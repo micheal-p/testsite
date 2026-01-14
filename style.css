@@ -1430,6 +1430,7 @@ body {
 .kpi-orange .kpi-icon {
     background: linear-gradient(135deg, #ff9800, #f57c00);
 }
+
 /* Notification Toast */
 .notification-toast {
     position: fixed;
@@ -2055,28 +2056,66 @@ body {
 
 /* Column Widths */
 .project-table th:nth-child(1),
-.project-table td:nth-child(1) { width: 22%; } /* Project Name */
+.project-table td:nth-child(1) {
+    width: 22%;
+}
+
+/* Project Name */
 
 .project-table th:nth-child(2),
-.project-table td:nth-child(2) { width: 14%; } /* Investment Type */
+.project-table td:nth-child(2) {
+    width: 14%;
+}
+
+/* Investment Type */
 
 .project-table th:nth-child(3),
-.project-table td:nth-child(3) { width: 10%; text-align: right; } /* Investment */
+.project-table td:nth-child(3) {
+    width: 10%;
+    text-align: right;
+}
+
+/* Investment */
 
 .project-table th:nth-child(4),
-.project-table td:nth-child(4) { width: 10%; text-align: right; } /* Disbursed */
+.project-table td:nth-child(4) {
+    width: 10%;
+    text-align: right;
+}
+
+/* Disbursed */
 
 .project-table th:nth-child(5),
-.project-table td:nth-child(5) { width: 10%; text-align: center; } /* Progress */
+.project-table td:nth-child(5) {
+    width: 10%;
+    text-align: center;
+}
+
+/* Progress */
 
 .project-table th:nth-child(6),
-.project-table td:nth-child(6) { width: 8%; text-align: center; } /* ROI */
+.project-table td:nth-child(6) {
+    width: 8%;
+    text-align: center;
+}
+
+/* ROI */
 
 .project-table th:nth-child(7),
-.project-table td:nth-child(7) { width: 12%; text-align: center; } /* Status */
+.project-table td:nth-child(7) {
+    width: 12%;
+    text-align: center;
+}
+
+/* Status */
 
 .project-table th:nth-child(8),
-.project-table td:nth-child(8) { width: 14%; text-align: center; } /* Actions */
+.project-table td:nth-child(8) {
+    width: 14%;
+    text-align: center;
+}
+
+/* Actions */
 
 /* Table Header */
 .project-table thead {
@@ -2327,14 +2366,43 @@ body {
 }
 
 /* Column Widths */
-.investment-table th:nth-child(1) { width: 24%; }
-.investment-table th:nth-child(2) { width: 14%; }
-.investment-table th:nth-child(3) { width: 10%; text-align: right; }
-.investment-table th:nth-child(4) { width: 10%; text-align: right; }
-.investment-table th:nth-child(5) { width: 10%; text-align: center; }
-.investment-table th:nth-child(6) { width: 8%; text-align: center; }
-.investment-table th:nth-child(7) { width: 12%; text-align: center; }
-.investment-table th:nth-child(8) { width: 12%; text-align: center; }
+.investment-table th:nth-child(1) {
+    width: 24%;
+}
+
+.investment-table th:nth-child(2) {
+    width: 14%;
+}
+
+.investment-table th:nth-child(3) {
+    width: 10%;
+    text-align: right;
+}
+
+.investment-table th:nth-child(4) {
+    width: 10%;
+    text-align: right;
+}
+
+.investment-table th:nth-child(5) {
+    width: 10%;
+    text-align: center;
+}
+
+.investment-table th:nth-child(6) {
+    width: 8%;
+    text-align: center;
+}
+
+.investment-table th:nth-child(7) {
+    width: 12%;
+    text-align: center;
+}
+
+.investment-table th:nth-child(8) {
+    width: 12%;
+    text-align: center;
+}
 
 .investment-table td {
     padding: 16px 20px;
@@ -2346,13 +2414,21 @@ body {
 }
 
 .investment-table td:nth-child(3),
-.investment-table td:nth-child(4) { text-align: right; font-weight: 600; color: #008751; }
+.investment-table td:nth-child(4) {
+    text-align: right;
+    font-weight: 600;
+    color: #008751;
+}
 
 .investment-table td:nth-child(5),
-.investment-table td:nth-child(6) { text-align: center; }
+.investment-table td:nth-child(6) {
+    text-align: center;
+}
 
 .investment-table td:nth-child(7),
-.investment-table td:nth-child(8) { text-align: center; }
+.investment-table td:nth-child(8) {
+    text-align: center;
+}
 
 .investment-table tbody tr {
     background: white;
@@ -2387,4 +2463,209 @@ body {
 .investment-table .btn-sm:hover {
     transform: scale(1.08);
     box-shadow: 0 4px 15px rgba(0, 135, 81, 0.4);
+}
+
+/* ============================================
+   MOBILE RESPONSIVENESS
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .investment-project-panel {
+        margin: 16px;
+    }
+
+    .bottom-panel {
+        padding: 0 16px 24px;
+    }
+
+    .investment-table th,
+    .investment-table td {
+        padding: 12px 10px;
+        font-size: 12px;
+    }
+
+    .project-table th,
+    .project-table td {
+        padding: 10px 8px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* Panel Header Mobile */
+    .investment-project-panel .panel-header {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .investment-project-panel .panel-header h3 {
+        font-size: 14px;
+    }
+
+    .bottom-panel .card.bottom-card .card-header {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .bottom-panel .card.bottom-card .card-header h4 {
+        font-size: 14px;
+    }
+
+    .bottom-panel .card.bottom-card .card-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+
+    .bottom-panel .card.bottom-card .enhanced-select {
+        flex: 1;
+        min-width: 100%;
+    }
+
+    /* Table Scrollable Container */
+    .project-table {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -16px;
+        padding: 0 16px;
+    }
+
+    .project-table table {
+        min-width: 800px;
+        table-layout: auto;
+    }
+
+    .investment-table {
+        min-width: 800px;
+    }
+
+    /* Column Auto-width for mobile scroll */
+    .project-table th,
+    .project-table td,
+    .investment-table th,
+    .investment-table td {
+        width: auto !important;
+        white-space: nowrap;
+        padding: 10px 12px;
+    }
+
+    /* Status Badge Mobile */
+    .status-badge {
+        padding: 4px 10px;
+        font-size: 10px;
+    }
+
+    /* Action Buttons Mobile */
+    .project-table .btn-sm,
+    .investment-table .btn-sm {
+        width: 30px;
+        height: 30px;
+        margin: 0 2px;
+    }
+
+    .project-table .btn-sm i,
+    .investment-table .btn-sm i {
+        font-size: 11px;
+    }
+
+    /* Filter Bar Mobile */
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+
+    .enhanced-select {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .action-buttons {
+        justify-content: center;
+    }
+
+    /* Cards Mobile */
+    .bottom-panel {
+        padding: 0 12px 20px;
+    }
+
+    .investment-project-panel {
+        margin: 12px;
+        border-radius: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    /* Smaller Mobile */
+    .investment-project-panel {
+        margin: 8px;
+    }
+
+    .investment-project-panel .panel-header h3 {
+        font-size: 12px;
+        gap: 8px;
+    }
+
+    .investment-project-panel .panel-header h3 i {
+        font-size: 16px;
+    }
+
+    .project-table table,
+    .investment-table {
+        min-width: 700px;
+    }
+
+    .project-table th,
+    .project-table td,
+    .investment-table th,
+    .investment-table td {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    /* Stats Cards Mobile */
+    .stat-card {
+        padding: 16px;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    /* Hide less important columns on very small screens */
+    .project-table th:nth-child(5),
+    .project-table td:nth-child(5),
+    .project-table th:nth-child(6),
+    .project-table td:nth-child(6),
+    .investment-table th:nth-child(5),
+    .investment-table td:nth-child(5),
+    .investment-table th:nth-child(6),
+    .investment-table td:nth-child(6) {
+        display: none;
+    }
+}
+
+/* Scroll indicator for tables */
+.table-scroll-hint {
+    display: none;
+    text-align: center;
+    padding: 8px;
+    color: #666;
+    font-size: 12px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+    .table-scroll-hint {
+        display: block;
+    }
 }
