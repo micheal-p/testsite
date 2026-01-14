@@ -2469,6 +2469,25 @@ body {
    MOBILE RESPONSIVENESS
    ============================================ */
 
+/* Table Scroll Wrapper - Enables horizontal scrolling */
+.table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-scroll-hint {
+    display: none;
+    text-align: center;
+    padding: 10px;
+    color: #008751;
+    font-size: 13px;
+    font-weight: 600;
+    background: linear-gradient(90deg, rgba(0, 135, 81, 0.1) 0%, rgba(232, 197, 71, 0.1) 100%);
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
 @media (max-width: 1024px) {
     .investment-project-panel {
         margin: 16px;
