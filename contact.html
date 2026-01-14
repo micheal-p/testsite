@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Sales - AngelList</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Dark Mode Toggle (Hanging Bulb) -->
+    <div class="bulb-container" id="theme-toggle-bulb">
+        <div class="bulb-wire"></div>
+        <div class="bulb-icon"></div>
+    </div>
+
+    <!-- Logo (Separate from Pill Navbar) -->
+    <a href="index.html" class="logo-fixed">
+        <svg width="120" height="32" viewBox="0 0 120 32" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="24" font-family="Arial, sans-serif" font-size="24" font-weight="bold" letter-spacing="-1"
+                fill="currentColor">AngelList</text>
+        </svg>
+    </a>
+
+    <!-- Navigation (Pill Style - Links Only) -->
+    <nav class="navbar pill-nav">
+        <div class="nav-links">
+            <a href="construction.html">Products</a>
+            <a href="construction.html">Solutions</a>
+            <a href="construction.html">Pricing</a>
+            <a href="construction.html">Resources</a>
+        </div>
+    </nav>
+
+    <!-- Auth Links (Separate from Pill) -->
+    <div class="auth-fixed">
+        <a href="signin.html" class="nav-link">Sign In</a>
+        <a href="newsletter.html" class="btn btn-black">Join</a>
+        <div class="app-launcher-container">
+            <button class="app-launcher-btn" aria-label="App Launcher" aria-expanded="false">
+                <div class="app-launcher-icon">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </button>
+            <div class="app-dropdown">
+                <a href="construction.html" class="app-item">
+                    <div class="app-item-icon" style="background: #e3f2fd; color: #1976d2;">S</div>
+                    <span>Startups</span>
+                </a>
+                <a href="construction.html" class="app-item">
+                    <div class="app-item-icon" style="background: #e8f5e9; color: #388e3c;">I</div>
+                    <span>Investors</span>
+                </a>
+                <a href="construction.html" class="app-item">
+                    <div class="app-item-icon" style="background: #ffebee; color: #d32f2f;">F</div>
+                    <span>Funds</span>
+                </a>
+                <a href="construction.html" class="app-item">
+                    <div class="app-item-icon" style="background: #fff3e0; color: #f57c00;">J</div>
+                    <span>Jobs</span>
+                </a>
+                <a href="construction.html" class="app-item">
+                    <div class="app-item-icon" style="background: #f3e5f5; color: #7b1fa2;">P</div>
+                    <span>Product</span>
+                </a>
+                <a href="signin.html" class="app-item">
+                    <div class="app-item-icon" style="background: #e1f5fe; color: #0288d1;">L</div>
+                    <span>Login</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <button class="mobile-close-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <ul>
+            <li><a href="construction.html">Products</a></li>
+            <li><a href="construction.html">Solutions</a></li>
+            <li><a href="construction.html">Pricing</a></li>
+            <li><a href="construction.html">Resources</a></li>
+            <li><a href="signin.html">Sign In</a></li>
+        </ul>
+    </div>
+
+    <!-- Contact Content -->
+    <main class="contact-page">
+        <div class="contact-card">
+            <h1>Contact Sales</h1>
+            <p>Interested in our products? Get in touch with our team.</p>
+
+            <form onsubmit="event.preventDefault(); alert('Message sent!'); window.location.href='index.html'">
+                <div class="form-row">
+                    <input type="text" placeholder="First Name" required>
+                    <input type="text" placeholder="Last Name" required>
+                </div>
+                <input type="email" placeholder="Work Email" required>
+                <input type="text" placeholder="Company">
+                <textarea placeholder="How can we help you?"></textarea>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

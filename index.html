@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AngelList Clone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Dark Mode Toggle (Hanging Bulb) -->
+    <div class="bulb-container" id="theme-toggle-bulb">
+        <div class="bulb-wire"></div>
+        <div class="bulb-icon"></div>
+    </div>
+
+    <!-- Logo (Separate from Pill Navbar) -->
+    <a href="index.html" class="logo-fixed">
+        <svg width="120" height="32" viewBox="0 0 120 32" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="24" font-family="Arial, sans-serif" font-size="24" font-weight="bold" letter-spacing="-1"
+                fill="currentColor">AngelList</text>
+        </svg>
+    </a>
+
+    <!-- Navigation (Pill Style - Links Only) -->
+    <nav class="navbar pill-nav">
+        <!-- Pill Links (No Logo Inside) -->
+        <div class="nav-links">
+            <a href="construction.html">Products</a>
+            <a href="construction.html">Solutions</a>
+            <a href="construction.html">Pricing</a>
+            <a href="construction.html">Resources</a>
+        </div>
+    </nav>
+
+    <!-- Auth Links (Separate from Pill) -->
+    <div class="auth-fixed">
+        <a href="signin.html" class="nav-link">Sign In</a>
+        <a href="newsletter.html" class="btn btn-black">Join</a>
+        <!-- App Launcher Container -->
+        <div class="app-launcher-container">
+            <button class="app-launcher-btn" aria-label="App Launcher" aria-expanded="false">
+                <div class="app-launcher-icon">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </button>
+            <!-- App Dropdown -->
+            <div class="app-dropdown">
+                <a href="construction.html" class="app-item">
+                    <div class="app-item-icon" style="background: #e3f2fd; color: #1976d2;">S</div>
+                    <span>Startups</span>
+                </a>
+                <a href="construction.html" class="app-item">
+                    <div class="app-item-icon" style="background: #e8f5e9; color: #388e3c;">I</div>
+                    <span>Investors</span>
+                </a>
+                <a href="construction.html" class="app-item">
+                    <div class="app-item-icon" style="background: #ffebee; color: #d32f2f;">F</div>
+                    <span>Funds</span>
+                </a>
+                <a href="construction.html" class="app-item">
+                    <div class="app-item-icon" style="background: #fff3e0; color: #f57c00;">J</div>
+                    <span>Jobs</span>
+                </a>
+                <a href="construction.html" class="app-item">
+                    <div class="app-item-icon" style="background: #f3e5f5; color: #7b1fa2;">P</div>
+                    <span>Product</span>
+                </a>
+                <a href="signin.html" class="app-item">
+                    <div class="app-item-icon" style="background: #e1f5fe; color: #0288d1;">L</div>
+                    <span>Login</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <button class="mobile-close-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <ul>
+            <li><a href="construction.html">Products</a></li>
+            <li><a href="construction.html">Solutions</a></li>
+            <li><a href="construction.html">Pricing</a></li>
+            <li><a href="construction.html">Resources</a></li>
+            <li><a href="signin.html">Sign In</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="hero container">
+        <h1>Built to scale all private funds</h1>
+        <p>AngelList provides investors and innovators with the tools to grow.</p>
+        <div class="hero-actions">
+            <a href="contact.html" class="btn btn-primary">Contact Sales</a>
+            <a href="construction.html" class="btn btn-secondary">Explore Venture Funds</a>
+        </div>
+        <div class="hero-image-wrapper">
+            <img src="assets/images/hero.jpg" alt="AngelList Dashboard Interface">
+        </div>
+    </header>
+
+    <!-- 8-Grid Section -->
+    <section class="grid-section">
+        <div class="grid-container">
+            <a href="construction.html" class="grid-item grid-1">
+                <span>01</span>
+                <h3>Venture Funds</h3>
+            </a>
+            <a href="construction.html" class="grid-item grid-2">
+                <span>02</span>
+                <h3>Rolling Funds</h3>
+            </a>
+            <a href="construction.html" class="grid-item grid-3">
+                <span>03</span>
+                <h3>SPVs</h3>
+            </a>
+            <a href="construction.html" class="grid-item grid-4">
+                <span>04</span>
+                <h3>Scout Funds</h3>
+            </a>
+            <a href="construction.html" class="grid-item grid-5">
+                <span>05</span>
+                <h3>About</h3>
+            </a>
+            <a href="construction.html" class="grid-item grid-6">
+                <span>06</span>
+                <h3>Careers</h3>
+            </a>
+            <a href="construction.html" class="grid-item grid-7">
+                <span>07</span>
+                <h3>Blog</h3>
+            </a>
+            <a href="contact.html" class="grid-item grid-8">
+                <span>08</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Stats Section - Fueling Innovation -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stats-left">
+                <span class="stats-label">By the numbers</span>
+                <h2 class="stats-heading">Fueling<br>innovation</h2>
+                <p class="stats-desc">With more than half of all top-tier VC deals run through the platform, AngelList
+                    is at the heart of venture investing. This exposure gives AngelList the insight to identify gaps in
+                    the VC market and build the solutions that bridge them.</p>
+            </div>
+            <div class="stats-right">
+                <div class="stats-grid">
+                    <div class="stat-item stat-main">
+                        <span class="stat-number" data-target="171" data-prefix="$" data-suffix="B">$0B</span>
+                        <span class="stat-label">Assets on platform</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="25" data-suffix="k+">0k+</span>
+                        <span class="stat-label">Funds and syndicates</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="13" data-suffix="k+">0k+</span>
+                        <span class="stat-label">Active startups</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="72" data-suffix="k+">0k+</span>
+                        <span class="stat-label">Active investors</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="10.7" data-prefix="$" data-suffix="B">$0B</span>
+                        <span class="stat-label">Raised by active startups</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features-section container">
+        <div class="feature-block">
+            <div class="feature-text">
+                <h2>Venture Funds</h2>
+                <p>Raise capital, close deals, and manage your portfolio — all from a single platform.</p>
+                <a href="construction.html" class="btn btn-secondary">Learn more</a>
+            </div>
+            <div class="feature-image">
+                <img src="assets/images/feature-1.png" alt="Venture Funds Interface">
+            </div>
+        </div>
+
+        <div class="feature-block reverse">
+            <div class="feature-text">
+                <h2>SPVs</h2>
+                <p>Raise privately on a deal-by-deal basis and leverage the AngelList Capital Network.</p>
+                <a href="construction.html" class="btn btn-secondary">Learn more</a>
+            </div>
+            <div class="feature-image">
+                <img src="assets/images/feature-2.png" alt="SPV Interface">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Products</h4>
+                <ul>
+                    <li><a href="construction.html">Venture Funds</a></li>
+                    <li><a href="construction.html">Rolling Funds</a></li>
+                    <li><a href="construction.html">SPVs</a></li>
+                    <li><a href="construction.html">Scout Funds</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="construction.html">About</a></li>
+                    <li><a href="construction.html">Careers</a></li>
+                    <li><a href="construction.html">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="construction.html">Help Center</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <p style="margin-top: 40px; color: var(--text-secondary); font-size: 0.9rem;">&copy; 2025 AngelList</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
