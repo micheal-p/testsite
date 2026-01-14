@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Management Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Top Navigation Bar -->
+        <div class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Financial Management</h1>
+                    <div class="subtitle">NEMIC / NEMP Financial Overview</div>
+                </div>
+                <div class="global-filters">
+                    <label><i class="fas fa-calendar"></i> Year:</label>
+                    <select id="year-filter">
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2025">2025 (Forecast)</option>
+                    </select>
+                    <label><i class="fas fa-layer-group"></i> Category:</label>
+                    <select id="category-filter">
+                        <option value="all">All</option>
+                        <option value="investment">Investment</option>
+                        <option value="loan">Loan</option>
+                        <option value="grant">Grant</option>
+                    </select>
+                </div>
+                <div class="header-actions">
+                    <button id="back-btn" class="btn btn-icon" title="Back to Main Dashboard"
+                        onclick="navigateToMain()">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <button id="refresh-btn" class="btn btn-icon" title="Refresh Data">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button id="export-btn" class="btn btn-icon" title="Export Report">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心KPI栏 -->
+        <div class="kpi-header">
+            <div class="kpi-card kpi-green">
+                <div class="kpi-icon"><i class="fas fa-coins"></i></div>
+                <div class="kpi-content">
+                    <div class="kpi-title">Total Annual Budget</div>
+                    <div class="kpi-value">$4.8B</div>
+                    <div class="kpi-trend trend-up"><i class="fas fa-arrow-up"></i> +15.2%</div>
+                    <div class="kpi-compare">YoY Increase</div>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-blue">
+                <div class="kpi-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                <div class="kpi-content">
+                    <div class="kpi-title">Mobilized Funds</div>
+                    <div class="kpi-value">$3.8B</div>
+                    <div class="kpi-trend trend-up"><i class="fas fa-arrow-up"></i> +22.5%</div>
+                    <div class="kpi-compare">Execution Rate 79.2%</div>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-purple">
+                <div class="kpi-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="kpi-content">
+                    <div class="kpi-title">Return on Investment</div>
+                    <div class="kpi-value">13.8%</div>
+                    <div class="kpi-trend trend-up"><i class="fas fa-arrow-up"></i> +2.1%</div>
+                    <div class="kpi-compare">Annual Average</div>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-orange">
+                <div class="kpi-icon"><i class="fas fa-piggy-bank"></i></div>
+                <div class="kpi-content">
+                    <div class="kpi-title">Pending Disbursement</div>
+                    <div class="kpi-value">$1.0B</div>
+                    <div class="kpi-trend trend-down"><i class="fas fa-arrow-down"></i> -12.3%</div>
+                    <div class="kpi-compare">YoY Decrease</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-dashboard">
+            <!-- Left: Budget & Fund Management -->
+            <div class="dashboard-column">
+                <div class="column-header">
+                    <h3><i class="fas fa-wallet"></i> Budget & Fund Management</h3>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Budget Execution Status</h4>
+                        <div class="chart-legend">
+                            <span class="legend-item"><span class="legend-dot legend-budget"></span> Budget</span>
+                            <span class="legend-item"><span class="legend-dot legend-actual"></span> Actual</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="budget-execution-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Funding Source Composition</h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="funding-source-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Funding Disbursement Timeline</h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="funding-timeline-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle: Investment Project Analysis -->
+            <div class="dashboard-column">
+                <div class="column-header">
+                    <h3><i class="fas fa-project-diagram"></i> Investment Project Analysis</h3>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Project Investment Distribution</h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="investment-distribution-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Project ROI Analysis</h4>
+                        <div class="chart-legend">
+                            <span class="legend-item">X: Investment | Y: ROI | Bubble: Scale</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="project-roi-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Investment Return Forecast</h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="roi-prediction-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：项目清单与财务报表 -->
+            <div class="dashboard-column">
+                <div class="column-header">
+                    <h3><i class="fas fa-file-invoice-dollar"></i> Financial Reports</h3>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Monthly Cash Flow</h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="cashflow-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Expense Category Statistics</h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="expense-category-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Investment Project List -->
+        <div class="investment-project-panel">
+            <div class="panel-header">
+                <h3><i class="fas fa-briefcase"></i> Investment Project List</h3>
+                <select id="project-status-filter" class="enhanced-select">
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="completed">Completed</option>
+                    <option value="planned">Planned</option>
+                </select>
+            </div>
+            <div class="panel-body">
+                <table class="investment-table">
+                    <thead>
+                        <tr>
+                            <th>Project Name</th>
+                            <th>Funding Source</th>
+                            <th>Investment</th>
+                            <th>Disbursed</th>
+                            <th>Progress</th>
+                            <th>ROI</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Content populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="finance.js"></script>
+</body>
+
+</html>
