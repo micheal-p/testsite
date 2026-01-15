@@ -1,3 +1,30 @@
+/* ============================================
+   ANGELLIST CUSTOM FONTS
+   ============================================ */
+@font-face {
+    font-family: 'AngelList';
+    src: url('assets/font/AngelList_VF-s.p.3bb41c0a.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'AngelList';
+    src: url('assets/font/AngelList_Italic_VF-s.p.31e87b9d.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'AngelList Display';
+    src: url('assets/font/AngelListDisplay_Regular-s.p.9a576876.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     /* Colors - Deduced from AngelList */
     --bg-primary: #ffffff;
@@ -8,8 +35,9 @@
     /* AngelList uses strong blacks */
     --border-color: #e6e9ed;
 
-    /* Typography */
-    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    /* Typography - AngelList Fonts */
+    --font-family: 'AngelList', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --font-display: 'AngelList Display', 'AngelList', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-size-base: 16px;
 
     /* Dark Mode Defaults (Light Mode First) */
@@ -31,12 +59,11 @@ body.dark-mode {
     --border-color: #0e3f45;
 }
 
-/* Bulb Toggle */
+/* Bulb Toggle - Fixed Alignment */
 .bulb-container {
     position: fixed;
     top: 0;
     right: 275px;
-    /* Shifted another 70px to the left */
     z-index: 1100;
     display: flex;
     flex-direction: column;
@@ -51,33 +78,37 @@ body.dark-mode {
 
 .bulb-wire {
     width: 2px;
-    height: 100px;
-    /* Initial length of wire */
-    background: #555;
+    height: 80px;
+    background: #333;
     transition: height 0.3s;
 }
 
 .bulb-icon {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     background: #ffeb3b;
-    /* Lit color */
     border-radius: 50%;
     box-shadow: 0 0 20px #ffeb3b;
-    margin-top: -2px;
     position: relative;
     transition: all 0.3s;
 }
 
-.bulb-icon::after {
+/* Socket - centered above bulb */
+.bulb-icon::before {
     content: '';
     position: absolute;
-    top: -5px;
-    left: 10px;
-    width: 20px;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
     height: 10px;
     background: #333;
-    /* Socket */
+    border-radius: 2px 2px 0 0;
+}
+
+/* Remove old after pseudo-element */
+.bulb-icon::after {
+    display: none;
 }
 
 /* Unlit State (Default for Light Mode in this logic, or logic can be flipped) */
@@ -331,6 +362,17 @@ body {
     background-color: var(--bg-primary);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+}
+
+/* Headings use AngelList Display font */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-display);
+    font-weight: 500;
 }
 
 /* Sections - Reduced Heights */
@@ -957,6 +999,7 @@ img {
         grid-column: span 1;
     }
 }
+
 
 /* ==================== */
 /* PAGE-SPECIFIC STYLES */
