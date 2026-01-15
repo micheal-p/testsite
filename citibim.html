@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>CITIBIM Infrastructure & Weather Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Leaflet & Plugins -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg: #f7fafc;
+            --panel: #ffffff;
+            --text: #0f172a;
+            --muted: #475569;
+            --accent: #38bdf8;
+            --good: #22c55e;
+            --warn: #f59e0b;
+            --bad: #ef4444;
+            --shadow: 0 10px 25px rgba(2, 6, 23, .08);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0b1220;
+            --panel: #0f172a;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #38bdf8;
+            --shadow: 0 10px 30px rgba(0, 0, 0, .25);
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            height: 100vh;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 360px 1fr;
+        }
+
+        /* Search bar styles */
+        #mapSearch {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            z-index: 2000;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            padding: 6px 10px;
+            width: 240px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #mapSearch input {
+            border: none;
+            outline: none;
+            width: 100%;
+            padding: 6px 10px;
+            font-size: 14px;
+            border-radius: 15px;
+        }
+
+        #searchResults {
+            max-height: 180px;
+            overflow-y: auto;
+            margin-top: 6px;
+            border-top: 1px solid #eee;
+        }
+
+        #searchResults div {
+            padding: 6px 8px;
+            cursor: pointer;
+            font-size: 13px;
+            border-radius: 8px;
+        }
+
+        #searchResults div:hover {
+            background: #f0f0f0;
+        }
+
+        #sidebar {
+            background: linear-gradient(180deg, var(--panel), color-mix(in srgb, var(--panel), transparent 20%) 100%);
+            box-shadow: var(--shadow);
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+
+        #sidebar .logo {
+            text-align: center;
+            margin-bottom: 10px;
+            background: var(--panel);
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        #sidebar .logo img {
+            width: 160px;
+            padding-top: 10px;
+        }
+
+        .tab-header {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            background: #e2e8f0;
+        }
+
+        .tab-header button {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            color: #222;
+            border-bottom: 2px solid transparent;
+            transition: border 0.2s;
+        }
+
+        .tab-header button.active {
+            border-bottom: 2px solid var(--accent);
+            background: var(--panel);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 10px 10px 20px 10px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Map */
+        #map {
+            height: 100vh;
+            width: 100%;
+            z-index: 0;
+        }
+
+        /* Infrastructure styles */
+        .group {
+            margin-bottom: 10px;
+        }
+
+        .group-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel);
+            padding: 15px 8px;
+            font-weight: bold;
+            border-radius: 15px;
+        }
+
+        .group-content {
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            background: #f0eeee;
+            border-radius: 15px;
+        }
+
+        .market-label {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 4px;
+            padding: 2px 4px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .health-label {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+            white-space: nowrap;
+        }
+
+        .layer-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 6px 0;
+            background: var(--panel);
+            border-radius: 12px;
+            padding: 5px 10px;
+        }
+
+        .layer-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .layer-name {
+            flex: 1;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .layer-icon {
+            width: 20px;
+            text-align: right;
+        }
+
+        .toggle {
+            background-color: #ccc;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 50px;
+            height: 25px;
+            position: relative;
+        }
+
+        .toggle::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s ease;
+        }
+
+        .toggle.active {
+            background-color: #4CAF50;
+        }
+
+        .toggle.active::before {
+            transform: translateX(20px);
+        }
+
+        /* Weather styles */
+        .panel {
+            background: var(--panel);
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .panel h3 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .control {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        input[type="text"],
+        input[type="search"],
+        select {
+            width: 100%;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #222;
+            padding: 10px 12px;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .btn {
+            cursor: pointer;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-weight: 600;
+        }
+
+        .btn.ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid #cbd5e1;
+        }
+
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .kpi {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .kpi .v {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .legend {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .legend .pill {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: #e0e7ef;
+            border: 1px solid #cbd5e1;
+        }
+
+        .footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .electrified-community-icon {
+            color: #2e3a27;
+            font-size: 18px;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .coal-mines-icon {
+            color: #472207;
+            font-size: 18px;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .school-icon {
+            color: #378f04;
+            font-size: 18px;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .marker-label {
+            background: #fff;
+            padding: 2px 6px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-wrap {
+            max-width: 84vw;
+            width: 320px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-inner {
+            flex: 1 1 auto;
+            background: #000;
+        }
+
+        .video-inner video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            padding: 6px;
+            background: #f8fafc;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .toggle-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 8px 12px;
+            min-width: 0;
+        }
+
+        .basemap-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 8px 12px;
+            margin-top: 8px;
+        }
+
+        .basemap-control label {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 0;
+            margin-right: 4px;
+        }
+
+        .basemap-control select {
+            min-width: 90px;
+            max-width: 120px;
+            padding: 6px 8px;
+            font-size: 14px;
+        }
+
+        .forecast-hour-control {
+            margin-top: 16px !important;
+        }
+
+        .population-marker {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .population-icon {
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .population-count {
+            background: white;
+            border-radius: 12px;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            border: 1px solid #ccc;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .info {
+            padding: 8px;
+            background: #fff;
+            border-top: 1px solid #ddd;
+            font-size: 13px;
+            color: #333;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .info table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .info td {
+            padding: 2px 4px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+
+        .info td:first-child {
+            font-weight: bold;
+            white-space: nowrap;
+            color: #555;
+        }
+
+        .menu-btn {
+            position: fixed;
+            top: 80px;
+            left: 8px;
+            z-index: 3000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .sidebar-btn {
+            position: fixed;
+            top: 80px;
+            left: 8px;
+            z-index: 3000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        @media (min-width: 901px) {
+            .menu-btn {
+                display: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+            body {
+                grid-template-columns: 1fr;
+            }
+
+            #sidebar {
+                width: 100vw;
+                position: absolute;
+                left: 0;
+                top: 0;
+                z-index: 4000;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            #sidebar.open {
+                transform: translateX(0);
+            }
+
+            #map {
+                height: 100vh;
+            }
+        }
+    </style>
+</head>
+
+<body data-theme="light">
+    <button id="menuToggleMap" class="menu-btn"><i class="fas fa-bars"></i></button>
+    <div id="sidebar">
+        <button id="menuToggleSidebar" class="menu-btn sidebar-btn"><i class="fas fa-bars"></i></button>
+        <div class="logo">
+            <img src="https://citibim.com/wp-content/uploads/2025/05/cropped-Citibim-logo.png" alt="CITIBIM Logo">
+            <div><strong>CITIBIM SUSTAINABILITY DASHBOARD</strong></div>
+            <p>This dashboard provides an interactive map of Nigeria's electricity infrastructure, resources, amenities,
+                and real-time weather for sustainable development in Nigeria</p>
+        </div>
+
+        <div class="tab-header">
+            <button class="active" data-tab="infrastructure">Infrastructure</button>
+            <button data-tab="weather">Weather</button>
+        </div>
+
+        <!-- Infrastructure Tab -->
+        <div id="infrastructure" class="tab-content active">
+            <!-- On Grid Infrastructure -->
+            <div class="group">
+                <div class="group-header">
+                    <span>ON GRID INFRASTRUCTURE</span>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="group-content">
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="transmission"></button>
+                            <span class="layer-name">Transmission Lines</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-bolt"></i></span>
+                    </div>
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="powerPlants"></button>
+                            <span class="layer-name">Power Plants</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-industry"></i></span>
+                    </div>
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="gasPipelines"></button>
+                            <span class="layer-name">Gas Pipelines</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-fire"></i></span>
+                    </div>
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="discoCoverage"></button>
+                            <span class="layer-name">DisCo Coverage</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-map"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Off Grid Infrastructure -->
+            <div class="group">
+                <div class="group-header">
+                    <span>OFF GRID INFRASTRUCTURE</span>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="group-content">
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="miniGrids"></button>
+                            <span class="layer-name">Mini Grids</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-solar-panel"></i></span>
+                    </div>
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="solarRadiance"></button>
+                            <span class="layer-name">Solar Radiance</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-sun"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Details -->
+            <div class="group">
+                <div class="group-header">
+                    <span>COMMUNITY DETAILS</span>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="group-content">
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="populatedPlaces"></button>
+                            <span class="layer-name">Populated Places</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-users"></i></span>
+                    </div>
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="electrifiedCommunities"></button>
+                            <span class="layer-name">Electrified Communities</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-lightbulb"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources -->
+            <div class="group">
+                <div class="group-header">
+                    <span>RESOURCES</span>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="group-content">
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="mines"></button>
+                            <span class="layer-name">Mines</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-mountain"></i></span>
+                    </div>
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="schools"></button>
+                            <span class="layer-name">Schools</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-school"></i></span>
+                    </div>
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="healthFacilities"></button>
+                            <span class="layer-name">Health Facilities</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-hospital"></i></span>
+                    </div>
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="financialServices"></button>
+                            <span class="layer-name">Financial Services</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-university"></i></span>
+                    </div>
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="waterPoints"></button>
+                            <span class="layer-name">Water Points</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-tint"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Markets -->
+            <div class="group">
+                <div class="group-header">
+                    <span>MARKETS</span>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="group-content">
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="wuseMarket"></button>
+                            <span class="layer-name">Wuse Market</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-store"></i></span>
+                    </div>
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="lagosIslandMarket"></button>
+                            <span class="layer-name">Lagos Island Market</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-store"></i></span>
+                    </div>
+                    <div class="layer-item">
+                        <div class="layer-toggle">
+                            <button class="toggle" data-layer="agbaniMarket"></button>
+                            <span class="layer-name">Agbani Market</span>
+                        </div>
+                        <span class="layer-icon"><i class="fas fa-store"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weather Tab -->
+        <div id="weather" class="tab-content">
+            <div class="panel">
+                <h3><i class="ri-map-pin-line"></i> Location</h3>
+                <div class="row">
+                    <div class="control">
+                        <label>City / Town</label>
+                        <input type="text" id="cityInput" placeholder="Enter city name..." value="Abuja">
+                    </div>
+                    <div class="control">
+                        <label>&nbsp;</label>
+                        <button class="btn" id="searchWeather"><i class="fas fa-search"></i> Search</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3><i class="ri-sun-line"></i> Current Weather</h3>
+                <div id="currentWeather">
+                    <div class="kpis">
+                        <div class="kpi">
+                            <div class="v" id="tempValue">--°C</div>
+                            <div>Temperature</div>
+                        </div>
+                        <div class="kpi">
+                            <div class="v" id="humidityValue">--%</div>
+                            <div>Humidity</div>
+                        </div>
+                        <div class="kpi">
+                            <div class="v" id="windValue">-- m/s</div>
+                            <div>Wind</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <span id="weatherDesc">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3><i class="ri-bar-chart-line"></i> 7-Day Forecast</h3>
+                <canvas id="forecastChart" height="150"></canvas>
+            </div>
+
+            <div class="panel">
+                <h3><i class="ri-settings-3-line"></i> Settings</h3>
+                <div class="toggle-group">
+                    <div class="toggle-control">
+                        <label>Units</label>
+                        <select id="unitsSelect">
+                            <option value="metric">°C</option>
+                            <option value="imperial">°F</option>
+                        </select>
+                    </div>
+                    <div class="toggle-control">
+                        <label>Theme</label>
+                        <select id="themeSelect">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="basemap-control">
+                    <label>Basemap</label>
+                    <select id="basemapSelect">
+                        <option value="osm">OpenStreetMap</option>
+                        <option value="satellite">Satellite</option>
+                        <option value="terrain">Terrain</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="map">
+        <div id="mapSearch">
+            <input type="search" id="layerSearchInput" placeholder="Search active layers...">
+            <div id="searchResults"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([9.0820, 8.6753], 6);
+
+        // Basemap layers
+        const basemaps = {
+            osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }),
+            satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '© Esri'
+            }),
+            terrain: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenTopoMap'
+            })
+        };
+
+        basemaps.osm.addTo(map);
+
+        // Custom marker icon
+        const citibimIcon = L.icon({
+            iconUrl: 'https://res.cloudinary.com/dwp2uy1pd/image/upload/v1756134128/citibim_marker_cadykz.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+
+        // Layer storage
+        const layers = {};
+        const layerData = {};
+
+        // Data URLs
+        const dataUrls = {
+            transmission: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/transmission_lines.geojson',
+            powerPlants: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/power_plants.json',
+            gasPipelines: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/Gas%20pipelines.json',
+            discoCoverage: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/disco%20coverage%20main.json',
+            mines: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/mines.geojson',
+            populatedPlaces: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/populated_places.geojson',
+            solarRadiance: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/solar_radiance.geojson',
+            schools: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/schools.geojson',
+            financialServices: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/financial_services.geojson',
+            healthFacilities: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/health_facilities.geojson',
+            waterPoints: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/wpdx_enhanced.csv',
+            wuseMarket: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/Wuse_Market.json',
+            lagosIslandMarket: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/Lagos__island_Market.json',
+            agbaniMarket: 'https://raw.githubusercontent.com/kizito79/REA_Dashbord/main/agbani_market_new.json'
+        };
+
+        // Style functions for different layer types
+        const layerStyles = {
+            transmission: {
+                color: '#ff6b35',
+                weight: 2,
+                opacity: 0.8
+            },
+            gasPipelines: {
+                color: '#ffc107',
+                weight: 3,
+                opacity: 0.8
+            },
+            discoCoverage: (feature) => ({
+                fillColor: getDiscoColor(feature.properties.DisCo || feature.properties.disco),
+                weight: 1,
+                opacity: 0.7,
+                color: '#333',
+                fillOpacity: 0.4
+            }),
+            solarRadiance: (feature) => ({
+                fillColor: getSolarColor(feature.properties.DNI || feature.properties.ghi || 5),
+                weight: 1,
+                opacity: 0.5,
+                fillOpacity: 0.6
+            })
+        };
+
+        function getDiscoColor(disco) {
+            const colors = {
+                'AEDC': '#e74c3c',
+                'BEDC': '#3498db',
+                'EKEDC': '#2ecc71',
+                'IBEDC': '#9b59b6',
+                'IEDC': '#f39c12',
+                'JEDC': '#1abc9c',
+                'KAEDCO': '#e91e63',
+                'KEDCO': '#00bcd4',
+                'PHED': '#8bc34a',
+                'YEDC': '#ff5722',
+                'EEDC': '#795548'
+            };
+            return colors[disco] || '#95a5a6';
+        }
+
+        function getSolarColor(value) {
+            if (value > 6) return '#ff5722';
+            if (value > 5) return '#ff9800';
+            if (value > 4) return '#ffc107';
+            return '#ffeb3b';
+        }
+
+        // Load GeoJSON layer
+        async function loadGeoJSONLayer(layerName) {
+            if (layers[layerName]) return layers[layerName];
+
+            try {
+                const response = await fetch(dataUrls[layerName]);
+                const data = await response.json();
+                layerData[layerName] = data;
+
+                let layer;
+                if (layerName === 'transmission' || layerName === 'gasPipelines') {
+                    layer = L.geoJSON(data, {
+                        style: layerStyles[layerName]
+                    });
+                } else if (layerName === 'discoCoverage' || layerName === 'solarRadiance') {
+                    layer = L.geoJSON(data, {
+                        style: layerStyles[layerName],
+                        onEachFeature: (feature, layer) => {
+                            const props = feature.properties;
+                            let popup = '<div class="info"><table>';
+                            for (const [key, value] of Object.entries(props)) {
+                                popup += `<tr><td>${key}</td><td>${value}</td></tr>`;
+                            }
+                            popup += '</table></div>';
+                            layer.bindPopup(popup);
+                        }
+                    });
+                } else if (layerName === 'powerPlants') {
+                    const cluster = L.markerClusterGroup();
+                    data.features.forEach(feature => {
+                        const coords = feature.geometry.coordinates;
+                        const props = feature.properties;
+                        const marker = L.marker([coords[1], coords[0]], {
+                            icon: L.divIcon({
+                                html: '<i class="fas fa-industry" style="color: #e74c3c; font-size: 20px;"></i>',
+                                className: '',
+                                iconSize: [24, 24]
+                            })
+                        });
+                        let popup = `<strong>${props.name || 'Power Plant'}</strong><div class="info"><table>`;
+                        for (const [key, value] of Object.entries(props)) {
+                            popup += `<tr><td>${key}</td><td>${value}</td></tr>`;
+                        }
+                        popup += '</table></div>';
+                        marker.bindPopup(popup);
+                        cluster.addLayer(marker);
+                    });
+                    layer = cluster;
+                } else if (layerName.includes('Market')) {
+                    const cluster = L.markerClusterGroup();
+                    data.features.forEach(feature => {
+                        const coords = feature.geometry.coordinates;
+                        const props = feature.properties;
+                        const marker = L.marker([coords[1], coords[0]], { icon: citibimIcon });
+
+                        // Create popup with video if available
+                        let popup = `<div class="video-wrap">
+                            <div class="video-inner">
+                                <video id="shopVideo" controls>
+                                    <source src="https://res.cloudinary.com/dwp2uy1pd/video/upload/v1756733388/shop2_dllluk.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="info"><table>`;
+                        for (const [key, value] of Object.entries(props)) {
+                            popup += `<tr><td>${key}</td><td>${value}</td></tr>`;
+                        }
+                        popup += '</table></div></div>';
+                        marker.bindPopup(popup, { maxWidth: 350 });
+                        cluster.addLayer(marker);
+                    });
+                    layer = cluster;
+                } else {
+                    // Default cluster layer for points
+                    const cluster = L.markerClusterGroup();
+                    data.features.forEach(feature => {
+                        if (feature.geometry.type === 'Point') {
+                            const coords = feature.geometry.coordinates;
+                            const props = feature.properties;
+                            const marker = L.marker([coords[1], coords[0]], {
+                                icon: getLayerIcon(layerName)
+                            });
+                            let popup = `<div class="info"><table>`;
+                            for (const [key, value] of Object.entries(props)) {
+                                popup += `<tr><td>${key}</td><td>${value}</td></tr>`;
+                            }
+                            popup += '</table></div>';
+                            marker.bindPopup(popup);
+                            cluster.addLayer(marker);
+                        }
+                    });
+                    layer = cluster;
+                }
+
+                layers[layerName] = layer;
+                return layer;
+            } catch (error) {
+                console.error(`Error loading ${layerName}:`, error);
+                return null;
+            }
+        }
+
+        // Load CSV layer (for water points)
+        async function loadCSVLayer(layerName) {
+            if (layers[layerName]) return layers[layerName];
+
+            try {
+                const response = await fetch(dataUrls[layerName]);
+                const text = await response.text();
+                const data = Papa.parse(text, { header: true }).data;
+
+                const cluster = L.markerClusterGroup();
+                data.forEach(row => {
+                    const lat = parseFloat(row.lat_deg || row.latitude);
+                    const lon = parseFloat(row.lon_deg || row.longitude);
+                    if (!isNaN(lat) && !isNaN(lon)) {
+                        const marker = L.marker([lat, lon], {
+                            icon: L.divIcon({
+                                html: '<i class="fas fa-tint" style="color: #3498db; font-size: 16px;"></i>',
+                                className: '',
+                                iconSize: [20, 20]
+                            })
+                        });
+                        let popup = '<div class="info"><table>';
+                        for (const [key, value] of Object.entries(row)) {
+                            if (value) popup += `<tr><td>${key}</td><td>${value}</td></tr>`;
+                        }
+                        popup += '</table></div>';
+                        marker.bindPopup(popup);
+                        cluster.addLayer(marker);
+                    }
+                });
+
+                layers[layerName] = cluster;
+                return cluster;
+            } catch (error) {
+                console.error(`Error loading ${layerName}:`, error);
+                return null;
+            }
+        }
+
+        function getLayerIcon(layerName) {
+            const icons = {
+                mines: { icon: 'fa-mountain', color: '#795548' },
+                schools: { icon: 'fa-school', color: '#4caf50' },
+                healthFacilities: { icon: 'fa-hospital', color: '#f44336' },
+                financialServices: { icon: 'fa-university', color: '#2196f3' },
+                populatedPlaces: { icon: 'fa-users', color: '#9c27b0' },
+                electrifiedCommunities: { icon: 'fa-lightbulb', color: '#ffc107' },
+                miniGrids: { icon: 'fa-solar-panel', color: '#ff9800' }
+            };
+            const iconInfo = icons[layerName] || { icon: 'fa-map-marker', color: '#607d8b' };
+            return L.divIcon({
+                html: `<i class="fas ${iconInfo.icon}" style="color: ${iconInfo.color}; font-size: 16px;"></i>`,
+                className: '',
+                iconSize: [20, 20]
+            });
+        }
+
+        // Toggle layer visibility
+        async function toggleLayer(layerName, show) {
+            if (show) {
+                let layer;
+                if (layerName === 'waterPoints') {
+                    layer = await loadCSVLayer(layerName);
+                } else {
+                    layer = await loadGeoJSONLayer(layerName);
+                }
+                if (layer) {
+                    layer.addTo(map);
+                }
+            } else if (layers[layerName]) {
+                map.removeLayer(layers[layerName]);
+            }
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab-header button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-header button').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Group expand/collapse
+        document.querySelectorAll('.group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('.toggle-icon');
+                if (content.style.display === 'flex') {
+                    content.style.display = 'none';
+                    icon.textContent = '+';
+                } else {
+                    content.style.display = 'flex';
+                    icon.textContent = '−';
+                }
+            });
+        });
+
+        // Layer toggles
+        document.querySelectorAll('.toggle[data-layer]').forEach(toggle => {
+            toggle.addEventListener('click', async () => {
+                toggle.classList.toggle('active');
+                const layerName = toggle.dataset.layer;
+                const isActive = toggle.classList.contains('active');
+                await toggleLayer(layerName, isActive);
+            });
+        });
+
+        // Mobile menu toggle
+        document.getElementById('menuToggleMap').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.add('open');
+        });
+        document.getElementById('menuToggleSidebar').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.remove('open');
+        });
+
+        // Theme toggle
+        document.getElementById('themeSelect').addEventListener('change', (e) => {
+            document.body.setAttribute('data-theme', e.target.value);
+        });
+
+        // Basemap toggle
+        document.getElementById('basemapSelect').addEventListener('change', (e) => {
+            Object.values(basemaps).forEach(bm => {
+                if (map.hasLayer(bm)) map.removeLayer(bm);
+            });
+            basemaps[e.target.value].addTo(map);
+        });
+
+        // Search functionality for layers
+        document.getElementById('layerSearchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const results = document.getElementById('searchResults');
+            results.innerHTML = '';
+
+            if (query.length < 2) return;
+
+            // Search through active layers
+            for (const [layerName, data] of Object.entries(layerData)) {
+                if (data && data.features) {
+                    data.features.forEach(feature => {
+                        const props = feature.properties;
+                        const name = props.name || props.Name || props.NAME || '';
+                        if (name.toLowerCase().includes(query)) {
+                            const div = document.createElement('div');
+                            div.textContent = `${name} (${layerName})`;
+                            div.addEventListener('click', () => {
+                                if (feature.geometry.type === 'Point') {
+                                    const coords = feature.geometry.coordinates;
+                                    map.setView([coords[1], coords[0]], 14);
+                                } else if (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon') {
+                                    const layer = L.geoJSON(feature);
+                                    map.fitBounds(layer.getBounds());
+                                }
+                                results.innerHTML = '';
+                                e.target.value = '';
+                            });
+                            results.appendChild(div);
+                        }
+                    });
+                }
+            }
+        });
+
+        // Weather API
+        const WEATHER_API_KEY = 'e916bf351ebe85669f0cfc9557a462e1';
+        let forecastChart = null;
+
+        async function getWeather(city) {
+            try {
+                // First geocode the city
+                const geoResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}, Nigeria`);
+                const geoData = await geoResponse.json();
+
+                if (geoData.length === 0) {
+                    alert('City not found');
+                    return;
+                }
+
+                const lat = geoData[0].lat;
+                const lon = geoData[0].lon;
+
+                // Add marker for city
+                L.marker([lat, lon]).addTo(map)
+                    .bindPopup(`<strong>${city}</strong>`)
+                    .openPopup();
+                map.setView([lat, lon], 10);
+
+                // Get current weather data (free API 2.5)
+                const units = document.getElementById('unitsSelect').value;
+                const weatherResponse = await fetch(
+                    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`
+                );
+                const weatherData = await weatherResponse.json();
+
+                // Update current weather
+                const unitSymbol = units === 'metric' ? '°C' : '°F';
+                document.getElementById('tempValue').textContent = `${Math.round(weatherData.main.temp)}${unitSymbol}`;
+                document.getElementById('humidityValue').textContent = `${weatherData.main.humidity}%`;
+                document.getElementById('windValue').textContent = `${weatherData.wind.speed} m/s`;
+                document.getElementById('weatherDesc').textContent = weatherData.weather[0].description;
+
+                // Get 5-day forecast (free API 2.5)
+                const forecastResponse = await fetch(
+                    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`
+                );
+                const forecastData = await forecastResponse.json();
+
+                // Update forecast chart
+                updateForecastChartFromList(forecastData.list, units);
+
+            } catch (error) {
+                console.error('Weather error:', error);
+                document.getElementById('weatherDesc').textContent = 'Error loading weather data';
+            }
+        }
+
+        function updateForecastChartFromList(list, units) {
+            const ctx = document.getElementById('forecastChart').getContext('2d');
+
+            // Group by date and get daily averages
+            const dailyTemps = {};
+            list.forEach(item => {
+                const date = new Date(item.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' });
+                if (!dailyTemps[date]) {
+                    dailyTemps[date] = [];
+                }
+                dailyTemps[date].push(item.main.temp);
+            });
+
+            const labels = Object.keys(dailyTemps).slice(0, 5);
+            const temps = labels.map(date => {
+                const dayTemps = dailyTemps[date];
+                return Math.round(dayTemps.reduce((a, b) => a + b, 0) / dayTemps.length);
+            });
+
+            if (forecastChart) {
+                forecastChart.destroy();
+            }
+
+            forecastChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: `Temperature (${units === 'metric' ? '°C' : '°F'})`,
+                        data: temps,
+                        borderColor: '#38bdf8',
+                        backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+        }
+
+        document.getElementById('searchWeather').addEventListener('click', () => {
+            const city = document.getElementById('cityInput').value;
+            if (city) getWeather(city);
+        });
+
+        // Load Nigeria boundary
+        async function loadNigeriaBoundary() {
+            try {
+                const response = await fetch('https://www.geoboundaries.org/api/current/gbOpen/NGA/ADM0/');
+                const data = await response.json();
+                const geoResponse = await fetch(data.gjDownloadURL);
+                const geoData = await geoResponse.json();
+
+                L.geoJSON(geoData, {
+                    style: {
+                        color: '#2c3e50',
+                        weight: 2,
+                        fillOpacity: 0.05
+                    }
+                }).addTo(map);
+            } catch (error) {
+                console.error('Error loading Nigeria boundary:', error);
+            }
+        }
+
+        // Initialize
+        loadNigeriaBoundary();
+        getWeather('Abuja');
+    </script>
+</body>
+
+</html>
