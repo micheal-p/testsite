@@ -1368,3 +1368,64 @@ img {
         grid-template-columns: 1fr;
     }
 }
+
+/* Logo Switching for Index Page */
+.light-mode-logo {
+    display: block;
+}
+
+.dark-mode-logo {
+    display: none;
+}
+
+.brand-text {
+    font-size: 0.35rem;
+    /* Reduced from 0.5rem */
+    font-weight: 800;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+    color: #006341;
+    max-width: 140px;
+    line-height: 1.2;
+}
+
+/* Mobile: Unstick Header Elements */
+@media (max-width: 768px) {
+
+    .logo-fixed,
+    .auth-fixed,
+    .bulb-container {
+        position: absolute;
+        /* Changed from fixed to absolute so they scroll away */
+    }
+
+    /* Keep mobile menu button fixed if it exists separately, 
+       but based on provided files, the primary nav is likely 
+       handled by the pill nav or specific mobile buttons. 
+       If there is a mobile menu button, ensure it stays fixed. */
+    .mobile-menu-btn {
+        position: fixed;
+        z-index: 1100;
+        top: 16px;
+        right: 16px;
+    }
+}
+
+/* Dark Mode Overrides */
+body.dark-mode .light-mode-logo {
+    display: none;
+}
+
+body.dark-mode .dark-mode-logo {
+    display: block;
+}
+
+body.dark-mode .brand-text {
+    color: #ffffff;
+}
+
+.logo-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

@@ -257,7 +257,7 @@ function createProjectRoiChart() {
         type: 'bubble',
         data: {
             datasets: [{
-                label: 'Solar Projects',
+                label: 'Solar Programs',
                 data: [
                     { x: 120, y: 14.2, r: 25 },
                     { x: 85, y: 16.8, r: 18 },
@@ -269,7 +269,7 @@ function createProjectRoiChart() {
                 borderColor: '#ff9800',
                 borderWidth: 2
             }, {
-                label: 'Wind Projects',
+                label: 'Wind Programs',
                 data: [
                     { x: 180, y: 15.5, r: 35 },
                     { x: 140, y: 13.2, r: 28 },
@@ -279,7 +279,7 @@ function createProjectRoiChart() {
                 borderColor: '#2196f3',
                 borderWidth: 2
             }, {
-                label: 'Storage Projects',
+                label: 'Storage Programs',
                 data: [
                     { x: 180, y: 18.5, r: 38 },
                     { x: 165, y: 17.2, r: 35 }
@@ -288,7 +288,7 @@ function createProjectRoiChart() {
                 borderColor: '#ff5722',
                 borderWidth: 2
             }, {
-                label: 'Microgrid Projects',
+                label: 'Microgrid Programs',
                 data: [
                     { x: 45, y: 11.8, r: 15 },
                     { x: 65, y: 12.5, r: 18 },
@@ -775,8 +775,8 @@ function exportFinanceData() {
     csvContent += `Return on Investment,${data.roi}%\n`;
     csvContent += `Pending Disbursement,$${data.pending}B\n\n`;
 
-    csvContent += 'PROJECT LIST\n';
-    csvContent += 'Project Name,Investment Type,Investment,Disbursed,Progress,ROI,Status\n';
+    csvContent += 'PROGRAM LIST\n';
+    csvContent += 'Program Name,Investment Type,Investment,Disbursed,Progress,ROI,Status\n';
     projectsData.forEach(p => {
         csvContent += `${p.name},${p.type},$${p.investment}M,$${p.disbursed}M,${p.progress}%,${p.roi || '-'},${p.status}\n`;
     });

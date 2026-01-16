@@ -118,7 +118,7 @@ function createProjectProgressChart() {
         data: {
             labels: ['Planning', 'Under Construction', 'Commissioned', 'Under Maintenance', 'Suspended'],
             datasets: [{
-                label: 'Project Count',
+                label: 'Program Count',
                 data: [18, 24, 42, 6, 5],
                 backgroundColor: [
                     'rgba(0, 168, 107, 0.7)',
@@ -263,7 +263,7 @@ function createInvestmentRoiChart() {
         type: 'bubble',
         data: {
             datasets: [{
-                label: 'Solar Projects',
+                label: 'Solar Programs',
                 data: [
                     { x: 120, y: 14.2, r: 25 },
                     { x: 85, y: 16.8, r: 18 },
@@ -274,7 +274,7 @@ function createInvestmentRoiChart() {
                 borderColor: '#008751',
                 borderWidth: 2
             }, {
-                label: 'Wind Projects',
+                label: 'Wind Programs',
                 data: [
                     { x: 180, y: 15.5, r: 35 },
                     { x: 140, y: 13.2, r: 28 },
@@ -284,7 +284,7 @@ function createInvestmentRoiChart() {
                 borderColor: '#00A86B',
                 borderWidth: 2
             }, {
-                label: 'Gas/Hydro Projects',
+                label: 'Gas/Hydro Programs',
                 data: [
                     { x: 80, y: 11.5, r: 15 },
                     { x: 110, y: 12.8, r: 20 }
