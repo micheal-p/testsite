@@ -1371,11 +1371,11 @@ img {
 
 /* Logo Switching for Index Page */
 .light-mode-logo {
-    display: block;
+    display: block !important;
 }
 
 .dark-mode-logo {
-    display: none;
+    display: none !important;
 }
 
 .brand-text {
@@ -1413,11 +1413,11 @@ img {
 
 /* Dark Mode Overrides */
 body.dark-mode .light-mode-logo {
-    display: none;
+    display: none !important;
 }
 
 body.dark-mode .dark-mode-logo {
-    display: block;
+    display: block !important;
 }
 
 body.dark-mode .brand-text {
