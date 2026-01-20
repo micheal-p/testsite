@@ -835,7 +835,7 @@ img {
 }
 
 .grid-2 {
-    background: url('assets/images/grid-2.png') center/cover no-repeat;
+    background: url('assets/images/grid-2.webp') center/cover no-repeat;
 }
 
 .grid-3 {
@@ -847,19 +847,35 @@ img {
 }
 
 .grid-5 {
-    background: url('assets/images/grid-5.png') center/cover no-repeat;
+    background: url('assets/images/Energy-Assets.jpg') center/cover no-repeat;
 }
 
 .grid-6 {
-    background: url('assets/images/grid-6.png') center/cover no-repeat;
+    background: url('assets/images/Esgi.jpg.avif') center/cover no-repeat;
 }
 
 .grid-7 {
-    background: url('assets/images/grid-7.png') center/cover no-repeat;
+    background: url('assets/images/GRID7.jpg') center/cover no-repeat;
 }
 
 .grid-8 {
-    background: url('assets/images/grid-8.png') center/cover no-repeat;
+    background: url('assets/images/lp_portal_by_zapflow_transforming_investment_insights_3x.webp') center/cover no-repeat;
+}
+
+.grid-9 {
+    background: url('assets/images/Designing_an_Energy_Management_Dashboard_that_Drives_ROI_0f169c300c.png') center/cover no-repeat;
+}
+
+.grid-10 {
+    background: url('assets/images/business-people-using-digital-tablet_107420-95867.jpg.avif') center/cover no-repeat;
+}
+
+.grid-11 {
+    background: url('assets/images/images.png') center/cover no-repeat;
+}
+
+.grid-12 {
+    background: url('assets/images/nefund.jpeg') center/cover no-repeat;
 }
 
 @media (max-width: 900px) {
