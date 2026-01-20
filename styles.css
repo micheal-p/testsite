@@ -700,6 +700,16 @@ img {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-image-wrapper img {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
 }
 
 /* --- Features --- */
