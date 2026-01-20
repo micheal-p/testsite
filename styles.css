@@ -831,7 +831,7 @@ img {
 
 /* Grid Background Images */
 .grid-1 {
-    background: url('assets/images/grid-1.png') center/cover no-repeat;
+    background: url('assets/images/grid-1.webp') center/cover no-repeat;
 }
 
 .grid-2 {
