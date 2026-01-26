@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join Newsletter - NEAP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -18,21 +19,85 @@
     <!-- Logo (Separate from Pill Navbar) -->
     <a href="index.html" class="logo-fixed">
         <div class="logo-wrapper">
-            <img src="assets/images/neiih_logo_green.png" alt="NEAP Logo" class="brand-logo light-mode-logo"
+            <img src="assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
                 style="max-width: 120px;">
-            <img src="assets/images/neiih_logo_white.png" alt="NEAP Logo" class="brand-logo dark-mode-logo"
+            <img src="assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
                 style="max-width: 120px; display: none;">
-            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE HUB</div>
+            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
         </div>
     </a>
 
     <!-- Navigation (Pill Style - Links Only) -->
     <nav class="navbar pill-nav">
+        <!-- Pill Links (No Logo Inside) -->
         <div class="nav-links">
+            <div class="nav-item dropdown">
+                <span class="nav-link dropdown-toggle">Resources <i class="fas fa-chevron-down"
+                        style="font-size: 12px; margin-left: 6px; transition: transform 0.2s;"></i></span>
+                <div class="mega-menu">
+                    <div class="mm-left-columns">
+                        <div class="mm-column">
+                            <h4>Fund Administration</h4>
+                            <ul class="mm-list">
+                                <li><a href="construction.html">Venture Funds</a></li>
+                                <li><a href="construction.html">Rolling Funds</a></li>
+                                <li><a href="construction.html">Scout Funds</a></li>
+                                <li><a href="construction.html">SPVs</a></li>
+                                <li><a href="construction.html">Roll Up Vehicles</a></li>
+                            </ul>
+                        </div>
+                        <div class="mm-column">
+                            <h4>Investor Management</h4>
+                            <ul class="mm-list">
+                                <li><a href="construction.html">Digital Subscriptions</a></li>
+                                <li><a href="construction.html">Data Room</a></li>
+                            </ul>
+                            <div style="margin-top: 24px;">
+                                <h4>Intelligence</h4>
+                                <ul class="mm-list">
+                                    <li><a href="construction.html">Fin <span
+                                                style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mm-footer"
+                            style="border-top: none; padding-top: 10px; margin-top: auto; color: #6b7280; font-size: 15px;">
+                            Looking for tools for startups? Explore <a href="construction.html"
+                                style="color: #6b7280 !important; text-decoration: underline; margin-left: 2px;">Rollups.</a>
+                            <svg width="10" height="10" viewBox="0 0 12 12" fill="none"
+                                style="margin-left: 4px; display: inline-block;">
+                                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="#6b7280" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mm-right-panel">
+                        <div class="mm-column">
+                            <h4>Product Suites</h4>
+                            <a href="construction.html" class="mm-card">
+                                <div class="mm-icon"><img src="assets/images/fund_administration.png"
+                                        alt="Fund Administration"></div>
+                                <div class="mm-content">
+                                    <h5>Fund Administration</h5>
+                                    <p>All-in-one partner to launch an investment vehicle</p>
+                                </div>
+                            </a>
+                            <a href="investor-management.html" class="mm-card">
+                                <div class="mm-icon"><img src="assets/images/investor_management.png"
+                                        alt="Investor Management"></div>
+                                <div class="mm-content">
+                                    <h5>Investor Management</h5>
+                                    <p>Explore all offerings to streamline the investor experience.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <a href="finance.html">Energy Finance & Capital</a>
             <a href="dashboard.html">Energy Ecosystem</a>
-            <a href="citibim.html">NEIIS</a>
-            <a href="construction.html">Resources</a>
+            <a href="citibim.html">NEIIA</a>
         </div>
     </nav>
 
@@ -40,47 +105,6 @@
     <div class="auth-fixed">
         <a href="signin.html" class="nav-link">Sign In</a>
         <a href="newsletter.html" class="btn btn-black">Join</a>
-        <div class="app-launcher-container">
-            <button class="app-launcher-btn" aria-label="App Launcher" aria-expanded="false">
-                <div class="app-launcher-icon">
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                </div>
-            </button>
-            <div class="app-dropdown">
-                <a href="construction.html" class="app-item">
-                    <div class="app-item-icon" style="background: #e3f2fd; color: #1976d2;">S</div>
-                    <span>Startups</span>
-                </a>
-                <a href="construction.html" class="app-item">
-                    <div class="app-item-icon" style="background: #e8f5e9; color: #388e3c;">I</div>
-                    <span>Investors</span>
-                </a>
-                <a href="construction.html" class="app-item">
-                    <div class="app-item-icon" style="background: #ffebee; color: #d32f2f;">F</div>
-                    <span>Funds</span>
-                </a>
-                <a href="construction.html" class="app-item">
-                    <div class="app-item-icon" style="background: #fff3e0; color: #f57c00;">J</div>
-                    <span>Jobs</span>
-                </a>
-                <a href="construction.html" class="app-item">
-                    <div class="app-item-icon" style="background: #f3e5f5; color: #7b1fa2;">P</div>
-                    <span>Product</span>
-                </a>
-                <a href="signin.html" class="app-item">
-                    <div class="app-item-icon" style="background: #e1f5fe; color: #0288d1;">L</div>
-                    <span>Login</span>
-                </a>
-            </div>
-        </div>
     </div>
 
     <!-- Mobile Menu Button -->
@@ -95,20 +119,104 @@
 
     <!-- Mobile Navigation Overlay -->
     <div class="mobile-nav-overlay">
-        <button class="mobile-close-btn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        </button>
-        <ul>
-            <li><a href="construction.html">Products</a></li>
-            <li><a href="construction.html">Solutions</a></li>
-            <li><a href="construction.html">Pricing</a></li>
-            <li><a href="construction.html">Resources</a></li>
-            <li><a href="signin.html">Sign In</a></li>
-            <li><a href="newsletter.html">Join</a></li>
-        </ul>
+        <div class="mobile-nav-header">
+            <a href="index.html">
+                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
+            </a>
+            <button class="mobile-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-nav-content">
+            <ul class="mobile-nav-list">
+                <li><a href="finance.html">Energy Finance & Capital <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="dashboard.html">Energy Ecosystem <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="citibim.html">NEIIA <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#" id="mobile-resources-link">Resources <i class="fas fa-chevron-right"></i></a></li>
+            </ul>
+            <div class="mobile-nav-footer">
+                <a href="contact.html" class="btn btn-primary full-width">Contact Support</a>
+                <a href="signin.html" class="btn btn-secondary full-width">Sign in</a>
+            </div>
+        </div>
+
+        <!-- Resources Submenu -->
+        <div class="mobile-submenu" id="resources-submenu">
+            <div class="submenu-header">
+                <button class="submenu-back-btn" id="submenu-back-btn">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="mobile-close-btn-sub">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="submenu-content">
+
+                <div class="submenu-section">
+                    <span class="submenu-label">Fund Administration</span>
+                    <ul class="submenu-list">
+                        <li><a href="construction.html">Venture Funds</a></li>
+                        <li><a href="construction.html">Rolling Funds</a></li>
+                        <li><a href="construction.html">Scout Funds</a></li>
+                        <li><a href="construction.html">SPVs</a></li>
+                        <li><a href="construction.html">Roll Up Vehicles</a></li>
+                    </ul>
+                </div>
+
+                <div class="submenu-section">
+                    <span class="submenu-label">Investor Management</span>
+                    <ul class="submenu-list">
+                        <li><a href="investor-management.html">Digital Subscriptions</a></li>
+                        <li><a href="investor-management.html">Data Room</a></li>
+                    </ul>
+                </div>
+
+                <div class="submenu-section">
+                    <span class="submenu-label">Intelligence</span>
+                    <ul class="submenu-list">
+                        <li><a href="construction.html">Fin <span class="beta-badge">Beta</span></a></li>
+                    </ul>
+                </div>
+
+                <!-- Product Suites Box -->
+                <div class="product-suites-box">
+                    <span class="submenu-label" style="margin-bottom: 24px; display: block;">Product Suites</span>
+
+                    <a href="construction.html" class="suite-card">
+                        <div class="suite-icon">
+                            <!-- Placeholder icon -->
+                            <i class="fas fa-circle-notch" style="color: #A3E635; font-size: 24px;"></i>
+                        </div>
+                        <div class="suite-info">
+                            <h4>Fund Administration</h4>
+                            <p>All-in-one partner to launch an investment vehicle</p>
+                        </div>
+                    </a>
+
+                    <a href="investor-management.html" class="suite-card">
+                        <div class="suite-icon">
+                            <!-- Placeholder icon -->
+                            <i class="fas fa-layer-group" style="color: #A3E635; font-size: 24px;"></i>
+                        </div>
+                        <div class="suite-info">
+                            <h4>Investor Management</h4>
+                            <p>Explore all offerings to streamline the investor experience.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Footer Links/Buttons -->
+                <a href="construction.html" class="submenu-footer-link">
+                    Looking for tools for startups? Explore Rollups. <i class="fas fa-arrow-right"
+                        style="font-size: 12px;"></i>
+                </a>
+
+                <div class="submenu-btn-group">
+                    <a href="contact.html" class="btn-lavender">Contact sales</a>
+                    <a href="signin.html" class="btn-gray-light">Sign in</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Newsletter Content -->

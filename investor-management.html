@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Management - NEIIA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ===== EXACT ANGELLIST INVESTOR MANAGEMENT STYLES ===== */
+
+        /* Color Variables - Exact AngelList Colors */
+        :root {
+            --im-bg-dark: #001D21;
+            --im-bg-dark-alt: #002B31;
+            --im-bg-light: #F9F9F7;
+            --im-bg-card: #F3F4F2;
+            --im-text-dark: #001D21;
+            --im-text-light: #F9F9F7;
+            --im-button-primary: #BDBBFF;
+            --im-accent-tan: #8A744A;
+        }
+
+        /* Reset for this page */
+        .im-page {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--im-bg-dark);
+            color: var(--im-text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .im-page * {
+            box-sizing: border-box;
+        }
+
+        /* Override navbar styles for dark page */
+        .im-page .logo-fixed .brand-logo.light-mode-logo {
+            display: none !important;
+        }
+
+        .im-page .logo-fixed .brand-logo.dark-mode-logo {
+            display: block !important;
+        }
+
+        .im-page .logo-fixed .brand-text {
+            color: var(--im-text-light);
+        }
+
+        .im-page .navbar.pill-nav {
+            background: #002b30;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .im-page .auth-fixed .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .im-page .auth-fixed .btn-black {
+            background: var(--im-button-primary);
+            color: var(--im-text-dark);
+            border: none;
+        }
+
+        /* ===== HEADER SCROLL STATE (Dynamic Color Change) ===== */
+        /* Default state is dark background (White text/logo) */
+
+        /* Scrolled state (Light background -> Dark text/Green logo) */
+        body.nav-scrolled .logo-fixed .brand-logo.light-mode-logo {
+            display: block !important;
+        }
+
+        body.nav-scrolled .logo-fixed .brand-logo.dark-mode-logo {
+            display: none !important;
+        }
+
+        body.nav-scrolled .logo-fixed .brand-text {
+            color: var(--im-text-dark) !important;
+            transition: color 0.3s ease;
+        }
+
+        body.nav-scrolled .auth-fixed .nav-link {
+            color: var(--im-text-dark) !important;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        /* Burger Icon Dynamic Color */
+        body.nav-scrolled .mobile-menu-btn {
+            color: var(--im-text-dark) !important;
+            transition: color 0.3s ease;
+        }
+
+        /* Hero Text Transition */
+        .logo-fixed .brand-text,
+        .auth-fixed .nav-link {
+            transition: color 0.3s ease;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .im-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 140px 24px 100px;
+            position: relative;
+        }
+
+        .im-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--im-text-light);
+            margin-bottom: 40px;
+            letter-spacing: 0.02em;
+        }
+
+        .im-hero h1 {
+            font-size: clamp(48px, 7vw, 80px);
+            font-weight: 600;
+            line-height: 1.05;
+            margin: 0 0 28px;
+            max-width: 900px;
+            letter-spacing: -0.03em;
+        }
+
+        .im-hero h1 .highlight {
+            color: var(--im-button-primary);
+        }
+
+        .im-hero-subtitle {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 580px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .im-hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-im-primary {
+            background: var(--im-button-primary);
+            color: var(--im-text-dark);
+            padding: 16px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-im-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(189, 187, 255, 0.3);
+        }
+
+        .btn-im-secondary {
+            background: transparent;
+            color: var(--im-text-light);
+            padding: 16px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: all 0.2s ease;
+        }
+
+        .btn-im-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* ===== STATS SECTION ===== */
+        .im-stats {
+            background: linear-gradient(180deg, #001D21 0%, #002B31 100%);
+            color: var(--im-text-light);
+            padding: 120px 24px 180px;
+            position: relative;
+        }
+
+        /* Decorative Color Blur Band - Stacked Stripes */
+        .im-stats::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background:
+                linear-gradient(180deg,
+                    transparent 0%,
+                    transparent 5%,
+                    rgba(30, 50, 55, 0.9) 5%,
+                    rgba(30, 50, 55, 0.9) 12%,
+                    transparent 12%,
+                    transparent 15%,
+                    rgba(40, 65, 75, 0.9) 15%,
+                    rgba(40, 65, 75, 0.9) 22%,
+                    transparent 22%,
+                    transparent 25%,
+                    rgba(55, 80, 90, 0.85) 25%,
+                    rgba(55, 80, 90, 0.85) 32%,
+                    transparent 32%,
+                    transparent 35%,
+                    rgba(70, 95, 105, 0.85) 35%,
+                    rgba(70, 95, 105, 0.85) 42%,
+                    transparent 42%,
+                    transparent 45%,
+                    rgba(90, 115, 130, 0.8) 45%,
+                    rgba(90, 115, 130, 0.8) 52%,
+                    transparent 52%,
+                    transparent 55%,
+                    rgba(110, 135, 155, 0.8) 55%,
+                    rgba(110, 135, 155, 0.8) 62%,
+                    transparent 62%,
+                    transparent 65%,
+                    rgba(135, 155, 180, 0.75) 65%,
+                    rgba(135, 155, 180, 0.75) 72%,
+                    transparent 72%,
+                    transparent 75%,
+                    rgba(160, 175, 210, 0.75) 75%,
+                    rgba(160, 175, 210, 0.75) 82%,
+                    transparent 82%,
+                    transparent 85%,
+                    rgba(185, 195, 235, 0.7) 85%,
+                    rgba(185, 195, 235, 0.7) 92%,
+                    transparent 92%,
+                    transparent 95%,
+                    rgba(210, 215, 255, 0.7) 95%,
+                    rgba(210, 215, 255, 0.7) 100%);
+            filter: blur(3px);
+            opacity: 1;
+            pointer-events: none;
+        }
+
+
+        .im-stats-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .im-stats h2 {
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            color: #ffffff;
+            margin: 0 0 80px;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-number {
+            font-size: 80px;
+            font-weight: 400;
+            color: #ffffff;
+            line-height: 1;
+            margin-bottom: 24px;
+            letter-spacing: -0.04em;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .stat-label {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+            letter-spacing: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* ===== FEATURE SECTION (Build Investor Trust) ===== */
+        .im-feature-section {
+            background: var(--im-bg-light);
+            color: var(--im-text-dark);
+            padding: 100px 24px 120px;
+        }
+
+        .im-feature-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .im-feature-section h2 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 600;
+            text-align: center;
+            margin: 0 0 80px;
+            letter-spacing: -0.02em;
+        }
+
+        .features-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .feature-tab {
+            padding: 28px 24px;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .feature-tab:hover {
+            background: rgba(0, 29, 33, 0.04);
+        }
+
+        .feature-tab.active {
+            background: var(--im-bg-card);
+            border-left-color: var(--im-text-dark);
+        }
+
+        .feature-tab h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0 0 10px;
+            color: var(--im-text-dark);
+        }
+
+        .feature-tab p {
+            font-size: 16px;
+            color: rgba(0, 29, 33, 0.6);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .features-visual {
+            background: var(--im-bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+        }
+
+        .features-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ===== CARDS SECTION (Redefine Experiences) ===== */
+        .im-cards-section {
+            background: var(--im-bg-light);
+            color: var(--im-text-dark);
+            padding: 80px 24px 120px;
+        }
+
+        .im-cards-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .im-cards-section h2 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 600;
+            text-align: center;
+            margin: 0 0 60px;
+            letter-spacing: -0.02em;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .cards-grid .im-card:first-child {
+            grid-column: span 2;
+        }
+
+        .cards-grid .im-card:nth-child(4) {
+            grid-column: span 2;
+        }
+
+        .im-card {
+            background: var(--im-bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: var(--im-text-dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Mouse Tracking Glow Effect */
+        .im-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                    rgba(189, 187, 255, 0.4),
+                    transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .im-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Ensure content stays above the glow */
+        .im-card-icon,
+        .im-card-footer,
+        .im-card h3,
+        .im-card-arrow {
+            position: relative;
+            z-index: 1;
+        }
+
+        .im-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .im-card-icon {
+            width: 48px;
+            height: 48px;
+            background: transparent;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--im-text-dark);
+            border: 1px solid rgba(0, 29, 33, 0.15);
+        }
+
+        .im-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .im-card h3 {
+            font-size: 22px;
+            font-weight: 500;
+            margin: 0;
+            letter-spacing: -0.01em;
+            color: var(--im-text-dark);
+        }
+
+        .im-card-arrow {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 29, 33, 0.08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--im-text-dark);
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.3s ease;
+        }
+
+        .im-card:hover .im-card-arrow {
+            background: rgba(0, 29, 33, 0.15);
+        }
+
+        /* ===== TESTIMONIALS SECTION - CAROUSEL ===== */
+        .im-testimonials {
+            background: var(--im-bg-light);
+            color: var(--im-text-dark);
+            padding: 80px 24px;
+            overflow: hidden;
+        }
+
+        .im-testimonials-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonials-carousel {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 20px 0;
+        }
+
+        .testimonials-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .testimonial-slide {
+            flex: 0 0 min(85%, 900px);
+            scroll-snap-align: start;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-radius: 24px;
+            overflow: hidden;
+            min-height: 400px;
+        }
+
+        .testimonial-slide.dark {
+            background: var(--im-bg-dark-alt);
+            color: var(--im-text-light);
+        }
+
+        .testimonial-slide.tan {
+            background: var(--im-accent-tan);
+            color: var(--im-text-light);
+        }
+
+        .testimonial-slide.lavender {
+            background: var(--im-button-primary);
+            color: var(--im-text-dark);
+        }
+
+        .testimonial-content {
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .testimonial-quote {
+            font-size: 24px;
+            line-height: 1.5;
+            font-weight: 400;
+            margin: 0 0 32px;
+        }
+
+        .testimonial-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .testimonial-author {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .testimonial-author h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .testimonial-author p {
+            font-size: 14px;
+            opacity: 0.7;
+            margin: 0;
+        }
+
+        .testimonial-logo {
+            height: 24px;
+            opacity: 0.8;
+        }
+
+        .testimonial-photo-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Carousel Navigation */
+        .carousel-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(0, 29, 33, 0.2);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: var(--im-text-dark);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .carousel-arrows {
+            display: flex;
+            gap: 8px;
+        }
+
+        .carousel-arrow {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 29, 33, 0.15);
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--im-text-dark);
+        }
+
+        .carousel-arrow:hover {
+            background: rgba(0, 29, 33, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .im-testimonials {
+                padding: 40px 0;
+                /* Full width container */
+            }
+
+            .im-testimonials-inner {
+                width: 100%;
+                overflow: hidden;
+            }
+
+            .testimonials-carousel {
+                padding: 0 24px;
+                /* Horizontal padding for scroll peek */
+                scroll-padding-left: 24px;
+                gap: 16px;
+                justify-content: flex-start;
+                /* Ensure left alignment for scrolling */
+            }
+
+            .testimonial-slide {
+                flex: 0 0 85%;
+                /* 85% width to show previous/next card peek */
+                width: 85%;
+                margin-right: 0;
+                /* Let gap handle spacing */
+                grid-template-columns: 1fr;
+                min-height: auto;
+                max-height: none;
+                display: flex;
+                flex-direction: column;
+                height: auto;
+                scroll-snap-align: center;
+                /* Snap to center feels better slightly smaller */
+            }
+
+            .testimonial-content {
+                padding: 32px 32px 24px;
+                /* Slightly reduced bottom padding */
+                order: 1;
+                flex: 1;
+                /* Take up necessary space */
+            }
+
+            .testimonial-quote {
+                font-size: 18px;
+                line-height: 1.5;
+                margin-bottom: 24px;
+            }
+
+            .testimonial-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                /* Tighter gap */
+            }
+
+            .testimonial-photo-container {
+                height: 240px;
+                /* Taller image area */
+                max-height: 240px;
+                order: 2;
+                overflow: hidden;
+                width: 100%;
+                flex-shrink: 0;
+                /* Prevent shrinking */
+                margin-top: auto;
+                /* Push to bottom if flex behavior acts up */
+            }
+
+            .testimonial-photo-container img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center 20%;
+                /* Focus slightly higher up on the face */
+                display: block;
+                /* Remove inline gap */
+            }
+        }
+
+        /* ===== CTA SECTION ===== */
+        .im-cta {
+            background: var(--im-bg-dark);
+            padding: 120px 24px;
+        }
+
+        .im-cta-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .im-cta h2 {
+            font-size: clamp(36px, 5vw, 52px);
+            font-weight: 600;
+            margin: 0 0 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .im-cta p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 0 40px;
+            line-height: 1.6;
+        }
+
+        /* ===== FOOTER OVERRIDE ===== */
+        .im-page .footer {
+            background: var(--im-bg-dark);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .im-page .footer h4,
+        .im-page .footer a,
+        .im-page .footer p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .im-page .footer a:hover {
+            color: var(--im-text-light);
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== 3D BLOCK STACK VISUAL (TRUE 3D) ===== */
+        .block-stack-container {
+            width: 100%;
+            max-width: 1000px;
+            height: 450px;
+            margin: 75px auto 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1200px;
+            /* Creates the 3D depth */
+        }
+
+        /* The stack scene wrapper */
+        .block-stack-scene {
+            width: 240px;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            /* CRITICAL: Enables 3D children */
+        }
+
+        /* The spinning container */
+        .block-stack {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: spinStack 15s linear infinite;
+        }
+
+        /* Pause animation on hover */
+        .block-stack:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes spinStack {
+            0% {
+                transform: rotateX(-15deg) rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateX(-15deg) rotateY(360deg);
+            }
+        }
+
+        /* Individual Slab Container */
+        .slab {
+            position: absolute;
+            width: 240px;
+            height: 15px;
+            left: 0;
+            transform-style: preserve-3d;
+        }
+
+        /* Common Face Styles */
+        .slab-face {
+            position: absolute;
+            width: 240px;
+            height: 15px;
+            /* Shared Noise Texture */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.60' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.7'/%3E%3C/svg%3E");
+            background-blend-mode: overlay;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-sizing: border-box;
+            backface-visibility: hidden;
+            /* Optional: Hides inside faces for cleaner rendering */
+        }
+
+        /* === FACE POSITIONING === */
+        /* Front Face */
+        .slab-front {
+            transform: translateZ(120px);
+            background-color: #9E9AE8;
+        }
+
+        /* Back Face */
+        .slab-back {
+            transform: rotateY(180deg) translateZ(120px);
+            background-color: #7B77C9;
+        }
+
+        /* Right Face */
+        .slab-right {
+            width: 240px;
+            /* Depth of the box */
+            transform: rotateY(90deg) translateZ(120px);
+            background-color: #6B67B8;
+        }
+
+        /* Left Face */
+        .slab-left {
+            width: 240px;
+            /* Depth of the box */
+            transform: rotateY(-90deg) translateZ(120px);
+            background-color: #9E9AE8;
+        }
+
+        /* Top Face */
+        .slab-top {
+            width: 240px;
+            height: 240px;
+            /* Depth of the box */
+            transform: rotateX(90deg) translateZ(120px);
+            background-color: #C4C2FF;
+        }
+
+        /* Bottom Face */
+        .slab-bottom {
+            width: 240px;
+            height: 240px;
+            transform: rotateX(-90deg) translateZ(-105px);
+            background-color: #5A5792;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Labels with brackets */
+        .stack-labels {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 760px;
+            height: 360px;
+            pointer-events: none;
+            /* Ensures clicks pass through to the 3D model if needed */
+        }
+
+        .label-group {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .label-group.left {
+            flex-direction: row;
+        }
+
+        .label-group.right {
+            flex-direction: row-reverse;
+        }
+
+        .label-text {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            white-space: nowrap;
+            margin-top: 0;
+        }
+
+        /* Dashed line connector */
+        .label-line {
+            width: 40px;
+            margin-top: 0;
+            border-top: 1px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        /* Bracket */
+        .label-bracket {
+            position: relative;
+            width: 12px;
+            margin-top: 0;
+            border-left: 1px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .label-group.right .label-bracket {
+            border-left: none;
+            border-right: 1px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .label-bracket::before,
+        .label-bracket::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .label-bracket::before {
+            top: 0;
+            left: 0;
+        }
+
+        .label-bracket::after {
+            bottom: 0;
+            left: 0;
+        }
+
+        .label-group.right .label-bracket::before,
+        .label-group.right .label-bracket::after {
+            left: auto;
+            right: 0;
+        }
+
+        /* Label positions - left side */
+        .label-fundraise {
+            top: 58px;
+            left: 20px;
+        }
+
+        .label-fundraise .label-bracket {
+            height: 75px;
+        }
+
+        .label-report {
+            top: 148px;
+            left: 20px;
+        }
+
+        .label-report .label-bracket {
+            height: 105px;
+        }
+
+        .label-engage {
+            top: 268px;
+            left: 20px;
+        }
+
+        .label-engage .label-bracket {
+            height: 75px;
+        }
+
+        /* Label positions - right side */
+        .label-onboard {
+            top: 58px;
+            right: 20px;
+        }
+
+        .label-onboard .label-bracket {
+            height: 105px;
+        }
+
+        .label-maintain {
+            top: 178px;
+            right: 20px;
+        }
+
+        .label-maintain .label-bracket {
+            height: 165px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .features-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .features-visual {
+                order: -1;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cards-grid .im-card:first-child,
+            .cards-grid .im-card:nth-child(4) {
+                grid-column: span 1;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Mobile 3D Block Stack Adjustments */
+            .block-stack-container {
+                height: 350px;
+                margin-top: 40px;
+                overflow: visible;
+                position: relative;
+            }
+
+            .block-stack-scene {
+                transform: scale(0.7);
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            /* Hide labels on mobile - cleaner look without overlap issues */
+            .stack-labels {
+                display: none !important;
+            }
+        }
+
+        /* ===== MOBILE SUBMENU ===== */
+        .mobile-submenu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1002;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-submenu.active {
+            transform: translateX(0);
+        }
+
+        .submenu-header {
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .submenu-back-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--im-text-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .submenu-content {
+            padding: 24px;
+            flex: 1;
+        }
+
+        .submenu-section {
+            margin-bottom: 40px;
+        }
+
+        .submenu-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(0, 29, 33, 0.5);
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .submenu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .submenu-list li a {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--im-text-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .beta-badge {
+            font-size: 10px;
+            background: #F3F4F6;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #6B7280;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        /* Product Suites Box */
+        .product-suites-box {
+            background: #F9FAFB;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 0 -12px 40px;
+            /* Slight negative margin to stretch */
+        }
+
+        .suite-card {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .suite-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .suite-icon {
+            width: 48px;
+            height: 48px;
+            background: #0C1618;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .suite-icon img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .suite-info h4 {
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0 0 4px;
+            color: #111827;
+        }
+
+        .suite-info p {
+            font-size: 14px;
+            color: #6B7280;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Submenu Footer */
+        .submenu-footer-link {
+            font-size: 14px;
+            color: #4B5563;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+
+        .submenu-btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-lavender {
+            background: #BBBBEE;
+            color: #000;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-gray-light {
+            background: #E5E7EB;
+            color: #1F2937;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="im-page">
+
+    <!-- Logo (Separate from Pill Navbar) -->
+    <a href="index.html" class="logo-fixed">
+        <div class="logo-wrapper">
+            <img src="assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
+                style="max-width: 120px;">
+            <img src="assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
+                style="max-width: 120px; display: none;">
+            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
+        </div>
+    </a>
+
+    <!-- Navigation (Pill Style - Links Only) -->
+    <nav class="navbar pill-nav">
+        <!-- Pill Links (No Logo Inside) -->
+        <div class="nav-links">
+            <div class="nav-item dropdown">
+                <span class="nav-link dropdown-toggle">Resources <i class="fas fa-chevron-down"
+                        style="font-size: 12px; margin-left: 6px; transition: transform 0.2s;"></i></span>
+                <div class="mega-menu">
+                    <div class="mm-left-columns">
+                        <div class="mm-column">
+                            <h4>Fund Administration</h4>
+                            <ul class="mm-list">
+                                <li><a href="construction.html">Venture Funds</a></li>
+                                <li><a href="construction.html">Rolling Funds</a></li>
+                                <li><a href="construction.html">Scout Funds</a></li>
+                                <li><a href="construction.html">SPVs</a></li>
+                                <li><a href="construction.html">Roll Up Vehicles</a></li>
+                            </ul>
+                        </div>
+                        <div class="mm-column">
+                            <h4>Investor Management</h4>
+                            <ul class="mm-list">
+                                <li><a href="construction.html">Digital Subscriptions</a></li>
+                                <li><a href="construction.html">Data Room</a></li>
+                            </ul>
+                            <div style="margin-top: 24px;">
+                                <h4>Intelligence</h4>
+                                <ul class="mm-list">
+                                    <li><a href="construction.html">Fin <span
+                                                style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mm-footer"
+                            style="border-top: none; padding-top: 10px; margin-top: auto; color: #6b7280; font-size: 15px;">
+                            Looking for tools for startups? Explore <a href="construction.html"
+                                style="color: #6b7280 !important; text-decoration: underline; margin-left: 2px;">Rollups.</a>
+                            <svg width="10" height="10" viewBox="0 0 12 12" fill="none"
+                                style="margin-left: 4px; display: inline-block;">
+                                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="#6b7280" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mm-right-panel">
+                        <div class="mm-column">
+                            <h4>Product Suites</h4>
+                            <a href="construction.html" class="mm-card">
+                                <div class="mm-icon"><img src="assets/images/fund_administration.png"
+                                        alt="Fund Administration"></div>
+                                <div class="mm-content">
+                                    <h5>Fund Administration</h5>
+                                    <p>All-in-one partner to launch an investment vehicle</p>
+                                </div>
+                            </a>
+                            <a href="investor-management.html" class="mm-card">
+                                <div class="mm-icon"><img src="assets/images/investor_management.png"
+                                        alt="Investor Management"></div>
+                                <div class="mm-content">
+                                    <h5>Investor Management</h5>
+                                    <p>Explore all offerings to streamline the investor experience.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="finance.html">Energy Finance & Capital</a>
+            <a href="dashboard.html">Energy Ecosystem</a>
+            <a href="citibim.html">NEIIA</a>
+        </div>
+    </nav>
+
+    <!-- Auth Links (Separate from Pill) -->
+    <div class="auth-fixed">
+        <a href="signin.html" class="nav-link">Sign In</a>
+        <a href="newsletter.html" class="btn btn-black">Join</a>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <div class="mobile-nav-header">
+            <a href="index.html">
+                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
+            </a>
+            <button class="mobile-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-nav-content">
+            <ul class="mobile-nav-list">
+                <li><a href="finance.html">Energy Finance & Capital <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="dashboard.html">Energy Ecosystem <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="citibim.html">NEIIA <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#" id="mobile-resources-link">Resources <i class="fas fa-chevron-right"></i></a></li>
+            </ul>
+            <div class="mobile-nav-footer">
+                <a href="contact.html" class="btn btn-primary full-width">Contact Support</a>
+                <a href="signin.html" class="btn btn-secondary full-width">Sign in</a>
+            </div>
+        </div>
+
+        <!-- Resources Submenu -->
+        <div class="mobile-submenu" id="resources-submenu">
+            <div class="submenu-header">
+                <button class="submenu-back-btn" id="submenu-back-btn">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="mobile-close-btn-sub">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="submenu-content">
+
+                <div class="submenu-section">
+                    <span class="submenu-label">Fund Administration</span>
+                    <ul class="submenu-list">
+                        <li><a href="construction.html">Venture Funds</a></li>
+                        <li><a href="construction.html">Rolling Funds</a></li>
+                        <li><a href="construction.html">Scout Funds</a></li>
+                        <li><a href="construction.html">SPVs</a></li>
+                        <li><a href="construction.html">Roll Up Vehicles</a></li>
+                    </ul>
+                </div>
+
+                <div class="submenu-section">
+                    <span class="submenu-label">Investor Management</span>
+                    <ul class="submenu-list">
+                        <li><a href="investor-management.html">Digital Subscriptions</a></li>
+                        <li><a href="investor-management.html">Data Room</a></li>
+                    </ul>
+                </div>
+
+                <div class="submenu-section">
+                    <span class="submenu-label">Intelligence</span>
+                    <ul class="submenu-list">
+                        <li><a href="construction.html">Fin <span class="beta-badge">Beta</span></a></li>
+                    </ul>
+                </div>
+
+                <!-- Product Suites Box -->
+                <div class="product-suites-box">
+                    <span class="submenu-label" style="margin-bottom: 24px; display: block;">Product Suites</span>
+
+                    <a href="construction.html" class="suite-card">
+                        <div class="suite-icon">
+                            <!-- Placeholder icon -->
+                            <i class="fas fa-circle-notch" style="color: #A3E635; font-size: 24px;"></i>
+                        </div>
+                        <div class="suite-info">
+                            <h4>Fund Administration</h4>
+                            <p>All-in-one partner to launch an investment vehicle</p>
+                        </div>
+                    </a>
+
+                    <a href="investor-management.html" class="suite-card">
+                        <div class="suite-icon">
+                            <!-- Placeholder icon -->
+                            <i class="fas fa-layer-group" style="color: #A3E635; font-size: 24px;"></i>
+                        </div>
+                        <div class="suite-info">
+                            <h4>Investor Management</h4>
+                            <p>Explore all offerings to streamline the investor experience.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Footer Links/Buttons -->
+                <a href="construction.html" class="submenu-footer-link">
+                    Looking for tools for startups? Explore Rollups. <i class="fas fa-arrow-right"
+                        style="font-size: 12px;"></i>
+                </a>
+
+                <div class="submenu-btn-group">
+                    <a href="contact.html" class="btn-lavender">Contact sales</a>
+                    <a href="signin.html" class="btn-gray-light">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="im-hero">
+        <span class="im-badge">Investor Management</span>
+        <h1>Elevate every investor <span class="highlight">touchpoint</span></h1>
+        <p class="im-hero-subtitle">Build investor trust with every interaction. Give LPs a modern, customized
+            experience, and your firm the tools to build lasting relationships.</p>
+        <div class="im-hero-buttons">
+            <a href="contact.html" class="btn-im-primary">Contact Sales</a>
+            <a href="signin.html" class="btn-im-secondary">Sign In</a>
+        </div>
+
+        <div class="block-stack-container">
+            <div class="stack-labels">
+                <div class="label-group left label-fundraise">
+                    <span class="label-text">FUNDRAISE</span>
+                    <span class="label-line"></span>
+                    <span class="label-bracket"></span>
+                </div>
+                <div class="label-group left label-report">
+                    <span class="label-text">REPORT</span>
+                    <span class="label-line"></span>
+                    <span class="label-bracket"></span>
+                </div>
+                <div class="label-group left label-engage">
+                    <span class="label-text">ENGAGE</span>
+                    <span class="label-line"></span>
+                    <span class="label-bracket"></span>
+                </div>
+                <div class="label-group right label-onboard">
+                    <span class="label-text">ONBOARD</span>
+                    <span class="label-line"></span>
+                    <span class="label-bracket"></span>
+                </div>
+                <div class="label-group right label-maintain">
+                    <span class="label-text">MAINTAIN</span>
+                    <span class="label-line"></span>
+                    <span class="label-bracket"></span>
+                </div>
+            </div>
+
+            <div class="block-stack-wrapper">
+                <div class="block-stack-scene">
+                    <div class="block-stack" id="blockStack">
+
+                        <div class="slab" style="bottom: 0;">
+                            <div class="slab-face slab-front"></div>
+                            <div class="slab-face slab-back"></div>
+                            <div class="slab-face slab-right"></div>
+                            <div class="slab-face slab-left"></div>
+                            <div class="slab-face slab-top"></div>
+                            <div class="slab-face slab-bottom"></div>
+                        </div>
+
+                        <div class="slab" style="bottom: 30px;">
+                            <div class="slab-face slab-front"></div>
+                            <div class="slab-face slab-back"></div>
+                            <div class="slab-face slab-right"></div>
+                            <div class="slab-face slab-left"></div>
+                            <div class="slab-face slab-top"></div>
+                            <div class="slab-face slab-bottom"></div>
+                        </div>
+
+                        <div class="slab" style="bottom: 60px;">
+                            <div class="slab-face slab-front"></div>
+                            <div class="slab-face slab-back"></div>
+                            <div class="slab-face slab-right"></div>
+                            <div class="slab-face slab-left"></div>
+                            <div class="slab-face slab-top"></div>
+                            <div class="slab-face slab-bottom"></div>
+                        </div>
+
+                        <div class="slab" style="bottom: 90px;">
+                            <div class="slab-face slab-front"></div>
+                            <div class="slab-face slab-back"></div>
+                            <div class="slab-face slab-right"></div>
+                            <div class="slab-face slab-left"></div>
+                            <div class="slab-face slab-top"></div>
+                            <div class="slab-face slab-bottom"></div>
+                        </div>
+
+                        <div class="slab" style="bottom: 120px;">
+                            <div class="slab-face slab-front"></div>
+                            <div class="slab-face slab-back"></div>
+                            <div class="slab-face slab-right"></div>
+                            <div class="slab-face slab-left"></div>
+                            <div class="slab-face slab-top"></div>
+                            <div class="slab-face slab-bottom"></div>
+                        </div>
+
+                        <div class="slab" style="bottom: 150px;">
+                            <div class="slab-face slab-front"></div>
+                            <div class="slab-face slab-back"></div>
+                            <div class="slab-face slab-right"></div>
+                            <div class="slab-face slab-left"></div>
+                            <div class="slab-face slab-top"></div>
+                            <div class="slab-face slab-bottom"></div>
+                        </div>
+
+                        <div class="slab" style="bottom: 180px;">
+                            <div class="slab-face slab-front"></div>
+                            <div class="slab-face slab-back"></div>
+                            <div class="slab-face slab-right"></div>
+                            <div class="slab-face slab-left"></div>
+                            <div class="slab-face slab-top"></div>
+                            <div class="slab-face slab-bottom"></div>
+                        </div>
+
+                        <div class="slab" style="bottom: 210px;">
+                            <div class="slab-face slab-front"></div>
+                            <div class="slab-face slab-back"></div>
+                            <div class="slab-face slab-right"></div>
+                            <div class="slab-face slab-left"></div>
+                            <div class="slab-face slab-top"></div>
+                            <div class="slab-face slab-bottom"></div>
+                        </div>
+
+                        <div class="slab" style="bottom: 240px;">
+                            <div class="slab-face slab-front"></div>
+                            <div class="slab-face slab-back"></div>
+                            <div class="slab-face slab-right"></div>
+                            <div class="slab-face slab-left"></div>
+                            <div class="slab-face slab-top"></div>
+                            <div class="slab-face slab-bottom"></div>
+                        </div>
+
+                        <div class="slab" style="bottom: 270px;">
+                            <div class="slab-face slab-front"></div>
+                            <div class="slab-face slab-back"></div>
+                            <div class="slab-face slab-right"></div>
+                            <div class="slab-face slab-left"></div>
+                            <div class="slab-face slab-top"></div>
+                            <div class="slab-face slab-bottom"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="im-stats">
+        <div class="im-stats-inner scroll-reveal">
+            <h2>A partnership built to scale with you</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="80">$0B+</div>
+                    <div class="stat-label">Assets Under Management</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="31">0K</div>
+                    <div class="stat-label">Funds Managed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="130">0K+</div>
+                    <div class="stat-label">Investors Served</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="im-feature-section">
+        <div class="im-feature-inner scroll-reveal">
+            <h2>Build investor trust with every interaction</h2>
+            <div class="features-layout">
+                <div class="features-list">
+                    <div class="feature-tab active" data-feature="subscriptions">
+                        <h3>Digital Subscriptions</h3>
+                        <p>Streamline your investor onboarding with digital subscription documents and e-signatures.</p>
+                    </div>
+                    <div class="feature-tab" data-feature="dataroom">
+                        <h3>Data Room</h3>
+                        <p>Secure document sharing with granular access controls and activity tracking.</p>
+                    </div>
+                    <div class="feature-tab" data-feature="branding">
+                        <h3>Custom Branding</h3>
+                        <p>White-label your investor portal with your firm's branding and domain.</p>
+                    </div>
+                    <div class="feature-tab" data-feature="reporting">
+                        <h3>Always-on Reporting</h3>
+                        <p>Give investors real-time access to performance data and portfolio updates.</p>
+                    </div>
+                </div>
+                <div class="features-visual">
+                    <img src="assets/images/investor-management/feature1.png" alt="Digital Subscriptions Interface"
+                        id="feature-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="im-cards-section">
+        <div class="im-cards-inner scroll-reveal">
+            <h2>Redefine investor experiences for the modern era</h2>
+            <div class="cards-grid">
+                <a href="construction.html" class="im-card">
+                    <div class="im-card-icon"><i class="fas fa-file-signature"></i></div>
+                    <div class="im-card-footer">
+                        <h3>Digital Subscriptions</h3>
+                        <div class="im-card-arrow"><i class="fas fa-arrow-right"></i></div>
+                    </div>
+                </a>
+                <a href="construction.html" class="im-card">
+                    <div class="im-card-icon"><i class="fas fa-folder-open"></i></div>
+                    <div class="im-card-footer">
+                        <h3>Data Room</h3>
+                        <div class="im-card-arrow"><i class="fas fa-arrow-right"></i></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="im-testimonials">
+        <div class="im-testimonials-inner scroll-reveal">
+            <div class="testimonials-carousel" id="testimonials-carousel">
+                <!-- Slide 1 -->
+                <div class="testimonial-slide dark">
+                    <div class="testimonial-content">
+                        <p class="testimonial-quote">"Since using AngelList, it's hard to imagine operating without
+                            software like Data Room and Digital Subscriptions. An un-integrated portal and manual
+                            subscription workflow is just so much less efficient. The market demands it now—digital
+                            subscriptions are quickly becoming the standard."</p>
+                        <div class="testimonial-footer">
+                            <div class="testimonial-author">
+                                <h4>Jonathan Schwartz</h4>
+                                <p>Investor Relations, VanEck</p>
+                            </div>
+                            <span
+                                style="font-family: serif; font-size: 24px; font-weight: 700; letter-spacing: 0.05em;">VanEck</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-photo-container">
+                        <img src="assets/images/investor-management/testimonial1.jpg" alt="Jonathan Schwartz">
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="testimonial-slide lavender">
+                    <div class="testimonial-content">
+                        <p class="testimonial-quote">"AngelList transformed us from a complex operation to something
+                            streamlined and involved, all without the overhead. The platform handles everything
+                            seamlessly."</p>
+                        <div class="testimonial-footer">
+                            <div class="testimonial-author">
+                                <h4>Garima Grover</h4>
+                                <p>VP of Client Services</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-photo-container">
+                        <img src="assets/images/investor-management/testimonial2.jpg" alt="Garima Grover">
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="testimonial-slide tan">
+                    <div class="testimonial-content">
+                        <p class="testimonial-quote">"We've reduced our investor onboarding time by 80%. The digital
+                            subscriptions feature is a game-changer for our fund operations."</p>
+                        <div class="testimonial-footer">
+                            <div class="testimonial-author">
+                                <h4>Sarah Chen</h4>
+                                <p>Fund Manager</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-photo-container">
+                        <img src="assets/images/investor-management/testimonial3.jpg" alt="Sarah Chen">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carousel Controls -->
+            <div class="carousel-controls">
+                <div class="carousel-dots">
+                    <button class="carousel-dot active" data-slide="0"></button>
+                    <button class="carousel-dot" data-slide="1"></button>
+                    <button class="carousel-dot" data-slide="2"></button>
+                </div>
+                <div class="carousel-arrows">
+                    <button class="carousel-arrow" id="prev-slide"><i class="fas fa-chevron-left"></i></button>
+                    <button class="carousel-arrow" id="next-slide"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="im-cta">
+        <div class="im-cta-inner scroll-reveal">
+            <h2>Ready to make every LP interaction count?</h2>
+            <p>Join thousands of fund managers who trust us to streamline their investor relationships.</p>
+            <a href="contact.html" class="btn-im-primary">Get Started Today</a>
+        </div>
+    </section>
+
+    <footer class="footer container" style="margin-top: 0; padding-top: 40px;">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Products</h4>
+                <ul>
+                    <li><a href="construction.html">Venture Funds</a></li>
+                    <li><a href="construction.html">Rolling Funds</a></li>
+                    <li><a href="construction.html">SPVs</a></li>
+                    <li><a href="construction.html">Scout Funds</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="construction.html">About</a></li>
+                    <li><a href="construction.html">Careers</a></li>
+                    <li><a href="construction.html">Blog</a></li>
+                    <li><a href="newsletter.html">Join</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="construction.html">Help Center</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <p style="margin-top: 40px; font-size: 0.9rem;">&copy; 2026 NEIIA</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // ===== INVESTOR MANAGEMENT PAGE SCRIPTS =====
+
+        // Scroll Reveal Animation
+        const scrollReveal = () => {
+            const elements = document.querySelectorAll('.scroll-reveal');
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                if (rect.top < windowHeight * 0.85) {
+                    el.classList.add('revealed');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', scrollReveal);
+        window.addEventListener('load', scrollReveal);
+
+        // Rolling Number Animation
+        const animateNumbers = () => {
+            const numbers = document.querySelectorAll('.stat-number');
+            numbers.forEach(num => {
+                const target = parseInt(num.dataset.target);
+                const duration = 2000;
+                const start = performance.now();
+
+                const animate = (currentTime) => {
+                    const elapsed = currentTime - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easeOut = 1 - Math.pow(1 - progress, 3);
+                    const current = Math.floor(target * easeOut);
+
+                    const originalText = num.textContent;
+                    if (originalText.includes('$')) {
+                        num.textContent = `$${current}B+`;
+                    } else if (originalText.includes('K+')) {
+                        num.textContent = `${current}K+`;
+                    } else {
+                        num.textContent = `${current}K`;
+                    }
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    }
+                };
+
+                requestAnimationFrame(animate);
+            });
+        };
+
+        // Trigger number animation when stats section is visible
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateNumbers();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const statsSection = document.querySelector('.im-stats');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+
+        // Feature Tabs Interaction
+        const featureTabs = document.querySelectorAll('.feature-tab');
+        const featureImage = document.getElementById('feature-image');
+        const featureImages = {
+            subscriptions: 'assets/images/investor-management/feature1.png',
+            dataroom: 'assets/images/investor-management/feature2.png',
+            branding: 'assets/images/investor-management/feature1.png',
+            reporting: 'assets/images/investor-management/feature2.png'
+        };
+
+        featureTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                featureTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                const feature = tab.dataset.feature;
+                if (featureImage && featureImages[feature]) {
+                    featureImage.style.opacity = '0';
+                    setTimeout(() => {
+                        featureImage.src = featureImages[feature];
+                        featureImage.style.opacity = '1';
+                    }, 200);
+                }
+            });
+        });
+
+        // Add transition for feature image
+        if (featureImage) {
+            featureImage.style.transition = 'opacity 0.3s ease';
+        }
+
+        // ===== TESTIMONIALS CAROUSEL =====
+        const carousel = document.getElementById('testimonials-carousel');
+        const slides = carousel ? carousel.querySelectorAll('.testimonial-slide') : [];
+        const dots = document.querySelectorAll('.carousel-dot');
+        const prevBtn = document.getElementById('prev-slide');
+        const nextBtn = document.getElementById('next-slide');
+        let currentSlide = 0;
+
+        function goToSlide(index) {
+            if (!carousel || slides.length === 0) return;
+
+            currentSlide = index;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+            if (currentSlide >= slides.length) currentSlide = 0;
+
+            const slideWidth = slides[0].offsetWidth + 24; // width + gap
+            carousel.scrollTo({
+                left: currentSlide * slideWidth,
+                behavior: 'smooth'
+            });
+
+            // Update dots
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        // Dot navigation
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                goToSlide(parseInt(dot.dataset.slide));
+            });
+        });
+
+        // Arrow navigation
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+        }
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+        }
+
+        // Auto-scroll every 5 seconds
+        setInterval(() => {
+            goToSlide(currentSlide + 1);
+        }, 5000);
+
+        // Update dots on scroll
+        if (carousel) {
+            carousel.addEventListener('scroll', () => {
+                const slideWidth = slides[0].offsetWidth + 24;
+                const newSlide = Math.round(carousel.scrollLeft / slideWidth);
+                if (newSlide !== currentSlide) {
+                    currentSlide = newSlide;
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === currentSlide);
+                    });
+                }
+            });
+        }
+
+        // ===== DYNAMIC HEADER COLORS =====
+        const body = document.body;
+        const featureSection = document.querySelector('.im-feature-section');
+        const ctaSection = document.querySelector('.im-cta');
+
+        function checkHeaderColor() {
+            if (!featureSection) return;
+
+            const scrollY = window.scrollY;
+            const featureTop = featureSection.offsetTop - 80; // Offset for navbar height
+            const ctaTop = ctaSection ? ctaSection.offsetTop - 80 : Infinity;
+
+            // If we are past the feature section start (light area) but NOT yet at CTA (dark area)
+            // Note: If CTA is dark, we might want to revert to white logo. 
+            // The user only asked for "visible in white background", so let's handle the light section range.
+
+            if (scrollY > featureTop && scrollY < ctaTop) {
+                body.classList.add('nav-scrolled');
+            } else {
+                body.classList.remove('nav-scrolled');
+            }
+        }
+
+        window.addEventListener('scroll', checkHeaderColor);
+        checkHeaderColor(); // Initial check
+
+        // ===== CARDS MOUSE TRACKING GLOW =====
+        const cards = document.querySelectorAll('.im-card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>

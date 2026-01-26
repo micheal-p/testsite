@@ -11,337 +11,335 @@
 </head>
 
 <body>
-    <div class="app-container">
-        <!-- Top Navigation Bar -->
-        <div class="header">
-            <div class="header-content">
-                <div class="logo">
-                    <h1>National Energy Ecosystem</h1>
-                    <div class="subtitle">Dashboard</div>
-                </div>
-                <div class="global-filters">
-                    <label><i class="fas fa-calendar"></i> Time Range:</label>
-                    <select id="time-filter">
-                        <option value="2024">2024 to Present</option>
-                        <option value="2023">2023</option>
-                        <option value="q4-2024">2024 Q4</option>
-                        <option value="q3-2024">2024 Q3</option>
-                    </select>
-                    <label><i class="fas fa-map-marker-alt"></i> Region:</label>
-                    <select id="region-filter">
-                        <option value="national">National</option>
-                        <option value="north">Northern Region</option>
-                        <option value="south">Southern Region</option>
-                        <option value="west">Western Region</option>
-                        <option value="east">Eastern Region</option>
-                    </select>
-                </div>
-                <div class="header-actions">
-                    <button id="refresh-btn" class="btn btn-icon" title="Refresh Data">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
-                    <button id="export-btn" class="btn btn-icon" title="Export Report">
-                        <i class="fas fa-download"></i>
-                    </button>
-                    <button id="settings-btn" class="btn btn-icon" title="Settings">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                </div>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>National Energy Ecosystem</h1>
+                <div class="subtitle">Dashboard</div>
+            </div>
+            <div class="global-filters">
+                <label><i class="fas fa-calendar"></i> Time Range:</label>
+                <select id="time-filter">
+                    <option value="2024">2024 to Present</option>
+                    <option value="2023">2023</option>
+                    <option value="q4-2024">2024 Q4</option>
+                    <option value="q3-2024">2024 Q3</option>
+                </select>
+                <label><i class="fas fa-map-marker-alt"></i> Region:</label>
+                <select id="region-filter">
+                    <option value="national">National</option>
+                    <option value="north">Northern Region</option>
+                    <option value="south">Southern Region</option>
+                    <option value="west">Western Region</option>
+                    <option value="east">Eastern Region</option>
+                </select>
+            </div>
+            <div class="header-actions">
+                <button id="refresh-btn" class="btn btn-icon" title="Refresh Data">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button id="export-btn" class="btn btn-icon" title="Export Report">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button id="settings-btn" class="btn btn-icon" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core KPI Section -->
+    <div class="kpi-header">
+        <div class="kpi-card kpi-green">
+            <div class="kpi-icon"><i class="fas fa-bolt"></i></div>
+            <div class="kpi-content">
+                <div class="kpi-title">Grid Generation Capacity</div>
+                <div class="kpi-value">5,324 MW</div>
+                <div class="kpi-trend trend-up"><i class="fas fa-arrow-up"></i> +8.2%</div>
+                <div class="kpi-compare">Peak Available</div>
             </div>
         </div>
 
-        <!-- Core KPI Section -->
-        <div class="kpi-header">
-            <div class="kpi-card kpi-green">
-                <div class="kpi-icon"><i class="fas fa-bolt"></i></div>
-                <div class="kpi-content">
-                    <div class="kpi-title">Grid Generation Capacity</div>
-                    <div class="kpi-value">5,324 MW</div>
-                    <div class="kpi-trend trend-up"><i class="fas fa-arrow-up"></i> +8.2%</div>
-                    <div class="kpi-compare">Peak Available</div>
-                </div>
-            </div>
-
-            <div class="kpi-card kpi-red">
-                <div class="kpi-icon"><i class="fas fa-smog"></i></div>
-                <div class="kpi-content">
-                    <div class="kpi-title">Total Carbon Emissions</div>
-                    <div class="kpi-value">98.2Mt</div>
-                    <div class="kpi-trend trend-down"><i class="fas fa-arrow-down"></i> -5.4%</div>
-                    <div class="kpi-compare">YoY Decrease</div>
-                </div>
-            </div>
-
-            <div class="kpi-card kpi-blue">
-                <div class="kpi-icon"><i class="fas fa-naira-sign"></i></div>
-                <div class="kpi-content">
-                    <div class="kpi-title">Total Energy Investment</div>
-                    <div class="kpi-value">$4.2B</div>
-                    <div class="kpi-trend trend-up"><i class="fas fa-arrow-up"></i> +18.6%</div>
-                    <div class="kpi-compare">2024 YTD</div>
-                </div>
-            </div>
-
-            <div class="kpi-card kpi-purple">
-                <div class="kpi-icon"><i class="fas fa-tasks"></i></div>
-                <div class="kpi-content">
-                    <div class="kpi-title">NEAP Project Progress</div>
-                    <div class="kpi-value">58.7%</div>
-                    <div class="kpi-trend trend-up"><i class="fas fa-arrow-up"></i> +12.3%</div>
-                    <div class="kpi-compare">Avg Completion Rate</div>
-                </div>
+        <div class="kpi-card kpi-red">
+            <div class="kpi-icon"><i class="fas fa-smog"></i></div>
+            <div class="kpi-content">
+                <div class="kpi-title">Total Carbon Emissions</div>
+                <div class="kpi-value">98.2Mt</div>
+                <div class="kpi-trend trend-down"><i class="fas fa-arrow-down"></i> -5.4%</div>
+                <div class="kpi-compare">YoY Decrease</div>
             </div>
         </div>
 
-        <!-- Main Content Area -->
-        <div class="main-dashboard">
-            <!-- Left: Energy Strategy & Project Monitoring -->
-            <div class="dashboard-column">
-                <div class="column-header">
-                    <h3><i class="fas fa-bolt"></i> Energy Strategy & Program Monitoring</h3>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h4>National Energy Supply-Demand Balance</h4>
-                        <div class="chart-legend">
-                            <span class="legend-item"><span class="legend-dot legend-supply"></span> Generation</span>
-                            <span class="legend-item"><span class="legend-dot legend-demand"></span> Demand</span>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="supply-demand-chart"></canvas>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h4>NEAP Program Progress Barometer</h4>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="project-progress-chart"></canvas>
-                    </div>
-                </div>
-
-                <div class="action-card">
-                    <button class="btn btn-primary btn-full" onclick="navigateToSystem('neap')">
-                        <i class="fas fa-external-link-alt"></i>
-                        Enter Program Tracking System
-                    </button>
-                </div>
-            </div>
-
-            <!-- Middle: Investment & Market Dynamics -->
-            <div class="dashboard-column">
-                <div class="column-header">
-                    <h3><i class="fas fa-chart-line"></i> Investment & Market Dynamics</h3>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Energy Fund Investment Flow</h4>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="investment-flow-chart"></canvas>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Key Program Investment Efficiency</h4>
-                        <div class="chart-legend">
-                            <span class="legend-item">X: Investment | Y: Expected ROI | Bubble: Employment</span>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="investment-roi-chart"></canvas>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Energy Trading Platform Daily Volume</h4>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="trading-volume-chart"></canvas>
-                    </div>
-                </div>
-
-                <div class="action-card">
-                    <button class="btn btn-primary btn-full" onclick="navigateToFinancePage()">
-                        <i class="fas fa-external-link-alt"></i>
-                        View Financial Details
-                    </button>
-                </div>
-            </div>
-
-            <!-- Right: Public Services & Coverage -->
-            <div class="dashboard-column">
-                <div class="column-header">
-                    <h3><i class="fas fa-users"></i> Public Services & Coverage</h3>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h4>eVillage Service Coverage Map</h4>
-                        <div class="map-stats">
-                            <div class="map-stat">Covering <span class="highlight">2,847</span> Villages</div>
-                            <div class="map-stat">Serving <span class="highlight">18.6M</span> People</div>
-                        </div>
-                    </div>
-                    <div class="card-body map-container">
-                        <div class="nigeria-map">
-                            <div class="map-region region-north" title="Northern Region - 65% Coverage">
-                                <span class="region-label">North 65%</span>
-                            </div>
-                            <div class="map-region region-south" title="Southern Region - 82% Coverage">
-                                <span class="region-label">South 82%</span>
-                            </div>
-                            <div class="map-region region-west" title="Western Region - 74% Coverage">
-                                <span class="region-label">West 74%</span>
-                            </div>
-                            <div class="map-region region-east" title="Eastern Region - 58% Coverage">
-                                <span class="region-label">East 58%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Rural Energy Service Type Distribution</h4>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="service-type-chart"></canvas>
-                    </div>
-                </div>
+        <div class="kpi-card kpi-blue">
+            <div class="kpi-icon"><i class="fas fa-naira-sign"></i></div>
+            <div class="kpi-content">
+                <div class="kpi-title">Total Energy Investment</div>
+                <div class="kpi-value">$4.2B</div>
+                <div class="kpi-trend trend-up"><i class="fas fa-arrow-up"></i> +18.6%</div>
+                <div class="kpi-compare">2024 YTD</div>
             </div>
         </div>
 
-        <!-- Bottom Alert & News Section -->
-        <div class="bottom-panel">
-            <div class="card bottom-card">
+        <div class="kpi-card kpi-purple">
+            <div class="kpi-icon"><i class="fas fa-tasks"></i></div>
+            <div class="kpi-content">
+                <div class="kpi-title">NEAP Project Progress</div>
+                <div class="kpi-value">58.7%</div>
+                <div class="kpi-trend trend-up"><i class="fas fa-arrow-up"></i> +12.3%</div>
+                <div class="kpi-compare">Avg Completion Rate</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-dashboard">
+        <!-- Left: Energy Strategy & Project Monitoring -->
+        <div class="dashboard-column">
+            <div class="column-header">
+                <h3><i class="fas fa-bolt"></i> Energy Strategy & Program Monitoring</h3>
+            </div>
+
+            <div class="card">
                 <div class="card-header">
-                    <h4><i class="fas fa-exclamation-triangle"></i> System Alerts</h4>
-                    <span class="badge badge-warning">3 New Alerts</span>
+                    <h4>National Energy Supply-Demand Balance</h4>
+                    <div class="chart-legend">
+                        <span class="legend-item"><span class="legend-dot legend-supply"></span> Generation</span>
+                        <span class="legend-item"><span class="legend-dot legend-demand"></span> Demand</span>
+                    </div>
                 </div>
-                <div class="alert-list" id="alert-list">
-                    <div class="alert-item alert-critical">
-                        <div class="alert-icon"><i class="fas fa-bolt"></i></div>
-                        <div class="alert-content">
-                            <div class="alert-title">Kano Power Plant High Load</div>
-                            <div class="alert-time">5 min ago</div>
-                            <div class="alert-detail">Current load at 92%, exceeding safety threshold</div>
-                        </div>
+                <div class="card-body">
+                    <canvas id="supply-demand-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>NEAP Program Progress Barometer</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="project-progress-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="action-card">
+                <button class="btn btn-primary btn-full" onclick="navigateToSystem('neap')">
+                    <i class="fas fa-external-link-alt"></i>
+                    Enter Program Tracking System
+                </button>
+            </div>
+        </div>
+
+        <!-- Middle: Investment & Market Dynamics -->
+        <div class="dashboard-column">
+            <div class="column-header">
+                <h3><i class="fas fa-chart-line"></i> Investment & Market Dynamics</h3>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>Energy Fund Investment Flow</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="investment-flow-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>Key Program Investment Efficiency</h4>
+                    <div class="chart-legend">
+                        <span class="legend-item">X: Investment | Y: Expected ROI | Bubble: Employment</span>
                     </div>
-                    <div class="alert-item alert-warning">
-                        <div class="alert-icon"><i class="fas fa-wave-square"></i></div>
-                        <div class="alert-content">
-                            <div class="alert-title">Rivers State Grid Fluctuation</div>
-                            <div class="alert-time">23 min ago</div>
-                            <div class="alert-detail">Voltage fluctuation ±12%, requires attention</div>
-                        </div>
+                </div>
+                <div class="card-body">
+                    <canvas id="investment-roi-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>Energy Trading Platform Daily Volume</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="trading-volume-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="action-card">
+                <button class="btn btn-primary btn-full" onclick="navigateToFinancePage()">
+                    <i class="fas fa-external-link-alt"></i>
+                    View Financial Details
+                </button>
+            </div>
+        </div>
+
+        <!-- Right: Public Services & Coverage -->
+        <div class="dashboard-column">
+            <div class="column-header">
+                <h3><i class="fas fa-users"></i> Public Services & Coverage</h3>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>eVillage Service Coverage Map</h4>
+                    <div class="map-stats">
+                        <div class="map-stat">Covering <span class="highlight">2,847</span> Villages</div>
+                        <div class="map-stat">Serving <span class="highlight">18.6M</span> People</div>
                     </div>
-                    <div class="alert-item alert-info">
-                        <div class="alert-icon"><i class="fas fa-tools"></i></div>
-                        <div class="alert-content">
-                            <div class="alert-title">Lagos Converter Station Maintenance</div>
-                            <div class="alert-time">1 hr ago</div>
-                            <div class="alert-detail">Scheduled maintenance at 22:00 today</div>
+                </div>
+                <div class="card-body map-container">
+                    <div class="nigeria-map">
+                        <div class="map-region region-north" title="Northern Region - 65% Coverage">
+                            <span class="region-label">North 65%</span>
                         </div>
-                    </div>
-                    <div class="alert-item alert-warning">
-                        <div class="alert-icon"><i class="fas fa-battery-quarter"></i></div>
-                        <div class="alert-content">
-                            <div class="alert-title">Storage System Low Charge</div>
-                            <div class="alert-time">2 hr ago</div>
-                            <div class="alert-detail">Abuja storage station at 28% capacity</div>
+                        <div class="map-region region-south" title="Southern Region - 82% Coverage">
+                            <span class="region-label">South 82%</span>
                         </div>
-                    </div>
-                    <div class="alert-item alert-info">
-                        <div class="alert-icon"><i class="fas fa-cloud-rain"></i></div>
-                        <div class="alert-content">
-                            <div class="alert-title">Rain Affects Wind Power Output</div>
-                            <div class="alert-time">3 hr ago</div>
-                            <div class="alert-detail">Niger Delta wind output down 15%</div>
+                        <div class="map-region region-west" title="Western Region - 74% Coverage">
+                            <span class="region-label">West 74%</span>
                         </div>
-                    </div>
-                    <div class="alert-item alert-critical">
-                        <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
-                        <div class="alert-content">
-                            <div class="alert-title">Benue State Solar Panel Efficiency Drop</div>
-                            <div class="alert-time">4 hr ago</div>
-                            <div class="alert-detail">Dust accumulation causes 12% efficiency loss</div>
+                        <div class="map-region region-east" title="Eastern Region - 58% Coverage">
+                            <span class="region-label">East 58%</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card bottom-card">
+            <div class="card">
                 <div class="card-header">
-                    <h4><i class="fas fa-newspaper"></i> Program Updates</h4>
-                    <span class="badge badge-info">Live Updates</span>
+                    <h4>Rural Energy Service Type Distribution</h4>
                 </div>
-                <div class="news-list" id="news-list">
-                    <div class="news-item">
-                        <div class="news-icon"><i class="fas fa-check-circle"></i></div>
-                        <div class="news-content">
-                            <div class="news-title">Kaduna 100MW Solar Plant Connected to Grid Today</div>
-                            <div class="news-time">2 hr ago</div>
-                        </div>
+                <div class="card-body">
+                    <canvas id="service-type-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Alert & News Section -->
+    <div class="bottom-panel">
+        <div class="card bottom-card">
+            <div class="card-header">
+                <h4><i class="fas fa-exclamation-triangle"></i> System Alerts</h4>
+                <span class="badge badge-warning">3 New Alerts</span>
+            </div>
+            <div class="alert-list" id="alert-list">
+                <div class="alert-item alert-critical">
+                    <div class="alert-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="alert-content">
+                        <div class="alert-title">Kano Power Plant High Load</div>
+                        <div class="alert-time">5 min ago</div>
+                        <div class="alert-detail">Current load at 92%, exceeding safety threshold</div>
                     </div>
-                    <div class="news-item">
-                        <div class="news-icon"><i class="fas fa-handshake"></i></div>
-                        <div class="news-content">
-                            <div class="news-title">Signed $500M Energy Cooperation Agreement with World Bank</div>
-                            <div class="news-time">4 hr ago</div>
-                        </div>
+                </div>
+                <div class="alert-item alert-warning">
+                    <div class="alert-icon"><i class="fas fa-wave-square"></i></div>
+                    <div class="alert-content">
+                        <div class="alert-title">Rivers State Grid Fluctuation</div>
+                        <div class="alert-time">23 min ago</div>
+                        <div class="alert-detail">Voltage fluctuation ±12%, requires attention</div>
                     </div>
-                    <div class="news-item">
-                        <div class="news-icon"><i class="fas fa-flag-checkered"></i></div>
-                        <div class="news-content">
-                            <div class="news-title">Niger Delta 50MW Wind Project Reaches 90% Progress</div>
-                            <div class="news-time">6 hr ago</div>
-                        </div>
+                </div>
+                <div class="alert-item alert-info">
+                    <div class="alert-icon"><i class="fas fa-tools"></i></div>
+                    <div class="alert-content">
+                        <div class="alert-title">Lagos Converter Station Maintenance</div>
+                        <div class="alert-time">1 hr ago</div>
+                        <div class="alert-detail">Scheduled maintenance at 22:00 today</div>
                     </div>
-                    <div class="news-item">
-                        <div class="news-icon"><i class="fas fa-users"></i></div>
-                        <div class="news-content">
-                            <div class="news-title">eVillage Project Adds 500 New Villages</div>
-                            <div class="news-time">8 hr ago</div>
-                        </div>
+                </div>
+                <div class="alert-item alert-warning">
+                    <div class="alert-icon"><i class="fas fa-battery-quarter"></i></div>
+                    <div class="alert-content">
+                        <div class="alert-title">Storage System Low Charge</div>
+                        <div class="alert-time">2 hr ago</div>
+                        <div class="alert-detail">Abuja storage station at 28% capacity</div>
                     </div>
-                    <div class="news-item">
-                        <div class="news-icon"><i class="fas fa-award"></i></div>
-                        <div class="news-content">
-                            <div class="news-title">Lagos Microgrid Project Wins African Green Energy Award</div>
-                            <div class="news-time">10 hr ago</div>
-                        </div>
+                </div>
+                <div class="alert-item alert-info">
+                    <div class="alert-icon"><i class="fas fa-cloud-rain"></i></div>
+                    <div class="alert-content">
+                        <div class="alert-title">Rain Affects Wind Power Output</div>
+                        <div class="alert-time">3 hr ago</div>
+                        <div class="alert-detail">Niger Delta wind output down 15%</div>
                     </div>
-                    <div class="news-item">
-                        <div class="news-icon"><i class="fas fa-graduation-cap"></i></div>
-                        <div class="news-content">
-                            <div class="news-title">Energy Training Center Phase 2 Course Opens</div>
-                            <div class="news-time">12 hr ago</div>
-                        </div>
-                    </div>
-                    <div class="news-item">
-                        <div class="news-icon"><i class="fas fa-chart-line"></i></div>
-                        <div class="news-content">
-                            <div class="news-title">Q3 Energy Investment Up 18.5% QoQ</div>
-                            <div class="news-time">Yesterday</div>
-                        </div>
-                    </div>
-                    <div class="news-item">
-                        <div class="news-icon"><i class="fas fa-lightbulb"></i></div>
-                        <div class="news-content">
-                            <div class="news-title">National Grid Upgrade Project Launched</div>
-                            <div class="news-time">Yesterday</div>
-                        </div>
+                </div>
+                <div class="alert-item alert-critical">
+                    <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
+                    <div class="alert-content">
+                        <div class="alert-title">Benue State Solar Panel Efficiency Drop</div>
+                        <div class="alert-time">4 hr ago</div>
+                        <div class="alert-detail">Dust accumulation causes 12% efficiency loss</div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="card bottom-card">
+            <div class="card-header">
+                <h4><i class="fas fa-newspaper"></i> Program Updates</h4>
+                <span class="badge badge-info">Live Updates</span>
+            </div>
+            <div class="news-list" id="news-list">
+                <div class="news-item">
+                    <div class="news-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="news-content">
+                        <div class="news-title">Kaduna 100MW Solar Plant Connected to Grid Today</div>
+                        <div class="news-time">2 hr ago</div>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-icon"><i class="fas fa-handshake"></i></div>
+                    <div class="news-content">
+                        <div class="news-title">Signed $500M Energy Cooperation Agreement with World Bank</div>
+                        <div class="news-time">4 hr ago</div>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-icon"><i class="fas fa-flag-checkered"></i></div>
+                    <div class="news-content">
+                        <div class="news-title">Niger Delta 50MW Wind Project Reaches 90% Progress</div>
+                        <div class="news-time">6 hr ago</div>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-icon"><i class="fas fa-users"></i></div>
+                    <div class="news-content">
+                        <div class="news-title">eVillage Project Adds 500 New Villages</div>
+                        <div class="news-time">8 hr ago</div>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-icon"><i class="fas fa-award"></i></div>
+                    <div class="news-content">
+                        <div class="news-title">Lagos Microgrid Project Wins African Green Energy Award</div>
+                        <div class="news-time">10 hr ago</div>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="news-content">
+                        <div class="news-title">Energy Training Center Phase 2 Course Opens</div>
+                        <div class="news-time">12 hr ago</div>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="news-content">
+                        <div class="news-title">Q3 Energy Investment Up 18.5% QoQ</div>
+                        <div class="news-time">Yesterday</div>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-icon"><i class="fas fa-lightbulb"></i></div>
+                    <div class="news-content">
+                        <div class="news-title">National Grid Upgrade Project Launched</div>
+                        <div class="news-time">Yesterday</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     <!-- Finance Details Modal -->

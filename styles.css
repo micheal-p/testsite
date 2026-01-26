@@ -160,13 +160,7 @@ body:not(.dark-mode) .bulb-icon {
     opacity: 1;
 }
 
-.nav-links a::after {
-    content: '⌄';
-    /* Simple expansion indicator */
-    margin-left: 4px;
-    font-size: 0.8em;
-    opacity: 0.5;
-}
+/* Removed global chevron - only Resources uses explicit icon now */
 
 /* Adjust layout for Logo in Pill */
 .nav-brand {
@@ -239,26 +233,203 @@ body:not(.dark-mode) .bulb-icon {
     font-weight: 500;
 }
 
+/* Removed has-dropdown arrow as we use explicit icons now */
 .navbar.pill-nav .nav-links a {
     color: rgba(255, 255, 255, 0.85);
     display: flex;
     align-items: center;
     gap: 4px;
+    text-decoration: none;
 }
 
 .navbar.pill-nav .nav-links a:hover {
     color: #fff;
 }
 
-.navbar.pill-nav .nav-links a::after {
-    content: '⌄';
-    font-size: 0.7em;
-    opacity: 0.6;
+/* Mega Menu Styles */
+.nav-item.dropdown {
+    position: static;
+    /* Allows menu to position relative to screen/pill */
 }
 
-/* Pricing has no dropdown */
-.navbar.pill-nav .nav-links a[href*="Pricing"]::after {
-    content: none;
+/* Mega Menu Layout */
+.mega-menu {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    width: 90vw;
+    max-width: 980px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    padding: 0;
+    /* Removing padding from grid container to allow panel */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 1200;
+    color: #050c26;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.6fr;
+    /* Adjusted ratio */
+    gap: 0;
+    /* Remove grid gap to handle padding internally */
+    text-align: left;
+    cursor: default;
+    overflow: hidden;
+    /* For radius */
+}
+
+/* Left Columns Container */
+.mm-left-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column: 1 / 3;
+    gap: 40px;
+    padding: 40px 0 40px 40px;
+    /* Padding for left side */
+}
+
+/* Right Column (Product Suites) Panel */
+.mm-right-panel {
+    background: #fcfcfc;
+    /* Very light gray/off-white as per screenshot */
+    padding: 40px;
+    grid-column: 3;
+}
+
+.nav-item.dropdown:hover .mega-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Mega Menu Columns */
+.mm-column h4 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #8890a0;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+}
+
+.mm-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mm-list li {
+    margin-bottom: 12px;
+}
+
+.mm-list a {
+    display: block;
+    color: #050c26 !important;
+    /* Override nav link color */
+    font-size: 15px;
+    font-weight: 400;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.mm-list a:hover {
+    color: #4f46e5 !important;
+    background: none !important;
+}
+
+/* Dropdown Toggle Text (Resources) */
+.nav-link.dropdown-toggle {
+    cursor: default;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 500;
+}
+
+.nav-link.dropdown-toggle:hover {
+    color: #fff;
+}
+
+.nav-item.dropdown:hover .dropdown-toggle i {
+    transform: rotate(180deg);
+}
+
+/* Product Suite Cards */
+.mm-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    /* Text gap increased */
+    padding: 16px;
+    border-radius: 8px;
+    transition: background 0.1s;
+    cursor: pointer;
+    text-decoration: none !important;
+    margin-bottom: 24px;
+}
+
+.mm-card:hover {
+    background: transparent;
+    /* Screenshot implies clean look, maybe no hover bg or subtle */
+}
+
+/* Icon container: Increased size +20% again */
+.mm-icon {
+    width: 80px;
+    /* 64 * 1.25 roughly */
+    height: 80px;
+    background: #051b22;
+    /* Dark background from screenshot */
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.mm-icon img {
+    width: 60px !important;
+    /* Scaled up */
+    height: 60px !important;
+    object-fit: contain;
+}
+
+.mm-content h5 {
+    margin: 0 0 8px 0;
+    font-size: 17px;
+    font-weight: 500;
+    /* Regular/Medium weight */
+    color: #050c26;
+    letter-spacing: -0.3px;
+}
+
+.mm-content p {
+    margin: 0;
+    font-size: 15px;
+    color: #5e6d8a;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+/* Bottom Link */
+.mm-footer {
+    grid-column: 1 / -1;
+    border-top: 1px solid #e6e9ed;
+    padding-top: 20px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #5e6d8a;
+}
+
+.mm-footer a {
+    color: #4f46e5 !important;
+    font-weight: 500;
+    margin-left: 4px;
 }
 
 /* Mobile Styles */
@@ -804,6 +975,12 @@ img {
     width: 100%;
     max-width: 1200px;
     padding: 0 var(--spacing-md);
+}
+
+/* Mobile-only elements hidden on desktop */
+.grid-arrow,
+.grid-dots {
+    display: none;
 }
 
 .grid-item {
@@ -1454,4 +1631,685 @@ body.dark-mode .brand-text {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+/* ============================================
+   MOBILE HORIZONTAL SCROLL GRID
+   ============================================ */
+@media (max-width: 768px) {
+    .grid-section {
+        padding: 40px 0 60px;
+        /* Extra bottom padding for "dots" */
+        overflow: hidden;
+        /* Hide overflow from container */
+        position: relative;
+    }
+
+    /* "Dots" behind/below the scroll */
+    .grid-section::after {
+        content: "• • • • •";
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #ddd;
+        font-size: 24px;
+        letter-spacing: 8px;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    /* Special "Active" dot simulation (optional) */
+    .grid-section::before {
+        content: "•";
+        position: absolute;
+        bottom: 20px;
+        left: calc(50% - 38px);
+        /* Adjust to align with first dot of the set above */
+        color: #000;
+        font-size: 24px;
+        z-index: 1;
+        opacity: 0.5;
+    }
+
+    .grid-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 20px;
+        padding: 0 20px 40px;
+        /* Side padding for peek effect, bottom space */
+        width: 100%;
+        grid-template-columns: none;
+        /* Override grid */
+        /* Hide scrollbar */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .grid-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .grid-item {
+        min-width: 85vw;
+        /* Large width cards */
+        height: 450px;
+        /* Increased height */
+        scroll-snap-align: center;
+        border-radius: 16px;
+        margin: 0;
+        /* Flex alignment */
+        flex-shrink: 0;
+        /* Enhancement */
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Enhance content visibility */
+    .grid-item h3 {
+        font-size: 2rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .grid-item span {
+        font-size: 1.1rem;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 4px 10px;
+        border-radius: 4px;
+        width: fit-content;
+    }
+}
+
+/* ============================================
+   MOBILE HORIZONTAL SCROLL ENHANCEMENTS
+   ============================================ */
+@media (max-width: 768px) {
+
+    /* Remove previous pseudo-element dots */
+    .grid-section::after,
+    .grid-section::before {
+        display: none;
+    }
+
+    .grid-section {
+        padding-bottom: 40px;
+        position: relative;
+    }
+
+    .grid-container {
+        padding-bottom: 20px;
+        scroll-snap-type: x mandatory;
+    }
+
+    .grid-item {
+        min-width: 85vw;
+        height: 500px;
+        /* Increased height */
+        position: relative;
+        /* Context for absolute positioning */
+        padding: 30px;
+        margin-right: 0;
+        /* Handled by gap */
+    }
+
+    /* ID Positioning (01, 02...) */
+    .grid-id {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        z-index: 2;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 6px 12px;
+        border-radius: 20px;
+        backdrop-filter: blur(4px);
+    }
+
+    /* Hide the old span styling that might conflict */
+    .grid-item>span:not(.grid-id) {
+        display: none;
+    }
+
+    /* Title Positioning */
+    .grid-item h3 {
+        position: absolute;
+        bottom: 80px;
+        /* Space for arrow row */
+        left: 24px;
+        right: 24px;
+        font-size: 2.2rem;
+        line-height: 1.1;
+        margin: 0;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Arrow Icon in Circle */
+    .grid-arrow {
+        position: absolute;
+        bottom: 24px;
+        right: 24px;
+        width: 48px;
+        height: 48px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+        z-index: 2;
+    }
+
+    .grid-arrow i {
+        color: white;
+        font-size: 1.2rem;
+        transform: rotate(-45deg);
+        /* Angled up-right arrow feel */
+    }
+
+    /* Dynamic Dots Container */
+    .grid-dots {
+        display: flex;
+        /* Flex to center row */
+        justify-content: center;
+        gap: 8px;
+        margin-top: 20px;
+        padding: 0 20px;
+        width: 100%;
+        overflow-x: auto;
+        /* Handle many dots gracefully */
+    }
+
+    .grid-dot {
+        width: 8px;
+        height: 8px;
+        background: #ccc;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+    }
+
+    .grid-dot.active {
+        width: 24px;
+        /* Elongated pill for active */
+        background: #000;
+        border-radius: 10px;
+    }
+
+    /* Handle Dark Mode for dots */
+    body.dark-mode .grid-dot {
+        background: #444;
+    }
+
+    body.dark-mode .grid-dot.active {
+        background: #fff;
+    }
+}
+
+/* ============================================
+   NEW MOBILE MENU DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+
+    /* Full screen overlay */
+    .mobile-nav-overlay {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        background: #fff;
+        z-index: 2000;
+        /* Topmost */
+    }
+
+    /* Header */
+    .mobile-nav-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .mobile-nav-header h3 {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+        color: #000;
+    }
+
+    /* Styled Close Button */
+    .mobile-close-btn {
+        position: static;
+        /* Override previous absolute */
+        font-size: 1.5rem;
+        color: #666;
+        padding: 8px;
+    }
+
+    /* Content Area */
+    .mobile-nav-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        overflow-y: auto;
+    }
+
+    /* List Items */
+    .mobile-nav-list {
+        list-style: none;
+        /* Ensure no bullets */
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+    .mobile-nav-list li {
+        margin: 0;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .mobile-nav-list li a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .mobile-nav-list li a i {
+        color: #ccc;
+        font-size: 0.9rem;
+    }
+
+    /* Footer Buttons */
+    .mobile-nav-footer {
+        padding: 24px;
+        margin-top: auto;
+        /* Push to bottom if space permits */
+        border-top: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .mobile-nav-footer .btn {
+        width: 100%;
+        text-align: center;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .mobile-nav-footer .btn-primary {
+        background: #000;
+        color: #fff;
+        border: 1px solid #000;
+    }
+
+    /* Secondary button styling override */
+    .mobile-nav-footer .btn-secondary {
+        background: #f5f5f5;
+        color: #333;
+        border: none;
+    }
+}
+
+/* Force full screen overlay override */
+@media (max-width: 768px) {
+    .mobile-nav-overlay {
+        top: 0 !important;
+        height: 100vh !important;
+        width: 100vw !important;
+    }
+}
+
+/* ===== MOBILE SUB-MENU (SLIDING) ===== */
+.mobile-submenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    z-index: 2005;
+    /* Above main mobile nav */
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.mobile-submenu.active {
+    transform: translateX(0);
+}
+
+.mobile-submenu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.mobile-back-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.mobile-close-btn-sub {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--text-dark);
+    cursor: pointer;
+}
+
+.mobile-submenu-content {
+    padding: 24px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.submenu-title {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 32px;
+    color: var(--text-dark);
+}
+
+.submenu-section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+}
+
+.submenu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.submenu-list li {
+    margin-bottom: 20px;
+}
+
+.submenu-list a {
+    font-size: 18px;
+    color: var(--text-dark);
+    text-decoration: none;
+    display: block;
+}
+
+/* FEATURED CARDS IN SUBMENU */
+.submenu-featured {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid #eee;
+    background: #f9fafb;
+    margin-left: -24px;
+    margin-right: -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 40px;
+}
+
+.submenu-featured-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.mm-card-featured {
+    display: block;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+    color: var(--text-dark);
+    border: 1px solid #eee;
+}
+
+.mm-card-image {
+    height: 180px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.mm-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mm-card-text {
+    padding: 16px;
+}
+
+.mm-card-text h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    line-height: 1.4;
+}
+
+.mm-card-text span {
+    font-size: 11px;
+    color: #6b7280;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* ===== MOBILE SUBMENU GLOBAL STYLES ===== */
+.mobile-submenu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1002;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-submenu.active {
+    transform: translateX(0);
+}
+
+.submenu-header {
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.submenu-back-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: 500;
+    color: #050c26;
+    /* Default dark text */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.submenu-content {
+    padding: 24px;
+    flex: 1;
+}
+
+.submenu-section {
+    margin-bottom: 40px;
+}
+
+.submenu-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(0, 29, 33, 0.5);
+    margin-bottom: 24px;
+    display: block;
+}
+
+.submenu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.submenu-list li a {
+    font-size: 18px;
+    font-weight: 400;
+    color: #050c26;
+    /* Default dark */
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.beta-badge {
+    font-size: 10px;
+    background: #F3F4F6;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #6B7280;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+/* Product Suites Box */
+.product-suites-box {
+    background: #F9FAFB;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 0 -12px 40px;
+}
+
+.suite-card {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.suite-card:last-child {
+    margin-bottom: 0;
+}
+
+.suite-icon {
+    width: 48px;
+    height: 48px;
+    background: #0C1618;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.suite-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.suite-info h4 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 4px;
+    color: #111827;
+}
+
+.suite-info p {
+    font-size: 14px;
+    color: #6B7280;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Submenu Footer */
+.submenu-footer-link {
+    font-size: 14px;
+    color: #4B5563;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 24px;
+}
+
+.submenu-btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-lavender {
+    background: #BBBBEE;
+    color: #000;
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+}
+
+.btn-gray-light {
+    background: #E5E7EB;
+    color: #1F2937;
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    display: block;
 }

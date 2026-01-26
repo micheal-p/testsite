@@ -30,11 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileBtn && mobileNav) {
         mobileBtn.addEventListener('click', () => {
             mobileNav.classList.add('open');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
         });
     }
     if (mobileCloseBtn && mobileNav) {
         mobileCloseBtn.addEventListener('click', () => {
             mobileNav.classList.remove('open');
+            document.body.style.overflow = ''; // Restore scrolling
         });
     }
 
@@ -113,5 +115,91 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { threshold: 0.3 });
 
         observer.observe(statsSection);
+    }
+});
+
+// ==========================================
+// MOBILE GRID CAROUSEL LOGIC
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const gridContainer = document.querySelector('.grid-container');
+    const dotsContainer = document.querySelector('.grid-dots');
+    const items = document.querySelectorAll('.grid-item');
+
+    if (gridContainer && dotsContainer && items.length > 0) {
+        // 1. Generate Dots
+        items.forEach((item, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('grid-dot');
+            if (index === 0) dot.classList.add('active');
+
+            // Allow clicking dots to scroll
+            dot.addEventListener('click', () => {
+                item.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            });
+
+            dotsContainer.appendChild(dot);
+        });
+
+        // 2. Intersection Observer for Active State
+        const observerOptions = {
+            root: gridContainer,
+            threshold: 0.6 // Item considered active when 60% visible
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Update dots
+                    const index = Array.from(items).indexOf(entry.target);
+                    const dots = document.querySelectorAll('.grid-dot');
+
+                    dots.forEach(d => d.classList.remove('active'));
+                    if (dots[index]) {
+                        dots[index].classList.add('active');
+                        // Optional: Scroll dots container if many dots
+                        dots[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    }
+                }
+            });
+        }, observerOptions);
+
+        items.forEach(item => observer.observe(item));
+    }
+});
+
+// ==========================================
+// MOBILE SUBMENU LOGIC (GLOBAL)
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const mobileResourcesLink = document.getElementById('mobile-resources-link');
+    const resourcesSubmenu = document.getElementById('resources-submenu');
+    const submenuBackBtn = document.getElementById('submenu-back-btn');
+    const mobileCloseBtnSub = document.querySelector('.mobile-close-btn-sub');
+    const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+
+    if (mobileResourcesLink && resourcesSubmenu) {
+        mobileResourcesLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            resourcesSubmenu.classList.add('active');
+        });
+    }
+
+    if (submenuBackBtn && resourcesSubmenu) {
+        submenuBackBtn.addEventListener('click', () => {
+            resourcesSubmenu.classList.remove('active');
+        });
+    }
+
+    if (mobileCloseBtnSub && resourcesSubmenu) {
+        mobileCloseBtnSub.addEventListener('click', () => {
+            // Close submenu
+            resourcesSubmenu.classList.remove('active');
+            // Close main menu
+            if (mobileNavOverlay) {
+                mobileNavOverlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
     }
 });
