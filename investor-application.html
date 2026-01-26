@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Account Application - NEIIA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Modern Reset */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #0f172a;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            padding: 24px 40px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .header img {
+            height: 28px;
+            width: auto;
+            display: block;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 48px 40px 60px;
+            max-width: 960px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Page Title */
+        .page-title {
+            font-size: 32px;
+            font-weight: 500;
+            color: #051e2b;
+            margin: 0 0 12px 0;
+        }
+
+        .subtitle-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 40px;
+        }
+
+        .subtitle-label {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .learn-more-link {
+            font-size: 14px;
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .learn-more-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+            background-color: #f8fafc;
+            border-radius: 12px;
+            padding: 40px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Welcome Card */
+        .welcome-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #051e2b;
+            margin: 0 0 16px 0;
+        }
+
+        .welcome-text {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #475569;
+            margin: 0 0 24px 0;
+        }
+
+        .btn-start {
+            display: inline-block;
+            background-color: #051e2b;
+            color: #ffffff;
+            border: none;
+            padding: 14px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            width: fit-content;
+            transition: background-color 0.2s;
+        }
+
+        .btn-start:hover {
+            background-color: #0a3a52;
+        }
+
+        /* Logos Grid */
+        .logos-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logos-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-item {
+            width: 72px;
+            height: 72px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            font-size: 11px;
+            font-weight: 600;
+            color: #334155;
+            text-align: center;
+            padding: 8px;
+        }
+
+        .logo-item.dark {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+
+        .logo-item.green {
+            background-color: #10b981;
+            color: #ffffff;
+        }
+
+        .logo-item.teal {
+            background-color: #0d9488;
+            color: #ffffff;
+        }
+
+        .logo-item.blue-outline {
+            border: 2px solid #3b82f6;
+            background-color: #ffffff;
+            color: #3b82f6;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px 24px;
+            }
+
+            .main-content {
+                padding: 32px 24px;
+            }
+
+            .page-title {
+                font-size: 26px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                padding: 24px;
+                gap: 32px;
+            }
+
+            .logos-container {
+                order: 2;
+            }
+
+            .welcome-card {
+                order: 1;
+            }
+
+            .logo-item {
+                width: 56px;
+                height: 56px;
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <a href="index.html">
+            <img src="assets/images/neiis-logo-green.png" alt="NEIIA">
+        </a>
+    </div>
+
+    <div class="main-content">
+        <h1 class="page-title">Investor Account Application</h1>
+
+        <div class="subtitle-row">
+            <span class="subtitle-label">For Accredited Investors</span>
+            <a href="#" class="learn-more-link">Learn more →</a>
+        </div>
+
+        <div class="content-grid">
+            <!-- Welcome Card -->
+            <div class="welcome-card">
+                <h2 class="welcome-title">Welcome!</h2>
+                <p class="welcome-text">
+                    Investing in venture capital funds involves a high degree of risk and is suitable only for
+                    sophisticated and qualified investors. This application for accredited investors takes around 5
+                    minutes to complete and will determine your qualification for deal by deal investing. All responses
+                    are kept confidential.
+                </p>
+                <a href="#" class="btn-start" onclick="alert('Application form not implemented yet')">Start
+                    Application</a>
+            </div>
+
+            <!-- Logos Grid -->
+            <div class="logos-container">
+                <div class="logos-grid">
+                    <div class="logo-item blue-outline">Pill<br>Pack</div>
+                    <div class="logo-item green">🪶</div>
+                    <div class="logo-item teal">Grove</div>
+
+                    <div class="logo-item dark">good<br>eggs</div>
+                    <div class="logo-item dark">BREX</div>
+                    <div class="logo-item">Notion</div>
+                    <div class="logo-item">alto</div>
+                    <div class="logo-item">🍋</div>
+
+                    <div class="logo-item">Rippling</div>
+                    <div class="logo-item">Zymergen</div>
+                    <div class="logo-item">✿</div>
+                    <div class="logo-item">flexport</div>
+                    <div class="logo-item dark">NURX.</div>
+                    <div class="logo-item">teach:able</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
