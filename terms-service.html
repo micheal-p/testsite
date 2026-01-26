@@ -292,11 +292,8 @@
         const nextBtn = document.getElementById('next-btn');
 
         function updateButtonState() {
-            // Usually only Terms are strictly mandatory for interaction, 
-            // but for a strict onboarding flow, mostly both or just terms.
-            // Screenshot shows button active (purple) when checked.
-            // Let's assume mandatory terms.
-            if (checkTerms.checked) {
+            // Require BOTH checkboxes to be checked
+            if (checkTerms.checked && checkCookies.checked) {
                 nextBtn.disabled = false;
             } else {
                 nextBtn.disabled = true;
@@ -309,10 +306,10 @@
         function completeOnboarding() {
             // Save consent state (Mock DB update)
             localStorage.setItem('terms_accepted', 'true');
-            localStorage.setItem('cookies_accepted', checkCookies.checked ? 'true' : 'false');
+            localStorage.setItem('cookies_accepted', 'true');
 
-            // Onboarding complete (for this demo phase) - Redirect to Dashboard
-            window.location.href = 'dashboard.html';
+            // Redirect to "Get Started" selection page
+            window.location.href = 'onboarding-start.html';
         }
     </script>
 </body>
