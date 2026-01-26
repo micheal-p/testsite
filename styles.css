@@ -2,42 +2,42 @@
    ANGELLIST CUSTOM FONTS
    ============================================ */
 @font-face {
-    font-family: 'AngelList';
-    src: url('assets/font/AngelList_VF-s.p.3bb41c0a.woff2') format('woff2');
+    font-family: 'NEIIA';
+    src: url('assets/font/NEIIA_VF-s.p.3bb41c0a.woff2') format('woff2');
     font-weight: 100 900;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'AngelList';
-    src: url('assets/font/AngelList_Italic_VF-s.p.31e87b9d.woff2') format('woff2');
+    font-family: 'NEIIA';
+    src: url('assets/font/NEIIA_Italic_VF-s.p.31e87b9d.woff2') format('woff2');
     font-weight: 100 900;
     font-style: italic;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'AngelList Display';
-    src: url('assets/font/AngelListDisplay_Regular-s.p.9a576876.woff2') format('woff2');
+    font-family: 'NEIIA Display';
+    src: url('assets/font/NEIIADisplay_Regular-s.p.9a576876.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
 
 :root {
-    /* Colors - Deduced from AngelList */
+    /* Colors - Deduced from NEIIA */
     --bg-primary: #ffffff;
     --bg-secondary: #f7f9fa;
     --text-primary: #050c26;
     --text-secondary: #5e6d8a;
     --accent-color: #000000;
-    /* AngelList uses strong blacks */
+    /* NEIIA uses strong blacks */
     --border-color: #e6e9ed;
 
-    /* Typography - AngelList Fonts */
-    --font-family: 'AngelList', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    --font-display: 'AngelList Display', 'AngelList', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Typography - NEIIA Fonts */
+    --font-family: 'NEIIA', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --font-display: 'NEIIA Display', 'NEIIA', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-size-base: 16px;
 
     /* Dark Mode Defaults (Light Mode First) */
@@ -537,7 +537,7 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Headings use AngelList Display font */
+/* Headings use NEIIA Display font */
 h1,
 h2,
 h3,
@@ -1086,7 +1086,7 @@ img {
 /* ==================== */
 .stats-section {
     background-color: #6b5b3e;
-    /* Olive/brown color from AngelList */
+    /* Olive/brown color from NEIIA */
     padding: 80px 0;
     color: #d4e8c7;
     /* Light green text */

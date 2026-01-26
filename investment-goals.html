@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 2: Investment Goals - NEIIA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #0f172a;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            padding: 24px 40px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .header img {
+            height: 28px;
+            width: auto;
+            display: block;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 48px 40px 100px;
+            /* Extra padding for footer */
+        }
+
+        /* Page Title */
+        .page-title {
+            font-size: 28px;
+            font-weight: 500;
+            color: #051e2b;
+            margin: 0 0 12px 0;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 48px;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        .form-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #051e2b;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-helper {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        /* Checkbox Group */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checkbox-option input[type="checkbox"]:checked {
+            background-color: #051e2b;
+            /* Dark theme color */
+            border-color: #051e2b;
+        }
+
+        .checkbox-option input[type="checkbox"]:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 12px;
+        }
+
+        .option-text {
+            font-size: 15px;
+            color: #334155;
+            line-height: 1.5;
+        }
+
+        /* Radio Group */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .radio-option input[type="radio"]:checked {
+            border-color: #5b55f6;
+            /* Blueish purple for radios in screenshot? darker in step 2 screenshot but acc was purple. Let's use darker to match button or purple. Screenshot looks blue/purple-ish. */
+            border-color: #5b55f6;
+        }
+
+        .radio-option input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background-color: #5b55f6;
+            border-radius: 50%;
+        }
+
+        /* Textarea */
+        .text-area {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            font-size: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            outline: none;
+            resize: vertical;
+            color: #0f172a;
+            font-family: inherit;
+        }
+
+        .text-area:focus {
+            border-color: #5b55f6;
+            box-shadow: 0 0 0 2px rgba(91, 85, 246, 0.1);
+        }
+
+        /* Footer */
+        .form-footer {
+            margin-top: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-back {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-back:hover {
+            background-color: #e2e8f0;
+        }
+
+        .btn-continue {
+            background-color: #051e2b;
+            color: #ffffff;
+            border: none;
+            padding: 12px 32px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-continue:hover {
+            background-color: #0a3a52;
+        }
+
+        /* Mobile */
+        @media (max-width: 640px) {
+            .header {
+                padding: 20px 24px;
+            }
+
+            .main-content {
+                padding: 32px 24px 80px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .form-footer {
+                flex-direction: column-reverse;
+                gap: 16px;
+                align-items: stretch;
+            }
+
+            .btn-back,
+            .btn-continue {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <a href="index.html">
+            <img src="assets/images/neiis-logo-green.png" alt="NEIIA">
+        </a>
+    </div>
+
+    <div class="main-content">
+        <h1 class="page-title">Step 2 of 3: Investment Goals</h1>
+        <div class="subtitle">Tell us more about why you want to invest on NEIIA</div>
+
+        <form id="investment-goals-form">
+            <!-- 1. Investment Strategies -->
+            <div class="form-section">
+                <label class="form-label">Which of the following investment strategies (or products) best match your
+                    preferences?</label>
+                <span class="form-helper">Choose all that apply</span>
+                <div class="checkbox-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="preferences" value="syndicates">
+                        <span class="option-text">Picking companies to invest in (NEIIA Syndicates)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="preferences" value="funds">
+                        <span class="option-text">Investing in funds that broadly index venture, such as NEIIA Access
+                            Fund (NEIIA Managed Funds)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="preferences" value="managers">
+                        <span class="option-text">Investing behind Fund Managers who pick companies to invest in (NEIIA
+                            Rolling or Venture Funds)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 2. Allocation Amount -->
+            <div class="form-section">
+                <label class="form-label">How much are you hoping to allocate (in USD) to startups using NEIIA over the
+                    next 12 months?</label>
+                <span class="form-helper">This will help us match you with the products that best fit your goals</span>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="allocation" value="20k">
+                        <span class="option-text">Up to $20,000</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="allocation" value="50k">
+                        <span class="option-text">Up to $50,000</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="allocation" value="100k">
+                        <span class="option-text">Up to $100,000</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="allocation" value="250k">
+                        <span class="option-text">Up to $250,000</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="allocation" value="500k">
+                        <span class="option-text">Up to $500,000</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="allocation" value="500k+">
+                        <span class="option-text">More than $500,000</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 3. Net Worth Percentage -->
+            <div class="form-section">
+                <label class="form-label">What percentage of your net worth do you want to allocate to investing in
+                    startups?</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="networth_pct" value="5">
+                        <span class="option-text">Up to 5%</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="networth_pct" value="10">
+                        <span class="option-text">Up to 10%</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="networth_pct" value="15">
+                        <span class="option-text">Up to 15%</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="networth_pct" value="15+">
+                        <span class="option-text">More than 15%</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 4. Reasons -->
+            <div class="form-section">
+                <label class="form-label">What are your main reasons for choosing NEIIA?</label>
+                <span class="form-helper">Choose all that apply</span>
+                <div class="checkbox-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="reasons" value="returns">
+                        <span class="option-text">Generating financial returns for your portfolio</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="reasons" value="network">
+                        <span class="option-text">Meeting new people to expand your network</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="reasons" value="dealflow">
+                        <span class="option-text">Accessing dealflow you can't get anywhere else</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="reasons" value="learning">
+                        <span class="option-text">Learning more about tech and startups</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 5. Usage Textarea -->
+            <div class="form-section">
+                <label class="form-label">How are you hoping to use NEIIA?</label>
+                <textarea class="text-area" name="usage_intent"></textarea>
+            </div>
+
+            <!-- Footer -->
+            <div class="form-footer">
+                <a href="accreditation-form.html" class="btn-back">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </a>
+                <button type="button" class="btn-continue" onclick="handleContinue()">
+                    Continue <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function handleContinue() {
+            // In a real app, validation and data saving would happen here
+
+            // Redirect to dashboard or next step (since User only asked for Step 2 for now, we can alert or redirect to dashboard/placeholder)
+            // Assuming Step 3 exists or we end here. User said "Step 2 of 3", so logic implies Step 3 comes next.
+            // For now, I'll just alert.
+            const form = document.getElementById('investment-goals-form');
+            const data = new FormData(form);
+
+            // Proceed to Step 3
+            window.location.href = 'past-experience.html';
+        }
+    </script>
+</body>
+
+</html>

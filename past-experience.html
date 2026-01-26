@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 3: Past Experience - NEIIA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #0f172a;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            padding: 24px 40px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .header img {
+            height: 28px;
+            width: auto;
+            display: block;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 48px 40px 100px;
+        }
+
+        /* Page Title */
+        .page-title {
+            font-size: 28px;
+            font-weight: 500;
+            color: #051e2b;
+            margin: 0 0 12px 0;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 48px;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        .form-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #051e2b;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-helper {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 16px;
+            display: block;
+            line-height: 1.5;
+        }
+
+        .form-helper a {
+            color: #5b55f6;
+            text-decoration: none;
+        }
+
+        .form-helper a:hover {
+            text-decoration: underline;
+        }
+
+        /* Text Input */
+        .text-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            outline: none;
+            color: #0f172a;
+            transition: border-color 0.2s;
+        }
+
+        .text-input:focus {
+            border-color: #5b55f6;
+            box-shadow: 0 0 0 2px rgba(91, 85, 246, 0.1);
+        }
+
+        /* Checkbox Group */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checkbox-option input[type="checkbox"]:checked {
+            background-color: #051e2b;
+            border-color: #051e2b;
+        }
+
+        .checkbox-option input[type="checkbox"]:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 12px;
+        }
+
+        .option-text {
+            font-size: 15px;
+            color: #334155;
+            line-height: 1.5;
+        }
+
+        /* Review List */
+        .review-list {
+            list-style-type: decimal;
+            padding-left: 20px;
+            margin: 16px 0 24px 0;
+            color: #334155;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .review-list li {
+            margin-bottom: 8px;
+        }
+
+        .terms-link {
+            color: #5b55f6;
+            text-decoration: none;
+        }
+
+        .terms-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Fake Captcha */
+        .captcha-box {
+            border: 1px solid #e2e8f0;
+            background-color: #f9fafb;
+            padding: 16px;
+            border-radius: 4px;
+            width: fit-content;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .captcha-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e1;
+            border-radius: 2px;
+            background: #fff;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .captcha-checkbox.checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #10b981;
+            /* Green check */
+            font-size: 16px;
+        }
+
+        .captcha-label {
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .captcha-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-left: 24px;
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        /* Footer */
+        .form-footer {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .btn-back {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-back:hover {
+            background-color: #e2e8f0;
+        }
+
+        .btn-submit {
+            background-color: #051e2b;
+            color: #ffffff;
+            border: none;
+            padding: 12px 32px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #0a3a52;
+        }
+
+        /* Mobile */
+        @media (max-width: 640px) {
+            .header {
+                padding: 20px 24px;
+            }
+
+            .main-content {
+                padding: 32px 24px 80px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .form-footer {
+                flex-direction: column-reverse;
+                gap: 16px;
+                align-items: stretch;
+            }
+
+            .btn-back,
+            .btn-submit {
+                justify-content: center;
+            }
+
+            .text-input {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <a href="index.html">
+            <img src="assets/images/neiis-logo-green.png" alt="NEIIA">
+        </a>
+    </div>
+
+    <div class="main-content">
+        <h1 class="page-title">Step 3 of 3: Past Experience</h1>
+        <div class="subtitle">Your goals and past experience can help unlock access to investment opportunities</div>
+
+        <form id="past-experience-form">
+            <!-- 1. LinkedIn -->
+            <div class="form-section">
+                <label class="form-label">LinkedIn Profile</label>
+                <div class="form-helper">
+                    Providing a LinkedIn profile helps us determine your eligibility. If you don't have one, leave this
+                    field blank.
+                    <a href="https://linkedin.com" target="_blank">Open LinkedIn in a new tab</a>
+                </div>
+                <input type="text" class="text-input" name="linkedin_profile">
+            </div>
+
+            <!-- 2. VC Investment Experience -->
+            <div class="form-section">
+                <label class="form-label">What is your experience investing in venture-backed tech startups or venture
+                    capital funds?</label>
+                <span class="form-helper">Choose all that apply</span>
+                <div class="checkbox-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="investing_exp" value="spv">
+                        <span class="option-text">I invested in a startup directly or through a single-purpose vehicle
+                            (SPV)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="investing_exp" value="indirectly">
+                        <span class="option-text">I invested in startups indirectly through a venture fund</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="investing_exp" value="vc_firm">
+                        <span class="option-text">I work or worked at a venture capital or investment firm</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="investing_exp" value="family_office">
+                        <span class="option-text">I represent or represented a family office or Registered Investment
+                            Advisor (RIA)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="investing_exp" value="none">
+                        <span class="option-text">None of the above</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 3. Startup Work Experience -->
+            <div class="form-section">
+                <label class="form-label">What is your experience working with tech startups?</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="startup_exp" value="employee">
+                        <span class="option-text">I work or worked at a tech startup</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="startup_exp" value="advisor">
+                        <span class="option-text">I advise or advised a tech startup</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="startup_exp" value="founder">
+                        <span class="option-text">I am or was a tech startup founder</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="startup_exp" value="none">
+                        <span class="option-text">None of the above</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 4. Source -->
+            <div class="form-section">
+                <label class="form-label">How did you hear about NEIIA?</label>
+                <span class="form-helper">Choose all that apply</span>
+                <div class="checkbox-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="source" value="google">
+                        <span class="option-text">Google search</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="source" value="media">
+                        <span class="option-text">Newsletter/Media Site (TechCrunch, etc.)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="source" value="twitter">
+                        <span class="option-text">X.com (Twitter)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="source" value="friend">
+                        <span class="option-text">Friend or Connection</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="source" value="syndicate">
+                        <span class="option-text">NEIIA Syndicate Lead or Fund Manager</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="source" value="other">
+                        <span class="option-text">Other (please specify)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 5. Agreement & Review -->
+            <div class="form-section">
+                <label class="form-label">Please carefully review the information below before submitting your
+                    application:</label>
+                <ol class="review-list">
+                    <li>I understand that most investments in startups result in a complete loss.</li>
+                    <li>I understand that NEIIA does not verify information on the site, and I am responsible for my own
+                        diligence.</li>
+                    <li>I promise to hold NEIIA harmless against any damage that may happen to myself as a result of my
+                        use of NEIIA.</li>
+                    <li>If I invest, I will comply with securities laws and consult my own attorney and professional
+                        advisors where I need advice.</li>
+                    <li>I understand that I will be permanently banned from NEIIA and that I may face legal consequences
+                        if I falsely represent my accreditation status.</li>
+                </ol>
+
+                <div class="checkbox-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="terms-agree">
+                        <span class="option-text">I agree to the <a href="#" class="terms-link">terms and
+                                conditions</a>, as well as the terms above.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- CAPTCHA -->
+            <div class="captcha-box">
+                <div class="captcha-checkbox" onclick="this.classList.toggle('checked')"></div>
+                <div class="captcha-label">Verify you are human</div>
+                <div class="captcha-brand">
+                    <i class="fa-solid fa-cloud" style="font-size: 16px;"></i>
+                    <span>CLOUDFLARE</span>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="form-footer">
+                <a href="investment-goals.html" class="btn-back">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </a>
+                <button type="button" class="btn-submit" onclick="handleSubmit()">
+                    Submit Application <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function handleSubmit() {
+            const termsAgree = document.getElementById('terms-agree').checked;
+
+            if (!termsAgree) {
+                alert('Please agree to the terms and conditions to continue.');
+                return;
+            }
+
+            // In a real app, submit data here
+            // Redirect to waitlist page
+            window.location.href = 'application-submitted.html';
+        }
+    </script>
+</body>
+
+</html>
