@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 1: Accreditation - NEIIA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #0f172a;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            padding: 24px 40px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .header img {
+            height: 28px;
+            width: auto;
+            display: block;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 48px 40px 80px;
+        }
+
+        /* Page Title */
+        .page-title {
+            font-size: 28px;
+            font-weight: 500;
+            color: #051e2b;
+            margin: 0 0 12px 0;
+        }
+
+        .subtitle-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 40px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .learn-more-link {
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .learn-more-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 32px;
+        }
+
+        .form-label {
+            font-size: 15px;
+            font-weight: 500;
+            color: #0f172a;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        /* Radio Group */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .radio-option input[type="radio"]:checked {
+            border-color: #5b55f6;
+        }
+
+        .radio-option input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background-color: #5b55f6;
+            border-radius: 50%;
+        }
+
+        .radio-label {
+            font-size: 14px;
+            color: #334155;
+        }
+
+        /* Text Input */
+        .text-input {
+            width: 100%;
+            max-width: 360px;
+            padding: 14px 16px;
+            font-size: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            outline: none;
+            color: #0f172a;
+            transition: border-color 0.2s;
+        }
+
+        .text-input:focus {
+            border-color: #5b55f6;
+            box-shadow: 0 0 0 2px rgba(91, 85, 246, 0.1);
+        }
+
+        /* Select Dropdown */
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .select-input {
+            width: 100%;
+            padding: 14px 40px 14px 16px;
+            font-size: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            outline: none;
+            color: #0f172a;
+            background-color: #fff;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .select-input:focus {
+            border-color: #5b55f6;
+            box-shadow: 0 0 0 2px rgba(91, 85, 246, 0.1);
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            pointer-events: none;
+        }
+
+        /* Footer */
+        .form-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 1px solid #f1f5f9;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .required-message {
+            font-size: 14px;
+            color: #f87171;
+        }
+
+        .btn-continue {
+            background-color: #64748b;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: not-allowed;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-continue.active {
+            background-color: #051e2b;
+            cursor: pointer;
+        }
+
+        .btn-continue.active:hover {
+            background-color: #0a3a52;
+        }
+
+        /* Mobile */
+        @media (max-width: 640px) {
+            .header {
+                padding: 20px 24px;
+            }
+
+            .main-content {
+                padding: 32px 24px 120px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .text-input,
+            .select-wrapper {
+                max-width: 100%;
+            }
+
+            .form-footer {
+                padding: 16px 24px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-continue {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <a href="index.html">
+            <img src="assets/images/neiis-logo-green.png" alt="NEIIA">
+        </a>
+    </div>
+
+    <div class="main-content">
+        <h1 class="page-title">Step 1 of 3: Accreditation</h1>
+
+        <div class="subtitle-row">
+            <span>You must be an accredited investor per the SEC's standards to invest on NEIIA</span>
+            <a href="#" class="learn-more-link">Learn more →</a>
+        </div>
+
+        <form id="accreditation-form">
+            <!-- Investor Type -->
+            <div class="form-section">
+                <label class="form-label">Will you be investing money as an Individual, a Trust, or a Firm or
+                    Fund?</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="investor-type" value="individual" checked>
+                        <span class="radio-label">Individual</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="investor-type" value="trust">
+                        <span class="radio-label">Trust</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="investor-type" value="firm">
+                        <span class="radio-label">Firm or Fund</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Full Legal Name -->
+            <div class="form-section">
+                <label class="form-label">What is your full legal name?</label>
+                <input type="text" class="text-input" id="legal-name" placeholder="" required>
+            </div>
+
+            <!-- Country of Residence -->
+            <div class="form-section">
+                <label class="form-label">Where is your legal place of residence?</label>
+                <div class="select-wrapper">
+                    <select class="select-input" id="country" required>
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="AU">Australia</option>
+                        <option value="DE">Germany</option>
+                        <option value="FR">France</option>
+                        <option value="NG">Nigeria</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down select-arrow"></i>
+                </div>
+            </div>
+
+            <!-- Accreditation Status -->
+            <div class="form-section">
+                <label class="form-label">How are you accredited?</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="accreditation" value="5m">
+                        <span class="radio-label">I have at least $5M in <u>investments</u></span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="accreditation" value="2.2m-5m">
+                        <span class="radio-label">I have between $2.2M and $5M in <u>assets</u></span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="accreditation" value="1m-2.2m">
+                        <span class="radio-label">I have between $1M and $2.2M in <u>assets</u></span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="accreditation" value="income">
+                        <span class="radio-label">I have income of $200k (or $300k jointly with spouse) for the past 2
+                            years and expect the same this year</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="accreditation" value="series">
+                        <span class="radio-label">I am a Series 7, Series 65, or Series 82 holder and my license is
+                            active and in good standing</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="accreditation" value="not-accredited">
+                        <span class="radio-label">I'm not accredited yet</span>
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="form-footer">
+        <span class="required-message" id="required-msg">Please fill out all required fields</span>
+        <button type="button" class="btn-continue" id="continue-btn" disabled>
+            Continue <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <script>
+        const form = document.getElementById('accreditation-form');
+        const legalName = document.getElementById('legal-name');
+        const accreditationRadios = document.querySelectorAll('input[name="accreditation"]');
+        const continueBtn = document.getElementById('continue-btn');
+        const requiredMsg = document.getElementById('required-msg');
+
+        function checkFormValidity() {
+            const nameValid = legalName.value.trim().length > 0;
+            const accreditationSelected = Array.from(accreditationRadios).some(r => r.checked);
+
+            if (nameValid && accreditationSelected) {
+                continueBtn.disabled = false;
+                continueBtn.classList.add('active');
+                requiredMsg.style.display = 'none';
+            } else {
+                continueBtn.disabled = true;
+                continueBtn.classList.remove('active');
+                requiredMsg.style.display = 'block';
+            }
+        }
+
+        legalName.addEventListener('input', checkFormValidity);
+        accreditationRadios.forEach(r => r.addEventListener('change', checkFormValidity));
+
+        continueBtn.addEventListener('click', () => {
+            if (!continueBtn.disabled) {
+                // Save form data
+                localStorage.setItem('investor_type', document.querySelector('input[name="investor-type"]:checked').value);
+                localStorage.setItem('legal_name', legalName.value);
+                localStorage.setItem('country', document.getElementById('country').value);
+                localStorage.setItem('accreditation', document.querySelector('input[name="accreditation"]:checked').value);
+
+                alert('Step 2 not implemented yet. Form data saved!');
+            }
+        });
+    </script>
+</body>
+
+</html>

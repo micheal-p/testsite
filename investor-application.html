@@ -131,58 +131,16 @@
             background-color: #0a3a52;
         }
 
-        /* Logos Grid */
+        /* Logos Container */
         .logos-container {
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
         }
 
-        .logos-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .logo-item {
-            width: 72px;
-            height: 72px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-            font-size: 11px;
-            font-weight: 600;
-            color: #334155;
-            text-align: center;
-            padding: 8px;
-        }
-
-        .logo-item.dark {
-            background-color: #0f172a;
-            color: #ffffff;
-        }
-
-        .logo-item.green {
-            background-color: #10b981;
-            color: #ffffff;
-        }
-
-        .logo-item.teal {
-            background-color: #0d9488;
-            color: #ffffff;
-        }
-
-        .logo-item.blue-outline {
-            border: 2px solid #3b82f6;
-            background-color: #ffffff;
-            color: #3b82f6;
+        .logos-image {
+            max-width: 100%;
+            height: auto;
         }
 
         /* Mobile */
@@ -247,30 +205,12 @@
                     minutes to complete and will determine your qualification for deal by deal investing. All responses
                     are kept confidential.
                 </p>
-                <a href="#" class="btn-start" onclick="alert('Application form not implemented yet')">Start
-                    Application</a>
+                <a href="accreditation-form.html" class="btn-start">Start Application</a>
             </div>
 
-            <!-- Logos Grid -->
+            <!-- Logos Image -->
             <div class="logos-container">
-                <div class="logos-grid">
-                    <div class="logo-item blue-outline">Pill<br>Pack</div>
-                    <div class="logo-item green">🪶</div>
-                    <div class="logo-item teal">Grove</div>
-
-                    <div class="logo-item dark">good<br>eggs</div>
-                    <div class="logo-item dark">BREX</div>
-                    <div class="logo-item">Notion</div>
-                    <div class="logo-item">alto</div>
-                    <div class="logo-item">🍋</div>
-
-                    <div class="logo-item">Rippling</div>
-                    <div class="logo-item">Zymergen</div>
-                    <div class="logo-item">✿</div>
-                    <div class="logo-item">flexport</div>
-                    <div class="logo-item dark">NURX.</div>
-                    <div class="logo-item">teach:able</div>
-                </div>
+                <img src="assets/images/investor-application.png" alt="Company logos" class="logos-image">
             </div>
         </div>
     </div>
