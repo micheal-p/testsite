@@ -389,12 +389,21 @@
         continueBtn.addEventListener('click', () => {
             if (!continueBtn.disabled) {
                 // Save form data
-                localStorage.setItem('investor_type', document.querySelector('input[name="investor-type"]:checked').value);
+                const investorType = document.querySelector('input[name="investor-type"]:checked').value;
+                const accreditation = document.querySelector('input[name="accreditation"]:checked').value;
+
+                localStorage.setItem('investor_type', investorType);
                 localStorage.setItem('legal_name', legalName.value);
                 localStorage.setItem('country', document.getElementById('country').value);
-                localStorage.setItem('accreditation', document.querySelector('input[name="accreditation"]:checked').value);
+                localStorage.setItem('accreditation', accreditation);
 
-                alert('Step 2 not implemented yet. Form data saved!');
+                // Check if not accredited
+                if (accreditation === 'not-accredited') {
+                    window.location.href = 'not-accredited.html';
+                } else {
+                    // Proceed to Step 2
+                    alert('Step 2 not implemented yet. Form data saved!');
+                }
             }
         });
     </script>
