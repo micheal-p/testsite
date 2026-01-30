@@ -2313,3 +2313,266 @@ body.dark-mode .brand-text {
     text-decoration: none;
     display: block;
 }
+/* ============================================
+   DATA BANK PAGE STYLES
+   ============================================ */
+
+.databank-page {
+    padding-top: 80px; /* Offset for fixed navbar */
+}
+
+/* Hero Section */
+.db-hero {
+    background: linear-gradient(135deg, #f7f9fa 0%, #eef2f6 50%, #e0e7ff 100%);
+    text-align: center;
+    padding: 100px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: 800px;
+    z-index: 2;
+}
+
+.hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #e0e7ff;
+    color: #4338ca;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.db-hero h1 {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    color: #111827;
+    letter-spacing: -1px;
+}
+
+.hero-subtext {
+    font-size: 1.25rem;
+    color: #4b5563; /* Gray 600 */
+    margin-bottom: 32px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-large {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+}
+
+/* Visual Mockup Section */
+.db-visual {
+    padding: 40px 20px 80px;
+    background: linear-gradient(to bottom, #f7f9fa 0%, #ffffff 100%);
+    text-align: center;
+}
+
+.db-mockup-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.db-hero-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* LP Lens Section (Dark) */
+.db-lp-lens {
+    background-color: #0d1117; /* Dark almost black */
+    color: #ffffff;
+    padding: 100px 0;
+}
+
+.db-lp-lens .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.lp-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 24px;
+    color: #ffffff;
+}
+
+.lp-content p {
+    font-size: 1.1rem;
+    color: #9ca3af; /* Gray 400 */
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+.lp-image img {
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Infrastructure Section */
+.db-infrastructure {
+    background-color: #f3f4f6; /* Light gray */
+    padding: 100px 0;
+}
+
+.infra-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 60px;
+}
+
+.infra-text h2 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #111827;
+}
+
+.infra-list {
+    list-style: none;
+    border-left: 2px solid #e5e7eb;
+}
+
+.infra-list li {
+    padding: 16px 24px;
+    font-size: 1.1rem;
+    color: #6b7280;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.infra-list li.active {
+    color: #4f46e5;
+    font-weight: 600;
+    border-left: 2px solid #4f46e5;
+    background: linear-gradient(to right, rgba(79, 70, 229, 0.05), transparent);
+    margin-left: -2px; /* Pull back to overlap border */
+}
+
+.infra-visual .visual-card {
+    background: white;
+    padding: 24px; /* Frame look */
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+}
+
+/* CTA Section */
+.db-cta {
+    padding: 100px 0;
+    background: #ffffff;
+}
+
+.db-cta h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 60px;
+}
+
+.cta-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+.cta-text p {
+    font-size: 1.1rem;
+    color: #4b5563;
+    margin-bottom: 32px;
+}
+
+.cta-features {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.cta-features li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1rem;
+    color: #1f2937;
+}
+
+.cta-features i {
+    color: #10b981; /* Green check */
+}
+
+.cta-card {
+    background: #f9fafb;
+    padding: 40px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    text-align: center;
+}
+
+.cta-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+}
+
+.cta-card p {
+    color: #6b7280;
+    margin-bottom: 24px;
+}
+
+/* Mobile Responsiveness for Data Bank */
+@media (max-width: 768px) {
+    .db-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .db-lp-lens .container,
+    .infra-layout,
+    .cta-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .db-lp-lens {
+        padding: 60px 0;
+    }
+    
+    .lp-image {
+        order: -1; 
+    }
+}
+
+/* Logo Toggling Logic */
+body.dark-mode .light-mode-logo {
+    display: none !important;
+}
+
+body.dark-mode .dark-mode-logo {
+    display: block !important;
+}
+
+body:not(.dark-mode) .light-mode-logo {
+    display: block !important;
+}
+
+body:not(.dark-mode) .dark-mode-logo {
+    display: none !important;
+}
