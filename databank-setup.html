@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Up Your Data Bank | NEIIA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #fff;
+            color: #0B1F24;
+            min-height: 100vh;
+        }
+
+        .onboarding-header {
+            padding: 24px 40px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .onboarding-header a {
+            text-decoration: none;
+            color: #0B1F24;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .onboarding-container {
+            display: flex;
+            min-height: calc(100vh - 73px);
+        }
+
+        /* Left Sidebar */
+        .onboarding-sidebar {
+            width: 320px;
+            padding: 48px 40px;
+            border-right: 1px solid #e5e7eb;
+            flex-shrink: 0;
+        }
+
+        .sidebar-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 24px;
+        }
+
+        .sidebar-icon svg {
+            width: 100%;
+            height: 100%;
+            color: #0B1F24;
+        }
+
+        .sidebar-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 48px;
+            color: #0B1F24;
+        }
+
+        .progress-steps {
+            list-style: none;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 24px;
+            bottom: 24px;
+            width: 2px;
+            background-color: #0B1F24;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+            font-size: 15px;
+            color: #6b7280;
+            position: relative;
+        }
+
+        .progress-step.completed {
+            color: #0B1F24;
+        }
+
+        .progress-step.active {
+            color: #0B1F24;
+            font-weight: 500;
+        }
+
+        .step-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #0B1F24;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-step:not(.active):not(.completed) .step-indicator {
+            background-color: #d1d5db;
+        }
+
+        /* Right Content Area */
+        .onboarding-content {
+            flex: 1;
+            padding: 48px 80px;
+            max-width: 700px;
+        }
+
+        .content-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            color: #0B1F24;
+        }
+
+        .form-section {
+            margin-bottom: 32px;
+        }
+
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #0B1F24;
+        }
+
+        .form-section-description {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .org-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border: 2px solid #0B1F24;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .org-option:hover {
+            background-color: #f9fafb;
+        }
+
+        .org-option-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .org-option-icon {
+            width: 20px;
+            height: 20px;
+            color: #6b7280;
+        }
+
+        .org-option-text h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: #0B1F24;
+        }
+
+        .org-option-text p {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .org-option-radio {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #0B1F24;
+            background-color: #0B1F24;
+            position: relative;
+        }
+
+        .org-option-radio::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #fff;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 15px;
+            color: #0B1F24;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #0B1F24;
+        }
+
+        .terms-section {
+            margin-top: 32px;
+        }
+
+        .terms-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #0B1F24;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: #0B1F24;
+        }
+
+        .checkbox-label a {
+            color: #0B1F24;
+            text-decoration: underline;
+        }
+
+        .terms-links {
+            margin-top: 4px;
+            font-size: 13px;
+        }
+
+        .terms-links a {
+            color: #6b7280;
+            text-decoration: underline;
+        }
+
+        .btn-create {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 32px;
+            background-color: #6366f1;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 32px;
+        }
+
+        .btn-create:hover {
+            background-color: #4f46e5;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .onboarding-container {
+                flex-direction: column;
+            }
+
+            .onboarding-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 32px 24px;
+            }
+
+            .sidebar-title {
+                margin-bottom: 24px;
+            }
+
+            .progress-step {
+                padding: 8px 0;
+            }
+
+            .onboarding-content {
+                padding: 32px 24px;
+                max-width: 100%;
+            }
+
+            .content-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="onboarding-header">
+        <a href="index.html">
+            <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 36px;">
+        </a>
+    </header>
+
+    <!-- Main Container -->
+    <div class="onboarding-container">
+        <!-- Left Sidebar -->
+        <aside class="onboarding-sidebar">
+            <div class="sidebar-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M19.6426 1.95801L23.2422 5.55859L23.4248 5.74121V18C23.4247 19.6704 22.0708 21.0252 20.4004 21.0254H3.60059C1.92999 21.0254 0.575301 19.6706 0.575195 18V5.74121L4.54102 1.77539H19.459L19.6426 1.95801ZM1.8252 18C1.8253 18.9802 2.62035 19.7754 3.60059 19.7754H20.4004C21.3804 19.7752 22.1747 18.9801 22.1748 18V13.8252H1.8252V18ZM13.8252 17.4248H10.1748V16.1748H13.8252V17.4248ZM1.8252 12.5752H22.1748V6.625H1.8252V12.5752ZM13.8252 10.2246H10.1748V8.97461H13.8252V10.2246ZM2.70996 5.375H21.291L18.9404 3.02539H5.05957L2.70996 5.375Z"
+                        fill="currentColor"></path>
+                </svg>
+            </div>
+            <h1 class="sidebar-title">Let's set up a data bank</h1>
+
+            <ul class="progress-steps">
+                <li class="progress-step completed">
+                    <span class="step-indicator"></span>
+                    About Data bank
+                </li>
+                <li class="progress-step active">
+                    <span class="step-indicator"></span>
+                    Set up your data bank
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Right Content -->
+        <main class="onboarding-content">
+            <h2 class="content-title">Set up your data bank</h2>
+
+            <form action="databank-success.html" method="get">
+                <!-- Organization Section -->
+                <div class="form-section">
+                    <h3 class="form-section-title">Organization</h3>
+                    <p class="form-section-description">
+                        Create an organization (e.g. venture firm, company) to manage your data banks. You will be
+                        able to update organization details in your dashboard.
+                    </p>
+
+                    <div class="org-option">
+                        <div class="org-option-left">
+                            <svg class="org-option-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            <div class="org-option-text">
+                                <h4>Create a new organization</h4>
+                                <p>Set up a new organization on NEIIA Data Bank</p>
+                            </div>
+                        </div>
+                        <div class="org-option-radio"></div>
+                    </div>
+
+                    <input type="text" class="form-input" placeholder="Organization name" name="org_name">
+                </div>
+
+                <!-- Data Bank Section -->
+                <div class="form-section">
+                    <h3 class="form-section-title">Data bank</h3>
+                    <p class="form-section-description">
+                        People you invite to the data bank will see this as the data bank name.
+                    </p>
+
+                    <input type="text" class="form-input" placeholder="External data bank name" name="databank_name">
+                </div>
+
+                <!-- Terms of Service -->
+                <div class="terms-section">
+                    <h3 class="terms-title">Terms of Service</h3>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <div>
+                            <label class="checkbox-label" for="terms">
+                                I agree to NEIIA's terms and conditions
+                            </label>
+                            <div class="terms-links">
+                                <a href="construction.html">General terms</a> · <a href="construction.html">Data
+                                    Bank</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-create">Create</button>
+            </form>
+        </main>
+    </div>
+</body>
+
+</html>
