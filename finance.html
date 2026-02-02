@@ -84,6 +84,31 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            padding: 8px 16px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
         .header-right {
             display: flex;
             align-items: center;
@@ -230,6 +255,10 @@
             text-align: center;
         }
 
+        .mobile-menu-link.active {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
         /* Dashboard Layout */
         .dashboard-container {
             display: grid;
@@ -252,8 +281,10 @@
         .card-header {
             display: flex;
             align-items: center;
+            justify-content: flex-start;
             gap: 10px;
             margin-bottom: 20px;
+            text-align: left;
         }
 
         .card-dot {
@@ -1040,6 +1071,7 @@
                 display: flex;
             }
 
+            .nav-links,
             .header-right .header-btn {
                 display: none;
             }
@@ -1058,6 +1090,19 @@
 
             .page-subtitle {
                 font-size: 10px;
+            }
+
+            .card {
+                text-align: left;
+            }
+
+            .card-header {
+                justify-content: flex-start !important;
+                text-align: left;
+            }
+
+            .card-title {
+                text-align: left;
             }
 
             .time-filters {
@@ -1420,10 +1465,12 @@
             <a href="index.html" class="logo-link">
                 <img src="assets/images/neiis-logo-green.png" alt="NEIIA">
             </a>
-            <div>
-                <div class="page-title">National Energy Finance & Capital</div>
-                <div class="page-subtitle">Financial Dashboard</div>
-            </div>
+            <nav class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="finance.html" class="nav-link active">Finance</a>
+                <a href="databank.html" class="nav-link">Databank</a>
+                <a href="investor-management.html" class="nav-link">Investors</a>
+            </nav>
         </div>
         <div class="header-right">
             <a href="index.html" class="header-btn">
@@ -1452,17 +1499,30 @@
             </button>
         </div>
         <div class="mobile-menu-links">
+            <a href="dashboard.html" class="mobile-menu-link">
+                <i class="fas fa-chart-pie"></i>
+                Dashboard
+            </a>
+            <a href="finance.html" class="mobile-menu-link active">
+                <i class="fas fa-coins"></i>
+                Finance
+            </a>
+            <a href="databank.html" class="mobile-menu-link">
+                <i class="fas fa-database"></i>
+                Databank
+            </a>
+            <a href="investor-management.html" class="mobile-menu-link">
+                <i class="fas fa-users"></i>
+                Investors
+            </a>
+            <button class="mobile-menu-link" onclick="window.print(); closeMobileMenu();"
+                style="width: 100%; border: none; text-align: left; background: #FF6B35; color: #fff; cursor: pointer;">
+                <i class="fas fa-download"></i>
+                Export Report
+            </button>
             <a href="index.html" class="mobile-menu-link">
                 <i class="fas fa-home"></i>
                 Back to Home
-            </a>
-            <a href="#" class="mobile-menu-link" onclick="window.print(); return false;">
-                <i class="fas fa-download"></i>
-                Export Report
-            </a>
-            <a href="#" class="mobile-menu-link" onclick="closeMobileMenu(); return false;">
-                <i class="fas fa-chart-line"></i>
-                Dashboard
             </a>
         </div>
     </div>
