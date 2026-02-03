@@ -11,6 +11,193 @@
 
 <body>
 
+    <!-- Login Overlay -->
+    <div id="loginOverlay"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 99999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+        <!-- Nigerian Coat of Arms Background -->
+        <img src="assets/images/nigerian_coat_of_arms.png" alt=""
+            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; opacity: 0.08; pointer-events: none;">
+
+        <!-- Login Box -->
+        <div
+            style="background: white; border-radius: 16px; padding: 48px; width: 90%; max-width: 420px; box-shadow: 0 25px 80px rgba(0,0,0,0.4); position: relative; z-index: 1;">
+            <div style="text-align: center; margin-bottom: 32px;">
+                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="height: 48px; margin-bottom: 16px;">
+                <h2 style="font-size: 24px; font-weight: 700; color: #111827; margin-bottom: 8px;">Secure Access
+                    Required</h2>
+                <p style="font-size: 14px; color: #6b7280;">Enter your credentials to access the portal</p>
+            </div>
+
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div style="margin-bottom: 20px;">
+                    <label
+                        style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">Username</label>
+                    <input type="text" id="loginUsername" placeholder="Enter username"
+                        style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; transition: border-color 0.2s;"
+                        onfocus="this.style.borderColor='#0B1F24'" onblur="this.style.borderColor='#d1d5db'">
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <label
+                        style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password"
+                        style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; transition: border-color 0.2s;"
+                        onfocus="this.style.borderColor='#0B1F24'" onblur="this.style.borderColor='#d1d5db'">
+                </div>
+
+                <div id="loginError"
+                    style="display: none; background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; text-align: center;">
+                </div>
+
+                <div id="lockoutMessage"
+                    style="display: none; background: #fef3c7; border: 1px solid #fcd34d; color: #92400e; padding: 16px; border-radius: 8px; margin-bottom: 16px; text-align: center;">
+                    <i class="fas fa-lock" style="font-size: 20px; margin-bottom: 8px; display: block;"></i>
+                    <div style="font-weight: 600; margin-bottom: 4px;">Account Temporarily Locked</div>
+                    <div id="lockoutTimer" style="font-size: 24px; font-weight: 700; color: #d97706;"></div>
+                </div>
+
+                <button type="submit" id="loginBtn"
+                    style="width: 100%; background: #0B1F24; color: white; border: none; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;"
+                    onmouseover="this.style.background='#0a1a1e'" onmouseout="this.style.background='#0B1F24'">
+                    Sign In
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+                <p style="font-size: 12px; color: #9ca3af;">Federal Republic of Nigeria</p>
+                <p style="font-size: 11px; color: #9ca3af; margin-top: 4px;">National Energy Investment & Intelligence
+                    Administration</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // Authentication System with Exponential Lockout
+            const AUTH_KEY = 'neiia_authenticated';
+            const LOCKOUT_KEY = 'neiia_lockout';
+            const ATTEMPTS_KEY = 'neiia_attempts';
+            const BASE_LOCKOUT_MS = 90 * 1000; // 1 minute 30 seconds
+
+            // Encoded credentials (fetched from .pass file conceptually)
+            const VALID_CREDS = 'bm9hY2Nlc3M6MTIzY29kZWQ='; // base64: noaccess:123coded
+
+            function checkAuth() {
+                const isAuthenticated = sessionStorage.getItem(AUTH_KEY) === 'true';
+                const overlay = document.getElementById('loginOverlay');
+
+                if (isAuthenticated) {
+                    overlay.style.display = 'none';
+                } else {
+                    overlay.style.display = 'flex';
+                    checkLockout();
+                }
+            }
+
+            function checkLockout() {
+                const lockoutData = localStorage.getItem(LOCKOUT_KEY);
+                if (lockoutData) {
+                    const { until, multiplier } = JSON.parse(lockoutData);
+                    const now = Date.now();
+
+                    if (now < until) {
+                        showLockout(until);
+                        return true;
+                    } else {
+                        // Lockout expired, but keep multiplier for next failure
+                    }
+                }
+                hideLockout();
+                return false;
+            }
+
+            function showLockout(until) {
+                document.getElementById('loginForm').querySelector('button').disabled = true;
+                document.getElementById('loginUsername').disabled = true;
+                document.getElementById('loginPassword').disabled = true;
+                document.getElementById('lockoutMessage').style.display = 'block';
+                document.getElementById('loginError').style.display = 'none';
+
+                updateLockoutTimer(until);
+            }
+
+            function hideLockout() {
+                document.getElementById('loginForm').querySelector('button').disabled = false;
+                document.getElementById('loginUsername').disabled = false;
+                document.getElementById('loginPassword').disabled = false;
+                document.getElementById('lockoutMessage').style.display = 'none';
+            }
+
+            function updateLockoutTimer(until) {
+                const timerEl = document.getElementById('lockoutTimer');
+
+                function tick() {
+                    const remaining = until - Date.now();
+
+                    if (remaining <= 0) {
+                        hideLockout();
+                        return;
+                    }
+
+                    const minutes = Math.floor(remaining / 60000);
+                    const seconds = Math.floor((remaining % 60000) / 1000);
+                    timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+                    setTimeout(tick, 1000);
+                }
+
+                tick();
+            }
+
+            function getMultiplier() {
+                const lockoutData = localStorage.getItem(LOCKOUT_KEY);
+                if (lockoutData) {
+                    return JSON.parse(lockoutData).multiplier || 1;
+                }
+                return 1;
+            }
+
+            window.handleLogin = function (event) {
+                event.preventDefault();
+
+                if (checkLockout()) return false;
+
+                const username = document.getElementById('loginUsername').value.trim();
+                const password = document.getElementById('loginPassword').value;
+                const inputCreds = btoa(username + ':' + password);
+
+                if (inputCreds === VALID_CREDS) {
+                    // Success
+                    sessionStorage.setItem(AUTH_KEY, 'true');
+                    localStorage.removeItem(LOCKOUT_KEY); // Reset lockout on success
+                    document.getElementById('loginOverlay').style.display = 'none';
+                } else {
+                    // Failed - apply exponential lockout
+                    const currentMultiplier = getMultiplier();
+                    const lockoutDuration = BASE_LOCKOUT_MS * currentMultiplier;
+                    const until = Date.now() + lockoutDuration;
+
+                    localStorage.setItem(LOCKOUT_KEY, JSON.stringify({
+                        until: until,
+                        multiplier: currentMultiplier * 2 // Double for next time
+                    }));
+
+                    document.getElementById('loginError').style.display = 'block';
+                    document.getElementById('loginError').innerHTML = '<i class="fas fa-exclamation-circle"></i> Invalid credentials. Account locked for ' + (lockoutDuration / 60000) + ' minutes.';
+
+                    setTimeout(() => {
+                        showLockout(until);
+                    }, 1500);
+                }
+
+                return false;
+            };
+
+            // Check auth on page load
+            document.addEventListener('DOMContentLoaded', checkAuth);
+        })();
+    </script>
+
     <!-- Dark Mode Toggle (Hanging Bulb) -->
     <div class="bulb-container" id="theme-toggle-bulb">
         <div class="bulb-wire"></div>
