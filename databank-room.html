@@ -1,0 +1,2648 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Banks | NEIIA Investor Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        @font-face {
+            font-family: 'AngelList';
+            src: url('assets/databank/fonts/AngelList-VF.3bb41c0a.woff2') format('woff2');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AngelList';
+            src: url('assets/databank/fonts/AngelList-Italic-VF.31e87b9d.woff2') format('woff2');
+            font-weight: 100 900;
+            font-style: italic;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AngelList Display';
+            src: url('assets/databank/fonts/AngelListDisplay-Regular.9a576876.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'AngelList', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        :root {
+            --sidebar-dark: #121212;
+            /* Matches the dark rail in screenshot */
+            --sidebar-light: #f9fafb;
+            /* Context sidebar */
+            --primary-green: #0B1F24;
+            --accent-green: #15803d;
+            --text-dark: #111827;
+            --text-gray: #6b7280;
+            --border-color: #e5e7eb;
+            --bg-white: #ffffff;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        /* 1. Icon Sidebar (Dark Rail) */
+        .icon-sidebar {
+            width: 60px;
+            background: var(--sidebar-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
+            border-right: 1px solid #333;
+            z-index: 20;
+            flex-shrink: 0;
+        }
+
+        .icon-nav-item {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            color: #9ca3af;
+            cursor: pointer;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+
+        .icon-nav-item:hover,
+        .icon-nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .icon-nav-item.logo-item {
+            margin-bottom: 24px;
+            color: #fff;
+        }
+
+        .icon-nav-bottom {
+            margin-top: auto;
+        }
+
+        /* 2. Context Sidebar (Light Panel) */
+        .context-sidebar {
+            width: 240px;
+            background: var(--sidebar-light);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .context-header {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 24px;
+            padding: 0 8px;
+        }
+
+        .context-nav-group {
+            margin-bottom: 24px;
+        }
+
+        .context-nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 6px;
+            margin-bottom: 2px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .context-nav-item:hover {
+            background: #f3f4f6;
+            color: var(--text-dark);
+        }
+
+        .context-nav-item.active {
+            background: #e5e7eb;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .nav-expand {
+            font-size: 12px;
+        }
+
+        /* 3. Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 40px 60px;
+            overflow-y: auto;
+            background: #fff;
+        }
+
+        /* Header Section matching screenshot */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .create-btn {
+            background: var(--primary-green);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .create-btn:hover {
+            background: #1a3b42;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 12px 8px 36px;
+            border: 1px solid var(--border-color);
+            background: #f9fafb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .filter-dropdown {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background: #f9fafb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text-dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Reusing Company Content Styles but cleaner */
+        .company-content-wrapper {
+            margin-top: 20px;
+        }
+
+        .sector-section {
+            margin-bottom: 32px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .sector-header {
+            background: #f9fafb;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .sector-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .sector-oil {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .sector-elec {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .sector-renew {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .sector-nuc {
+            background: #e0e7ff;
+            color: #4f46e5;
+        }
+
+        .sector-store {
+            background: #f3e8ff;
+            color: #9333ea;
+        }
+
+        .sector-grid {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .sector-bio {
+            background: #ecfccb;
+            color: #65a30d;
+        }
+
+        .sector-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .sector-desc {
+            font-size: 13px;
+            color: var(--text-gray);
+            margin-left: auto;
+        }
+
+        .companies-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .company-list-container {
+            padding: 24px;
+        }
+
+        .company-list-container:first-child {
+            border-right: 1px solid var(--border-color);
+        }
+
+        .company-list-header {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-gray);
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .company-list {
+            list-style: none;
+        }
+
+        .company-item {
+            font-size: 14px;
+            color: var(--text-dark);
+            padding: 6px 0;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+        }
+
+        .company-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank {
+            color: var(--text-gray);
+            font-size: 12px;
+            width: 24px;
+            display: inline-block;
+        }
+
+        /* Explore More Button */
+        .explore-trigger {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: 1px dashed var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            color: var(--text-gray);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .explore-trigger:hover {
+            border-color: var(--text-gray);
+            color: var(--text-dark);
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+
+            .icon-sidebar,
+            .context-sidebar {
+                display: none;
+            }
+
+            .main-content {
+                padding: 16px;
+            }
+
+            .companies-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .company-list-container:first-child {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .sector-desc {
+                display: none;
+            }
+
+            /* Mobile Header */
+            .mobile-header-bar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-bottom: 16px;
+                margin-bottom: 16px;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            /* Page Header */
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .page-header .create-btn {
+                width: 100%;
+            }
+
+            /* Filter Bar */
+            .filter-bar {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .search-input-wrapper {
+                width: 100%;
+            }
+
+            .filter-dropdown {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            /* Team View Table */
+            .td-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 16px;
+            }
+
+            .td-cell {
+                width: 100%;
+                padding: 0;
+            }
+
+            .th-row {
+                display: none;
+            }
+
+            /* Slide-over Panels */
+            #invitePanel,
+            #editMemberPanel {
+                width: 100% !important;
+                right: -100% !important;
+            }
+
+            #invitePanel[style*="right: 0"],
+            #editMemberPanel[style*="right: 0"] {
+                right: 0 !important;
+            }
+
+            /* Settings View */
+            #settingsView .page-header {
+                padding: 16px;
+            }
+
+            #settingsView>div:last-child {
+                flex-direction: column;
+                gap: 0;
+                margin-top: 16px;
+            }
+
+            #settingsView .settings-nav-item {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            #settingsView>div:last-child>div:first-child {
+                width: 100%;
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            #settingsView>div:last-child>div:last-child {
+                padding: 16px;
+                max-width: 100%;
+            }
+
+            .settings-section {
+                padding: 16px 0;
+            }
+
+            .form-group[style*="display: flex"][style*="justify-content: space-between"] {
+                flex-direction: column !important;
+                gap: 12px;
+            }
+
+            /* Create Data Bank Modal */
+            #createDataRoomModal {
+                width: 95% !important;
+                max-width: none !important;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            /* Status Dropdown */
+            .status-dropdown {
+                left: 0;
+                right: 0;
+                width: auto;
+            }
+
+            /* Profile Popup */
+            .profile-popup {
+                right: 10px;
+                width: calc(100% - 20px);
+                max-width: 280px;
+            }
+
+            /* Organization Dropdown */
+            #orgDropdown {
+                width: calc(100% - 20px);
+                left: 10px;
+                right: 10px;
+            }
+        }
+
+        /* Tablet breakpoint */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .context-sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                padding: 24px;
+            }
+
+            .companies-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #settingsView>div:last-child>div:first-child {
+                width: 160px;
+            }
+        }
+
+        /* Sidebar Expansion Styles */
+        .icon-sidebar {
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            white-space: nowrap;
+            align-items: flex-start;
+            /* Default align */
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+
+        .icon-sidebar:not(.expanded) {
+            align-items: center;
+            /* Center icons when collapsed */
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .icon-sidebar.expanded {
+            width: 260px;
+            /* Expanded width */
+            align-items: flex-start;
+        }
+
+        .icon-nav-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            /* Left align content */
+            padding: 0 12px;
+            /* Inner padding */
+            box-sizing: border-box;
+        }
+
+        .icon-sidebar:not(.expanded) .icon-nav-item {
+            justify-content: center;
+            /* Center content when collapsed */
+            padding: 0;
+        }
+
+        .nav-label {
+            opacity: 0;
+            transition: opacity 0.2s;
+            display: none;
+            /* Hide via display to remove layout space */
+        }
+
+        .icon-sidebar.expanded .nav-label {
+            display: block;
+            /* Show */
+            opacity: 1;
+        }
+
+        .icon-sidebar:not(.expanded) .logo-item {
+            margin-bottom: 24px;
+        }
+
+        /* Specific adjustments for logo item when expanded */
+        .icon-sidebar.expanded .logo-item {
+            background: #1f2937;
+            /* Darker bg for active org item */
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        /* Dropdown Styles */
+        .dropdown-content {
+            display: none;
+            flex-direction: column;
+            padding-left: 12px;
+        }
+
+        .dropdown-content.open {
+            display: flex;
+        }
+
+        .sub-item {
+            font-size: 13px;
+            color: var(--text-gray);
+            padding-left: 24px;
+            /* Indent sub-items */
+        }
+
+        .sub-item:hover {
+            color: var(--text-dark);
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .dropdown-trigger {
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mainSidebar');
+            sidebar.classList.toggle('expanded');
+        }
+
+        function toggleDropdown(element) {
+            const content = element.nextElementSibling;
+            const icon = element.querySelector('.nav-expand');
+
+            if (content.style.display === 'none' || !content.classList.contains('open')) {
+                content.classList.add('open');
+                content.style.display = 'flex';
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                content.classList.remove('open');
+                content.style.display = 'none';
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        }
+    </script>
+
+<body>
+    <!-- 1. Icon Sidebar (Dark Rail) -->
+    <!-- 1. Icon Sidebar (Dark Rail) -->
+    <nav class="icon-sidebar" id="mainSidebar">
+        <!-- Hamburger Menu -->
+        <div class="icon-nav-item" onclick="toggleSidebar()" style="margin-bottom: 24px;">
+            <i class="fas fa-bars"></i>
+            <span class="nav-label"
+                style="font-weight: 600; font-size: 16px; margin-left: 12px; color: #fff;">NEIIA</span>
+        </div>
+
+        <!-- Logo/Org Item -->
+        <a href="#" onclick="toggleOrgPopup(event)" class="icon-nav-item logo-item" style="text-decoration: none;">
+            <div
+                style="width: 36px; height: 36px; min-width: 36px; border: 1px solid rgba(255, 255, 255, 0.3); display: flex; align-items: center; justify-content: center; border-radius: 2px;">
+                <img src="assets/images/neiih_logo_white.png" alt="NEIIA" style="max-height: 20px; max-width: 24px;">
+            </div>
+            <div class="nav-label" style="margin-left: 12px;">
+                <div style="color: #fff; font-weight: 500; font-size: 14px; line-height: 1.2;">anie</div>
+                <div style="color: #9ca3af; font-size: 12px;">Organization</div>
+            </div>
+            <i class="fas fa-chevron-right nav-label" style="margin-left: auto; font-size: 12px; color: #6b7280;"></i>
+        </a>
+
+        <div class="icon-nav-item active" title="Investor Management">
+            <div
+                style="width: 36px; height: 36px; min-width: 36px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <span class="nav-label">Investor Management</span>
+        </div>
+
+        <div class="icon-nav-item" title="Apps">
+            <div
+                style="width: 36px; height: 36px; min-width: 36px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-th-large"></i>
+            </div>
+            <span class="nav-label">Explore more apps</span>
+        </div>
+
+        <div class="icon-nav-bottom" style="position: relative;">
+            <!-- User Profile -->
+            <div class="icon-nav-item" style="margin-top: auto; cursor: pointer;" onclick="toggleProfilePopup(event)">
+                <div
+                    style="width: 24px; height: 24px; min-width: 24px; background: #374151; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white;">
+                    A</div>
+                <span class="nav-label"
+                    style="margin-left: 12px; font-size: 13px; font-weight: 500; color: #d1d5db;">ANIE PIUS</span>
+            </div>
+        </div>
+    </nav>
+    <style>
+        .profile-popup.visible {
+            display: flex;
+        }
+
+        .popup-header {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .popup-user-row {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        .popup-user-row:hover {
+            background: #f9fafb;
+        }
+
+        .popup-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            /* Placeholder styling */
+            color: #374151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 500;
+            margin-right: 12px;
+        }
+
+        .popup-user-info {
+            flex: 1;
+        }
+
+        .popup-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .popup-email {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .popup-check {
+            color: #059669;
+            /* Green check */
+            font-size: 14px;
+        }
+
+        .popup-divider {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 8px 0;
+        }
+
+        .popup-item {
+            display: block;
+            padding: 8px 20px;
+            font-size: 14px;
+            color: #374151;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .popup-item:hover {
+            background: #f9fafb;
+            color: #111827;
+        }
+    </style>
+    <script>
+        function toggleProfilePopup(event) {
+            event.stopPropagation();
+            const popup = document.getElementById('profilePopup');
+            popup.classList.toggle('visible');
+        }
+
+        // Close on outside click
+        document.addEventListener('click', function (event) {
+            const popup = document.getElementById('profilePopup');
+            const trigger = document.querySelector('.icon-nav-bottom .icon-nav-item');
+            if (popup && popup.classList.contains('visible') && !popup.contains(event.target) && !trigger.contains(event.target)) {
+                popup.classList.remove('visible');
+            }
+        });
+    </script>
+
+    <!-- 2. Context Sidebar -->
+    <nav class="context-sidebar">
+        <div class="context-header">Investor Management</div>
+
+        <div class="context-nav-group">
+            <a href="#" class="context-nav-item active" onclick="showSection('dataroom'); return false;"
+                id="nav-dataroom">
+                <span>Data Banks</span>
+            </a>
+
+            <!-- Directory Dropdown -->
+            <div class="nav-dropdown-wrapper">
+                <div class="context-nav-item dropdown-trigger" onclick="toggleDropdown(this)">
+                    <span>Directory</span>
+                    <i class="fas fa-chevron-up nav-expand"></i>
+                </div>
+                <div class="dropdown-content open">
+                    <a href="#" class="context-nav-item sub-item" onclick="showSection('people'); return false;"
+                        id="nav-people">People</a>
+                </div>
+            </div>
+
+            <!-- Organization Dropdown -->
+            <div class="nav-dropdown-wrapper">
+                <div class="context-nav-item dropdown-trigger" onclick="toggleDropdown(this)">
+                    <span>Organization</span>
+                    <i class="fas fa-chevron-up nav-expand"></i>
+                </div>
+                <div class="dropdown-content open">
+                    <a href="#" class="context-nav-item sub-item" onclick="showSection('team'); return false;"
+                        id="nav-team">Team</a>
+                    <a href="#" class="context-nav-item sub-item" onclick="showSection('settings'); return false;"
+                        id="nav-settings">Settings</a>
+                </div>
+            </div>
+        </div>
+
+
+    </nav>
+
+    <!-- 3. Main Content -->
+    <main class="main-content">
+        <!-- DATA BANKS VIEW -->
+        <div id="dataRoomView">
+            <!-- Mobile Header (Visible only on mobile) -->
+            <div class="mobile-header-bar" style="display: none;">
+                <a href="dashboard.html" style="text-decoration: none; color: inherit; font-weight: 600;">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="height: 24px;">
+            </div>
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Data Banks</h1>
+                <button class="create-btn" onclick="openCreateDataRoomModal()">Create data bank</button>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search">
+                </div>
+                <div class="filter-dropdown">
+                    Status <i class="fas fa-chevron-down" style="font-size: 12px; margin-left: auto;"></i>
+                </div>
+            </div>
+
+            <!-- Dynamic Content: Companies -->
+            <div id="companyContentArea" class="company-content-wrapper">
+                <!-- Selected Sectors render here -->
+            </div>
+
+            <!-- Explore More -->
+            <div style="margin-top: 24px;">
+                <button class="explore-trigger" onclick="toggleExplore()">
+                    <i class="fas fa-plus"></i> Open more sections
+                </button>
+                <div id="exploreContainer" style="display: none; margin-top: 24px;"></div>
+            </div>
+        </div>
+
+        <!-- PEOPLE VIEW (Hidden by default) -->
+        <div id="peopleView" style="display: none; padding: 40px;">
+            <div class="page-header"
+                style="padding: 0; margin-bottom: 32px; border: none; flex-direction: column; align-items: flex-start;">
+                <h1 style="font-size: 24px; font-weight: 600; color: #111827; margin-bottom: 8px;">People</h1>
+                <p style="color: #6b7280; font-size: 14px;">View details, team members, and associated transactions for
+                    your investors.</p>
+            </div>
+
+            <div class="filter-bar" style="padding: 0; margin-bottom: 32px; border: none;">
+                <div class="search-container"
+                    style="max-width: 300px; position: relative; display: flex; align-items: center;">
+                    <i class="fas fa-search search-icon"
+                        style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 14px;"></i>
+                    <input type="text" class="search-input" placeholder="Search"
+                        style="padding-left: 38px; height: 36px; width: 100%;">
+                </div>
+                <button class="filter-btn"
+                    style="margin-left: 12px; background: white; border: 1px solid #e5e7eb; padding: 8px 12px; border-radius: 6px; cursor: pointer; color: #374151; font-size: 13px; font-weight: 500;">
+                    <i class="fas fa-plus" style="margin-right: 6px;"></i> Filter
+                </button>
+            </div>
+
+            <!-- Table Header -->
+            <div class="people-table-header"
+                style="display: grid; grid-template-columns: 2fr 2fr 1.5fr 1.5fr 1fr 1fr 1fr; padding: 12px 0; border-bottom: 1px solid #e5e7eb; margin-bottom: 24px;">
+                <div class="th-cell">Name</div>
+                <div class="th-cell">Email</div>
+                <div class="th-cell">Entities <i class="far fa-question-circle"
+                        style="font-size: 12px; color: #9ca3af; margin-left: 4px;"></i></div>
+                <div class="th-cell">Data banks <i class="far fa-question-circle"
+                        style="font-size: 12px; color: #9ca3af; margin-left: 4px;"></i></div>
+                <div class="th-cell">Invites <i class="far fa-question-circle"
+                        style="font-size: 12px; color: #9ca3af; margin-left: 4px;"></i></div>
+                <div class="th-cell">Created</div>
+                <div class="th-cell">Joined</div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="people-empty-state"
+                style="text-align: center; padding: 60px 0; color: #6b7280; font-size: 14px; font-weight: 500;">
+                No results
+            </div>
+        </div>
+
+        <!-- TEAM VIEW (Hidden by default) -->
+        <div id="teamView" style="display: none; padding: 40px;">
+            <div class="page-header"
+                style="padding: 0; margin-bottom: 32px; border: none; flex-direction: column; align-items: flex-start;">
+                <h1 style="font-size: 24px; font-weight: 600; color: #111827; margin-bottom: 8px;">Team</h1>
+            </div>
+
+            <div class="filter-bar"
+                style="padding: 0; margin-bottom: 32px; border: none; display: flex; justify-content: space-between;">
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <div class="search-container"
+                        style="max-width: 300px; position: relative; display: flex; align-items: center; background: #f9fafb; border-radius: 6px;">
+                        <i class="fas fa-search search-icon"
+                            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 14px;"></i>
+                        <input type="text" class="search-input" placeholder="Search"
+                            style="padding-left: 38px; height: 36px; width: 240px; background: transparent; border: 1px solid transparent;">
+                    </div>
+                    <div style="position: relative;">
+                        <button id="statusFilterBtn" class="filter-btn" onclick="toggleStatusDropdown(event)"
+                            style="background: white; border: 1px solid #e5e7eb; padding: 8px 12px; border-radius: 6px; cursor: pointer; color: #374151; font-size: 13px; font-weight: 500;">
+                            Status <i class="fas fa-chevron-down" style="margin-left: 6px; font-size: 10px;"></i>
+                        </button>
+
+                        <!-- Status Dropdown -->
+                        <div id="statusDropdown" class="status-dropdown" style="display: none;">
+                            <div class="filter-dropdown-header">Filter</div>
+                            <div class="filter-options">
+                                <label class="filter-option-row">
+                                    <span class="option-label">Active</span>
+                                    <input type="radio" name="statusFilter" value="active">
+                                    <span class="custom-radio"></span>
+                                </label>
+                                <label class="filter-option-row">
+                                    <span class="option-label">Invited</span>
+                                    <input type="radio" name="statusFilter" value="invited">
+                                    <span class="custom-radio"></span>
+                                </label>
+                            </div>
+                            <div class="filter-dropdown-footer">
+                                <button class="btn-reset">Reset</button>
+                                <button class="btn-apply">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-new-member" onclick="openInvitePanel()">New member</button>
+            </div>
+
+            <!-- Table Header -->
+            <div class="team-table-header"
+                style="display: grid; grid-template-columns: 2.5fr 1.5fr 1fr 1fr 1fr 0.5fr; padding: 12px 0; border-bottom: 1px solid #e5e7eb; margin-bottom: 0;">
+                <div class="th-cell">Member</div>
+                <div class="th-cell">Permissions</div>
+                <div class="th-cell">Status</div>
+                <div class="th-cell">Date added</div>
+                <div class="th-cell">Last active</div>
+                <div class="th-cell"></div>
+            </div>
+
+            <!-- User Row -->
+            <div class="team-row"
+                style="display: grid; grid-template-columns: 2.5fr 1.5fr 1fr 1fr 1fr 0.5fr; padding: 16px 0; border-bottom: 1px solid #f3f4f6; align-items: center;">
+                <div class="td-cell" style="display: flex; align-items: center; gap: 12px;">
+                    <div class="popup-avatar dynamic-team-avatar"
+                        style="width: 32px; height: 32px; font-size: 12px; background: #d1fae5; color: #065f46;"></div>
+                    <div>
+                        <div class="popup-name dynamic-team-name" style="font-size: 14px; color: #111827;"></div>
+                        <div class="popup-email dynamic-team-email" style="font-size: 13px; color: #6b7280;"></div>
+                    </div>
+                </div>
+                <div class="td-cell">
+                    <a href="#"
+                        style="color: #6b7280; font-size: 13px; text-decoration: underline; text-decoration-color: #d1d5db;">3
+                        permissions</a>
+                </div>
+                <div class="td-cell">
+                    <span
+                        style="background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">Active</span>
+                </div>
+                <div class="td-cell" style="font-size: 13px; color: #374151;">31 Jan 2026</div>
+                <div class="td-cell" style="font-size: 13px; color: #374151;">3 Feb 2026</div>
+                <div class="td-cell" style="text-align: right; color: #9ca3af; cursor: pointer; position: relative;">
+                    <i class="fas fa-ellipsis-h" onclick="toggleTeamDropdown(event)"></i>
+                    <!-- Dropdown Menu -->
+                    <div id="teamDropdown" class="team-dropdown-menu"
+                        style="display: none; position: absolute; right: 0; top: 100%; background: white; border: 1px solid #e5e7eb; border-radius: 6px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); z-index: 10; width: 160px; text-align: left; padding: 4px 0;">
+                        <div class="dropdown-item" onclick="openEditMemberPanel()"
+                            style="padding: 8px 16px; font-size: 13px; color: #374151; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-pen" style="font-size: 12px; color: #6b7280;"></i> Edit details
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS VIEW (Hidden by default) -->
+        <div id="settingsView" style="display: none; padding: 40px;">
+            <div class="page-header" style="padding: 0; margin-bottom: 24px; border: none; display: block;">
+                <h1 style="font-size: 24px; font-weight: 600; color: #111827; margin-bottom: 24px;">Settings</h1>
+
+                <!-- Simple Tab Navigation -->
+                <div style="border-bottom: 1px solid #e5e7eb; display: flex;">
+                    <div
+                        style="padding: 12px 4px; border-bottom: 2px solid #111827; color: #111827; font-weight: 500; font-size: 14px; cursor: pointer;">
+                        General</div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 48px; margin-top: 32px;">
+                <!-- Settings Sidebar -->
+                <div style="width: 200px; flex-shrink: 0;">
+                    <div class="settings-nav-item active" id="settings-tab-details"
+                        onclick="showSettingsTab('details')">Details</div>
+                    <div class="settings-nav-item" id="settings-tab-theme" onclick="showSettingsTab('theme')">Theme
+                    </div>
+                </div>
+
+                <!-- Settings Content -->
+                <div style="flex: 1; max-width: 600px;">
+
+                    <!-- DETAILS TAB CONTENT -->
+                    <div id="settings-content-details">
+                        <!-- Organization Details -->
+                        <div class="settings-section">
+                            <h2 class="settings-section-title">Organization Details</h2>
+                            <p class="settings-section-desc">Organization details appear across your investor-facing
+                                products, such as your Portal, Digital Subscriptions or Data Bank pages.</p>
+
+                            <div class="form-group">
+                                <label class="form-label">Organization name</label>
+                                <input type="text" class="form-input dynamic-settings-org-name"
+                                    placeholder="Organization name">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Organization handle</label>
+                                <input type="text" class="form-input dynamic-settings-handle"
+                                    placeholder="Organization handle">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Organization description</label>
+                                <textarea class="form-textarea dynamic-settings-desc"
+                                    placeholder="Organization description"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Avatar & Logo -->
+                        <div class="settings-section">
+                            <div class="form-group"
+                                style="display: flex; justify-content: space-between; align-items: start;">
+                                <div>
+                                    <label class="form-label">Avatar</label>
+                                    <p class="form-help">Upload a 256 x 256 pixel PNG, or JPG image.</p>
+                                </div>
+                                <button class="btn-upload">Upload</button>
+                            </div>
+
+                            <div class="form-group"
+                                style="display: flex; justify-content: space-between; align-items: start; margin-top: 24px;">
+                                <div>
+                                    <label class="form-label">Logo</label>
+                                    <p class="form-help">Upload a high-resolution PNG (preferred) or JPG with a minimum
+                                        height of 150 pixels. For best results ensure the background is transparent and
+                                        remove any excess logo padding.</p>
+                                </div>
+                                <button class="btn-upload">Upload</button>
+                            </div>
+                        </div>
+
+                        <!-- Organization ID -->
+                        <div class="settings-section">
+                            <h2 class="form-label" style="font-size: 14px; margin-bottom: 8px;">Organization ID</h2>
+                            <div
+                                style="background: #f9fafb; padding: 10px 12px; border-radius: 6px; font-family: monospace; font-size: 13px; color: #374151; display: flex; justify-content: space-between; align-items: center;">
+                                <span class="dynamic-settings-id">59b7ec03-7d5b-492a-bfb9-b05a6736352e</span>
+                                <i class="far fa-copy" style="cursor: pointer; color: #9ca3af;"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- THEME TAB CONTENT (Hidden by Default) -->
+                    <div id="settings-content-theme" style="display: none;">
+                        <!-- Theme -->
+                        <div class="settings-section" style="border-bottom: none;">
+                            <h2 class="settings-section-title">Theme</h2>
+                            <p class="settings-section-desc">Default theme settings for all AngelList Investor
+                                Management
+                                products.</p>
+
+                            <div class="form-group"
+                                style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="max-width: 80%;">
+                                    <label class="form-label">Background color</label>
+                                    <p class="form-help">This impacts the background color of the cover image as well as
+                                        the
+                                        background of a primary action.</p>
+                                </div>
+                                <div
+                                    style="display: flex; align-items: center; border: 1px solid #e5e7eb; padding: 6px 8px; border-radius: 6px;">
+                                    <div
+                                        style="width: 18px; height: 18px; border: 1px solid #e5e7eb; border-radius: 2px; background: #ffffff; margin-right: 8px;">
+                                    </div>
+                                    <span
+                                        style="font-size: 13px; font-weight: 500; color: #374151; margin-right: 8px;">#ffffff</span>
+                                    <i class="fas fa-undo"
+                                        style="font-size: 12px; color: #9ca3af; cursor: pointer;"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group"
+                                style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
+                                <div style="max-width: 80%;">
+                                    <label class="form-label">Primary color</label>
+                                    <p class="form-help">This impacts various UI elements including buttons and input
+                                        fields
+                                    </p>
+                                </div>
+                                <div
+                                    style="display: flex; align-items: center; border: 1px solid #e5e7eb; padding: 6px 8px; border-radius: 6px;">
+                                    <div
+                                        style="width: 18px; height: 18px; border-radius: 2px; background: #5955ff; margin-right: 8px;">
+                                    </div>
+                                    <span
+                                        style="font-size: 13px; font-weight: 500; color: #374151; margin-right: 8px;">#5955ff</span>
+                                    <i class="fas fa-undo"
+                                        style="font-size: 12px; color: #9ca3af; cursor: pointer;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- End Theme Content -->
+
+                </div> <!-- End Details Content -->
+
+            </div>
+        </div>
+        </div>
+
+        <!-- Create Data Bank Modal -->
+        <div id="createDataRoomOverlay"
+            style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: none; opacity: 0; transition: opacity 0.3s;">
+        </div>
+        <div id="createDataRoomModal"
+            style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.95); width: 90%; max-width: 500px; background: #fff; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); z-index: 1001; display: none; opacity: 0; transition: all 0.3s ease;">
+            <!-- Modal Header -->
+            <div
+                style="padding: 24px 24px 16px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-size: 20px; font-weight: 600; color: #111827;">Create data bank</h2>
+                <button onclick="closeCreateDataRoomModal()"
+                    style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 20px; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: background 0.2s;"
+                    onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div style="padding: 24px;">
+                <p style="font-size: 14px; color: #6b7280; margin-bottom: 24px;">Create a new data bank and select a
+                    vehicle to associate it with.</p>
+
+                <!-- Details Section -->
+                <div style="margin-bottom: 24px;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 16px;">Details</h3>
+
+                    <!-- External data bank name -->
+                    <div style="margin-bottom: 20px;">
+                        <label
+                            style="display: block; font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 8px;">External
+                            data bank name</label>
+                        <input type="text" id="dataRoomName" placeholder=""
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; color: #111827; transition: border-color 0.2s;"
+                            onfocus="this.style.borderColor='#6366f1'" onblur="this.style.borderColor='#d1d5db'">
+                    </div>
+
+                    <!-- Associated vehicles -->
+                    <div>
+                        <label
+                            style="display: block; font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 8px;">Associated
+                            vehicles</label>
+                        <div style="position: relative;">
+                            <input type="text" id="vehicleSearch" placeholder="Search..."
+                                style="width: 100%; padding: 10px 36px 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; color: #111827; transition: border-color 0.2s;"
+                                onfocus="this.style.borderColor='#6366f1'; document.getElementById('noOptionsMessage').style.display='block'"
+                                onblur="setTimeout(() => { this.style.borderColor='#d1d5db'; document.getElementById('noOptionsMessage').style.display='none'; }, 200)">
+                            <i class="fas fa-chevron-down"
+                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 12px; color: #9ca3af; pointer-events: none;"></i>
+
+                            <!-- No options dropdown -->
+                            <div id="noOptionsMessage"
+                                style="display: none; position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px; background: white; border: 1px solid #e5e7eb; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 12px; z-index: 10;">
+                                <p style="font-size: 13px; color: #6b7280; text-align: center;">No available options</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div
+                style="padding: 16px 24px; border-top: 1px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 12px;">
+                <button onclick="closeCreateDataRoomModal()"
+                    style="background: white; color: #374151; border: 1px solid #d1d5db; padding: 10px 20px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer; transition: all 0.2s;"
+                    onmouseover="this.style.background='#f9fafb'"
+                    onmouseout="this.style.background='white'">Cancel</button>
+                <button
+                    style="background: #0B1F24; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer; transition: all 0.2s;"
+                    onmouseover="this.style.background='#0a1a1e'" onmouseout="this.style.background='#0B1F24'">Create
+                    room</button>
+            </div>
+        </div>
+
+        <!-- Invite Panel (Slide-over) -->
+        <div id="invitePanelOverlay"
+            style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s;">
+        </div>
+        <div id="invitePanel"
+            style="position: fixed; top: 0; right: -600px; width: 600px; height: 100%; background: #fff; z-index: 1000; box-shadow: -4px 0 24px rgba(0,0,0,0.1); padding: 0; display: flex; flex-direction: column; transition: right 0.3s ease-in-out;">
+
+            <!-- Panel Header -->
+            <div style="padding: 24px 32px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="closeInvitePanel()"
+                    style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 20px;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Panel Content -->
+            <div style="padding: 0 32px 32px; overflow-y: auto; flex: 1;">
+                <h2 style="font-size: 24px; font-weight: 600; color: #111827; margin-bottom: 32px;">Invite</h2>
+
+                <!-- Form Fields -->
+                <div style="margin-bottom: 24px;">
+                    <label
+                        style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">Name</label>
+                    <input type="text" placeholder="Name"
+                        style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; color: #111827;">
+                </div>
+
+                <div style="margin-bottom: 40px;">
+                    <label
+                        style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">Email</label>
+                    <input type="email" placeholder="Email"
+                        style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; color: #111827;">
+                </div>
+
+                <!-- Admin Access Toggle -->
+                <div
+                    style="padding: 24px; background: #f9fafb; border-radius: 8px; display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 40px;">
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 4px;">Admin access
+                        </div>
+                        <div style="font-size: 13px; color: #6b7280; max-width: 380px; line-height: 1.5;">Admins have
+                            full access to all entities and organization permissions, and can manage access for other
+                            team members.</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <!-- Permissions -->
+                <h3 style="font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 8px;">Investment
+                    permissions</h3>
+                <p style="font-size: 14px; color: #6b7280; margin-bottom: 24px;">The permission applies to all
+                    investments this member can access through each entity.</p>
+
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <label class="checkbox-container">
+                        <input type="checkbox" checked>
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">Same permission for all entities</span>
+                    </label>
+
+                    <label class="checkbox-container disabled">
+                        <input type="checkbox" checked disabled>
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label" style="color: #9ca3af;">View investments and performance</span>
+                    </label>
+
+                    <label class="checkbox-container">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">Edit investment details</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div style="padding: 24px 32px; border-top: 1px solid #e5e7eb; display: flex; justify-content: flex-end;">
+                <button
+                    style="background: #0B1F24; color: white; border: none; padding: 10px 24px; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer;">Invite</button>
+            </div>
+        </div>
+
+        <!-- Edit Member Panel (Slide-over) -->
+        <div id="editMemberPanelOverlay"
+            style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s;">
+        </div>
+        <div id="editMemberPanel"
+            style="position: fixed; top: 0; right: -600px; width: 600px; height: 100%; background: #fff; z-index: 1000; box-shadow: -4px 0 24px rgba(0,0,0,0.1); padding: 0; display: flex; flex-direction: column; transition: right 0.3s ease-in-out;">
+
+            <!-- Panel Header -->
+            <div style="padding: 24px 32px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="closeEditMemberPanel()"
+                    style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 20px;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Panel Content -->
+            <div style="padding: 0 32px 32px; overflow-y: auto; flex: 1;">
+
+                <!-- Static User Info -->
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                    <div class="popup-avatar dynamic-team-avatar"
+                        style="width: 32px; height: 32px; font-size: 12px; background: #d1fae5; color: #065f46;"></div>
+                </div>
+                <h2 class="dynamic-edit-panel-name"
+                    style="font-size: 24px; font-weight: 600; color: #111827; margin-bottom: 4px;"></h2>
+                <div class="dynamic-edit-panel-email" style="font-size: 14px; color: #6b7280; margin-bottom: 32px;">
+                </div>
+
+                <!-- Admin Access Toggle -->
+                <div
+                    style="padding: 24px; background: #f9fafb; border-radius: 8px; display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 40px;">
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 4px;">Admin access
+                        </div>
+                        <div style="font-size: 13px; color: #6b7280; max-width: 380px; line-height: 1.5;">Admins have
+                            full access to all entities and organization permissions, and can manage access for other
+                            team members.</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <!-- Permissions -->
+                <h3 style="font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 8px;">Investment
+                    permissions</h3>
+                <p style="font-size: 14px; color: #6b7280; margin-bottom: 24px;">The permission applies to all
+                    investments this member can access through each entity.</p>
+
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <label class="checkbox-container">
+                        <input type="checkbox" checked>
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">Same permission for all entities</span>
+                    </label>
+
+                    <label class="checkbox-container disabled">
+                        <input type="checkbox" checked disabled>
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label" style="color: #9ca3af;">View investments and performance</span>
+                    </label>
+
+                    <label class="checkbox-container">
+                        <input type="checkbox" checked>
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">Edit investment details</span>
+                    </label>
+
+                    <label class="checkbox-container">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">Sign for investment</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div style="padding: 24px 32px; border-top: 1px solid #e5e7eb; display: flex; justify-content: flex-end;">
+                <button
+                    style="background: #0B1F24; color: white; border: none; padding: 10px 24px; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer;">Save
+                    changes</button>
+            </div>
+        </div>
+
+        <style>
+            /* Custom Scrollbar for Panel */
+            #invitePanel ::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            #invitePanel ::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            #invitePanel ::-webkit-scrollbar-thumb {
+                background: #e5e7eb;
+                border-radius: 3px;
+            }
+
+            /* Switch Styles */
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 44px;
+                height: 24px;
+            }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #e5e7eb;
+                transition: .4s;
+            }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 20px;
+                left: 2px;
+                bottom: 2px;
+                background-color: white;
+                transition: .4s;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            }
+
+            input:checked+.slider {
+                background-color: #0B1F24;
+            }
+
+            input:checked+.slider:before {
+                transform: translateX(20px);
+            }
+
+            .slider.round {
+                border-radius: 34px;
+            }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+
+            /* Checkbox Styles */
+            .checkbox-container {
+                display: flex;
+                align-items: center;
+                position: relative;
+                padding-left: 32px;
+                cursor: pointer;
+                user-select: none;
+                font-size: 14px;
+                color: #374151;
+            }
+
+            .checkbox-container input {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+                height: 0;
+                width: 0;
+            }
+
+            .checkmark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 20px;
+                width: 20px;
+                background-color: #fff;
+                border: 1px solid #d1d5db;
+                border-radius: 4px;
+            }
+
+            .checkbox-container:hover input~.checkmark {
+                border-color: #9ca3af;
+            }
+
+            .checkbox-container input:checked~.checkmark {
+                background-color: #0B1F24;
+                border-color: #0B1F24;
+            }
+
+            .checkbox-container.disabled input:checked~.checkmark {
+                background-color: #9ca3af;
+                border-color: #9ca3af;
+            }
+
+            .checkmark:after {
+                content: "";
+                position: absolute;
+                display: none;
+            }
+
+            .checkbox-container input:checked~.checkmark:after {
+                display: block;
+            }
+
+            .checkbox-container .checkmark:after {
+                left: 7px;
+                top: 3px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+            }
+
+            /* Dropdown Hover */
+            .dropdown-item:hover {
+                background-color: #f3f4f6;
+            }
+        </style>
+
+        <script>
+            function openInvitePanel() {
+                const panel = document.getElementById('invitePanel');
+                const overlay = document.getElementById('invitePanelOverlay');
+                overlay.style.display = 'block';
+                setTimeout(() => {
+                    overlay.style.opacity = '1';
+                    panel.style.right = '0';
+                }, 10);
+            }
+
+            function closeInvitePanel() {
+                const panel = document.getElementById('invitePanel');
+                const overlay = document.getElementById('invitePanelOverlay');
+                panel.style.right = '-600px';
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 300);
+            }
+
+            function toggleTeamDropdown(event) {
+                event.stopPropagation();
+                const dropdown = document.getElementById('teamDropdown');
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                } else {
+                    dropdown.style.display = 'block';
+                }
+            }
+
+            function openEditMemberPanel() {
+                // Close dropdown first
+                document.getElementById('teamDropdown').style.display = 'none';
+
+                const panel = document.getElementById('editMemberPanel');
+                const overlay = document.getElementById('editMemberPanelOverlay');
+                overlay.style.display = 'block';
+                setTimeout(() => {
+                    overlay.style.opacity = '1';
+                    panel.style.right = '0';
+                }, 10);
+            }
+
+            function closeEditMemberPanel() {
+                const panel = document.getElementById('editMemberPanel');
+                const overlay = document.getElementById('editMemberPanelOverlay');
+                panel.style.right = '-600px';
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 300);
+            }
+
+
+
+            function toggleStatusDropdown(event) {
+                event.stopPropagation();
+                const dropdown = document.getElementById('statusDropdown');
+                const btn = document.getElementById('statusFilterBtn');
+
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                    btn.classList.remove('status-btn-active');
+                } else {
+                    dropdown.style.display = 'block';
+                    btn.classList.add('status-btn-active');
+                }
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                const teamDropdown = document.getElementById('teamDropdown');
+                if (teamDropdown && teamDropdown.style.display === 'block' && !event.target.closest('.td-cell')) {
+                    teamDropdown.style.display = 'none';
+                }
+
+                const statusDropdown = document.getElementById('statusDropdown');
+                const statusBtn = document.getElementById('statusFilterBtn');
+                if (statusDropdown && statusDropdown.style.display === 'block' && !event.target.closest('#statusFilterBtn') && !event.target.closest('.status-dropdown')) {
+                    statusDropdown.style.display = 'none';
+                    statusBtn.classList.remove('status-btn-active');
+                }
+            });
+
+            // Bind to button
+            document.addEventListener('DOMContentLoaded', () => {
+                const btn = document.querySelector('.btn-new-room'); // Caution: might target the one in header by mistake if not careful.
+                // Better to target the specific button in team view if possible, or all .btn-new-room if intention is same.
+                // The team view button was defined inline style recently.
+                // Let's add onClick inline to the button in the HTML above to be sure.
+            });
+        </script>
+
+        <style>
+            .th-cell {
+                font-size: 12px;
+                font-weight: 500;
+                color: #6b7280;
+            }
+        </style>
+
+        <script>
+            // View Switching Logic
+            function showSection(sectionId) {
+                const dataRoomView = document.getElementById('dataRoomView');
+                const peopleView = document.getElementById('peopleView');
+                const teamView = document.getElementById('teamView');
+                const settingsView = document.getElementById('settingsView');
+
+                const navDataRoom = document.getElementById('nav-dataroom');
+                const navPeople = document.getElementById('nav-people');
+                const navTeam = document.getElementById('nav-team');
+                const navSettings = document.getElementById('nav-settings');
+
+                // Reset active states
+                navDataRoom.classList.remove('active');
+
+                // Reset styling for sub-items
+                [navPeople, navTeam, navSettings].forEach(nav => {
+                    if (nav) {
+                        nav.style.color = '';
+                        nav.style.fontWeight = '';
+                    }
+                });
+
+                // Hide all views first
+                dataRoomView.style.display = 'none';
+                peopleView.style.display = 'none';
+                if (teamView) teamView.style.display = 'none';
+                if (settingsView) settingsView.style.display = 'none';
+
+                if (sectionId === 'dataroom') {
+                    dataRoomView.style.display = 'block';
+                    navDataRoom.classList.add('active');
+                } else if (sectionId === 'people') {
+                    peopleView.style.display = 'block';
+                    if (navPeople) {
+                        navPeople.style.color = '#111827';
+                        navPeople.style.fontWeight = '600';
+                    }
+                } else if (sectionId === 'team') {
+                    if (teamView) teamView.style.display = 'block';
+                    if (navTeam) {
+                        navTeam.style.color = '#111827';
+                        navTeam.style.fontWeight = '600';
+                    }
+                } else if (sectionId === 'settings') {
+                    if (settingsView) settingsView.style.display = 'block';
+                    if (navSettings) {
+                        navSettings.style.color = '#111827';
+                        navSettings.style.fontWeight = '600';
+                    }
+                }
+            }
+
+
+            function showSettingsTab(tabName) {
+                const detailsContent = document.getElementById('settings-content-details');
+                const themeContent = document.getElementById('settings-content-theme');
+                const detailsTab = document.getElementById('settings-tab-details');
+                const themeTab = document.getElementById('settings-tab-theme');
+
+                // Hide all contents
+                detailsContent.style.display = 'none';
+                themeContent.style.display = 'none';
+
+                // Remove active class
+                detailsTab.classList.remove('active');
+                themeTab.classList.remove('active');
+
+                if (tabName === 'details') {
+                    detailsContent.style.display = 'block';
+                    detailsTab.classList.add('active');
+                } else if (tabName === 'theme') {
+                    themeContent.style.display = 'block';
+                    themeTab.classList.add('active');
+                }
+            }
+
+            function openCreateDataRoomModal() {
+                const modal = document.getElementById('createDataRoomModal');
+                const overlay = document.getElementById('createDataRoomOverlay');
+
+                overlay.style.display = 'block';
+                modal.style.display = 'block';
+
+                setTimeout(() => {
+                    overlay.style.opacity = '1';
+                    modal.style.opacity = '1';
+                    modal.style.transform = 'translate(-50%, -50%) scale(1)';
+                }, 10);
+            }
+
+            function closeCreateDataRoomModal() {
+                const modal = document.getElementById('createDataRoomModal');
+                const overlay = document.getElementById('createDataRoomOverlay');
+
+                modal.style.opacity = '0';
+                modal.style.transform = 'translate(-50%, -50%) scale(0.95)';
+                overlay.style.opacity = '0';
+
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    overlay.style.display = 'none';
+                    // Clear form fields
+                    document.getElementById('dataRoomName').value = '';
+                    document.getElementById('vehicleSearch').value = '';
+                }, 300);
+            }
+
+            // Company Data
+            const companyData = {
+                "Oil and Gas": {
+                    icon: "fa-gas-pump",
+                    style: "sector-oil",
+                    desc: "Fossil Fuels backbone.",
+                    nigerian: [
+                        "NNPC Ltd", "Seplat Energy", "Aradel Holdings", "Oando PLC", "Shell Nigeria (SPDC)",
+                        "TotalEnergies Marketing", "Conoil PLC", "MRS Oil", "Eterna PLC", "11 PLC (Mobil)",
+                        "Famfa Oil", "Sahara Group", "Niger Delta Petroleum", "Lekoil", "Neconde",
+                        "Matrix Energy", "Petrolex", "Shoreline Natural Resources", "AMNI Petroleum", "Aiteo"
+                    ],
+                    global: [
+                        "ExxonMobil", "Chevron", "Shell PLC", "BP", "Saudi Aramco",
+                        "TotalEnergies", "Petrobras", "Eni", "Equinor", "ConocoPhillips",
+                        "Occidental Petroleum", "Valero Energy", "Marathon Petroleum", "Phillips 66", "Halliburton",
+                        "Schlumberger (SLB)", "Baker Hughes", "Cheniere Energy", "Enbridge", "TC Energy",
+                        "Woodside Energy", "CNOOC", "Petronas", "Lukoil", "Repsol", "Gazprom", "Hess Corp"
+                    ]
+                },
+                "Electricity & Utilities": {
+                    icon: "fa-bolt",
+                    style: "sector-elec",
+                    desc: "GenCos, DisCos, and grid.",
+                    nigerian: [
+                        "Geregu Power", "Transcorp Power", "Egbin Power PLC", "Ikeja Electric", "Eko DisCo",
+                        "Mainstream Energy", "Abuja DisCo (AEDC)", "Benin DisCo (BEDC)", "Enugu DisCo", "Ibadan DisCo",
+                        "Azura-Edo Power", "First Independent Power", "Sapele Power", "Ibom Power", "Kaduna DisCo",
+                        "Port Harcourt DisCo", "Yola DisCo", "Kano DisCo", "Jos DisCo", "Niger Delta Power (NDPHC)"
+                    ],
+                    global: [
+                        "NextEra Energy", "Duke Energy", "Southern Company", "Enel", "Iberdrola",
+                        "National Grid", "Engie", "EDF (France)", "Constellation Energy", "American Electric Power",
+                        "Dominion Energy", "Exelon", "PG&E", "Vistra Corp", "Ørsted",
+                        "RWE", "SSE PLC", "Fortum", "AES Corp", "E.ON",
+                        "Xcel Energy", "Entergy", "Consolidated Edison", "Public Service Enterprise Group"
+                    ]
+                },
+                "Renewable Energy": {
+                    icon: "fa-solar-panel",
+                    style: "sector-renew",
+                    desc: "DARES program scale-up.",
+                    nigerian: [
+                        "Daystar Power", "Starsight Energy", "Arnergy", "Lumos Nigeria", "Auxano Solar",
+                        "Rensource Energy", "Havenhill Systems", "GVE Projects", "Rubitec Solar", "Solntra Energy",
+                        "Creeds Energy", "Aspire Power", "Blue Camel Energy", "D.light Nigeria", "Baobab Plus",
+                        "A4&T Power", "Green Village Electricity", "Nayo Tropical Tech", "Prado Power", "Sosai Renewables"
+                    ],
+                    global: [
+                        "Brookfield Renewable", "First Solar", "SolarEdge", "Enphase Energy", "Vestas",
+                        "Canadian Solar", "JinkoSolar", "Sunrun", "Orsted (Wind)", "Nordex",
+                        "Plug Power (Hydrogen)", "Bloom Energy", "Siemens Gamesa", "Meyer Burger", "TPI Composites",
+                        "Scatec", "Acciona Energia", "Neoen", "EDP Renovaveis", "Shoals Technologies",
+                        "Clearway Energy", "Atlantica Sustainable Infrastructure", "Boralex"
+                    ]
+                },
+                "Nuclear Energy": {
+                    icon: "fa-atom",
+                    style: "sector-nuc",
+                    desc: "Niche strategic sector.",
+                    nigerian: [
+                        "NAEC (Atomic Energy Comm.)", "Nig. Nuclear Regulatory Authority", "Rosatom Nigeria", "Center for Energy Research Zaria", "FGN Nuclear Fund",
+                        "KAERI Nigeria", "Nigerian Uranium Mining Co", "NNPC New Energy Division", "NASENI", "Julius Berger (Nuclear Infra)",
+                        "Etco Nigeria", "ABB Nigeria", "GE Vernova Nigeria"
+                    ],
+                    global: [
+                        "Cameco Corp", "BWX Technologies", "Westinghouse", "TerraPower", "NuScale Power",
+                        "Kazatomprom", "Denison Mines", "NexGen Energy", "Energy Fuels", "Uranerz",
+                        "Mitsubishi Heavy Industries", "Hitachi-GE", "Rolls-Royce SMR", "Framatome", "Centrus Energy",
+                        "Uranium Energy Corp", "Paladin Energy", "Yellow Cake PLC", "Jacobs Solutions"
+                    ]
+                },
+                "Energy Storage": {
+                    icon: "fa-battery-full",
+                    style: "sector-store",
+                    desc: "Mini-grid revolution.",
+                    nigerian: [
+                        "Arnergy (Storage Div)", "Zola Electric", "PowerGen Renewable", "All On (Investor)", "Sterling Bank (Green Bond)",
+                        "Koolboks", "SunFi", "Beacon Power Services", "Infibranches", "Reeddi",
+                        "Gennex Technologies", "Simba Power", "Wavetra", "Jubaili Bros"
+                    ],
+                    global: [
+                        "Tesla (Powerwall)", "BYD", "CATL", "Fluence Energy", "Stem Inc",
+                        "LG Energy Solution", "Samsung SDI", "Panasonic", "QuantumScape", "Solid Power",
+                        "Albemarle (Lithium)", "Ganfeng Lithium", "Sigma Lithium", "ESS Tech", "Eos Energy"
+                    ]
+                },
+                "Smart Grid": {
+                    icon: "fa-network-wired",
+                    style: "sector-grid",
+                    desc: "Modern transmission network.",
+                    nigerian: [
+                        "TCN (Transmission Co.)", "MainData Nigeria", "Beacon Power", "Cloud Energy", "Power Control Ltd",
+                        "Metering Services Ltd", "Mojec International", "Unistar Hi-Tech", "Momas Electricity", "Adroit Metering",
+                        "Resourcery", "Zinox (Smart Power)", "CWG PLC", "MainOne (Equinix)", "VDT Communications"
+                    ],
+                    global: [
+                        "Schneider Electric", "Siemens AG", "GE Vernova", "ABB", "Itron",
+                        "Landis+Gyr", "Eaton", "Rockwell Automation", "Quanta Services", "Hubbell",
+                        "Honeywell", "Oracle (Utilities)", "Cisco (Smart Grid)", "SAP (Energy)", "Emerson Electric"
+                    ]
+                },
+                "Bioenergy": {
+                    icon: "fa-leaf",
+                    style: "sector-bio",
+                    desc: "Biomass and biofuels.",
+                    nigerian: [
+                        "Dangote Sugar (Ethanol)", "BUA Foods (Biofuel)", "Green Energy Biofuels", "Homefort", "Gas360",
+                        "West Africa ENRG", "Carbon Circles", "Aiteo (Bio-division)", "Flour Mills of Nig", "Presco PLC",
+                        "Okomu Oil", "Notore Chemical", "Golden Sugar", "Global Biofuels Nig"
+                    ],
+                    global: [
+                        "Archer-Daniels-Midland (ADM)", "Darling Ingredients", "Neste", "Drax Group", "Enviva",
+                        "Green Plains", "Renewable Energy Group", "Verbio", "Gevo", "Amyris",
+                        "Pacific Bioenergy", "Enerkem", "Lignetics", "POET", "Babcock & Wilcox"
+                    ]
+                }
+            };
+
+
+
+            function renderSector(sectorName) {
+                const data = companyData[sectorName];
+                if (!data) return '';
+
+                let nigerianHtml = '';
+                data.nigerian.forEach((company, index) => {
+                    nigerianHtml += `<li class="company-item"><span class="rank">${index + 1}</span> ${company}</li>`;
+                });
+
+                let globalHtml = '';
+                data.global.forEach((company, index) => {
+                    globalHtml += `<li class="company-item"><span class="rank">${index + 21}</span> ${company}</li>`;
+                });
+
+                return `
+                <div class="sector-section">
+                    <div class="sector-header">
+                        <div class="sector-icon ${data.style}"><i class="fas ${data.icon}"></i></div>
+                        <div class="sector-title">${sectorName}</div>
+                        <div class="sector-desc">${data.desc}</div>
+                    </div>
+                    <div class="companies-grid">
+                        <div class="company-list-container">
+                            <div class="company-list-header">Nigerian Focus (1-20)</div>
+                            <ul class="company-list">${nigerianHtml}</ul>
+                        </div>
+                        <div class="company-list-container">
+                            <div class="company-list-header">Global Leaders (21-50)</div>
+                            <ul class="company-list">${globalHtml}</ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                // Mobile Check
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.mobile-header-bar').style.display = 'flex';
+                }
+
+                // Dynamic Name Loading
+                const storedOrgName = localStorage.getItem('neiis_org_name');
+                const dataBankName = localStorage.getItem('neiis_databank_name'); // If needed for title
+
+                if (storedOrgName) {
+                    // Update Sidebar Org Name
+                    const orgNameElements = document.querySelectorAll('.nav-label div[style*="color: #fff"]');
+                    if (orgNameElements.length > 0) {
+                        orgNameElements[0].textContent = storedOrgName;
+                    }
+
+                    // Update Bottom User Name
+                    const userNameElement = document.querySelector('.icon-nav-bottom .nav-label[style*="color: #d1d5db"]');
+                    if (userNameElement) {
+                        userNameElement.textContent = storedOrgName.toUpperCase();
+                    }
+
+                    // Update Sidebar Avatar
+                    const avatarElement = document.querySelector('.icon-nav-bottom .icon-nav-item div[style*="border-radius: 50%"]');
+                    if (avatarElement) {
+                        avatarElement.textContent = storedOrgName.charAt(0).toUpperCase();
+                    }
+
+                    // Update All Popup User Info (Profile & Org Switcher)
+                    const popupNames = document.querySelectorAll('.popup-name');
+                    popupNames.forEach(el => {
+                        // Start of word uppercase or simple uppercase depending on context? 
+                        // Let's stick to straight replacement for now.
+                        el.textContent = storedOrgName.toUpperCase();
+                    });
+
+                    // Update avatars that serve as User Avatars, NOT the Org Logo box 
+                    const popupAvatars = document.querySelectorAll('.popup-avatar:not(.org-avatar-box)');
+                    popupAvatars.forEach(el => {
+                        el.textContent = storedOrgName.charAt(0).toUpperCase();
+                    });
+
+                    // Specifically update the Org Name in the switcher (case sensitive preference?)
+                    const orgDynamicNames = document.querySelectorAll('.org-name-dynamic');
+                    orgDynamicNames.forEach(el => {
+                        el.textContent = storedOrgName;
+                    });
+                }
+
+                const storedInterests = localStorage.getItem('neiis_selected_interests');
+                let selectedInterests = storedInterests ? JSON.parse(storedInterests) : [];
+                // Ensure we match data keys
+                const dataKeys = Object.keys(companyData);
+
+                // Simple normalization/matching if needed (assuming user selections match keys)
+
+                const container = document.getElementById('companyContentArea');
+                const exploreContainer = document.getElementById('exploreContainer');
+
+                let hasSelection = false;
+                selectedInterests.forEach(sector => {
+                    if (companyData[sector]) {
+                        container.innerHTML += renderSector(sector);
+                        hasSelection = true;
+                    }
+                });
+
+                if (!hasSelection) {
+                    // display something or everything
+                    dataKeys.slice(0, 1).forEach(sector => container.innerHTML += renderSector(sector));
+                }
+
+                // Unselected
+                dataKeys.forEach(sector => {
+                    if (!selectedInterests.includes(sector) && (hasSelection || sector !== dataKeys[0])) {
+                        exploreContainer.innerHTML += renderSector(sector);
+                    }
+                });
+
+                if (selectedInterests.length === dataKeys.length) {
+                    document.querySelector('.explore-trigger').style.display = 'none';
+                }
+
+                // Dynamic Team Data Population
+                const teamNameEl = document.querySelector('.dynamic-team-name');
+                if (teamNameEl) teamNameEl.textContent = storedOrgName.toUpperCase() + " (You)";
+
+                const mockEmail = "admin@" + storedOrgName.toLowerCase().replace(/\s+/g, '') + ".com";
+
+                const teamEmailEls = document.querySelectorAll('.dynamic-team-email');
+                teamEmailEls.forEach(el => el.textContent = mockEmail);
+
+                const teamAvatarEls = document.querySelectorAll('.dynamic-team-avatar');
+                teamAvatarEls.forEach(el => el.textContent = storedOrgName.charAt(0).toUpperCase());
+
+                // Update Edit Panel specific details
+                const editPanelName = document.querySelector('.dynamic-edit-panel-name');
+                if (editPanelName) editPanelName.textContent = storedOrgName.toUpperCase();
+
+                const editPanelEmail = document.querySelector('.dynamic-edit-panel-email');
+                if (editPanelEmail) editPanelEmail.textContent = mockEmail + " · Last activity on Feb 3, 2026";
+
+                // Populate Settings View
+                const settingsNameInput = document.querySelector('.dynamic-settings-org-name');
+                if (settingsNameInput) settingsNameInput.value = storedOrgName;
+
+                const settingsHandleInput = document.querySelector('.dynamic-settings-handle');
+                // Create a handle from org name
+                const handle = storedOrgName.toLowerCase().replace(/[^a-z0-9]/g, '') + Math.floor(Math.random() * 1000);
+                if (settingsHandleInput) settingsHandleInput.value = handle;
+
+                const settingsDescInput = document.querySelector('.dynamic-settings-desc');
+                if (settingsDescInput) settingsDescInput.value = `The ${storedOrgName} Investor Portal is powered by AngelList. Here you can access all your files, manage transactions, and see latest insights and data from our organization.`;
+            });
+
+            function toggleExplore() {
+                const container = document.getElementById('exploreContainer');
+                const btn = document.querySelector('.explore-trigger');
+                if (container.style.display === 'none') {
+                    container.style.display = 'block';
+                    btn.innerHTML = '<i class="fas fa-minus"></i> Hide sections';
+                } else {
+                    container.style.display = 'none';
+                    btn.innerHTML = '<i class="fas fa-plus"></i> Open more sections';
+                }
+            }
+        </script>
+</body>
+
+<!-- Profile Popup (Moved to body to avoid overflow issues) -->
+<div id="profilePopup" class="profile-popup">
+    <div class="popup-header">SIGNED IN AS</div>
+    <div class="popup-user-row">
+        <div class="popup-avatar">A</div>
+        <div class="popup-user-info">
+            <div class="popup-name">ANIE PIUS</div>
+            <div class="popup-email">sauheisjgh608@gmail.com</div>
+        </div>
+        <i class="fas fa-check popup-check"></i>
+    </div>
+    <div class="popup-divider"></div>
+    <a href="#" class="popup-item">Account settings</a>
+    <a href="#" class="popup-item">Help center</a>
+    <a href="#" class="popup-item">Feedback</a>
+    <div class="popup-divider"></div>
+    <a href="#" class="popup-item">Sign out</a>
+</div>
+
+<style>
+    /* Profile Popup Styles */
+    .btn-new-member {
+        background-color: #ffffff;
+        color: #111827;
+        border: 1px solid #d1d5db;
+        font-weight: 500;
+        font-size: 13px;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-new-member:hover {
+        background-color: #f9fafb;
+        border-color: #9ca3af;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-new-member:active {
+        background-color: #f3f4f6;
+        box-shadow: none;
+        transform: translateY(1px);
+    }
+
+    /* Status Dropdown Styles */
+    .status-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 8px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        width: 240px;
+        z-index: 50;
+        padding-top: 8px;
+    }
+
+    .filter-dropdown-header {
+        padding: 8px 16px;
+        font-size: 12px;
+        color: #9ca3af;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    /* Settings View Styles */
+    .settings-nav-item {
+        padding: 8px 12px;
+        color: #6b7280;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 6px;
+        margin-bottom: 4px;
+    }
+
+    .settings-nav-item.active {
+        background-color: #f3f4f6;
+        /* A clearer active state background */
+        color: #111827;
+        font-weight: 600;
+    }
+
+    .settings-section {
+        margin-bottom: 48px;
+        padding-bottom: 48px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .settings-section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 8px;
+    }
+
+    .settings-section-desc {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 24px;
+        line-height: 1.5;
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 6px;
+    }
+
+    .form-help {
+        font-size: 13px;
+        color: #6b7280;
+        line-height: 1.5;
+        margin-top: 4px;
+    }
+
+    .form-input,
+    .form-textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 14px;
+        color: #111827;
+        background: white;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+        border-color: #6366f1;
+        outline: none;
+        box-shadow: 0 0 0 1px #6366f1;
+    }
+
+    .form-textarea {
+        height: 100px;
+        resize: vertical;
+    }
+
+    .btn-upload {
+        background: white;
+        border: 1px solid #d1d5db;
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #374151;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .btn-upload:hover {
+        background: #f9fafb;
+        border-color: #9ca3af;
+    }
+
+
+
+    .filter-options {
+        padding-bottom: 8px;
+    }
+
+    .filter-option-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        cursor: pointer;
+    }
+
+    .filter-option-row:hover {
+        background-color: #f9fafb;
+    }
+
+    .option-label {
+        font-size: 14px;
+        color: #111827;
+        font-weight: 500;
+    }
+
+    .filter-option-row input {
+        display: none;
+    }
+
+    .custom-radio {
+        width: 18px;
+        height: 18px;
+        border: 1px solid #d1d5db;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+    }
+
+    .filter-option-row input:checked+.custom-radio {
+        border-color: #6366f1;
+        /* Indigo */
+        background-color: #fff;
+    }
+
+    .filter-option-row input:checked+.custom-radio:after {
+        content: '';
+        width: 10px;
+        height: 10px;
+        background: #6366f1;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+    }
+
+    .filter-dropdown-footer {
+        padding: 12px 16px;
+        border-top: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn-reset {
+        background: none;
+        border: none;
+        color: #6b7280;
+        font-size: 13px;
+        cursor: pointer;
+        padding: 4px;
+    }
+
+    .btn-reset:hover {
+        color: #374151;
+    }
+
+    .btn-apply {
+        background: #6366f1;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .btn-apply:hover {
+        background: #4f46e5;
+    }
+
+    .status-btn-active {
+        border-color: #6366f1 !important;
+        background-color: #eef2ff !important;
+        color: #4f46e5 !important;
+    }
+
+    .profile-popup {
+        position: fixed;
+        /* Fixed to viewport */
+        width: 300px;
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        border: 1px solid #e5e7eb;
+        display: none;
+        flex-direction: column;
+        z-index: 9999;
+        /* High z-index */
+        padding: 8px 0;
+        left: 0;
+        top: 0;
+    }
+
+    /* Status Dropdown Styles */
+    .status-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 8px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        width: 240px;
+        z-index: 50;
+        padding-top: 8px;
+    }
+
+    .filter-dropdown-header {
+        padding: 8px 16px;
+        font-size: 12px;
+        color: #9ca3af;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .filter-options {
+        padding-bottom: 8px;
+    }
+
+    .filter-option-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        cursor: pointer;
+    }
+
+    .filter-option-row:hover {
+        background-color: #f9fafb;
+    }
+
+    .option-label {
+        font-size: 14px;
+        color: #111827;
+        font-weight: 500;
+    }
+
+    .filter-option-row input {
+        display: none;
+    }
+
+    .custom-radio {
+        width: 18px;
+        height: 18px;
+        border: 1px solid #d1d5db;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+    }
+
+    .filter-option-row input:checked+.custom-radio {
+        border-color: #6366f1;
+        /* Indigo */
+        background-color: #fff;
+    }
+
+    .filter-option-row input:checked+.custom-radio:after {
+        content: '';
+        width: 10px;
+        height: 10px;
+        background: #6366f1;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+    }
+
+    .filter-dropdown-footer {
+        padding: 12px 16px;
+        border-top: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn-reset {
+        background: none;
+        border: none;
+        color: #6b7280;
+        font-size: 13px;
+        cursor: pointer;
+        padding: 4px;
+    }
+
+    .btn-reset:hover {
+        color: #374151;
+    }
+
+    .btn-apply {
+        background: #6366f1;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .btn-apply:hover {
+        background: #4f46e5;
+    }
+
+    .status-btn-active {
+        border-color: #6366f1 !important;
+        background-color: #eef2ff !important;
+        color: #4f46e5 !important;
+    }
+
+    .profile-popup.visible {
+        display: flex;
+    }
+
+    .popup-header {
+        font-size: 11px;
+        font-weight: 600;
+        color: #6b7280;
+        text-transform: uppercase;
+        padding: 8px 16px;
+        letter-spacing: 0.5px;
+    }
+
+    .popup-user-row {
+        display: flex;
+        align-items: center;
+        padding: 8px 16px;
+        cursor: pointer;
+    }
+
+    .popup-user-row:hover {
+        background: #f9fafb;
+    }
+
+    .popup-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #e5e7eb;
+        color: #374151;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 500;
+        margin-right: 12px;
+    }
+
+    .popup-user-info {
+        flex: 1;
+    }
+
+    .popup-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .popup-email {
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    .popup-check {
+        color: #059669;
+        font-size: 14px;
+    }
+
+    .popup-divider {
+        height: 1px;
+        background: #e5e7eb;
+        margin: 8px 0;
+    }
+
+    .popup-item {
+        display: block;
+        padding: 8px 20px;
+        font-size: 14px;
+        color: #374151;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+
+    .popup-item:hover {
+        background: #f9fafb;
+        color: #111827;
+    }
+</style>
+
+<!-- Org Switcher Popup -->
+<div id="orgPopup" class="profile-popup" style="width: 320px;">
+    <div class="popup-header"
+        style="text-transform: none; color: #111827; font-size: 15px; font-weight: 600; padding: 16px 16px 8px;">Your
+        dashboards</div>
+
+    <!-- Org Item (Active) -->
+    <div class="popup-user-row selected">
+        <div class="popup-avatar org-avatar-box" style="border-radius: 4px; background: #000; border: 1px solid #333;">
+            <img src="assets/images/neiih_logo_white.png" alt="NEIIA" style="max-height: 16px; max-width: 20px;">
+        </div>
+        <div class="popup-user-info">
+            <div class="popup-name org-name-dynamic">anie</div>
+            <div class="popup-email">Organization</div>
+        </div>
+        <i class="fas fa-check popup-check"></i>
+    </div>
+
+    <!-- Personal Item -->
+    <div class="popup-user-row">
+        <div class="popup-avatar" style="background: #60a5fa; color: white; border-radius: 4px; font-weight: 500;">AP
+        </div>
+        <div class="popup-user-info">
+            <div class="popup-name">ANIE PIUS</div>
+            <div class="popup-email">Invest Account</div>
+        </div>
+    </div>
+
+    <div class="popup-divider"></div>
+
+    <div style="padding: 12px 16px;">
+        <button
+            style="width: 100%; padding: 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; font-weight: 600; color: #374151; cursor: pointer; font-size: 13px; transition: background 0.2s;">
+            Explore other ways to use NEIIA
+        </button>
+    </div>
+</div>
+
+<script>
+    function toggleProfilePopup(event) {
+        event.stopPropagation();
+        closeAllPopups();
+        const popup = document.getElementById('profilePopup');
+        const trigger = event.currentTarget;
+        showPopup(popup, trigger);
+    }
+
+    function toggleOrgPopup(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        closeAllPopups();
+        const popup = document.getElementById('orgPopup');
+        const trigger = event.currentTarget;
+        showPopup(popup, trigger);
+    }
+
+    function showPopup(popup, trigger) {
+        // Position Calculation
+        const rect = trigger.getBoundingClientRect();
+        const leftPos = rect.right + 12;
+
+        // Logic to determine top/bottom alignment
+        // If in top half of screen, align TOP. Else BOTTOM.
+        if (rect.top < window.innerHeight / 2) {
+            // Top alignment
+            popup.style.left = leftPos + 'px';
+            popup.style.top = rect.top + 'px';
+            popup.style.bottom = 'auto';
+        } else {
+            // Bottom alignment
+            popup.style.left = leftPos + 'px';
+            popup.style.bottom = (window.innerHeight - rect.bottom) + 'px';
+            popup.style.top = 'auto';
+        }
+
+        popup.classList.add('visible');
+    }
+
+    function closeAllPopups() {
+        document.querySelectorAll('.profile-popup').forEach(p => p.classList.remove('visible'));
+    }
+
+    // Close on outside click
+    document.addEventListener('click', function (event) {
+        const popups = document.querySelectorAll('.profile-popup.visible');
+        popups.forEach(popup => {
+            if (popup && !popup.contains(event.target)) {
+                popup.classList.remove('visible');
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

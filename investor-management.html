@@ -1854,7 +1854,7 @@
         <div class="im-cta-inner scroll-reveal">
             <h2>Ready to make every LP interaction count?</h2>
             <p>Join thousands of fund managers who trust us to streamline their investor relationships.</p>
-            <a href="contact.html" class="btn-im-primary">Get Started Today</a>
+            <a href="#" onclick="handleGetStarted(event)" class="btn-im-primary">Get Started Today</a>
         </div>
     </section>
 
@@ -2102,6 +2102,18 @@
         });
 
 
+
+        function handleGetStarted(e) {
+            e.preventDefault();
+            const orgName = localStorage.getItem('neiis_org_name');
+            if (orgName) {
+                // User has an account/setup completed
+                window.location.href = 'databank-room.html';
+            } else {
+                // User needs to onboard
+                window.location.href = 'databank-onboarding.html';
+            }
+        }
     </script>
     <script src="script.js"></script>
 </body>

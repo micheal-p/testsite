@@ -207,14 +207,417 @@
         <a href="construction.html">Privacy Policy</a>
     </footer>
 
+    <!-- Interest Configuration Modal -->
+    <div class="modal-overlay" id="interestModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Select Your Interests in Energy</h2>
+                <div class="modal-progress">2/3</div>
+            </div>
+            <p class="modal-subtitle">
+                Choose the energy sectors that interest you most. This sets the foundation for your business profile and
+                helps us personalize your experience.
+            </p>
+
+            <div class="interests-grid">
+                <!-- Interest Items -->
+                <div class="interest-item" onclick="toggleInterest(this)">
+                    <div class="interest-icon">
+                        <i class="fas fa-gas-pump"></i>
+                    </div>
+                    <div class="interest-name">Oil and Gas</div>
+                    <div class="interest-sub">Fossil Fuels</div>
+                    <div class="check-circle"><i class="fas fa-check"></i></div>
+                </div>
+
+                <div class="interest-item" onclick="toggleInterest(this)">
+                    <div class="interest-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="interest-name">Electricity & Utilities</div>
+                    <div class="interest-sub">Power Generation</div>
+                    <div class="check-circle"><i class="fas fa-check"></i></div>
+                </div>
+
+                <div class="interest-item" onclick="toggleInterest(this)">
+                    <div class="interest-icon">
+                        <i class="fas fa-solar-panel"></i>
+                    </div>
+                    <div class="interest-name">Renewable Energy</div>
+                    <div class="interest-sub">Solar, Wind, Hydro</div>
+                    <div class="check-circle"><i class="fas fa-check"></i></div>
+                </div>
+
+                <div class="interest-item" onclick="toggleInterest(this)">
+                    <div class="interest-icon">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <div class="interest-name">Nuclear Energy</div>
+                    <div class="interest-sub">& Mining</div>
+                    <div class="check-circle"><i class="fas fa-check"></i></div>
+                </div>
+
+                <div class="interest-item" onclick="toggleInterest(this)">
+                    <div class="interest-icon">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                    <div class="interest-name">Energy Storage</div>
+                    <div class="interest-sub">& Batteries</div>
+                    <div class="check-circle"><i class="fas fa-check"></i></div>
+                </div>
+
+                <div class="interest-item" onclick="toggleInterest(this)">
+                    <div class="interest-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <div class="interest-name">Smart Grid</div>
+                    <div class="interest-sub">& AI Technologies</div>
+                    <div class="check-circle"><i class="fas fa-check"></i></div>
+                </div>
+
+                <div class="interest-item" onclick="toggleInterest(this)">
+                    <div class="interest-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="interest-name">Bioenergy</div>
+                    <div class="interest-sub">& Sustainable Fuels</div>
+                    <div class="check-circle"><i class="fas fa-check"></i></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="secondary-btn" id="selectAllBtn" onclick="toggleSelectAll()">Select All</button>
+                <div class="footer-actions">
+                    <button class="secondary-btn" onclick="closeModal()">Cancel</button>
+                    <button class="primary-btn" onclick="continueToNext()">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 31, 36, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background: #fff;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #0B1F24;
+        }
+
+        .modal-progress {
+            font-size: 16px;
+            font-weight: 500;
+            color: #0B1F24;
+        }
+
+        .modal-subtitle {
+            font-size: 15px;
+            color: #6b7280;
+            margin-bottom: 32px;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .interests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .interest-item {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 140px;
+        }
+
+        .interest-item:hover {
+            border-color: #d1d5db;
+            background: #f9fafb;
+        }
+
+        .interest-item.selected {
+            border-color: #FF6B35;
+            background: #fffafa;
+            box-shadow: 0 4px 6px -1px rgba(255, 107, 53, 0.1);
+        }
+
+        .interest-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            color: #4b5563;
+            margin-bottom: 8px;
+        }
+
+        .interest-item.selected .interest-icon {
+            color: #FF6B35;
+        }
+
+        .interest-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0B1F24;
+        }
+
+        .interest-sub {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .check-circle {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .interest-item.selected .check-circle {
+            background: #FF6B35;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .footer-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .primary-btn {
+            background: #6366f1;
+            /* Using purple as in the screenshot example, or stick to brand? User showed purple. But brand is green/orange. I'll use brand purple or brand primary */
+            /* Actually, the user screenshot showed purple button. But NEIIA is green/orange. I'll stick to user request "maintain the ui as we have been using".
+               The user said "you know how it works in spotify... so here is the flow... make sure you maintain the ui as we have been using".
+               So I will use the established NEIIA green/orange colors, NOT the purple from the example screenshot. */
+            background: #0B1F24;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .primary-btn:hover {
+            background: #1a3b42;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: #4b5563;
+            border: 1px solid #e5e7eb;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .secondary-btn:hover {
+            background: #f9fafb;
+            color: #0B1F24;
+        }
+
+        @media (max-width: 640px) {
+            .modal-container {
+                padding: 24px;
+                max-height: 100vh;
+                border-radius: 0;
+            }
+
+            .interests-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-footer {
+                flex-direction: column-reverse;
+                gap: 16px;
+            }
+
+            .footer-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            #selectAllBtn {
+                width: 100%;
+            }
+
+            .primary-btn,
+            .secondary-btn {
+                width: 100%;
+            }
+        }
+    </style>
+
     <script>
         // Get URL parameters to display the organization name
         const urlParams = new URLSearchParams(window.location.search);
         const orgName = urlParams.get('org_name');
+        const databankName = urlParams.get('databank_name');
 
         if (orgName) {
             document.getElementById('orgName').textContent = orgName;
             document.getElementById('avatarInitial').textContent = orgName.charAt(0).toUpperCase();
+            localStorage.setItem('neiis_org_name', orgName);
+        }
+
+        if (databankName) {
+            localStorage.setItem('neiis_databank_name', databankName);
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('interestModal');
+        const triggerCard = document.getElementById('databankCard');
+
+        triggerCard.onclick = function (e) {
+            e.preventDefault();
+            modal.classList.add('active');
+        };
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        function toggleInterest(element) {
+            element.classList.toggle('selected');
+            updateSelectAllBtn();
+        }
+
+        function toggleSelectAll() {
+            const items = document.querySelectorAll('.interest-item');
+            const selectAllBtn = document.getElementById('selectAllBtn');
+            // If currently all selected, deselect all. Otherwise select all.
+            const allSelected = Array.from(items).every(item => item.classList.contains('selected'));
+
+            if (allSelected) {
+                items.forEach(item => item.classList.remove('selected'));
+                selectAllBtn.textContent = 'Select All';
+            } else {
+                items.forEach(item => item.classList.add('selected'));
+                selectAllBtn.textContent = 'Deselect All';
+            }
+        }
+
+        function updateSelectAllBtn() {
+            const items = document.querySelectorAll('.interest-item');
+            const selectAllBtn = document.getElementById('selectAllBtn');
+            const allSelected = Array.from(items).every(item => item.classList.contains('selected'));
+
+            if (allSelected) {
+                selectAllBtn.textContent = 'Deselect All';
+            } else {
+                selectAllBtn.textContent = 'Select All';
+            }
+        }
+
+        function continueToNext() {
+            // Logic to save preferences and navigate away
+            const selected = document.querySelectorAll('.interest-item.selected');
+            if (selected.length === 0) {
+                alert('Please select at least one interest to continue.');
+                return;
+            }
+
+            // Get selected interests text
+            const selectedInterests = Array.from(selected).map(item => {
+                return item.querySelector('.interest-name').textContent.trim();
+            });
+
+            // Save to localStorage
+            localStorage.setItem('neiis_selected_interests', JSON.stringify(selectedInterests));
+
+            // Redirect to dashboard (simulated next step)
+            // Or change text to "Configuring..." then redirect
+            const btn = document.querySelector('.primary-btn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Allocating Data Room...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                window.location.href = 'databank-room.html';
+            }, 1500);
+        }
+
+        // Close modal if clicking outside
+        modal.onclick = function (e) {
+            if (e.target === modal) {
+                closeModal();
+            }
         }
     </script>
 </body>
