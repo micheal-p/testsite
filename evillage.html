@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eVillage Portal | NEIIA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="auth-check.js"></script>
+    <style>
+        /* Apple-style Font Stack */
+        .evillage-page {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: -0.01em;
+        }
+
+        .evillage-page h1,
+        .evillage-page h2,
+        .evillage-page h3 {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+        }
+
+        .ev-stat-number {
+            font-weight: 500;
+            letter-spacing: -0.03em;
+        }
+
+        /* Page-specific overrides */
+        .evillage-page {
+            background: var(--bg-primary);
+        }
+
+        /* Hero Section - eVillage specific */
+        .ev-hero {
+            padding: 180px 40px 100px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Coat of Arms Watermark */
+        .ev-hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: url('assets/images/nigerian_coat_of_arms.png') center center no-repeat;
+            background-size: contain;
+            opacity: 0.07;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ev-hero>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .ev-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(13, 61, 68, 0.1);
+            color: #0d3d44;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 32px;
+        }
+
+        .ev-hero h1 {
+            font-family: var(--font-display);
+            font-size: 56px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            line-height: 1.1;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .ev-hero h1 span {
+            color: #0d3d44;
+        }
+
+        .ev-hero-desc {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .ev-hero-cta {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 64px;
+        }
+
+        .ev-btn-primary {
+            background: #0d3d44;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s;
+            border: 1px solid #0d3d44;
+        }
+
+        .ev-btn-primary:hover {
+            background: #0a2e33;
+        }
+
+        .ev-btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 14px 32px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .ev-btn-secondary:hover {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        /* Stats Bar */
+        .ev-stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+        }
+
+        .ev-stat-item {
+            text-align: center;
+        }
+
+        .ev-stat-number {
+            font-family: var(--font-display);
+            font-size: 48px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .ev-stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Section Styles */
+        .ev-section {
+            padding: 100px 40px;
+        }
+
+        .ev-section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .ev-section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .ev-section-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0d3d44;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .ev-section-title {
+            font-family: var(--font-display);
+            font-size: 42px;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .ev-section-desc {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Objectives Grid */
+        .ev-objectives-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .ev-objective-card {
+            background: #fff;
+            padding: 32px 24px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .ev-objective-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .ev-objective-icon {
+            width: 64px;
+            height: 64px;
+            background: #0d3d44;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            color: white;
+        }
+
+        .ev-objective-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .ev-objective-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Modules Section */
+        .ev-modules {
+            background: var(--bg-secondary);
+        }
+
+        .ev-module-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .ev-module-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .ev-module-block.reverse {
+            direction: rtl;
+        }
+
+        .ev-module-block.reverse>* {
+            direction: ltr;
+        }
+
+        .ev-module-content {
+            padding: 0 20px;
+        }
+
+        .ev-module-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(13, 61, 68, 0.1);
+            color: #0d3d44;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .ev-module-content h2 {
+            font-family: var(--font-display);
+            font-size: 32px;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .ev-module-content>p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .ev-feature-list {
+            list-style: none;
+        }
+
+        .ev-feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            font-size: 15px;
+            color: var(--text-primary);
+        }
+
+        .ev-feature-list li i {
+            color: #0d3d44;
+            font-size: 16px;
+            margin-top: 3px;
+        }
+
+        .ev-module-image {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .ev-module-image img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* User Roles */
+        .ev-roles {
+            background: #0d3d44;
+            color: white;
+        }
+
+        .ev-roles .ev-section-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .ev-roles .ev-section-title {
+            color: white;
+        }
+
+        .ev-roles .ev-section-desc {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .ev-roles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .ev-role-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 40px 32px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .ev-role-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .ev-role-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .ev-role-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ev-role-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .ev-role-card p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* Impact Section */
+        .ev-impact {
+            background: linear-gradient(135deg, #e8f5f0 0%, #d4ede5 100%);
+        }
+
+        .ev-impact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .ev-impact-card {
+            background: white;
+            padding: 40px 32px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .ev-impact-icon {
+            width: 60px;
+            height: 60px;
+            background: #0d3d44;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .ev-impact-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .ev-impact-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .ev-cta {
+            padding: 100px 40px;
+            text-align: center;
+            background: #fff;
+        }
+
+        .ev-cta h2 {
+            font-family: var(--font-display);
+            font-size: 42px;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .ev-cta p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .ev-cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        /* Footer */
+        .ev-footer {
+            padding: 40px;
+            background: #0d3d44;
+            text-align: center;
+        }
+
+        .ev-footer p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .ev-objectives-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .ev-module-block,
+            .ev-module-block.reverse {
+                grid-template-columns: 1fr;
+                direction: ltr;
+            }
+
+            .ev-roles-grid,
+            .ev-impact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .ev-hero h1 {
+                font-size: 32px;
+            }
+
+            .ev-hero-desc {
+                font-size: 16px;
+            }
+
+            .ev-hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .ev-stats-bar {
+                flex-direction: column;
+                gap: 32px;
+            }
+
+            .ev-section-title {
+                font-size: 28px;
+            }
+
+            .ev-objectives-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ev-module-content h2 {
+                font-size: 26px;
+            }
+
+            .ev-cta h2 {
+                font-size: 28px;
+            }
+
+            .ev-cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .ev-section {
+                padding: 60px 20px;
+            }
+
+            .ev-hero {
+                padding: 140px 20px 60px;
+            }
+        }
+
+        /* Dark Mode Overrides - When bulb is OFF (dark mode) */
+        body.dark-mode .ev-hero-badge {
+            background: rgba(255, 255, 255, 0.1);
+            color: #10b981;
+        }
+
+        body.dark-mode .ev-hero h1 span {
+            color: #10b981;
+        }
+
+        body.dark-mode .ev-btn-primary {
+            background: #10b981;
+            border-color: #10b981;
+        }
+
+        body.dark-mode .ev-btn-primary:hover {
+            background: #059669;
+        }
+
+        body.dark-mode .ev-btn-secondary {
+            border-color: rgba(255, 255, 255, 0.3);
+            color: var(--text-primary);
+        }
+
+        body.dark-mode .ev-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #fff;
+        }
+
+        body.dark-mode .ev-section-label {
+            color: #10b981;
+        }
+
+        body.dark-mode .ev-objective-card {
+            background: var(--bg-secondary);
+            border-color: var(--border-color);
+        }
+
+        body.dark-mode .ev-objective-icon {
+            background: #10b981;
+        }
+
+        body.dark-mode .ev-module-label {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+
+        body.dark-mode .ev-feature-list li i {
+            color: #10b981;
+        }
+
+        body.dark-mode .ev-impact {
+            background: linear-gradient(135deg, #0a2e33 0%, #0d3d44 100%);
+        }
+
+        body.dark-mode .ev-impact-card {
+            background: var(--bg-secondary);
+        }
+
+        body.dark-mode .ev-impact-icon {
+            background: #10b981;
+        }
+
+        body.dark-mode .ev-cta {
+            background: var(--bg-primary);
+        }
+
+        body.dark-mode .ev-footer {
+            background: #001D21;
+        }
+    </style>
+</head>
+
+<body class="evillage-page">
+
+    <!-- Logo (Separate from Pill Navbar) - Same as index.html -->
+    <a href="index.html" class="logo-fixed">
+        <div class="logo-wrapper">
+            <img src="assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
+                style="max-width: 120px;">
+            <img src="assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
+                style="max-width: 120px; display: none;">
+            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
+        </div>
+    </a>
+
+    <!-- Navigation (Pill Style - eVillage Links) -->
+    <nav class="navbar pill-nav">
+        <div class="nav-links">
+            <a href="construction.html">Civil Registration</a>
+            <a href="construction.html">Property & Tax</a>
+            <a href="construction.html">Governance</a>
+            <a href="construction.html">Admin Ledger</a>
+            <a href="index.html">Back to NEIIA</a>
+        </div>
+    </nav>
+
+    <!-- Auth Links (Separate from Pill) -->
+    <div class="auth-fixed">
+        <a href="signin.html" class="nav-link">Sign In</a>
+        <a href="newsletter.html" class="btn btn-black">Join</a>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <div class="mobile-nav-header">
+            <a href="index.html">
+                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
+            </a>
+            <button class="mobile-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-nav-content">
+            <ul class="mobile-nav-list">
+                <li><a href="finance.html">Energy Finance & Capital <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="dashboard.html">Energy Ecosystem <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="citibim.html">NEIIA <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="evillage.html">eVillage <i class="fas fa-arrow-right"></i></a></li>
+            </ul>
+            <div class="mobile-nav-footer">
+                <a href="contact.html" class="btn btn-primary full-width">Contact Support</a>
+                <a href="signin.html" class="btn btn-secondary full-width">Sign in</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <section class="ev-hero">
+        <div style="text-align: center;">
+            <span class="ev-hero-badge">
+                <i class="fas fa-leaf"></i> Digital Village Governance
+            </span>
+        </div>
+        <h1>Empowering <span>128,000+</span> Villages with Digital Governance</h1>
+        <p class="ev-hero-desc">A revolutionary platform connecting citizens directly to government services, bringing
+            transparency, efficiency, and accountability to every village across Nigeria.</p>
+
+        <div class="ev-hero-cta">
+            <a href="contact.html" class="ev-btn-primary">Get Started</a>
+            <a href="#modules" class="ev-btn-secondary">Explore Features</a>
+        </div>
+
+        <div class="ev-stats-bar">
+            <div class="ev-stat-item">
+                <div class="ev-stat-number" data-target="128" data-suffix="K+">0</div>
+                <div class="ev-stat-label">Villages Connected</div>
+            </div>
+            <div class="ev-stat-item">
+                <div class="ev-stat-number" data-target="36">0</div>
+                <div class="ev-stat-label">States Covered</div>
+            </div>
+            <div class="ev-stat-item">
+                <div class="ev-stat-number" data-target="774">0</div>
+                <div class="ev-stat-label">LGAs Integrated</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Objectives -->
+    <section class="ev-section">
+        <div class="ev-section-container">
+            <div class="ev-section-header">
+                <p class="ev-section-label">Why eVillage</p>
+                <h2 class="ev-section-title">Transforming Rural Governance</h2>
+                <p class="ev-section-desc">Building a bridge between citizens and government through digital innovation
+                </p>
+            </div>
+
+            <div class="ev-objectives-grid">
+                <div class="ev-objective-card">
+                    <div class="ev-objective-icon"><i class="fas fa-eye"></i></div>
+                    <h3>Full Transparency</h3>
+                    <p>Public access to development projects, budgets, and progress reports in real-time</p>
+                </div>
+                <div class="ev-objective-card">
+                    <div class="ev-objective-icon"><i class="fas fa-rocket"></i></div>
+                    <h3>Maximum Efficiency</h3>
+                    <p>Streamlined record management for births, deaths, property, and civil matters</p>
+                </div>
+                <div class="ev-objective-card">
+                    <div class="ev-objective-icon"><i class="fas fa-coins"></i></div>
+                    <h3>Revenue Growth</h3>
+                    <p>Automated tax calculations and seamless collection processes</p>
+                </div>
+                <div class="ev-objective-card">
+                    <div class="ev-objective-icon"><i class="fas fa-balance-scale"></i></div>
+                    <h3>True Accountability</h3>
+                    <p>Work-based accounting ensuring every Naira is tracked and accounted for</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules -->
+    <section class="ev-section ev-modules" id="modules">
+        <div class="ev-section-container">
+            <div class="ev-section-header">
+                <p class="ev-section-label">Platform Capabilities</p>
+                <h2 class="ev-section-title">Comprehensive Service Modules</h2>
+                <p class="ev-section-desc">Everything you need to manage village governance digitally</p>
+            </div>
+
+            <!-- Civil Registration -->
+            <div class="ev-module-block">
+                <div class="ev-module-content">
+                    <span class="ev-module-label"><i class="fas fa-file-alt"></i> Civil Services</span>
+                    <h2>Civil Registration Hub</h2>
+                    <p>Complete digital management of vital records with instant certificate generation and secure
+                        storage.</p>
+                    <ul class="ev-feature-list">
+                        <li><i class="fas fa-check-circle"></i> Birth & Death Registration with verification</li>
+                        <li><i class="fas fa-check-circle"></i> Smart search by name, date, or registration number</li>
+                        <li><i class="fas fa-check-circle"></i> Instant PDF certificates (Birth, Death, Marriage,
+                            Domicile)</li>
+                        <li><i class="fas fa-check-circle"></i> Secure cloud storage with backup</li>
+                    </ul>
+                </div>
+                <div class="ev-module-image">
+                    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80"
+                        alt="Civil Registration">
+                </div>
+            </div>
+
+            <!-- Property & Tax -->
+            <div class="ev-module-block reverse">
+                <div class="ev-module-content">
+                    <span class="ev-module-label"><i class="fas fa-home"></i> Property & Revenue</span>
+                    <h2>Property & Tax Engine</h2>
+                    <p>Digital land registry with intelligent tax calculation and utility management dashboard.</p>
+                    <ul class="ev-feature-list">
+                        <li><i class="fas fa-check-circle"></i> Complete land and property registration</li>
+                        <li><i class="fas fa-check-circle"></i> Automated tax calculation by property type & size</li>
+                        <li><i class="fas fa-check-circle"></i> Utility services dashboard</li>
+                        <li><i class="fas fa-check-circle"></i> Payment tracking and receipts</li>
+                    </ul>
+                </div>
+                <div class="ev-module-image">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80"
+                        alt="Property Management">
+                </div>
+            </div>
+
+            <!-- Governance -->
+            <div class="ev-module-block">
+                <div class="ev-module-content">
+                    <span class="ev-module-label"><i class="fas fa-landmark"></i> Governance</span>
+                    <h2>Project Oversight Dashboard</h2>
+                    <p>Public visibility into development projects with citizen engagement and complaint resolution.</p>
+                    <ul class="ev-feature-list">
+                        <li><i class="fas fa-check-circle"></i> Real-time project tracking with milestones</li>
+                        <li><i class="fas fa-check-circle"></i> Citizen complaint portal with tracking IDs</li>
+                        <li><i class="fas fa-check-circle"></i> Financial statements download center</li>
+                        <li><i class="fas fa-check-circle"></i> Public meeting schedules and minutes</li>
+                    </ul>
+                </div>
+                <div class="ev-module-image">
+                    <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80" alt="Governance">
+                </div>
+            </div>
+
+            <!-- Accounting -->
+            <div class="ev-module-block reverse">
+                <div class="ev-module-content">
+                    <span class="ev-module-label"><i class="fas fa-chart-pie"></i> Finance</span>
+                    <h2>Administrative Ledger</h2>
+                    <p>Complete asset inventory and expenditure monitoring for transparent fund management.</p>
+                    <ul class="ev-feature-list">
+                        <li><i class="fas fa-check-circle"></i> Digital asset directory for Local Councils</li>
+                        <li><i class="fas fa-check-circle"></i> Real-time expenditure tracking</li>
+                        <li><i class="fas fa-check-circle"></i> Budget allocation visualization</li>
+                        <li><i class="fas fa-check-circle"></i> Audit trail for all transactions</li>
+                    </ul>
+                </div>
+                <div class="ev-module-image">
+                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80" alt="Accounting">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- User Roles -->
+    <section class="ev-section ev-roles">
+        <div class="ev-section-container">
+            <div class="ev-section-header">
+                <p class="ev-section-label">Access Levels</p>
+                <h2 class="ev-section-title">Platform Users</h2>
+                <p class="ev-section-desc">Tailored access for every stakeholder in the governance ecosystem</p>
+            </div>
+
+            <div class="ev-roles-grid">
+                <div class="ev-role-card">
+                    <div class="ev-role-avatar">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop"
+                            alt="Citizen">
+                    </div>
+                    <h3>Citizen</h3>
+                    <p>Access certificates, pay taxes online, file complaints, and track resolution status</p>
+                </div>
+                <div class="ev-role-card">
+                    <div class="ev-role-avatar">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop"
+                            alt="Village Official">
+                    </div>
+                    <h3>Village Official</h3>
+                    <p>Manage local records, update project statuses, and handle citizen requests</p>
+                </div>
+                <div class="ev-role-card">
+                    <div class="ev-role-avatar">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop"
+                            alt="LGA Chairman">
+                    </div>
+                    <h3>LGA Chairman</h3>
+                    <p>Oversee fund expenditures, monitor projects, and review local participation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact -->
+    <section class="ev-section ev-impact">
+        <div class="ev-section-container">
+            <div class="ev-section-header">
+                <p class="ev-section-label">Expected Outcomes</p>
+                <h2 class="ev-section-title">Measurable Impact</h2>
+                <p class="ev-section-desc">Transforming governance through digital innovation</p>
+            </div>
+
+            <div class="ev-impact-grid">
+                <div class="ev-impact-card">
+                    <div class="ev-impact-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    <h3>Speedy Implementation</h3>
+                    <p>Faster project execution through digital monitoring and real-time status updates</p>
+                </div>
+                <div class="ev-impact-card">
+                    <div class="ev-impact-icon"><i class="fas fa-users"></i></div>
+                    <h3>Citizen Empowerment</h3>
+                    <p>Easier access to government services and information from anywhere</p>
+                </div>
+                <div class="ev-impact-card">
+                    <div class="ev-impact-icon"><i class="fas fa-piggy-bank"></i></div>
+                    <h3>Cost Reduction</h3>
+                    <p>Moving paper-based processes to digital saves resources and reduces waste</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="ev-cta">
+        <div class="ev-section-container">
+            <h2>Ready to Transform Your Village?</h2>
+            <p>Join the digital governance revolution and bring transparency to your community</p>
+            <div class="ev-cta-buttons">
+                <a href="contact.html" class="ev-btn-primary">Contact Us</a>
+                <a href="construction.html" class="ev-btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="ev-footer">
+        <p>&copy; 2026 NEIIA - eVillage Portal | Federal Republic of Nigeria</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Stats Count-Up Animation
+        (function () {
+            const stats = document.querySelectorAll('.ev-stat-number[data-target]');
+            let animated = false;
+
+            function animateStats() {
+                if (animated) return;
+
+                stats.forEach(stat => {
+                    const target = parseFloat(stat.dataset.target);
+                    const suffix = stat.dataset.suffix || '';
+                    const duration = 2000; // 2 seconds
+                    const increment = target / (duration / 16);
+                    let current = 0;
+
+                    const updateCount = () => {
+                        current += increment;
+                        if (current < target) {
+                            stat.textContent = Math.floor(current) + suffix;
+                            requestAnimationFrame(updateCount);
+                        } else {
+                            stat.textContent = target + suffix;
+                        }
+                    };
+
+                    updateCount();
+                });
+
+                animated = true;
+            }
+
+            // Trigger animation when stats are visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateStats();
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            const statsBar = document.querySelector('.ev-stats-bar');
+            if (statsBar) {
+                observer.observe(statsBar);
+            }
+        })();
+    </script>
+</body>
+
+</html>
