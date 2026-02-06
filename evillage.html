@@ -522,10 +522,19 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
+        /* Roles Wrapper (Desktop Default) */
+        .ev-roles-wrapper {
+            position: relative;
+            width: 100%;
+            display: block;
+        }
+
         .ev-roles-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 32px;
+            width: 100%;
+            overflow: visible;
         }
 
         .ev-role-card {
@@ -535,6 +544,9 @@
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: transform 0.2s;
+            height: 100%;
+            display: block;
+            flex: none;
         }
 
         .ev-role-card:hover {
@@ -569,15 +581,85 @@
             line-height: 1.6;
         }
 
+        /* Roles Carousel Mobile Styles */
+        @media (max-width: 768px) {
+            .ev-roles-wrapper {
+                padding: 0 0 20px 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 0 -20px;
+                width: calc(100% + 40px);
+            }
+
+            .ev-roles-grid {
+                display: flex;
+                gap: 16px;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                scroll-behavior: smooth;
+                padding: 20px 20px 40px 20px;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+                align-items: stretch;
+                grid-template-columns: none;
+
+                /* Mobile breakout */
+                width: 100vw;
+                margin-left: calc(-50vw + 50%);
+                margin-right: calc(-50vw + 50%);
+                box-sizing: border-box;
+            }
+
+            .ev-roles-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            .ev-role-card {
+                flex: 0 0 85vw;
+                min-width: 85vw;
+                scroll-snap-align: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                min-height: 320px;
+            }
+
+            /* Custom white dots for dark background */
+            .ev-roles-wrapper .ev-carousel-dots {
+                display: flex;
+                /* Show on mobile */
+                margin-top: 0;
+            }
+
+            .ev-roles-wrapper .ev-carousel-dot {
+                background: rgba(255, 255, 255, 0.3);
+            }
+
+            .ev-roles-wrapper .ev-carousel-dot.active {
+                background: #fff;
+            }
+        }
+
         /* Impact Section */
         .ev-impact {
             background: linear-gradient(135deg, #e8f5f0 0%, #d4ede5 100%);
+        }
+
+        /* Impact Wrapper (Desktop Default) */
+        .ev-impact-wrapper {
+            position: relative;
+            width: 100%;
+            display: block;
         }
 
         .ev-impact-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 32px;
+            width: 100%;
+            overflow: visible;
         }
 
         .ev-impact-card {
@@ -586,6 +668,9 @@
             border-radius: 16px;
             text-align: center;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            display: block;
+            flex: none;
         }
 
         .ev-impact-icon {
@@ -599,6 +684,68 @@
             margin: 0 auto 20px;
             font-size: 24px;
             color: white;
+            box-shadow: 0 4px 12px rgba(13, 61, 68, 0.15);
+        }
+
+        /* Impact Carousel Mobile Styles */
+        @media (max-width: 768px) {
+            .ev-impact-wrapper {
+                padding: 0 0 20px 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 0 -20px;
+                width: calc(100% + 40px);
+            }
+
+            .ev-impact-grid {
+                display: flex;
+                gap: 16px;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                scroll-behavior: smooth;
+                padding: 20px 20px 40px 20px;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+                align-items: stretch;
+                grid-template-columns: none;
+
+                /* Mobile breakout */
+                width: 100vw;
+                margin-left: calc(-50vw + 50%);
+                margin-right: calc(-50vw + 50%);
+                box-sizing: border-box;
+            }
+
+            .ev-impact-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            .ev-impact-card {
+                flex: 0 0 85vw;
+                min-width: 85vw;
+                scroll-snap-align: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                min-height: 300px;
+            }
+
+            /* Custom dark dots for light background */
+            .ev-impact-wrapper .ev-carousel-dots {
+                display: flex;
+                /* Show on mobile */
+                margin-top: 0;
+            }
+
+            .ev-impact-wrapper .ev-carousel-dot {
+                background: rgba(13, 61, 68, 0.2);
+            }
+
+            .ev-impact-wrapper .ev-carousel-dot.active {
+                background: #0d3d44;
+            }
         }
 
         .ev-impact-card h3 {
@@ -680,8 +827,9 @@
             }
 
             .ev-hero-cta {
-                flex-direction: column;
+                flex-direction: row;
                 align-items: center;
+                gap: 12px;
             }
 
             .ev-stats-bar {
@@ -716,8 +864,9 @@
             }
 
             .ev-cta-buttons {
-                flex-direction: column;
+                flex-direction: row;
                 align-items: center;
+                gap: 12px;
             }
 
             .ev-section {
@@ -1039,30 +1188,38 @@
                 <p class="ev-section-desc">Tailored access for every stakeholder in the governance ecosystem</p>
             </div>
 
-            <div class="ev-roles-grid">
-                <div class="ev-role-card">
-                    <div class="ev-role-avatar">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop"
-                            alt="Citizen">
+            <div class="ev-roles-wrapper">
+                <div class="ev-roles-grid" id="rolesCarousel">
+                    <div class="ev-role-card">
+                        <div class="ev-role-avatar">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop"
+                                alt="Citizen">
+                        </div>
+                        <h3>Citizen</h3>
+                        <p>Access certificates, pay taxes online, file complaints, and track resolution status</p>
                     </div>
-                    <h3>Citizen</h3>
-                    <p>Access certificates, pay taxes online, file complaints, and track resolution status</p>
+                    <div class="ev-role-card">
+                        <div class="ev-role-avatar">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop"
+                                alt="Village Official">
+                        </div>
+                        <h3>Village Official</h3>
+                        <p>Manage local records, update project statuses, and handle citizen requests</p>
+                    </div>
+                    <div class="ev-role-card">
+                        <div class="ev-role-avatar">
+                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop"
+                                alt="LGA Chairman">
+                        </div>
+                        <h3>LGA Chairman</h3>
+                        <p>Oversee fund expenditures, monitor projects, and review local participation</p>
+                    </div>
                 </div>
-                <div class="ev-role-card">
-                    <div class="ev-role-avatar">
-                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop"
-                            alt="Village Official">
-                    </div>
-                    <h3>Village Official</h3>
-                    <p>Manage local records, update project statuses, and handle citizen requests</p>
-                </div>
-                <div class="ev-role-card">
-                    <div class="ev-role-avatar">
-                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop"
-                            alt="LGA Chairman">
-                    </div>
-                    <h3>LGA Chairman</h3>
-                    <p>Oversee fund expenditures, monitor projects, and review local participation</p>
+                <!-- Roles Carousel Dots (Mobile Only) -->
+                <div class="ev-carousel-dots" id="rolesDots">
+                    <button class="ev-carousel-dot active" data-index="0"></button>
+                    <button class="ev-carousel-dot" data-index="1"></button>
+                    <button class="ev-carousel-dot" data-index="2"></button>
                 </div>
             </div>
         </div>
@@ -1077,21 +1234,29 @@
                 <p class="ev-section-desc">Transforming governance through digital innovation</p>
             </div>
 
-            <div class="ev-impact-grid">
-                <div class="ev-impact-card">
-                    <div class="ev-impact-icon"><i class="fas fa-tachometer-alt"></i></div>
-                    <h3>Speedy Implementation</h3>
-                    <p>Faster project execution through digital monitoring and real-time status updates</p>
+            <div class="ev-impact-wrapper">
+                <div class="ev-impact-grid" id="impactCarousel">
+                    <div class="ev-impact-card">
+                        <div class="ev-impact-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h3>Speedy Implementation</h3>
+                        <p>Faster project execution through digital monitoring and real-time status updates</p>
+                    </div>
+                    <div class="ev-impact-card">
+                        <div class="ev-impact-icon"><i class="fas fa-users"></i></div>
+                        <h3>Citizen Empowerment</h3>
+                        <p>Easier access to government services and information from anywhere</p>
+                    </div>
+                    <div class="ev-impact-card">
+                        <div class="ev-impact-icon"><i class="fas fa-piggy-bank"></i></div>
+                        <h3>Cost Reduction</h3>
+                        <p>Moving paper-based processes to digital saves resources and reduces waste</p>
+                    </div>
                 </div>
-                <div class="ev-impact-card">
-                    <div class="ev-impact-icon"><i class="fas fa-users"></i></div>
-                    <h3>Citizen Empowerment</h3>
-                    <p>Easier access to government services and information from anywhere</p>
-                </div>
-                <div class="ev-impact-card">
-                    <div class="ev-impact-icon"><i class="fas fa-piggy-bank"></i></div>
-                    <h3>Cost Reduction</h3>
-                    <p>Moving paper-based processes to digital saves resources and reduces waste</p>
+                <!-- Impact Carousel Dots (Mobile Only) -->
+                <div class="ev-carousel-dots" id="impactDots">
+                    <button class="ev-carousel-dot active" data-index="0"></button>
+                    <button class="ev-carousel-dot" data-index="1"></button>
+                    <button class="ev-carousel-dot" data-index="2"></button>
                 </div>
             </div>
         </div>
@@ -1117,63 +1282,54 @@
     <script src="script.js"></script>
     <script>
         // Stats Count-Up Animation
-        (function () {
-            const stats = document.querySelectorAll('.ev-stat-number[data-target]');
-            let animated = false;
 
-            function animateStats() {
-                if (animated) return;
+        // Count up animation
+        const stats = document.querySelectorAll('.ev-stat-number');
+        const options = {
+            threshold: 0.5
+        };
 
-                stats.forEach(stat => {
-                    const target = parseFloat(stat.dataset.target);
-                    const suffix = stat.dataset.suffix || '';
-                    const duration = 2000; // 2 seconds
-                    const increment = target / (duration / 16);
-                    let current = 0;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = parseInt(entry.target.getAttribute('data-target'));
+                    const suffix = entry.target.getAttribute('data-suffix') || '';
+                    animateValue(entry.target, 0, target, 2000, suffix);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, options);
 
-                    const updateCount = () => {
-                        current += increment;
-                        if (current < target) {
-                            stat.textContent = Math.floor(current) + suffix;
-                            requestAnimationFrame(updateCount);
-                        } else {
-                            stat.textContent = target + suffix;
-                        }
-                    };
+        stats.forEach(stat => observer.observe(stat));
 
-                    updateCount();
-                });
+        function animateValue(obj, start, end, duration, suffix) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start) + suffix;
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
 
-                animated = true;
-            }
+        // Carousel Logic (Reusable)
+        function initCarousel(carouselId, dotsId, cardSelector) {
+            const carousel = document.getElementById(carouselId);
+            const dotsContainer = document.getElementById(dotsId);
 
-            // Trigger animation when stats are visible
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        animateStats();
-                    }
-                });
-            }, { threshold: 0.5 });
+            if (!carousel || !dotsContainer) return;
 
-            const statsBar = document.querySelector('.ev-stats-bar');
-            if (statsBar) {
-                observer.observe(statsBar);
-            }
-        })();
-
-        // Objectives Carousel
-        (function () {
-            const carousel = document.getElementById('objectivesCarousel');
-            const dots = document.querySelectorAll('.ev-carousel-dot');
-
-            if (!carousel || !dots.length) return;
+            const dots = dotsContainer.querySelectorAll('.ev-carousel-dot');
+            if (!dots.length) return;
 
             // Click on dots to scroll
             dots.forEach(dot => {
                 dot.addEventListener('click', () => {
                     const index = parseInt(dot.dataset.index);
-                    const cards = carousel.querySelectorAll('.ev-objective-card');
+                    const cards = carousel.querySelectorAll(cardSelector);
                     if (cards[index]) {
                         cards[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                     }
@@ -1183,14 +1339,41 @@
             // Update dots on scroll
             carousel.addEventListener('scroll', () => {
                 const scrollLeft = carousel.scrollLeft;
-                const cardWidth = 280 + 24; // card width + gap
+                const cards = carousel.querySelectorAll(cardSelector);
+                if (!cards.length) return;
+
+                const cardWidth = cards[0].offsetWidth + 16; // width + gap
                 const activeIndex = Math.round(scrollLeft / cardWidth);
 
                 dots.forEach((dot, i) => {
                     dot.classList.toggle('active', i === activeIndex);
                 });
             });
-        })();
+        }
+
+        // Initialize Carousels
+        document.addEventListener('DOMContentLoaded', () => {
+            initCarousel('objectivesCarousel', 'carouselDots', '.ev-objective-card');
+            initCarousel('rolesCarousel', 'rolesDots', '.ev-role-card');
+            initCarousel('impactCarousel', 'impactDots', '.ev-impact-card');
+        });
+
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+        const mobileCloseBtn = document.querySelector('.mobile-close-btn');
+
+        if (mobileMenuBtn && mobileNavOverlay && mobileCloseBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileNavOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            mobileCloseBtn.addEventListener('click', () => {
+                mobileNavOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
     </script>
 </body>
 
