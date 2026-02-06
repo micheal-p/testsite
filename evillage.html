@@ -208,11 +208,27 @@
             margin: 0 auto;
         }
 
-        /* Objectives Grid */
+        /* Objectives Carousel */
+        /* Objectives Grid (Desktop Default) */
+        .ev-objectives-wrapper {
+            position: relative;
+            background: rgba(13, 61, 68, 0.03);
+            border-radius: 24px;
+            padding: 40px 0;
+            overflow: hidden;
+            margin: 0;
+            width: 100%;
+            display: block;
+        }
+
         .ev-objectives-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 24px;
+            padding: 40px;
+            width: 100%;
+            margin: 0;
+            overflow: visible;
         }
 
         .ev-objective-card {
@@ -222,6 +238,12 @@
             text-align: center;
             border: 1px solid var(--border-color);
             transition: transform 0.2s, box-shadow 0.2s;
+            height: 100%;
+            /* Match height */
+            box-shadow: none;
+            min-height: auto;
+            flex: none;
+            display: block;
         }
 
         .ev-objective-card:hover {
@@ -240,6 +262,7 @@
             margin: 0 auto 20px;
             font-size: 28px;
             color: white;
+            box-shadow: none;
         }
 
         .ev-objective-card h3 {
@@ -249,10 +272,147 @@
             color: var(--text-primary);
         }
 
+        /* Carousel Dots (Hidden on Desktop) */
+        .ev-carousel-dots {
+            display: none;
+        }
+
         .ev-objective-card p {
             font-size: 14px;
             color: var(--text-secondary);
             line-height: 1.5;
+            max-width: none;
+        }
+
+        /* Mobile Carousel Styles */
+        @media (max-width: 768px) {
+            .ev-objectives-wrapper {
+                background: transparent;
+                border-radius: 0;
+                padding: 0 0 20px 0;
+                /* Reduced top padding */
+                display: flex;
+                flex-direction: column;
+                /* Stack dots below */
+                align-items: center;
+                margin: 0 -20px;
+                width: calc(100% + 40px);
+            }
+
+            .ev-objectives-grid {
+                display: flex;
+                gap: 16px;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                scroll-behavior: smooth;
+                padding: 20px 20px 40px 20px;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+                align-items: stretch;
+                grid-template-columns: none;
+
+                /* Mobile breakout */
+                width: 100vw;
+                margin-left: calc(-50vw + 50%);
+                margin-right: calc(-50vw + 50%);
+                box-sizing: border-box;
+            }
+
+            .ev-objective-card {
+                padding: 40px 32px;
+                border-radius: 24px;
+                flex: 0 0 85vw;
+                min-width: 85vw;
+                scroll-snap-align: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                min-height: 360px;
+                /* Slightly reduced height */
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            }
+
+            .ev-objective-icon {
+                width: 80px;
+                height: 80px;
+                border-radius: 20px;
+                margin-bottom: 24px;
+                font-size: 32px;
+                box-shadow: 0 8px 16px rgba(13, 61, 68, 0.2);
+            }
+
+            .ev-objective-card h3 {
+                font-size: 24px;
+                margin-bottom: 12px;
+            }
+
+            .ev-objective-card p {
+                font-size: 16px;
+                line-height: 1.5;
+                max-width: 260px;
+                margin: 0 auto;
+            }
+
+            /* Center dots on mobile and show them */
+            .ev-carousel-dots {
+                display: flex;
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+        }
+
+        .ev-objective-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .ev-objective-icon {
+            width: 80px;
+            height: 80px;
+            background: #0d3d44;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 32px;
+            font-size: 32px;
+            color: white;
+            box-shadow: 0 8px 16px rgba(13, 61, 68, 0.2);
+        }
+
+        .ev-objective-card h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .ev-objective-card p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 260px;
+            margin: 0 auto;
+        }
+
+
+        .ev-carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(13, 61, 68, 0.2);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+            margin: 0 4px;
+        }
+
+        .ev-carousel-dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: #0d3d44;
         }
 
         /* Modules Section */
@@ -525,8 +685,18 @@
             }
 
             .ev-stats-bar {
-                flex-direction: column;
-                gap: 32px;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 24px;
+                justify-content: center;
+            }
+
+            .ev-stat-number {
+                font-size: 32px;
+            }
+
+            .ev-stat-label {
+                font-size: 12px;
             }
 
             .ev-section-title {
@@ -676,8 +846,8 @@
     <!-- Mobile Navigation Overlay -->
     <div class="mobile-nav-overlay">
         <div class="mobile-nav-header">
-            <a href="index.html">
-                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
+            <a href="evillage.html">
+                <img src="assets/images/neiis-logo-green.png" alt="eVillage" style="max-height: 40px;">
             </a>
             <button class="mobile-close-btn">
                 <i class="fas fa-times"></i>
@@ -685,10 +855,11 @@
         </div>
         <div class="mobile-nav-content">
             <ul class="mobile-nav-list">
-                <li><a href="finance.html">Energy Finance & Capital <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="dashboard.html">Energy Ecosystem <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="citibim.html">NEIIA <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="evillage.html">eVillage <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="construction.html">Civil Registration <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="construction.html">Property & Tax <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="construction.html">Governance <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="construction.html">Admin Ledger <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="index.html">Back to NEIIA <i class="fas fa-arrow-right"></i></a></li>
             </ul>
             <div class="mobile-nav-footer">
                 <a href="contact.html" class="btn btn-primary full-width">Contact Support</a>
@@ -739,26 +910,34 @@
                 </p>
             </div>
 
-            <div class="ev-objectives-grid">
-                <div class="ev-objective-card">
-                    <div class="ev-objective-icon"><i class="fas fa-eye"></i></div>
-                    <h3>Full Transparency</h3>
-                    <p>Public access to development projects, budgets, and progress reports in real-time</p>
+            <div class="ev-objectives-wrapper">
+                <div class="ev-objectives-grid" id="objectivesCarousel">
+                    <div class="ev-objective-card">
+                        <div class="ev-objective-icon"><i class="fas fa-eye"></i></div>
+                        <h3>Full Transparency</h3>
+                        <p>Public access to development projects, budgets, and progress reports in real-time</p>
+                    </div>
+                    <div class="ev-objective-card">
+                        <div class="ev-objective-icon"><i class="fas fa-rocket"></i></div>
+                        <h3>Maximum Efficiency</h3>
+                        <p>Streamlined record management for births, deaths, property, and civil matters</p>
+                    </div>
+                    <div class="ev-objective-card">
+                        <div class="ev-objective-icon"><i class="fas fa-coins"></i></div>
+                        <h3>Revenue Growth</h3>
+                        <p>Automated tax calculations and seamless collection processes</p>
+                    </div>
+                    <div class="ev-objective-card">
+                        <div class="ev-objective-icon"><i class="fas fa-balance-scale"></i></div>
+                        <h3>True Accountability</h3>
+                        <p>Work-based accounting ensuring every Naira is tracked and accounted for</p>
+                    </div>
                 </div>
-                <div class="ev-objective-card">
-                    <div class="ev-objective-icon"><i class="fas fa-rocket"></i></div>
-                    <h3>Maximum Efficiency</h3>
-                    <p>Streamlined record management for births, deaths, property, and civil matters</p>
-                </div>
-                <div class="ev-objective-card">
-                    <div class="ev-objective-icon"><i class="fas fa-coins"></i></div>
-                    <h3>Revenue Growth</h3>
-                    <p>Automated tax calculations and seamless collection processes</p>
-                </div>
-                <div class="ev-objective-card">
-                    <div class="ev-objective-icon"><i class="fas fa-balance-scale"></i></div>
-                    <h3>True Accountability</h3>
-                    <p>Work-based accounting ensuring every Naira is tracked and accounted for</p>
+                <div class="ev-carousel-dots" id="carouselDots">
+                    <button class="ev-carousel-dot active" data-index="0"></button>
+                    <button class="ev-carousel-dot" data-index="1"></button>
+                    <button class="ev-carousel-dot" data-index="2"></button>
+                    <button class="ev-carousel-dot" data-index="3"></button>
                 </div>
             </div>
         </div>
@@ -981,6 +1160,36 @@
             if (statsBar) {
                 observer.observe(statsBar);
             }
+        })();
+
+        // Objectives Carousel
+        (function () {
+            const carousel = document.getElementById('objectivesCarousel');
+            const dots = document.querySelectorAll('.ev-carousel-dot');
+
+            if (!carousel || !dots.length) return;
+
+            // Click on dots to scroll
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const index = parseInt(dot.dataset.index);
+                    const cards = carousel.querySelectorAll('.ev-objective-card');
+                    if (cards[index]) {
+                        cards[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    }
+                });
+            });
+
+            // Update dots on scroll
+            carousel.addEventListener('scroll', () => {
+                const scrollLeft = carousel.scrollLeft;
+                const cardWidth = 280 + 24; // card width + gap
+                const activeIndex = Math.round(scrollLeft / cardWidth);
+
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === activeIndex);
+                });
+            });
         })();
     </script>
 </body>
