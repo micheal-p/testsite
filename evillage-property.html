@@ -19,6 +19,8 @@
             padding: 0;
             display: flex;
             min-height: 100vh;
+            overflow-x: hidden;
+            /* Prevent body scroll when panel is open */
         }
 
         /* Sidebar Styles */
@@ -153,7 +155,7 @@
             font-size: 14px;
         }
 
-        /* Property & Tax Specifics */
+        /* ACTIONS GRID */
         .actions-row {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -161,6 +163,7 @@
             margin-bottom: 32px;
         }
 
+        /* Interactive Verification Widget */
         .action-highlight {
             background: #0d3d44;
             color: white;
@@ -171,6 +174,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            transition: all 0.3s;
         }
 
         .action-highlight::before {
@@ -204,27 +208,92 @@
             z-index: 1;
         }
 
-        .pay-btn {
+        /* Search Input Area */
+        .verification-search {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            gap: 12px;
+            max-width: 400px;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 12px 12px 42px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            outline: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .verify-btn {
             background: #10b981;
             color: #0d3d44;
-            padding: 12px 24px;
+            border: none;
+            padding: 0 24px;
             border-radius: 8px;
-            text-decoration: none;
             font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            align-self: flex-start;
-            position: relative;
-            z-index: 1;
+            cursor: pointer;
             transition: all 0.2s;
         }
 
-        .pay-btn:hover {
+        .verify-btn:hover {
             background: #059669;
             color: white;
+            transform: translateY(-1px);
         }
 
+        /* Verification Result */
+        .verification-result {
+            display: none;
+            /* Hidden by default */
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #10b981;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        /* Secondary Actions */
         .secondary-actions {
             display: grid;
             gap: 16px;
@@ -241,11 +310,13 @@
             text-decoration: none;
             color: inherit;
             transition: all 0.2s;
+            cursor: pointer;
         }
 
         .secondary-card:hover {
             border-color: #0d3d44;
             transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .sec-icon {
@@ -272,15 +343,45 @@
             color: var(--text-secondary, #6b7280);
         }
 
+        /* Property List */
         .property-list-section {
             background: white;
             border-radius: 16px;
             padding: 24px;
             border: 1px solid var(--border-color, #e5e7eb);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         }
 
-        .property-list {
-            margin-top: 16px;
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary, #111827);
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color, #e5e7eb);
+            background: white;
+            color: var(--text-secondary, #6b7280);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            border-color: #0d3d44;
+            color: #0d3d44;
         }
 
         .property-item {
@@ -288,6 +389,13 @@
             align-items: center;
             padding: 16px;
             border-bottom: 1px solid var(--border-color, #e5e7eb);
+            transition: background 0.2s;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .property-item:hover {
+            background-color: #f9fafb;
         }
 
         .property-item:last-child {
@@ -328,12 +436,168 @@
             color: #065f46;
         }
 
-        .prop-action {
+        .prop-action-btn {
             margin-left: 16px;
-            color: #0d3d44;
-            font-weight: 500;
+            padding: 6px 12px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            border-radius: 6px;
             font-size: 13px;
-            text-decoration: none;
+            color: var(--text-secondary, #6b7280);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .prop-action-btn:hover {
+            border-color: #0d3d44;
+            color: #0d3d44;
+        }
+
+        /* --- SLIDE OVER PANELS --- */
+        .slide-over-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .slide-over-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .slide-over-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            z-index: 201;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .slide-over-panel.open {
+            transform: translateX(0);
+        }
+
+        .panel-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color, #e5e7eb);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .panel-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary, #111827);
+        }
+
+        .close-panel-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary, #6b7280);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .close-panel-btn:hover {
+            background: #f3f4f6;
+            color: var(--text-primary, #111827);
+        }
+
+        .panel-content {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* Detail Enhancements */
+        .detail-hero-img {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 24px;
+        }
+
+        .detail-group {
+            margin-bottom: 24px;
+        }
+
+        .detail-label {
+            font-size: 13px;
+            color: var(--text-secondary, #6b7280);
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary, #111827);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding-bottom: 24px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 24px;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #10b981;
+            /* Success green */
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px #10b981;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+        }
+
+        .timeline-content p {
+            font-size: 13px;
+            color: var(--text-secondary, #6b7280);
+            margin: 0;
         }
 
         /* Mobile Responsive */
@@ -363,6 +627,10 @@
             .actions-row {
                 grid-template-columns: 1fr;
             }
+
+            .slide-over-panel {
+                max-width: 100%;
+            }
         }
 
         @media (max-width: 768px) {
@@ -377,6 +645,60 @@
             .main-content {
                 margin-left: 0;
                 padding: 80px 20px 40px;
+            }
+
+            /* Property List Mobile Alignment */
+            .property-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .prop-image {
+                width: 100%;
+                height: 140px;
+                margin-right: 0;
+                margin-bottom: 4px;
+            }
+
+            .prop-details {
+                width: 100%;
+            }
+
+            .prop-status {
+                display: inline-block;
+                margin-bottom: 4px;
+            }
+
+            .prop-action-btn {
+                margin-left: 0;
+                width: 100%;
+                text-align: center;
+                margin-top: 4px;
+                padding: 10px;
+            }
+
+            /* Action Highlight Mobile */
+            .action-highlight {
+                padding: 24px;
+            }
+
+            .action-highlight h2 {
+                font-size: 20px;
+            }
+
+            .action-highlight p {
+                max-width: 100%;
+                font-size: 14px;
+            }
+
+            .verification-search {
+                flex-direction: column;
+            }
+
+            .verify-btn {
+                width: 100%;
+                padding: 12px;
             }
 
             .mobile-header {
@@ -398,9 +720,29 @@
         }
 
         body.dark-mode .secondary-card,
-        body.dark-mode .property-list-section {
+        body.dark-mode .property-list-section,
+        body.dark-mode .slide-over-panel,
+        body.dark-mode .panel-header,
+        body.dark-mode .icon-btn,
+        body.dark-mode .prop-action-btn,
+        body.dark-mode .search-input {
             background: #003540;
             border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .search-input {
+            color: white;
+        }
+
+        body.dark-mode .property-item:hover,
+        body.dark-mode .prop-action-btn:hover {
+            background: #004552;
+            color: white;
+        }
+
+        body.dark-mode .close-panel-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
         }
 
         body.dark-mode .sec-icon {
@@ -414,10 +756,6 @@
 
         body.dark-mode .prop-image {
             background: #002329;
-        }
-
-        body.dark-mode .prop-action {
-            color: #10b981;
         }
     </style>
 </head>
@@ -504,30 +842,45 @@
         </div>
 
         <div class="actions-row">
-            <!-- Featured Action -->
+            <!-- Featured Action: Interactive Verification -->
             <div class="action-highlight">
                 <h2>Land Verification Search</h2>
-                <p>Instantly verify the authenticity of land titles and survey plans in your village before purchase.
-                </p>
-                <a href="construction.html" class="pay-btn"><i class="fas fa-search"></i> Verify Land</a>
+                <p>Instantly verify the authenticity of land titles and survey plans in your village.</p>
+
+                <div class="verification-search">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="search-input" id="surveyInput"
+                            placeholder="Enter survey plan number...">
+                    </div>
+                    <button class="verify-btn" onclick="runVerification()">Verify</button>
+                </div>
+
+                <div class="verification-result" id="verifyResult">
+                    <div class="result-header">
+                        <i class="fas fa-check-circle"></i> Result: Verified Authentic
+                    </div>
+                    <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 13px;">Plan AG-2023-8992 is registered
+                        to <strong>Chief Emeka Obi</strong> since 2018.</p>
+                </div>
             </div>
 
             <!-- Secondary Actions -->
             <div class="secondary-actions">
-                <a href="construction.html" class="secondary-card">
+                <div class="secondary-card">
                     <div class="sec-icon"><i class="fas fa-file-signature"></i></div>
                     <div class="sec-content">
                         <h3>Tenancy Registration</h3>
                         <p>Register new tenant agreements</p>
                     </div>
-                </a>
-                <a href="construction.html" class="secondary-card">
+                </div>
+                <div class="secondary-card">
                     <div class="sec-icon"><i class="fas fa-store"></i></div>
                     <div class="sec-content">
                         <h3>Business Permit</h3>
                         <p>Apply for trade license</p>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
 
@@ -539,7 +892,8 @@
             </div>
 
             <div class="property-list">
-                <div class="property-item">
+                <!-- Item 1 -->
+                <div class="property-item" onclick="openDetailsPanel('prop1')">
                     <div class="prop-image"
                         style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=100&q=60'); background-size: cover;">
                     </div>
@@ -548,10 +902,11 @@
                         <div class="prop-id">ID: PRO-2023-8921</div>
                     </div>
                     <div class="prop-status">Tax Paid</div>
-                    <a href="#" class="prop-action">View History</a>
+                    <button class="prop-action-btn">View Details</button>
                 </div>
 
-                <div class="property-item">
+                <!-- Item 2 -->
+                <div class="property-item" onclick="openPaymentPanel('prop2')">
                     <div class="prop-image"
                         style="background-image: url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=100&q=60'); background-size: cover;">
                     </div>
@@ -560,11 +915,93 @@
                         <div class="prop-id">ID: COM-2024-1102</div>
                     </div>
                     <div class="prop-status" style="background: #fef3c7; color: #92400e;">Payment Due</div>
-                    <a href="construction.html" class="prop-action" style="color: #f59e0b;">Pay Now</a>
+                    <button class="prop-action-btn" style="color: #d97706; border-color: #fcd34d;">Pay Tax</button>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- SLIDE OVER: Property Details -->
+    <div class="slide-over-backdrop" id="backdrop" onclick="closeAllPanels()"></div>
+
+    <div class="slide-over-panel" id="detailsPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Property Details</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="House"
+                class="detail-hero-img">
+
+            <div class="detail-group">
+                <div class="detail-label">Property Address</div>
+                <div class="detail-value">Plot 45, Market Road, Agba Village, Abuja</div>
+            </div>
+
+            <div class="detail-group">
+                <div class="detail-label">Survey Plan Number</div>
+                <div class="detail-value">SUR-992-KKA-2021 <i class="far fa-copy"
+                        style="font-size: 12px; margin-left: 8px; color: #10b981; cursor: pointer;"></i></div>
+            </div>
+
+            <div style="margin-top: 32px;">
+                <h4 style="margin-bottom: 16px; font-weight: 600;">Tax History</h4>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>2025 Annual Ground Rent</h4>
+                        <p>Paid on Jan 15, 2025 • ₦25,000</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>2024 Annual Ground Rent</h4>
+                        <p>Paid on Feb 02, 2024 • ₦25,000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE OVER: Pay Tax -->
+    <div class="slide-over-panel" id="paymentPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Pay Property Tax</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <div style="background: #f3f4f6; padding: 20px; border-radius: 12px; margin-bottom: 24px;">
+                <div class="detail-label" style="margin-bottom: 8px;">Payment for:</div>
+                <div class="detail-value">Shop 12, Community Plaza</div>
+                <div class="prop-id" style="margin-top: 4px;">ID: COM-2024-1102</div>
+            </div>
+
+            <div class="detail-group">
+                <div class="detail-label">Payment Type</div>
+                <div class="custom-select-wrapper" style="position: relative;">
+                    <select
+                        style="width: 100%; padding: 16px; border-radius: 12px; border: 1px solid #e5e7eb; margin-top: 8px; font-size: 15px; color: #111827; appearance: none; background: white;">
+                        <option>2026 Annual Tenement Rate</option>
+                        <option>Waste Management Levy</option>
+                    </select>
+                    <i class="fas fa-chevron-down"
+                        style="position: absolute; right: 16px; top: 60%; transform: translateY(-50%); color: #6b7280; pointer-events: none;"></i>
+                </div>
+            </div>
+
+            <div class="detail-group" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+                <div class="detail-label">Total Amount Due</div>
+                <div style="font-size: 32px; font-weight: 700; color: #0d3d44; margin-top: 8px; letter-spacing: -1px;">
+                    ₦15,000.00</div>
+            </div>
+
+            <button class="pay-btn"
+                style="width: 100%; justify-content: center; margin-top: 32px; padding: 16px; font-size: 16px; border: none; cursor: pointer; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);">
+                <i class="fas fa-lock"></i> Pay Securely
+            </button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
     <script>
@@ -572,6 +1009,7 @@
             document.getElementById('sidebar').classList.toggle('active');
         }
 
+        // Close sidebar when clicking outside on mobile
         document.addEventListener('click', (e) => {
             const sidebar = document.getElementById('sidebar');
             const menuBtn = document.querySelector('.mobile-menu-toggle');
@@ -583,6 +1021,41 @@
                 sidebar.classList.remove('active');
             }
         });
+
+        // Verification Widget Logic
+        function runVerification() {
+            const input = document.getElementById('surveyInput');
+            const result = document.getElementById('verifyResult');
+            const btn = document.querySelector('.verify-btn');
+
+            if (!input.value) return;
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            result.style.display = 'none';
+
+            setTimeout(() => {
+                btn.innerHTML = 'Verify';
+                result.style.display = 'block';
+            }, 1000);
+        }
+
+        // Slide Over Panel Logic
+        function openDetailsPanel(id) {
+            document.getElementById('backdrop').classList.add('open');
+            document.getElementById('detailsPanel').classList.add('open');
+        }
+
+        function openPaymentPanel(id) {
+            document.getElementById('backdrop').classList.add('open');
+            document.getElementById('paymentPanel').classList.add('open');
+        }
+
+        function closeAllPanels() {
+            document.getElementById('backdrop').classList.remove('open');
+            document.querySelectorAll('.slide-over-panel').forEach(panel => {
+                panel.classList.remove('open');
+            });
+        }
     </script>
 </body>
 

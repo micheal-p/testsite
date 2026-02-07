@@ -19,6 +19,7 @@
             padding: 0;
             display: flex;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* Sidebar */
@@ -173,11 +174,23 @@
             color: var(--text-secondary, #6b7280);
             cursor: pointer;
             transition: all 0.2s;
+            position: relative;
         }
 
         .icon-btn:hover {
             color: #0d3d44;
             border-color: #0d3d44;
+        }
+
+        .badge-dot {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 1px solid white;
         }
 
         /* Dashboard Grid */
@@ -196,6 +209,11 @@
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
         }
 
         .stat-content h3 {
@@ -275,6 +293,7 @@
             color: inherit;
             transition: all 0.2s;
             border: 1px solid transparent;
+            cursor: pointer;
         }
 
         .action-card:hover {
@@ -334,6 +353,15 @@
             gap: 16px;
             padding: 16px 0;
             border-bottom: 1px solid var(--border-color, #e5e7eb);
+            cursor: pointer;
+            transition: background 0.2s;
+            border-radius: 8px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+
+        .activity-item:hover {
+            background: #f9fafb;
         }
 
         .activity-item:last-child {
@@ -383,6 +411,150 @@
             color: #065f46;
         }
 
+        /* --- SLIDE OVER PANELS (Shared with Property Page) --- */
+        .slide-over-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .slide-over-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .slide-over-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            z-index: 201;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .slide-over-panel.open {
+            transform: translateX(0);
+        }
+
+        .panel-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color, #e5e7eb);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .panel-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary, #111827);
+        }
+
+        .close-panel-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary, #6b7280);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .close-panel-btn:hover {
+            background: #f3f4f6;
+            color: var(--text-primary, #111827);
+        }
+
+        .panel-content {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* Notifications */
+        .notification-item {
+            padding: 16px;
+            border-radius: 8px;
+            background: #f9fafb;
+            margin-bottom: 12px;
+            border-left: 3px solid #0d3d44;
+        }
+
+        .notif-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .notif-body {
+            font-size: 13px;
+            color: var(--text-secondary, #6b7280);
+            margin-bottom: 8px;
+        }
+
+        .notif-time {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        /* Report Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-secondary, #6b7280);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            /* Fix for padding overflow */
+        }
+
+        .form-input:focus {
+            border-color: #0d3d44;
+            box-shadow: 0 0 0 2px rgba(13, 61, 68, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #0d3d44;
+            color: white;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
         /* Mobile Responsive */
         .mobile-header {
             display: none;
@@ -427,7 +599,8 @@
 
             .main-content {
                 margin-left: 0;
-                padding: 80px 20px 40px;
+                padding: 80px 20px 80px;
+                /* Added bottom padding for mobile scroll */
             }
 
             .mobile-header {
@@ -440,8 +613,13 @@
                 gap: 16px;
             }
 
-            .dashboard-grid {
+            .dashboard-grid,
+            .actions-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .slide-over-panel {
+                max-width: 100%;
             }
         }
 
@@ -460,13 +638,28 @@
 
         body.dark-mode .stat-card,
         body.dark-mode .action-card,
-        body.dark-mode .activity-section {
+        body.dark-mode .activity-section,
+        body.dark-mode .slide-over-panel,
+        body.dark-mode .panel-header,
+        body.dark-mode .icon-btn,
+        body.dark-mode .form-input,
+        body.dark-mode .notification-item {
             background: #003540;
+            border-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        body.dark-mode .notification-item {
+            background: #002b33;
         }
 
         body.dark-mode .icon-btn {
             background: transparent;
             color: white;
+        }
+
+        body.dark-mode .activity-item:hover {
+            background: #004552;
         }
     </style>
 </head>
@@ -553,8 +746,11 @@
                 <p>Here's what's happening in your village today.</p>
             </div>
             <div class="header-actions">
-                <button class="icon-btn"><i class="far fa-bell"></i></button>
-                <button class="icon-btn"><i class="fas fa-cog"></i></button>
+                <button class="icon-btn" onclick="openPanel('notificationPanel')">
+                    <i class="far fa-bell"></i>
+                    <span class="badge-dot"></span>
+                </button>
+                <button class="icon-btn" onclick="openPanel('settingsPanel')"><i class="fas fa-cog"></i></button>
             </div>
         </div>
 
@@ -599,34 +795,34 @@
         </div>
 
         <div class="actions-grid">
-            <a href="evillage-civil.html" class="action-card">
+            <div class="action-card" onclick="window.location.href='evillage-civil.html'">
                 <div class="action-icon">
                     <i class="fas fa-file-signature"></i>
                 </div>
                 <h3>Get Certificate</h3>
                 <p>Birth, Indigene, Marriage</p>
-            </a>
-            <a href="evillage-property.html" class="action-card">
+            </div>
+            <div class="action-card" onclick="window.location.href='evillage-property.html'">
                 <div class="action-icon">
                     <i class="fas fa-coins"></i>
                 </div>
                 <h3>Pay Tax</h3>
                 <p>Property, Business, Levy</p>
-            </a>
-            <a href="evillage-governance.html" class="action-card">
+            </div>
+            <div class="action-card" onclick="openPanel('reportPanel')">
                 <div class="action-icon">
                     <i class="fas fa-bullhorn"></i>
                 </div>
                 <h3>Report Issue</h3>
                 <p>Roads, Water, Security</p>
-            </a>
-            <a href="evillage-governance.html" class="action-card">
+            </div>
+            <div class="action-card" onclick="window.location.href='evillage-governance.html'">
                 <div class="action-icon">
                     <i class="fas fa-vote-yea"></i>
                 </div>
                 <h3>Vote / Polls</h3>
                 <p>Community decisions</p>
-            </a>
+            </div>
         </div>
 
         <!-- Recent Activity -->
@@ -637,7 +833,7 @@
 
         <div class="activity-section">
             <ul class="activity-list">
-                <li class="activity-item">
+                <li class="activity-item" onclick="openPanel('activityPanel')">
                     <div class="activity-icon bg-teal">
                         <i class="fas fa-file-alt"></i>
                     </div>
@@ -647,7 +843,7 @@
                     </div>
                     <span class="activity-status status-pending">Pending Approval</span>
                 </li>
-                <li class="activity-item">
+                <li class="activity-item" onclick="openPanel('activityPanel')">
                     <div class="activity-icon bg-green">
                         <i class="fas fa-check-circle"></i>
                     </div>
@@ -657,7 +853,7 @@
                     </div>
                     <span class="activity-status status-completed">Success</span>
                 </li>
-                <li class="activity-item">
+                <li class="activity-item" onclick="openPanel('activityPanel')">
                     <div class="activity-icon bg-orange">
                         <i class="fas fa-exclamation-triangle"></i>
                     </div>
@@ -670,6 +866,222 @@
             </ul>
         </div>
     </main>
+
+    <!-- PANEL: Notifications -->
+    <div class="slide-over-backdrop" id="backdrop" onclick="closeAllPanels()"></div>
+
+    <div class="slide-over-panel" id="notificationPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Notifications</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <div class="notification-item">
+                <div class="notif-title">Town Hall Meeting Tomorrow</div>
+                <div class="notif-body">Reminder: The quarterly Agba Village town hall starts at 10 AM at the Community
+                    Center.</div>
+                <div class="notif-time">2 hours ago</div>
+            </div>
+            <div class="notification-item">
+                <div class="notif-title">Tax Payment Confirmed</div>
+                <div class="notif-body">Your payment of ₦25,000 for Plot 45 Ground Rent has been successfully processed.
+                </div>
+                <div class="notif-time">Yesterday</div>
+            </div>
+            <div class="notification-item" style="border-left-color: #f59e0b;">
+                <div class="notif-title">Water Supply Maintenance</div>
+                <div class="notif-body">Scheduled maintenance on the main pump this Saturday. Expect interruptions.
+                </div>
+                <div class="notif-time">2 days ago</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL: Report Issue -->
+    <div class="slide-over-panel" id="reportPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Report an Issue</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <p style="color: #6b7280; margin-bottom: 24px; font-size: 14px;">Use this form to report infrastructure
+                problems, security concerns, or other village matters.</p>
+
+            <div class="form-group">
+                <label>Issue Type</label>
+                <div class="custom-select-wrapper" style="position: relative;">
+                    <select class="form-input" style="appearance: none; background: white;">
+                        <option>Road Maintenance</option>
+                        <option>Water Supply</option>
+                        <option>Security Alert</option>
+                        <option>Waste Disposal</option>
+                        <option>Other</option>
+                    </select>
+                    <i class="fas fa-chevron-down"
+                        style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #6b7280; pointer-events: none;"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" class="form-input" placeholder="e.g. Main Market Entrance">
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea class="form-input" rows="4" placeholder="Describe the issue in detail..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Attach Photo (Optional)</label>
+                <div
+                    style="border: 2px dashed #e5e7eb; padding: 32px; text-align: center; border-radius: 12px; cursor: pointer;">
+                    <i class="fas fa-camera" style="font-size: 24px; color: #9ca3af; margin-bottom: 8px;"></i>
+                    <div style="font-size: 13px; color: #6b7280;">Click to upload image</div>
+                </div>
+            </div>
+
+            <button class="submit-btn" onclick="submitReport()">
+                Submit Report <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- PANEL: Activity Details -->
+    <div class="slide-over-panel" id="activityPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Activity Details</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <div style="text-align: center; margin-bottom: 32px;">
+                <div
+                    style="width: 64px; height: 64px; background: rgba(13, 61, 68, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: #0d3d44; font-size: 24px;">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h2 style="font-size: 20px; font-weight: 600; color: #111827; margin-bottom: 4px;">Indigene Certificate
+                    Request</h2>
+                <div class="status-pending"
+                    style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 14px;">Pending
+                    Approval</div>
+            </div>
+
+            <div class="detail-group" style="margin-bottom: 20px;">
+                <div style="font-size: 13px; color: #6b7280; margin-bottom: 4px;">Request ID</div>
+                <div style="font-size: 16px; font-weight: 500; color: #111827;">IND-2026-8829</div>
+            </div>
+
+            <div class="detail-group" style="margin-bottom: 20px;">
+                <div style="font-size: 13px; color: #6b7280; margin-bottom: 4px;">Date Submitted</div>
+                <div style="font-size: 16px; font-weight: 500; color: #111827;">February 7, 2026 at 10:23 AM</div>
+            </div>
+
+            <div style="background: #f9fafb; padding: 16px; border-radius: 12px; margin-top: 24px;">
+                <h4 style="font-size: 14px; margin-bottom: 8px;">Tracking</h4>
+                <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                    <div style="width: 2px; background: #e5e7eb;"></div>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 500;">Request Submitted</div>
+                        <div style="font-size: 12px; color: #6b7280;">10:23 AM</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <div style="width: 2px; background: #e5e7eb;"></div>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 500; color: #0d3d44;">Awaiting L.G.A Verification
+                        </div>
+                        <div style="font-size: 12px; color: #0d3d44;">Current Stage</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL: Settings -->
+    <div class="slide-over-panel" id="settingsPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Settings</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <div class="user-profile"
+                style="background: var(--bg-primary, #f3f4f6); margin-bottom: 24px; padding: 20px;">
+                <div class="user-avatar" style="width: 56px; height: 56px; font-size: 20px;">AD</div>
+                <div class="user-info">
+                    <div class="user-name" style="font-size: 16px; color: var(--text-primary, #111827);">Adewale David
+                    </div>
+                    <div class="user-role" style="color: var(--text-secondary, #6b7280);">adewale.d@evillage.ng</div>
+                </div>
+            </div>
+
+            <h4
+                style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; margin-bottom: 12px;">
+                Preferences</h4>
+
+            <div class="setting-item"
+                style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #e5e7eb;">
+                <div>
+                    <div style="font-weight: 500; color: var(--text-primary, #111827);">Dark Mode</div>
+                    <div style="font-size: 13px; color: #6b7280;">Reduce eye strain</div>
+                </div>
+                <label class="switch" style="position: relative; display: inline-block; width: 44px; height: 24px;">
+                    <input type="checkbox" onchange="document.body.classList.toggle('dark-mode')">
+                    <span class="slider round"
+                        style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px;"></span>
+                </label>
+            </div>
+
+            <div class="setting-item"
+                style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #e5e7eb;">
+                <div>
+                    <div style="font-weight: 500; color: var(--text-primary, #111827);">Email Notifications</div>
+                    <div style="font-size: 13px; color: #6b7280;">Receive updates via email</div>
+                </div>
+                <label class="switch" style="position: relative; display: inline-block; width: 44px; height: 24px;">
+                    <input type="checkbox" checked>
+                    <span class="slider round"
+                        style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #10b981; transition: .4s; border-radius: 24px;"></span>
+                </label>
+            </div>
+
+            <h4
+                style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; margin-top: 32px; margin-bottom: 12px;">
+                Account</h4>
+
+            <button class="action-card"
+                style="width: 100%; text-align: left; display: flex; align-items: center; gap: 12px; padding: 16px; margin-bottom: 12px;">
+                <i class="fas fa-lock" style="color: #6b7280;"></i>
+                <span style="font-weight: 500;">Change Password</span>
+            </button>
+
+            <button class="action-card"
+                style="width: 100%; text-align: left; display: flex; align-items: center; gap: 12px; padding: 16px;">
+                <i class="fas fa-sign-out-alt" style="color: #ef4444;"></i>
+                <span style="font-weight: 500; color: #ef4444;">Sign Out</span>
+            </button>
+        </div>
+    </div>
+    <style>
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #10b981;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+    </style>
 
     <script src="script.js"></script>
     <script>
@@ -689,6 +1101,42 @@
                 sidebar.classList.remove('active');
             }
         });
+
+        // Panel Logic
+        function openPanel(panelId) {
+            document.getElementById('backdrop').classList.add('open');
+            document.getElementById(panelId).classList.add('open');
+        }
+
+        function closeAllPanels() {
+            document.getElementById('backdrop').classList.remove('open');
+            document.querySelectorAll('.slide-over-panel').forEach(panel => {
+                panel.classList.remove('open');
+            });
+        }
+
+        function submitReport() {
+            const btn = document.querySelector('.submit-btn');
+            const originalText = btn.innerHTML;
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            btn.style.opacity = '0.8';
+
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Report Sent!';
+                btn.style.background = '#10b981';
+
+                setTimeout(() => {
+                    closeAllPanels();
+                    // Reset button after close
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.style.background = '#0d3d44';
+                        btn.style.opacity = '1';
+                    }, 500);
+                }, 1500);
+            }, 1200);
+        }
     </script>
 </body>
 

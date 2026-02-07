@@ -20,6 +20,7 @@
             padding: 0;
             display: flex;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* Reusing Dashboard Sidebar Styles */
@@ -252,6 +253,13 @@
             border: 1px solid var(--border-color, #e5e7eb);
             border-radius: 12px;
             gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .doc-item:hover {
+            border-color: #0d3d44;
+            background: #f9fafb;
         }
 
         .doc-preview {
@@ -289,6 +297,137 @@
             background: #d1fae5;
             color: #065f46;
             margin-left: 8px;
+        }
+
+        /* --- SLIDE OVER PANELS (Shared) --- */
+        .slide-over-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .slide-over-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .slide-over-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 500px;
+            /* Slightly wider for forms */
+            background: white;
+            z-index: 201;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .slide-over-panel.open {
+            transform: translateX(0);
+        }
+
+        .panel-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color, #e5e7eb);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .panel-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary, #111827);
+        }
+
+        .close-panel-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary, #6b7280);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .close-panel-btn:hover {
+            background: #f3f4f6;
+            color: var(--text-primary, #111827);
+        }
+
+        .panel-content {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-secondary, #6b7280);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            border-color: #0d3d44;
+            box-shadow: 0 0 0 2px rgba(13, 61, 68, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #0d3d44;
+            color: white;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #e5e7eb;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            cursor: pointer;
         }
 
         /* Mobile Responsive */
@@ -345,6 +484,10 @@
             .services-grid {
                 grid-template-columns: 1fr;
             }
+
+            .slide-over-panel {
+                max-width: 100%;
+            }
         }
 
         /* Dark Mode */
@@ -361,9 +504,18 @@
         }
 
         body.dark-mode .service-card,
-        body.dark-mode .document-vault {
+        body.dark-mode .document-vault,
+        body.dark-mode .slide-over-panel,
+        body.dark-mode .panel-header,
+        body.dark-mode .form-input,
+        body.dark-mode .icon-btn {
             background: #003540;
             border-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        body.dark-mode .doc-item:hover {
+            background: #004552;
         }
 
         body.dark-mode .service-icon {
@@ -465,59 +617,34 @@
 
         <!-- Services Grid -->
         <div class="services-grid">
-            <a href="construction.html" class="service-card">
+            <div class="service-card" onclick="openPanel('birthPanel')">
                 <div class="service-icon">
                     <i class="fas fa-baby"></i>
                 </div>
                 <h3>Birth Registration</h3>
                 <p>Register a new birth and obtain a digital birth certificate for your child.</p>
                 <div class="service-action">Start Registration <i class="fas fa-arrow-right"></i></div>
-            </a>
+            </div>
 
-            <a href="construction.html" class="service-card">
+            <div class="service-card" onclick="openPanel('indigenePanel')">
                 <div class="service-icon">
                     <i class="fas fa-id-card"></i>
                 </div>
                 <h3>Indigene Letter</h3>
                 <p>Apply for a certificate of origin / indigene letter from your LGA.</p>
                 <div class="service-action">Apply Now <i class="fas fa-arrow-right"></i></div>
-            </a>
+            </div>
 
-            <a href="construction.html" class="service-card">
+            <div class="service-card" onclick="openPanel('marriagePanel')">
                 <div class="service-icon">
-                    <i class="fas fa-rings"></i>
+                    <i class="fas fa-heart"></i>
                 </div>
                 <h3>Marriage Registry</h3>
                 <p>Book a marriage date and process your marriage certificate online.</p>
                 <div class="service-action">Book Date <i class="fas fa-arrow-right"></i></div>
-            </a>
+            </div>
 
-            <a href="construction.html" class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-address-card"></i>
-                </div>
-                <h3>Digital ID Status</h3>
-                <p>Check the status of your National Identity Number (NIN) integration.</p>
-                <div class="service-action">Check Status <i class="fas fa-arrow-right"></i></div>
-            </a>
-
-            <a href="construction.html" class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-file-medical"></i>
-                </div>
-                <h3>Death Registration</h3>
-                <p>Register a death to obtain a certificate for legal and estate purposes.</p>
-                <div class="service-action">Register <i class="fas fa-arrow-right"></i></div>
-            </a>
-
-            <a href="construction.html" class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-user-check"></i>
-                </div>
-                <h3>Attestation</h3>
-                <p>Request age declaration or other swearing-in documents.</p>
-                <div class="service-action">Request <i class="fas fa-arrow-right"></i></div>
-            </a>
+            <!-- More services can be added here -->
         </div>
 
         <!-- Document Vault -->
@@ -528,7 +655,7 @@
             </div>
 
             <div class="doc-list">
-                <div class="doc-item">
+                <div class="doc-item" onclick="openPanel('docViewPanel')">
                     <div class="doc-preview">
                         <i class="fas fa-file-alt"></i>
                     </div>
@@ -540,7 +667,7 @@
                     <button class="icon-btn" title="Download"><i class="fas fa-download"></i></button>
                 </div>
 
-                <div class="doc-item">
+                <div class="doc-item" onclick="openPanel('docViewPanel')">
                     <div class="doc-preview">
                         <i class="fas fa-file-invoice"></i>
                     </div>
@@ -554,6 +681,180 @@
             </div>
         </div>
     </main>
+
+    <div class="slide-over-backdrop" id="backdrop" onclick="closeAllPanels()"></div>
+
+    <!-- PANEL: Birth Registration -->
+    <div class="slide-over-panel" id="birthPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Birth Registration</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <div
+                style="background: #f0fdf4; padding: 16px; border-radius: 8px; margin-bottom: 24px; border: 1px solid #bbf7d0;">
+                <div style="font-size: 13px; color: #166534;"><i class="fas fa-info-circle"></i> Digital certificate
+                    will be issued upon approval.</div>
+            </div>
+
+            <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #0d3d44;">Child's Information</h4>
+            <div class="form-group">
+                <label>Full Name of Child</label>
+                <input type="text" class="form-input" placeholder="Surname First Name Middle Name">
+            </div>
+            <div class="form-group">
+                <label>Date of Birth</label>
+                <input type="date" class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Gender</label>
+                <div class="custom-select-wrapper" style="position: relative;">
+                    <select class="form-input" style="appearance: none; background: white;">
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                    <i class="fas fa-chevron-down"
+                        style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #6b7280; pointer-events: none;"></i>
+                </div>
+            </div>
+
+            <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; margin-top: 24px; color: #0d3d44;">
+                Parent's Information</h4>
+            <div class="form-group">
+                <label>Father's Name</label>
+                <input type="text" class="form-input" value="Adewale David" readonly style="background: #f9fafb;">
+            </div>
+            <div class="form-group">
+                <label>Mother's Maiden Name</label>
+                <input type="text" class="form-input">
+            </div>
+
+            <button class="submit-btn" onclick="submitForm(this)">
+                Submit Application <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- PANEL: Indigene Letter -->
+    <div class="slide-over-panel" id="indigenePanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Indigene Letter Request</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <p style="font-size: 14px; color: #6b7280; margin-bottom: 24px;">This document certifies your origin from
+                Agba Village. It is valid for 5 years.</p>
+
+            <div class="form-group">
+                <label>Are you currently residing in the village?</label>
+                <div class="custom-select-wrapper" style="position: relative;">
+                    <select class="form-input" style="appearance: none; background: white;">
+                        <option>Yes, I live here</option>
+                        <option>No, I live elsewhere</option>
+                    </select>
+                    <i class="fas fa-chevron-down"
+                        style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #6b7280; pointer-events: none;"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Family House / Compound Name</label>
+                <input type="text" class="form-input" placeholder="e.g. Ile Olukotun">
+            </div>
+
+            <div class="form-group">
+                <label>Purpose of Request</label>
+                <div class="custom-select-wrapper" style="position: relative;">
+                    <select class="form-input" style="appearance: none; background: white;">
+                        <option>Employment</option>
+                        <option>Education Admission</option>
+                        <option>Passport Application</option>
+                        <option>Other</option>
+                    </select>
+                    <i class="fas fa-chevron-down"
+                        style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #6b7280; pointer-events: none;"></i>
+                </div>
+            </div>
+
+            <button class="submit-btn" onclick="submitForm(this)">
+                Apply for Letter (₦2,500) <i class="fas fa-check-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- PANEL: Marriage Registry -->
+    <div class="slide-over-panel" id="marriagePanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Marriage Registry</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <div class="form-group">
+                <label>Proposed Wedding Date</label>
+                <input type="date" class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Registry Location</label>
+                <div class="custom-select-wrapper" style="position: relative;">
+                    <select class="form-input" style="appearance: none; background: white;">
+                        <option>Agba Village Main Hall</option>
+                        <option>LGA Secretariat Registry</option>
+                    </select>
+                    <i class="fas fa-chevron-down"
+                        style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #6b7280; pointer-events: none;"></i>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Spouse's Name</label>
+                <input type="text" class="form-input" placeholder="Full Name">
+            </div>
+
+            <button class="submit-btn" onclick="submitForm(this)">
+                Book Date <i class="fas fa-calendar-check"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- PANEL: Document View -->
+    <div class="slide-over-panel" id="docViewPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Document View</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content" style="text-align: center;">
+            <div
+                style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 40px; margin-bottom: 24px; position: relative; overflow: hidden;">
+                <!-- Watermark -->
+                <div
+                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 60px; color: rgba(0,0,0,0.03); font-weight: 700; white-space: nowrap;">
+                    ORIGINAL COPY</div>
+
+                <i class="fas fa-certificate" style="font-size: 48px; color: #0d3d44; margin-bottom: 16px;"></i>
+                <h2 style="font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">Certificate of
+                    Indigene</h2>
+                <p style="font-size: 14px; color: #6b7280; margin-bottom: 24px;">Agba Village Local Government</p>
+
+                <div
+                    style="text-align: left; background: white; padding: 16px; border-radius: 8px; font-size: 13px; line-height: 1.6; color: #374151; margin-bottom: 24px;">
+                    This is to certify that <strong>Adewale David</strong> is a bona-fide indigene of Agba Village,
+                    descending from the Ile Olukotun compound.
+                </div>
+
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=eVillage-Verified-IND-2025-001"
+                    alt="QR Code" style="width: 80px; height: 80px;">
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+                <button class="submit-btn" style="flex: 1;">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="submit-btn"
+                    style="flex: 1; background: white; color: #0d3d44; border: 1px solid #e5e7eb;">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
     <script>
@@ -573,6 +874,41 @@
                 sidebar.classList.remove('active');
             }
         });
+
+        // Panel Logic
+        function openPanel(panelId) {
+            document.getElementById('backdrop').classList.add('open');
+            document.getElementById(panelId).classList.add('open');
+        }
+
+        function closeAllPanels() {
+            document.getElementById('backdrop').classList.remove('open');
+            document.querySelectorAll('.slide-over-panel').forEach(panel => {
+                panel.classList.remove('open');
+            });
+        }
+
+        function submitForm(btn) {
+            const originalText = btn.innerHTML;
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.style.opacity = '0.8';
+
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Success!';
+                btn.style.background = '#10b981';
+
+                setTimeout(() => {
+                    closeAllPanels();
+                    // Reset button after close
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.style.background = '#0d3d44';
+                        btn.style.opacity = '1';
+                    }, 500);
+                }, 1500);
+            }, 1500);
+        }
     </script>
 </body>
 
