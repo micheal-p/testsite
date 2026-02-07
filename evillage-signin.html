@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | eVillage Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="auth-check.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: -0.01em;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0d3d44 0%, #0a2e33 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .signin-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 480px;
+            width: 100%;
+            padding: 60px;
+        }
+
+        .logo-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            text-decoration: none;
+            color: #0d3d44;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .logo-link i {
+            font-size: 24px;
+        }
+
+        .signin-header {
+            margin-bottom: 32px;
+        }
+
+        .signin-header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary, #111827);
+        }
+
+        .signin-header p {
+            font-size: 16px;
+            color: var(--text-secondary, #6b7280);
+        }
+
+        .signin-header p a {
+            color: #0d3d44;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signin-header p a:hover {
+            text-decoration: underline;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary, #111827);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 1px solid var(--border-color, #e5e7eb);
+            border-radius: 6px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #0d3d44;
+            box-shadow: 0 0 0 3px rgba(13, 61, 68, 0.1);
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-secondary, #6b7280);
+        }
+
+        .remember-me input {
+            width: auto;
+        }
+
+        .forgot-link {
+            font-size: 14px;
+            color: #0d3d44;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            background: #0d3d44;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .submit-btn:hover {
+            background: #0a2e33;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+
+
+        .social-signin {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--border-color, #e5e7eb);
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary, #111827);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .social-btn:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .social-btn i {
+            font-size: 16px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 640px) {
+            .signin-card {
+                padding: 40px 24px;
+            }
+
+            .signin-header h1 {
+                font-size: 28px;
+            }
+
+            .form-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .social-signin {
+                flex-direction: column;
+            }
+        }
+
+        /* Dark Mode Support */
+        body.dark-mode {
+            background: linear-gradient(135deg, #001D21 0%, #002329 100%);
+        }
+
+        body.dark-mode .signin-card {
+            background: #003540;
+        }
+
+        body.dark-mode .form-group input {
+            background: #004552;
+            color: white;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        body.dark-mode .social-btn {
+            background: #004552;
+            border-color: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        body.dark-mode .social-btn:hover {
+            background: #005566;
+        }
+
+        body.dark-mode .submit-btn {
+            background: #10b981;
+        }
+
+        body.dark-mode .submit-btn:hover {
+            background: #059669;
+        }
+
+        body.dark-mode .logo-link {
+            color: white;
+        }
+
+        body.dark-mode .signin-header h1 {
+            color: white;
+        }
+
+        body.dark-mode .signin-header p,
+        body.dark-mode .remember-me {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        body.dark-mode .signin-header p a,
+        body.dark-mode .forgot-link {
+            color: #10b981;
+        }
+
+        body.dark-mode .form-group label {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="signin-card">
+        <a href="evillage.html" class="logo-link">
+            <i class="fas fa-leaf"></i>
+            <span>eVillage Portal</span>
+        </a>
+
+        <div class="signin-header">
+            <h1>Welcome back</h1>
+            <p>Don't have an account? <a href="evillage-signup.html">Sign up</a></p>
+        </div>
+
+        <form id="signinForm" action="dashboard.html">
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required autofocus>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+
+            <!-- Remember & Forgot -->
+            <div class="form-footer">
+                <label class="remember-me">
+                    <input type="checkbox" name="remember">
+                    <span>Remember me</span>
+                </label>
+                <a href="password.html" class="forgot-link">Forgot password?</a>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="submit-btn">Sign In</button>
+        </form>
+
+
+
+        <!-- Social Sign In -->
+        <div class="social-signin">
+            <button class="social-btn" type="button">
+                <i class="fab fa-google"></i>
+                <span>Google</span>
+            </button>
+            <button class="social-btn" type="button">
+                <i class="fab fa-microsoft"></i>
+                <span>Microsoft</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

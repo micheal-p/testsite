@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | eVillage Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="auth-check.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: -0.01em;
+            margin: 0;
+            padding: 0;
+            background: var(--bg-primary, #f9fafb);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .split-layout-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
+            height: 100vh;
+        }
+
+        /* LEFT: Form Section */
+        .form-section {
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        /* RIGHT: Info Section */
+        .info-section {
+            background: linear-gradient(135deg, #0d3d44 0%, #0a2e33 100%);
+            background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .info-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(13, 61, 68, 0.95) 0%, rgba(10, 46, 51, 0.9) 100%);
+        }
+
+        .info-content {
+            position: relative;
+            z-index: 1;
+            padding: 80px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+        /* Navigation Links */
+        .logo-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            text-decoration: none;
+            color: #0d3d44;
+            font-weight: 600;
+        }
+
+        .logo-link img {
+            height: 32px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary, #6b7280);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: #0d3d44;
+        }
+
+        /* Form Styling */
+        .form-header {
+            margin-bottom: 32px;
+        }
+
+        .form-header h2 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary, #111827);
+        }
+
+        .form-header p {
+            font-size: 16px;
+            color: var(--text-secondary, #6b7280);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary, #111827);
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 1px solid var(--border-color, #e5e7eb);
+            border-radius: 8px;
+            font-family: inherit;
+            transition: all 0.2s;
+            background: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0d3d44;
+            box-shadow: 0 0 0 4px rgba(13, 61, 68, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            background: #0d3d44;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .submit-btn:hover {
+            background: #0a2e33;
+            transform: translateY(-1px);
+        }
+
+        /* Info Panel Styling */
+        .info-header h1 {
+            font-size: 42px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .info-header p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 48px;
+        }
+
+        .contact-details {
+            display: grid;
+            gap: 32px;
+        }
+
+        .detail-item {
+            display: flex;
+            gap: 20px;
+        }
+
+        .detail-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #10b981;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .detail-text h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: white;
+        }
+
+        .detail-text p,
+        .detail-text a {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin: 0;
+            text-decoration: none;
+        }
+
+        .detail-text a:hover {
+            color: #10b981;
+        }
+
+        .office-hours-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 16px;
+            backdrop-filter: blur(12px);
+        }
+
+        .office-hours-card h4 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #10b981;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .hours-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .social-links {
+            margin-top: 48px;
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .social-link:hover {
+            background: #10b981;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 968px) {
+            body {
+                overflow: auto;
+                height: auto;
+            }
+
+            .split-layout-container {
+                grid-template-columns: 1fr;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .info-section {
+                display: none;
+                /* Hide hero on smaller phones to focus on form, or move to bottom */
+            }
+
+            .form-section {
+                padding: 40px 24px;
+                overflow-y: visible;
+                height: auto;
+            }
+        }
+
+        /* Tablet (show info at top or bottom) */
+        @media (min-width: 768px) and (max-width: 968px) {
+            /* Adjust if needed */
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            --bg-primary: #001D21;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        body.dark-mode .form-section {
+            background: #002329;
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group select,
+        body.dark-mode .form-group textarea {
+            background: #003540;
+            color: white;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .logo-link {
+            color: white;
+        }
+
+        body.dark-mode .submit-btn {
+            background: #10b981;
+            color: #001D21;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="split-layout-container">
+        <!-- LEFT: Form Section -->
+        <div class="form-section">
+            <a href="evillage.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+
+            <a href="evillage.html" class="logo-link">
+                <i class="fas fa-leaf"></i>
+                <span style="font-size: 20px;">eVillage Portal</span>
+            </a>
+
+            <div class="form-header">
+                <h2>Get in touch</h2>
+                <p>We'd love to hear from you. Please fill out this form.</p>
+            </div>
+
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">Full name</label>
+                    <input type="text" id="name" name="name" placeholder="First and last name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" id="email" name="email" placeholder="you@company.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+234 (000) 000-0000">
+                </div>
+
+                <div class="form-group">
+                    <label for="lga">Your LGA (Optional)</label>
+                    <input type="text" id="lga" name="lga" placeholder="e.g. Ikeja">
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="How can we help you?" required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Send message <i class="fas fa-paper-plane" style="font-size: 12px;"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- RIGHT: Info Section -->
+        <div class="info-section">
+            <div class="info-content">
+                <div class="info-header">
+                    <h1>We're here to help build a better community.</h1>
+                    <p>Visit our headquarters or reach out directly for immediate assistance with village services.</p>
+                </div>
+
+                <div class="contact-details">
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="detail-text">
+                            <h4>Visit us</h4>
+                            <p>NEIIA Headquarters, Plot 123<br>Central Business District, Abuja FCT</p>
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="detail-text">
+                            <h4>Chat to us</h4>
+                            <p><a href="mailto:support@evillage.gov.ng">support@evillage.gov.ng</a></p>
+                            <p><a href="mailto:info@evillage.gov.ng">info@evillage.gov.ng</a></p>
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="detail-text">
+                            <h4>Call us</h4>
+                            <p>+234 (0) 9 461 4000</p>
+                            <p>Mon-Fri from 8am to 5pm</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="office-hours-card">
+                    <h4>Office Hours</h4>
+                    <div class="hours-row">
+                        <span>Monday - Friday</span>
+                        <span>8:00 AM - 5:00 PM</span>
+                    </div>
+                    <div class="hours-row">
+                        <span>Saturday</span>
+                        <span>9:00 AM - 2:00 PM</span>
+                    </div>
+                    <div class="hours-row" style="border:none;">
+                        <span>Sunday</span>
+                        <span>Closed</span>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const btn = this.querySelector('.submit-btn');
+            const originalText = btn.innerHTML;
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            btn.style.opacity = '0.7';
+
+            setTimeout(() => {
+                alert('Message sent successfully! We will contact you shortly.');
+                this.reset();
+                btn.innerHTML = originalText;
+                btn.style.opacity = '1';
+            }, 1500);
+        });
+    </script>
+</body>
+
+</html>

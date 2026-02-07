@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property & Tax | eVillage Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="auth-check.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary, #f3f4f6);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 260px;
+            background: #0d3d44;
+            color: white;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            text-decoration: none;
+            color: white;
+            padding: 0 12px;
+        }
+
+        .sidebar-brand i {
+            font-size: 24px;
+            color: #10b981;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .user-profile {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #0d3d44;
+        }
+
+        .user-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 32px 40px;
+            max-width: 1400px;
+        }
+
+        .header {
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary, #111827);
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            color: var(--text-secondary, #6b7280);
+            font-size: 14px;
+        }
+
+        /* Property & Tax Specifics */
+        .actions-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .action-highlight {
+            background: #0d3d44;
+            color: white;
+            border-radius: 16px;
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .action-highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80') no-repeat center center;
+            background-size: cover;
+            opacity: 0.2;
+            mask-image: linear-gradient(to left, black, transparent);
+            -webkit-mask-image: linear-gradient(to left, black, transparent);
+        }
+
+        .action-highlight h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-highlight p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 24px;
+            max-width: 60%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pay-btn {
+            background: #10b981;
+            color: #0d3d44;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            align-self: flex-start;
+            position: relative;
+            z-index: 1;
+            transition: all 0.2s;
+        }
+
+        .pay-btn:hover {
+            background: #059669;
+            color: white;
+        }
+
+        .secondary-actions {
+            display: grid;
+            gap: 16px;
+        }
+
+        .secondary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color, #e5e7eb);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+        }
+
+        .secondary-card:hover {
+            border-color: #0d3d44;
+            transform: translateX(4px);
+        }
+
+        .sec-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(13, 61, 68, 0.05);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0d3d44;
+            font-size: 20px;
+        }
+
+        .sec-content h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text-primary, #111827);
+        }
+
+        .sec-content p {
+            font-size: 12px;
+            color: var(--text-secondary, #6b7280);
+        }
+
+        .property-list-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border-color, #e5e7eb);
+        }
+
+        .property-list {
+            margin-top: 16px;
+        }
+
+        .property-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color, #e5e7eb);
+        }
+
+        .property-item:last-child {
+            border-bottom: none;
+        }
+
+        .prop-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            margin-right: 16px;
+            object-fit: cover;
+        }
+
+        .prop-details {
+            flex: 1;
+        }
+
+        .prop-address {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary, #111827);
+            margin-bottom: 4px;
+        }
+
+        .prop-id {
+            font-size: 12px;
+            color: var(--text-secondary, #6b7280);
+        }
+
+        .prop-status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .prop-action {
+            margin-left: 16px;
+            color: #0d3d44;
+            font-weight: 500;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        /* Mobile Responsive */
+        .mobile-header {
+            display: none;
+            padding: 16px 20px;
+            background: #0d3d44;
+            color: white;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 99;
+        }
+
+        .mobile-menu-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 968px) {
+            .actions-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 80px 20px 40px;
+            }
+
+            .mobile-header {
+                display: flex;
+            }
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background: #001D21;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        body.dark-mode .sidebar {
+            background: #002329;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .secondary-card,
+        body.dark-mode .property-list-section {
+            background: #003540;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .sec-icon {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        body.dark-mode .property-item {
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .prop-image {
+            background: #002329;
+        }
+
+        body.dark-mode .prop-action {
+            color: #10b981;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <div class="evillage-logo" style="display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-leaf"></i>
+            <span style="font-weight: 600;">eVillage</span>
+        </div>
+        <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <a href="evillage.html" class="sidebar-brand">
+            <i class="fas fa-leaf"></i>
+            <span>eVillage Portal</span>
+        </a>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="evillage-dashboard.html" class="nav-link">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="evillage-civil.html" class="nav-link">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Civil Registration</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="evillage-property.html" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    <span>Property & Tax</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="evillage-governance.html" class="nav-link">
+                    <i class="fas fa-landmark"></i>
+                    <span>Governance</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="evillage-admin.html" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Admin Ledger</span>
+                </a>
+            </li>
+            <li class="nav-item"
+                style="margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px;">
+                <a href="evillage-contact.html" class="nav-link">
+                    <i class="fas fa-headset"></i>
+                    <span>Support</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="evillage.html" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sign Out</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="user-profile">
+            <div class="user-avatar">AD</div>
+            <div class="user-info">
+                <div class="user-name">Adewale David</div>
+                <div class="user-role">Agba Village</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h1>Property & Tax Management</h1>
+            <p>Verify land ownership, register property, and pay your taxes securely.</p>
+        </div>
+
+        <div class="actions-row">
+            <!-- Featured Action -->
+            <div class="action-highlight">
+                <h2>Land Verification Search</h2>
+                <p>Instantly verify the authenticity of land titles and survey plans in your village before purchase.
+                </p>
+                <a href="construction.html" class="pay-btn"><i class="fas fa-search"></i> Verify Land</a>
+            </div>
+
+            <!-- Secondary Actions -->
+            <div class="secondary-actions">
+                <a href="construction.html" class="secondary-card">
+                    <div class="sec-icon"><i class="fas fa-file-signature"></i></div>
+                    <div class="sec-content">
+                        <h3>Tenancy Registration</h3>
+                        <p>Register new tenant agreements</p>
+                    </div>
+                </a>
+                <a href="construction.html" class="secondary-card">
+                    <div class="sec-icon"><i class="fas fa-store"></i></div>
+                    <div class="sec-content">
+                        <h3>Business Permit</h3>
+                        <p>Apply for trade license</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- My Properties -->
+        <div class="property-list-section">
+            <div class="section-header">
+                <div class="section-title">My Registered Properties</div>
+                <button class="icon-btn" title="Add New"><i class="fas fa-plus"></i></button>
+            </div>
+
+            <div class="property-list">
+                <div class="property-item">
+                    <div class="prop-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=100&q=60'); background-size: cover;">
+                    </div>
+                    <div class="prop-details">
+                        <div class="prop-address">Plot 45, Market Road, Agba Village</div>
+                        <div class="prop-id">ID: PRO-2023-8921</div>
+                    </div>
+                    <div class="prop-status">Tax Paid</div>
+                    <a href="#" class="prop-action">View History</a>
+                </div>
+
+                <div class="property-item">
+                    <div class="prop-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=100&q=60'); background-size: cover;">
+                    </div>
+                    <div class="prop-details">
+                        <div class="prop-address">Shop 12, Community Plaza</div>
+                        <div class="prop-id">ID: COM-2024-1102</div>
+                    </div>
+                    <div class="prop-status" style="background: #fef3c7; color: #92400e;">Payment Due</div>
+                    <a href="construction.html" class="prop-action" style="color: #f59e0b;">Pay Now</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.mobile-menu-toggle');
+
+            if (window.innerWidth <= 768 &&
+                sidebar.classList.contains('active') &&
+                !sidebar.contains(e.target) &&
+                !menuBtn.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+
+</html>

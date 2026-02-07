@@ -38,6 +38,25 @@
             background: var(--bg-primary);
         }
 
+        /* Logo Styles */
+        .evillage-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #0d3d44;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .evillage-logo i {
+            font-size: 24px;
+        }
+
+        /* Dark Mode Logo Override */
+        body.dark-mode .evillage-logo {
+            color: white;
+        }
+
         /* Hero Section - eVillage specific */
         .ev-hero {
             padding: 180px 40px 100px;
@@ -955,31 +974,29 @@
 <body class="evillage-page">
 
     <!-- Logo (Separate from Pill Navbar) - Same as index.html -->
-    <a href="index.html" class="logo-fixed">
-        <div class="logo-wrapper">
-            <img src="assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
-                style="max-width: 120px;">
-            <img src="assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
-                style="max-width: 120px; display: none;">
-            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
+    <!-- Logo (Separate from Pill Navbar) -->
+    <a href="evillage.html" class="logo-fixed">
+        <div class="logo-wrapper evillage-logo">
+            <i class="fas fa-leaf"></i>
+            <span>eVillage Portal</span>
         </div>
     </a>
 
     <!-- Navigation (Pill Style - eVillage Links) -->
     <nav class="navbar pill-nav">
         <div class="nav-links">
-            <a href="construction.html">Civil Registration</a>
-            <a href="construction.html">Property & Tax</a>
-            <a href="construction.html">Governance</a>
-            <a href="construction.html">Admin Ledger</a>
+            <a href="evillage-civil.html">Civil Registration</a>
+            <a href="evillage-property.html">Property & Tax</a>
+            <a href="evillage-governance.html">Governance</a>
+            <a href="evillage-admin.html">Admin Ledger</a>
             <a href="index.html">Back to NEIIA</a>
         </div>
     </nav>
 
     <!-- Auth Links (Separate from Pill) -->
     <div class="auth-fixed">
-        <a href="signin.html" class="nav-link">Sign In</a>
-        <a href="newsletter.html" class="btn btn-black">Join</a>
+        <a href="evillage-signin.html" class="nav-link">Sign In</a>
+        <a href="evillage-signup.html" class="btn btn-black">Join</a>
     </div>
 
     <!-- Mobile Menu Button -->
@@ -996,7 +1013,10 @@
     <div class="mobile-nav-overlay">
         <div class="mobile-nav-header">
             <a href="evillage.html">
-                <img src="assets/images/neiis-logo-green.png" alt="eVillage" style="max-height: 40px;">
+                <div class="evillage-logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>eVillage Portal</span>
+                </div>
             </a>
             <button class="mobile-close-btn">
                 <i class="fas fa-times"></i>
@@ -1004,15 +1024,15 @@
         </div>
         <div class="mobile-nav-content">
             <ul class="mobile-nav-list">
-                <li><a href="construction.html">Civil Registration <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="construction.html">Property & Tax <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="construction.html">Governance <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="construction.html">Admin Ledger <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="evillage-civil.html">Civil Registration <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="evillage-property.html">Property & Tax <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="evillage-governance.html">Governance <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="evillage-admin.html">Admin Ledger <i class="fas fa-arrow-right"></i></a></li>
                 <li><a href="index.html">Back to NEIIA <i class="fas fa-arrow-right"></i></a></li>
             </ul>
             <div class="mobile-nav-footer">
-                <a href="contact.html" class="btn btn-primary full-width">Contact Support</a>
-                <a href="signin.html" class="btn btn-secondary full-width">Sign in</a>
+                <a href="evillage-contact.html" class="btn btn-primary full-width">Contact Support</a>
+                <a href="evillage-signin.html" class="btn btn-secondary full-width">Sign in</a>
             </div>
         </div>
     </div>
@@ -1029,7 +1049,7 @@
             transparency, efficiency, and accountability to every village across Nigeria.</p>
 
         <div class="ev-hero-cta">
-            <a href="contact.html" class="ev-btn-primary">Get Started</a>
+            <a href="evillage-signup.html" class="ev-btn-primary">Get Started</a>
             <a href="#modules" class="ev-btn-secondary">Explore Features</a>
         </div>
 
@@ -1268,7 +1288,7 @@
             <h2>Ready to Transform Your Village?</h2>
             <p>Join the digital governance revolution and bring transparency to your community</p>
             <div class="ev-cta-buttons">
-                <a href="contact.html" class="ev-btn-primary">Contact Us</a>
+                <a href="evillage-signup.html" class="ev-btn-primary">Get Started</a>
                 <a href="construction.html" class="ev-btn-secondary">Learn More</a>
             </div>
         </div>

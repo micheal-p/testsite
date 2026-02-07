@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | eVillage Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="auth-check.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary, #f3f4f6);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #0d3d44;
+            color: white;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            text-decoration: none;
+            color: white;
+            padding: 0 12px;
+        }
+
+        .sidebar-brand i {
+            font-size: 24px;
+            color: #10b981;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .user-profile {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #0d3d44;
+        }
+
+        .user-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 32px 40px;
+            max-width: 1400px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome-text h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary, #111827);
+            margin-bottom: 4px;
+        }
+
+        .welcome-text p {
+            color: var(--text-secondary, #6b7280);
+            font-size: 15px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid var(--border-color, #e5e7eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary, #6b7280);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            color: #0d3d44;
+            border-color: #0d3d44;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .stat-content h3 {
+            font-size: 14px;
+            color: var(--text-secondary, #6b7280);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary, #111827);
+            margin-bottom: 4px;
+        }
+
+        .stat-trend {
+            font-size: 13px;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .bg-teal {
+            background: rgba(13, 61, 68, 0.1);
+            color: #0d3d44;
+        }
+
+        .bg-green {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .bg-orange {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        /* Quick Actions */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary, #111827);
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .action-card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .action-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
+            border-color: rgba(13, 61, 68, 0.1);
+        }
+
+        .action-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--bg-primary, #f3f4f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+            color: #0d3d44;
+            transition: all 0.2s;
+        }
+
+        .action-card:hover .action-icon {
+            background: #0d3d44;
+            color: white;
+        }
+
+        .action-card h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text-primary, #111827);
+        }
+
+        .action-card p {
+            font-size: 13px;
+            color: var(--text-secondary, #6b7280);
+            line-height: 1.4;
+        }
+
+        /* Recent Activity */
+        .activity-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .activity-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color, #e5e7eb);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary, #111827);
+            margin-bottom: 2px;
+        }
+
+        .activity-date {
+            font-size: 12px;
+            color: var(--text-secondary, #6b7280);
+        }
+
+        .activity-status {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        /* Mobile Responsive */
+        .mobile-header {
+            display: none;
+            padding: 16px 20px;
+            background: #0d3d44;
+            color: white;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 99;
+        }
+
+        .mobile-menu-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 80px 20px 40px;
+            }
+
+            .mobile-header {
+                display: flex;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background: #001D21;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        body.dark-mode .sidebar {
+            background: #002329;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .stat-card,
+        body.dark-mode .action-card,
+        body.dark-mode .activity-section {
+            background: #003540;
+        }
+
+        body.dark-mode .icon-btn {
+            background: transparent;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <div class="evillage-logo" style="display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-leaf"></i>
+            <span style="font-weight: 600;">eVillage</span>
+        </div>
+        <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <a href="evillage.html" class="sidebar-brand">
+            <i class="fas fa-leaf"></i>
+            <span>eVillage Portal</span>
+        </a>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="evillage-dashboard.html" class="nav-link active">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="evillage-civil.html" class="nav-link">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Civil Registration</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="evillage-property.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Property & Tax</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="evillage-governance.html" class="nav-link">
+                    <i class="fas fa-landmark"></i>
+                    <span>Governance</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="evillage-admin.html" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Admin Ledger</span>
+                </a>
+            </li>
+            <li class="nav-item"
+                style="margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px;">
+                <a href="evillage-contact.html" class="nav-link">
+                    <i class="fas fa-headset"></i>
+                    <span>Support</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="evillage.html" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sign Out</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="user-profile">
+            <div class="user-avatar">AD</div>
+            <div class="user-info">
+                <div class="user-name">Adewale David</div>
+                <div class="user-role">Agba Village</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <div class="welcome-text">
+                <h1>Welcome back, Adewale</h1>
+                <p>Here's what's happening in your village today.</p>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn"><i class="far fa-bell"></i></button>
+                <button class="icon-btn"><i class="fas fa-cog"></i></button>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <div class="stat-content">
+                    <h3>Village Population</h3>
+                    <div class="stat-value">4,285</div>
+                    <div class="stat-trend"><i class="fas fa-arrow-up"></i> 12% growth</div>
+                </div>
+                <div class="stat-icon bg-teal">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-content">
+                    <h3>Active Projects</h3>
+                    <div class="stat-value">8</div>
+                    <div class="stat-trend"><i class="fas fa-check"></i> 2 completed</div>
+                </div>
+                <div class="stat-icon bg-green">
+                    <i class="fas fa-hard-hat"></i>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-content">
+                    <h3>Pending Requests</h3>
+                    <div class="stat-value">3</div>
+                    <div class="stat-trend text-orange"><span style="color: #f59e0b; font-size: 13px;">Action
+                            needed</span></div>
+                </div>
+                <div class="stat-icon bg-orange">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section-header">
+            <div class="section-title">Quick Actions</div>
+        </div>
+
+        <div class="actions-grid">
+            <a href="evillage-civil.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-file-signature"></i>
+                </div>
+                <h3>Get Certificate</h3>
+                <p>Birth, Indigene, Marriage</p>
+            </a>
+            <a href="evillage-property.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <h3>Pay Tax</h3>
+                <p>Property, Business, Levy</p>
+            </a>
+            <a href="evillage-governance.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <h3>Report Issue</h3>
+                <p>Roads, Water, Security</p>
+            </a>
+            <a href="evillage-governance.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-vote-yea"></i>
+                </div>
+                <h3>Vote / Polls</h3>
+                <p>Community decisions</p>
+            </a>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="section-header">
+            <div class="section-title">Recent Activity</div>
+            <a href="#" style="color: #0d3d44; text-decoration: none; font-size: 14px; font-weight: 600;">View All</a>
+        </div>
+
+        <div class="activity-section">
+            <ul class="activity-list">
+                <li class="activity-item">
+                    <div class="activity-icon bg-teal">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="activity-info">
+                        <div class="activity-title">Indigene Certificate Request</div>
+                        <div class="activity-date">Today, 10:23 AM</div>
+                    </div>
+                    <span class="activity-status status-pending">Pending Approval</span>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon bg-green">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="activity-info">
+                        <div class="activity-title">Market Levy Payment</div>
+                        <div class="activity-date">Yesterday, 4:15 PM</div>
+                    </div>
+                    <span class="activity-status status-completed">Success</span>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon bg-orange">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="activity-info">
+                        <div class="activity-title">Road Maintenance Report</div>
+                        <div class="activity-date">Feb 5, 2026</div>
+                    </div>
+                    <span class="activity-status status-pending">In Review</span>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.mobile-menu-toggle');
+
+            if (window.innerWidth <= 768 &&
+                sidebar.classList.contains('active') &&
+                !sidebar.contains(e.target) &&
+                !menuBtn.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+
+</html>
