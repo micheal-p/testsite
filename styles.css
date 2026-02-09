@@ -1042,15 +1042,15 @@ img {
 }
 
 .grid-7 {
-    background: url('assets/images/GRID7.jpg') center/cover no-repeat;
+    background: url('assets/images/Regulatory-change-management-Blog_Blog-Image.webp') center/cover no-repeat;
 }
 
 .grid-8 {
-    background: url('assets/images/lp_portal_by_zapflow_transforming_investment_insights_3x.webp') center/cover no-repeat;
+    background: url('assets/images/portal-logo-icon-flat-vector-600nw-2671058773.jpg.webp') center/cover no-repeat;
 }
 
 .grid-9 {
-    background: url('assets/images/Designing_an_Energy_Management_Dashboard_that_Drives_ROI_0f169c300c.png') center/cover no-repeat;
+    background: url('assets/images/pexels-manuel-geissinger-325229.jpg') center/cover no-repeat;
 }
 
 .grid-10 {
@@ -2313,12 +2313,14 @@ body.dark-mode .brand-text {
     text-decoration: none;
     display: block;
 }
+
 /* ============================================
    DATA BANK PAGE STYLES
    ============================================ */
 
 .databank-page {
-    padding-top: 80px; /* Offset for fixed navbar */
+    padding-top: 80px;
+    /* Offset for fixed navbar */
 }
 
 /* Hero Section */
@@ -2361,7 +2363,8 @@ body.dark-mode .brand-text {
 
 .hero-subtext {
     font-size: 1.25rem;
-    color: #4b5563; /* Gray 600 */
+    color: #4b5563;
+    /* Gray 600 */
     margin-bottom: 32px;
     max-width: 600px;
     margin-left: auto;
@@ -2384,9 +2387,9 @@ body.dark-mode .brand-text {
     max-width: 1000px;
     margin: 0 auto;
     border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .db-hero-img {
@@ -2397,7 +2400,8 @@ body.dark-mode .brand-text {
 
 /* LP Lens Section (Dark) */
 .db-lp-lens {
-    background-color: #0d1117; /* Dark almost black */
+    background-color: #0d1117;
+    /* Dark almost black */
     color: #ffffff;
     padding: 100px 0;
 }
@@ -2417,20 +2421,22 @@ body.dark-mode .brand-text {
 
 .lp-content p {
     font-size: 1.1rem;
-    color: #9ca3af; /* Gray 400 */
+    color: #9ca3af;
+    /* Gray 400 */
     margin-bottom: 32px;
     line-height: 1.6;
 }
 
 .lp-image img {
     border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Infrastructure Section */
 .db-infrastructure {
-    background-color: #f3f4f6; /* Light gray */
+    background-color: #f3f4f6;
+    /* Light gray */
     padding: 100px 0;
 }
 
@@ -2465,14 +2471,16 @@ body.dark-mode .brand-text {
     font-weight: 600;
     border-left: 2px solid #4f46e5;
     background: linear-gradient(to right, rgba(79, 70, 229, 0.05), transparent);
-    margin-left: -2px; /* Pull back to overlap border */
+    margin-left: -2px;
+    /* Pull back to overlap border */
 }
 
 .infra-visual .visual-card {
     background: white;
-    padding: 24px; /* Frame look */
+    padding: 24px;
+    /* Frame look */
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
 /* CTA Section */
@@ -2517,7 +2525,8 @@ body.dark-mode .brand-text {
 }
 
 .cta-features i {
-    color: #10b981; /* Green check */
+    color: #10b981;
+    /* Green check */
 }
 
 .cta-card {
@@ -2543,20 +2552,20 @@ body.dark-mode .brand-text {
     .db-hero h1 {
         font-size: 2.5rem;
     }
-    
+
     .db-lp-lens .container,
     .infra-layout,
     .cta-grid {
         grid-template-columns: 1fr;
         gap: 40px;
     }
-    
+
     .db-lp-lens {
         padding: 60px 0;
     }
-    
+
     .lp-image {
-        order: -1; 
+        order: -1;
     }
 }
 

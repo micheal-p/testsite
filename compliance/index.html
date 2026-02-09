@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise GRC & Regulatory Intelligence | NEIIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #ffffff;
+            --bg-secondary: #f8fafc;
+            --primary: #0d3d44;
+            /* Deep Teal */
+            --accent: #10b981;
+            /* Emerald Green */
+            --text-main: #111827;
+            --text-secondary: #6b7280;
+            --border: #e2e8f0;
+            --surface: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand img {
+            height: 36px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .header-btn {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .header-btn:hover {
+            background: #0a2e33;
+            transform: translateY(-1px);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 140px 5% 80px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            background: linear-gradient(to bottom, #f8fafc, #ffffff);
+            position: relative;
+        }
+
+        /* Subtle background texture */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background-image: url('images/PPC-lp-body-wave-bg.png');
+            background-repeat: no-repeat;
+            background-position: top right;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            line-height: 1.6;
+            max-width: 540px;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border);
+            transform: perspective(1000px) rotateY(-2deg);
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image:hover img {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        /* --- Infinite Logo Marquee --- */
+        .marquee-section {
+            padding: 40px 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+        }
+
+        /* Duplicate content for seamless loop */
+        .marquee-content img {
+            height: 40px;
+            margin: 0 40px;
+            opacity: 1;
+            filter: grayscale(0%);
+            transition: all 0.3s;
+        }
+
+        .marquee-content img:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+            transform: scale(1.1);
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-33.33%);
+            }
+        }
+
+        /* --- Customer Talk Slider section --- */
+        .slider-section {
+            padding: 80px 5%;
+            background: #f8fafc;
+        }
+
+        .section-header {
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .testimonial-slider {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .slide-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slide {
+            min-width: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            opacity: 0.4;
+            transform: scale(0.9);
+            transition: all 0.5s;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .slide img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .slide-content blockquote {
+            font-size: 20px;
+            font-style: italic;
+            color: var(--text-main);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .slide-content cite {
+            display: block;
+            font-weight: 700;
+            font-style: normal;
+            color: var(--primary);
+        }
+
+        .slide-content span {
+            display: block;
+            font-weight: 400;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 40px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: var(--accent);
+            transform: scale(1.2);
+        }
+
+        /* --- Related Resources --- */
+        .resources-section {
+            padding: 80px 5%;
+            background: white;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            margin-top: 40px;
+        }
+
+        .resource-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border-color: var(--accent);
+        }
+
+        .resource-tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .resource-card h4 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .resource-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .resource-link {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- Wizard Modal --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .wizard-card {
+            background: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: transform 0.3s ease-out;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .modal-overlay.active .wizard-card {
+            transform: translateY(0);
+        }
+
+        .wizard-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+        }
+
+        .wizard-title h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .wizard-title p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .wizard-body {
+            padding: 32px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .industry-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .industry-card {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .industry-card:hover {
+            border-color: var(--accent);
+            background: #f0f9ff;
+        }
+
+        .industry-card.selected {
+            border-color: var(--accent);
+            background: #eff6ff;
+            outline: 2px solid var(--accent);
+        }
+
+        .industry-card i {
+            font-size: 24px;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .industry-card h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .question-group {
+            margin-bottom: 24px;
+        }
+
+        .question-label {
+            display: block;
+            font-weight: 500;
+            font-size: 15px;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .radio-options {
+            display: flex;
+            gap: 16px;
+        }
+
+        .radio-btn {
+            flex: 1;
+            border: 1px solid var(--border);
+            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-main);
+            transition: all 0.2s;
+        }
+
+        .radio-btn.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent);
+            border-width: 2px;
+            padding: 11px;
+        }
+
+        .wizard-footer {
+            padding: 20px 32px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: #f8fafc;
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 10px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loader-container {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 100px;
+                text-align: center;
+            }
+
+            .hero-content p {
+                margin: 0 auto 32px;
+            }
+
+            .slide {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            /* Horizontal Scroll for Grids */
+            .resources-grid {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 32px;
+                padding-bottom: 20px;
+                margin-left: -5%;
+                margin-right: -5%;
+                padding-left: calc(5% + 20px);
+                /* Extra 20px for edge spacing */
+                padding-right: calc(5% + 20px);
+                -webkit-overflow-scrolling: touch;
+                scroll-padding-left: calc(5% + 20px);
+                /* Offset snap point */
+            }
+
+            .resources-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            .resource-card {
+                min-width: 85%;
+                scroll-snap-align: center;
+                flex-shrink: 0;
+            }
+
+            .industry-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Footer Stacking */
+            footer>div:first-child {
+                grid-template-columns: 1fr !important;
+                gap: 40px !important;
+            }
+
+            /* Mobile Menu Styles */
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 77px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                border-bottom: 1px solid var(--border);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                z-index: 1002;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            /* Typography Fixes */
+            .hero h1 {
+                font-size: 32px !important;
+                line-height: 1.2 !important;
+            }
+
+            .hero p {
+                font-size: 16px !important;
+            }
+
+            h2 {
+                font-size: 24px !important;
+            }
+
+            /* UI Polish - Round 3 (Corrective) */
+
+            /* Footer Alignment - 2-column grid for Platform/Company */
+            footer>div:first-child {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                /* Two columns */
+                gap: 30px 20px !important;
+                text-align: left !important;
+            }
+
+            /* First div (logo section) spans full width */
+            footer>div:first-child>div:first-child {
+                grid-column: 1 / -1 !important;
+            }
+
+            /* Last div (Contact) spans full width */
+            footer>div:first-child>div:last-child {
+                grid-column: 1 / -1 !important;
+            }
+
+            footer>div:first-child>div:last-child>div {
+                justify-content: flex-start !important;
+            }
+
+            /* Menu Visibility & Z-Index Fixes */
+            header .header-btn {
+                display: none !important;
+            }
+
+            .hero .header-btn {
+                display: block !important;
+                margin: 20px auto !important;
+                width: fit-content;
+            }
+
+            .mobile-menu-btn {
+                display: block !important;
+                font-size: 28px;
+                padding: 10px;
+                color: #0d3d44 !important;
+                /* Dark Teal for contrast */
+                z-index: 2005 !important;
+                position: relative;
+            }
+
+            /* Full Screen Menu */
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                height: calc(100vh - 70px);
+                padding: 40px 20px;
+                border: none;
+                flex-direction: column;
+                justify-content: flex-start;
+                background: white;
+                z-index: 2000 !important;
+                overflow-y: auto;
+            }
+
+            .nav-links.active {
+                display: flex !important;
+            }
+
+            .nav-links a {
+                font-size: 20px;
+                padding: 15px;
+                text-align: center;
+                border-bottom: 1px solid var(--border);
+                width: 100%;
+                color: var(--text-main);
+            }
+
+            /* Modern Cards */
+            .resources-grid {
+                padding-bottom: 40px;
+                scrollbar-width: none;
+                /* Fixed edge spacing - add proper side margins */
+                padding-left: calc(5% + 20px) !important;
+                padding-right: calc(5% + 20px) !important;
+                /* Offset the scroll snap point to respect padding */
+                scroll-padding-left: calc(5% + 20px);
+            }
+
+            .resources-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            .resource-card {
+                min-width: 280px;
+                max-width: 280px;
+                min-height: 400px;
+            }
+
+            .resource-card .card-img {
+                height: 220px;
+            }
+        }
+
+        /* Menu Button Default */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex !important;
+                position: static;
+                flex-direction: row;
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="brand">
+            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA">
+        </div>
+        <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="solutions.html">Solutions</a>
+            <a href="resources.html">Resources</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <button class="header-btn" onclick="openWizard()">Request Assessment</button>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Automated GRC & Regulatory Intelligence</h1>
+            <p>Streamline compliance with real-time gap analysis against CBN, NERC, and HIPAA frameworks. Designed for
+                high-growth enterprises.</p>
+            <button class="header-btn" style="padding: 16px 32px; font-size: 16px;" onclick="openWizard()">Start
+                Readiness Assessment</button>
+        </div>
+        <div class="hero-image">
+            <img src="file:///Users/aniebietpius/.gemini/antigravity/brain/4ad71687-996f-4a3f-911d-ef79be267717/enterprise_grc_dashboard_mockup_1770596060655.png"
+                alt="GRC Dashboard">
+        </div>
+    </div>
+
+    <!-- Infinite Logo Marquee -->
+    <div class="marquee-section">
+        <div class="marquee-container">
+            <div class="marquee-content">
+                <!-- Original Set -->
+                <img src="images/trimble-logo.png" alt="Trimble">
+                <img src="images/parkland-health-logo.png" alt="Parkland">
+                <img src="images/UBS-logo.png" alt="UBS">
+                <img src="images/MMI-holdings-logo.png" alt="MMI">
+                <img src="images/capricorn-group-logo.png" alt="Capricorn">
+                <img src="images/Bapco-logo.png" alt="Bapco">
+                <img src="images/king-fahad-medical-city-logo.png" alt="KFMC">
+                <img src="images/cummins-logo.png" alt="Cummins">
+                <img src="images/opap-logo.png" alt="OPAP">
+                <!-- Duplicated Set for Smooth Loop -->
+                <img src="images/trimble-logo.png" alt="Trimble">
+                <img src="images/parkland-health-logo.png" alt="Parkland">
+                <img src="images/UBS-logo.png" alt="UBS">
+                <img src="images/MMI-holdings-logo.png" alt="MMI">
+                <img src="images/capricorn-group-logo.png" alt="Capricorn">
+                <img src="images/Bapco-logo.png" alt="Bapco">
+                <img src="images/king-fahad-medical-city-logo.png" alt="KFMC">
+                <img src="images/cummins-logo.png" alt="Cummins">
+                <img src="images/opap-logo.png" alt="OPAP">
+                <!-- Triplicated Set to ensure coverage on large screens -->
+                <img src="images/trimble-logo.png" alt="Trimble">
+                <img src="images/parkland-health-logo.png" alt="Parkland">
+                <img src="images/UBS-logo.png" alt="UBS">
+                <img src="images/MMI-holdings-logo.png" alt="MMI">
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Talk Slider -->
+    <div class="slider-section">
+        <div class="section-header">
+            <h2>Transform your GRC journey</h2>
+            <p>Join Fortune 500 companies building better governed, more risk-aware enterprises.</p>
+        </div>
+
+        <div class="testimonial-slider">
+            <div class="slide-track" id="sliderTrack">
+                <!-- Slide 1 -->
+                <div class="slide active">
+                    <img src="images/customer-talk-Knute-Ohman-TCF-insight.jpg" alt="Knute Ohman">
+                    <div class="slide-content">
+                        <blockquote>"Prior to moving to NEIIA, it took 1-2 weeks to get the management report ready. By
+                            streamlining the process, we have reduced the timeframe to 1-2 hours."</blockquote>
+                        <cite>Knute Ohman</cite>
+                        <span>Vice President, GRC Program Manager, TCF Bank</span>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="slide">
+                    <img src="images/OPAP-Automates-Its-GRC-Program.jpg" alt="Marisa Melliou">
+                    <div class="slide-content">
+                        <blockquote>"One of our biggest risks is responsible gaming risks. GRC technology can help us a
+                            lot in tracking this risk instantly, and taking measures to mitigate it."</blockquote>
+                        <cite>Marisa Melliou</cite>
+                        <span>Group Audit Director, OPAP</span>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="slide">
+                    <img src="images/michael-cover-customer-experience.jpg" alt="Michael Cover">
+                    <div class="slide-content">
+                        <blockquote>"It is truly a strategic implementation. You can save a lot of time, streamline your
+                            processes, and get people across the organization to use the same tool."</blockquote>
+                        <cite>Michael Cover</cite>
+                        <span>Manager, BCBS Michigan</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slider-dots" id="sliderDots">
+                <div class="dot active" onclick="goToSlide(0)"></div>
+                <div class="dot" onclick="goToSlide(1)"></div>
+                <div class="dot" onclick="goToSlide(2)"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Resources -->
+    <div class="resources-section">
+        <div class="section-header">
+            <h2>Related Resources</h2>
+        </div>
+        <div class="resources-grid">
+            <!-- Card 1 -->
+            <div class="resource-card">
+                <div>
+                    <div class="resource-tag">Analyst Report</div>
+                    <h4>ConnectedGRC: Integrating Risk to Thrive</h4>
+                    <p>Deep dive into current GRC trends and how to enable organizations to thrive on risk.</p>
+                </div>
+                <div class="resource-link">Download Now <i class="fas fa-arrow-right"></i></div>
+            </div>
+            <!-- Card 2 -->
+            <div class="resource-card">
+                <div>
+                    <div class="resource-tag">Case Study</div>
+                    <h4>Zurich Insurance Modernizes Compliance</h4>
+                    <p>Learn how Zurich Insurance embarked on a GRC modernization journey for agile compliance.</p>
+                </div>
+                <div class="resource-link">Read Case Study <i class="fas fa-arrow-right"></i></div>
+            </div>
+            <!-- Card 3 -->
+            <div class="resource-card">
+                <div>
+                    <div class="resource-tag">Customer Story</div>
+                    <h4>Nordea - GRC Journey Award Winner</h4>
+                    <p>Brian F. Sørensen shares how partnering with us helped implement integrated risk management.</p>
+                </div>
+                <div class="resource-link">Watch Video <i class="fas fa-play-circle"></i></div>
+            </div>
+            <!-- Card 4 -->
+            <div class="resource-card">
+                <div>
+                    <div class="resource-tag">E-Book</div>
+                    <h4>Compliance in Highly Regulated Industries</h4>
+                    <p>Understand requirements of the EU's DORA and key steps to achieve compliance resilience.</p>
+                </div>
+                <div class="resource-link">Get E-Book <i class="fas fa-download"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background: var(--primary); color: white; padding: 80px 5% 40px;">
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px;">
+            <div>
+                <img src="../assets/images/neiis-logo-green.png" alt="NEIIA"
+                    style="height: 40px; margin-bottom: 24px; filter: brightness(0) invert(1);">
+                <p style="color: #94a3b8; line-height: 1.6; font-size: 15px;">The National Energy Investment &
+                    Intelligence Agency (NEIIA) drives regulatory compliance, risk management, and sustainable growth
+                    for Nigeria's critical infrastructure sectors.</p>
+            </div>
+            <div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; color: white;">Platform</h4>
+                <a href="solutions.html"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Solutions</a>
+                <a href="resources.html"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Resources</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Data
+                    Bank</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Login</a>
+            </div>
+            <div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; color: white;">Company</h4>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">About
+                    NEIIA</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Leadership</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Careers</a>
+                <a href="contact.html"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Contact
+                    Us</a>
+            </div>
+            <div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; color: white;">Contact</h4>
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 12px;">Central Business District,<br>Abuja,
+                    Nigeria</p>
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 12px;">compliance@neiia.gov.ng</p>
+                <div style="display: flex; gap: 16px; margin-top: 24px;">
+                    <a href="#" style="color: #94a3b8; font-size: 18px;"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" style="color: #94a3b8; font-size: 18px;"><i class="fab fa-twitter"></i></a>
+                    <a href="#" style="color: #94a3b8; font-size: 18px;"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div
+            style="border-top: 1px solid #334155; padding-top: 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+            <p style="color: #64748b; font-size: 13px;">&copy; 2026 NEIIA Compliance Portal. All rights reserved.</p>
+            <div style="display: flex; gap: 24px;">
+                <a href="#" style="color: #64748b; text-decoration: none; font-size: 13px;">Privacy Policy</a>
+                <a href="#" style="color: #64748b; text-decoration: none; font-size: 13px;">Terms of Service</a>
+                <a href="#" style="color: #64748b; text-decoration: none; font-size: 13px;">Security</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Wizard Modal Structure -->
+    <div class="modal-overlay" id="wizardModal">
+        <div class="wizard-card">
+            <div class="wizard-header">
+                <div class="wizard-title">
+                    <h3>Compliance Readiness Assessment</h3>
+                    <p>Step <span id="stepCount">1</span> of 4</p>
+                </div>
+                <button onclick="closeWizard()"
+                    style="background:none; border:none; cursor:pointer; font-size:20px; color:#64748b;">&times;</button>
+            </div>
+            <div class="wizard-body">
+                <div class="step active" id="step1">
+                    <h4 style="margin-bottom: 16px; font-weight: 600;">Select Your Sector</h4>
+                    <div class="industry-grid">
+                        <div class="industry-card" onclick="selectIndustry('fintech', this)">
+                            <i class="fas fa-landmark"></i>
+                            <h4>FinTech & Banking</h4>
+                            <div style="font-size: 11px; margin-top: 4px; color: #64748b;">CBN, SEC, PCI-DSS</div>
+                        </div>
+                        <div class="industry-card" onclick="selectIndustry('health', this)">
+                            <i class="fas fa-stethoscope"></i>
+                            <h4>Healthcare</h4>
+                            <div style="font-size: 11px; margin-top: 4px; color: #64748b;">HIPAA, NHIS</div>
+                        </div>
+                        <div class="industry-card" onclick="selectIndustry('energy', this)">
+                            <i class="fas fa-solar-panel"></i>
+                            <h4>Energy & Infra</h4>
+                            <div style="font-size: 11px; margin-top: 4px; color: #64748b;">NERC, ISO 14001</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="step" id="step2">
+                    <h4 style="margin-bottom: 20px; font-weight: 600;">Organization Details</h4>
+                    <div class="question-group">
+                        <label class="question-label">Company Name</label>
+                        <input type="text" class="form-input" placeholder="Legal Entity Name">
+                    </div>
+                    <div class="question-group">
+                        <label class="question-label">Corporate Email Address</label>
+                        <input type="email" class="form-input" id="emailInput" placeholder="name@company.com">
+                        <div id="emailError" style="color:red; font-size:12px; margin-top:4px; display:none;">Please
+                            use a valid corporate email.</div>
+                    </div>
+                    <div class="question-group">
+                        <label class="question-label">Annual Revenue Range</label>
+                        <select class="form-input" id="revenueInput">
+                            <option value="">Select Revenue Range...</option>
+                            <option value="pre_rev">Pre-Revenue / Seed Stage</option>
+                            <option value="100m_500m">₦100M - ₦500M</option>
+                            <option value="500m_1b">₦500M - ₦1B</option>
+                            <option value="1b_5b">₦1B - ₦5B</option>
+                            <option value="5b_plus">₦5B+</option>
+                        </select>
+                    </div>
+                    <div class="question-group">
+                        <label class="question-label">Primary Regulatory Jurisdiction</label>
+                        <select class="form-input" id="jurisdictionInput">
+                            <option value="NG">Nigeria (CBN/SEC/NERC)</option>
+                            <option value="GH">Ghana (SEC/BoG)</option>
+                            <option value="INT">International/Cross-Border</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="step" id="step3">
+                    <h4 style="margin-bottom: 20px; font-weight: 600;">Risk & Compliance Check</h4>
+                    <div id="dynamicQuestions"></div>
+                </div>
+                <!-- Step 4 -->
+                <div class="step" id="step4">
+                    <div class="loader-container" id="loadingState">
+                        <div class="spinner"></div>
+                        <h4 style="font-size: 16px; color: var(--text-main);">Analyzing regulatory gap posture...</h4>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">Comparing against ISO
+                            27001 and local frameworks.</p>
+                    </div>
+                    <div id="successState" style="display:none; text-align:center; padding-top: 20px;">
+                        <div
+                            style="width: 60px; height: 60px; background: #dcfce7; color: #166534; border-radius: 50%; display:inline-flex; align-items:center; justify-content:center; font-size: 24px; margin-bottom: 20px;">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <h3 style="margin-bottom: 12px;">Submission Received</h3>
+                        <p
+                            style="font-size: 14px; color: var(--text-secondary); max-width: 400px; margin: 0 auto 24px;">
+                            Your data has been securely routed to our audit team. We have identified <strong
+                                id="riskCount">3 potential gaps</strong>. A detailed report will be sent to your email.
+                        </p>
+                        <button class="btn-primary" onclick="closeWizard()">Return to Dashboard</button>
+                    </div>
+                </div>
+            </div>
+            <div class="wizard-footer" id="wizardFooter">
+                <button class="btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn-primary" onclick="nextStep()" id="nextBtn">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Wizard and Sliders -->
+    <script>
+        // --- Slider Logic ---
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        function updateSlider() {
+            const track = document.getElementById('sliderTrack');
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentSlide);
+            });
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlider();
+        }, 5000);
+
+        // --- Expanded Wizard Logic ---
+        let currentStep = 1;
+        let selectedIndustry = null;
+        const blockedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com'];
+
+        // EXPANDED QUESTIONNAIRES - DEEP DIVE (12-15 Questions)
+        const questions = {
+            fintech: [
+                { id: 'pci', text: "Does your infrastructure process, store, or transmit cardholder data (PAN)?", sub: "PCI-DSS Requirement 3.4" },
+                { id: 'data_res', text: "Do you host customer data exclusively within Nigerian borders?", sub: "NDPR / Data Localization Framework" },
+                { id: 'aml_report', text: "Is your AML (Anti-Money Laundering) reporting automated via API?", sub: "CBN / SEC Anti-Money Laundering Req" },
+                { id: 'kyc_tier', text: "Do you enforce Tier-3 KYC verification for transactions over N5m?", sub: "CBN Tiered KYC Registry" },
+                { id: 'fraud_detect', text: "Is your fraud detection system integrated with NIBSS anti-fraud portal?", sub: "NIBSS Integration Standard" },
+                { id: 'settle_recon', text: "Do you perform T+1 automated reconciliation for all settlements?", sub: "Operational Risk Management" },
+                { id: '2fa_biometric', text: "Is 2FA or Biometric authentication mandatory for all fund transfers?", sub: "Cybersecurity Framework 2023" },
+                { id: 'cloud_audit', text: "Has your cloud infrastructure undergone a PCIDSS audit in the last 12 months?", sub: "Third-Party Risk Management" },
+                { id: 'pen_test', text: "Do you conduct quarterly penetration testing on all public-facing APIs?", sub: "Vulnerability Management Policy" },
+                { id: 'incident_resp', text: " Is there a tested Incident Response Plan (IRP) for cyber breaches?", sub: "ISO 27001 / NIST Framework" },
+                { id: 'vendor_risk', text: "Do you assess the security posture of third-party API providers annually?", sub: "Supply Chain Risk Management" },
+                { id: 'board_oversight', text: "Does the Board have a dedicated Risk & Compliance Committee?", sub: "Corporate Governance Code 2018" }
+            ],
+            health: [
+                { id: 'hipaa_enc', text: "Do you maintain separate encrypted environments for PHI?", sub: "HIPAA / NDPR Data Privacy" },
+                { id: 'nhis_acc', text: "Are you validly accredited by the NHIS for HMO services?", sub: "NHIS Operational License" },
+                { id: 'consent_mgmt', text: "Do you have automated patient consent management workflows?", sub: "Patient Rights / Data Processing" },
+                { id: 'telemed_secure', text: "Are telemedicine sessions end-to-end encrypted and not recorded without consent?", sub: "Digital Health Practice Guidelines" },
+                { id: 'data_retention', text: "Do you enforce a 6-year data retention policy for medical records?", sub: "Medical Records Retention Act" },
+                { id: 'staff_training', text: "Has all staff completed annual data privacy training?", sub: "Organizational Compliance" },
+                { id: 'breach_proto', text: "Is there a documented 72-hour breach notification protocol?", sub: "NDPR Incident Response" },
+                { id: 'medical_device', text: "Are networked medical devices segmented from the guest Wi-Fi network?", sub: "IoMT Security Standard" },
+                { id: 'access_control', text: "Is access to EMR systems restricted based on role (RBAC)?", sub: "Least Privilege Principle" },
+                { id: 'disaster_recov', text: "Do you have off-site immutable backups for critical patient data?", sub: "Business Continuity Planning" },
+                { id: 'audit_logs', text: "Are access logs for sensitive records retained for at least 12 months?", sub: "Audit Trail Requirements" }
+            ],
+            energy: [
+                { id: 'eia_audit', text: "Have you conducted an EIA for all active operational sites?", sub: "ISO 14001 / FMEnv Certification" },
+                { id: 'nerc_meter', text: "Do you meet NERC metering code standards for interconnection?", sub: "NERC Grid Code" },
+                { id: 'esg_report', text: "Do you publish an annual Sustainability/ESG report?", sub: "Global Reporting Initiative (GRI)" },
+                { id: 'grid_emissions', text: "Do you track Scope 1 & 2 emissions for grid-connected assets?", sub: "Carbon Footprint Assessment" },
+                { id: 'comm_engage', text: "Is there a formalized Community Engagement Framework (CDA)?", sub: "Host Community Development Act" },
+                { id: 'waste_mgmt', text: "Do you have a certified hazardous waste disposal vendor?", sub: "Environmental Safety Standards" },
+                { id: 'HSE_policy', text: "Is your HSE policy compliant with ISO 45001?", sub: "Occupational Health & Safety" },
+                { id: 'cyber_ot', text: "Is your OT (Operational Technology) network air-gapped from IT?", sub: "Critical Infrastructure Protection" },
+                { id: 'scada_sec', text: "Are SCADA systems protected by strict access controls and monitoring?", sub: "Industrial Control Systems Security" },
+                { id: 'emergency_resp', text: "Is there a site-specific Emergency Response Plan drilled annually?", sub: "Safety Regulations" },
+                { id: 'asset_mgmt', text: "Do you maintain a real-time asset inventory for critical infrastructure?", sub: "Asset Integrity Management" }
+            ]
+        };
+
+        function resetWizard() {
+            currentStep = 1;
+            selectedIndustry = null;
+            updateUI();
+            document.querySelectorAll('.industry-card').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('input').forEach(i => i.value = '');
+            document.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+            // Clear segmented controls
+            document.querySelectorAll('.segmented-control .segment').forEach(s => s.classList.remove('active'));
+        }
+
+        function loadQuestions() {
+            const container = document.getElementById('dynamicQuestions');
+            container.innerHTML = '';
+
+            questions[selectedIndustry].forEach((q, idx) => {
+                const uniqueId = `q_${idx}`;
+                const html = `
+                    <div class="question-group" style="background: #f8fafc; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 20px;">
+                        <label class="question-label" style="font-size: 16px; margin-bottom: 8px; color: #1e293b; font-weight: 600;">${q.text}</label>
+                        <div style="font-size: 12px; color: #64748b; margin-bottom: 20px; font-family: monospace; background: #e2e8f0; display: inline-block; padding: 2px 8px; border-radius: 4px;">REF: ${q.sub}</div>
+                        
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+                            <div>
+                                <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 8px; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Maturity Level</label>
+                                <div class="segmented-control" id="${uniqueId}_control" style="display: flex; background: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px; gap: 4px;">
+                                    <div class="segment" onclick="selectSegment('${uniqueId}', 'none', this)" style="flex: 1; padding: 8px; text-align: center; font-size: 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s; color: #64748b;">Non-Compliant</div>
+                                    <div class="segment" onclick="selectSegment('${uniqueId}', 'planned', this)" style="flex: 1; padding: 8px; text-align: center; font-size: 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s; color: #64748b;">Planned</div>
+                                    <div class="segment" onclick="selectSegment('${uniqueId}', 'implemented', this)" style="flex: 1; padding: 8px; text-align: center; font-size: 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s; color: #64748b;">Implemented</div>
+                                    <div class="segment" onclick="selectSegment('${uniqueId}', 'audited', this)" style="flex: 1; padding: 8px; text-align: center; font-size: 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s; color: #64748b;">Audited</div>
+                                </div>
+                                <input type="hidden" id="${uniqueId}_input" name="${uniqueId}">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 8px; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Evidence / Ref ID</label>
+                                <input type="text" class="form-input" placeholder="e.g. ISO-27001-A.12" style="font-size: 13px; padding: 10px;">
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        function selectSegment(groupId, value, element) {
+            // Update UI
+            const container = document.getElementById(`${groupId}_control`);
+            container.querySelectorAll('.segment').forEach(s => {
+                s.style.background = 'transparent';
+                s.style.color = '#64748b';
+                s.style.fontWeight = '400';
+                s.classList.remove('active');
+            });
+
+            element.classList.add('active');
+            element.style.color = 'white';
+            element.style.fontWeight = '600';
+
+            // Color coding based on selection
+            if (value === 'none') element.style.background = '#ef4444'; // Red
+            else if (value === 'planned') element.style.background = '#f59e0b'; // Amber
+            else if (value === 'implemented') element.style.background = '#10b981'; // Green
+            else if (value === 'audited') element.style.background = '#0d3d44'; // Brand Teal
+
+            // Update hidden input
+            document.getElementById(`${groupId}_input`).value = value;
+        }
+
+        function openWizard() {
+            document.getElementById('wizardModal').classList.add('active');
+            resetWizard();
+        }
+
+        function closeWizard() {
+            document.getElementById('wizardModal').classList.remove('active');
+        }
+
+        function selectIndustry(ind, card) {
+            selectedIndustry = ind;
+            document.querySelectorAll('.industry-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+        }
+
+        function updateUI() {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            document.getElementById('stepCount').textContent = currentStep;
+
+            const footer = document.getElementById('wizardFooter');
+            const nextBtn = document.getElementById('nextBtn');
+
+            if (currentStep === 1) {
+                document.querySelector('.btn-secondary').style.display = 'none';
+                nextBtn.textContent = 'Continue';
+                footer.style.display = 'flex';
+            } else if (currentStep === 4) {
+                footer.style.display = 'none';
+            } else {
+                document.querySelector('.btn-secondary').style.display = 'block';
+                if (currentStep === 3) nextBtn.textContent = 'Submit Assessment';
+                else nextBtn.textContent = 'Continue';
+                footer.style.display = 'flex';
+            }
+        }
+
+        function nextStep() {
+            if (currentStep === 1) {
+                if (!selectedIndustry) return alert('Please select an industry.');
+                loadQuestions();
+            } else if (currentStep === 2) {
+                const email = document.getElementById('emailInput').value;
+                if (!validateEmail(email)) return;
+            } else if (currentStep === 3) {
+                currentStep++;
+                updateUI();
+                simulateLoading();
+                return;
+            }
+            currentStep++;
+            updateUI();
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateUI();
+            }
+        }
+
+        function validateEmail(email) {
+            const error = document.getElementById('emailError');
+            if (!email || !email.includes('@')) {
+                error.style.display = 'block'; return false;
+            }
+            const domain = email.split('@')[1];
+            if (blockedDomains.some(d => domain.includes(d))) {
+                error.textContent = 'Please use a corporate email address.';
+                error.style.display = 'block';
+                return false;
+            }
+            error.style.display = 'none';
+            return true;
+        }
+
+        function simulateLoading() {
+            setTimeout(() => {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('successState').style.display = 'block';
+            }, 3000);
+        }
+    </script>
+    <script>
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+            document.querySelector('.nav-links').classList.toggle('active');
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    </script>
+</body>
+
+</html>

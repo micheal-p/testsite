@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRC Solutions & Modules | NEIIA Compliance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #ffffff;
+            --bg-secondary: #f8fafc;
+            --primary: #0d3d44;
+            /* Deep Teal */
+            --accent: #10b981;
+            /* Emerald Green */
+            --text-main: #111827;
+            --text-secondary: #6b7280;
+            --border: #e2e8f0;
+            --surface: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand img {
+            height: 36px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .header-btn {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .header-btn:hover {
+            background: #0a2e33;
+            transform: translateY(-1px);
+        }
+
+        /* --- Page Content --- */
+        .page-header {
+            padding: 160px 5% 80px;
+            background: #f8fafc;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .page-header p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .solutions-grid {
+            padding: 80px 5%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .solution-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border-color: var(--accent);
+        }
+
+        .card-img {
+            height: 200px;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 32px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 24px;
+        }
+
+        .card-body h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .card-body p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .card-link {
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .feature-strip {
+            background: var(--primary);
+            color: white;
+            padding: 80px 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .strip-content h2 {
+            font-size: 32px;
+            margin-bottom: 24px;
+        }
+
+        .strip-content p {
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 32px;
+            font-size: 16px;
+        }
+
+        .feature-list li {
+            margin-bottom: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .feature-list i {
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 120px 5% 60px;
+            }
+
+            .solutions-grid {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 32px;
+                padding-bottom: 20px;
+                /* Match index.html approach: use negative margin + percentage padding */
+                margin-left: -5%;
+                margin-right: -5%;
+                padding-left: calc(5% + 20px);
+                /* Extra 20px for more spacing */
+                padding-right: calc(5% + 20px);
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .solutions-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            .solution-card {
+                min-width: 85%;
+                scroll-snap-align: start;
+                flex-shrink: 0;
+            }
+
+            .feature-strip {
+                grid-template-columns: 1fr;
+                padding: 60px 5%;
+                text-align: center;
+            }
+
+            .feature-list li {
+                justify-content: center;
+            }
+
+            /* Footer Stacking */
+            footer>div:first-child {
+                grid-template-columns: 1fr !important;
+                gap: 40px !important;
+            }
+
+            /* Mobile Menu Styles */
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 77px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                border-bottom: 1px solid var(--border);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                z-index: 1002;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            h1 {
+                font-size: 32px !important;
+                line-height: 1.2 !important;
+            }
+
+            p {
+                font-size: 16px !important;
+            }
+
+            /* UI Polish - Round 3 (Corrective) */
+
+            /* Footer Alignment - 2-column grid for Platform/Company */
+            footer>div:first-child {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                /* Two columns */
+                gap: 30px 20px !important;
+                text-align: left !important;
+            }
+
+            /* First div (logo section) spans full width */
+            footer>div:first-child>div:first-child {
+                grid-column: 1 / -1 !important;
+            }
+
+            /* Last div (Contact) spans full width */
+            footer>div:first-child>div:last-child {
+                grid-column: 1 / -1 !important;
+            }
+
+            footer>div:first-child>div:last-child>div {
+                justify-content: flex-start !important;
+            }
+
+            /* Menu Visibility & Z-Index Fixes */
+            header .header-btn {
+                display: none !important;
+            }
+
+            .hero .header-btn {
+                display: block !important;
+                margin: 20px auto !important;
+                width: fit-content;
+            }
+
+            .mobile-menu-btn {
+                display: block !important;
+                font-size: 28px;
+                padding: 10px;
+                color: #0d3d44 !important;
+                /* Dark Teal for contrast */
+                z-index: 2005 !important;
+                position: relative;
+            }
+
+            /* Full Screen Menu */
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                height: calc(100vh - 70px);
+                padding: 40px 20px;
+                border: none;
+                flex-direction: column;
+                justify-content: flex-start;
+                background: white;
+                z-index: 2000 !important;
+                overflow-y: auto;
+            }
+
+            .nav-links.active {
+                display: flex !important;
+            }
+
+            .nav-links a {
+                font-size: 20px;
+                padding: 15px;
+                text-align: center;
+                border-bottom: 1px solid var(--border);
+                width: 100%;
+                color: var(--text-main);
+            }
+
+            /* Modern Cards */
+            .solutions-grid {
+                padding-bottom: 40px;
+                scrollbar-width: none;
+                /* Fixed edge spacing - add proper side margins */
+                padding-left: calc(5% + 20px) !important;
+                padding-right: calc(5% + 20px) !important;
+                /* Offset the scroll snap point to respect padding */
+                scroll-padding-left: calc(5% + 20px);
+            }
+
+            .solutions-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            .solution-card {
+                min-width: 280px;
+                max-width: 280px;
+                min-height: 400px;
+            }
+
+            .solution-card .card-img {
+                height: 220px;
+            }
+        }
+
+        /* Menu Button Default */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex !important;
+                position: static;
+                flex-direction: row;
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="brand">
+            <a href="index.html"><img src="../assets/images/neiis-logo-green.png" alt="NEIIA"></a>
+        </div>
+        <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="solutions.html" class="active">Solutions</a>
+            <a href="resources.html">Resources</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <button class="header-btn" onclick="window.location.href='index.html'">Request Assessment</button>
+    </header>
+
+    <div class="page-header">
+        <h1>Integrated GRC Modules</h1>
+        <p>Purpose-built applications to harmonize risk management, compliance, and audit workflows across your
+            enterprise.</p>
+    </div>
+
+    <div class="solutions-grid">
+        <!-- Module 1 -->
+        <div class="solution-card">
+            <div class="card-img">
+                <img src="images/demo-latest-screen-laptop.jpg" alt="Risk Management">
+            </div>
+            <div class="card-body">
+                <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Enterprise Risk Management</h3>
+                <p>Identify, assess, and mitigate risks with a unified data model. Link risks to controls, assets, and
+                    strategic objectives.</p>
+                <a href="#" class="card-link">Explore ERM <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <!-- Module 2 -->
+        <div class="solution-card">
+            <div class="card-img">
+                <img src="images/demo-pardot-header-banner.jpg" alt="Audit Management">
+            </div>
+            <div class="card-body">
+                <div class="card-icon"><i class="fas fa-clipboard-check"></i></div>
+                <h3>Internal Audit Management</h3>
+                <p>Streamline the entire audit lifecycle from planning and scheduling to fieldwork, reporting, and issue
+                    tracking.</p>
+                <a href="#" class="card-link">Explore Audit <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <!-- Module 3 -->
+        <div class="solution-card">
+            <div class="card-img">
+                <img src="images/solutionbriefs-pardot-header-banner.jpg" alt="Policy Compliance">
+            </div>
+            <div class="card-body">
+                <div class="card-icon"><i class="fas fa-file-contract"></i></div>
+                <h3>Policy & Compliance</h3>
+                <p>Map internal policies to external regulations (CBN, NDPR, GDPR). Automate evidence collection and gap
+                    analysis.</p>
+                <a href="#" class="card-link">Explore Policy <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="feature-strip">
+        <div class="strip-content">
+            <h2>Why Unified GRC?</h2>
+            <p>Siloed compliance efforts lead to redundancy and blind spots. Our platform connects the dots between
+                risk, compliance, and audit.</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-check-circle"></i> <span>Single Source of Truth for all GRC data</span></li>
+                <li><i class="fas fa-check-circle"></i> <span>Real-time Dashboards & Reporting</span></li>
+                <li><i class="fas fa-check-circle"></i> <span>AI-Powered Regulatory Intelligence</span></li>
+            </ul>
+        </div>
+        <div class="strip-image">
+            <img src="images/demo-latest-screen-laptop.jpg"
+                style="width: 100%; border-radius: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);" alt="Dashboard">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background: var(--primary); color: white; padding: 80px 5% 40px;">
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px;">
+            <div>
+                <img src="../assets/images/neiis-logo-green.png" alt="NEIIA"
+                    style="height: 40px; margin-bottom: 24px; filter: brightness(0) invert(1);">
+                <p style="color: #94a3b8; line-height: 1.6; font-size: 15px;">The National Energy Investment &
+                    Intelligence Agency (NEIIA) drives regulatory compliance, risk management, and sustainable growth
+                    for Nigeria's critical infrastructure sectors.</p>
+            </div>
+            <div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; color: white;">Platform</h4>
+                <a href="solutions.html"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Solutions</a>
+                <a href="resources.html"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Resources</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Data
+                    Bank</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Login</a>
+            </div>
+            <div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; color: white;">Company</h4>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">About
+                    NEIIA</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Leadership</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Careers</a>
+                <a href="contact.html"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Contact
+                    Us</a>
+            </div>
+            <div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; color: white;">Contact</h4>
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 12px;">Central Business District,<br>Abuja,
+                    Nigeria</p>
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 12px;">compliance@neiia.gov.ng</p>
+                <div style="display: flex; gap: 16px; margin-top: 24px;">
+                    <a href="#" style="color: #94a3b8; font-size: 18px;"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" style="color: #94a3b8; font-size: 18px;"><i class="fab fa-twitter"></i></a>
+                    <a href="#" style="color: #94a3b8; font-size: 18px;"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div
+            style="border-top: 1px solid #334155; padding-top: 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+            <p style="color: #64748b; font-size: 13px;">&copy; 2026 NEIIA Compliance Portal. All rights reserved.</p>
+            <div style="display: flex; gap: 24px;">
+                <a href="#" style="color: #64748b; text-decoration: none; font-size: 13px;">Privacy Policy</a>
+                <a href="#" style="color: #64748b; text-decoration: none; font-size: 13px;">Terms of Service</a>
+                <a href="#" style="color: #64748b; text-decoration: none; font-size: 13px;">Security</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+            document.querySelector('.nav-links').classList.toggle('active');
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    </script>
+</body>
+
+
+</html>

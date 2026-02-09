@@ -1,0 +1,203 @@
+/* @import url('http://example.com/example_style.css'); */
+
+/***********************************************/
+/* CSS @imports must be at the top of the file */
+/* Add them above this section                 */
+/***********************************************/
+
+/*****************************************/
+/* Start your style declarations here    */
+/*****************************************/
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+
+body{
+  margin:0;
+  padding:0;
+  font-size: 16px;
+  font-family: 'Noto Sans', sans-serif;
+}
+* {
+  margin:0;
+  padding:0;
+}
+ul {
+  margin:0;
+  padding:0;
+}
+li {
+  list-style:none;
+}
+.container-fluid{
+  padding:0 !important;
+  margin:0 !important;
+}
+
+h1, h2, h3, h4, h5, h6{
+  font-family: 'serenity', sans-serif !important;
+}
+
+.submitted-message p {
+  font-size: 16px !important;
+  padding: 10px 0 !important;
+}
+.interested-section-absolute {
+  position: absolute;
+  right: 5%;
+  max-width: 340px;
+  width: 25% !important;
+  top: 110px;
+}
+
+.interested-section-absolute .form-container-tnku {
+  width: inherit;
+  color: indianred;
+  display: inherit;
+  text-align: inherit;
+  position: inherit;
+  margin: inherit;
+  right: inherit;
+  bottom: inherit;
+  z-index: inherit;
+  background: inherit;
+  padding: inherit;
+}
+.interested-section-absolute .form-container-tnku{
+  background:#27EBBF;
+}
+.form-container-tnku .grey-bg{
+  background:#27EBBF;
+}
+.interested-section-absolute h3.form-container-tnku {
+  margin: 0;
+  color: rgb(255, 255, 255);
+  font-size: 1em;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 22px;
+  text-align: center;
+  padding: .5em;
+
+}
+.datasheet-thank-box .tnku-new-theme img {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 370px;
+}
+#subject {
+  color:rgb(16, 100, 181);
+}
+.editable #subject {
+  color:#10052F;
+  font-family: 'serenity', sans-serif !important;
+}
+
+.interested-section-relative {
+  position: relative;
+  right: 0%;
+  background: #27EBBF;
+  max-width: 340px;
+  width: 25% !important;
+  top: 0px;
+}
+.interested-section-relative .form-container-tnku {
+  width: inherit;
+  color: indianred;
+  display: inherit;
+  text-align: inherit;
+  position: inherit;
+  margin: inherit;
+  right: inherit;
+  bottom: inherit;
+  z-index: inherit;
+  background: inherit;
+  padding: inherit;
+}
+.interested-section-relative .form-container-tnku{
+  background: rgb(83 86 90);
+}
+.interested-section-relative h3.form-container-tnku {
+  margin: 0;
+  color: rgb(255, 255, 255);
+  font-size: 1em;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 22px;
+  text-align: center;
+  padding: .5em;
+
+}
+.interested-section-relative .grey-bg{
+  background: #27EBBF;
+}
+.interested-section-relative .rsrc-section {
+  margin: 10px 10px 10px 10px;
+}
+.interested-section-relative .form-container-tnku h3{
+  background: #27EBBF;
+}
+.interested-section-relative .rsrc-section p a {
+  color: #10052F;
+  font-weight: 600;
+  font-size: .85em;
+}
+.form-container-tnku .rsrc-section a{
+  color:#10052F;
+  transition:0.3s;
+}
+.form-container-tnku .rsrc-section div a:hover{
+  background: #10052F;
+  background-position: 0 0;
+  transition:0.3s;
+}
+/*.interested-section-relative .rsrc-section div a:hover {
+color: rgb(146 201 62);
+}*/
+
+
+@media (max-width:767px) {
+  .interested-section-relative {
+    width: 100% !important;
+    margin: 0px auto !important;
+  }
+  .interested-section-relative .rsrc-section p,  .interested-section-relative .rsrc-section div{
+    text-align: left;
+  }
+  .main-heading {
+    font-size: 20px;
+  }
+  .top-header{
+    width: 100% !important;
+  }
+  .interested-section-absolute {
+    position: relative;
+    right: 0;
+    max-width: 340px;
+    width: 95% !important;
+    top: 0px;
+    margin: 8px auto !important;
+  }
+}
+
+
+@media (min-width:768px) and (max-width:991px) {
+  .interested-section-relative, .interested-section-absolute {
+    width: 29% !important;
+  }
+  .rsrc-section div a {
+    font-size: 11px;
+  }
+
+
+}
+
+
+@media (min-width:992px) and (max-width:1199px) {
+  .interested-section-relative .rsrc-section div a {
+    font-size: 11px;
+  }
+
+
+}

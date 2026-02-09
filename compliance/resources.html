@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRC Resources & Insights | NEIIA Compliance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #ffffff;
+            --bg-secondary: #f8fafc;
+            --primary: #0d3d44;
+            /* Deep Teal */
+            --accent: #10b981;
+            /* Emerald Green */
+            --text-main: #111827;
+            --text-secondary: #6b7280;
+            --border: #e2e8f0;
+            --surface: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand img {
+            height: 36px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .header-btn {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .header-btn:hover {
+            background: #0a2e33;
+            transform: translateY(-1px);
+        }
+
+        /* --- Page Content --- */
+        .page-header {
+            padding: 160px 5% 60px;
+            background: #f8fafc;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .page-header p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .resource-grid {
+            padding: 60px 5%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .resource-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+            border-color: var(--accent);
+        }
+
+        .card-img {
+            height: 180px;
+            position: relative;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card-body {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-body h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            color: var(--text-main);
+        }
+
+        .card-body p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .card-link {
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 120px 5% 60px;
+            }
+
+            .resource-grid {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 16px;
+                padding-bottom: 20px;
+                margin-left: -5%;
+                margin-right: -5%;
+                padding-left: 5%;
+                padding-right: 5%;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .resource-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            .resource-card {
+                min-width: 85%;
+                scroll-snap-align: center;
+                flex-shrink: 0;
+            }
+
+            /* Footer Stacking */
+            footer>div:first-child {
+                grid-template-columns: 1fr !important;
+                gap: 40px !important;
+            }
+
+            /* Mobile Menu Styles */
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 77px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                border-bottom: 1px solid var(--border);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                z-index: 1002;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            h1 {
+                font-size: 32px !important;
+                line-height: 1.2 !important;
+            }
+
+            p {
+                font-size: 16px !important;
+            }
+
+            /* UI Polish - Round 3 (Corrective) */
+
+            /* Footer Alignment - 2-column grid for Platform/Company */
+            footer>div:first-child {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                /* Two columns */
+                gap: 30px 20px !important;
+                text-align: left !important;
+            }
+
+            /* First div (logo section) spans full width */
+            footer>div:first-child>div:first-child {
+                grid-column: 1 / -1 !important;
+            }
+
+            /* Last div (Contact) spans full width */
+            footer>div:first-child>div:last-child {
+                grid-column: 1 / -1 !important;
+            }
+
+            footer>div:first-child>div:last-child>div {
+                justify-content: flex-start !important;
+            }
+
+            /* Menu Visibility & Z-Index Fixes */
+            header .header-btn {
+                display: none !important;
+            }
+
+            .hero .header-btn {
+                display: block !important;
+                margin: 20px auto !important;
+                width: fit-content;
+            }
+
+            .mobile-menu-btn {
+                display: block !important;
+                font-size: 28px;
+                padding: 10px;
+                color: #0d3d44 !important;
+                /* Dark Teal for contrast */
+                z-index: 2005 !important;
+                position: relative;
+            }
+
+            /* Full Screen Menu */
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                height: calc(100vh - 70px);
+                padding: 40px 20px;
+                border: none;
+                flex-direction: column;
+                justify-content: flex-start;
+                background: white;
+                z-index: 2000 !important;
+                overflow-y: auto;
+            }
+
+            .nav-links.active {
+                display: flex !important;
+            }
+
+            .nav-links a {
+                font-size: 20px;
+                padding: 15px;
+                text-align: center;
+                border-bottom: 1px solid var(--border);
+                width: 100%;
+                color: var(--text-main);
+            }
+
+            /* Modern Cards */
+            .resource-grid {
+                padding-bottom: 40px;
+                scrollbar-width: none;
+            }
+
+            .resource-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            .resource-card {
+                min-width: 280px;
+                max-width: 280px;
+                min-height: 400px;
+            }
+
+            .resource-card .card-img {
+                height: 220px;
+            }
+        }
+
+        /* Menu Button Default */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex !important;
+                position: static;
+                flex-direction: row;
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="brand">
+            <a href="index.html"><img src="../assets/images/neiis-logo-green.png" alt="NEIIA"></a>
+        </div>
+        <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="solutions.html">Solutions</a>
+            <a href="resources.html" class="active">Resources</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <button class="header-btn" onclick="window.location.href='index.html'">Request Assessment</button>
+    </header>
+
+    <div class="page-header">
+        <h1>Regulatory Intelligence Hub</h1>
+        <p>Stay ahead of compliance mandates with our latest whitepapers, case studies, and analyst reports.</p>
+    </div>
+
+    <div class="resource-grid">
+        <!-- Resource 1 -->
+        <div class="resource-card">
+            <div class="card-img">
+                <img src="images/factsheets-pardot-header-banner.jpg" alt="Report">
+                <span class="card-tag">Analyst Report</span>
+            </div>
+            <div class="card-body">
+                <h3>The State of GRC in 2026</h3>
+                <p>An in-depth analysis of emerging risks, regulatory changes, and technology trends shaping the
+                    governance landscape.</p>
+                <a href="#" class="card-link">Download Report <i class="fas fa-download"></i></a>
+            </div>
+        </div>
+
+        <!-- Resource 2 -->
+        <div class="resource-card">
+            <div class="card-img">
+                <img src="images/webinars-pardot-header-banner.jpg" alt="Webinar">
+                <span class="card-tag">Webinar</span>
+            </div>
+            <div class="card-body">
+                <h3>Navigating CBN Digital Currency Frameworks</h3>
+                <p>Watch our expert panel discuss the implications of the latest Central Bank directives on fintech
+                    compliance.</p>
+                <a href="#" class="card-link">Watch Now <i class="fas fa-play-circle"></i></a>
+            </div>
+        </div>
+
+        <!-- Resource 3 -->
+        <div class="resource-card">
+            <div class="card-img">
+                <img src="images/casestudies-pardot-header-banner.jpg" alt="Case Study">
+                <span class="card-tag">Case Study</span>
+            </div>
+            <div class="card-body">
+                <h3>How First Bank Automated Third-Party Risk</h3>
+                <p>Learn how First Bank reduced vendor onboarding time by 60% while maintaining strict risk controls.
+                </p>
+                <a href="#" class="card-link">Read Case Study <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <!-- Resource 4 -->
+        <div class="resource-card">
+            <div class="card-img">
+                <img src="images/analyst-reports-pardot-banner.jpg" alt="Guide">
+                <span class="card-tag">Guide</span>
+            </div>
+            <div class="card-body">
+                <h3>ISO 27001 Implementation Checklist</h3>
+                <p>A step-by-step guide to preparing your organization for ISO 27001 certification and audit readiness.
+                </p>
+                <a href="#" class="card-link">Get Checklist <i class="fas fa-check-square"></i></a>
+            </div>
+        </div>
+
+        <!-- Resource 5 -->
+        <div class="resource-card">
+            <div class="card-img">
+                <img src="images/videos-pardot-header-banner.jpg" alt="Video">
+                <span class="card-tag">Video Series</span>
+            </div>
+            <div class="card-body">
+                <h3>Compliance Masterclass Series</h3>
+                <p>Short, practical videos covering key topics like AML, KYC, and Data Privacy for compliance officers.
+                </p>
+                <a href="#" class="card-link">Start Watching <i class="fas fa-play"></i></a>
+            </div>
+        </div>
+
+        <!-- Resource 6 -->
+        <div class="resource-card">
+            <div class="card-img">
+                <img src="images/pricing-pardot-header-banner.jpg" alt="Whitepaper">
+                <span class="card-tag">Whitepaper</span>
+            </div>
+            <div class="card-body">
+                <h3>The ROI of Automated Compliance</h3>
+                <p>Quantifying the business value of shifting from manual spreadsheets to an integrated GRC platform.
+                </p>
+                <a href="#" class="card-link">Read Paper <i class="fas fa-file-alt"></i></a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer style="background: var(--primary); color: white; padding: 80px 5% 40px;">
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px;">
+            <div>
+                <img src="../assets/images/neiis-logo-green.png" alt="NEIIA"
+                    style="height: 40px; margin-bottom: 24px; filter: brightness(0) invert(1);">
+                <p style="color: #94a3b8; line-height: 1.6; font-size: 15px;">The National Energy Investment &
+                    Intelligence Agency (NEIIA) drives regulatory compliance, risk management, and sustainable growth
+                    for Nigeria's critical infrastructure sectors.</p>
+            </div>
+            <div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; color: white;">Platform</h4>
+                <a href="solutions.html"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Solutions</a>
+                <a href="resources.html"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Resources</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Data
+                    Bank</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Login</a>
+            </div>
+            <div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; color: white;">Company</h4>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">About
+                    NEIIA</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Leadership</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Careers</a>
+                <a href="contact.html"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Contact
+                    Us</a>
+            </div>
+            <div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; color: white;">Contact</h4>
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 12px;">Central Business District,<br>Abuja,
+                    Nigeria</p>
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 12px;">compliance@neiia.gov.ng</p>
+                <div style="display: flex; gap: 16px; margin-top: 24px;">
+                    <a href="#" style="color: #94a3b8; font-size: 18px;"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" style="color: #94a3b8; font-size: 18px;"><i class="fab fa-twitter"></i></a>
+                    <a href="#" style="color: #94a3b8; font-size: 18px;"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div
+            style="border-top: 1px solid #334155; padding-top: 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+            <p style="color: #64748b; font-size: 13px;">&copy; 2026 NEIIA Compliance Portal. All rights reserved.</p>
+            <div style="display: flex; gap: 24px;">
+                <a href="#" style="color: #64748b; text-decoration: none; font-size: 13px;">Privacy Policy</a>
+                <a href="#" style="color: #64748b; text-decoration: none; font-size: 13px;">Terms of Service</a>
+                <a href="#" style="color: #64748b; text-decoration: none; font-size: 13px;">Security</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+            document.querySelector('.nav-links').classList.toggle('active');
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    </script>
+</body>
+
+
+</html>

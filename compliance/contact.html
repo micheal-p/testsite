@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact GRC Sales | NEIIA Compliance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #ffffff;
+            --bg-secondary: #f8fafc;
+            --primary: #0d3d44;
+            /* Deep Teal */
+            --accent: #10b981;
+            /* Emerald Green */
+            --text-main: #111827;
+            --text-secondary: #6b7280;
+            --border: #e2e8f0;
+            --surface: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand img {
+            height: 36px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .header-btn {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .header-btn:hover {
+            background: #0a2e33;
+            transform: translateY(-1px);
+        }
+
+        /* --- Contact Layout --- */
+        .contact-section {
+            padding: 140px 5% 80px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            background: #f8fafc;
+        }
+
+        .contact-info h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--primary);
+        }
+
+        .contact-info p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .contact-details {
+            margin-bottom: 40px;
+        }
+
+        .detail-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .detail-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 18px;
+        }
+
+        .detail-text h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .detail-text span {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .contact-form-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #fbfbfc;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent);
+            background: white;
+        }
+
+        textarea.form-input {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #0a2e33;
+        }
+
+        @media (max-width: 768px) {
+
+            /* Contact Hero Mobile */
+            .contact-hero h1 {
+                font-size: 32px !important;
+            }
+
+            /* Quick Contact Cards Mobile - Stack vertically */
+            .quick-contact-card {
+                padding: 24px 16px !important;
+            }
+
+            section>div[style*="grid-template-columns: repeat(3"] {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+
+            /* Main Contact Grid - Stack */
+            section>div[style*="grid-template-columns: 1fr 1.1fr"] {
+                grid-template-columns: 1fr !important;
+                gap: 40px !important;
+            }
+
+            /* Stats row on mobile */
+            div[style*="grid-template-columns: repeat(3, 1fr)"] {
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 12px !important;
+            }
+
+            div[style*="grid-template-columns: repeat(3, 1fr)"]>div>div:first-child {
+                font-size: 22px !important;
+            }
+
+            /* Form responsiveness */
+            .contact-form-card {
+                padding: 28px 20px !important;
+                position: static !important;
+            }
+
+            div[style*="grid-template-columns: 1fr 1fr; gap: 16px"] {
+                grid-template-columns: 1fr !important;
+            }
+
+            .contact-info h1 {
+                font-size: 32px;
+            }
+
+            /* Footer Stacking */
+            footer>div:first-child {
+                grid-template-columns: 1fr !important;
+                gap: 40px !important;
+            }
+
+            /* Mobile Menu Styles */
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 77px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                border-bottom: 1px solid var(--border);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                z-index: 1002;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            h1 {
+                font-size: 32px !important;
+                line-height: 1.2 !important;
+            }
+
+            p {
+                font-size: 16px !important;
+            }
+
+            /* UI Polish - Round 3 (Corrective) */
+
+            /* Footer Alignment - 2-column grid for Platform/Company */
+            footer>div:first-child {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                /* Two columns */
+                gap: 30px 20px !important;
+                text-align: left !important;
+            }
+
+            /* First div (logo section) spans full width */
+            footer>div:first-child>div:first-child {
+                grid-column: 1 / -1 !important;
+            }
+
+            /* Last div (Contact) spans full width */
+            footer>div:first-child>div:last-child {
+                grid-column: 1 / -1 !important;
+            }
+
+            footer>div:first-child>div:last-child>div {
+                justify-content: flex-start !important;
+            }
+
+            /* Menu Visibility & Z-Index Fixes */
+            header .header-btn {
+                display: none !important;
+            }
+
+            .hero .header-btn {
+                display: block !important;
+                margin: 20px auto !important;
+                width: fit-content;
+            }
+
+            .mobile-menu-btn {
+                display: block !important;
+                font-size: 28px;
+                padding: 10px;
+                color: #0d3d44 !important;
+                /* Dark Teal for contrast */
+                z-index: 2005 !important;
+                position: relative;
+            }
+
+            /* Full Screen Menu */
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                height: calc(100vh - 70px);
+                padding: 40px 20px;
+                border: none;
+                flex-direction: column;
+                justify-content: flex-start;
+                background: white;
+                z-index: 2000 !important;
+                overflow-y: auto;
+            }
+
+            .nav-links.active {
+                display: flex !important;
+            }
+
+            .nav-links a {
+                font-size: 20px;
+                padding: 15px;
+                text-align: center;
+                border-bottom: 1px solid var(--border);
+                width: 100%;
+                color: var(--text-main);
+            }
+        }
+
+        /* Menu Button Default */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex !important;
+                position: static;
+                flex-direction: row;
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="brand">
+            <a href="index.html"><img src="../assets/images/neiis-logo-green.png" alt="NEIIA"></a>
+        </div>
+        <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="solutions.html">Solutions</a>
+            <a href="resources.html">Resources</a>
+            <a href="contact.html" class="active">Contact</a>
+        </div>
+        <button class="header-btn" onclick="window.location.href='index.html'">Request Assessment</button>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="contact-hero"
+        style="padding: 140px 5% 60px; background: linear-gradient(135deg, var(--primary) 0%, #0a2e33 100%); text-align: center;">
+        <h1 style="color: white; font-size: 48px; font-weight: 700; margin-bottom: 20px;">Let's Talk Compliance</h1>
+        <p style="color: #94a3b8; font-size: 18px; max-width: 600px; margin: 0 auto; line-height: 1.6;">Ready to
+            modernize your risk management? Our GRC experts are here to help you navigate complex regulatory
+            environments.</p>
+    </section>
+
+    <!-- Quick Contact Cards -->
+    <section style="padding: 0 5%; margin-top: -40px; margin-bottom: 60px;">
+        <div
+            style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1000px; margin: 0 auto;">
+            <div class="quick-contact-card"
+                style="background: white; padding: 32px 24px; border-radius: 12px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.12); border: 1px solid var(--border);">
+                <div
+                    style="width: 56px; height: 56px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i class="fas fa-map-marker-alt" style="color: white; font-size: 22px;"></i>
+                </div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--primary);">Visit Us</h4>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;">Central Business
+                    District<br>Abuja, Nigeria</p>
+            </div>
+            <div class="quick-contact-card"
+                style="background: white; padding: 32px 24px; border-radius: 12px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.12); border: 1px solid var(--border);">
+                <div
+                    style="width: 56px; height: 56px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i class="fas fa-envelope" style="color: white; font-size: 22px;"></i>
+                </div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--primary);">Email Us</h4>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;"><a
+                        href="mailto:compliance@neiia.gov.ng"
+                        style="color: var(--accent); text-decoration: none;">compliance@neiia.gov.ng</a></p>
+            </div>
+            <div class="quick-contact-card"
+                style="background: white; padding: 32px 24px; border-radius: 12px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.12); border: 1px solid var(--border);">
+                <div
+                    style="width: 56px; height: 56px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i class="fas fa-phone-alt" style="color: white; font-size: 22px;"></i>
+                </div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--primary);">Call Us</h4>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;">+234 (0) 700 NEIIA GRC</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Contact Section -->
+    <section style="padding: 60px 5% 80px; background: #f8fafc;">
+        <div
+            style="display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; max-width: 1200px; margin: 0 auto; align-items: start;">
+            <!-- Left: Info & Trust -->
+            <div>
+                <span
+                    style="display: inline-block; background: rgba(16, 185, 129, 0.1); color: var(--accent); padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 20px;">GET
+                    IN TOUCH</span>
+                <h2
+                    style="font-size: 36px; font-weight: 700; color: var(--primary); margin-bottom: 16px; line-height: 1.2;">
+                    Schedule a Personalized Demo</h2>
+                <p style="font-size: 16px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 32px;">See how
+                    our integrated GRC platform can transform your compliance operations. Our team will walk you through
+                    industry-specific solutions tailored to your needs.</p>
+
+                <!-- Trust Indicators -->
+                <div style="margin-bottom: 32px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <div
+                            style="width: 32px; height: 32px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-check" style="color: #16a34a; font-size: 14px;"></i>
+                        </div>
+                        <span style="font-size: 15px; color: var(--text-main);">Response within 24 hours</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <div
+                            style="width: 32px; height: 32px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-check" style="color: #16a34a; font-size: 14px;"></i>
+                        </div>
+                        <span style="font-size: 15px; color: var(--text-main);">Free compliance consultation</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <div
+                            style="width: 32px; height: 32px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-check" style="color: #16a34a; font-size: 14px;"></i>
+                        </div>
+                        <span style="font-size: 15px; color: var(--text-main);">Tailored to your industry</span>
+                    </div>
+                </div>
+
+                <!-- Office Image -->
+                <img src="images/contact-us-pardot-banner.jpg"
+                    style="width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);"
+                    alt="NEIIA Office">
+
+                <!-- Stats Row -->
+                <div
+                    style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px; text-align: center;">
+                    <div>
+                        <div style="font-size: 28px; font-weight: 700; color: var(--primary);">500+</div>
+                        <div style="font-size: 13px; color: var(--text-secondary);">Enterprise Clients</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 28px; font-weight: 700; color: var(--primary);">98%</div>
+                        <div style="font-size: 13px; color: var(--text-secondary);">Retention Rate</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 28px; font-weight: 700; color: var(--primary);">24/7</div>
+                        <div style="font-size: 13px; color: var(--text-secondary);">Support</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Form Card -->
+            <div class="contact-form-card"
+                style="background: white; padding: 48px 40px; border-radius: 16px; box-shadow: 0 25px 60px rgba(0,0,0,0.1); border: 1px solid var(--border); position: sticky; top: 100px;">
+                <h3 style="font-size: 22px; font-weight: 600; margin-bottom: 8px; color: var(--primary);">Send us a
+                    message</h3>
+                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 28px;">Fill out the form below
+                    and we'll get back to you shortly.</p>
+
+                <form>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label">First Name *</label>
+                            <input type="text" class="form-input" placeholder="John">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name *</label>
+                            <input type="text" class="form-input" placeholder="Doe">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Work Email *</label>
+                        <input type="email" class="form-input" placeholder="john@company.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Company Name *</label>
+                        <input type="text" class="form-input" placeholder="Your Organization">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" class="form-input" placeholder="e.g. Chief Risk Officer">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">How can we help? *</label>
+                        <select class="form-input" style="cursor: pointer;">
+                            <option value="">Select an option...</option>
+                            <option value="demo">Request a Demo</option>
+                            <option value="pricing">Pricing Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="partnership">Partnership Opportunity</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-input" placeholder="Tell us about your compliance needs..."
+                            style="min-height: 100px;"></textarea>
+                    </div>
+                    <button type="button" class="submit-btn"
+                        style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        Send Message <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <p style="font-size: 12px; color: var(--text-secondary); text-align: center; margin-top: 16px;">By
+                        submitting, you agree to our <a href="#" style="color: var(--accent);">Privacy Policy</a></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: var(--primary); color: white; padding: 80px 5% 40px;">
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px;">
+            <div>
+                <img src="../assets/images/neiis-logo-green.png" alt="NEIIA"
+                    style="height: 40px; margin-bottom: 24px; filter: brightness(0) invert(1);">
+                <p style="color: #94a3b8; line-height: 1.6; font-size: 15px;">The National Energy Investment &
+                    Intelligence Agency (NEIIA) drives regulatory compliance, risk management, and sustainable growth
+                    for Nigeria's critical infrastructure sectors.</p>
+            </div>
+            <div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; color: white;">Platform</h4>
+                <a href="solutions.html"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Solutions</a>
+                <a href="resources.html"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Resources</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Data
+                    Bank</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Login</a>
+            </div>
+            <div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; color: white;">Company</h4>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">About
+                    NEIIA</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Leadership</a>
+                <a href="#"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Careers</a>
+                <a href="contact.html"
+                    style="display: block; color: #94a3b8; text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: color 0.2s;">Contact
+                    Us</a>
+            </div>
+            <div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; color: white;">Contact</h4>
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 12px;">Central Business District,<br>Abuja,
+                    Nigeria</p>
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 12px;">compliance@neiia.gov.ng</p>
+                <div style="display: flex; gap: 16px; margin-top: 24px;">
+                    <a href="#" style="color: #94a3b8; font-size: 18px;"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" style="color: #94a3b8; font-size: 18px;"><i class="fab fa-twitter"></i></a>
+                    <a href="#" style="color: #94a3b8; font-size: 18px;"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div
+            style="border-top: 1px solid #334155; padding-top: 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+            <p style="color: #64748b; font-size: 13px;">&copy; 2026 NEIIA Compliance Portal. All rights reserved.</p>
+            <div style="display: flex; gap: 24px;">
+                <a href="#" style="color: #64748b; text-decoration: none; font-size: 13px;">Privacy Policy</a>
+                <a href="#" style="color: #64748b; text-decoration: none; font-size: 13px;">Terms of Service</a>
+                <a href="#" style="color: #64748b; text-decoration: none; font-size: 13px;">Security</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+            document.querySelector('.nav-links').classList.toggle('active');
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    </script>
+</body>
+
+
+</html>
