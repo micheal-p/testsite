@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property & Tax | eVillage Portal</title>
+    <title>Utility & Loans | eVillage Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=1.1">
-    <script src="auth-check.js?v=1.1"></script>
+    <link rel="stylesheet" href="styles.css?v=2.0">
+    <script src="auth-check.js?v=2.0"></script>
     <style>
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
@@ -788,26 +788,26 @@
             </li>
             <li class="nav-item">
                 <a href="evillage-civil.html" class="nav-link">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Civil Registration</span>
+                    <i class="fas fa-store"></i>
+                    <span>Energy Marketplace</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-property.html" class="nav-link active">
-                    <i class="fas fa-home"></i>
-                    <span>Property & Tax</span>
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>Utility & Loans</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-governance.html" class="nav-link">
-                    <i class="fas fa-landmark"></i>
-                    <span>Governance</span>
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Energy Projects</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-admin.html" class="nav-link">
-                    <i class="fas fa-book"></i>
-                    <span>Admin Ledger</span>
+                    <i class="fas fa-shield-alt"></i>
+                    <span>NEMiC Controls</span>
                 </a>
             </li>
             <li class="nav-item"
@@ -818,7 +818,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="evillage.html" class="nav-link">
+                <a href="#" class="nav-link"
+                    onclick="sessionStorage.removeItem('neiia_authenticated'); window.location.href='evillage-signin.html'; return false;">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Sign Out</span>
                 </a>
@@ -837,173 +838,435 @@
     <!-- Main Content -->
     <main class="main-content">
         <div class="header">
-            <h1>Property & Tax Management</h1>
-            <p>Verify land ownership, register property, and pay your taxes securely.</p>
+            <h1>Utility & Loan Tracker</h1>
+            <p>Manage your energy bills, loan repayments, and mini-grid credit balance.</p>
         </div>
 
-        <div class="actions-row">
-            <!-- Featured Action: Interactive Verification -->
-            <div class="action-highlight">
-                <h2>Land Verification Search</h2>
-                <p>Instantly verify the authenticity of land titles and survey plans in your village.</p>
+        <!-- Featured Action: Loan Status -->
+        <div class="action-highlight">
+            <h2>Solar Loan Repayment</h2>
+            <p>Track your monthly payments and remaining balance on your Solar Home System financing.</p>
 
-                <div class="verification-search">
-                    <div class="search-input-wrapper">
-                        <i class="fas fa-search"></i>
-                        <input type="text" class="search-input" id="surveyInput"
-                            placeholder="Enter survey plan number...">
-                    </div>
-                    <button class="verify-btn" onclick="runVerification()">Verify</button>
+            <div class="verification-search">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="search-input" id="surveyInput"
+                        placeholder="Enter loan reference number...">
                 </div>
-
-                <div class="verification-result" id="verifyResult">
-                    <div class="result-header">
-                        <i class="fas fa-check-circle"></i> Result: Verified Authentic
-                    </div>
-                    <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 13px;">Plan AG-2023-8992 is registered
-                        to <strong>Chief Emeka Obi</strong> since 2018.</p>
-                </div>
+                <button class="verify-btn" onclick="runVerification()">Check Status</button>
             </div>
 
-            <!-- Secondary Actions -->
-            <div class="secondary-actions">
-                <div class="secondary-card">
-                    <div class="sec-icon"><i class="fas fa-file-signature"></i></div>
-                    <div class="sec-content">
-                        <h3>Tenancy Registration</h3>
-                        <p>Register new tenant agreements</p>
-                    </div>
+            <div class="verification-result" id="verifyResult">
+                <div class="result-header">
+                    <i class="fas fa-check-circle"></i> Loan Status: In Good Standing
                 </div>
-                <div class="secondary-card">
-                    <div class="sec-icon"><i class="fas fa-store"></i></div>
-                    <div class="sec-content">
-                        <h3>Business Permit</h3>
-                        <p>Apply for trade license</p>
-                    </div>
-                </div>
+                <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 13px;">Loan SL-2025-0892 • Balance:
+                    ₦285,000 • Next Payment: ₦18,500 due Feb 28</p>
             </div>
         </div>
 
-        <!-- My Properties -->
+        <!-- Secondary Actions -->
+        <div class="secondary-actions">
+            <div class="secondary-card" onclick="openPanel('miniGridPanel')">
+                <div class="sec-icon"><i class="fas fa-bolt"></i></div>
+                <div class="sec-content">
+                    <h3>Pay Mini-Grid Credit</h3>
+                    <p>Top up your prepaid energy balance</p>
+                </div>
+            </div>
+            <div class="secondary-card" onclick="openPanel('statementsPanel')">
+                <div class="sec-icon"><i class="fas fa-file-invoice"></i></div>
+                <div class="sec-content">
+                    <h3>View Statements</h3>
+                    <p>Download payment history</p>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Payment History -->
         <div class="property-list-section">
             <div class="section-header">
-                <div class="section-title">My Registered Properties</div>
-                <button class="icon-btn" title="Add New"><i class="fas fa-plus"></i></button>
+                <div class="section-title">Payment History</div>
+                <button class="icon-btn" title="Filter"><i class="fas fa-filter"></i></button>
             </div>
 
             <div class="property-list">
                 <!-- Item 1 -->
-                <div class="property-item" onclick="openDetailsPanel('prop1')">
+                <div class="property-item" onclick="openReceiptPanel('receipt1')">
                     <div class="prop-image"
-                        style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=100&q=60'); background-size: cover;">
+                        style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-bolt" style="font-size: 24px; color: white;"></i>
                     </div>
                     <div class="prop-details">
-                        <div class="prop-address">Plot 45, Market Road, Agba Village</div>
-                        <div class="prop-id">ID: PRO-2023-8921</div>
+                        <div class="prop-address">Mini-Grid Credit Top-up</div>
+                        <div class="prop-id">Feb 8, 2026 • Ref: MG-2026-0208</div>
                     </div>
-                    <div class="prop-status">Tax Paid</div>
-                    <button class="prop-action-btn">View Details</button>
+                    <div class="prop-status">₦8,500</div>
+                    <button class="prop-action-btn"
+                        onclick="event.stopPropagation(); openReceiptPanel('receipt1')">Receipt</button>
                 </div>
 
                 <!-- Item 2 -->
-                <div class="property-item" onclick="openPaymentPanel('prop2')">
+                <div class="property-item" onclick="openReceiptPanel('receipt2')">
                     <div class="prop-image"
-                        style="background-image: url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=100&q=60'); background-size: cover;">
+                        style="background: linear-gradient(135deg, #0d3d44 0%, #0a2e33 100%); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-solar-panel" style="font-size: 24px; color: white;"></i>
                     </div>
                     <div class="prop-details">
-                        <div class="prop-address">Shop 12, Community Plaza</div>
-                        <div class="prop-id">ID: COM-2024-1102</div>
+                        <div class="prop-address">Solar Loan Installment</div>
+                        <div class="prop-id">Jan 28, 2026 • Ref: SL-2026-0128</div>
                     </div>
-                    <div class="prop-status" style="background: #fef3c7; color: #92400e;">Payment Due</div>
-                    <button class="prop-action-btn" style="color: #d97706; border-color: #fcd34d;">Pay Tax</button>
+                    <div class="prop-status">₦18,500</div>
+                    <button class="prop-action-btn"
+                        onclick="event.stopPropagation(); openReceiptPanel('receipt2')">Receipt</button>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="property-item" onclick="openPanel('payBillPanel')">
+                    <div class="prop-image"
+                        style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-tools" style="font-size: 24px; color: white;"></i>
+                    </div>
+                    <div class="prop-details">
+                        <div class="prop-address">Maintenance Fee</div>
+                        <div class="prop-id">Jan 15, 2026 • Ref: MF-2026-0115</div>
+                    </div>
+                    <div class="prop-status" style="background: #fef3c7; color: #92400e;">Pending</div>
+                    <button class="prop-action-btn" onclick="event.stopPropagation(); openPanel('payBillPanel')"
+                        style="color: #d97706; border-color: #fcd34d;">Pay Now</button>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="property-item" onclick="openReceiptPanel('receipt3')">
+                    <div class="prop-image"
+                        style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-hand-holding-usd" style="font-size: 24px; color: white;"></i>
+                    </div>
+                    <div class="prop-details">
+                        <div class="prop-address">Subsidy Disbursement</div>
+                        <div class="prop-id">Jan 5, 2026 • Ref: SUB-2026-0105</div>
+                    </div>
+                    <div class="prop-status" style="background: #dbeafe; color: #1e40af;">Credit</div>
+                    <button class="prop-action-btn"
+                        onclick="event.stopPropagation(); openReceiptPanel('receipt3')">Receipt</button>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- SLIDE OVER: Property Details -->
+    <!-- BACKDROP -->
     <div class="slide-over-backdrop" id="backdrop" onclick="closeAllPanels()"></div>
 
-    <div class="slide-over-panel" id="detailsPanel">
+    <!-- PANEL: Payment Receipt -->
+    <div class="slide-over-panel" id="receiptPanel">
         <div class="panel-header">
-            <h3 class="panel-title">Property Details</h3>
+            <h3 class="panel-title">Payment Receipt</h3>
             <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
         </div>
         <div class="panel-content">
-            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="House"
-                class="detail-hero-img">
-
-            <div class="detail-group">
-                <div class="detail-label">Property Address</div>
-                <div class="detail-value">Plot 45, Market Road, Agba Village, Abuja</div>
+            <!-- Success Badge -->
+            <div style="text-align: center; padding: 32px 0 24px;">
+                <div
+                    style="width: 72px; height: 72px; border-radius: 50%; background: #d1fae5; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                    <i class="fas fa-check" style="font-size: 32px; color: #059669;"></i>
+                </div>
+                <h3 id="receiptTitle"
+                    style="font-size: 20px; font-weight: 600; color: var(--text-primary, #111827); margin-bottom: 4px;">
+                    Payment Successful</h3>
+                <p id="receiptDate" style="font-size: 14px; color: var(--text-secondary, #6b7280);">Feb 8, 2026</p>
             </div>
 
-            <div class="detail-group">
-                <div class="detail-label">Survey Plan Number</div>
-                <div class="detail-value">SUR-992-KKA-2021 <i class="far fa-copy"
-                        style="font-size: 12px; margin-left: 8px; color: #10b981; cursor: pointer;"></i></div>
+            <!-- Amount -->
+            <div style="text-align: center; margin-bottom: 32px;">
+                <div id="receiptAmount"
+                    style="font-size: 36px; font-weight: 700; color: #0d3d44; letter-spacing: -1px;">₦8,500.00</div>
             </div>
 
-            <div style="margin-top: 32px;">
-                <h4 style="margin-bottom: 16px; font-weight: 600;">Tax History</h4>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h4>2025 Annual Ground Rent</h4>
-                        <p>Paid on Jan 15, 2025 • ₦25,000</p>
-                    </div>
+            <!-- Receipt Details -->
+            <div
+                style="background: var(--bg-primary, #f9fafb); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                <div
+                    style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                    <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Reference</span>
+                    <span id="receiptRef"
+                        style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">MG-2026-0208</span>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h4>2024 Annual Ground Rent</h4>
-                        <p>Paid on Feb 02, 2024 • ₦25,000</p>
-                    </div>
+                <div
+                    style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                    <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Payment Type</span>
+                    <span id="receiptType"
+                        style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Mini-Grid
+                        Credit</span>
                 </div>
+                <div
+                    style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                    <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Account</span>
+                    <span style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Adewale
+                        David</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 12px 0;">
+                    <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Status</span>
+                    <span id="receiptStatus" style="font-size: 13px; font-weight: 600; color: #059669;"><i
+                            class="fas fa-check-circle"></i> Confirmed</span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div style="display: flex; gap: 12px;">
+                <button onclick="downloadReceipt()"
+                    style="flex: 1; padding: 14px; background: #0d3d44; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s;"
+                    onmouseover="this.style.background='#0a2e33'" onmouseout="this.style.background='#0d3d44'">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button onclick="shareReceipt()"
+                    style="flex: 1; padding: 14px; background: transparent; color: var(--text-primary, #0d3d44); border: 1px solid var(--border-color, #e5e7eb); border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- SLIDE OVER: Pay Tax -->
-    <div class="slide-over-panel" id="paymentPanel">
+    <!-- PANEL: Pay Energy Bill -->
+    <div class="slide-over-panel" id="payBillPanel">
         <div class="panel-header">
-            <h3 class="panel-title">Pay Property Tax</h3>
+            <h3 class="panel-title">Pay Energy Bill</h3>
             <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
         </div>
         <div class="panel-content">
-            <div style="background: #f3f4f6; padding: 20px; border-radius: 12px; margin-bottom: 24px;">
-                <div class="detail-label" style="margin-bottom: 8px;">Payment for:</div>
-                <div class="detail-value">Shop 12, Community Plaza</div>
-                <div class="prop-id" style="margin-top: 4px;">ID: COM-2024-1102</div>
+            <div
+                style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 24px; border-radius: 12px; margin-bottom: 24px;">
+                <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">Outstanding Balance</div>
+                <div style="font-size: 32px; font-weight: 700; letter-spacing: -1px;">₦12,500.00</div>
+                <div style="font-size: 13px; opacity: 0.8; margin-top: 8px;"><i class="fas fa-clock"></i> Due by Feb 28,
+                    2026</div>
             </div>
 
-            <div class="detail-group">
-                <div class="detail-label">Payment Type</div>
-                <div class="custom-select-wrapper" style="position: relative;">
-                    <select
-                        style="width: 100%; padding: 16px; border-radius: 12px; border: 1px solid #e5e7eb; margin-top: 8px; font-size: 15px; color: #111827; appearance: none; background: white;">
-                        <option>2026 Annual Tenement Rate</option>
-                        <option>Waste Management Levy</option>
-                    </select>
-                    <i class="fas fa-chevron-down"
-                        style="position: absolute; right: 16px; top: 60%; transform: translateY(-50%); color: #6b7280; pointer-events: none;"></i>
+            <form onsubmit="event.preventDefault(); processPayment(this);">
+                <div style="margin-bottom: 20px;">
+                    <label
+                        style="display: block; font-size: 13px; font-weight: 500; color: var(--text-primary, #111827); margin-bottom: 6px;">Bill
+                        Type</label>
+                    <div style="position: relative;">
+                        <select
+                            style="width: 100%; padding: 14px 40px 14px 16px; border-radius: 8px; border: 1px solid var(--border-color, #e5e7eb); font-size: 14px; color: var(--text-primary, #111827); appearance: none; background: var(--bg-primary, white); cursor: pointer;">
+                            <option>Solar Panel Maintenance Fee</option>
+                            <option>Mini-Grid Monthly Charge</option>
+                            <option>Equipment Insurance Premium</option>
+                        </select>
+                        <i class="fas fa-chevron-down"
+                            style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--text-secondary, #6b7280); pointer-events: none;"></i>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label
+                        style="display: block; font-size: 13px; font-weight: 500; color: var(--text-primary, #111827); margin-bottom: 6px;">Payment
+                        Amount (₦)</label>
+                    <input type="number" value="12500" min="100" step="100" required
+                        style="width: 100%; padding: 14px 16px; border-radius: 8px; border: 1px solid var(--border-color, #e5e7eb); font-size: 16px; font-weight: 600; color: var(--text-primary, #111827); background: var(--bg-primary, white); outline: none;"
+                        onfocus="this.style.borderColor='#0d3d44'" onblur="this.style.borderColor='#e5e7eb'">
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <label
+                        style="display: block; font-size: 13px; font-weight: 500; color: var(--text-primary, #111827); margin-bottom: 6px;">Payment
+                        Method</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <label
+                            style="display: flex; align-items: center; gap: 10px; padding: 14px; border: 2px solid #0d3d44; border-radius: 8px; cursor: pointer; background: rgba(13,61,68,0.03);">
+                            <input type="radio" name="payMethod" value="card" checked style="accent-color: #0d3d44;">
+                            <i class="fas fa-credit-card" style="color: #0d3d44;"></i>
+                            <span style="font-size: 13px; font-weight: 500;">Card</span>
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 10px; padding: 14px; border: 2px solid var(--border-color, #e5e7eb); border-radius: 8px; cursor: pointer;">
+                            <input type="radio" name="payMethod" value="bank" style="accent-color: #0d3d44;">
+                            <i class="fas fa-university" style="color: var(--text-secondary, #6b7280);"></i>
+                            <span style="font-size: 13px; font-weight: 500;">Bank</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" id="payBillBtn"
+                    style="width: 100%; padding: 16px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);"
+                    onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">
+                    <i class="fas fa-lock"></i> Pay ₦12,500.00
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PANEL: Mini-Grid Credit Top-up -->
+    <div class="slide-over-panel" id="miniGridPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Mini-Grid Credit</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <!-- Balance Card -->
+            <div
+                style="background: linear-gradient(135deg, #0d3d44 0%, #0a2e33 100%); color: white; padding: 24px; border-radius: 16px; margin-bottom: 24px; position: relative; overflow: hidden;">
+                <div
+                    style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: rgba(16,185,129,0.15); border-radius: 50%;">
+                </div>
+                <div
+                    style="position: absolute; bottom: -30px; right: 30px; width: 60px; height: 60px; background: rgba(16,185,129,0.1); border-radius: 50%;">
+                </div>
+                <div
+                    style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 8px;">
+                    Current Balance</div>
+                <div style="font-size: 36px; font-weight: 700; letter-spacing: -1px; margin-bottom: 4px;">₦3,250.00
+                </div>
+                <div style="font-size: 13px; opacity: 0.7;"><i class="fas fa-bolt"></i> ~18 kWh remaining</div>
+            </div>
+
+            <!-- Quick Top-up Amounts -->
+            <div style="margin-bottom: 24px;">
+                <label
+                    style="display: block; font-size: 13px; font-weight: 500; color: var(--text-primary, #111827); margin-bottom: 12px;">Quick
+                    Top-up</label>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+                    <button class="topup-amount" onclick="selectTopupAmount(this, 1000)"
+                        style="padding: 12px; border: 2px solid var(--border-color, #e5e7eb); border-radius: 8px; background: var(--bg-primary, white); font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; color: var(--text-primary, #111827);">₦1,000</button>
+                    <button class="topup-amount" onclick="selectTopupAmount(this, 2000)"
+                        style="padding: 12px; border: 2px solid var(--border-color, #e5e7eb); border-radius: 8px; background: var(--bg-primary, white); font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; color: var(--text-primary, #111827);">₦2,000</button>
+                    <button class="topup-amount selected" onclick="selectTopupAmount(this, 5000)"
+                        style="padding: 12px; border: 2px solid #0d3d44; border-radius: 8px; background: rgba(13,61,68,0.05); font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; color: #0d3d44;">₦5,000</button>
+                    <button class="topup-amount" onclick="selectTopupAmount(this, 10000)"
+                        style="padding: 12px; border: 2px solid var(--border-color, #e5e7eb); border-radius: 8px; background: var(--bg-primary, white); font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; color: var(--text-primary, #111827);">₦10,000</button>
                 </div>
             </div>
 
-            <div class="detail-group" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
-                <div class="detail-label">Total Amount Due</div>
-                <div style="font-size: 32px; font-weight: 700; color: #0d3d44; margin-top: 8px; letter-spacing: -1px;">
-                    ₦15,000.00</div>
+            <!-- Custom Amount -->
+            <div style="margin-bottom: 24px;">
+                <label
+                    style="display: block; font-size: 13px; font-weight: 500; color: var(--text-primary, #111827); margin-bottom: 6px;">Or
+                    enter custom amount</label>
+                <input type="number" id="topupCustomAmount" value="5000" min="500" step="100"
+                    style="width: 100%; padding: 14px 16px; border-radius: 8px; border: 1px solid var(--border-color, #e5e7eb); font-size: 16px; font-weight: 600; color: var(--text-primary, #111827); background: var(--bg-primary, white); outline: none;"
+                    onfocus="this.style.borderColor='#0d3d44'" onblur="this.style.borderColor='#e5e7eb'">
             </div>
 
-            <button class="pay-btn"
-                style="width: 100%; justify-content: center; margin-top: 32px; padding: 16px; font-size: 16px; border: none; cursor: pointer; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);">
-                <i class="fas fa-lock"></i> Pay Securely
+            <!-- Meter Number -->
+            <div style="margin-bottom: 24px;">
+                <label
+                    style="display: block; font-size: 13px; font-weight: 500; color: var(--text-primary, #111827); margin-bottom: 6px;">Meter
+                    Number</label>
+                <input type="text" value="AGV-MG-04592" readonly
+                    style="width: 100%; padding: 14px 16px; border-radius: 8px; border: 1px solid var(--border-color, #e5e7eb); font-size: 14px; color: var(--text-secondary, #6b7280); background: var(--bg-primary, #f9fafb);">
+            </div>
+
+            <button id="topupBtn" onclick="processTopup()"
+                style="width: 100%; padding: 16px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);"
+                onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">
+                <i class="fas fa-bolt"></i> Top Up ₦5,000
             </button>
         </div>
     </div>
 
-    <script src="script.js?v=1.1"></script>
+    <!-- PANEL: View Statements -->
+    <div class="slide-over-panel" id="statementsPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Payment Statements</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <p style="font-size: 14px; color: var(--text-secondary, #6b7280); margin-bottom: 24px;">View and download
+                your monthly payment statements.</p>
+
+            <!-- Statement List -->
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div class="statement-row" onclick="downloadStatement('feb2026')"
+                    style="padding: 16px; border: 1px solid var(--border-color, #e5e7eb); border-radius: 10px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: all 0.2s; background: var(--bg-primary, white);"
+                    onmouseover="this.style.borderColor='#0d3d44'; this.style.transform='translateX(4px)'"
+                    onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateX(0)'">
+                    <div
+                        style="width: 44px; height: 44px; border-radius: 10px; background: rgba(13,61,68,0.06); display: flex; align-items: center; justify-content: center; color: #0d3d44;">
+                        <i class="fas fa-file-pdf" style="font-size: 18px;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827);">February
+                            2026</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280);">2 transactions • ₦27,000
+                        </div>
+                    </div>
+                    <i class="fas fa-download" style="color: var(--text-secondary, #6b7280); font-size: 14px;"></i>
+                </div>
+
+                <div class="statement-row" onclick="downloadStatement('jan2026')"
+                    style="padding: 16px; border: 1px solid var(--border-color, #e5e7eb); border-radius: 10px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: all 0.2s; background: var(--bg-primary, white);"
+                    onmouseover="this.style.borderColor='#0d3d44'; this.style.transform='translateX(4px)'"
+                    onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateX(0)'">
+                    <div
+                        style="width: 44px; height: 44px; border-radius: 10px; background: rgba(13,61,68,0.06); display: flex; align-items: center; justify-content: center; color: #0d3d44;">
+                        <i class="fas fa-file-pdf" style="font-size: 18px;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827);">January
+                            2026</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280);">3 transactions • ₦42,500
+                        </div>
+                    </div>
+                    <i class="fas fa-download" style="color: var(--text-secondary, #6b7280); font-size: 14px;"></i>
+                </div>
+
+                <div class="statement-row" onclick="downloadStatement('dec2025')"
+                    style="padding: 16px; border: 1px solid var(--border-color, #e5e7eb); border-radius: 10px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: all 0.2s; background: var(--bg-primary, white);"
+                    onmouseover="this.style.borderColor='#0d3d44'; this.style.transform='translateX(4px)'"
+                    onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateX(0)'">
+                    <div
+                        style="width: 44px; height: 44px; border-radius: 10px; background: rgba(13,61,68,0.06); display: flex; align-items: center; justify-content: center; color: #0d3d44;">
+                        <i class="fas fa-file-pdf" style="font-size: 18px;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827);">December
+                            2025</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280);">4 transactions • ₦55,200
+                        </div>
+                    </div>
+                    <i class="fas fa-download" style="color: var(--text-secondary, #6b7280); font-size: 14px;"></i>
+                </div>
+
+                <div class="statement-row" onclick="downloadStatement('nov2025')"
+                    style="padding: 16px; border: 1px solid var(--border-color, #e5e7eb); border-radius: 10px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: all 0.2s; background: var(--bg-primary, white);"
+                    onmouseover="this.style.borderColor='#0d3d44'; this.style.transform='translateX(4px)'"
+                    onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateX(0)'">
+                    <div
+                        style="width: 44px; height: 44px; border-radius: 10px; background: rgba(13,61,68,0.06); display: flex; align-items: center; justify-content: center; color: #0d3d44;">
+                        <i class="fas fa-file-pdf" style="font-size: 18px;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827);">November
+                            2025</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280);">2 transactions • ₦27,000
+                        </div>
+                    </div>
+                    <i class="fas fa-download" style="color: var(--text-secondary, #6b7280); font-size: 14px;"></i>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div
+                style="background: var(--bg-primary, #f0fdf4); border-radius: 12px; padding: 20px; margin-top: 24px; border: 1px solid #bbf7d0;">
+                <div style="font-size: 13px; color: #059669; font-weight: 600; margin-bottom: 8px;"><i
+                        class="fas fa-chart-line"></i> Summary (Last 4 months)</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280);">Total Paid</div>
+                        <div style="font-size: 18px; font-weight: 700; color: var(--text-primary, #0d3d44);">₦151,700
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280);">Transactions</div>
+                        <div style="font-size: 18px; font-weight: 700; color: var(--text-primary, #0d3d44);">11</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=2.0"></script>
     <script>
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
@@ -1034,20 +1297,15 @@
             result.style.display = 'none';
 
             setTimeout(() => {
-                btn.innerHTML = 'Verify';
+                btn.innerHTML = 'Check Status';
                 result.style.display = 'block';
             }, 1000);
         }
 
-        // Slide Over Panel Logic
-        function openDetailsPanel(id) {
+        // Panel Logic
+        function openPanel(panelId) {
             document.getElementById('backdrop').classList.add('open');
-            document.getElementById('detailsPanel').classList.add('open');
-        }
-
-        function openPaymentPanel(id) {
-            document.getElementById('backdrop').classList.add('open');
-            document.getElementById('paymentPanel').classList.add('open');
+            document.getElementById(panelId).classList.add('open');
         }
 
         function closeAllPanels() {
@@ -1055,6 +1313,114 @@
             document.querySelectorAll('.slide-over-panel').forEach(panel => {
                 panel.classList.remove('open');
             });
+        }
+
+        // Receipt data
+        const receipts = {
+            receipt1: { title: 'Mini-Grid Credit Top-up', date: 'Feb 8, 2026', amount: '₦8,500.00', ref: 'MG-2026-0208', type: 'Mini-Grid Credit', status: 'Confirmed' },
+            receipt2: { title: 'Solar Loan Installment', date: 'Jan 28, 2026', amount: '₦18,500.00', ref: 'SL-2026-0128', type: 'Solar Loan', status: 'Confirmed' },
+            receipt3: { title: 'Subsidy Disbursement', date: 'Jan 5, 2026', amount: '₦45,000.00', ref: 'SUB-2026-0105', type: 'SHINE Subsidy', status: 'Credited' }
+        };
+
+        function openReceiptPanel(receiptId) {
+            const data = receipts[receiptId];
+            if (!data) return;
+            document.getElementById('receiptTitle').textContent = data.title;
+            document.getElementById('receiptDate').textContent = data.date;
+            document.getElementById('receiptAmount').textContent = data.amount;
+            document.getElementById('receiptRef').textContent = data.ref;
+            document.getElementById('receiptType').textContent = data.type;
+            document.getElementById('receiptStatus').innerHTML = '<i class="fas fa-check-circle"></i> ' + data.status;
+            openPanel('receiptPanel');
+        }
+
+        // Mini-Grid Top-up
+        function selectTopupAmount(btn, amount) {
+            document.querySelectorAll('.topup-amount').forEach(b => {
+                b.style.borderColor = '#e5e7eb';
+                b.style.background = 'white';
+                b.style.color = '#111827';
+            });
+            btn.style.borderColor = '#0d3d44';
+            btn.style.background = 'rgba(13,61,68,0.05)';
+            btn.style.color = '#0d3d44';
+            document.getElementById('topupCustomAmount').value = amount;
+            document.getElementById('topupBtn').innerHTML = '<i class="fas fa-bolt"></i> Top Up ₦' + amount.toLocaleString();
+        }
+
+        function processTopup() {
+            const btn = document.getElementById('topupBtn');
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.style.opacity = '0.8';
+
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Credit Added!';
+                btn.style.background = '#059669';
+                setTimeout(() => {
+                    closeAllPanels();
+                    setTimeout(() => {
+                        btn.innerHTML = original;
+                        btn.style.background = '#10b981';
+                        btn.style.opacity = '1';
+                    }, 500);
+                }, 1500);
+            }, 1200);
+        }
+
+        // Pay Bill
+        function processPayment(form) {
+            const btn = document.getElementById('payBillBtn');
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.style.opacity = '0.8';
+
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Payment Successful!';
+                btn.style.background = '#059669';
+                setTimeout(() => {
+                    closeAllPanels();
+                    setTimeout(() => {
+                        btn.innerHTML = original;
+                        btn.style.background = '#10b981';
+                        btn.style.opacity = '1';
+                    }, 500);
+                }, 1500);
+            }, 1200);
+        }
+
+        // Receipt actions
+        function downloadReceipt() {
+            const ref = document.getElementById('receiptRef').textContent;
+            alert('Receipt ' + ref + ' downloaded as PDF');
+        }
+
+        function shareReceipt() {
+            const ref = document.getElementById('receiptRef').textContent;
+            if (navigator.share) {
+                navigator.share({ title: 'Payment Receipt', text: 'Receipt ' + ref + ' from eVillage Portal' });
+            } else {
+                alert('Share link copied to clipboard!');
+            }
+        }
+
+        // Statement Download
+        function downloadStatement(month) {
+            const row = event.currentTarget;
+            const icon = row.querySelector('.fa-download');
+            icon.classList.remove('fa-download');
+            icon.classList.add('fa-spinner', 'fa-spin');
+            icon.style.color = '#0d3d44';
+            setTimeout(() => {
+                icon.classList.remove('fa-spinner', 'fa-spin');
+                icon.classList.add('fa-check-circle');
+                icon.style.color = '#10b981';
+                setTimeout(() => {
+                    icon.classList.remove('fa-check-circle');
+                    icon.classList.add('fa-download');
+                    icon.style.color = '#6b7280';
+                }, 2000);
+            }, 1000);
         }
     </script>
 </body>

@@ -9,8 +9,32 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <script src="auth-check.js"></script>
+    <link rel="stylesheet" href="styles.css?v=2.0">
+    <script src="auth-check.js?v=2.0"></script>
+    <script>
+        // Force Light Mode - Remove dark mode class if present
+        (function () {
+            document.documentElement.classList.remove('dark-mode');
+
+            // Watch for changes
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        if (document.body.classList.contains('dark-mode')) {
+                            document.body.classList.remove('dark-mode');
+                        }
+                    }
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', () => {
+                if (document.body) {
+                    document.body.classList.remove('dark-mode');
+                    observer.observe(document.body, { attributes: true });
+                }
+            });
+        })();
+    </script>
     <style>
         /* Apple-style Font Stack */
         .evillage-page {
@@ -33,9 +57,17 @@
             letter-spacing: -0.03em;
         }
 
-        /* Page-specific overrides */
-        .evillage-page {
-            background: var(--bg-primary);
+        /* Page-specific overrides - FORCE LIGHT MODE */
+        .evillage-page,
+        body.evillage-page,
+        body.evillage-page.dark-mode {
+            background: #ffffff !important;
+            color: #050c26 !important;
+            --bg-primary: #ffffff !important;
+            --bg-secondary: #f7f9fa !important;
+            --text-primary: #050c26 !important;
+            --text-secondary: #5e6d8a !important;
+            --border-color: #e6e9ed !important;
         }
 
         /* Logo Styles */
@@ -322,6 +354,8 @@
                 display: flex;
                 gap: 16px;
                 overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                -webkit-scroll-snap-type: x mandatory;
                 scroll-snap-type: x mandatory;
                 scroll-behavior: smooth;
                 padding: 20px 20px 40px 20px;
@@ -615,6 +649,8 @@
                 display: flex;
                 gap: 16px;
                 overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                -webkit-scroll-snap-type: x mandatory;
                 scroll-snap-type: x mandatory;
                 scroll-behavior: smooth;
                 padding: 20px 20px 40px 20px;
@@ -721,6 +757,8 @@
                 display: flex;
                 gap: 16px;
                 overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                -webkit-scroll-snap-type: x mandatory;
                 scroll-snap-type: x mandatory;
                 scroll-behavior: smooth;
                 padding: 20px 20px 40px 20px;
@@ -898,76 +936,7 @@
         }
 
         /* Dark Mode Overrides - When bulb is OFF (dark mode) */
-        body.dark-mode .ev-hero-badge {
-            background: rgba(255, 255, 255, 0.1);
-            color: #10b981;
-        }
-
-        body.dark-mode .ev-hero h1 span {
-            color: #10b981;
-        }
-
-        body.dark-mode .ev-btn-primary {
-            background: #10b981;
-            border-color: #10b981;
-        }
-
-        body.dark-mode .ev-btn-primary:hover {
-            background: #059669;
-        }
-
-        body.dark-mode .ev-btn-secondary {
-            border-color: rgba(255, 255, 255, 0.3);
-            color: var(--text-primary);
-        }
-
-        body.dark-mode .ev-btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.5);
-            color: #fff;
-        }
-
-        body.dark-mode .ev-section-label {
-            color: #10b981;
-        }
-
-        body.dark-mode .ev-objective-card {
-            background: var(--bg-secondary);
-            border-color: var(--border-color);
-        }
-
-        body.dark-mode .ev-objective-icon {
-            background: #10b981;
-        }
-
-        body.dark-mode .ev-module-label {
-            background: rgba(16, 185, 129, 0.15);
-            color: #10b981;
-        }
-
-        body.dark-mode .ev-feature-list li i {
-            color: #10b981;
-        }
-
-        body.dark-mode .ev-impact {
-            background: linear-gradient(135deg, #0a2e33 0%, #0d3d44 100%);
-        }
-
-        body.dark-mode .ev-impact-card {
-            background: var(--bg-secondary);
-        }
-
-        body.dark-mode .ev-impact-icon {
-            background: #10b981;
-        }
-
-        body.dark-mode .ev-cta {
-            background: var(--bg-primary);
-        }
-
-        body.dark-mode .ev-footer {
-            background: #001D21;
-        }
+        /* Dark Mode Overrides Removed to force light theme */
     </style>
 </head>
 
@@ -985,10 +954,10 @@
     <!-- Navigation (Pill Style - eVillage Links) -->
     <nav class="navbar pill-nav">
         <div class="nav-links">
-            <a href="evillage-civil.html">Civil Registration</a>
-            <a href="evillage-property.html">Property & Tax</a>
-            <a href="evillage-governance.html">Governance</a>
-            <a href="evillage-admin.html">Admin Ledger</a>
+            <a href="evillage-civil.html">Energy Marketplace</a>
+            <a href="evillage-property.html">Utility & Loans</a>
+            <a href="evillage-governance.html">Energy Projects</a>
+            <a href="evillage-admin.html">NEMiC Controls</a>
             <a href="index.html">Back to NEIIA</a>
         </div>
     </nav>
@@ -1024,10 +993,10 @@
         </div>
         <div class="mobile-nav-content">
             <ul class="mobile-nav-list">
-                <li><a href="evillage-civil.html">Civil Registration <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="evillage-property.html">Property & Tax <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="evillage-governance.html">Governance <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="evillage-admin.html">Admin Ledger <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="evillage-civil.html">Energy Marketplace <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="evillage-property.html">Utility & Loans <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="evillage-governance.html">Energy Projects <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="evillage-admin.html">NEMiC Controls <i class="fas fa-arrow-right"></i></a></li>
                 <li><a href="index.html">Back to NEIIA <i class="fas fa-arrow-right"></i></a></li>
             </ul>
             <div class="mobile-nav-footer">
@@ -1039,32 +1008,28 @@
 
     <!-- Hero -->
     <section class="ev-hero">
-        <div style="text-align: center;">
-            <span class="ev-hero-badge">
-                <i class="fas fa-leaf"></i> Digital Village Governance
-            </span>
-        </div>
-        <h1>Empowering <span>128,000+</span> Villages with Digital Governance</h1>
-        <p class="ev-hero-desc">A revolutionary platform connecting citizens directly to government services, bringing
-            transparency, efficiency, and accountability to every village across Nigeria.</p>
+
+        <h1>Powering <span>5 Million+</span> Households with Clean Energy</h1>
+        <p class="ev-hero-desc">Your central hub for solar financing, mini-grid connections, utility payments, and
+            subsidy management — accelerating Nigeria’s energy transition.</p>
 
         <div class="ev-hero-cta">
             <a href="evillage-signup.html" class="ev-btn-primary">Get Started</a>
-            <a href="#modules" class="ev-btn-secondary">Explore Features</a>
+            <a href="#modules" class="ev-btn-secondary">Explore Services</a>
         </div>
 
         <div class="ev-stats-bar">
             <div class="ev-stat-item">
-                <div class="ev-stat-number" data-target="128" data-suffix="K+">0</div>
-                <div class="ev-stat-label">Villages Connected</div>
+                <div class="ev-stat-number" data-target="248" data-suffix="K+">0</div>
+                <div class="ev-stat-label">Solar Systems Deployed</div>
             </div>
             <div class="ev-stat-item">
                 <div class="ev-stat-number" data-target="36">0</div>
                 <div class="ev-stat-label">States Covered</div>
             </div>
             <div class="ev-stat-item">
-                <div class="ev-stat-number" data-target="774">0</div>
-                <div class="ev-stat-label">LGAs Integrated</div>
+                <div class="ev-stat-number" data-target="92" data-suffix="MW">0</div>
+                <div class="ev-stat-label">Total Capacity Installed</div>
             </div>
         </div>
     </section>
@@ -1073,33 +1038,33 @@
     <section class="ev-section">
         <div class="ev-section-container">
             <div class="ev-section-header">
-                <p class="ev-section-label">Why eVillage</p>
-                <h2 class="ev-section-title">Transforming Rural Governance</h2>
-                <p class="ev-section-desc">Building a bridge between citizens and government through digital innovation
+                <p class="ev-section-label">Why eVillage Energy</p>
+                <h2 class="ev-section-title">Accelerating Clean Energy Access</h2>
+                <p class="ev-section-desc">Bridging the energy gap through technology and transparent subsidy management
                 </p>
             </div>
 
             <div class="ev-objectives-wrapper">
                 <div class="ev-objectives-grid" id="objectivesCarousel">
                     <div class="ev-objective-card">
-                        <div class="ev-objective-icon"><i class="fas fa-eye"></i></div>
-                        <h3>Full Transparency</h3>
-                        <p>Public access to development projects, budgets, and progress reports in real-time</p>
+                        <div class="ev-objective-icon"><i class="fas fa-solar-panel"></i></div>
+                        <h3>Solar Financing</h3>
+                        <p>Affordable payment plans for solar home systems with transparent loan tracking</p>
                     </div>
                     <div class="ev-objective-card">
-                        <div class="ev-objective-icon"><i class="fas fa-rocket"></i></div>
-                        <h3>Maximum Efficiency</h3>
-                        <p>Streamlined record management for births, deaths, property, and civil matters</p>
+                        <div class="ev-objective-icon"><i class="fas fa-bolt"></i></div>
+                        <h3>Mini-Grid Access</h3>
+                        <p>Connect to community mini-grids with pay-as-you-go metering solutions</p>
                     </div>
                     <div class="ev-objective-card">
-                        <div class="ev-objective-icon"><i class="fas fa-coins"></i></div>
-                        <h3>Revenue Growth</h3>
-                        <p>Automated tax calculations and seamless collection processes</p>
+                        <div class="ev-objective-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                        <h3>Subsidy Tracking</h3>
+                        <p>Real-time tracking of SHINE subsidies from application to disbursement</p>
                     </div>
                     <div class="ev-objective-card">
-                        <div class="ev-objective-icon"><i class="fas fa-balance-scale"></i></div>
-                        <h3>True Accountability</h3>
-                        <p>Work-based accounting ensuring every Naira is tracked and accounted for</p>
+                        <div class="ev-objective-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>NEMiC Transparency</h3>
+                        <p>Complete visibility into energy transactions and vendor payments</p>
                     </div>
                 </div>
                 <div class="ev-carousel-dots" id="carouselDots">
@@ -1116,84 +1081,86 @@
     <section class="ev-section ev-modules" id="modules">
         <div class="ev-section-container">
             <div class="ev-section-header">
-                <p class="ev-section-label">Platform Capabilities</p>
-                <h2 class="ev-section-title">Comprehensive Service Modules</h2>
-                <p class="ev-section-desc">Everything you need to manage village governance digitally</p>
+                <p class="ev-section-label">Platform Modules</p>
+                <h2 class="ev-section-title">Comprehensive Energy Services</h2>
+                <p class="ev-section-desc">Everything you need to access clean energy and manage utility payments</p>
             </div>
 
-            <!-- Civil Registration -->
+            <!-- Energy Marketplace -->
             <div class="ev-module-block">
                 <div class="ev-module-content">
-                    <span class="ev-module-label"><i class="fas fa-file-alt"></i> Civil Services</span>
-                    <h2>Civil Registration Hub</h2>
-                    <p>Complete digital management of vital records with instant certificate generation and secure
-                        storage.</p>
+                    <span class="ev-module-label"><i class="fas fa-store"></i> Energy Marketplace</span>
+                    <h2>Solar Products & Financing</h2>
+                    <p>Browse certified solar equipment, apply for financing, and track subsidy applications all in one
+                        place.</p>
                     <ul class="ev-feature-list">
-                        <li><i class="fas fa-check-circle"></i> Birth & Death Registration with verification</li>
-                        <li><i class="fas fa-check-circle"></i> Smart search by name, date, or registration number</li>
-                        <li><i class="fas fa-check-circle"></i> Instant PDF certificates (Birth, Death, Marriage,
-                            Domicile)</li>
-                        <li><i class="fas fa-check-circle"></i> Secure cloud storage with backup</li>
+                        <li><i class="fas fa-check-circle"></i> Solar loan applications with flexible terms</li>
+                        <li><i class="fas fa-check-circle"></i> Browse solar kits from certified vendors</li>
+                        <li><i class="fas fa-check-circle"></i> SHINE subsidy applications with BVN/NIN verification
+                        </li>
+                        <li><i class="fas fa-check-circle"></i> Track application status in real-time</li>
                     </ul>
                 </div>
                 <div class="ev-module-image">
-                    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80"
-                        alt="Civil Registration">
+                    <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80"
+                        alt="Solar Panel Installation">
                 </div>
             </div>
 
-            <!-- Property & Tax -->
+            <!-- Utility & Loans -->
             <div class="ev-module-block reverse">
                 <div class="ev-module-content">
-                    <span class="ev-module-label"><i class="fas fa-home"></i> Property & Revenue</span>
-                    <h2>Property & Tax Engine</h2>
-                    <p>Digital land registry with intelligent tax calculation and utility management dashboard.</p>
+                    <span class="ev-module-label"><i class="fas fa-file-invoice-dollar"></i> Utility & Loans</span>
+                    <h2>Payment & Loan Management</h2>
+                    <p>Pay utility bills, track loan repayments, and view your complete energy payment history.</p>
                     <ul class="ev-feature-list">
-                        <li><i class="fas fa-check-circle"></i> Complete land and property registration</li>
-                        <li><i class="fas fa-check-circle"></i> Automated tax calculation by property type & size</li>
-                        <li><i class="fas fa-check-circle"></i> Utility services dashboard</li>
-                        <li><i class="fas fa-check-circle"></i> Payment tracking and receipts</li>
+                        <li><i class="fas fa-check-circle"></i> Solar loan repayment tracking</li>
+                        <li><i class="fas fa-check-circle"></i> Mini-grid credit payments</li>
+                        <li><i class="fas fa-check-circle"></i> Complete payment history and statements</li>
+                        <li><i class="fas fa-check-circle"></i> Instant payment receipts</li>
                     </ul>
                 </div>
                 <div class="ev-module-image">
-                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80"
-                        alt="Property Management">
+                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80"
+                        alt="Payment Management">
                 </div>
             </div>
 
-            <!-- Governance -->
+            <!-- Energy Projects -->
             <div class="ev-module-block">
                 <div class="ev-module-content">
-                    <span class="ev-module-label"><i class="fas fa-landmark"></i> Governance</span>
-                    <h2>Project Oversight Dashboard</h2>
-                    <p>Public visibility into development projects with citizen engagement and complaint resolution.</p>
+                    <span class="ev-module-label"><i class="fas fa-project-diagram"></i> Energy Projects</span>
+                    <h2>Community Energy Tracker</h2>
+                    <p>Track mini-grid installations, solar deployments, and vote on community energy priorities.</p>
                     <ul class="ev-feature-list">
-                        <li><i class="fas fa-check-circle"></i> Real-time project tracking with milestones</li>
-                        <li><i class="fas fa-check-circle"></i> Citizen complaint portal with tracking IDs</li>
-                        <li><i class="fas fa-check-circle"></i> Financial statements download center</li>
-                        <li><i class="fas fa-check-circle"></i> Public meeting schedules and minutes</li>
+                        <li><i class="fas fa-check-circle"></i> Real-time installation progress tracking</li>
+                        <li><i class="fas fa-check-circle"></i> Solar home system deployment status</li>
+                        <li><i class="fas fa-check-circle"></i> Community energy priority voting</li>
+                        <li><i class="fas fa-check-circle"></i> Project milestone notifications</li>
                     </ul>
                 </div>
                 <div class="ev-module-image">
-                    <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80" alt="Governance">
+                    <img src="https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=800&q=80"
+                        alt="Solar Installation">
                 </div>
             </div>
 
-            <!-- Accounting -->
+            <!-- NEMiC Controls -->
             <div class="ev-module-block reverse">
                 <div class="ev-module-content">
-                    <span class="ev-module-label"><i class="fas fa-chart-pie"></i> Finance</span>
-                    <h2>Administrative Ledger</h2>
-                    <p>Complete asset inventory and expenditure monitoring for transparent fund management.</p>
+                    <span class="ev-module-label"><i class="fas fa-shield-alt"></i> NEMiC Controls</span>
+                    <h2>Transparency & Ledger</h2>
+                    <p>Complete visibility into subsidy disbursements, vendor payments, and energy transactions.</p>
                     <ul class="ev-feature-list">
-                        <li><i class="fas fa-check-circle"></i> Digital asset directory for Local Councils</li>
-                        <li><i class="fas fa-check-circle"></i> Real-time expenditure tracking</li>
-                        <li><i class="fas fa-check-circle"></i> Budget allocation visualization</li>
-                        <li><i class="fas fa-check-circle"></i> Audit trail for all transactions</li>
+                        <li><i class="fas fa-check-circle"></i> Subsidy disbursement tracking</li>
+                        <li><i class="fas fa-check-circle"></i> Loan repayment and collection stats</li>
+                        <li><i class="fas fa-check-circle"></i> Vendor payment audit trail</li>
+                        <li><i class="fas fa-check-circle"></i> Export reports for compliance</li>
                     </ul>
                 </div>
                 <div class="ev-module-image">
-                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80" alt="Accounting">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
+                        alt="Data Dashboard">
                 </div>
             </div>
         </div>
@@ -1285,8 +1252,8 @@
     <!-- CTA -->
     <section class="ev-cta">
         <div class="ev-section-container">
-            <h2>Ready to Transform Your Village?</h2>
-            <p>Join the digital governance revolution and bring transparency to your community</p>
+            <h2>Ready to Join the Clean Energy Revolution?</h2>
+            <p>Access solar financing, connect to mini-grids, and power your home sustainably</p>
             <div class="ev-cta-buttons">
                 <a href="evillage-signup.html" class="ev-btn-primary">Get Started</a>
                 <a href="construction.html" class="ev-btn-secondary">Learn More</a>
@@ -1299,7 +1266,7 @@
         <p>&copy; 2026 NEIIA - eVillage Portal | Federal Republic of Nigeria</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=2.0"></script>
     <script>
         // Stats Count-Up Animation
 

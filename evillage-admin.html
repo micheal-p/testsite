@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Ledger | eVillage Portal</title>
+    <title>NEMiC Controls | eVillage Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -505,26 +505,26 @@
             </li>
             <li class="nav-item">
                 <a href="evillage-civil.html" class="nav-link">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Civil Registration</span>
+                    <i class="fas fa-store"></i>
+                    <span>Energy Marketplace</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-property.html" class="nav-link">
-                    <i class="fas fa-home"></i>
-                    <span>Property & Tax</span>
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>Utility & Loans</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-governance.html" class="nav-link">
-                    <i class="fas fa-landmark"></i>
-                    <span>Governance</span>
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Energy Projects</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-admin.html" class="nav-link active">
-                    <i class="fas fa-book"></i>
-                    <span>Admin Ledger</span>
+                    <i class="fas fa-shield-alt"></i>
+                    <span>NEMiC Controls</span>
                 </a>
             </li>
             <li class="nav-item"
@@ -535,7 +535,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="evillage.html" class="nav-link">
+                <a href="#" class="nav-link"
+                    onclick="sessionStorage.removeItem('neiia_authenticated'); window.location.href='evillage-signin.html'; return false;">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Sign Out</span>
                 </a>
@@ -555,55 +556,58 @@
     <main class="main-content">
         <div class="header">
             <div>
-                <h1>Admin Ledger & Records</h1>
-                <p>Track village revenue, expenditures, and administrative logs.</p>
+                <h1>NEMiC Controls & Ledger</h1>
+                <p>Track subsidy disbursements, loan repayments, and energy transactions.</p>
             </div>
-            <button class="export-btn"><i class="fas fa-download"></i> Export Report</button>
+            <button class="export-btn" onclick="exportReport()"><i class="fas fa-download"></i> Export Report</button>
         </div>
 
-        <!-- Admin Stats -->
+        <!-- Energy Stats -->
         <div class="admin-stats">
             <div class="stat-box">
-                <div class="stat-label">Total Revenue (Feb)</div>
-                <div class="stat-figure">₦2.4M</div>
-                <div class="stat-delta">↑ 15% vs last month</div>
+                <div class="stat-label">Subsidies Disbursed (Feb)</div>
+                <div class="stat-figure">₦12.4M</div>
+                <div class="stat-delta">↑ 248 beneficiaries</div>
             </div>
             <div class="stat-box">
-                <div class="stat-label">Total Expenditure</div>
-                <div class="stat-figure">₦1.8M</div>
-                <div class="stat-delta negative">↑ 5% vs last month</div>
+                <div class="stat-label">Loan Repayments</div>
+                <div class="stat-figure">₦8.2M</div>
+                <div class="stat-delta">↑ 92% collection rate</div>
             </div>
             <div class="stat-box">
-                <div class="stat-label">New Registrations</div>
-                <div class="stat-figure">142</div>
-                <div class="stat-delta">↑ 8 this week</div>
+                <div class="stat-label">New Connections</div>
+                <div class="stat-figure">156</div>
+                <div class="stat-delta">↑ 24 this week</div>
             </div>
             <div class="stat-box">
-                <div class="stat-label">Pending Reviews</div>
-                <div class="stat-figure">18</div>
+                <div class="stat-label">Pending Approvals</div>
+                <div class="stat-figure">12</div>
                 <div class="stat-delta text-orange">Action required</div>
             </div>
         </div>
 
-        <!-- Ledger Table -->
+        <!-- Energy Transaction Ledger -->
         <div class="ledger-card">
             <div class="table-header">
-                <div class="table-title">Recent Transactions</div>
+                <div class="table-title">Energy Transactions</div>
                 <div class="table-filters">
-                    <select class="filter-select">
-                        <option>All Types</option>
-                        <option>Revenue</option>
-                        <option>Expense</option>
+                    <select class="filter-select" id="typeFilter" onchange="filterTransactions()">
+                        <option value="all">All Types</option>
+                        <option value="Subsidy">Subsidies</option>
+                        <option value="Loan Payment">Loan Payments</option>
+                        <option value="Mini-Grid">Mini-Grid Credits</option>
+                        <option value="Vendor">Vendor Payments</option>
                     </select>
-                    <select class="filter-select">
-                        <option>This Month</option>
-                        <option>Last Month</option>
+                    <select class="filter-select" id="dateFilter" onchange="filterTransactions()">
+                        <option value="this">This Month</option>
+                        <option value="last">Last Month</option>
+                        <option value="all">All Time</option>
                     </select>
                 </div>
             </div>
 
             <div class="table-container">
-                <table>
+                <table id="transactionTable">
                     <thead>
                         <tr>
                             <th>Transaction ID</th>
@@ -615,48 +619,79 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td data-label="Transaction ID">#TRX-8921</td>
-                            <td data-label="Description">Market Stall Levy - Zone A</td>
+                        <tr data-category="Subsidy" data-month="feb">
+                            <td data-label="Transaction ID">#SHS-8921</td>
+                            <td data-label="Description">Subsidy Disbursement - Cluster A</td>
                             <td data-label="Date">Feb 07, 2026</td>
-                            <td data-label="Category">Revenue</td>
-                            <td data-label="Amount" class="amount-in">+ ₦150,000</td>
+                            <td data-label="Category">Subsidy</td>
+                            <td data-label="Amount" class="amount-out">- ₦2,500,000</td>
+                            <td data-label="Status"><span class="status-badge status-success">Disbursed</span></td>
+                        </tr>
+                        <tr data-category="Loan Payment" data-month="feb">
+                            <td data-label="Transaction ID">#LRP-8920</td>
+                            <td data-label="Description">Loan Repayment - Batch 45</td>
+                            <td data-label="Date">Feb 06, 2026</td>
+                            <td data-label="Category">Loan Payment</td>
+                            <td data-label="Amount" class="amount-in">+ ₦850,000</td>
                             <td data-label="Status"><span class="status-badge status-success">Verified</span></td>
                         </tr>
-                        <tr>
-                            <td data-label="Transaction ID">#TRX-8920</td>
-                            <td data-label="Description">Road Repair Materials</td>
+                        <tr data-category="Mini-Grid" data-month="feb">
+                            <td data-label="Transaction ID">#MG-8919</td>
+                            <td data-label="Description">Mini-Grid Revenue - Adeka Zone</td>
                             <td data-label="Date">Feb 06, 2026</td>
-                            <td data-label="Category">Expense</td>
-                            <td data-label="Amount" class="amount-out">- ₦450,000</td>
+                            <td data-label="Category">Mini-Grid</td>
+                            <td data-label="Amount" class="amount-in">+ ₦125,000</td>
+                            <td data-label="Status"><span class="status-badge status-success">Verified</span></td>
+                        </tr>
+                        <tr data-category="Vendor" data-month="feb">
+                            <td data-label="Transaction ID">#VDR-8918</td>
+                            <td data-label="Description">Vendor Payment - GreenPower NG</td>
+                            <td data-label="Date">Feb 05, 2026</td>
+                            <td data-label="Category">Vendor</td>
+                            <td data-label="Amount" class="amount-out">- ₦4,250,000</td>
                             <td data-label="Status"><span class="status-badge status-processing">Processing</span></td>
                         </tr>
-                        <tr>
-                            <td data-label="Transaction ID">#TRX-8919</td>
-                            <td data-label="Description">Indigene Certificate Fees</td>
-                            <td data-label="Date">Feb 06, 2026</td>
-                            <td data-label="Category">Revenue</td>
-                            <td data-label="Amount" class="amount-in">+ ₦25,000</td>
-                            <td data-label="Status"><span class="status-badge status-success">Verified</span></td>
-                        </tr>
-                        <tr>
-                            <td data-label="Transaction ID">#TRX-8918</td>
-                            <td data-label="Description">Solar Maintenance Contract</td>
-                            <td data-label="Date">Feb 05, 2026</td>
-                            <td data-label="Category">Expense</td>
-                            <td data-label="Amount" class="amount-out">- ₦120,000</td>
-                            <td data-label="Status"><span class="status-badge status-success">Paid</span></td>
-                        </tr>
-                        <tr>
-                            <td data-label="Transaction ID">#TRX-8917</td>
-                            <td data-label="Description">Business Permit Renewal</td>
+                        <tr data-category="Subsidy" data-month="feb">
+                            <td data-label="Transaction ID">#SHS-8917</td>
+                            <td data-label="Description">Subsidy Disbursement - Cluster B</td>
                             <td data-label="Date">Feb 04, 2026</td>
-                            <td data-label="Category">Revenue</td>
-                            <td data-label="Amount" class="amount-in">+ ₦45,000</td>
+                            <td data-label="Category">Subsidy</td>
+                            <td data-label="Amount" class="amount-out">- ₦1,750,000</td>
+                            <td data-label="Status"><span class="status-badge status-success">Disbursed</span></td>
+                        </tr>
+                        <tr data-category="Loan Payment" data-month="jan">
+                            <td data-label="Transaction ID">#LRP-8910</td>
+                            <td data-label="Description">Loan Repayment - Batch 44</td>
+                            <td data-label="Date">Jan 28, 2026</td>
+                            <td data-label="Category">Loan Payment</td>
+                            <td data-label="Amount" class="amount-in">+ ₦720,000</td>
                             <td data-label="Status"><span class="status-badge status-success">Verified</span></td>
+                        </tr>
+                        <tr data-category="Mini-Grid" data-month="jan">
+                            <td data-label="Transaction ID">#MG-8905</td>
+                            <td data-label="Description">Mini-Grid Revenue - Oju Zone</td>
+                            <td data-label="Date">Jan 25, 2026</td>
+                            <td data-label="Category">Mini-Grid</td>
+                            <td data-label="Amount" class="amount-in">+ ₦98,000</td>
+                            <td data-label="Status"><span class="status-badge status-success">Verified</span></td>
+                        </tr>
+                        <tr data-category="Subsidy" data-month="jan">
+                            <td data-label="Transaction ID">#SHS-8899</td>
+                            <td data-label="Description">Subsidy Disbursement - Cluster C</td>
+                            <td data-label="Date">Jan 20, 2026</td>
+                            <td data-label="Category">Subsidy</td>
+                            <td data-label="Amount" class="amount-out">- ₦3,100,000</td>
+                            <td data-label="Status"><span class="status-badge status-success">Disbursed</span></td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- No Results Message -->
+            <div id="noResults"
+                style="display: none; text-align: center; padding: 40px 20px; color: var(--text-secondary, #6b7280);">
+                <i class="fas fa-search" style="font-size: 32px; margin-bottom: 12px; opacity: 0.4;"></i>
+                <p style="font-size: 14px;">No transactions match your filters.</p>
             </div>
         </div>
     </main>
@@ -670,14 +705,94 @@
         document.addEventListener('click', (e) => {
             const sidebar = document.getElementById('sidebar');
             const menuBtn = document.querySelector('.mobile-menu-toggle');
-            
-            if (window.innerWidth <= 768 && 
-                sidebar.classList.contains('active') && 
-                !sidebar.contains(e.target) && 
+
+            if (window.innerWidth <= 768 &&
+                sidebar.classList.contains('active') &&
+                !sidebar.contains(e.target) &&
                 !menuBtn.contains(e.target)) {
                 sidebar.classList.remove('active');
             }
         });
+
+        // --- Transaction Filters ---
+        function filterTransactions() {
+            const typeFilter = document.getElementById('typeFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            const rows = document.querySelectorAll('#transactionTable tbody tr');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const category = row.getAttribute('data-category');
+                const month = row.getAttribute('data-month');
+
+                const typeMatch = (typeFilter === 'all') || (category === typeFilter);
+
+                let dateMatch = true;
+                if (dateFilter === 'this') {
+                    dateMatch = (month === 'feb');
+                } else if (dateFilter === 'last') {
+                    dateMatch = (month === 'jan');
+                }
+
+                if (typeMatch && dateMatch) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Show/hide no results message
+            document.getElementById('noResults').style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+
+        // --- Export Report ---
+        function exportReport() {
+            const btn = event.currentTarget;
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+
+            setTimeout(() => {
+                // Gather visible rows
+                const rows = document.querySelectorAll('#transactionTable tbody tr');
+                let csv = 'Transaction ID,Description,Date,Category,Amount,Status\n';
+
+                rows.forEach(row => {
+                    if (row.style.display !== 'none') {
+                        const cells = row.querySelectorAll('td');
+                        const rowData = Array.from(cells).map(cell => {
+                            let text = cell.textContent.trim().replace(/,/g, '');
+                            return '"' + text + '"';
+                        });
+                        csv += rowData.join(',') + '\n';
+                    }
+                });
+
+                // Create and trigger download
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'NEMiC_Energy_Transactions_Report_' + new Date().toISOString().slice(0, 10) + '.csv';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+
+                btn.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
+                btn.style.background = '#10b981';
+                btn.style.borderColor = '#10b981';
+
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.style.background = '';
+                    btn.style.borderColor = '';
+                }, 2500);
+            }, 1000);
+        }
+
+        // Initialize — show "This Month" by default
+        filterTransactions();
     </script>
 </body>
 

@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=1.1">
-    <script src="auth-check.js?v=1.1"></script>
+    <link rel="stylesheet" href="styles.css?v=2.0">
+    <script src="auth-check.js?v=2.0"></script>
     <style>
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
@@ -692,26 +692,26 @@
             </li>
             <li class="nav-item">
                 <a href="evillage-civil.html" class="nav-link">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Civil Registration</span>
+                    <i class="fas fa-store"></i>
+                    <span>Energy Marketplace</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-property.html" class="nav-link">
-                    <i class="fas fa-home"></i>
-                    <span>Property & Tax</span>
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>Utility & Loans</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-governance.html" class="nav-link">
-                    <i class="fas fa-landmark"></i>
-                    <span>Governance</span>
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Energy Projects</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-admin.html" class="nav-link">
-                    <i class="fas fa-book"></i>
-                    <span>Admin Ledger</span>
+                    <i class="fas fa-shield-alt"></i>
+                    <span>NEMiC Controls</span>
                 </a>
             </li>
             <li class="nav-item"
@@ -722,7 +722,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="evillage.html" class="nav-link">
+                <a href="#" class="nav-link" onclick="sessionStorage.removeItem('neiia_authenticated'); window.location.href='evillage-signin.html'; return false;">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Sign Out</span>
                 </a>
@@ -743,7 +743,7 @@
         <div class="header">
             <div class="welcome-text">
                 <h1>Welcome back, Adewale</h1>
-                <p>Here's what's happening in your village today.</p>
+                <p>Here's your energy dashboard for Agba Village.</p>
             </div>
             <div class="header-actions">
                 <button class="icon-btn" onclick="openPanel('notificationPanel')">
@@ -758,33 +758,33 @@
         <div class="dashboard-grid">
             <div class="stat-card">
                 <div class="stat-content">
-                    <h3>Village Population</h3>
-                    <div class="stat-value">4,285</div>
-                    <div class="stat-trend"><i class="fas fa-arrow-up"></i> 12% growth</div>
+                    <h3>Energy Connections</h3>
+                    <div class="stat-value">892</div>
+                    <div class="stat-trend"><i class="fas fa-arrow-up"></i> 24 this month</div>
                 </div>
                 <div class="stat-icon bg-teal">
-                    <i class="fas fa-users"></i>
+                    <i class="fas fa-bolt"></i>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-content">
-                    <h3>Active Projects</h3>
-                    <div class="stat-value">8</div>
-                    <div class="stat-trend"><i class="fas fa-check"></i> 2 completed</div>
+                    <h3>Solar Installations</h3>
+                    <div class="stat-value">156</div>
+                    <div class="stat-trend"><i class="fas fa-solar-panel"></i> 12 pending</div>
                 </div>
                 <div class="stat-icon bg-green">
-                    <i class="fas fa-hard-hat"></i>
+                    <i class="fas fa-sun"></i>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-content">
-                    <h3>Pending Requests</h3>
-                    <div class="stat-value">3</div>
-                    <div class="stat-trend text-orange"><span style="color: #f59e0b; font-size: 13px;">Action
-                            needed</span></div>
+                    <h3>Pending Disbursements</h3>
+                    <div class="stat-value">₦3.2M</div>
+                    <div class="stat-trend text-orange"><span style="color: #f59e0b; font-size: 13px;">Awaiting
+                            approval</span></div>
                 </div>
                 <div class="stat-icon bg-orange">
-                    <i class="fas fa-clipboard-list"></i>
+                    <i class="fas fa-money-bill-wave"></i>
                 </div>
             </div>
         </div>
@@ -797,31 +797,31 @@
         <div class="actions-grid">
             <div class="action-card" onclick="window.location.href='evillage-civil.html'">
                 <div class="action-icon">
-                    <i class="fas fa-file-signature"></i>
+                    <i class="fas fa-solar-panel"></i>
                 </div>
-                <h3>Get Certificate</h3>
-                <p>Birth, Indigene, Marriage</p>
+                <h3>Apply for Solar Loan</h3>
+                <p>SHS financing options</p>
             </div>
             <div class="action-card" onclick="window.location.href='evillage-property.html'">
                 <div class="action-icon">
-                    <i class="fas fa-coins"></i>
+                    <i class="fas fa-receipt"></i>
                 </div>
-                <h3>Pay Tax</h3>
-                <p>Property, Business, Levy</p>
+                <h3>Pay Utility Bill</h3>
+                <p>Grid & mini-grid credits</p>
             </div>
             <div class="action-card" onclick="openPanel('reportPanel')">
                 <div class="action-icon">
-                    <i class="fas fa-bullhorn"></i>
+                    <i class="fas fa-exclamation-triangle"></i>
                 </div>
-                <h3>Report Issue</h3>
-                <p>Roads, Water, Security</p>
+                <h3>Report Fault</h3>
+                <p>Poles, Transformers, Theft</p>
             </div>
             <div class="action-card" onclick="window.location.href='evillage-governance.html'">
                 <div class="action-icon">
                     <i class="fas fa-vote-yea"></i>
                 </div>
-                <h3>Vote / Polls</h3>
-                <p>Community decisions</p>
+                <h3>Vote on Projects</h3>
+                <p>Community energy needs</p>
             </div>
         </div>
 
@@ -835,33 +835,33 @@
             <ul class="activity-list">
                 <li class="activity-item" onclick="openPanel('activityPanel')">
                     <div class="activity-icon bg-teal">
-                        <i class="fas fa-file-alt"></i>
+                        <i class="fas fa-solar-panel"></i>
                     </div>
                     <div class="activity-info">
-                        <div class="activity-title">Indigene Certificate Request</div>
+                        <div class="activity-title">Solar Loan Application</div>
                         <div class="activity-date">Today, 10:23 AM</div>
                     </div>
-                    <span class="activity-status status-pending">Pending Approval</span>
+                    <span class="activity-status status-pending">Under Review</span>
                 </li>
                 <li class="activity-item" onclick="openPanel('activityPanel')">
                     <div class="activity-icon bg-green">
                         <i class="fas fa-check-circle"></i>
                     </div>
                     <div class="activity-info">
-                        <div class="activity-title">Market Levy Payment</div>
+                        <div class="activity-title">Mini-grid Credit Payment</div>
                         <div class="activity-date">Yesterday, 4:15 PM</div>
                     </div>
-                    <span class="activity-status status-completed">Success</span>
+                    <span class="activity-status status-completed">Successful</span>
                 </li>
                 <li class="activity-item" onclick="openPanel('activityPanel')">
                     <div class="activity-icon bg-orange">
-                        <i class="fas fa-exclamation-triangle"></i>
+                        <i class="fas fa-bolt"></i>
                     </div>
                     <div class="activity-info">
-                        <div class="activity-title">Road Maintenance Report</div>
+                        <div class="activity-title">Transformer Fault Report</div>
                         <div class="activity-date">Feb 5, 2026</div>
                     </div>
-                    <span class="activity-status status-pending">In Review</span>
+                    <span class="activity-status status-pending">Dispatched</span>
                 </li>
             </ul>
         </div>
@@ -877,21 +877,21 @@
         </div>
         <div class="panel-content">
             <div class="notification-item">
-                <div class="notif-title">Town Hall Meeting Tomorrow</div>
-                <div class="notif-body">Reminder: The quarterly Agba Village town hall starts at 10 AM at the Community
-                    Center.</div>
+                <div class="notif-title">Solar Kit Approved!</div>
+                <div class="notif-body">Your 1.5kW Solar Home System application has been approved. Installation
+                    scheduled for next week.</div>
                 <div class="notif-time">2 hours ago</div>
             </div>
             <div class="notification-item">
-                <div class="notif-title">Tax Payment Confirmed</div>
-                <div class="notif-body">Your payment of ₦25,000 for Plot 45 Ground Rent has been successfully processed.
-                </div>
+                <div class="notif-title">Utility Payment Confirmed</div>
+                <div class="notif-body">Your mini-grid credit of ₦8,500 has been successfully processed. Current
+                    balance: ₦12,300.</div>
                 <div class="notif-time">Yesterday</div>
             </div>
             <div class="notification-item" style="border-left-color: #f59e0b;">
-                <div class="notif-title">Water Supply Maintenance</div>
-                <div class="notif-body">Scheduled maintenance on the main pump this Saturday. Expect interruptions.
-                </div>
+                <div class="notif-title">Scheduled Maintenance</div>
+                <div class="notif-body">The village mini-grid will undergo maintenance this Saturday. Backup solar
+                    recommended.</div>
                 <div class="notif-time">2 days ago</div>
             </div>
         </div>
@@ -1048,17 +1048,78 @@
                 style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; margin-top: 32px; margin-bottom: 12px;">
                 Account</h4>
 
-            <button class="action-card"
+            <button class="action-card" onclick="openPanel('changePasswordPanel')"
                 style="width: 100%; text-align: left; display: flex; align-items: center; gap: 12px; padding: 16px; margin-bottom: 12px;">
                 <i class="fas fa-lock" style="color: #6b7280;"></i>
                 <span style="font-weight: 500;">Change Password</span>
             </button>
 
-            <button class="action-card"
+            <button class="action-card" onclick="signOut()"
                 style="width: 100%; text-align: left; display: flex; align-items: center; gap: 12px; padding: 16px;">
                 <i class="fas fa-sign-out-alt" style="color: #ef4444;"></i>
                 <span style="font-weight: 500; color: #ef4444;">Sign Out</span>
             </button>
+        </div>
+    </div>
+
+    <!-- PANEL: Change Password -->
+    <div class="slide-over-panel" id="changePasswordPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Change Password</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <p style="font-size: 14px; color: #6b7280; margin-bottom: 24px;">Update your account password. Choose a
+                strong password with at least 8 characters.</p>
+
+            <form id="changePasswordForm" onsubmit="event.preventDefault(); submitPasswordChange();">
+                <div style="margin-bottom: 20px;">
+                    <label
+                        style="display: block; font-size: 13px; font-weight: 500; color: var(--text-primary, #111827); margin-bottom: 6px;">Current
+                        Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="currentPassword" required placeholder="Enter current password"
+                            style="width: 100%; padding: 12px 40px 12px 16px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: var(--bg-primary, #f9fafb); color: var(--text-primary, #111827); outline: none; transition: border-color 0.2s;"
+                            onfocus="this.style.borderColor='#0d3d44'" onblur="this.style.borderColor='#e5e7eb'">
+                        <i class="fas fa-eye toggle-pwd" onclick="togglePwd('currentPassword', this)"
+                            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; cursor: pointer;"></i>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label
+                        style="display: block; font-size: 13px; font-weight: 500; color: var(--text-primary, #111827); margin-bottom: 6px;">New
+                        Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="newPassword" required placeholder="Enter new password" minlength="8"
+                            style="width: 100%; padding: 12px 40px 12px 16px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: var(--bg-primary, #f9fafb); color: var(--text-primary, #111827); outline: none; transition: border-color 0.2s;"
+                            onfocus="this.style.borderColor='#0d3d44'" onblur="this.style.borderColor='#e5e7eb'">
+                        <i class="fas fa-eye toggle-pwd" onclick="togglePwd('newPassword', this)"
+                            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; cursor: pointer;"></i>
+                    </div>
+                    <div id="passwordStrength" style="margin-top: 8px; font-size: 12px; color: #6b7280;"></div>
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <label
+                        style="display: block; font-size: 13px; font-weight: 500; color: var(--text-primary, #111827); margin-bottom: 6px;">Confirm
+                        New Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="confirmPassword" required placeholder="Re-enter new password"
+                            style="width: 100%; padding: 12px 40px 12px 16px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: var(--bg-primary, #f9fafb); color: var(--text-primary, #111827); outline: none; transition: border-color 0.2s;"
+                            onfocus="this.style.borderColor='#0d3d44'" onblur="this.style.borderColor='#e5e7eb'">
+                        <i class="fas fa-eye toggle-pwd" onclick="togglePwd('confirmPassword', this)"
+                            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; cursor: pointer;"></i>
+                    </div>
+                    <div id="passwordMatch" style="margin-top: 6px; font-size: 12px;"></div>
+                </div>
+
+                <button type="submit" id="changePassBtn"
+                    style="width: 100%; padding: 14px; background: #0d3d44; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;"
+                    onmouseover="this.style.background='#0a2e33'" onmouseout="this.style.background='#0d3d44'">
+                    Update Password
+                </button>
+            </form>
         </div>
     </div>
     <style>
@@ -1083,7 +1144,7 @@
         }
     </style>
 
-    <script src="script.js?v=1.1"></script>
+    <script src="script.js?v=2.0"></script>
     <script>
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
@@ -1136,6 +1197,85 @@
                     }, 500);
                 }, 1500);
             }, 1200);
+        }
+
+        // Toggle password visibility
+        function togglePwd(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Password strength indicator
+        document.getElementById('newPassword')?.addEventListener('input', function () {
+            const val = this.value;
+            const el = document.getElementById('passwordStrength');
+            if (val.length === 0) { el.textContent = ''; return; }
+            if (val.length < 6) {
+                el.innerHTML = '<span style="color: #ef4444;">⚠ Too short</span>';
+            } else if (val.length < 8 || !/[A-Z]/.test(val) || !/[0-9]/.test(val)) {
+                el.innerHTML = '<span style="color: #f59e0b;">● Medium strength</span>';
+            } else {
+                el.innerHTML = '<span style="color: #10b981;">● Strong password</span>';
+            }
+        });
+
+        // Password match check
+        document.getElementById('confirmPassword')?.addEventListener('input', function () {
+            const newPwd = document.getElementById('newPassword').value;
+            const el = document.getElementById('passwordMatch');
+            if (this.value.length === 0) { el.textContent = ''; return; }
+            if (this.value === newPwd) {
+                el.innerHTML = '<span style="color: #10b981;"><i class="fas fa-check-circle"></i> Passwords match</span>';
+            } else {
+                el.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-times-circle"></i> Passwords do not match</span>';
+            }
+        });
+
+        // Submit password change
+        function submitPasswordChange() {
+            const newPwd = document.getElementById('newPassword').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
+
+            if (newPwd !== confirmPwd) {
+                document.getElementById('passwordMatch').innerHTML = '<span style="color: #ef4444;"><i class="fas fa-times-circle"></i> Passwords do not match</span>';
+                return;
+            }
+
+            const btn = document.getElementById('changePassBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+            btn.style.opacity = '0.8';
+
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Password Updated!';
+                btn.style.background = '#10b981';
+
+                setTimeout(() => {
+                    closeAllPanels();
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.style.background = '#0d3d44';
+                        btn.style.opacity = '1';
+                        document.getElementById('changePasswordForm').reset();
+                        document.getElementById('passwordStrength').textContent = '';
+                        document.getElementById('passwordMatch').textContent = '';
+                    }, 500);
+                }, 1500);
+            }, 1200);
+        }
+
+        // Sign out
+        function signOut() {
+            sessionStorage.removeItem('neiia_authenticated');
+            window.location.href = 'evillage-signin.html';
         }
     </script>
 </body>

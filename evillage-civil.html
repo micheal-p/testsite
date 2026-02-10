@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Civil Registration | eVillage Portal</title>
+    <title>Energy Marketplace | eVillage Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=1.1">
-    <script src="auth-check.js?v=1.1"></script>
+    <link rel="stylesheet" href="styles.css?v=2.0">
+    <script src="auth-check.js?v=2.0"></script>
     <style>
         /* Inherit base styles from dashboard */
         body {
@@ -562,26 +562,26 @@
             </li>
             <li class="nav-item">
                 <a href="evillage-civil.html" class="nav-link active">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Civil Registration</span>
+                    <i class="fas fa-store"></i>
+                    <span>Energy Marketplace</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-property.html" class="nav-link">
-                    <i class="fas fa-home"></i>
-                    <span>Property & Tax</span>
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>Utility & Loans</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-governance.html" class="nav-link">
-                    <i class="fas fa-landmark"></i>
-                    <span>Governance</span>
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Energy Projects</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-admin.html" class="nav-link">
-                    <i class="fas fa-book"></i>
-                    <span>Admin Ledger</span>
+                    <i class="fas fa-shield-alt"></i>
+                    <span>NEMiC Controls</span>
                 </a>
             </li>
             <li class="nav-item"
@@ -592,7 +592,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="evillage.html" class="nav-link">
+                <a href="#" class="nav-link"
+                    onclick="sessionStorage.removeItem('neiia_authenticated'); window.location.href='evillage-signin.html'; return false;">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Sign Out</span>
                 </a>
@@ -611,72 +612,184 @@
     <!-- Main Content -->
     <main class="main-content">
         <div class="header">
-            <h1>Civil Registration</h1>
-            <p>Manage your identity documents and register vital life events.</p>
+            <h1>Energy Marketplace</h1>
+            <p>Browse solar kits, apply for financing, and manage your energy equipment.</p>
         </div>
 
         <!-- Services Grid -->
         <div class="services-grid">
             <div class="service-card" onclick="openPanel('birthPanel')">
                 <div class="service-icon">
-                    <i class="fas fa-baby"></i>
+                    <i class="fas fa-solar-panel"></i>
                 </div>
-                <h3>Birth Registration</h3>
-                <p>Register a new birth and obtain a digital birth certificate for your child.</p>
-                <div class="service-action">Start Registration <i class="fas fa-arrow-right"></i></div>
+                <h3>Solar Loan Application</h3>
+                <p>Apply for bank-financed Solar Home Systems with flexible monthly payments.</p>
+                <div class="service-action">Start Application <i class="fas fa-arrow-right"></i></div>
             </div>
 
             <div class="service-card" onclick="openPanel('indigenePanel')">
                 <div class="service-icon">
-                    <i class="fas fa-id-card"></i>
+                    <i class="fas fa-store"></i>
                 </div>
-                <h3>Indigene Letter</h3>
-                <p>Apply for a certificate of origin / indigene letter from your LGA.</p>
-                <div class="service-action">Apply Now <i class="fas fa-arrow-right"></i></div>
+                <h3>Browse Solar Kits</h3>
+                <p>Explore verified vendor products including inverters, panels, and batteries.</p>
+                <div class="service-action">View Products <i class="fas fa-arrow-right"></i></div>
             </div>
 
             <div class="service-card" onclick="openPanel('marriagePanel')">
                 <div class="service-icon">
-                    <i class="fas fa-heart"></i>
+                    <i class="fas fa-hand-holding-usd"></i>
                 </div>
-                <h3>Marriage Registry</h3>
-                <p>Book a marriage date and process your marriage certificate online.</p>
-                <div class="service-action">Book Date <i class="fas fa-arrow-right"></i></div>
+                <h3>Subsidy Application</h3>
+                <p>Apply for fixed incentive grants for eligible Solar Home Systems.</p>
+                <div class="service-action">Check Eligibility <i class="fas fa-arrow-right"></i></div>
             </div>
 
             <!-- More services can be added here -->
         </div>
 
-        <!-- Document Vault -->
+        <!-- Equipment Registry -->
         <div class="document-vault">
             <div class="section-header">
-                <div class="section-title">My Documents Vault</div>
+                <div class="section-title">My Equipment Registry</div>
                 <button class="icon-btn" title="Filter"><i class="fas fa-filter"></i></button>
             </div>
 
             <div class="doc-list">
-                <div class="doc-item" onclick="openPanel('docViewPanel')">
+                <div class="doc-item" onclick="openEquipmentPanel('equip1')">
                     <div class="doc-preview">
-                        <i class="fas fa-file-alt"></i>
+                        <i class="fas fa-solar-panel"></i>
                     </div>
                     <div class="doc-info">
-                        <div class="doc-name">Indigene Certificate</div>
-                        <div class="doc-meta">Issued: Jan 12, 2025 • Ref: IND/2025/001</div>
+                        <div class="doc-name">1.5kW Solar Home System</div>
+                        <div class="doc-meta">Installed: Jan 12, 2025 • SN: SHS-2025-00892</div>
                     </div>
                     <div class="doc-status">Active</div>
-                    <button class="icon-btn" title="Download"><i class="fas fa-download"></i></button>
+                    <button class="icon-btn" title="View Details"
+                        onclick="event.stopPropagation(); openEquipmentPanel('equip1')"><i
+                            class="fas fa-eye"></i></button>
                 </div>
 
-                <div class="doc-item" onclick="openPanel('docViewPanel')">
+                <div class="doc-item" onclick="openEquipmentPanel('equip2')">
                     <div class="doc-preview">
-                        <i class="fas fa-file-invoice"></i>
+                        <i class="fas fa-car-battery"></i>
                     </div>
                     <div class="doc-info">
-                        <div class="doc-name">Tax Clearance 2024</div>
-                        <div class="doc-meta">Issued: Dec 20, 2024 • Ref: TAX/2024/892</div>
+                        <div class="doc-name">200Ah Tubular Battery</div>
+                        <div class="doc-meta">Warranty until: Dec 2027 • SN: BAT-2024-1124</div>
                     </div>
-                    <div class="doc-status">Verified</div>
-                    <button class="icon-btn" title="Download"><i class="fas fa-download"></i></button>
+                    <div class="doc-status">Warranty</div>
+                    <button class="icon-btn" title="View Details"
+                        onclick="event.stopPropagation(); openEquipmentPanel('equip2')"><i
+                            class="fas fa-eye"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="document-vault" style="margin-top: 24px;">
+            <div class="section-header">
+                <div class="section-title">Recent Activity</div>
+                <button class="icon-btn" title="View All"><i class="fas fa-ellipsis-h"></i></button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0;">
+                <div style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border-color, #e5e7eb); cursor:pointer;"
+                    onclick="openPanel('activityPanel')">
+                    <div
+                        style="width: 36px; height: 36px; border-radius: 50%; background: #d1fae5; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fas fa-check" style="color: #059669; font-size: 14px;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 14px; font-weight: 500; color: var(--text-primary, #111827);">Solar Loan
+                            — Installment ₦18,500 paid</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Jan 28,
+                            2026 • Auto-debit</div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border-color, #e5e7eb); cursor:pointer;"
+                    onclick="openPanel('activityPanel')">
+                    <div
+                        style="width: 36px; height: 36px; border-radius: 50%; background: #dbeafe; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fas fa-bolt" style="color: #2563eb; font-size: 14px;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 14px; font-weight: 500; color: var(--text-primary, #111827);">Mini-Grid
+                            Credit — Topped up ₦8,500</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Feb 8,
+                            2026 • Card payment</div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border-color, #e5e7eb); cursor:pointer;"
+                    onclick="openPanel('activityPanel')">
+                    <div
+                        style="width: 36px; height: 36px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fas fa-tools" style="color: #d97706; font-size: 14px;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 14px; font-weight: 500; color: var(--text-primary, #111827);">Maintenance
+                            scheduled — Panel cleaning</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Feb 15,
+                            2026 • Upcoming</div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; cursor:pointer;"
+                    onclick="openPanel('activityPanel')">
+                    <div
+                        style="width: 36px; height: 36px; border-radius: 50%; background: #ede9fe; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fas fa-hand-holding-usd" style="color: #7c3aed; font-size: 14px;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 14px; font-weight: 500; color: var(--text-primary, #111827);">SHINE
+                            Subsidy — ₦45,000 credited</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Jan 5,
+                            2026 • Grant disbursement</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Progress -->
+        <div class="document-vault" style="margin-top: 24px;">
+            <div class="section-header">
+                <div class="section-title">Loan Progress</div>
+                <button class="icon-btn" onclick="openPanel('progressPanel')" title="View Full Progress"><i
+                        class="fas fa-expand-alt"></i></button>
+            </div>
+            <div onclick="openPanel('progressPanel')" style="cursor: pointer;">
+                <!-- Loan Progress Bar -->
+                <div style="margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Solar Loan
+                            SL-2025-0892</span>
+                        <span style="font-size: 13px; font-weight: 600; color: #059669;">42% Paid</span>
+                    </div>
+                    <div
+                        style="height: 10px; background: var(--border-color, #e5e7eb); border-radius: 99px; overflow: hidden;">
+                        <div
+                            style="height: 100%; width: 42%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 99px; transition: width 1s ease;">
+                        </div>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                    <div
+                        style="text-align: center; padding: 12px; background: var(--bg-primary, #f9fafb); border-radius: 8px;">
+                        <div style="font-size: 18px; font-weight: 700; color: var(--text-primary, #0d3d44);">₦285K</div>
+                        <div style="font-size: 11px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Remaining
+                        </div>
+                    </div>
+                    <div
+                        style="text-align: center; padding: 12px; background: var(--bg-primary, #f9fafb); border-radius: 8px;">
+                        <div style="font-size: 18px; font-weight: 700; color: var(--text-primary, #0d3d44);">₦18.5K
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Monthly
+                        </div>
+                    </div>
+                    <div
+                        style="text-align: center; padding: 12px; background: var(--bg-primary, #f9fafb); border-radius: 8px;">
+                        <div style="font-size: 18px; font-weight: 700; color: var(--text-primary, #0d3d44);">16</div>
+                        <div style="font-size: 11px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Months
+                            Left</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -684,91 +797,74 @@
 
     <div class="slide-over-backdrop" id="backdrop" onclick="closeAllPanels()"></div>
 
-    <!-- PANEL: Birth Registration -->
+    <!-- PANEL: Solar Loan Application -->
     <div class="slide-over-panel" id="birthPanel">
         <div class="panel-header">
-            <h3 class="panel-title">Birth Registration</h3>
+            <h3 class="panel-title">Solar Loan Application</h3>
             <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
         </div>
         <div class="panel-content">
             <div
                 style="background: #f0fdf4; padding: 16px; border-radius: 8px; margin-bottom: 24px; border: 1px solid #bbf7d0;">
-                <div style="font-size: 13px; color: #166534;"><i class="fas fa-info-circle"></i> Digital certificate
-                    will be issued upon approval.</div>
+                <div style="font-size: 13px; color: #166534;"><i class="fas fa-info-circle"></i> Bank-financed SHS with
+                    flexible 12-36 month repayment plans.</div>
             </div>
 
-            <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #0d3d44;">Child's Information</h4>
+            <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #0d3d44;">Household Information
+            </h4>
             <div class="form-group">
-                <label>Full Name of Child</label>
-                <input type="text" class="form-input" placeholder="Surname First Name Middle Name">
-            </div>
-            <div class="form-group">
-                <label>Date of Birth</label>
-                <input type="date" class="form-input">
-            </div>
-            <div class="form-group">
-                <label>Gender</label>
+                <label>Household Size</label>
                 <div class="custom-select-wrapper" style="position: relative;">
                     <select class="form-input" style="appearance: none; background: white;">
-                        <option>Male</option>
-                        <option>Female</option>
+                        <option>1-2 members</option>
+                        <option>3-5 members</option>
+                        <option>6-10 members</option>
+                        <option>10+ members</option>
+                    </select>
+                    <i class="fas fa-chevron-down"
+                        style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #6b7280; pointer-events: none;"></i>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Current Monthly Energy Spend (₦)</label>
+                <input type="number" class="form-input" placeholder="e.g. 15000">
+            </div>
+            <div class="form-group">
+                <label>Generator Usage (if any)</label>
+                <div class="custom-select-wrapper" style="position: relative;">
+                    <select class="form-input" style="appearance: none; background: white;">
+                        <option>No generator</option>
+                        <option>Petrol - Small (I pass my neighbour)</option>
+                        <option>Petrol - Standard</option>
+                        <option>Diesel Generator</option>
                     </select>
                     <i class="fas fa-chevron-down"
                         style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #6b7280; pointer-events: none;"></i>
                 </div>
             </div>
 
-            <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; margin-top: 24px; color: #0d3d44;">
-                Parent's Information</h4>
+            <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; margin-top: 24px; color: #0d3d44;">System
+                Requirements</h4>
             <div class="form-group">
-                <label>Father's Name</label>
-                <input type="text" class="form-input" value="Adewale David" readonly style="background: #f9fafb;">
-            </div>
-            <div class="form-group">
-                <label>Mother's Maiden Name</label>
-                <input type="text" class="form-input">
-            </div>
-
-            <button class="submit-btn" onclick="submitForm(this)">
-                Submit Application <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
-    </div>
-
-    <!-- PANEL: Indigene Letter -->
-    <div class="slide-over-panel" id="indigenePanel">
-        <div class="panel-header">
-            <h3 class="panel-title">Indigene Letter Request</h3>
-            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="panel-content">
-            <p style="font-size: 14px; color: #6b7280; margin-bottom: 24px;">This document certifies your origin from
-                Agba Village. It is valid for 5 years.</p>
-
-            <div class="form-group">
-                <label>Are you currently residing in the village?</label>
+                <label>Preferred System Size</label>
                 <div class="custom-select-wrapper" style="position: relative;">
                     <select class="form-input" style="appearance: none; background: white;">
-                        <option>Yes, I live here</option>
-                        <option>No, I live elsewhere</option>
+                        <option>500W - Basic Lighting</option>
+                        <option>1kW - Lights + Fan + TV</option>
+                        <option>1.5kW - Full Home System</option>
+                        <option>3kW+ - Home + Productive Use</option>
                     </select>
                     <i class="fas fa-chevron-down"
                         style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #6b7280; pointer-events: none;"></i>
                 </div>
             </div>
-
             <div class="form-group">
-                <label>Family House / Compound Name</label>
-                <input type="text" class="form-input" placeholder="e.g. Ile Olukotun">
-            </div>
-
-            <div class="form-group">
-                <label>Purpose of Request</label>
+                <label>Roof Type</label>
                 <div class="custom-select-wrapper" style="position: relative;">
                     <select class="form-input" style="appearance: none; background: white;">
-                        <option>Employment</option>
-                        <option>Education Admission</option>
-                        <option>Passport Application</option>
+                        <option>Corrugated Iron (Zinc)</option>
+                        <option>Concrete</option>
+                        <option>Thatch/Traditional</option>
                         <option>Other</option>
                     </select>
                     <i class="fas fa-chevron-down"
@@ -777,86 +873,519 @@
             </div>
 
             <button class="submit-btn" onclick="submitForm(this)">
-                Apply for Letter (₦2,500) <i class="fas fa-check-circle"></i>
+                Submit Application <i class="fas fa-arrow-right"></i>
             </button>
         </div>
     </div>
 
-    <!-- PANEL: Marriage Registry -->
-    <div class="slide-over-panel" id="marriagePanel">
+    <!-- PANEL: Browse Solar Kits -->
+    <div class="slide-over-panel" id="indigenePanel">
         <div class="panel-header">
-            <h3 class="panel-title">Marriage Registry</h3>
+            <h3 class="panel-title">Solar Kits Catalog</h3>
             <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
         </div>
         <div class="panel-content">
+            <p style="font-size: 14px; color: #6b7280; margin-bottom: 24px;">Browse verified vendor products from
+                NEMiC-certified suppliers.</p>
+
+            <!-- Product Card 1 -->
+            <div
+                style="background: #f9fafb; padding: 16px; border-radius: 12px; margin-bottom: 16px; border: 1px solid #e5e7eb;">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                    <div>
+                        <div style="font-size: 15px; font-weight: 600; color: #111827; margin-bottom: 4px;">SolarMax
+                            1.5kW Home Kit</div>
+                        <div style="font-size: 12px; color: #6b7280;">By: GreenPower Nigeria</div>
+                    </div>
+                    <div
+                        style="background: #d1fae5; color: #065f46; padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 600;">
+                        Verified</div>
+                </div>
+                <div style="font-size: 13px; color: #374151; margin-bottom: 12px;">6x 250W Panels • 1.5kW Inverter •
+                    200Ah Battery</div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 18px; font-weight: 700; color: #0d3d44;">₦485,000</div>
+                    <button onclick="selectKit('SolarMax 1.5kW Home Kit', '₦485,000', 'GreenPower Nigeria')"
+                        style="background: #0d3d44; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;">Select
+                        Kit</button>
+                </div>
+            </div>
+
+            <!-- Product Card 2 -->
+            <div
+                style="background: #f9fafb; padding: 16px; border-radius: 12px; margin-bottom: 16px; border: 1px solid #e5e7eb;">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                    <div>
+                        <div style="font-size: 15px; font-weight: 600; color: #111827; margin-bottom: 4px;">LumiSol 500W
+                            Basic</div>
+                        <div style="font-size: 12px; color: #6b7280;">By: SunBright LTD</div>
+                    </div>
+                    <div
+                        style="background: #d1fae5; color: #065f46; padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 600;">
+                        Verified</div>
+                </div>
+                <div style="font-size: 13px; color: #374151; margin-bottom: 12px;">2x 250W Panels • 500W Inverter •
+                    100Ah Battery</div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 18px; font-weight: 700; color: #0d3d44;">₦185,000</div>
+                    <button onclick="selectKit('LumiSol 500W Basic', '₦185,000', 'SunBright LTD')"
+                        style="background: #0d3d44; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;">Select
+                        Kit</button>
+                </div>
+            </div>
+
+            <!-- Product Card 3 -->
+            <div
+                style="background: #f9fafb; padding: 16px; border-radius: 12px; margin-bottom: 16px; border: 1px solid #e5e7eb;">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                    <div>
+                        <div style="font-size: 15px; font-weight: 600; color: #111827; margin-bottom: 4px;">AgriPower
+                            3kW Commercial</div>
+                        <div style="font-size: 12px; color: #6b7280;">By: EnergyFirst NG</div>
+                    </div>
+                    <div
+                        style="background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 600;">
+                        Popular</div>
+                </div>
+                <div style="font-size: 13px; color: #374151; margin-bottom: 12px;">12x 250W Panels • 3kW Inverter • 2x
+                    200Ah Battery</div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 18px; font-weight: 700; color: #0d3d44;">₦925,000</div>
+                    <button onclick="selectKit('AgriPower 3kW Commercial', '₦925,000', 'EnergyFirst NG')"
+                        style="background: #0d3d44; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;">Select
+                        Kit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL: Subsidy Application -->
+    <div class="slide-over-panel" id="marriagePanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Subsidy Application</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <div
+                style="background: #fef3c7; padding: 16px; border-radius: 8px; margin-bottom: 24px; border: 1px solid #fcd34d;">
+                <div style="font-size: 13px; color: #92400e;"><i class="fas fa-info-circle"></i> Eligible for up to
+                    ₦50,000 fixed incentive grant on approved SHS installations.</div>
+            </div>
+
             <div class="form-group">
-                <label>Proposed Wedding Date</label>
-                <input type="date" class="form-input">
+                <label>BVN (Bank Verification Number)</label>
+                <input type="text" class="form-input" placeholder="11-digit BVN">
             </div>
             <div class="form-group">
-                <label>Registry Location</label>
+                <label>NIN (National Identification Number)</label>
+                <input type="text" class="form-input" placeholder="11-digit NIN">
+            </div>
+            <div class="form-group">
+                <label>Annual Household Income (₦)</label>
                 <div class="custom-select-wrapper" style="position: relative;">
                     <select class="form-input" style="appearance: none; background: white;">
-                        <option>Agba Village Main Hall</option>
-                        <option>LGA Secretariat Registry</option>
+                        <option>Below ₦500,000</option>
+                        <option>₦500,000 - ₦1,000,000</option>
+                        <option>₦1,000,000 - ₦2,500,000</option>
+                        <option>Above ₦2,500,000</option>
                     </select>
                     <i class="fas fa-chevron-down"
                         style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #6b7280; pointer-events: none;"></i>
                 </div>
             </div>
             <div class="form-group">
-                <label>Spouse's Name</label>
-                <input type="text" class="form-input" placeholder="Full Name">
+                <label>Currently grid-connected?</label>
+                <div class="custom-select-wrapper" style="position: relative;">
+                    <select class="form-input" style="appearance: none; background: white;">
+                        <option>No - Not connected to national grid</option>
+                        <option>Yes - But unreliable supply</option>
+                        <option>Yes - Stable supply</option>
+                    </select>
+                    <i class="fas fa-chevron-down"
+                        style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #6b7280; pointer-events: none;"></i>
+                </div>
             </div>
 
             <button class="submit-btn" onclick="submitForm(this)">
-                Book Date <i class="fas fa-calendar-check"></i>
+                Check Eligibility <i class="fas fa-check-circle"></i>
             </button>
         </div>
     </div>
 
-    <!-- PANEL: Document View -->
-    <div class="slide-over-panel" id="docViewPanel">
+    <!-- PANEL: Equipment Details -->
+    <div class="slide-over-panel" id="equipmentPanel">
         <div class="panel-header">
-            <h3 class="panel-title">Document View</h3>
+            <h3 class="panel-title">Equipment Details</h3>
             <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
         </div>
-        <div class="panel-content" style="text-align: center;">
-            <div
-                style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 40px; margin-bottom: 24px; position: relative; overflow: hidden;">
-                <!-- Watermark -->
-                <div
-                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 60px; color: rgba(0,0,0,0.03); font-weight: 700; white-space: nowrap;">
-                    ORIGINAL COPY</div>
-
-                <i class="fas fa-certificate" style="font-size: 48px; color: #0d3d44; margin-bottom: 16px;"></i>
-                <h2 style="font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">Certificate of
-                    Indigene</h2>
-                <p style="font-size: 14px; color: #6b7280; margin-bottom: 24px;">Agba Village Local Government</p>
-
-                <div
-                    style="text-align: left; background: white; padding: 16px; border-radius: 8px; font-size: 13px; line-height: 1.6; color: #374151; margin-bottom: 24px;">
-                    This is to certify that <strong>Adewale David</strong> is a bona-fide indigene of Agba Village,
-                    descending from the Ile Olukotun compound.
+        <div class="panel-content">
+            <!-- Status Badge -->
+            <div style="text-align: center; padding: 24px 0 20px;">
+                <div id="equipIcon"
+                    style="width: 72px; height: 72px; border-radius: 50%; background: rgba(13,61,68,0.08); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                    <i class="fas fa-solar-panel" style="font-size: 32px; color: #0d3d44;"></i>
                 </div>
-
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=eVillage-Verified-IND-2025-001"
-                    alt="QR Code" style="width: 80px; height: 80px;">
+                <h3 id="equipName"
+                    style="font-size: 20px; font-weight: 600; color: var(--text-primary, #111827); margin-bottom: 4px;">
+                    1.5kW Solar Home System</h3>
+                <div id="equipStatusBadge"
+                    style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; background: #d1fae5; color: #065f46;">
+                    Active</div>
             </div>
 
+            <!-- Details Grid -->
+            <div
+                style="background: var(--bg-primary, #f9fafb); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                <div
+                    style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                    <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Serial Number</span>
+                    <span id="equipSerial"
+                        style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">SHS-2025-00892</span>
+                </div>
+                <div
+                    style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                    <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Vendor</span>
+                    <span id="equipVendor"
+                        style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">GreenPower
+                        Nigeria</span>
+                </div>
+                <div
+                    style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                    <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Install Date</span>
+                    <span id="equipDate"
+                        style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Jan 12,
+                        2025</span>
+                </div>
+                <div
+                    style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                    <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Warranty</span>
+                    <span id="equipWarranty"
+                        style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Until Dec
+                        2027</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 12px 0;">
+                    <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Condition</span>
+                    <span id="equipCondition" style="font-size: 13px; font-weight: 600; color: #059669;"><i
+                            class="fas fa-check-circle"></i> Good</span>
+                </div>
+            </div>
+
+            <!-- Next Maintenance -->
+            <div
+                style="background: #fef3c7; border: 1px solid #fcd34d; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-wrench" style="color: #d97706;"></i>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600; color: #92400e;">Next Maintenance</div>
+                        <div id="equipMaintenance" style="font-size: 12px; color: #92400e; opacity: 0.8;">Panel cleaning
+                            — Feb 15, 2026</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
             <div style="display: flex; gap: 12px;">
-                <button class="submit-btn" style="flex: 1;">
-                    <i class="fas fa-download"></i> Download PDF
+                <button onclick="requestMaintenance()"
+                    style="flex: 1; padding: 14px; background: #0d3d44; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;"
+                    onmouseover="this.style.background='#0a2e33'" onmouseout="this.style.background='#0d3d44'">
+                    <i class="fas fa-wrench"></i> Request Service
                 </button>
-                <button class="submit-btn"
-                    style="flex: 1; background: white; color: #0d3d44; border: 1px solid #e5e7eb;">
-                    <i class="fas fa-share-alt"></i> Share
+                <button onclick="reportIssue()"
+                    style="flex: 1; padding: 14px; background: transparent; color: var(--text-primary, #0d3d44); border: 1px solid var(--border-color, #e5e7eb); border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                    <i class="fas fa-exclamation-triangle"></i> Report Issue
                 </button>
             </div>
         </div>
     </div>
 
-    <script src="script.js?v=1.1"></script>
+    <!-- PANEL: Kit Selected -->
+    <div class="slide-over-panel" id="kitSelectedPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Kit Selected</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <!-- Success -->
+            <div style="text-align: center; padding: 32px 0 24px;">
+                <div
+                    style="width: 72px; height: 72px; border-radius: 50%; background: #d1fae5; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                    <i class="fas fa-check" style="font-size: 32px; color: #059669;"></i>
+                </div>
+                <h3 style="font-size: 20px; font-weight: 600; color: var(--text-primary, #111827); margin-bottom: 4px;">
+                    Kit Added to Application</h3>
+                <p style="font-size: 14px; color: var(--text-secondary, #6b7280);">Your selected kit will be included in
+                    your Solar Loan application.</p>
+            </div>
+
+            <!-- Kit Summary -->
+            <div
+                style="background: var(--bg-primary, #f9fafb); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                <div
+                    style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                    <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Kit</span>
+                    <span id="selectedKitName"
+                        style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">—</span>
+                </div>
+                <div
+                    style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                    <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Vendor</span>
+                    <span id="selectedKitVendor"
+                        style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">—</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 12px 0;">
+                    <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Price</span>
+                    <span id="selectedKitPrice" style="font-size: 13px; font-weight: 700; color: #0d3d44;">—</span>
+                </div>
+            </div>
+
+            <!-- Financing -->
+            <div
+                style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                <div style="font-size: 13px; color: #166534; font-weight: 600; margin-bottom: 8px;"><i
+                        class="fas fa-calculator"></i> Estimated Monthly Payment</div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280);">12 months</div>
+                        <div id="est12" style="font-size: 15px; font-weight: 700; color: #0d3d44;">—</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280);">24 months</div>
+                        <div id="est24" style="font-size: 15px; font-weight: 700; color: #0d3d44;">—</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280);">36 months</div>
+                        <div id="est36" style="font-size: 15px; font-weight: 700; color: #0d3d44;">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+                <button onclick="closeAllPanels(); openPanel('birthPanel');"
+                    style="flex: 1; padding: 14px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(16,185,129,0.3);"
+                    onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">
+                    <i class="fas fa-file-alt"></i> Start Loan Application
+                </button>
+                <button onclick="closeAllPanels()"
+                    style="flex: 1; padding: 14px; background: transparent; color: var(--text-primary, #0d3d44); border: 1px solid var(--border-color, #e5e7eb); border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">
+                    Continue Browsing
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL: Activity Details -->
+    <div class="slide-over-panel" id="activityPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Activity Log</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <p style="font-size: 14px; color: var(--text-secondary, #6b7280); margin-bottom: 24px;">Full history of your
+                energy transactions and activities.</p>
+
+            <div style="display: flex; flex-direction: column; gap: 0; position: relative;">
+                <!-- Timeline Line -->
+                <div
+                    style="position: absolute; left: 17px; top: 20px; bottom: 20px; width: 2px; background: var(--border-color, #e5e7eb);">
+                </div>
+
+                <div style="display: flex; gap: 16px; padding: 16px 0; position: relative;">
+                    <div
+                        style="width: 36px; height: 36px; border-radius: 50%; background: #d1fae5; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1;">
+                        <i class="fas fa-check" style="color: #059669; font-size: 14px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827);">Solar Loan
+                            Installment Paid</div>
+                        <div style="font-size: 13px; color: var(--text-secondary, #6b7280); margin-top: 2px;">₦18,500
+                            deducted • Ref: SL-2026-0128</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 4px;">Jan 28,
+                            2026 at 9:00 AM</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 16px; padding: 16px 0; position: relative;">
+                    <div
+                        style="width: 36px; height: 36px; border-radius: 50%; background: #dbeafe; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1;">
+                        <i class="fas fa-bolt" style="color: #2563eb; font-size: 14px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827);">Mini-Grid
+                            Credit Top-up</div>
+                        <div style="font-size: 13px; color: var(--text-secondary, #6b7280); margin-top: 2px;">₦8,500
+                            added • Card ****4829</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 4px;">Feb 8,
+                            2026 at 2:15 PM</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 16px; padding: 16px 0; position: relative;">
+                    <div
+                        style="width: 36px; height: 36px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1;">
+                        <i class="fas fa-tools" style="color: #d97706; font-size: 14px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827);">Maintenance
+                            Scheduled</div>
+                        <div style="font-size: 13px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Panel
+                            cleaning by GreenPower Nigeria</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 4px;">Scheduled
+                            for Feb 15, 2026</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 16px; padding: 16px 0; position: relative;">
+                    <div
+                        style="width: 36px; height: 36px; border-radius: 50%; background: #ede9fe; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1;">
+                        <i class="fas fa-hand-holding-usd" style="color: #7c3aed; font-size: 14px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827);">SHINE
+                            Subsidy Credited</div>
+                        <div style="font-size: 13px; color: var(--text-secondary, #6b7280); margin-top: 2px;">₦45,000
+                            grant disbursement received</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 4px;">Jan 5,
+                            2026 at 11:30 AM</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 16px; padding: 16px 0; position: relative;">
+                    <div
+                        style="width: 36px; height: 36px; border-radius: 50%; background: #d1fae5; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1;">
+                        <i class="fas fa-solar-panel" style="color: #059669; font-size: 14px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827);">System
+                            Installation Complete</div>
+                        <div style="font-size: 13px; color: var(--text-secondary, #6b7280); margin-top: 2px;">1.5kW SHS
+                            installed • SN: SHS-2025-00892</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 4px;">Jan 12,
+                            2025 at 4:00 PM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL: Full Loan Progress -->
+    <div class="slide-over-panel" id="progressPanel">
+        <div class="panel-header">
+            <h3 class="panel-title">Loan Progress</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <!-- Loan Card -->
+            <div
+                style="background: linear-gradient(135deg, #0d3d44 0%, #0a2e33 100%); color: white; padding: 24px; border-radius: 16px; margin-bottom: 24px; position: relative; overflow: hidden;">
+                <div
+                    style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: rgba(16,185,129,0.15); border-radius: 50%;">
+                </div>
+                <div
+                    style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 4px;">
+                    Total Loan Amount</div>
+                <div style="font-size: 32px; font-weight: 700; letter-spacing: -1px; margin-bottom: 8px;">₦485,000</div>
+                <div style="font-size: 13px; opacity: 0.7;">SolarMax 1.5kW Home Kit • SL-2025-0892</div>
+            </div>
+
+            <!-- Progress -->
+            <div style="margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827);">Repayment
+                        Progress</span>
+                    <span style="font-size: 14px; font-weight: 700; color: #059669;">42%</span>
+                </div>
+                <div
+                    style="height: 12px; background: var(--border-color, #e5e7eb); border-radius: 99px; overflow: hidden;">
+                    <div
+                        style="height: 100%; width: 42%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 99px;">
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+                    <span style="font-size: 12px; color: var(--text-secondary, #6b7280);">₦200,000 paid</span>
+                    <span style="font-size: 12px; color: var(--text-secondary, #6b7280);">₦285,000 remaining</span>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+                <div
+                    style="padding: 16px; background: var(--bg-primary, #f9fafb); border-radius: 10px; text-align: center;">
+                    <div style="font-size: 22px; font-weight: 700; color: var(--text-primary, #0d3d44);">₦18,500</div>
+                    <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Monthly
+                        Payment</div>
+                </div>
+                <div
+                    style="padding: 16px; background: var(--bg-primary, #f9fafb); border-radius: 10px; text-align: center;">
+                    <div style="font-size: 22px; font-weight: 700; color: var(--text-primary, #0d3d44);">16</div>
+                    <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Months
+                        Remaining</div>
+                </div>
+                <div
+                    style="padding: 16px; background: var(--bg-primary, #f9fafb); border-radius: 10px; text-align: center;">
+                    <div style="font-size: 22px; font-weight: 700; color: var(--text-primary, #0d3d44);">Feb 28</div>
+                    <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Next Payment
+                    </div>
+                </div>
+                <div
+                    style="padding: 16px; background: var(--bg-primary, #f9fafb); border-radius: 10px; text-align: center;">
+                    <div style="font-size: 22px; font-weight: 700; color: #059669;">0</div>
+                    <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Missed
+                        Payments</div>
+                </div>
+            </div>
+
+            <!-- Payment Timeline -->
+            <h4 style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827); margin-bottom: 16px;">
+                Payment Timeline</h4>
+            <div style="display: flex; flex-direction: column; gap: 0; position: relative;">
+                <div
+                    style="position: absolute; left: 7px; top: 10px; bottom: 10px; width: 2px; background: var(--border-color, #e5e7eb);">
+                </div>
+                <div style="display: flex; gap: 16px; padding: 10px 0; position: relative;">
+                    <div
+                        style="width: 16px; height: 16px; border-radius: 50%; background: #10b981; border: 2px solid white; box-shadow: 0 0 0 2px #10b981; flex-shrink: 0; z-index: 1; margin-top: 2px;">
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Jan 2026 —
+                            ₦18,500</div>
+                        <div style="font-size: 12px; color: #059669;">Paid on Jan 28</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 16px; padding: 10px 0; position: relative;">
+                    <div
+                        style="width: 16px; height: 16px; border-radius: 50%; background: #10b981; border: 2px solid white; box-shadow: 0 0 0 2px #10b981; flex-shrink: 0; z-index: 1; margin-top: 2px;">
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Dec 2025 —
+                            ₦18,500</div>
+                        <div style="font-size: 12px; color: #059669;">Paid on Dec 28</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 16px; padding: 10px 0; position: relative;">
+                    <div
+                        style="width: 16px; height: 16px; border-radius: 50%; background: #10b981; border: 2px solid white; box-shadow: 0 0 0 2px #10b981; flex-shrink: 0; z-index: 1; margin-top: 2px;">
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Nov 2025 —
+                            ₦18,500</div>
+                        <div style="font-size: 12px; color: #059669;">Paid on Nov 28</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 16px; padding: 10px 0; position: relative;">
+                    <div
+                        style="width: 16px; height: 16px; border-radius: 50%; background: var(--border-color, #e5e7eb); border: 2px solid white; box-shadow: 0 0 0 2px var(--border-color, #e5e7eb); flex-shrink: 0; z-index: 1; margin-top: 2px;">
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--text-secondary, #6b7280);">Feb 2026
+                            — ₦18,500</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280);">Due Feb 28</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=2.0"></script>
     <script>
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
@@ -890,17 +1419,13 @@
 
         function submitForm(btn) {
             const originalText = btn.innerHTML;
-
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             btn.style.opacity = '0.8';
-
             setTimeout(() => {
                 btn.innerHTML = '<i class="fas fa-check"></i> Success!';
                 btn.style.background = '#10b981';
-
                 setTimeout(() => {
                     closeAllPanels();
-                    // Reset button after close
                     setTimeout(() => {
                         btn.innerHTML = originalText;
                         btn.style.background = '#0d3d44';
@@ -908,6 +1433,92 @@
                     }, 500);
                 }, 1500);
             }, 1500);
+        }
+
+        // Equipment Data
+        const equipment = {
+            equip1: {
+                name: '1.5kW Solar Home System',
+                icon: 'fa-solar-panel',
+                serial: 'SHS-2025-00892',
+                vendor: 'GreenPower Nigeria',
+                date: 'Jan 12, 2025',
+                warranty: 'Until Dec 2027',
+                condition: '<i class="fas fa-check-circle"></i> Good',
+                conditionColor: '#059669',
+                status: 'Active',
+                statusBg: '#d1fae5',
+                statusColor: '#065f46',
+                maintenance: 'Panel cleaning — Feb 15, 2026'
+            },
+            equip2: {
+                name: '200Ah Tubular Battery',
+                icon: 'fa-car-battery',
+                serial: 'BAT-2024-1124',
+                vendor: 'SunBright LTD',
+                date: 'Nov 24, 2024',
+                warranty: 'Until Dec 2027',
+                condition: '<i class="fas fa-check-circle"></i> Good',
+                conditionColor: '#059669',
+                status: 'Warranty',
+                statusBg: '#dbeafe',
+                statusColor: '#1e40af',
+                maintenance: 'Electrolyte check — Mar 1, 2026'
+            }
+        };
+
+        function openEquipmentPanel(id) {
+            const data = equipment[id];
+            if (!data) return;
+            document.getElementById('equipIcon').innerHTML = '<i class="fas ' + data.icon + '" style="font-size: 32px; color: #0d3d44;"></i>';
+            document.getElementById('equipName').textContent = data.name;
+            document.getElementById('equipSerial').textContent = data.serial;
+            document.getElementById('equipVendor').textContent = data.vendor;
+            document.getElementById('equipDate').textContent = data.date;
+            document.getElementById('equipWarranty').textContent = data.warranty;
+            document.getElementById('equipCondition').innerHTML = data.condition;
+            document.getElementById('equipCondition').style.color = data.conditionColor;
+            document.getElementById('equipMaintenance').textContent = data.maintenance;
+            const badge = document.getElementById('equipStatusBadge');
+            badge.textContent = data.status;
+            badge.style.background = data.statusBg;
+            badge.style.color = data.statusColor;
+            openPanel('equipmentPanel');
+        }
+
+        // Solar Kit Selection
+        function selectKit(name, price, vendor) {
+            document.getElementById('selectedKitName').textContent = name;
+            document.getElementById('selectedKitVendor').textContent = vendor;
+            document.getElementById('selectedKitPrice').textContent = price;
+
+            // Calculate monthly estimates
+            const numPrice = parseInt(price.replace(/[^0-9]/g, ''));
+            document.getElementById('est12').textContent = '₦' + Math.round(numPrice / 12).toLocaleString();
+            document.getElementById('est24').textContent = '₦' + Math.round(numPrice / 24).toLocaleString();
+            document.getElementById('est36').textContent = '₦' + Math.round(numPrice / 36).toLocaleString();
+
+            closeAllPanels();
+            setTimeout(() => openPanel('kitSelectedPanel'), 400);
+        }
+
+        // Equipment actions
+        function requestMaintenance() {
+            const btn = event.currentTarget;
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Requesting...';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Request Sent!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.style.background = '#0d3d44';
+                }, 2000);
+            }, 1200);
+        }
+
+        function reportIssue() {
+            alert('Report Issue form would open here. Contact support at evillage-support@neiia.gov.ng');
         }
     </script>
 </body>

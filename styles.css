@@ -137,6 +137,7 @@ body:not(.dark-mode) .bulb-icon {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(0, 0, 0, 0.05);
     /* Subtle border for contrast */
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     z-index: 1000;
     justify-content: space-between;
@@ -219,6 +220,7 @@ body:not(.dark-mode) .bulb-icon {
     color: white;
     padding: 0 24px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     z-index: 1000;
     display: flex;
@@ -1675,6 +1677,8 @@ body.dark-mode .brand-text {
     .grid-container {
         display: flex;
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -webkit-scroll-snap-type: x mandatory;
         scroll-snap-type: x mandatory;
         gap: 20px;
         padding: 0 20px 40px;
@@ -1738,6 +1742,7 @@ body.dark-mode .brand-text {
 
     .grid-container {
         padding-bottom: 20px;
+        -webkit-scroll-snap-type: x mandatory;
         scroll-snap-type: x mandatory;
     }
 
@@ -1763,6 +1768,7 @@ body.dark-mode .brand-text {
         background: rgba(0, 0, 0, 0.4);
         padding: 6px 12px;
         border-radius: 20px;
+        -webkit-backdrop-filter: blur(4px);
         backdrop-filter: blur(4px);
     }
 
@@ -1792,6 +1798,7 @@ body.dark-mode .brand-text {
         width: 48px;
         height: 48px;
         background: rgba(255, 255, 255, 0.2);
+        -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.4);
         border-radius: 50%;

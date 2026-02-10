@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Governance | eVillage Portal</title>
+    <title>Energy Projects | eVillage Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -451,26 +451,26 @@
             </li>
             <li class="nav-item">
                 <a href="evillage-civil.html" class="nav-link">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Civil Registration</span>
+                    <i class="fas fa-store"></i>
+                    <span>Energy Marketplace</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-property.html" class="nav-link">
-                    <i class="fas fa-home"></i>
-                    <span>Property & Tax</span>
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>Utility & Loans</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-governance.html" class="nav-link active">
-                    <i class="fas fa-landmark"></i>
-                    <span>Governance</span>
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Energy Projects</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="evillage-admin.html" class="nav-link">
-                    <i class="fas fa-book"></i>
-                    <span>Admin Ledger</span>
+                    <i class="fas fa-shield-alt"></i>
+                    <span>NEMiC Controls</span>
                 </a>
             </li>
             <li class="nav-item"
@@ -481,7 +481,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="evillage.html" class="nav-link">
+                <a href="#" class="nav-link"
+                    onclick="sessionStorage.removeItem('neiia_authenticated'); window.location.href='evillage-signin.html'; return false;">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Sign Out</span>
                 </a>
@@ -500,91 +501,253 @@
     <!-- Main Content -->
     <main class="main-content">
         <div class="header">
-            <h1>Community Governance</h1>
-            <p>Participate in town halls, vote on projects, and track village progress.</p>
+            <h1>Energy Projects</h1>
+            <p>Track mini-grid installations, solar deployments, and community energy initiatives.</p>
         </div>
 
         <div class="gov-grid">
-            <!-- Feature: Town Hall -->
+            <!-- Feature: Project Update -->
             <div class="town-hall-card">
                 <div class="meeting-info">
-                    <div class="live-tag">Live Now</div>
-                    <h2>Monthly Town Hall: Infrastructure Budget</h2>
-                    <p>Join the LGA Chairman and Village Elders as they discuss the new budget allocation for road
-                        repairs and solar streetlights.</p>
-                    <a href="construction.html" class="join-btn"><i class="fas fa-video"></i> Join Meeting</a>
+                    <div class="live-tag">In Progress</div>
+                    <h2>Adeka Community Mini-Grid Installation</h2>
+                    <p>Phase 2 of the 100kW mini-grid installation is underway. 45 households connected so far, with 85
+                        more planned by March 2026.</p>
+                    <button onclick="openPanel('progressPanel')" class="join-btn"
+                        style="border: none; cursor: pointer;"><i class="fas fa-chart-line"></i> View Progress</button>
                 </div>
             </div>
 
-            <!-- Left Col: Projects -->
+            <!-- Left Col: Energy Projects -->
             <div class="project-column">
-                <div class="section-title">Ongoing Projects</div>
+                <div class="section-title">Active Installations</div>
 
-                <div class="project-card">
+                <div class="project-card" onclick="openProjectDetail('proj1')" style="cursor: pointer;">
                     <div class="project-header">
                         <div class="project-title">
-                            <h3>Main Market Renovation</h3>
-                            <div class="project-meta">Started: Jan 15, 2026 • Completion: Mar 30, 2026</div>
+                            <h3>SHS Cluster - Zone A (50 Units)</h3>
+                            <div class="project-meta">Started: Jan 15, 2026 • Target: 50 Solar Home Systems</div>
                         </div>
                         <span class="activity-status"
                             style="background:#d1fae5; color:#065f46; padding: 4px 8px; border-radius: 4px; font-size: 11px; height: fit-content;">On
                             Track</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 65%;"></div>
+                        <div class="progress-fill" style="width: 72%;"></div>
                     </div>
                     <div class="progress-text">
-                        <span>Roofing Stage</span>
-                        <span>65%</span>
+                        <span>36 of 50 installed</span>
+                        <span>72%</span>
                     </div>
                 </div>
 
-                <div class="project-card">
+                <div class="project-card" onclick="openProjectDetail('proj2')" style="cursor: pointer;">
                     <div class="project-header">
                         <div class="project-title">
-                            <h3>Solar Borehole - Zone B</h3>
-                            <div class="project-meta">Started: Feb 1, 2026 • Completion: Feb 20, 2026</div>
+                            <h3>Community Solar Borehole</h3>
+                            <div class="project-meta">Started: Feb 1, 2026 • 3kW Solar Pump System</div>
                         </div>
                         <span class="activity-status"
-                            style="background:#fef3c7; color:#92400e; padding: 4px 8px; border-radius: 4px; font-size: 11px; height: fit-content;">Delayed</span>
+                            style="background:#fef3c7; color:#92400e; padding: 4px 8px; border-radius: 4px; font-size: 11px; height: fit-content;">Awaiting
+                            Parts</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 30%; background: #f59e0b;"></div>
+                        <div class="progress-fill" style="width: 40%; background: #f59e0b;"></div>
                     </div>
                     <div class="progress-text">
-                        <span>Foundation Laying</span>
-                        <span>30%</span>
+                        <span>Panel mounting complete</span>
+                        <span>40%</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Col: Voting -->
+            <!-- Right Col: Community Vote -->
             <div class="voting-column">
-                <div class="section-title">Active Polls</div>
+                <div class="section-title">Energy Priority Vote</div>
 
                 <div class="poll-card">
-                    <div class="poll-question">Where should the new health center annex be located?</div>
+                    <div class="poll-question">Which community area should get next mini-grid expansion?</div>
 
-                    <div class="poll-option">
-                        <span>Near Primary School</span>
+                    <div class="poll-option" onclick="selectVote(this)" data-option="zoneC">
+                        <span>Zone C - Market Area (42 shops)</span>
                         <i class="far fa-circle"></i>
                     </div>
-                    <div class="poll-option">
-                        <span>Old Market Square</span>
+                    <div class="poll-option" onclick="selectVote(this)" data-option="zoneD">
+                        <span>Zone D - Farming District (28 households)</span>
                         <i class="far fa-circle"></i>
                     </div>
-                    <div class="poll-option">
-                        <span>Community Hall Grounds</span>
+                    <div class="poll-option" onclick="selectVote(this)" data-option="zoneE">
+                        <span>Zone E - School Complex</span>
                         <i class="far fa-circle"></i>
                     </div>
 
-                    <button class="join-btn"
-                        style="width: 100%; justify-content: center; background: #0d3d44; color: white; margin-top: 12px;">Submit
+                    <button class="join-btn" id="voteBtn" onclick="submitVote()"
+                        style="width: 100%; justify-content: center; background: #0d3d44; color: white; margin-top: 12px; border: none; cursor: pointer; font-size: 14px;">Submit
                         Vote</button>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- Slide Over Backdrop -->
+    <div class="slide-over-backdrop" id="backdrop" onclick="closeAllPanels()"
+        style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; opacity: 0; visibility: hidden; transition: all 0.3s;">
+    </div>
+
+    <!-- PANEL: View Progress -->
+    <div class="slide-over-panel" id="progressPanel"
+        style="position: fixed; top: 0; right: -480px; width: 480px; max-width: 90vw; height: 100vh; background: var(--bg-primary, white); z-index: 201; transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; box-shadow: -4px 0 30px rgba(0,0,0,0.15);">
+        <div
+            style="padding: 24px; border-bottom: 1px solid var(--border-color, #e5e7eb); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--bg-primary, white); z-index: 10;">
+            <h3 style="font-size: 18px; font-weight: 600; color: var(--text-primary, #111827); margin: 0;">Project
+                Progress</h3>
+            <button onclick="closeAllPanels()"
+                style="width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--bg-primary, #f3f4f6); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-secondary, #6b7280);"><i
+                    class="fas fa-times"></i></button>
+        </div>
+        <div style="padding: 24px;">
+            <!-- Project Header -->
+            <div
+                style="background: linear-gradient(135deg, #0d3d44, #0a2e33); color: white; padding: 24px; border-radius: 16px; margin-bottom: 24px; position: relative; overflow: hidden;">
+                <div
+                    style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: rgba(16,185,129,0.15); border-radius: 50%;">
+                </div>
+                <div
+                    style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 4px;">
+                    100kW Community Mini-Grid</div>
+                <div style="font-size: 22px; font-weight: 700; margin-bottom: 8px;">Adeka Community Installation</div>
+                <div style="font-size: 13px; opacity: 0.7;">Phase 2 • Target Completion: Mar 2026</div>
+            </div>
+
+            <!-- Progress -->
+            <div style="margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827);">Overall
+                        Progress</span>
+                    <span style="font-size: 14px; font-weight: 700; color: #059669;">65%</span>
+                </div>
+                <div
+                    style="height: 12px; background: var(--border-color, #e5e7eb); border-radius: 99px; overflow: hidden;">
+                    <div
+                        style="height: 100%; width: 65%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 99px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+                <div
+                    style="padding: 16px; background: var(--bg-primary, #f9fafb); border-radius: 10px; text-align: center;">
+                    <div style="font-size: 22px; font-weight: 700; color: var(--text-primary, #0d3d44);">45</div>
+                    <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Connected
+                    </div>
+                </div>
+                <div
+                    style="padding: 16px; background: var(--bg-primary, #f9fafb); border-radius: 10px; text-align: center;">
+                    <div style="font-size: 22px; font-weight: 700; color: var(--text-primary, #0d3d44);">85</div>
+                    <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Remaining
+                    </div>
+                </div>
+                <div
+                    style="padding: 16px; background: var(--bg-primary, #f9fafb); border-radius: 10px; text-align: center;">
+                    <div style="font-size: 22px; font-weight: 700; color: var(--text-primary, #0d3d44);">₦28M</div>
+                    <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Budget Spent
+                    </div>
+                </div>
+                <div
+                    style="padding: 16px; background: var(--bg-primary, #f9fafb); border-radius: 10px; text-align: center;">
+                    <div style="font-size: 22px; font-weight: 700; color: #059669;">On Track</div>
+                    <div style="font-size: 12px; color: var(--text-secondary, #6b7280); margin-top: 2px;">Status</div>
+                </div>
+            </div>
+
+            <!-- Milestones -->
+            <h4 style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827); margin-bottom: 16px;">
+                Milestones</h4>
+            <div style="display: flex; flex-direction: column; gap: 0; position: relative;">
+                <div
+                    style="position: absolute; left: 7px; top: 10px; bottom: 10px; width: 2px; background: var(--border-color, #e5e7eb);">
+                </div>
+                <div style="display: flex; gap: 16px; padding: 10px 0; position: relative;">
+                    <div
+                        style="width: 16px; height: 16px; border-radius: 50%; background: #10b981; border: 2px solid white; box-shadow: 0 0 0 2px #10b981; flex-shrink: 0; z-index: 1; margin-top: 2px;">
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Site Survey
+                            & Design</div>
+                        <div style="font-size: 12px; color: #059669;">Completed — Oct 2025</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 16px; padding: 10px 0; position: relative;">
+                    <div
+                        style="width: 16px; height: 16px; border-radius: 50%; background: #10b981; border: 2px solid white; box-shadow: 0 0 0 2px #10b981; flex-shrink: 0; z-index: 1; margin-top: 2px;">
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Foundation
+                            & Mounting</div>
+                        <div style="font-size: 12px; color: #059669;">Completed — Dec 2025</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 16px; padding: 10px 0; position: relative;">
+                    <div
+                        style="width: 16px; height: 16px; border-radius: 50%; background: #10b981; border: 2px solid white; box-shadow: 0 0 0 2px #10b981; flex-shrink: 0; z-index: 1; margin-top: 2px;">
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Phase 1
+                            Connections (45 homes)</div>
+                        <div style="font-size: 12px; color: #059669;">Completed — Jan 2026</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 16px; padding: 10px 0; position: relative;">
+                    <div
+                        style="width: 16px; height: 16px; border-radius: 50%; background: #f59e0b; border: 2px solid white; box-shadow: 0 0 0 2px #f59e0b; flex-shrink: 0; z-index: 1; margin-top: 2px; animation: pulse 2s infinite;">
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Phase 2
+                            Distribution Network</div>
+                        <div style="font-size: 12px; color: #d97706;">In Progress — Est. Feb 2026</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 16px; padding: 10px 0; position: relative;">
+                    <div
+                        style="width: 16px; height: 16px; border-radius: 50%; background: var(--border-color, #e5e7eb); border: 2px solid white; box-shadow: 0 0 0 2px var(--border-color, #e5e7eb); flex-shrink: 0; z-index: 1; margin-top: 2px;">
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--text-secondary, #6b7280);">Phase 2
+                            Connections (85 homes)</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280);">Planned — Mar 2026</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 16px; padding: 10px 0; position: relative;">
+                    <div
+                        style="width: 16px; height: 16px; border-radius: 50%; background: var(--border-color, #e5e7eb); border: 2px solid white; box-shadow: 0 0 0 2px var(--border-color, #e5e7eb); flex-shrink: 0; z-index: 1; margin-top: 2px;">
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--text-secondary, #6b7280);">
+                            Commissioning & Handover</div>
+                        <div style="font-size: 12px; color: var(--text-secondary, #6b7280);">Planned — Apr 2026</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL: Project Detail -->
+    <div class="slide-over-panel" id="projectDetailPanel"
+        style="position: fixed; top: 0; right: -480px; width: 480px; max-width: 90vw; height: 100vh; background: var(--bg-primary, white); z-index: 201; transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; box-shadow: -4px 0 30px rgba(0,0,0,0.15);">
+        <div
+            style="padding: 24px; border-bottom: 1px solid var(--border-color, #e5e7eb); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--bg-primary, white); z-index: 10;">
+            <h3 id="projPanelTitle"
+                style="font-size: 18px; font-weight: 600; color: var(--text-primary, #111827); margin: 0;">Project
+                Details</h3>
+            <button onclick="closeAllPanels()"
+                style="width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--bg-primary, #f3f4f6); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-secondary, #6b7280);"><i
+                    class="fas fa-times"></i></button>
+        </div>
+        <div id="projPanelContent" style="padding: 24px;">
+            <!-- Filled dynamically -->
+        </div>
+    </div>
 
     <script src="script.js"></script>
     <script>
@@ -603,6 +766,178 @@
                 sidebar.classList.remove('active');
             }
         });
+
+        // --- Panel Logic ---
+        function openPanel(panelId) {
+            document.getElementById('backdrop').style.opacity = '1';
+            document.getElementById('backdrop').style.visibility = 'visible';
+            document.getElementById(panelId).style.right = '0';
+        }
+
+        function closeAllPanels() {
+            document.getElementById('backdrop').style.opacity = '0';
+            document.getElementById('backdrop').style.visibility = 'hidden';
+            document.querySelectorAll('.slide-over-panel').forEach(panel => {
+                panel.style.right = '-480px';
+            });
+        }
+
+        // --- Voting ---
+        let selectedOption = null;
+
+        function selectVote(el) {
+            // Reset all
+            document.querySelectorAll('.poll-option').forEach(opt => {
+                opt.style.borderColor = '';
+                opt.style.background = '';
+                opt.querySelector('i').className = 'far fa-circle';
+                opt.querySelector('i').style.color = '';
+            });
+            // Select this one
+            el.style.borderColor = '#0d3d44';
+            el.style.background = 'rgba(13, 61, 68, 0.05)';
+            el.querySelector('i').className = 'fas fa-check-circle';
+            el.querySelector('i').style.color = '#10b981';
+            selectedOption = el.getAttribute('data-option');
+        }
+
+        function submitVote() {
+            if (!selectedOption) {
+                alert('Please select an option before voting.');
+                return;
+            }
+
+            const btn = document.getElementById('voteBtn');
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            btn.style.opacity = '0.8';
+
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Vote Submitted!';
+                btn.style.background = '#10b981';
+                btn.style.opacity = '1';
+
+                // Show results
+                const results = { zoneC: 47, zoneD: 31, zoneE: 22 };
+                document.querySelectorAll('.poll-option').forEach(opt => {
+                    const option = opt.getAttribute('data-option');
+                    const pct = results[option] || 0;
+                    opt.style.position = 'relative';
+                    opt.style.overflow = 'hidden';
+                    opt.innerHTML = `
+                        <div style="position: absolute; left: 0; top: 0; bottom: 0; width: ${pct}%; background: rgba(16,185,129,0.1); transition: width 0.6s ease; border-radius: 8px;"></div>
+                        <span style="position: relative; z-index: 1;">${opt.querySelector('span') ? opt.querySelector('span').textContent : ''}</span>
+                        <span style="position: relative; z-index: 1; font-weight: 600; color: #059669;">${pct}%</span>
+                    `;
+                    opt.style.cursor = 'default';
+                    opt.onclick = null;
+                });
+
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.style.background = '#0d3d44';
+                    btn.disabled = true;
+                    btn.style.opacity = '0.6';
+                    btn.innerHTML = '<i class="fas fa-check"></i> Thank You!';
+                }, 2000);
+            }, 1200);
+        }
+
+        // --- Project Detail ---
+        const projects = {
+            proj1: {
+                title: 'SHS Cluster - Zone A',
+                content: `
+                    <div style="background: #d1fae5; border: 1px solid #a7f3d0; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check-circle" style="color: #059669; font-size: 18px;"></i>
+                            <div>
+                                <div style="font-size: 14px; font-weight: 600; color: #065f46;">On Track</div>
+                                <div style="font-size: 12px; color: #065f46; opacity: 0.8;">36 of 50 systems installed</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-primary, #f9fafb); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                            <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Project</span>
+                            <span style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">50x Solar Home Systems</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                            <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Start Date</span>
+                            <span style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Jan 15, 2026</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                            <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Contractor</span>
+                            <span style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">GreenPower Nigeria</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                            <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Budget</span>
+                            <span style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">₦24,250,000</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 12px 0;">
+                            <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Est. Completion</span>
+                            <span style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Feb 28, 2026</span>
+                        </div>
+                    </div>
+                    <h4 style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827); margin-bottom: 12px;">Recent Updates</h4>
+                    <div style="font-size: 13px; color: var(--text-secondary, #6b7280); line-height: 1.8;">
+                        <div style="padding: 8px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);"><strong>Feb 8:</strong> 4 systems installed in sub-cluster A3.</div>
+                        <div style="padding: 8px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);"><strong>Feb 5:</strong> Wiring completed for 8 households in A2.</div>
+                        <div style="padding: 8px 0;"><strong>Feb 1:</strong> Inverters delivered for remaining 14 units.</div>
+                    </div>
+                `
+            },
+            proj2: {
+                title: 'Community Solar Borehole',
+                content: `
+                    <div style="background: #fef3c7; border: 1px solid #fcd34d; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-clock" style="color: #d97706; font-size: 18px;"></i>
+                            <div>
+                                <div style="font-size: 14px; font-weight: 600; color: #92400e;">Awaiting Parts</div>
+                                <div style="font-size: 12px; color: #92400e; opacity: 0.8;">Pump controller on order — ETA 5 days</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-primary, #f9fafb); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                            <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Project</span>
+                            <span style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">3kW Solar Pump System</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                            <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Start Date</span>
+                            <span style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Feb 1, 2026</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                            <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Contractor</span>
+                            <span style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">SunBright LTD</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);">
+                            <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Budget</span>
+                            <span style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">₦4,800,000</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 12px 0;">
+                            <span style="font-size: 13px; color: var(--text-secondary, #6b7280);">Est. Completion</span>
+                            <span style="font-size: 13px; font-weight: 600; color: var(--text-primary, #111827);">Mar 15, 2026</span>
+                        </div>
+                    </div>
+                    <h4 style="font-size: 14px; font-weight: 600; color: var(--text-primary, #111827); margin-bottom: 12px;">Recent Updates</h4>
+                    <div style="font-size: 13px; color: var(--text-secondary, #6b7280); line-height: 1.8;">
+                        <div style="padding: 8px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);"><strong>Feb 8:</strong> Pump controller ordered from Lagos. ETA 5 business days.</div>
+                        <div style="padding: 8px 0; border-bottom: 1px solid var(--border-color, #e5e7eb);"><strong>Feb 3:</strong> Solar panel array mounted and wired.</div>
+                        <div style="padding: 8px 0;"><strong>Feb 1:</strong> Borehole drilling completed at 120ft depth.</div>
+                    </div>
+                `
+            }
+        };
+
+        function openProjectDetail(id) {
+            const proj = projects[id];
+            if (!proj) return;
+            document.getElementById('projPanelTitle').textContent = proj.title;
+            document.getElementById('projPanelContent').innerHTML = proj.content;
+            openPanel('projectDetailPanel');
+        }
     </script>
 </body>
 

@@ -9,510 +9,1456 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <script src="auth-check.js"></script>
+    <link rel="stylesheet" href="styles.css?v=2.0">
+    <script src="auth-check.js?v=2.0"></script>
     <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            letter-spacing: -0.01em;
             margin: 0;
             padding: 0;
-            background: var(--bg-primary, #f9fafb);
-            overflow: hidden;
-            height: 100vh;
+            background: #0a2e33;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .signup-container {
+        /* ─── Layout ─── */
+        .signup-layout {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-columns: 1fr 1fr;
-            height: 100vh;
+            grid-template-columns: 460px 1fr;
+            min-height: 100vh;
         }
 
-        .signup-form-section {
-            padding: 60px 80px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        /* ─── Left: Form Panel ─── */
+        .form-panel {
             background: white;
-            overflow-y: auto;
-            height: 100vh;
-        }
-
-        .signup-hero-section {
-            background: linear-gradient(135deg, #0d3d44 0%, #0a2e33 100%);
-            background-image: url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            overflow: hidden;
-            height: 100vh;
-        }
-
-        .signup-hero-section::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(13, 61, 68, 0.95) 0%, rgba(10, 46, 51, 0.9) 100%);
-        }
-
-        .signup-hero-content {
-            position: relative;
-            z-index: 1;
-            padding: 80px;
-            color: white;
+            padding: 40px 44px 32px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            height: 100%;
+            overflow-y: auto;
+            z-index: 2;
+            box-shadow: 4px 0 60px rgba(0, 0, 0, 0.12);
         }
 
-        .logo-link {
-            display: inline-flex;
+        .logo-row {
+            display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 60px;
+            gap: 10px;
             text-decoration: none;
-            color: white;
+            color: #0d3d44;
             font-weight: 600;
-        }
-
-        .logo-link img {
-            height: 32px;
-        }
-
-        .signup-hero-content h1 {
-            font-size: 42px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            line-height: 1.2;
-        }
-
-        .signup-hero-content p {
-            font-size: 18px;
-            line-height: 1.7;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 48px;
-        }
-
-        .benefits-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .benefits-list li {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px 0;
             font-size: 16px;
-            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 28px;
         }
 
-        .benefits-list li i {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(16, 185, 129, 0.2);
-            color: #10b981;
-            border-radius: 50%;
-            font-size: 12px;
+        .logo-row i {
+            font-size: 20px;
         }
 
         .form-header {
-            margin-bottom: 40px;
+            margin-bottom: 24px;
         }
 
-        .form-header h2 {
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-primary, #111827);
+        .form-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 4px;
+            letter-spacing: -0.02em;
         }
 
         .form-header p {
-            font-size: 16px;
-            color: var(--text-secondary, #6b7280);
+            font-size: 14px;
+            color: #6b7280;
+            margin: 0;
         }
 
         .form-header p a {
             color: #0d3d44;
-            text-decoration: none;
             font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
         }
 
         .form-header p a:hover {
             text-decoration: underline;
         }
 
-        .form-group {
+        /* ─── Steps indicator ─── */
+        .steps-bar {
+            display: flex;
+            align-items: center;
+            gap: 0;
             margin-bottom: 24px;
+        }
+
+        .step-pill {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #9ca3af;
+            background: #f3f4f6;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .step-pill.active {
+            color: white;
+            background: #0d3d44;
+        }
+
+        .step-pill.done {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .step-pill .num {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            background: rgba(0, 0, 0, 0.08);
+            color: inherit;
+        }
+
+        .step-pill.active .num {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .step-pill.done .num {
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .step-connector {
+            width: 20px;
+            height: 2px;
+            background: #e5e7eb;
+            flex-shrink: 0;
+        }
+
+        .step-connector.done {
+            background: #10b981;
+        }
+
+        /* ─── Form step animation ─── */
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ─── Form ─── */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            color: var(--text-primary, #111827);
-            margin-bottom: 8px;
+            color: #374151;
+            margin-bottom: 6px;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 12px 16px;
-            font-size: 15px;
-            border: 1px solid var(--border-color, #e5e7eb);
-            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 14px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 8px;
             font-family: inherit;
             transition: all 0.2s;
+            color: #111827;
+            background: white;
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
             border-color: #0d3d44;
-            box-shadow: 0 0 0 3px rgba(13, 61, 68, 0.1);
+            box-shadow: 0 0 0 3px rgba(13, 61, 68, 0.08);
         }
 
-        .role-selector {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 24px;
+        .form-group input::placeholder {
+            color: #9ca3af;
         }
 
-        .role-option {
+        .form-group select {
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .form-group select:valid {
+            color: #111827;
+        }
+
+        /* Phone */
+        .phone-wrapper {
+            display: flex;
+            gap: 0;
+        }
+
+        .phone-prefix {
+            padding: 10px 12px;
+            font-size: 14px;
+            border: 1.5px solid #e5e7eb;
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+            background: #f9fafb;
+            color: #374151;
+            font-weight: 500;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .phone-wrapper input {
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Password */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 44px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #9ca3af;
+            font-size: 15px;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s;
+        }
+
+        .toggle-password:hover {
+            color: #374151;
+        }
+
+        /* Strength segments */
+        .strength-row {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .strength-seg {
+            flex: 1;
+            height: 3px;
+            border-radius: 2px;
+            background: #e5e7eb;
+            transition: background 0.3s;
+        }
+
+        .strength-label {
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 4px;
+            color: #9ca3af;
+            transition: color 0.3s;
+        }
+
+        /* Role selector */
+        .role-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .role-radio {
             display: none;
         }
 
-        .role-label {
+        label.role-card {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
-            padding: 20px 16px;
-            border: 2px solid var(--border-color, #e5e7eb);
-            border-radius: 8px;
+            gap: 14px;
+            padding: 16px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s;
-            text-align: center;
+            text-align: left;
+            background: white;
         }
 
-        .role-label:hover {
+        .role-card:hover {
             border-color: #0d3d44;
             background: rgba(13, 61, 68, 0.02);
         }
 
-        .role-option:checked+.role-label {
+        .role-radio:checked+.role-card {
             border-color: #0d3d44;
-            background: rgba(13, 61, 68, 0.05);
+            background: rgba(13, 61, 68, 0.04);
+            box-shadow: 0 0 0 3px rgba(13, 61, 68, 0.08);
         }
 
-        .role-label i {
-            font-size: 24px;
-            color: #0d3d44;
-            margin-bottom: 8px;
+        .role-card .role-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            flex-shrink: 0;
         }
 
-        .role-label span {
+        .role-icon.homeowner {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .role-icon.vendor {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .role-text {
+            flex: 1;
+        }
+
+        .role-card .role-name {
             font-size: 14px;
             font-weight: 600;
-            color: var(--text-primary, #111827);
+            color: #374151;
+            margin-bottom: 2px;
         }
 
-        .checkbox-group {
+        .role-card .role-desc {
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.4;
+        }
+
+        /* Terms */
+        .terms-row {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 10px;
+            margin-bottom: 18px;
+            margin-top: 2px;
         }
 
-        .checkbox-group input[type="checkbox"] {
-            width: auto;
-            margin-top: 4px;
+        .terms-row input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin-top: 2px;
+            accent-color: #0d3d44;
+            flex-shrink: 0;
         }
 
-        .checkbox-group label {
-            font-size: 14px;
-            color: var(--text-secondary, #6b7280);
+        .terms-row label {
+            font-size: 12px;
+            color: #6b7280;
             line-height: 1.5;
         }
 
-        .checkbox-group label a {
+        .terms-row label a {
             color: #0d3d44;
+            font-weight: 500;
             text-decoration: none;
         }
 
-        .checkbox-group label a:hover {
+        .terms-row label a:hover {
             text-decoration: underline;
         }
 
-        .submit-btn {
+        /* Buttons */
+        .btn-primary {
             width: 100%;
-            padding: 14px 32px;
-            font-size: 15px;
+            padding: 12px 24px;
+            font-size: 14px;
             font-weight: 600;
             color: white;
             background: #0d3d44;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
             font-family: inherit;
         }
 
-        .submit-btn:hover {
+        .btn-primary:hover {
             background: #0a2e33;
+            transform: translateY(-1px);
         }
 
-        .submit-btn:disabled {
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
 
-        /* Mobile Responsive */
-        @media (max-width: 968px) {
-            body {
-                overflow: auto;
-                height: auto;
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 4px;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            background: white;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-secondary:hover {
+            border-color: #d1d5db;
+            background: #f9fafb;
+        }
+
+        .btn-primary.full {
+            flex: 2;
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 18px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e5e7eb;
+        }
+
+        .divider span {
+            font-size: 11px;
+            color: #9ca3af;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .social-btn:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .social-btn i {
+            font-size: 16px;
+        }
+
+        /* Footer */
+        .form-footer-text {
+            text-align: center;
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: auto;
+            padding-top: 16px;
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* ─── Right: Visual Panel ─── */
+        /* ═══════════════════════════════════════ */
+        .visual-panel {
+            background: linear-gradient(160deg, #0d3d44 0%, #0a2e33 40%, #07242a 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 72px 64px;
+        }
+
+        .visual-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(13, 61, 68, 0.2) 0%, transparent 50%);
+        }
+
+        /* Subtle grid */
+        .grid-lines {
+            position: absolute;
+            inset: 0;
+            opacity: 0.04;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+            background-size: 56px 56px;
+        }
+
+        .visual-content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            max-width: 500px;
+        }
+
+        .visual-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: rgba(16, 185, 129, 0.12);
+            color: #10b981;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 28px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .visual-content h2 {
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.15;
+            margin: 0 0 16px;
+            letter-spacing: -0.025em;
+        }
+
+        .visual-content h2 .highlight {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .visual-content>p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 0 36px;
+        }
+
+        /* Stats */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+
+        .stat-card {
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2px;
+        }
+
+        .stat-card .label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Testimonial Carousel */
+        .testimonial-carousel {
+            position: relative;
+            min-height: 160px;
+        }
+
+        .testimonial-card {
+            padding: 24px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+
+        .testimonial-card.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            position: relative;
+        }
+
+        .testimonial-card .quote {
+            font-size: 14px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 16px;
+            font-style: italic;
+        }
+
+        .testimonial-card .quote::before {
+            content: '"';
+        }
+
+        .testimonial-card .quote::after {
+            content: '"';
+        }
+
+        .testimonial-card .author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .testimonial-card .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .avatar.green {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .avatar.blue {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .avatar.purple {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .avatar.orange {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .testimonial-card .author-info .name {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .testimonial-card .author-info .role {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Progress dots */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 16px;
+        }
+
+        .carousel-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            padding: 0;
+        }
+
+        .carousel-dot.active {
+            width: 18px;
+            border-radius: 3px;
+            background: #10b981;
+        }
+
+        /* Floating elements */
+        .float-icon {
+            position: absolute;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.1);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .float-icon.f1 {
+            top: 8%;
+            right: 10%;
+            width: 44px;
+            height: 44px;
+            font-size: 18px;
+            animation-delay: 0s;
+        }
+
+        .float-icon.f2 {
+            bottom: 14%;
+            left: 7%;
+            width: 38px;
+            height: 38px;
+            font-size: 15px;
+            animation-delay: -3s;
+        }
+
+        .float-icon.f3 {
+            top: 50%;
+            right: 5%;
+            width: 32px;
+            height: 32px;
+            font-size: 13px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
             }
 
-            .signup-container {
+            50% {
+                transform: translateY(-10px) rotate(2deg);
+            }
+        }
+
+        /* ═══════════════════════════════════════ */
+        /* ─── Mobile Responsive ─── */
+        /* ═══════════════════════════════════════ */
+        @media (max-width: 1024px) {
+            .signup-layout {
                 grid-template-columns: 1fr;
-                height: auto;
-                min-height: 100vh;
             }
 
-            .signup-hero-section {
+            .visual-panel {
                 display: none;
             }
 
-            .signup-form-section {
-                padding: 40px 24px;
-                overflow-y: visible;
-                height: auto;
+            .form-panel {
+                padding: 32px 24px;
+                box-shadow: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-panel {
+                padding: 24px 20px;
             }
 
-            .form-header h2 {
-                font-size: 28px;
+            .form-header h1 {
+                font-size: 22px;
             }
 
-            .role-selector {
+
+
+            .form-row {
                 grid-template-columns: 1fr;
             }
+
+            .steps-bar {
+                gap: 4px;
+            }
+
+            .step-pill {
+                padding: 5px 10px;
+                font-size: 11px;
+            }
+
+            .step-connector {
+                width: 12px;
+            }
+
+            .social-row {
+                flex-direction: column;
+            }
+
+            .btn-row {
+                flex-direction: column;
+            }
+
+            .btn-primary.full {
+                flex: 1;
+            }
         }
 
-        /* Dark Mode Support */
-        body.dark-mode {
-            --bg-primary: #001D21;
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        body.dark-mode .signup-form-section {
+        /* ═══════════════════════════════════════ */
+        /* ─── Dark Mode ─── */
+        /* ═══════════════════════════════════════ */
+        body.dark-mode .form-panel {
             background: #002329;
+        }
+
+        body.dark-mode .form-header h1 {
+            color: white;
+        }
+
+        body.dark-mode .form-header p {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        body.dark-mode .form-header p a {
+            color: #10b981;
+        }
+
+        body.dark-mode .form-group label {
+            color: rgba(255, 255, 255, 0.9);
         }
 
         body.dark-mode .form-group input,
         body.dark-mode .form-group select {
             background: #003540;
             color: white;
+            border-color: rgba(255, 255, 255, 0.12);
         }
 
-        body.dark-mode .role-label {
-            background: #003540;
-        }
-
-        body.dark-mode .role-label:hover,
-        body.dark-mode .role-option:checked+.role-label {
-            background: rgba(16, 185, 129, 0.1);
+        body.dark-mode .form-group input:focus,
+        body.dark-mode .form-group select:focus {
             border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
         }
 
-        body.dark-mode .submit-btn {
+        body.dark-mode .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        body.dark-mode .phone-prefix {
+            background: #004552;
+            color: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        body.dark-mode .role-card {
+            background: #003540;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .role-card .role-name {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        body.dark-mode .role-card .role-desc {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        body.dark-mode .role-card:hover {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        body.dark-mode .role-radio:checked+.role-card {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.08);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        body.dark-mode .step-pill {
+            background: #003540;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        body.dark-mode .step-pill .num {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        body.dark-mode .step-pill.active {
+            background: #10b981;
+            color: white;
+        }
+
+        body.dark-mode .step-pill.active .num {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        body.dark-mode .step-pill.done {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        body.dark-mode .step-connector {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        body.dark-mode .step-connector.done {
             background: #10b981;
         }
 
-        body.dark-mode .submit-btn:hover {
+        body.dark-mode .btn-primary {
+            background: #10b981;
+        }
+
+        body.dark-mode .btn-primary:hover {
             background: #059669;
+        }
+
+        body.dark-mode .btn-secondary {
+            background: #003540;
+            border-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        body.dark-mode .btn-secondary:hover {
+            background: #004552;
+        }
+
+        body.dark-mode .social-btn {
+            background: #003540;
+            border-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        body.dark-mode .social-btn:hover {
+            background: #004552;
+        }
+
+        body.dark-mode .divider::before,
+        body.dark-mode .divider::after {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        body.dark-mode .divider span {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        body.dark-mode .terms-row label {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        body.dark-mode .terms-row label a {
+            color: #10b981;
+        }
+
+        body.dark-mode .toggle-password {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        body.dark-mode .toggle-password:hover {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        body.dark-mode .strength-seg {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        body.dark-mode .logo-row {
+            color: white;
+        }
+
+        body.dark-mode .form-footer-text {
+            color: rgba(255, 255, 255, 0.3);
         }
     </style>
 </head>
 
 <body>
-    <div class="signup-container">
-        <!-- Left: Form Section -->
-        <div class="signup-form-section">
-            <a href="evillage.html" class="logo-link" style="color: #0d3d44;">
+    <div class="signup-layout">
+        <!-- ─── Left: Form Panel ─── -->
+        <div class="form-panel">
+            <a href="evillage.html" class="logo-row">
                 <i class="fas fa-leaf"></i>
                 <span>eVillage Portal</span>
             </a>
 
             <div class="form-header">
-                <h2>Create your account</h2>
+                <h1>Create your account</h1>
                 <p>Already have an account? <a href="evillage-signin.html">Sign in</a></p>
             </div>
 
-            <form id="signupForm" action="evillage-signin.html">
-                <!-- Role Selection -->
-                <div class="form-group">
-                    <label>I am a...</label>
-                    <div class="role-selector">
-                        <div>
-                            <input type="radio" name="role" value="citizen" id="role-citizen" class="role-option"
-                                required>
-                            <label for="role-citizen" class="role-label">
-                                <i class="fas fa-user"></i>
-                                <span>Citizen</span>
-                            </label>
+            <!-- Steps Indicator -->
+            <div class="steps-bar">
+                <div class="step-pill active" id="pill1"><span class="num">1</span> Role</div>
+                <div class="step-connector" id="conn1"></div>
+                <div class="step-pill" id="pill2"><span class="num">2</span> Details</div>
+                <div class="step-connector" id="conn2"></div>
+                <div class="step-pill" id="pill3"><span class="num">3</span> Security</div>
+            </div>
+
+            <form id="signupForm">
+                <!-- STEP 1: Role Selection -->
+                <div class="step-content active" id="stepContent1">
+                    <div class="form-group">
+                        <label>Select your role</label>
+                        <div class="role-grid">
+                            <div>
+                                <input type="radio" name="role" value="homeowner" id="roleHomeowner" class="role-radio"
+                                    required>
+                                <label for="roleHomeowner" class="role-card">
+                                    <div class="role-icon homeowner"><i class="fas fa-home"></i></div>
+                                    <div class="role-text">
+                                        <div class="role-name">Homeowner</div>
+                                        <div class="role-desc">Apply for solar financing & track energy usage</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio" name="role" value="vendor" id="roleVendor" class="role-radio">
+                                <label for="roleVendor" class="role-card">
+                                    <div class="role-icon vendor"><i class="fas fa-solar-panel"></i></div>
+                                    <div class="role-text">
+                                        <div class="role-name">Energy Vendor</div>
+                                        <div class="role-desc">Manage installations, bids & service contracts</div>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
-                        <div>
-                            <input type="radio" name="role" value="official" id="role-official" class="role-option">
-                            <label for="role-official" class="role-label">
-                                <i class="fas fa-user-tie"></i>
-                                <span>Village Official</span>
-                            </label>
+                    </div>
+
+                    <div class="divider"><span>or sign up with</span></div>
+                    <div class="social-row">
+                        <button type="button" class="social-btn"><i class="fab fa-google"></i> Google</button>
+                        <button type="button" class="social-btn"><i class="fab fa-microsoft"></i> Microsoft</button>
+                    </div>
+
+                    <div style="margin-top: 18px;">
+                        <button type="button" class="btn-primary" onclick="goStep(2)">Continue</button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Personal Details -->
+                <div class="step-content" id="stepContent2">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" placeholder="First name" required>
                         </div>
-                        <div>
-                            <input type="radio" name="role" value="chairman" id="role-chairman" class="role-option">
-                            <label for="role-chairman" class="role-label">
-                                <i class="fas fa-landmark"></i>
-                                <span>LGA Chairman</span>
-                            </label>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" placeholder="Last name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupEmail">Email Address</label>
+                        <input type="email" id="signupEmail" placeholder="you@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <div class="phone-wrapper">
+                            <div class="phone-prefix">🇳🇬 +234</div>
+                            <input type="tel" id="phone" placeholder="XXX XXX XXXX" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <select id="state" required>
+                                <option value="">Select state</option>
+                                <option>Abia</option>
+                                <option>Adamawa</option>
+                                <option>Akwa Ibom</option>
+                                <option>Anambra</option>
+                                <option>Bauchi</option>
+                                <option>Bayelsa</option>
+                                <option>Benue</option>
+                                <option>Borno</option>
+                                <option>Cross River</option>
+                                <option>Delta</option>
+                                <option>Ebonyi</option>
+                                <option>Edo</option>
+                                <option>Ekiti</option>
+                                <option>Enugu</option>
+                                <option>FCT Abuja</option>
+                                <option>Gombe</option>
+                                <option>Imo</option>
+                                <option>Jigawa</option>
+                                <option>Kaduna</option>
+                                <option>Kano</option>
+                                <option>Katsina</option>
+                                <option>Kebbi</option>
+                                <option>Kogi</option>
+                                <option>Kwara</option>
+                                <option>Lagos</option>
+                                <option>Nasarawa</option>
+                                <option>Niger</option>
+                                <option>Ogun</option>
+                                <option>Ondo</option>
+                                <option>Osun</option>
+                                <option>Oyo</option>
+                                <option>Plateau</option>
+                                <option>Rivers</option>
+                                <option>Sokoto</option>
+                                <option>Taraba</option>
+                                <option>Yobe</option>
+                                <option>Zamfara</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="community">Community / LGA</label>
+                            <input type="text" id="community" placeholder="Your community" required>
+                        </div>
+                    </div>
+
+                    <div class="btn-row">
+                        <button type="button" class="btn-secondary" onclick="goStep(1)"><i
+                                class="fas fa-arrow-left"></i> Back</button>
+                        <button type="button" class="btn-primary full" onclick="goStep(3)">Continue</button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Password & Terms -->
+                <div class="step-content" id="stepContent3">
+                    <div class="form-group">
+                        <label for="signupPassword">Create Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="signupPassword" placeholder="Create a strong password" required
+                                oninput="checkPwStrength()">
+                            <button type="button" class="toggle-password" onclick="togglePw('signupPassword', this)">
+                                <i class="far fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="strength-row" id="strengthRow">
+                            <div class="strength-seg" id="seg1"></div>
+                            <div class="strength-seg" id="seg2"></div>
+                            <div class="strength-seg" id="seg3"></div>
+                            <div class="strength-seg" id="seg4"></div>
+                        </div>
+                        <div class="strength-label" id="strengthLabel"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="confirmPassword" placeholder="Re-enter your password" required>
+                            <button type="button" class="toggle-password" onclick="togglePw('confirmPassword', this)">
+                                <i class="far fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="terms-row">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">
+                            I agree to the <a href="terms-service.html">Terms of Service</a> and <a href="#">Privacy
+                                Policy</a>, and consent to my data being used to provide eVillage services.
+                        </label>
+                    </div>
+
+                    <div class="btn-row">
+                        <button type="button" class="btn-secondary" onclick="goStep(2)"><i
+                                class="fas fa-arrow-left"></i> Back</button>
+                        <button type="submit" class="btn-primary full" id="createBtn">Create Account</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="form-footer-text">
+                © 2026 eVillage Portal — Powered by NEIIA
+            </div>
+        </div>
+
+        <!-- ─── Right: Visual Panel ─── -->
+        <div class="visual-panel">
+            <div class="grid-lines"></div>
+            <div class="float-icon f1"><i class="fas fa-solar-panel"></i></div>
+            <div class="float-icon f2"><i class="fas fa-bolt"></i></div>
+            <div class="float-icon f3"><i class="fas fa-leaf"></i></div>
+
+            <div class="visual-content">
+                <div class="visual-badge">
+                    <i class="fas fa-bolt"></i>
+                    Trusted by 5M+ Households
+                </div>
+
+                <h2>Power your home with <span class="highlight">clean energy</span></h2>
+                <p>Apply for solar financing, track subsidies, pay utility bills, and connect to mini-grids — all from
+                    one platform.</p>
+
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="number">5M+</div>
+                        <div class="label">Households</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">₦48B</div>
+                        <div class="label">Disbursed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">36</div>
+                        <div class="label">States</div>
+                    </div>
+                </div>
+
+                <!-- Rotating Testimonials -->
+                <div class="testimonial-carousel" id="testimonialCarousel">
+                    <div class="testimonial-card active" data-index="0">
+                        <div class="quote">eVillage made it so easy to apply for a solar loan. Within 2 weeks, we had
+                            our panels installed and our electricity bills dropped by 80%.</div>
+                        <div class="author">
+                            <div class="avatar green">AD</div>
+                            <div class="author-info">
+                                <div class="name">Adewale David</div>
+                                <div class="role">Homeowner, Agba Village</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card" data-index="1">
+                        <div class="quote">The subsidy tracking feature saved us months of follow-up. We can see exactly
+                            when payments are disbursed and plan our installations accordingly.</div>
+                        <div class="author">
+                            <div class="avatar blue">CF</div>
+                            <div class="author-info">
+                                <div class="name">Chioma Francis</div>
+                                <div class="role">Energy Vendor, Enugu</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card" data-index="2">
+                        <div class="quote">Our community mini-grid now powers over 200 homes. eVillage helped us
+                            organize the entire project from financing to meter management.</div>
+                        <div class="author">
+                            <div class="avatar purple">OM</div>
+                            <div class="author-info">
+                                <div class="name">Obinna Mbachu</div>
+                                <div class="role">Community Leader, Abia</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card" data-index="3">
+                        <div class="quote">I no longer worry about generator fuel costs. The solar system I got through
+                            eVillage pays for itself every month. My family is grateful.</div>
+                        <div class="author">
+                            <div class="avatar orange">AK</div>
+                            <div class="author-info">
+                                <div class="name">Amina Kalu</div>
+                                <div class="role">Homeowner, Kaduna</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Full Name -->
-                <div class="form-group">
-                    <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                <div class="carousel-dots" id="carouselDots">
+                    <button class="carousel-dot active" data-index="0" onclick="goToTestimonial(0)"></button>
+                    <button class="carousel-dot" data-index="1" onclick="goToTestimonial(1)"></button>
+                    <button class="carousel-dot" data-index="2" onclick="goToTestimonial(2)"></button>
+                    <button class="carousel-dot" data-index="3" onclick="goToTestimonial(3)"></button>
                 </div>
-
-                <!-- Email -->
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
-                </div>
-
-                <!-- Phone -->
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" placeholder="+234 XXX XXX XXXX" required>
-                </div>
-
-                <!-- State -->
-                <div class="form-group">
-                    <label for="state">State</label>
-                    <select id="state" name="state" required>
-                        <option value="">Select your state</option>
-                        <option value="Abia">Abia</option>
-                        <option value="Adamawa">Adamawa</option>
-                        <option value="AkwaIbom">Akwa Ibom</option>
-                        <option value="Anambra">Anambra</option>
-                        <option value="Bauchi">Bauchi</option>
-                        <option value="Bayelsa">Bayelsa</option>
-                        <option value="Benue">Benue</option>
-                        <option value="Borno">Borno</option>
-                        <option value="CrossRiver">Cross River</option>
-                        <option value="Delta">Delta</option>
-                        <option value="Ebonyi">Ebonyi</option>
-                        <option value="Edo">Edo</option>
-                        <option value="Ekiti">Ekiti</option>
-                        <option value="Enugu">Enugu</option>
-                        <option value="FCT">FCT Abuja</option>
-                        <option value="Gombe">Gombe</option>
-                        <option value="Imo">Imo</option>
-                        <option value="Jigawa">Jigawa</option>
-                        <option value="Kaduna">Kaduna</option>
-                        <option value="Kano">Kano</option>
-                        <option value="Katsina">Katsina</option>
-                        <option value="Kebbi">Kebbi</option>
-                        <option value="Kogi">Kogi</option>
-                        <option value="Kwara">Kwara</option>
-                        <option value="Lagos">Lagos</option>
-                        <option value="Nasarawa">Nasarawa</option>
-                        <option value="Niger">Niger</option>
-                        <option value="Ogun">Ogun</option>
-                        <option value="Ondo">Ondo</option>
-                        <option value="Osun">Osun</option>
-                        <option value="Oyo">Oyo</option>
-                        <option value="Plateau">Plateau</option>
-                        <option value="Rivers">Rivers</option>
-                        <option value="Sokoto">Sokoto</option>
-                        <option value="Taraba">Taraba</option>
-                        <option value="Yobe">Yobe</option>
-                        <option value="Zamfara">Zamfara</option>
-                    </select>
-                </div>
-
-                <!-- Village/LGA -->
-                <div class="form-group">
-                    <label for="location">Village / LGA</label>
-                    <input type="text" id="location" name="location" placeholder="Enter your village or LGA" required>
-                </div>
-
-                <!-- Password -->
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Create a strong password"
-                        required>
-                </div>
-
-                <!-- Terms -->
-                <div class="checkbox-group">
-                    <input type="checkbox" id="terms" name="terms" required>
-                    <label for="terms">
-                        I agree to the <a href="terms-service.html">Terms of Service</a> and understand that my
-                        information will be used to provide eVillage services.
-                    </label>
-                </div>
-
-                <!-- Submit -->
-                <button type="submit" class="submit-btn">Create Account</button>
-            </form>
-        </div>
-
-        <!-- Right: Hero Section -->
-        <div class="signup-hero-section">
-            <div class="signup-hero-content">
-                <h1>Join 128,000+ Villages in Digital Transformation</h1>
-                <p>Access government services, track development projects, and participate in transparent governance
-                    from anywhere.</p>
-
-                <ul class="benefits-list">
-                    <li>
-                        <i class="fas fa-check"></i>
-                        <span>Access certificates and documents instantly</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-check"></i>
-                        <span>Pay taxes and fees online securely</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-check"></i>
-                        <span>Track village projects in real-time</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-check"></i>
-                        <span>File and monitor complaint resolution</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-check"></i>
-                        <span>Participate in transparent governance</span>
-                    </li>
-                </ul>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=2.0"></script>
+    <script>
+        /* ─── Step Navigation ─── */
+        let currentStep = 1;
+
+        function goStep(n) {
+            if (n > currentStep) {
+                if (currentStep === 1 && !document.querySelector('input[name="role"]:checked')) {
+                    // Briefly shake the role cards
+                    document.querySelector('.role-grid').style.animation = 'shake 0.4s ease';
+                    setTimeout(() => document.querySelector('.role-grid').style.animation = '', 400);
+                    return;
+                }
+                if (currentStep === 2) {
+                    const fields = ['firstName', 'lastName', 'signupEmail', 'phone', 'state', 'community'];
+                    for (const id of fields) {
+                        const el = document.getElementById(id);
+                        if (!el.value.trim()) {
+                            el.focus();
+                            el.style.borderColor = '#ef4444';
+                            el.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.1)';
+                            setTimeout(() => { el.style.borderColor = ''; el.style.boxShadow = ''; }, 2000);
+                            return;
+                        }
+                    }
+                }
+            }
+
+            currentStep = n;
+            document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+            document.getElementById('stepContent' + n).classList.add('active');
+
+            for (let i = 1; i <= 3; i++) {
+                const pill = document.getElementById('pill' + i);
+                pill.classList.remove('active', 'done');
+                if (i < n) pill.classList.add('done');
+                else if (i === n) pill.classList.add('active');
+            }
+
+            document.getElementById('conn1').classList.toggle('done', n > 1);
+            document.getElementById('conn2').classList.toggle('done', n > 2);
+
+            // Scroll form panel to top
+            document.querySelector('.form-panel').scrollTop = 0;
+        }
+
+        /* ─── Password Toggle ─── */
+        function togglePw(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            btn.querySelector('i').className = isPassword ? 'far fa-eye-slash' : 'far fa-eye';
+        }
+
+        /* ─── Password Strength ─── */
+        function checkPwStrength() {
+            const val = document.getElementById('signupPassword').value;
+            let score = 0;
+            if (val.length >= 8) score++;
+            if (/[A-Z]/.test(val)) score++;
+            if (/[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+
+            const colors = ['', '#ef4444', '#f59e0b', '#3b82f6', '#10b981'];
+            const labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById('seg' + i).style.background = i <= score ? colors[score] : '';
+            }
+            const labelEl = document.getElementById('strengthLabel');
+            labelEl.textContent = labels[score] || '';
+            labelEl.style.color = colors[score] || '';
+        }
+
+        /* ─── Form Submit ─── */
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const pw = document.getElementById('signupPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+
+            if (pw !== confirm) {
+                const field = document.getElementById('confirmPassword');
+                field.style.borderColor = '#ef4444';
+                field.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.1)';
+                setTimeout(() => { field.style.borderColor = ''; field.style.boxShadow = ''; }, 2000);
+                return;
+            }
+
+            if (!document.getElementById('terms').checked) return;
+
+            const btn = document.getElementById('createBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                window.location.href = 'evillage-signin.html';
+            }, 2000);
+        });
+
+        /* ─── Testimonial Carousel ─── */
+        let currentTestimonial = 0;
+        const totalTestimonials = 4;
+        let autoplayInterval;
+
+        function goToTestimonial(index) {
+            currentTestimonial = index;
+            const cards = document.querySelectorAll('.testimonial-card');
+            const dots = document.querySelectorAll('.carousel-dot');
+
+            cards.forEach(c => c.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+
+            cards[index].classList.add('active');
+            dots[index].classList.add('active');
+
+            // Reset autoplay timer
+            clearInterval(autoplayInterval);
+            startAutoplay();
+        }
+
+        function nextTestimonial() {
+            goToTestimonial((currentTestimonial + 1) % totalTestimonials);
+        }
+
+        function startAutoplay() {
+            autoplayInterval = setInterval(nextTestimonial, 10000);
+        }
+
+        startAutoplay();
+    </script>
 </body>
 
 </html>
