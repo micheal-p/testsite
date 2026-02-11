@@ -1,0 +1,299 @@
+/* Reusable Component Styles */
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background-color: var(--primary-dark);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background-color: #234d4d;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background-color: var(--accent-purple-light);
+  color: var(--primary-dark);
+  padding: var(--space-2) var(--space-4);
+}
+
+.btn-secondary:hover {
+  background-color: #b8afd8;
+}
+
+.btn-link {
+  background: transparent;
+  color: var(--gray-800);
+  padding: var(--space-2) var(--space-4);
+}
+
+.btn-link:hover {
+  color: var(--primary-dark);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.badge-outline {
+  border: 1.5px solid var(--gray-800);
+  background: transparent;
+  color: var(--gray-800);
+}
+
+.badge-status {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  border-radius: var(--radius-xl);
+}
+
+.badge-progress {
+  background-color: var(--status-progress-bg);
+  color: var(--status-progress-text);
+}
+
+.badge-complete {
+  background-color: var(--status-complete-bg);
+  color: var(--status-complete-text);
+}
+
+/* Cards */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.card-dual {
+  display: grid;
+  grid-template-columns: 45% 55%;
+  min-height: 320px;
+}
+
+.card-panel {
+  padding: var(--space-8);
+}
+
+.card-panel-pink {
+  background-color: var(--accent-pink);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.card-panel-teal {
+  background-color: var(--primary-teal);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Avatar */
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background-color: var(--gray-200);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Logo Circle */
+.logo-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #6b5b95 0%, #b8a9c9 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-lg);
+}
+
+/* Progress Bar */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: var(--gray-200);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--gray-400);
+  transition: width var(--transition-slow);
+  border-radius: var(--radius-sm);
+}
+
+.progress-fill.in-progress {
+  background-color: var(--status-progress-text);
+}
+
+.progress-fill.complete {
+  background-color: var(--status-complete-text);
+}
+
+/* Form Controls */
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  transition: border-color var(--transition-fast);
+  width: 100%;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary-dark);
+}
+
+.input-icon {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--gray-400);
+  pointer-events: none;
+}
+
+.input-with-icon {
+  padding-left: var(--space-10);
+}
+
+/* Dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  color: var(--gray-800);
+}
+
+.dropdown-toggle:hover {
+  color: var(--primary-dark);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: var(--space-2);
+  background: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all var(--transition-fast);
+  z-index: 1000;
+}
+
+.dropdown.active .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  color: var(--gray-800);
+  transition: background-color var(--transition-fast);
+}
+
+.dropdown-item:hover {
+  background-color: var(--gray-100);
+}
+
+/* Checkmark Icon */
+.checkmark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  color: var(--status-complete-text);
+  font-weight: var(--weight-bold);
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.gap-2 {
+  gap: var(--space-2);
+}
+
+.gap-4 {
+  gap: var(--space-4);
+}

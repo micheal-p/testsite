@@ -1,0 +1,218 @@
+/* Key Features Section Styles - Grid Rebuild */
+.key-features-section {
+  background-color: var(--white);
+  color: #0b161a;
+  position: relative;
+  padding-top: var(--space-20);
+  padding-bottom: var(--space-32);
+}
+
+/* Grid Container */
+.kf-grid-container {
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+  display: grid;
+  grid-template-columns: 280px 1fr; 
+  /* Auto row for header, 1fr for content */
+  grid-template-rows: auto 1fr;
+  gap: var(--space-10); /* 40px gap */
+  position: relative;
+  align-items: start;
+}
+
+/* --- Left Column: Label --- */
+.kf-cell-label {
+  grid-column: 1;
+  /* Span all rows so the sticky label persists for the entire section height */
+  grid-row: 1 / -1; 
+  height: 100%; /* Fill grid height */
+}
+
+.kf-sticky-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #64748b;
+  position: sticky;
+  top: 100px;
+}
+
+.kf-dot {
+  width: 10px; 
+  height: 10px;
+  background-color: currentColor;
+  border-radius: 50%;
+  display: block;
+}
+
+/* --- Right Column Row 1: Headline --- */
+.kf-cell-headline {
+  grid-column: 2;
+  grid-row: 1;
+  padding-bottom: var(--space-12);
+}
+
+.kf-headline {
+  font-size: 40px;
+  font-weight: 400;
+  color: #0b161a;
+  line-height: 1.1;
+  max-width: 100%;
+}
+
+/* --- Right Column Row 2: Content (cards + list) --- */
+.kf-cell-cards {
+  grid-column: 2;
+  grid-row: 2;
+  position: relative; /* Anchor for absolute list */
+}
+
+/* Absolute List Container */
+/* Positions the list visually in Column 1, below the Label */
+.kf-list-container {
+  position: absolute;
+  top: 0;
+  /* Left position: -1 * (Col 1 Width + Grid Gap) */
+  /* Col 1 = 280px. Gap = space-10 = 2.5rem = 40px. */
+  left: calc(-280px - 40px);
+  width: 280px;
+  height: 100%; /* Match height of cards container */
+  /* Ensure it doesn't overlap if content is weird, but standard flow is fine */
+  pointer-events: none; /* Allow click through if needed, but li has pointer-events: auto */
+}
+
+.kf-sticky-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  list-style: none;
+  position: sticky;
+  top: 160px; /* Below the label */
+  pointer-events: auto; /* Re-enable clicks */
+}
+
+.kf-nav-item {
+  font-size: 16px;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 4px 0;
+}
+
+.kf-nav-item:hover,
+.kf-nav-item.active {
+  color: #0b161a;
+  font-weight: 500;
+}
+
+/* Content Wrapper */
+.kf-cards-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20vh;
+}
+
+/* Card Styles */
+.kf-card {
+  background-color: #f8fafc; 
+  border-radius: 12px;
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+  
+  /* Sticky Stacking */
+  position: sticky;
+  top: 140px; 
+  
+  /* Stagger Effect */
+  /* Using top calc for visual stagger in strict mode */
+  top: calc(140px + var(--stagger, 0rem));
+  margin-top: var(--stagger, 0rem); 
+  
+  margin-bottom: 40vh;
+  box-shadow: none;
+  z-index: 10; /* Above list container */
+  background-clip: padding-box; /* crisp formatting */
+}
+
+/* Every odd card gets a slightly different background */
+.kf-card:nth-child(odd) {
+  background-color: #f1f5f9;
+}
+
+.kf-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.kf-card-title {
+  font-size: 32px;
+  font-weight: 400;
+  color: #0b161a;
+  margin-bottom: 0;
+}
+
+.kf-card-desc {
+  font-size: 18px;
+  color: #64748b;
+  line-height: 1.6;
+  padding-left: 20px;
+  border-left: 4px solid #a78bfa;
+}
+
+.kf-card-visual {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.kf-image-container {
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #e2e8f0;
+}
+
+.kf-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Ensure last card doesn't add extra scroll space so sticky label stops */
+.kf-card:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive */
+@media (max-width: 1023px) {
+  .kf-grid-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .kf-cell-label { grid-row: 1; grid-column: 1; height: auto; }
+  .kf-cell-headline { grid-row: 2; grid-column: 1; }
+  .kf-cell-cards { grid-row: 3; grid-column: 1; }
+
+  /* Hide absolutely positioned list on mobile */
+  .kf-list-container { display: none; }
+
+  .kf-card {
+    grid-template-columns: 1fr;
+    position: static;
+    margin-top: 0;
+    top: auto;
+    gap: 32px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+}

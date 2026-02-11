@@ -1,0 +1,310 @@
+/* Customer Spotlight Section */
+.customer-spotlight-section {
+  padding: var(--space-20) 0 var(--space-32);
+  background-color: var(--white);
+  color: #0b161a;
+  overflow: hidden; /* Prevent horizontal scrollbar from carousel */
+}
+
+.cs-container {
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+/* Header */
+.cs-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cs-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cs-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #b18e6b;
+  border-radius: 50%;
+  display: block;
+}
+
+/* Carousel Container */
+.embla {
+  overflow: hidden;
+  position: relative;
+  /* Add cursor styles for drag later */
+}
+
+.embla__container {
+  display: flex;
+  gap: var(--space-8);
+  /* Native Scroll Snap */
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  
+  /* Hide Scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.embla__container::-webkit-scrollbar {
+  display: none;
+}
+
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  position: relative;
+  scroll-snap-align: center;
+}
+
+/* Slide Content - Grid Layout */
+.cs-card {
+  border-radius: 12px;
+  overflow: hidden;
+  /* Aspect Ratio or Height? */
+  min-height: 500px;
+  display: grid;
+  grid-template-columns: 7fr 4fr; /* 7/11 and 4/11 split approx */
+  gap: var(--space-8);
+}
+
+/* Theme Colors */
+.cs-card[data-theme="purple"] {
+  background-color: var(--testimonial-purple);
+  color: #0b161a;
+}
+
+.cs-card[data-theme="gold"] {
+  background-color: var(--testimonial-gold);
+  color: #0b161a;
+}
+
+.cs-card[data-theme="ink"] {
+  background-color: var(--testimonial-ink);
+  color: #ffffff; /* Light text for dark theme */
+}
+
+/* Left Content */
+.cs-content-left {
+  padding: var(--space-12);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cs-quote {
+  font-size: var(--text-2xl); /* 32px approx */
+  font-weight: 400; /* Normal weight */
+  line-height: 1.3;
+  margin-bottom: var(--space-6);
+  font-family: var(--font-primary); /* Or serif if needed */
+}
+
+.cs-author {
+  font-weight: 700;
+  margin-bottom: var(--space-4);
+}
+
+.cs-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-weight: 500;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+.cs-logo-container {
+  margin-top: auto;
+  opacity: 0.9;
+}
+
+/* Right Content */
+.cs-content-right {
+  padding: var(--space-12);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding-left: 0; /* Align with left content logic? */
+}
+
+.cs-image-wrapper {
+  width: 170px; /* From reference code */
+  height: 255px; /* Aspect 2/3 */
+  border-radius: 100px; /* Pill shape / rounded full */
+  overflow: hidden;
+  margin-left: auto; /* Push to right? OR grid placement */
+}
+
+.cs-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cs-stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: auto;
+}
+
+.cs-stat-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Light divider */
+  padding-bottom: var(--space-3);
+}
+
+.cs-stat-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.cs-theme-ink .cs-stat-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+}
+
+.cs-stat-label {
+  font-size: 11px; /* Eyebrow text */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+.cs-stat-value {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* Navigation - Buttons/Dots */
+.cs-nav-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.cs-nav-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+}
+
+.cs-nav-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.cs-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.cs-nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cs-nav-dot.is-active {
+  background: #0b161a;
+}
+
+/* Responsive */
+@media (max-width: 1023px) {
+  .cs-card {
+    grid-template-columns: 1fr;
+    height: auto;
+    /* Stack vertically */
+  }
+
+  .cs-content-left {
+    padding-bottom: 0;
+  }
+  
+  .cs-content-right {
+    padding-top: 0;
+    padding-left: var(--space-12); /* Restore padding */
+    flex-direction: row; /* Layout change for tablet? */
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cs-stats-list {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Relative layout for absolute image positioning */
+  .cs-card {
+    position: relative;
+    min-height: auto;
+  }
+
+  /* Left Content: Add right padding for image */
+  .cs-content-left {
+    padding: 24px 80px 24px 24px; 
+  }
+
+  /* Right Content: Stats only effectively */
+  .cs-content-right {
+    padding: 0 24px 24px 24px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Position Image Top Right */
+  .cs-image-wrapper {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    margin: 0;
+    border-radius: 50%;
+  }
+  
+  /* Stats Border Extension */
+  .cs-stats-list {
+    margin-top: 0;
+  }
+
+  .cs-stat-item {
+    margin-left: -24px;
+    margin-right: -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  
+  .cs-quote {
+    display: none;
+  }
+}

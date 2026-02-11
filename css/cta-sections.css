@@ -1,0 +1,69 @@
+/* CTA Sections Styles */
+.workflow-cta-section {
+  padding: var(--space-20) 0;
+  background-color: var(--white);
+}
+
+.w-cta-container {
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+}
+
+.w-cta-card {
+  background: linear-gradient(135deg, #f3f0ff 0%, #e0e7ff 50%, #f3f0ff 100%);
+  border-radius: 12px;
+  padding: var(--space-20) var(--space-8);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.w-cta-headline {
+  font-size: 56px;
+  font-weight: 500;
+  color: #0b161a;
+  line-height: 1.1;
+  max-width: 800px;
+}
+
+.w-cta-subheadline {
+  font-size: 18px;
+  color: #0b161a;
+  line-height: 1.5;
+  max-width: 600px;
+  opacity: 0.8;
+}
+
+.w-cta-btn {
+  background-color: #0b161a;
+  color: var(--white);
+  padding: var(--space-4) var(--space-8);
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.w-cta-btn:hover {
+  opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 1023px) {
+  .w-cta-headline {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .w-cta-headline {
+    font-size: 32px;
+  }
+  
+  .w-cta-card {
+    padding: var(--space-12) var(--space-6);
+  }
+}

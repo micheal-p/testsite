@@ -1,0 +1,155 @@
+
+/* Trusted Section */
+.trusted-section {
+  padding: var(--space-16) var(--space-4); /* ~64px top/bottom */
+  background-color: var(--white);
+  text-align: center;
+}
+
+.trusted-title {
+  font-size: var(--text-xl); /* ~20px */
+  font-weight: var(--weight-medium);
+  color: #0f172a; /* Slate 900 */
+  margin-bottom: var(--space-12); /* ~48px */
+}
+
+.trusted-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  max-width: 1200px; /* Standard container width */
+  margin: 0 auto;
+  align-items: center;
+}
+
+.trusted-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  color: #9ca3af; /* Gray 400 - Muted look */
+  font-size: 20px;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.trusted-item:hover {
+  color: #4b5563; /* Darker on hover */
+}
+
+/* Vertical Dividers for Desktop */
+.trusted-item:not(:last-child) {
+  border-right: 1px solid #e5e7eb;
+}
+
+/* Mock Logos Typography */
+.trusted-item:nth-child(1) { /* PANTERA */
+  font-family: sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.trusted-item:nth-child(2) { /* VAC */
+  font-family: sans-serif;
+  font-weight: 800;
+  letter-spacing: -1px;
+  font-size: 24px;
+}
+
+.trusted-item:nth-child(3) { /* VanEck */
+  font-family: serif;
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.trusted-item:nth-child(4) { /* orrick */
+  font-family: sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  font-size: 22px;
+}
+
+.trusted-item:nth-child(5) { /* SIDLEY */
+  font-family: sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.trusted-item:nth-child(6) { /* SECURITIZE */
+  font-family: sans-serif;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.trusted-item:nth-child(6)::before {
+  content: "§"; /* Mock icon */
+  font-size: 18px;
+  font-weight: 400;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+
+/* Responsive Styles */
+@media (max-width: 1023px) {
+  .trusted-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .trusted-item:not(:last-child) {
+    border-right: none; /* Reset desktop borders */
+  }
+
+  /* Reset borders logic for 3-col grid if needed, but user specifically asked for Mobile 2-col below */
+  .trusted-item:nth-child(-n+3) {
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .trusted-item:not(:nth-child(3n)) {
+    border-right: 1px solid #e5e7eb;
+  }
+}
+
+@media (max-width: 767px) {
+  .trusted-title {
+    font-size: var(--text-lg);
+    padding: 0 var(--space-4);
+  }
+
+  .trusted-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Reset all previous borders */
+  .trusted-item {
+    border: none !important;
+  }
+
+  /* Mobile Borders Logic: 2 cols, 3 rows */
+  /* Vertical divider: Every odd item gets a right border */
+  .trusted-item:nth-child(odd) {
+    border-right: 1px solid #e5e7eb !important;
+  }
+
+  /* Horizontal dividers: First 4 items (top 2 rows) get bottom border */
+  .trusted-item:nth-child(-n+4) {
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+  
+  .trusted-item {
+    height: 100px; /* Taller on mobile as seen in screenshot */
+  }
+}
