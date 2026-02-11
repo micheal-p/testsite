@@ -1,0 +1,124 @@
+/* Advanced Features Section */
+.advanced-features-section {
+  padding: var(--space-20) 0 var(--space-32);
+  background-color: var(--white);
+  color: #0b161a;
+  position: relative;
+  z-index: 20; /* Ensure it sits above sticky elements from previous section */
+}
+
+.af-grid-container {
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--space-10);
+  align-items: start;
+}
+
+/* Sidebar Label */
+.af-cell-label {
+  grid-column: 1;
+}
+
+.af-sticky-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #64748b;
+  /* Not sticky needed if content is short, but can be sticky just in case */
+  position: sticky;
+  top: 100px; 
+}
+
+.af-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #b18e6b; /* Gold/Bronze */
+  border-radius: 50%;
+  display: block;
+}
+
+/* Content Grid */
+.af-content-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0; /* No gap, using borders/padding */
+}
+
+.af-item {
+  padding: 0 var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: flex-start;
+  border-left: 1px solid #e2e8f0;
+}
+
+/* Remove border from first item */
+.af-item:first-child {
+  border-left: none;
+  padding-left: 0; 
+}
+
+/* Remove padding-right from last item if needed, but keeping it standard is fine */
+
+.af-icon {
+  font-size: 24px;
+  color: #b18e6b; /* Gold Icon Color */
+  margin-bottom: var(--space-4);
+}
+
+/* .af-icon i {} Removed empty rule */
+
+.af-title {
+  font-size: 20px; /* text-xl */
+  font-weight: 500;
+  color: #0b161a;
+  line-height: 1.2;
+}
+
+.af-desc {
+  font-size: 16px;
+  color: #64748b; /* Slate 500 */
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 1280px) {
+  /* Reduce to 2 columns on medium screens? or tighten spacing? */
+  .af-item {
+    padding: 0 var(--space-6);
+  }
+}
+
+@media (max-width: 1023px) {
+  .af-grid-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .af-cell-label {
+    margin-bottom: var(--space-8);
+  }
+
+  .af-content-grid {
+    grid-template-columns: 1fr 1fr; /* 2x2 grid on tablet */
+    gap: var(--space-8);
+  }
+
+  .af-item {
+    border-left: none; /* Remove borders on smaller screens, use gap */
+    padding: 0;
+    /* Maybe add new borders or just spacing */
+  }
+}
+
+@media (max-width: 640px) {
+  .af-content-grid {
+    grid-template-columns: 1fr; /* Stack vertically */
+  }
+}

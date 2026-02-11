@@ -1,0 +1,113 @@
+/* Tailored Needs Section Styles */
+.tailored-needs-section {
+  padding: var(--space-48) 0 var(--space-32);
+  background-color: #0b161a; /* Dark theme as per screenshot */
+  color: var(--white);
+}
+
+.tn-container {
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: var(--space-12) var(--space-8) 0;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--space-10);
+}
+
+/* Sidebar Label */
+.tn-cell-label {
+  grid-column: 1;
+}
+
+.tn-sticky-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.tn-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #a78bfa; /* Light purple dot */
+  border-radius: 50%;
+  display: block;
+}
+
+/* Content Area */
+.tn-content {
+  grid-column: 2;
+  max-width: 800px;
+}
+
+.tn-headline {
+  font-size: 64px;
+  font-weight: 500;
+  line-height: 1.1;
+  margin-bottom: var(--space-8);
+}
+
+.tn-subheadline {
+  font-size: 20px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-bottom: var(--space-20);
+}
+
+.tn-list-label {
+  font-size: 14px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-8);
+}
+
+.tn-checklist {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.tn-check-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-6) 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 18px;
+  color: var(--white);
+}
+
+.tn-check-item:first-child {
+  border-top: none;
+}
+
+.tn-icon {
+  color: #64748b; /* Gray checkmarks as per screenshot */
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 1023px) {
+  .tn-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+  
+  .tn-headline {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tn-headline {
+    font-size: 32px;
+  }
+  
+  .tn-check-item {
+    font-size: 16px;
+  }
+}

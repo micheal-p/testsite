@@ -1,597 +1,707 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEIIA</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Intelligent investor onboarding for all fund structures">
+  <title>NEIIA - Digital Subscriptions</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/mega-menu.css">
+  <link rel="stylesheet" href="css/mobile-menu.css">
+  <link rel="stylesheet" href="css/trusted-section.css">
+  <link rel="stylesheet" href="css/feature-section.css">
+  <link rel="stylesheet" href="css/key-features.css">
+  <link rel="stylesheet" href="css/advanced-features.css">
+  <link rel="stylesheet" href="css/customer-spotlight.css">
+  <link rel="stylesheet" href="css/cta-sections.css">
+  <link rel="stylesheet" href="css/tailored-needs.css">
+  <link rel="stylesheet" href="css/explore-section.css">
+  <link rel="stylesheet" href="css/faq-section.css">
+  <link rel="stylesheet" href="css/footer.css">
 </head>
-
 <body>
-
-    <!-- Login Overlay -->
-    <div id="loginOverlay"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 99999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
-        <!-- Nigerian Coat of Arms Background -->
-        <img src="assets/images/nigerian_coat_of_arms.png" alt=""
-            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; opacity: 0.08; pointer-events: none;">
-
-        <!-- Login Box -->
-        <div
-            style="background: white; border-radius: 16px; padding: 48px; width: 90%; max-width: 420px; box-shadow: 0 25px 80px rgba(0,0,0,0.4); position: relative; z-index: 1;">
-            <div style="text-align: center; margin-bottom: 32px;">
-                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="height: 48px; margin-bottom: 16px;">
-                <h2 style="font-size: 24px; font-weight: 700; color: #111827; margin-bottom: 8px;">Secure Access
-                    Required</h2>
-                <p style="font-size: 14px; color: #6b7280;">Enter your credentials to access the portal</p>
-            </div>
-
-            <form id="loginForm" onsubmit="return handleLogin(event)">
-                <div style="margin-bottom: 20px;">
-                    <label
-                        style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">Username</label>
-                    <input type="text" id="loginUsername" placeholder="Enter username"
-                        style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; transition: border-color 0.2s;"
-                        onfocus="this.style.borderColor='#0B1F24'" onblur="this.style.borderColor='#d1d5db'">
-                </div>
-
-                <div style="margin-bottom: 24px;">
-                    <label
-                        style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">Password</label>
-                    <input type="password" id="loginPassword" placeholder="Enter password"
-                        style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; transition: border-color 0.2s;"
-                        onfocus="this.style.borderColor='#0B1F24'" onblur="this.style.borderColor='#d1d5db'">
-                </div>
-
-                <div id="loginError"
-                    style="display: none; background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; text-align: center;">
-                </div>
-
-                <div id="lockoutMessage"
-                    style="display: none; background: #fef3c7; border: 1px solid #fcd34d; color: #92400e; padding: 16px; border-radius: 8px; margin-bottom: 16px; text-align: center;">
-                    <i class="fas fa-lock" style="font-size: 20px; margin-bottom: 8px; display: block;"></i>
-                    <div style="font-weight: 600; margin-bottom: 4px;">Account Temporarily Locked</div>
-                    <div id="lockoutTimer" style="font-size: 24px; font-weight: 700; color: #d97706;"></div>
-                </div>
-
-                <button type="submit" id="loginBtn"
-                    style="width: 100%; background: #0B1F24; color: white; border: none; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;"
-                    onmouseover="this.style.background='#0a1a1e'" onmouseout="this.style.background='#0B1F24'">
-                    Sign In
-                </button>
-            </form>
-
-            <div style="text-align: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
-                <p style="font-size: 12px; color: #9ca3af;">Federal Republic of Nigeria</p>
-                <p style="font-size: 11px; color: #9ca3af; margin-top: 4px;">National Energy Investment & Intelligence
-                    Administration</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        (function () {
-            // Authentication System with Exponential Lockout
-            const AUTH_KEY = 'neiia_authenticated';
-            const LOCKOUT_KEY = 'neiia_lockout';
-            const ATTEMPTS_KEY = 'neiia_attempts';
-            const BASE_LOCKOUT_MS = 90 * 1000; // 1 minute 30 seconds
-
-            // Encoded credentials (fetched from .pass file conceptually)
-            const VALID_CREDS = 'bm9hY2Nlc3M6MTIzY29kZWQ='; // base64: noaccess:123coded
-
-            function checkAuth() {
-                const isAuthenticated = sessionStorage.getItem(AUTH_KEY) === 'true';
-                const overlay = document.getElementById('loginOverlay');
-
-                if (isAuthenticated) {
-                    overlay.style.display = 'none';
-                } else {
-                    overlay.style.display = 'flex';
-                    checkLockout();
-                }
-            }
-
-            function checkLockout() {
-                const lockoutData = localStorage.getItem(LOCKOUT_KEY);
-                if (lockoutData) {
-                    const { until, multiplier } = JSON.parse(lockoutData);
-                    const now = Date.now();
-
-                    if (now < until) {
-                        showLockout(until);
-                        return true;
-                    } else {
-                        // Lockout expired, but keep multiplier for next failure
-                    }
-                }
-                hideLockout();
-                return false;
-            }
-
-            function showLockout(until) {
-                document.getElementById('loginForm').querySelector('button').disabled = true;
-                document.getElementById('loginUsername').disabled = true;
-                document.getElementById('loginPassword').disabled = true;
-                document.getElementById('lockoutMessage').style.display = 'block';
-                document.getElementById('loginError').style.display = 'none';
-
-                updateLockoutTimer(until);
-            }
-
-            function hideLockout() {
-                document.getElementById('loginForm').querySelector('button').disabled = false;
-                document.getElementById('loginUsername').disabled = false;
-                document.getElementById('loginPassword').disabled = false;
-                document.getElementById('lockoutMessage').style.display = 'none';
-            }
-
-            function updateLockoutTimer(until) {
-                const timerEl = document.getElementById('lockoutTimer');
-
-                function tick() {
-                    const remaining = until - Date.now();
-
-                    if (remaining <= 0) {
-                        hideLockout();
-                        return;
-                    }
-
-                    const minutes = Math.floor(remaining / 60000);
-                    const seconds = Math.floor((remaining % 60000) / 1000);
-                    timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-
-                    setTimeout(tick, 1000);
-                }
-
-                tick();
-            }
-
-            function getMultiplier() {
-                const lockoutData = localStorage.getItem(LOCKOUT_KEY);
-                if (lockoutData) {
-                    return JSON.parse(lockoutData).multiplier || 1;
-                }
-                return 1;
-            }
-
-            window.handleLogin = function (event) {
-                event.preventDefault();
-
-                if (checkLockout()) return false;
-
-                const username = document.getElementById('loginUsername').value.trim();
-                const password = document.getElementById('loginPassword').value;
-                const inputCreds = btoa(username + ':' + password);
-
-                if (inputCreds === VALID_CREDS) {
-                    // Success
-                    sessionStorage.setItem(AUTH_KEY, 'true');
-                    localStorage.removeItem(LOCKOUT_KEY); // Reset lockout on success
-                    document.getElementById('loginOverlay').style.display = 'none';
-                } else {
-                    // Failed - apply exponential lockout
-                    const currentMultiplier = getMultiplier();
-                    const lockoutDuration = BASE_LOCKOUT_MS * currentMultiplier;
-                    const until = Date.now() + lockoutDuration;
-
-                    localStorage.setItem(LOCKOUT_KEY, JSON.stringify({
-                        until: until,
-                        multiplier: currentMultiplier * 2 // Double for next time
-                    }));
-
-                    document.getElementById('loginError').style.display = 'block';
-                    document.getElementById('loginError').innerHTML = '<i class="fas fa-exclamation-circle"></i> Invalid credentials. Account locked for ' + (lockoutDuration / 60000) + ' minutes.';
-
-                    setTimeout(() => {
-                        showLockout(until);
-                    }, 1500);
-                }
-
-                return false;
-            };
-
-            // Check auth on page load
-            document.addEventListener('DOMContentLoaded', checkAuth);
-        })();
-    </script>
-
-    <!-- Dark Mode Toggle (Hanging Bulb) -->
-    <div class="bulb-container" id="theme-toggle-bulb">
-        <div class="bulb-wire"></div>
-        <div class="bulb-icon"></div>
-    </div>
-
-    <!-- Logo (Separate from Pill Navbar) -->
+  <!-- Header -->
+  <header class="header">
     <a href="index.html" class="logo-fixed">
-        <div class="logo-wrapper">
-            <img src="assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
-                style="max-width: 120px;">
-            <img src="assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
-                style="max-width: 120px; display: none;">
-            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
-        </div>
+      <div class="logo-wrapper">
+        <img src="assets/images/neiia-logo.png" alt="NEIIA Logo" class="brand-logo light-mode-logo" style="max-width: 120px;">
+        <img src="assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo" style="max-width: 120px; display: none;">
+        <div class="brand-text">NATIONAL ENERGY INVESTMENT &amp; INTELLIGENCE ADMINISTRATION</div>
+      </div>
     </a>
-
-    <!-- Navigation (Pill Style - Links Only) -->
-    <nav class="navbar pill-nav">
-        <!-- Pill Links (No Logo Inside) -->
-        <div class="nav-links">
-            <div class="nav-item dropdown">
-                <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down"
-                        style="font-size: 12px; margin-left: 6px; transition: transform 0.2s;"></i></span>
-                <div class="mega-menu">
-                    <div class="mm-left-columns">
-                        <div class="mm-column">
-                            <h4>Fund Administration</h4>
-                            <ul class="mm-list">
-                                <li><a href="construction.html">Venture Funds</a></li>
-                                <li><a href="construction.html">Rolling Funds</a></li>
-                                <li><a href="construction.html">Scout Funds</a></li>
-                                <li><a href="construction.html">SPVs</a></li>
-                                <li><a href="construction.html">Roll Up Vehicles</a></li>
-                            </ul>
-                        </div>
-                        <div class="mm-column">
-                            <h4>Investor Management</h4>
-                            <ul class="mm-list">
-                                <li><a href="construction.html">Digital Subscriptions</a></li>
-                                <li><a href="databank.html">Data Bank</a></li>
-                            </ul>
-                            <div style="margin-top: 24px;">
-                                <h4>Intelligence</h4>
-                                <ul class="mm-list">
-                                    <li><a href="construction.html">Fin <span
-                                                style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="mm-footer"
-                            style="border-top: none; padding-top: 10px; margin-top: auto; color: #6b7280; font-size: 15px;">
-                            Looking for tools for startups? Explore <a href="construction.html"
-                                style="color: #6b7280 !important; text-decoration: underline; margin-left: 2px;">Rollups.</a>
-                            <svg width="10" height="10" viewBox="0 0 12 12" fill="none"
-                                style="margin-left: 4px; display: inline-block;">
-                                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="#6b7280" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="mm-right-panel">
-                        <div class="mm-column">
-                            <h4>Product Suites</h4>
-                            <a href="construction.html" class="mm-card">
-                                <div class="mm-icon"><img src="assets/images/fund_administration.png"
-                                        alt="Fund Administration"></div>
-                                <div class="mm-content">
-                                    <h5>Fund Administration</h5>
-                                    <p>All-in-one partner to launch an investment vehicle</p>
-                                </div>
-                            </a>
-                            <a href="investor-management.html" class="mm-card">
-                                <div class="mm-icon"><img src="assets/images/investor_management.png"
-                                        alt="Investor Management"></div>
-                                <div class="mm-content">
-                                    <h5>Investor Management</h5>
-                                    <p>Explore all offerings to streamline the investor experience.</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+    
+    <nav class="nav">
+      <ul class="nav-menu" id="navMenu">
+        <li class="nav-item dropdown">
+          <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down" style="font-size: 12px; margin-left: 6px; transition: transform 0.2s;"></i></span>
+          <div class="mega-menu">
+            <!-- Main Content (Left) -->
+            <div class="mm-main">
+              <div class="mm-grid">
+                <!-- Column 1 -->
+                <div class="mm-col">
+                  <div class="mm-header">FUND ADMINISTRATION</div>
+                  <ul class="mm-list">
+                    <li><a href="#">Venture Funds</a></li>
+                    <li><a href="#">Rolling Funds</a></li>
+                    <li><a href="#">Scout Funds</a></li>
+                    <li><a href="#">SPVs</a></li>
+                    <li><a href="#">Roll Up Vehicles</a></li>
+                  </ul>
                 </div>
+                
+                <!-- Column 2 -->
+                <div class="mm-col">
+                  <div class="mm-group">
+                    <div class="mm-header">INVESTOR MANAGEMENT</div>
+                    <ul class="mm-list">
+                      <li><a href="#">Digital Subscriptions</a></li>
+                      <li><a href="#">Data Room</a></li>
+                    </ul>
+                  </div>
+                  
+                  <div class="mm-group">
+                    <div class="mm-header">INTELLIGENCE</div>
+                    <ul class="mm-list">
+                      <li><a href="#" class="beta-link">Fin <span class="badge-beta">BETA</span></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mm-footer">
+                Looking for tools for startups? Explore <a href="#">Rollups.</a>
+                <i class="fas fa-arrow-right-long footer-arrow"></i>
+              </div>
             </div>
-            <a href="finance.html">Energy Finance & Capital</a>
-            <a href="dashboard.html">Energy Ecosystem</a>
-            <a href="citibim.html">NEIIA</a>
-        </div>
+            
+            <!-- Sidebar (Right) -->
+            <div class="mm-sidebar">
+              <div class="mm-header">PRODUCT SUITES</div>
+              
+              <a href="#" class="mm-product-card">
+                <div class="mm-product-icon">
+                  <i class="fas fa-layer-group"></i> <!-- Placeholder for coils -->
+                </div>
+                <div class="mm-product-content">
+                  <div class="mm-product-title">Fund Administration</div>
+                  <div class="mm-product-desc">All-in-one partner to launch an investment vehicle</div>
+                </div>
+              </a>
+              
+              <a href="#" class="mm-product-card">
+                <div class="mm-product-icon">
+                  <i class="fas fa-building"></i> <!-- Placeholder for building -->
+                </div>
+                <div class="mm-product-content">
+                  <div class="mm-product-title">Investor Management</div>
+                  <div class="mm-product-desc">Explore all offerings to streamline the investor experience.</div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </li>
+        <li><a href="#" class="nav-item">Energy Finance &amp; Capital</a></li>
+        <li><a href="#" class="nav-item">Energy Ecosystem</a></li>
+        <li><a href="#" class="nav-item">NEIIA</a></li>
+      </ul>
     </nav>
-
-    <!-- Auth Links (Separate from Pill) -->
-    <div class="auth-fixed">
-        <a href="signin.html" class="nav-link">Sign In</a>
-        <a href="newsletter.html" class="btn btn-black">Join</a>
+    
+    <div class="nav-actions">
+      <a href="#" class="nav-signin">Sign In</a>
+      <a href="#" class="btn btn-join">Join</a>
     </div>
-
-    <!-- Mobile Menu Button -->
-    <button class="mobile-menu-btn" aria-label="Menu">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
+    
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
+  </header>
 
-    <!-- Mobile Navigation Overlay -->
-    <div class="mobile-nav-overlay">
-        <div class="mobile-nav-header">
-            <a href="index.html">
-                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
-            </a>
-            <button class="mobile-close-btn">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="mobile-nav-content">
-            <ul class="mobile-nav-list">
-                <li><a href="finance.html">Energy Finance & Capital <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="dashboard.html">Energy Ecosystem <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="citibim.html">NEIIA <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="#" id="mobile-resources-link">NEFUND <i class="fas fa-chevron-right"></i></a></li>
-            </ul>
-            <div class="mobile-nav-footer">
-                <a href="contact.html" class="btn btn-primary full-width">Contact Support</a>
-                <a href="signin.html" class="btn btn-secondary full-width">Sign in</a>
-            </div>
-        </div>
-
-        <!-- Resources Submenu -->
-        <div class="mobile-submenu" id="resources-submenu">
-            <div class="submenu-header">
-                <button class="submenu-back-btn" id="submenu-back-btn">
-                    <i class="fas fa-arrow-left"></i> Back
-                </button>
-                <button class="mobile-close-btn-sub">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="submenu-content">
-
-                <div class="submenu-section">
-                    <span class="submenu-label">Fund Administration</span>
-                    <ul class="submenu-list">
-                        <li><a href="construction.html">Venture Funds</a></li>
-                        <li><a href="construction.html">Rolling Funds</a></li>
-                        <li><a href="construction.html">Scout Funds</a></li>
-                        <li><a href="construction.html">SPVs</a></li>
-                        <li><a href="construction.html">Roll Up Vehicles</a></li>
-                    </ul>
-                </div>
-
-                <div class="submenu-section">
-                    <span class="submenu-label">Investor Management</span>
-                    <ul class="submenu-list">
-                        <li><a href="investor-management.html">Digital Subscriptions</a></li>
-                        <li><a href="databank.html">Data Bank</a></li>
-                    </ul>
-                </div>
-
-                <div class="submenu-section">
-                    <span class="submenu-label">Intelligence</span>
-                    <ul class="submenu-list">
-                        <li><a href="construction.html">Fin <span class="beta-badge">Beta</span></a></li>
-                    </ul>
-                </div>
-
-                <!-- Product Suites Box -->
-                <div class="product-suites-box">
-                    <span class="submenu-label" style="margin-bottom: 24px; display: block;">Product Suites</span>
-
-                    <a href="construction.html" class="suite-card">
-                        <div class="suite-icon">
-                            <!-- Placeholder icon -->
-                            <i class="fas fa-circle-notch" style="color: #A3E635; font-size: 24px;"></i>
-                        </div>
-                        <div class="suite-info">
-                            <h4>Fund Administration</h4>
-                            <p>All-in-one partner to launch an investment vehicle</p>
-                        </div>
-                    </a>
-
-                    <a href="investor-management.html" class="suite-card">
-                        <div class="suite-icon">
-                            <!-- Placeholder icon -->
-                            <i class="fas fa-layer-group" style="color: #A3E635; font-size: 24px;"></i>
-                        </div>
-                        <div class="suite-info">
-                            <h4>Investor Management</h4>
-                            <p>Explore all offerings to streamline the investor experience.</p>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Footer Links/Buttons -->
-                <a href="construction.html" class="submenu-footer-link">
-                    Looking for tools for startups? Explore Rollups. <i class="fas fa-arrow-right"
-                        style="font-size: 12px;"></i>
-                </a>
-
-                <div class="submenu-btn-group">
-                    <a href="contact.html" class="btn-lavender">Contact sales</a>
-                    <a href="signin.html" class="btn-gray-light">Sign in</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
+  <!-- Main Content -->
+  <main>
     <!-- Hero Section -->
-    <header class="hero container">
-        <h1>Powering Nigeria’s Energy Investments with Intelligence</h1>
-        <p>A centralized platform delivering energy investment intelligence, data, and strategic insight for Nigeria’s
-            energy sector.</p>
-        <div class="hero-actions">
-            <a href="construction.html" class="btn btn-primary">Explore Energy Opportunities</a>
-            <a href="construction.html" class="btn btn-secondary">View Investment Programs</a>
-        </div>
-        <div class="hero-image-wrapper">
-            <img src="assets/images/hero.jpg" alt="NEAP Dashboard Interface">
-        </div>
-    </header>
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="badge badge-outline">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="14" height="13" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M3 7h14M7 4v3M13 4v3" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          Digital Subscriptions
+        </span>
+      </div>
+      
+      <h1 class="hero-title">
+        Intelligent investor onboarding<br>for all fund structures
+      </h1>
+      
+      <div class="hero-cta">
+        <button class="btn btn-primary">Talk to an expert</button>
+      </div>
+      
+      <!-- Dashboard Preview Image -->
+      <div class="dashboard-preview desktop-preview">
+        <img src="assets/images/dashboard-preview.png" alt="Dashboard preview showing transactions and onboarding" class="dashboard-preview-img">
+      </div>
 
-    <!-- 8-Grid Section -->
-    <section class="grid-section">
-        <div class="grid-container">
-            <a href="construction.html" class="grid-item grid-12">
-                <span class="grid-id">1</span>
-                <h3>NEFUND</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="evillage.html" class="grid-item grid-11">
-                <span class="grid-id">02</span>
-                <h3>⁠⁠Evillage</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="construction.html" class="grid-item grid-9">
-                <span class="grid-id">03</span>
-                <h3>National Energy Data Bank</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="construction.html" class="grid-item grid-1">
-                <span class="grid-id">04</span>
-                <h3>Venture Funds</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="construction.html" class="grid-item grid-2">
-                <span class="grid-id">05</span>
-                <h3>Rolling Funds</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="construction.html" class="grid-item grid-3">
-                <span class="grid-id">06</span>
-                <h3>SPVs</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="construction.html" class="grid-item grid-4">
-                <span class="grid-id">07</span>
-                <h3>Scout Funds</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="construction.html" class="grid-item grid-5">
-                <span class="grid-id">08</span>
-                <h3>Energy Assets</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="construction.html" class="grid-item grid-6">
-                <span class="grid-id">09</span>
-                <h3>Risk & ESG Intelligence</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="compliance/index.html" class="grid-item grid-7">
-                <span class="grid-id">10</span>
-                <h3>Compliance & Regulatory Oversight</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="contact.html" class="grid-item grid-8">
-                <span class="grid-id">11</span>
-                <h3>Reporting & LP Portals</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="contact.html" class="grid-item grid-10">
-                <span class="grid-id">12</span>
-                <h3>Administration & Governance</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-        </div>
-        <!-- Dots Container -->
-        <div class="grid-dots"></div>
+      <!-- Mobile Dashboard Preview Image -->
+      <div class="dashboard-preview mobile-preview">
+        <img src="assets/images/mobile-dashboard-preview.png" alt="Mobile Dashboard preview" class="dashboard-preview-img">
+      </div>
     </section>
 
-    <!-- Stats Section - Fueling Innovation -->
-    <section class="stats-section">
-        <div class="stats-container">
-            <div class="stats-left">
-                <span class="stats-label">Platform Overview</span>
-                <h2 class="stats-heading">Powering Nigeria’s <br> Energy Investments</h2>
+    <!-- Trusted Section -->
+    <section class="trusted-section">
+      <h2 class="trusted-title">Trusted by top firms + service providers</h2>
+      <div class="trusted-grid">
+        <div class="trusted-item">PANTERA</div>
+        <div class="trusted-item">VAC</div>
+        <div class="trusted-item">VanEck</div>
+        <div class="trusted-item">orrick</div>
+        <div class="trusted-item">SIDLEY</div>
+        <div class="trusted-item">SECURITIZE</div>
+      </div>
+    </section>
 
-                <p class="stats-desc">NEIIA serves as Nigeria’s centralized platform for energy investment intelligence,
-                    asset visibility, and strategic coordination.
-                    <br>
-                    By aggregating data across funds, projects, SPVs, and energy assets, the platform enables
-                    government, investors, and stakeholders to make informed decisions, identify investment gaps, manage
-                    risk, and accelerate the implementation of national energy priorities.
-                </p>
-            </div>
-            <div class="stats-right">
-                <div class="stats-grid">
-                    <div class="stat-item stat-main">
-                        <span class="stat-number" data-target="100" data-prefix="$" data-suffix="B">$0B</span>
-                        <span class="stat-label">Target Assets on Platform</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" data-target="25" data-suffix="k+">0k+</span>
-                        <span class="stat-label">Funds and syndicates</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" data-target="13" data-suffix="k+">0k+</span>
-                        <span class="stat-label">Active startups</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" data-target="72" data-suffix="k+">0k+</span>
-                        <span class="stat-label">Active investors</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" data-target="10.7" data-prefix="$" data-suffix="B">$0B</span>
-                        <span class="stat-label">Raised by active startups</span>
-                    </div>
+    <!-- Exceed Expectations Feature Section -->
+    <section class="feature-section">
+      <div class="feature-container">
+        <!-- Left Content -->
+        <div class="feature-content">
+          <h2 class="feature-title">Exceed investor expectations</h2>
+          <p class="feature-desc">Delight LPs with flexible digital workflows, modernizing the manual subscription paperwork process. Reduce friction and errors by collaborating with your service providers in real-time within a single dashboard.</p>
+          <a href="#" class="btn btn-demo-light">Explore demo</a>
+        </div>
+        
+        <!-- Right Image Content -->
+        <div class="feature-visual">
+          <div class="feature-image-wrapper">
+            <img src="assets/images/dashboard-preview.png" alt="Transactions Dashboard" class="feature-img">
+            
+            <!-- Hover Overlay (Modal Style) -->
+            <div class="feature-overlay">
+              <div class="overlay-modal">
+                <div class="overlay-logo-icon">
+                  <svg fill="none" viewBox="0 0 82 24" xmlns="http://www.w3.org/2000/svg" width="82" height="24">
+                    <path d="m5.08978 4.67345-5.08978 14.19485h2.21088l1.47392-4.1769h5.53196l1.46914 4.1769h2.2894l-5.09458-14.19485zm-.71319 8.04955 2.07776-5.87671 2.06824 5.88141zm18.06741-3.03109c.3353.62529.4993 1.32819.4755 2.03739v7.1318h-2.1776v-6.761c0-.756-.1973-1.3075-.5872-1.6522-.4317-.3591-.982-.54396-1.5429-.51826-.378-.00006-.7525.07256-1.103.21396-.3584.1437-.6655.3912-.882.7108-.2473.3862-.3678.84-.3447 1.298v6.7325h-2.2204v-10.64551h2.2109v1.25996c.1246-.18383.2706-.35222.435-.50161.3554-.31468.7689-.55694 1.2172-.71318.4641-.16808.9541-.25338 1.4477-.252.6245-.01015 1.2415.13614 1.7949.42554.5388.28155.9859.7113 1.2885 1.23857zm9.1645-2.63404c-.4319.27191-.7459.69616-.8796 1.18865-.5057-.16088-1.0336-.2411-1.5643-.23773-.7474-.01145-1.4873.15134-2.1609.47546-.6099.29537-1.1283.75051-1.5001 1.31702-.3817.60613-.5753 1.31173-.5563 2.02783-.0202.7009.1667 1.3922.5373 1.9874.1881.2919.4198.5532.687.775l-.0998.0452c-.3596.1839-.6664.4563-.8915.7916-.2112.324-.3328.6982-.3524 1.0844-.0196.3863.0634.7709.2406 1.1146.1696.329.4337.5998.7584.7774-.344.0742-.6681.2209-.9509.4303-.2319.171-.4182.3964-.5425.6563-.1244.2599-.183.5464-.1707.8342 0 .8622.4255 1.5239 1.2766 1.9851s1.9795.691 3.3853.6894c1.6102 0 2.8915-.3003 3.844-.901.4519-.2663.8231-.6501 1.0742-1.1106.2512-.4604.3729-.9803.3522-1.5044.0172-.3585-.0438-.7165-.1789-1.049-.135-.3325-.3409-.6317-.6032-.8766-.576-.4946-1.3195-.7498-2.0778-.7132-.1355 0-.3613 0-.6775 0s-.6537.0166-1.0056.0285c-.3518.0119-.6751.0238-.9723.0309s-.4992 0-.6086 0c-.3254.0169-.6488-.0598-.9319-.2211-.1099-.0678-.1997-.1637-.2603-.2777-.0606-.1141-.0897-.2422-.0844-.3713-.0015-.1309.0258-.2605.08-.3797.0543-.1191.1341-.2249.2338-.3097.0672-.0599.1387-.1147.214-.164.5757.2207 1.1878.3312 1.8043.3257.7387.0131 1.4706-.143 2.1396-.4565.4604-.2408.8671-.5726 1.1955-.9754.3283-.4027.5715-.8679.7146-1.3674.1432-.4995.1834-1.0229.1182-1.5384s-.2344-1.0124-.4973-1.46055c-.1859-.28438-.4135-.53921-.6752-.75597.089-.09246.1968-.16463.3162-.21158.4065-.15453 1.027-.14502 1.8662.0309v-2.02545c-1.0555-.21396-1.9161-.11173-2.5841.31618zm-.668 11.75333c.3251-.0217.6466.0792.9009.2829.1042.0947.1865.2109.2411.3407.0546.1297.0802.2698.0751.4105 0 .5397-.2781.9509-.832 1.2362s-1.3242.4256-2.3108.4256c-.9509 0-1.6641-.1348-2.1395-.4042-.4755-.2694-.7132-.6276-.7132-1.0745.0073-.3055.1256-.5979.3328-.8226.2235-.2631.626-.3946 1.2077-.3946zm-.2853-5.4939c-.297.3141-.6827.5302-1.1057.6194-.4229.0893-.8631.0474-1.2616-.12-.3986-.1673-.7366-.4523-.9691-.8168-.2324-.3644-.3481-.7911-.3318-1.2231-.0144-.2773.0284-.5547.1258-.8148.0973-.2601.2471-.4974.44-.6972.2102-.1919.4567-.34002.7249-.43554.2682-.09553.5527-.13656.837-.12071.2817-.01508.5636.02729.8284.12456s.5071.24739.7121.44119c.3666.4222.5685.9624.5685 1.5215s-.2019 1.0994-.5685 1.5215zm11.7604-4.73558c-.7258-.37643-1.5335-.56753-2.3511-.55629-.8813-.0097-1.7505.20636-2.5247.62761-.7851.43573-1.4261 1.09084-1.8448 1.88516-.4886.9668-.7257 2.0411-.6894 3.1238-.0225.9884.1782 1.9693.5872 2.8694.3657.7885.9638 1.4463 1.714 1.8852.8271.4587 1.7624.6861 2.7078.6585 1.0739.0297 2.1301-.2788 3.0191-.882.8444-.5967 1.4314-1.4912 1.6427-2.5033h-2.2489c-.1175.454-.3986.8485-.7892 1.1078-.4536.2792-.9798.4174-1.512.397-.9509 0-1.6736-.328-2.1681-.9842-.4429-.6204-.6957-1.3564-.7274-2.1181h7.4979c.0143-.2164.0214-.447.0214-.6894 0-1.2584-.2131-2.2822-.6395-3.0715-.3747-.74145-.9658-1.35161-1.695-1.74968zm-4.4503 2.21088c.2462-.3119.563-.5608.9242-.7261.3613-.16533.7567-.24239 1.1536-.22482.4749-.00878.9435.1094 1.3574.34232.422.258.749.6459.9319 1.1055.1465.3681.227.7592.2378 1.1553h-5.2776c.0806-.5988.3121-1.1674.6727-1.6522zm8.6891-6.11915h2.2085v14.19485h-2.2085zm6.9131 12.20735h6.5281v1.9875h-8.739v-14.19485h2.2109zm8.0685-8.64141h2.2109v10.64551h-2.2109zm2.0374-3.85121c.1224.12184.2188.26726.2833.42744.0646.16018.096.33179.0923.50445.0045.17561-.0265.35032-.091.5137s-.1613.31208-.2846.43722c-.1184.12499-.2616.22382-.4205.29015-.1588.06633-.3298.09868-.5019.09497-.1767.00625-.3527-.02482-.5165-.09118-.1639-.06636-.3119-.16652-.4344-.29394-.1233-.12514-.2201-.27384-.2846-.43722-.0646-.16338-.0955-.33809-.091-.5137-.0037-.17266.0277-.34427.0922-.50445.0646-.16018.161-.3056.2834-.42744.1224-.12774.2703-.22826.4342-.29502.1638-.06676.3399-.09828.5167-.09248.1714-.00479.3419.02614.5007.0908.1588.06467.3024.16166.4217.28481zm3.9843 6.79192c-.0097.1495.0145.2992.0709.438.0564.1387.1435.2629.2548.3631.2648.205.573.3465.901.4137.3851.0951.8281.183 1.3289.2639.4569.068.9099.1592 1.3574.2734.4339.1108.85.2821 1.2362.5087.3744.2167.6858.5272.9034.901.2398.448.3555.9519.3352 1.4597 0 1.0555-.3819 1.8669-1.1458 2.4343-.764.5674-1.7814.8511-3.0525.8511-.8493.0284-1.6942-.134-2.4724-.4755-.6098-.2713-1.133-.7057-1.5119-1.2552-.335-.4979-.5469-1.0683-.6181-1.6641h2.1395c.1.486.3739.9188.7703 1.2172.4073.3169.9818.4754 1.7235.4754.5273.0265 1.0513-.0963 1.512-.3542.1761-.1052.3206-.2558.4185-.4361.0979-.1802.1455-.3835.1378-.5885.0171-.2246-.0414-.4485-.1664-.636-.125-.1874-.3091-.3276-.5231-.3981-.6105-.2118-1.2428-.3545-1.8851-.4256-.4503-.0538-.8972-.1332-1.3385-.2377-.43-.1032-.8431-.2673-1.2266-.4873-.3674-.2134-.6743-.5169-.8915-.882-.2412-.4441-.3571-.9453-.3352-1.4502-.026-.6794.1646-1.3496.5444-1.91367.3651-.5177.8719-.91891 1.4596-1.15537 1.285-.49732 2.7042-.52594 4.0081-.08083.5082.18605.9756.46859 1.3765.83206.3527.31778.6422.69928.8534 1.12441.1857.3703.2926.775.3138 1.1887h-2.1395c-.0891-.4756-.3352-.9076-.6989-1.2267-.3733-.33044-.9296-.49685-1.6641-.49685-.5031-.02706-1.002.1043-1.4264.37565-.1727.1101-.314.2629-.4102.4437-.0962.1807-.1441.3833-.139.588zm11.304-1.0389v4.9662c-.0263.4921.0892.9814.3329 1.4097.2171.3455.6609.5183 1.3313.5183.3417-.0036.6821-.0443 1.0151-.1213v1.928c-.5031.0838-1.0116.1307-1.5215.1403-1.1617 0-2.0167-.3075-2.5651-.9224s-.8218-1.5167-.8202-2.7054v-5.2134h-2.0064v-1.90181h2.0064v-2.54608h2.2275v2.54608h2.6864v1.90181z" fill="currentColor"></path></svg>
                 </div>
+                <h3 class="overlay-title">See Digital Subscriptions in action</h3>
+                <a href="#" class="btn btn-demo-light">Explore demo</a>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+          
+      <!-- Animated Bars Effect (Full Width Bottom) -->
+      <div class="feature-bars">
+        <div class="bar-container" style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);"><span class="bar-overlay" style="background:rgba(1, 29, 33, 0.9)"></span></div>
+        <div class="bar-container" style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);"><span class="bar-overlay" style="background:rgba(1, 29, 33, 0.8)"></span></div>
+        <div class="bar-container" style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);"><span class="bar-overlay" style="background:rgba(1, 29, 33, 0.6)"></span></div>
+        <div class="bar-container" style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);"><span class="bar-overlay" style="background:rgba(1, 29, 33, 0.4)"></span></div>
+        <div class="bar-container" style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);"><span class="bar-overlay" style="background:rgba(1, 29, 33, 0.2)"></span></div>
+        <div class="bar-container" style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);"><span class="bar-overlay" style="background:rgba(1, 29, 33, 0.05)"></span></div>
+      </div>
     </section>
 
-
-    <!-- Features -->
-    <section class="features-section container">
-        <div class="feature-block">
-            <div class="feature-text">
-                <h2>Venture Funds</h2>
-                <p>Raise capital, structure investments, and manage energy venture portfolios — all from a single
-                    platform.</p>
-                <a href="construction.html" class="btn btn-secondary">Learn more</a>
-            </div>
-            <div class="feature-image">
-                <img src="assets/images/feature-1.png" alt="Venture Funds Interface">
-            </div>
+    <!-- Key Features Section -->
+    <section class="key-features-section">
+      <div class="kf-grid-container">
+        
+        <!-- Left Column: Label (Spans Full Height) -->
+        <div class="kf-cell-label">
+          <div class="kf-sticky-label">
+            <span class="kf-dot"></span>Key features
+          </div>
         </div>
 
-        <div class="feature-block reverse">
-            <div class="feature-text">
-                <h2>SPVs</h2>
-                <p>Raise capital on a deal-by-deal basis through Special Purpose Vehicles and leverage the NEIIA capital
-                    and partner network.</p>
-                <a href="construction.html" class="btn btn-secondary">Learn more</a>
-            </div>
-            <div class="feature-image">
-                <img src="assets/images/feature-2.png" alt="SPV Interface">
-            </div>
+        <!-- Right Column Row 1: Headline -->
+        <div class="kf-cell-headline">
+          <h2 class="kf-headline">Modernize the fund subscription process</h2>
         </div>
+
+        <!-- Right Column Row 2: Content (List + Cards) -->
+        <div class="kf-cell-cards">
+          
+          <!-- Absolute List Container -->
+          <div class="kf-list-container">
+            <ul class="kf-sticky-list">
+              <li class="kf-nav-item active" data-target="card-1">Investor passport</li>
+              <li class="kf-nav-item" data-target="card-2">Custom onboarding workflows</li>
+              <li class="kf-nav-item" data-target="card-3">Service provider collaboration</li>
+              <li class="kf-nav-item" data-target="card-4">DocuSign integration</li>
+            </ul>
+          </div>
+
+          <div class="kf-cards-wrapper">
+            
+            <!-- Card 1 -->
+            <div class="kf-card" id="card-1" style="--stagger: 0rem">
+              <div class="kf-card-content">
+                <h3 class="kf-card-title">Investor passport</h3>
+                <div class="kf-card-desc">
+                  Make it easy for investors to reinvest by removing friction from the process. After the first commitment, AngelList creates a reusable profile that securely stores their essential information—enabling them to invest in minutes.
+                </div>
+              </div>
+              <div class="kf-card-visual">
+                <div class="kf-image-container">
+                  <img src="assets/images/dashboard-preview.png" alt="Investor Passport" class="kf-image">
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="kf-card" id="card-2" style="--stagger: 2rem">
+              <div class="kf-card-content">
+                <h3 class="kf-card-title">Custom onboarding workflows</h3>
+                <div class="kf-card-desc">
+                  Request only what’s needed from each LP, with real-time data validation to reduce errors. Onboarding flows are built in partnership with our team and customized to match your fund’s subscription documents.
+                </div>
+              </div>
+              <div class="kf-card-visual">
+                <div class="kf-image-container">
+                  <img src="assets/images/dashboard-preview.png" alt="Onboarding Workflows" class="kf-image">
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="kf-card" id="card-3" style="--stagger: 4rem">
+              <div class="kf-card-content">
+                <h3 class="kf-card-title">Service provider collaboration</h3>
+                <div class="kf-card-desc">
+                  Set up dedicated dashboards with entity-level permissions for your fund admin & law firm partners to review LP submissions, conduct KYC/AML checks, and flag errors within a single platform.
+                </div>
+              </div>
+              <div class="kf-card-visual">
+                <div class="kf-image-container">
+                  <img src="assets/images/dashboard-preview.png" alt="Collaboration" class="kf-image">
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="kf-card" id="card-4" style="--stagger: 6rem">
+              <div class="kf-card-content">
+                <h3 class="kf-card-title">DocuSign integration</h3>
+                <div class="kf-card-desc">
+                  Enable investors to sign finalized subscription documents effortlessly. Review and countersign everything from one centralized login.
+                </div>
+              </div>
+              <div class="kf-card-visual">
+                <div class="kf-image-container">
+                  <img src="assets/images/dashboard-preview.png" alt="DocuSign Integration" class="kf-image">
+                </div>
+              </div>
+            </div>
+
+          </div> <!-- End kf-cards-wrapper -->
+        </div> <!-- End kf-cell-cards -->
+
+      </div> <!-- End kf-grid-container -->
     </section>
 
-    <!-- Footer -->
-    <footer class="footer container">
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>Products</h4>
-                <ul>
-                    <li><a href="construction.html">Venture Funds</a></li>
-                    <li><a href="construction.html">Rolling Funds</a></li>
-                    <li><a href="construction.html">SPVs</a></li>
-                    <li><a href="construction.html">Scout Funds</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Administration</h4>
-                <ul>
-                    <li><a href="construction.html">About NEIIA</a></li>
-                    <li><a href="construction.html">Mandate & Governance</a></li>
-                    <li><a href="construction.html">Careers</a></li>
-                    <li><a href="newsletter.html">News & Updates</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Engagement</h4>
-                <ul>
-                    <li><a href="construction.html">Support & Enquiries</a></li>
-                    <li><a href="contact.html">Contact NEIIA</a></li>
-                </ul>
-            </div>
+    <!-- Advanced Features Section -->
+    <section class="advanced-features-section">
+      <div class="af-grid-container">
+        <!-- Label -->
+        <div class="af-cell-label">
+          <div class="af-sticky-label"><span class="af-dot"></span>Advanced features</div>
         </div>
-        <p style="margin-top: 40px; color: var(--text-secondary); font-size: 0.9rem;">&copy; 2026 NEIIA</p>
-    </footer>
+        
+        <!-- Content Grid -->
+        <div class="af-content-grid">
+          <!-- Item 1 -->
+          <div class="af-item">
+            <div class="af-icon"><i class="fas fa-layer-group"></i></div>
+            <h3 class="af-title">Asset class agnostic</h3>
+            <p class="af-desc">Digital Subscriptions can be configured for all asset classes and fund structures.</p>
+          </div>
+          <!-- Item 2 -->
+          <div class="af-item">
+            <div class="af-icon"><i class="fas fa-history"></i></div>
+            <h3 class="af-title">Activity tracking</h3>
+            <p class="af-desc">View exactly where each investor is in the onboarding process and send reminders.</p>
+          </div>
+          <!-- Item 3 -->
+          <div class="af-item">
+            <div class="af-icon"><i class="fas fa-code"></i></div>
+            <h3 class="af-title">API integration</h3>
+            <p class="af-desc">Use our APIs to set up straight through processing and eliminate manual data entry.</p>
+          </div>
+          <!-- Item 4 -->
+          <div class="af-item">
+            <div class="af-icon"><i class="fas fa-shield-alt"></i></div>
+            <h3 class="af-title">SOC2 certification</h3>
+            <p class="af-desc">All data processed by AngelList products meets SOC2 certification standards for security & privacy.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <script src="script.js"></script>
+    <!-- Customer Spotlight Section -->
+    <section class="customer-spotlight-section">
+      <div class="cs-container">
+        <!-- Header -->
+        <div class="cs-header">
+          <div class="cs-label"><span class="cs-dot"></span>Customer spotlight</div>
+        </div>
+        
+        <!-- Carousel -->
+        <div class="embla">
+          <div class="embla__container">
+            
+            <!-- Slide 1: VanEck (Purple) -->
+            <div class="embla__slide">
+              <div class="cs-card" data-theme="purple">
+                <div class="cs-content-left">
+                  <div>
+                    <h3 class="cs-author-header" style="font-size: 24px; font-weight: 500; margin-bottom: 24px;">VanEck</h3>
+                    <blockquote class="cs-quote">“There’s always a risk of sending PII information if you forward something incorrectly, but with AngelList, I’m no longer ferrying around unsecured PDFs.”</blockquote>
+                    <div class="cs-author">Jonathan Schwartz</div>
+                    <a href="#" class="cs-link">Read case study</a>
+                  </div>
+                  <div class="cs-logo-container">
+                    <svg width="100" height="40" viewBox="0 0 128 52" fill="none" style="color: #0b161a;"><path d="M14.55 51.23C14.35 51.72 14.19 52 13.78 52C13.38 52 13.21 51.72 13.01 51.23L2.84 26.61C1.78 24.06 0 25.11 0 24.22C0 23.98 0.16 23.77 0.49 23.77C2.63 23.77 4.78 23.86 6.93 23.86C9 23.86 11.07 23.77 13.13 23.77C13.74 23.77 14.02 23.86 14.02 24.18C14.02 24.95 11.55 24.5 11.55 26.45C11.55 27.22 12.2 28.88 17.23 41.58H17.31C20.83 32.62 22.17 29.94 22.17 28.07C22.17 24.02 18.69 25.28 18.69 24.22C18.69 23.9 18.85 23.77 19.37 23.77C20.79 23.77 22.45 23.86 23.51 23.86C25.37 23.86 26.63 23.77 28.01 23.77C28.37 23.77 28.66 23.86 28.66 24.1C28.66 25.15 25.7 23.94 23.39 29.62L14.55 51.23ZM33.15 35.25C33.15 33.95 32.75 33.59 31.94 33.59C30.64 33.59 29.67 34.28 29.67 35.49C29.67 36.43 29.83 37.44 29.83 38.41C29.83 40.24 28.57 41.54 26.38 41.54C24.15 41.54 23.26 40.56 23.26 39.06C23.26 35.82 29.22 32.62 34.49 32.62C38.95 32.62 40.53 34.44 40.53 37.72V48.64C40.53 49.12 40.77 49.41 41.22 49.41C42.31 49.41 42.47 47.95 43.08 47.95C43.28 47.95 43.45 48.15 43.45 48.31C43.45 48.72 42.07 51.68 37.73 51.68C35.1 51.68 33.92 50.7 33.44 49.08C31.25 50.82 29.34 51.68 27.31 51.68C23.91 51.68 22.53 49.73 22.53 47.99C22.53 44.82 24.88 43.85 33.15 40.93V35.25ZM33.15 41.78C30.64 42.79 29.91 43.97 29.91 45.8C29.91 48.47 30.52 49.16 31.57 49.16C32.26 49.16 32.79 48.67 33.15 48.31V41.78ZM88.16 32.62C93.35 32.62 96.23 36.1 96.23 38.74C96.23 41.05 94.85 42.11 93.07 42.11C91.4 42.11 89.99 40.93 89.99 38.74C89.99 37.44 90.23 36.1 90.23 35.29C90.23 33.95 89.42 33.34 88.2 33.34C86.26 33.34 84.72 35.94 84.72 39.02C84.72 44.46 87.96 47.3 91.04 47.3C95.17 47.3 94.97 44.66 95.86 44.66C96.15 44.66 96.23 44.82 96.23 45.07C96.23 46.12 93.8 51.68 87.15 51.68C82.77 51.68 78.15 48.47 78.15 42.55C78.15 36.75 83.1 32.62 88.16 32.62ZM106.2 48.96C106.2 50.95 108.55 50.18 108.55 51.03C108.55 51.23 108.47 51.43 108.1 51.43C106.56 51.43 104.82 51.35 102.75 51.35C100.69 51.35 98.94 51.43 97.4 51.43C97.04 51.43 96.96 51.23 96.96 51.03C96.96 50.18 99.31 50.95 99.31 48.96V26.53C99.31 24.5 96.8 25.03 96.8 24.26C96.8 23.33 99.23 24.38 106.2 21.75V48.96ZM107.58 41.46C111.23 38.33 112.12 37.52 112.12 36.14C112.12 33.34 109.77 34.12 109.77 33.22C109.77 32.94 109.97 32.86 110.33 32.86C111.1 32.86 112.77 32.94 114.43 32.94C116.41 32.94 117.83 32.86 118.64 32.86C119.13 32.86 119.29 33.02 119.29 33.26C119.29 34.08 116.49 33.22 112.52 37.64L119.01 49C120.18 51.03 121.68 50.09 121.68 51.03C121.68 51.35 121.48 51.43 120.67 51.43C119.09 51.43 117.47 51.35 115.56 51.35C113.9 51.35 112.28 51.43 110.62 51.43C110.21 51.43 109.97 51.35 109.97 50.99C109.97 50.34 111.35 50.74 111.35 49.57C111.35 48.96 110.94 48.23 110.58 47.5L107.58 41.46ZM76.16 30.15C76.25 30.4 76.61 30.33 76.61 30.07L76.55 23.91C76.55 23.9 76.55 23.88 76.54 23.85C76.52 23.8 76.47 23.77 76.42 23.78C71.47 23.82 66.49 23.86 61.31 23.86C58.35 23.86 56.04 23.77 54.46 23.77C54.02 23.77 53.85 23.9 53.85 24.26C53.85 25.56 57.26 24.02 57.26 26.86V29.98C57.26 30.24 57.51 30.42 57.75 30.33C58.46 30.07 59.22 29.92 60.01 29.92C61.85 29.92 63.51 30.69 64.74 31.93C64.97 32.17 65.37 32 65.37 31.67V25.13C65.37 24.92 65.53 24.75 65.74 24.76C67.62 24.82 70.22 25.12 71.8 25.9C73.28 26.62 74.17 27.06 75.01 28.07C75.65 28.84 75.96 29.59 76.16 30.15ZM56.42 51.43C56.05 51.43 55.97 51.23 55.97 51.03C55.97 50.18 58 50.95 58 48.96V37.56C58 35.78 57.06 35.13 56.09 35.13C55.04 35.13 53.9 35.9 53.05 36.71V48.96C53.05 50.95 55.08 50.18 55.08 51.03C55.08 51.23 55 51.43 54.63 51.43C53.42 51.43 51.67 51.35 49.61 51.35C47.54 51.35 45.8 51.43 44.26 51.43C43.89 51.43 43.81 51.23 43.81 51.03C43.81 50.18 46.16 50.95 46.16 48.96V37.36C46.16 34.6 43.49 35.09 43.49 34.32C43.49 33.67 46.04 34.4 53.05 32.62V35.41C55.89 33.22 57.51 32.62 59.74 32.62C63.79 32.62 64.89 35.13 64.89 38.66V48.96C64.89 50.02 65.55 50.29 66.18 50.45C67.89 50.56 70.07 50 71.45 49.32C72.92 48.59 73.81 48.14 74.65 47.13C75.28 46.36 75.59 45.61 75.79 45.04C75.87 44.8 76.23 44.86 76.23 45.12L76.21 51.29C76.21 51.29 76.21 51.32 76.2 51.34C76.18 51.39 76.13 51.42 76.07 51.42L56.42 51.43Z" fill="currentColor"></path>
+<path d="M71.51 41.47C71.58 41.97 71.58 42.43 71.99 42.43C72.2 42.43 72.35 42.37 72.35 42.03V31.92C72.35 31.58 72.2 31.52 71.99 31.52C71.58 31.52 71.58 31.98 71.51 32.47C71.23 34.32 69.45 35.9 67.04 36.31C66.95 36.33 66.91 36.4 66.91 36.48C66.94 36.78 66.95 36.89 66.99 37.13C66.99 37.19 67.04 37.24 67.11 37.25C69.43 37.69 71.17 39.28 71.51 41.47Z" fill="currentColor"></path>
+<path d="M121.68 26.93C121.68 25.17 123.08 23.78 124.84 23.78C126.61 23.78 128 25.17 128 26.93C128 28.69 126.6 30.08 124.84 30.08C123.08 30.08 121.68 28.69 121.68 26.93ZM122.19 26.93C122.19 28.41 123.4 29.57 124.84 29.57C126.28 29.57 127.49 28.41 127.49 26.93C127.49 25.44 126.28 24.29 124.84 24.29C123.4 24.29 122.19 25.44 122.19 26.93ZM126.28 28.73H125.7L124.79 27.09H124.13V28.73H123.62V25.18H125.11C125.76 25.18 126.33 25.37 126.33 26.12C126.33 26.82 125.86 27.07 125.39 27.09L126.28 28.73ZM124.13 25.69V26.58H124.68C125.16 26.58 125.82 26.66 125.82 26.18C125.82 25.73 125.44 25.69 125.02 25.69H124.13Z" fill="currentColor"></path></svg>
+                  </div>
+                </div>
+                <div class="cs-content-right">
+                  <div class="cs-image-wrapper">
+                    <img src="https://cdn.sanity.io/images/q8bht0jl/production/acf7b44e39e7ba9ee4675b60d5bec1bc243156d8-510x738.jpg?fit=max&auto=format&w=640&q=75" alt="VanEck" class="cs-image">
+                  </div>
+                  <div class="cs-stats-list">
+                    <div class="cs-stat-item">
+                      <div class="cs-stat-label">AUM</div>
+                      <div class="cs-stat-value">$116.3B</div>
+                    </div>
+                    <div class="cs-stat-item">
+                      <div class="cs-stat-label">Fund Admin</div>
+                      <div class="cs-stat-value">MG Stover</div>
+                    </div>
+                    <div class="cs-stat-item">
+                      <div class="cs-stat-label">Time Saved</div>
+                      <div class="cs-stat-value">12+ hrs/month</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Slide 2: Galaxy (Gold) -->
+            <div class="embla__slide">
+              <div class="cs-card" data-theme="gold">
+                <div class="cs-content-left">
+                  <div>
+                    <h3 class="cs-author-header" style="font-size: 24px; font-weight: 500; margin-bottom: 24px;">Galaxy</h3>
+                    <blockquote class="cs-quote">“The fact that you can see where a client is in their subscription process is so vital because, before this, you’d have to pick up the phone and ask...”</blockquote>
+                    <div class="cs-author">Garima Grover</div>
+                    <a href="#" class="cs-link">Read Q+A</a>
+                  </div>
+                  <div class="cs-logo-container">
+                    <svg width="100" height="40" viewBox="0 0 128 52" fill="none" style="color: #0b161a;"><path d="M5.4 21.44V46.9C3.68 45.23 2.33 43.25 1.4 41.06C0.47 38.88 0 36.54 0 34.17C0 29.2 2.06 24.7 5.4 21.44ZM31.45 21.44C29.74 19.76 27.71 18.43 25.47 17.53C23.24 16.62 20.84 16.16 18.42 16.16C16 16.16 13.61 16.62 11.37 17.53C9.14 18.43 7.11 19.76 5.4 21.44H31.45ZM31.45 21.44V46.91C33.16 45.24 34.52 43.25 35.45 41.07C36.37 38.88 36.85 36.54 36.84 34.17C36.84 29.2 34.78 24.7 31.45 21.44ZM79.83 41.92C79.78 41.92 79.74 41.91 79.71 41.89C79.67 41.87 79.65 41.83 79.63 41.8C79.62 41.77 79.62 41.74 79.62 41.72L79.71 31.56L79.61 21.64C79.61 21.61 79.62 21.59 79.63 21.56C79.64 21.54 79.66 21.51 79.68 21.49C79.69 21.47 79.72 21.46 79.74 21.45C79.77 21.44 79.8 21.43 79.83 21.44H82.14C82.17 21.43 82.19 21.44 82.22 21.45C82.24 21.46 82.27 21.48 82.29 21.49C82.31 21.51 82.32 21.54 82.33 21.56C82.34 21.59 82.35 21.61 82.35 21.64L82.26 31.53L82.35 41.72C82.35 41.76 82.34 41.8 82.31 41.83C82.29 41.87 82.26 41.89 82.22 41.91C82.19 41.92 82.17 41.92 82.14 41.92L79.83 41.92ZM74.41 41.91C74.44 41.92 74.46 41.92 74.49 41.92H76.8C76.83 41.92 76.85 41.92 76.88 41.91C76.91 41.9 76.93 41.88 76.95 41.86C76.97 41.84 76.99 41.82 77 41.8C77.01 41.77 77.01 41.75 77.01 41.72L76.92 34.25L77.01 27.05C77.01 27.03 77.01 27 77 26.98C76.98 26.95 76.97 26.93 76.95 26.91C76.93 26.89 76.91 26.87 76.88 26.86C76.86 26.85 76.83 26.85 76.8 26.85H74.46C74.43 26.85 74.41 26.85 74.38 26.86C74.35 26.87 74.33 26.89 74.31 26.91C74.29 26.93 74.28 26.95 74.27 26.98C74.26 27 74.25 27.03 74.25 27.05L74.31 29.13C73.29 27.46 71.64 26.56 69.45 26.56C65.37 26.56 63 30.07 63 34.43C63 38.79 65.22 42.21 69.39 42.21C71.64 42.21 73.29 41.19 74.34 39.49L74.28 41.72C74.28 41.76 74.29 41.8 74.32 41.83C74.34 41.87 74.37 41.89 74.41 41.91ZM74.4 34.52C74.37 38.32 72.75 40.25 70.08 40.25H70.08C67.17 40.25 65.79 37.83 65.79 34.22C65.79 30.92 67.11 28.6 69.93 28.52H70.44C72.99 28.69 74.43 30.86 74.4 34.52ZM47.5 42.95C47.77 46.22 50.59 47.72 54.16 47.66C58.57 47.66 61.06 45.23 61.03 40.9L61 32.88L61.06 27.05C61.06 27.03 61.06 27 61.05 26.98C61.04 26.95 61.02 26.93 61 26.91C60.98 26.89 60.96 26.87 60.93 26.86C60.91 26.85 60.88 26.85 60.85 26.85H58.54C58.51 26.85 58.49 26.86 58.46 26.87C58.44 26.88 58.41 26.89 58.39 26.91C58.37 26.93 58.36 26.95 58.35 26.98C58.34 27 58.33 27.03 58.33 27.06L58.42 29.19C57.4 27.52 55.75 26.62 53.59 26.62C49.42 26.62 47.08 30.07 47.08 34.34C47.08 38.64 49.36 41.83 53.68 41.83C55.84 41.83 57.49 40.84 58.48 39.17V40.87C58.48 44.26 56.74 45.73 54.22 45.73C52.06 45.73 50.5 44.85 50.23 42.95C50.2 42.83 50.11 42.74 49.99 42.74H47.71C47.68 42.74 47.65 42.74 47.63 42.75C47.6 42.76 47.58 42.78 47.56 42.8C47.54 42.82 47.52 42.84 47.51 42.87C47.5 42.89 47.5 42.92 47.5 42.95ZM58.48 34.46C58.45 38.18 56.8 39.93 54.28 39.93C51.34 39.96 49.84 37.88 49.84 34.25C49.84 30.83 51.25 28.61 54.01 28.52H54.52C57.07 28.69 58.51 30.86 58.48 34.46ZM95.71 41.91C95.74 41.92 95.76 41.92 95.79 41.92H98.1C98.13 41.92 98.16 41.92 98.18 41.91C98.21 41.9 98.23 41.88 98.25 41.86C98.27 41.84 98.29 41.82 98.3 41.79C98.31 41.77 98.31 41.74 98.31 41.72L98.22 34.25L98.31 27.05C98.31 27.03 98.31 27 98.3 26.98C98.29 26.95 98.27 26.93 98.25 26.91C98.23 26.89 98.21 26.87 98.18 26.86C98.16 26.85 98.13 26.85 98.1 26.85H95.76C95.73 26.85 95.71 26.85 95.68 26.86C95.66 26.87 95.63 26.89 95.61 26.91C95.59 26.93 95.58 26.95 95.57 26.98C95.56 27 95.55 27.03 95.55 27.05L95.61 29.13C94.59 27.46 92.94 26.56 90.75 26.56C86.67 26.56 84.3 30.07 84.3 34.43C84.3 38.79 86.52 42.21 90.69 42.21C92.94 42.21 94.59 41.19 95.64 39.49L95.58 41.72C95.58 41.76 95.59 41.8 95.62 41.83C95.64 41.87 95.67 41.89 95.71 41.91ZM95.7 34.52C95.67 38.32 94.05 40.25 91.38 40.25C88.47 40.25 87.09 37.83 87.09 34.22C87.09 30.92 88.41 28.6 91.23 28.52H91.74C94.29 28.69 95.73 30.86 95.7 34.52Z" fill="currentColor"></path>
+<path d="M110.58 41.92C110.46 41.92 110.31 41.86 110.25 41.74L106.41 35.6L102.57 41.74C102.51 41.86 102.36 41.92 102.24 41.92H99.81C99.79 41.92 99.78 41.92 99.76 41.91C99.75 41.9 99.74 41.9 99.73 41.88C99.71 41.87 99.71 41.86 99.7 41.85C99.7 41.83 99.69 41.82 99.7 41.8C99.7 41.78 99.71 41.76 99.72 41.74L104.73 33.93L100.14 27.02C100.13 27.01 100.12 26.99 100.11 26.97C100.11 26.95 100.12 26.92 100.13 26.91C100.14 26.89 100.15 26.87 100.17 26.86C100.19 26.85 100.21 26.85 100.23 26.85H102.9C103.02 26.85 103.17 26.9 103.23 27.02L106.71 32.55L110.07 27.02C110.11 26.97 110.16 26.93 110.21 26.9C110.27 26.87 110.34 26.85 110.4 26.85H112.74C112.76 26.85 112.79 26.85 112.8 26.86C112.82 26.87 112.84 26.89 112.85 26.91C112.85 26.93 112.86 26.95 112.86 26.97C112.85 26.99 112.85 27.01 112.83 27.02L108.39 34.02L113.34 41.74C113.36 41.76 113.36 41.78 113.37 41.8C113.37 41.82 113.36 41.84 113.35 41.86C113.34 41.88 113.33 41.89 113.31 41.9C113.29 41.91 113.27 41.92 113.25 41.92H110.58ZM120.87 46.83C120.92 46.8 120.95 46.75 120.97 46.69L127.99 27.05C128.02 26.93 127.96 26.85 127.84 26.85H125.44C125.38 26.85 125.32 26.87 125.27 26.91C125.22 26.94 125.19 26.99 125.17 27.05L121.45 38.47L117.04 27.05C117.03 26.99 116.99 26.94 116.94 26.91C116.89 26.87 116.83 26.85 116.77 26.85H114.1C113.98 26.85 113.92 26.93 113.98 27.05L120.04 41.95L118.36 46.69C118.35 46.71 118.35 46.74 118.36 46.76C118.36 46.78 118.37 46.81 118.39 46.83C118.4 46.85 118.42 46.86 118.44 46.87C118.46 46.89 118.49 46.89 118.51 46.89H120.7C120.76 46.89 120.82 46.87 120.87 46.83ZM5.39 46.91H31.45V52H5.39L5.39 46.91Z" fill="currentColor"></path></svg>
+                  </div>
+                </div>
+                <!-- Right Content -->
+                <div class="cs-content-right">
+                  <div class="cs-image-wrapper">
+                    <img src="https://cdn.sanity.io/images/q8bht0jl/production/afdb8d4fae40fd8f14d6d1fe292b0f4b5594e593-1024x1280.jpg?fit=max&auto=format&w=640&q=75" alt="Galaxy" class="cs-image">
+                  </div>
+                  <div class="cs-stats-list">
+                    <div class="cs-stat-item">
+                      <div class="cs-stat-label">AUM</div>
+                      <div class="cs-stat-value">$5.7B</div>
+                    </div>
+                    <div class="cs-stat-item">
+                      <div class="cs-stat-label">Asset Class</div>
+                      <div class="cs-stat-value">Digital Assets & Blockchain</div>
+                    </div>
+                    <div class="cs-stat-item">
+                      <div class="cs-stat-label">Power Users</div>
+                      <div class="cs-stat-value">Client Services Team</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 3: IceCap (Ink) -->
+            <div class="embla__slide">
+              <div class="cs-card cs-theme-ink" data-theme="ink">
+                <div class="cs-content-left">
+                  <div>
+                    <h3 class="cs-author-header" style="font-size: 24px; font-weight: 500; margin-bottom: 24px;">IceCap</h3>
+                    <blockquote class="cs-quote">“Digital Subscriptions helped us convert prospects to investors and get started on the right foot with them. We’re able to make a good impression...”</blockquote>
+                    <div class="cs-author">Andrea Knorring</div>
+                  </div>
+                  <div class="cs-logo-container">
+                    <svg width="100" height="40" viewBox="0 0 128 52" fill="none" style="color: #ffffff;"><path d="M102.28 44.51L105.91 44.48L97.4 30.93L97.33 31.05L97.32 31.04L91.02 41.48L89.45 38.77L87.59 41.47L89.27 44.37L89.23 44.44H89.32L89.35 44.51L90.98 44.48L92.62 44.51L92.66 44.44H92.75L92.7 44.37L97.43 36.66L102.28 44.51Z" fill="currentColor"></path>
+<path d="M94.09 31.14L95.79 28.33L93.77 25.18L92.46 23.13L79.68 44.44L83.07 44.51L92.57 28.71L94.09 31.14Z" fill="currentColor"></path>
+<path d="M4.26 44.38H0V23.06H4.26V44.38Z" fill="currentColor"></path>
+<path d="M110.97 44.38H106.71V32.71H110.97V44.38Z" fill="currentColor"></path>
+<path d="M29.12 40.12V44.38H14.91C10.17 44.38 7.81 42.02 7.83 37.31V30.23C7.83 25.49 10.19 23.13 14.91 23.16H29.12V27.32H15.49C13.21 27.32 12.07 28.46 12.06 30.73V36.69C12.06 38.98 13.21 40.12 15.5 40.12H29.12Z" fill="currentColor"></path>
+<path d="M53.98 40.12V44.38H39.77C35.03 44.38 32.66 42.02 32.66 37.31V30.23C32.66 25.45 35.03 23.06 39.77 23.06H53.98V27.32H40.35C38.07 27.32 36.93 28.46 36.93 30.73V36.69C36.93 38.98 38.07 40.12 40.37 40.12H53.98Z" fill="currentColor"></path>
+<path d="M32.66 31.59H53.97V35.85H32.66V31.59Z" fill="currentColor"></path>
+<path d="M78.83 40.12V44.38H64.62C59.88 44.38 57.52 42.02 57.54 37.31V30.23C57.54 25.49 59.9 23.13 64.62 23.16H78.83V27.32H65.2C62.92 27.32 61.77 28.46 61.77 30.73V36.69C61.77 38.98 62.92 40.12 65.22 40.12H78.83Z" fill="currentColor"></path>
+<path d="M106.68 31.59H120.18C122.55 31.59 123.74 30.88 123.74 29.46C123.74 28.04 122.55 27.32 120.18 27.32H106.68V23.06H120.9C125.62 23.06 127.97 25.2 127.97 29.49C127.97 33.78 125.62 35.91 120.9 35.88H106.68V31.59Z" fill="currentColor"></path>
+<path d="M83.87 50.64C83.76 50.91 83.61 51.17 83.4 51.38C83.2 51.58 82.96 51.74 82.69 51.85C82.4 51.95 82.09 52 81.78 52C81.43 52.01 81.09 51.94 80.77 51.79C80.46 51.65 80.18 51.43 79.96 51.16C79.73 50.88 79.56 50.56 79.46 50.22C79.34 49.83 79.28 49.42 79.28 49.02C79.28 48.61 79.34 48.2 79.46 47.81C79.56 47.46 79.73 47.14 79.96 46.86C80.18 46.59 80.46 46.38 80.77 46.23C81.09 46.09 81.43 46.02 81.78 46.03C82.2 46.01 82.62 46.11 83 46.3C83.33 46.5 83.61 46.78 83.79 47.11L83.02 47.58C82.89 47.37 82.72 47.19 82.51 47.06C82.29 46.94 82.04 46.88 81.78 46.89C81.55 46.88 81.32 46.93 81.12 47.03C80.91 47.13 80.73 47.28 80.6 47.47C80.3 47.93 80.16 48.47 80.19 49.02C80.16 49.56 80.3 50.1 80.6 50.56C80.73 50.75 80.91 50.9 81.12 51C81.32 51.1 81.55 51.14 81.78 51.13C82 51.14 82.22 51.1 82.42 51.02C82.58 50.96 82.72 50.86 82.84 50.74C82.95 50.62 83.03 50.47 83.07 50.32C83.13 50.16 83.15 50 83.15 49.83H82.19V49H84.06V49.64C84.06 49.98 83.99 50.32 83.87 50.64Z" fill="currentColor"></path>
+<path d="M89.57 47.85C89.6 48.24 89.49 48.63 89.25 48.94C89.02 49.26 88.67 49.47 88.28 49.54L89.49 51.91H88.47L87.3 49.61H85.97V51.91H85.08V46.12H87.65C87.9 46.12 88.14 46.16 88.38 46.23C88.6 46.29 88.81 46.4 88.98 46.54C89.16 46.68 89.31 46.87 89.4 47.08C89.51 47.32 89.57 47.58 89.57 47.85ZM88.68 47.85C88.68 47.72 88.66 47.59 88.62 47.47C88.57 47.35 88.5 47.24 88.41 47.15C88.2 46.98 87.94 46.9 87.67 46.91H85.96V48.78H87.67C87.93 48.8 88.19 48.72 88.4 48.56C88.49 48.47 88.57 48.37 88.62 48.25C88.66 48.13 88.68 48 88.68 47.87V47.85Z" fill="currentColor"></path>
+<path d="M95.32 49.02C95.32 49.42 95.26 49.83 95.14 50.22C95.03 50.56 94.86 50.88 94.64 51.16C94.42 51.43 94.15 51.65 93.85 51.81C93.52 51.96 93.16 52.03 92.8 52.03C92.46 52.03 92.11 51.96 91.8 51.82C91.48 51.67 91.2 51.46 90.98 51.19C90.76 50.91 90.59 50.59 90.48 50.24C90.36 49.85 90.3 49.45 90.31 49.04C90.3 48.63 90.36 48.22 90.48 47.83C90.59 47.49 90.76 47.17 90.98 46.89C91.2 46.62 91.48 46.4 91.8 46.26C92.11 46.12 92.46 46.04 92.8 46.05C93.16 46.04 93.52 46.12 93.85 46.27C94.15 46.42 94.42 46.64 94.64 46.91C94.86 47.19 95.03 47.51 95.14 47.86C95.25 48.23 95.32 48.62 95.32 49.02ZM94.41 49.02C94.44 48.47 94.3 47.93 94 47.47C93.86 47.29 93.68 47.14 93.47 47.05C93.26 46.95 93.04 46.89 92.81 46.89C92.58 46.89 92.36 46.95 92.15 47.05C91.94 47.14 91.76 47.29 91.62 47.47C91.32 47.93 91.18 48.47 91.21 49.02C91.18 49.56 91.32 50.1 91.62 50.56C91.76 50.74 91.94 50.88 92.15 50.98C92.36 51.08 92.58 51.13 92.81 51.13C93.04 51.13 93.26 51.08 93.47 50.98C93.68 50.88 93.86 50.74 94 50.56C94.3 50.1 94.44 49.56 94.41 49.02Z" fill="currentColor"></path>
+<path d="M100.23 51.36C100.01 51.58 99.75 51.75 99.46 51.86C99.16 51.98 98.85 52.02 98.54 52C98.23 52.02 97.92 51.98 97.64 51.87C97.35 51.76 97.09 51.58 96.88 51.36C96.48 50.82 96.28 50.16 96.32 49.5V46.12H97.2V49.43C97.16 49.88 97.28 50.34 97.54 50.71C97.67 50.86 97.82 50.97 98 51.05C98.18 51.12 98.37 51.15 98.56 51.14C98.75 51.15 98.95 51.12 99.13 51.05C99.31 50.98 99.47 50.87 99.6 50.73C99.85 50.37 99.97 49.95 99.94 49.52V46.12H100.82V49.49C100.87 50.17 100.66 50.83 100.23 51.36Z" fill="currentColor"></path>
+<path d="M106.48 47.93C106.48 48.2 106.43 48.46 106.33 48.71C106.24 48.93 106.1 49.13 105.93 49.29C105.74 49.45 105.52 49.57 105.29 49.63C105.03 49.71 104.77 49.75 104.5 49.75H102.96V51.91H102.08V46.12H104.55C104.81 46.12 105.07 46.16 105.31 46.24C105.54 46.31 105.74 46.43 105.92 46.59C106.09 46.74 106.23 46.94 106.32 47.15C106.42 47.4 106.47 47.66 106.48 47.93ZM105.57 47.93C105.58 47.79 105.56 47.66 105.51 47.53C105.47 47.4 105.39 47.29 105.3 47.19C105.09 47.02 104.83 46.93 104.56 46.94H102.98V48.93H104.56C104.7 48.94 104.84 48.93 104.97 48.88C105.1 48.83 105.22 48.76 105.32 48.66C105.5 48.46 105.59 48.2 105.57 47.93Z" fill="currentColor"></path></svg>
+                  </div>
+                </div>
+                <div class="cs-content-right">
+                  <div class="cs-image-wrapper">
+                    <img src="https://cdn.sanity.io/images/q8bht0jl/production/486da599b4c2586eff44f0d29c2d440b45db4575-244x305.jpg?fit=max&auto=format&w=640&q=75" alt="IceCap" class="cs-image">
+                  </div>
+                  <div class="cs-stats-list">
+                    <div class="cs-stat-item">
+                      <div class="cs-stat-label">Loans Closed</div>
+                      <div class="cs-stat-value">$1.95B</div>
+                    </div>
+                    <div class="cs-stat-item">
+                      <div class="cs-stat-label">Asset Class</div>
+                      <div class="cs-stat-value">Real Estate</div>
+                    </div>
+                    <div class="cs-stat-item">
+                      <div class="cs-stat-label">Power Users</div>
+                      <div class="cs-stat-value">Investor Relations</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div> <!-- End embla__container -->
+        </div> <!-- End embla -->
+
+        <!-- Navigation Controls -->
+        <div class="cs-nav-controls">
+          <div class="cs-dots">
+            <div class="cs-nav-dot is-active" data-index="0"></div>
+            <div class="cs-nav-dot" data-index="1"></div>
+            <div class="cs-nav-dot" data-index="2"></div>
+          </div>
+          <div style="flex: 1"></div> <!-- Spacer -->
+          <button class="cs-nav-btn" id="prevSlide"><i class="fas fa-chevron-left"></i></button>
+          <button class="cs-nav-btn" id="nextSlide"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Simplify Workflow CTA -->
+    <section class="workflow-cta-section">
+      <div class="w-cta-container">
+        <div class="w-cta-card">
+          <h2 class="w-cta-headline">Simplify your most complex workflow</h2>
+          <p class="w-cta-subheadline">Partner with AngelList to streamline your subscription workflows and remove friction for investors. Talk to one of our experts to get started.</p>
+          <button class="w-cta-btn">Talk to an expert</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tailored for your needs Section -->
+    <section class="tailored-needs-section">
+      <div class="tn-container">
+        <div class="tn-cell-label">
+          <div class="tn-sticky-label">
+            <span class="tn-dot"></span> Pricing
+          </div>
+        </div>
+        <div class="tn-content">
+          <h2 class="tn-headline">Tailored for your needs</h2>
+          <p class="tn-subheadline">Our implementation team works with you to design custom investor onboarding flows and eliminate the manual work of transactions.</p>
+          
+          <div class="tn-list-label">Digital Subscriptions include:</div>
+          <ul class="tn-checklist">
+            <li class="tn-check-item">
+              <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              Custom subscription workflows for all asset classes
+            </li>
+            <li class="tn-check-item">
+              <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              Reusable investor profiles to speed up transactions
+            </li>
+            <li class="tn-check-item">
+              <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              Enterprise implementation and onboarding support
+            </li>
+            <li class="tn-check-item">
+              <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              Access for law firms & fund administrators
+            </li>
+            <li class="tn-check-item">
+              <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              Review and revision approval workflows
+            </li>
+            <li class="tn-check-item">
+              <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              E-signatures via DocuSign integration
+            </li>
+          </ul>
+        </div>
+      </div>
+    <!-- Explore Product Suites Section -->
+    <section class="explore-section">
+      <div class="ex-container">
+        <h2 class="ex-headline">Explore the AngelList product suites</h2>
+        
+        <div class="ex-grid">
+          <a href="#" class="ex-card">
+            <div class="ex-icon-top">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            </div>
+            <div class="ex-footer">
+              <div class="ex-title">Investor Management</div>
+              <div class="ex-arrow-circle">
+                <i class="fas fa-arrow-right"></i>
+              </div>
+            </div>
+          </a>
+          
+          <a href="#" class="ex-card">
+            <div class="ex-icon-top">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <div class="ex-footer">
+              <div class="ex-title">Fund Administration</div>
+              <div class="ex-arrow-circle">
+                <i class="fas fa-arrow-right"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <div class="faq-container">
+        <div class="faq-cell-label">
+          <div class="faq-sticky-label">
+            <span class="faq-dot"></span> FAQs
+          </div>
+        </div>
+        <div class="faq-content">
+          <h4 class="faq-headline">Your questions answered</h4>
+          
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-question-btn">
+                Can we use our law firm's legal documents?
+                <span class="faq-icon-toggle"></span>
+              </button>
+              <div class="faq-answer">
+                Yes. AngelList Digital Subscriptions can take your law firm's subscription booklet and create custom workflows based on those unique documents. We've digitized subscription booklets from over 40 law firms for our clients.
+              </div>
+            </div>
+            
+            <div class="faq-item">
+              <button class="faq-question-btn">
+                Is there an API integration for data transfers?
+                <span class="faq-icon-toggle"></span>
+              </button>
+              <div class="faq-answer">
+                Yes, AngelList Digital Subscriptions has an open API and can support other preferred data transfer methods.
+              </div>
+            </div>
+            
+            <div class="faq-item">
+              <button class="faq-question-btn">
+                What types of documents or subscription paperwork can AngelList Digital Subscriptions turn into workflows?
+                <span class="faq-icon-toggle"></span>
+              </button>
+              <div class="faq-answer">
+                AngelList Digital Subscriptions supports any type of paperwork or form, including investor suitability questionnaires, on-shore and off-shore subscription booklets, SPV and Sidecar subscription documents, co-investment documents, addition forms, redemption forms, and transfer form.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-col-title">Products</div>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Venture Funds</a></li>
+            <li><a href="#" class="footer-link">Rolling Funds</a></li>
+            <li><a href="#" class="footer-link">SPVs</a></li>
+            <li><a href="#" class="footer-link">Scout Funds</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Administration</div>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">About NEIIA</a></li>
+            <li><a href="#" class="footer-link">Mandate & Governance</a></li>
+            <li><a href="#" class="footer-link">Careers</a></li>
+            <li><a href="#" class="footer-link">News & Updates</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Engagement</div>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Support & Enquiries</a></li>
+            <li><a href="#" class="footer-link">Contact NEIIA</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">© 2026 NEIIA</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+    <div class="mm-header">
+      <div class="mm-logo">
+        <a href="index.html" class="logo-fixed">
+          <div class="logo-wrapper">
+            <img src="assets/images/neiia-logo.png" alt="NEIIA Logo" class="brand-logo light-mode-logo" style="max-width: 100px;">
+            <div class="brand-text" style="font-size: 0.3rem; max-width: 110px;">NATIONAL ENERGY INVESTMENT &amp; INTELLIGENCE ADMINISTRATION</div>
+          </div>
+        </a>
+      </div>
+      <button class="mm-close" id="mobileMenuClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul class="mm-links">
+      <li><a href="#">Products <i class="fas fa-arrow-right"></i></a></li>
+      <li><a href="#">Solutions <i class="fas fa-arrow-right"></i></a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Resources <i class="fas fa-arrow-right"></i></a></li>
+    </ul>
+    <div class="mm-actions">
+      <a href="#" class="btn btn-mm-signin">Sign in</a>
+      <a href="#" class="btn btn-mm-contact">Contact support</a>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/landing.js"></script>
 </body>
-
 </html>
