@@ -228,14 +228,18 @@
                 display: flex;
                 overflow-x: auto;
                 scroll-snap-type: x mandatory;
-                gap: 32px;
-                padding-bottom: 20px;
-                /* Match index.html approach: use negative margin + percentage padding */
-                margin-left: -5%;
-                margin-right: -5%;
-                padding-left: calc(5% + 20px);
-                /* Extra 20px for more spacing */
-                padding-right: calc(5% + 20px);
+                gap: 24px;
+                padding-bottom: 24px;
+
+                /* Full width breakout */
+                width: 100vw;
+                margin-left: calc(-50vw + 50%);
+                margin-right: calc(-50vw + 50%);
+
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+                scroll-padding-left: 20px;
+
                 -webkit-overflow-scrolling: touch;
             }
 
@@ -377,11 +381,6 @@
             .solutions-grid {
                 padding-bottom: 40px;
                 scrollbar-width: none;
-                /* Fixed edge spacing - add proper side margins */
-                padding-left: calc(5% + 20px) !important;
-                padding-right: calc(5% + 20px) !important;
-                /* Offset the scroll snap point to respect padding */
-                scroll-padding-left: calc(5% + 20px);
             }
 
             .solutions-grid::-webkit-scrollbar {
