@@ -315,49 +315,119 @@
         }
 
         .companies-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .company-list-container {
-            padding: 24px;
-        }
-
-        .company-list-container:first-child {
-            border-right: 1px solid var(--border-color);
+            padding: 20px 24px 24px;
         }
 
         .company-list-header {
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             color: var(--text-gray);
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .company-list-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, var(--border-color), transparent);
         }
 
         .company-list {
             list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .company-item {
-            font-size: 14px;
-            color: var(--text-dark);
-            padding: 6px 0;
-            border-bottom: 1px solid #f3f4f6;
+        .company-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px 8px 8px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-chip::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(13, 61, 68, 0.06), rgba(16, 185, 129, 0.06));
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+
+        .company-chip:hover {
+            border-color: #0d3d44;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 61, 68, 0.15);
+        }
+
+        .company-chip:hover::before {
+            opacity: 1;
+        }
+
+        .company-chip:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(13, 61, 68, 0.1);
+        }
+
+        .company-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
         }
 
-        .company-item:last-child {
-            border-bottom: none;
+        .company-avatar.ng {
+            background: linear-gradient(135deg, #0d3d44, #10b981);
         }
 
-        .rank {
-            color: var(--text-gray);
-            font-size: 12px;
-            width: 24px;
-            display: inline-block;
+        .company-avatar.gl {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+        }
+
+        .company-chip-name {
+            position: relative;
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .company-chip-arrow {
+            margin-left: 2px;
+            font-size: 10px;
+            color: #9ca3af;
+            transition: all 0.25s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .company-chip:hover .company-chip-arrow {
+            color: #0d3d44;
+            transform: translateX(2px);
         }
 
         /* Explore More Button */
@@ -383,6 +453,29 @@
             color: var(--text-dark);
         }
 
+        /* Show More Button */
+        .btn-show-more {
+            margin-top: 12px;
+            background: transparent;
+            border: 1px dashed #e5e7eb;
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-show-more:hover {
+            border-color: #9ca3af;
+            color: #374151;
+            background: #f9fafb;
+        }
+
         /* Mobile */
         @media (max-width: 768px) {
 
@@ -396,20 +489,18 @@
             }
 
             .companies-grid {
-                grid-template-columns: 1fr;
+                padding: 16px;
             }
 
-            .company-list-container:first-child {
-                border-right: none;
-                border-bottom: 1px solid var(--border-color);
+            .company-chip {
+                font-size: 12px;
+                padding: 6px 12px 6px 6px;
             }
 
-            .page-title {
-                font-size: 24px;
-            }
-
-            .sector-desc {
-                display: none;
+            .company-avatar {
+                width: 24px;
+                height: 24px;
+                font-size: 10px;
             }
 
             /* Mobile Header */
@@ -875,11 +966,14 @@
         <!-- DATA BANKS VIEW -->
         <div id="dataRoomView">
             <!-- Mobile Header (Visible only on mobile) -->
-            <div class="mobile-header-bar" style="display: none;">
-                <a href="dashboard.html" style="text-decoration: none; color: inherit; font-weight: 600;">
-                    <i class="fas fa-arrow-left"></i> Back
-                </a>
-                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="height: 24px;">
+            <div class="mobile-header-bar"
+                style="display: none; height: 56px; padding: 0 16px; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e7eb; background: #fff;">
+                <button class="mobile-menu-btn" onclick="toggleMobileContentMenu(event)"
+                    style="background:none; border:none; font-size: 20px; color: #111827; cursor:pointer; padding: 0;">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div style="font-weight: 600; font-size: 16px; color: #111827;">Investor Management</div>
+                <div style="width: 20px;"></div> <!-- Spacer -->
             </div>
 
             <!-- Page Header -->
@@ -894,8 +988,24 @@
                     <i class="fas fa-search search-icon"></i>
                     <input type="text" class="search-input" placeholder="Search">
                 </div>
-                <div class="filter-dropdown">
-                    Status <i class="fas fa-chevron-down" style="font-size: 12px; margin-left: auto;"></i>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <div class="filter-dropdown">
+                        Status <i class="fas fa-chevron-down" style="font-size: 12px; margin-left: auto;"></i>
+                    </div>
+                    <div style="position: relative;">
+                        <button class="icon-filter-btn" onclick="toggleInterestFilter(event)" title="Filter Interests">
+                            <i class="fas fa-sliders-h"></i>
+                        </button>
+                        <!-- Interest Filter Dropdown -->
+                        <div id="interestFilterDropdown" class="interest-dropdown" style="display: none;">
+                            <div class="filter-dropdown-header">Filter Interests</div>
+                            <div class="filter-options" id="interestOptionsContainer"></div>
+                            <div class="filter-dropdown-footer">
+                                <button class="btn-reset" onclick="resetInterestFilter()">Reset</button>
+                                <button class="btn-apply" onclick="toggleInterestFilter(event)">Done</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -904,13 +1014,7 @@
                 <!-- Selected Sectors render here -->
             </div>
 
-            <!-- Explore More -->
-            <div style="margin-top: 24px;">
-                <button class="explore-trigger" onclick="toggleExplore()">
-                    <i class="fas fa-plus"></i> Open more sections
-                </button>
-                <div id="exploreContainer" style="display: none; margin-top: 24px;"></div>
-            </div>
+
         </div>
 
         <!-- PEOPLE VIEW (Hidden by default) -->
@@ -1910,19 +2014,72 @@
 
 
 
+            function showMoreCompanies(btn, increment) {
+                const container = btn.parentElement;
+
+                // If button is in "Show Less" mode
+                if (btn.classList.contains('show-less-mode')) {
+                    const allItems = container.querySelectorAll('.company-chip');
+                    // Hide all beyond first 8
+                    allItems.forEach((item, index) => {
+                        if (index >= 8) item.style.display = 'none';
+                    });
+
+                    btn.innerHTML = `<i class="fas fa-chevron-down"></i> Show more (${allItems.length - 8} remaining)`;
+                    btn.classList.remove('show-less-mode');
+                    return;
+                }
+
+                // Show more logic
+                const hiddenItems = container.querySelectorAll('.company-chip[style*="display: none"]');
+                let count = 0;
+
+                hiddenItems.forEach(item => {
+                    if (count < increment) {
+                        item.style.display = 'inline-flex';
+                        count++;
+                    }
+                });
+
+                const remainingHidden = container.querySelectorAll('.company-chip[style*="display: none"]').length;
+
+                if (remainingHidden === 0) {
+                    btn.innerHTML = `<i class="fas fa-chevron-up"></i> Show less`;
+                    btn.classList.add('show-less-mode');
+                } else {
+                    btn.innerHTML = `<i class="fas fa-chevron-down"></i> Show more (${remainingHidden} remaining)`;
+                }
+            }
+
             function renderSector(sectorName) {
                 const data = companyData[sectorName];
                 if (!data) return '';
 
-                let nigerianHtml = '';
-                data.nigerian.forEach((company, index) => {
-                    nigerianHtml += `<li class="company-item"><span class="rank">${index + 1}</span> ${company}</li>`;
-                });
+                function getInitials(name) {
+                    return name.split(/[\s&()]+/).filter(w => w.length > 0).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+                }
 
-                let globalHtml = '';
-                data.global.forEach((company, index) => {
-                    globalHtml += `<li class="company-item"><span class="rank">${index + 21}</span> ${company}</li>`;
-                });
+                function renderList(items, type) {
+                    let html = '';
+                    const initialLimit = 8;
+                    items.forEach((company, index) => {
+                        const displayStyle = index >= initialLimit ? 'display: none' : '';
+                        html += `<a href="construction.html" class="company-chip" title="View ${company}" style="${displayStyle}">
+                            <span class="company-avatar ${type}">${getInitials(company)}</span>
+                            <span class="company-chip-name">${company}</span>
+                            <i class="fas fa-arrow-right company-chip-arrow"></i>
+                        </a>`;
+                    });
+                    return html;
+                }
+
+                const nigerianHtml = renderList(data.nigerian, 'ng');
+                const globalHtml = renderList(data.global, 'gl');
+
+                const showMoreBtn = (count) => count > 8 ?
+                    `<button class="btn-show-more" onclick="showMoreCompanies(this, 10)">
+                        <i class="fas fa-chevron-down"></i> Show more (${count - 8} remaining)
+                     </button>` : '';
 
                 return `
                 <div class="sector-section">
@@ -1932,13 +2089,15 @@
                         <div class="sector-desc">${data.desc}</div>
                     </div>
                     <div class="companies-grid">
-                        <div class="company-list-container">
-                            <div class="company-list-header">Nigerian Focus (1-20)</div>
-                            <ul class="company-list">${nigerianHtml}</ul>
+                        <div class="company-group-wrapper">
+                            <div class="company-list-header">🇳🇬 Nigerian Focus</div>
+                            <div class="company-list">${nigerianHtml}</div>
+                            ${showMoreBtn(data.nigerian.length)}
                         </div>
-                        <div class="company-list-container">
-                            <div class="company-list-header">Global Leaders (21-50)</div>
-                            <ul class="company-list">${globalHtml}</ul>
+                        <div class="company-group-wrapper" style="margin-top: 20px;">
+                            <div class="company-list-header">🌍 Global Leaders</div>
+                            <div class="company-list">${globalHtml}</div>
+                            ${showMoreBtn(data.global.length)}
                         </div>
                     </div>
                 </div>
@@ -1995,39 +2154,7 @@
                     });
                 }
 
-                const storedInterests = localStorage.getItem('neiis_selected_interests');
-                let selectedInterests = storedInterests ? JSON.parse(storedInterests) : [];
-                // Ensure we match data keys
-                const dataKeys = Object.keys(companyData);
 
-                // Simple normalization/matching if needed (assuming user selections match keys)
-
-                const container = document.getElementById('companyContentArea');
-                const exploreContainer = document.getElementById('exploreContainer');
-
-                let hasSelection = false;
-                selectedInterests.forEach(sector => {
-                    if (companyData[sector]) {
-                        container.innerHTML += renderSector(sector);
-                        hasSelection = true;
-                    }
-                });
-
-                if (!hasSelection) {
-                    // display something or everything
-                    dataKeys.slice(0, 1).forEach(sector => container.innerHTML += renderSector(sector));
-                }
-
-                // Unselected
-                dataKeys.forEach(sector => {
-                    if (!selectedInterests.includes(sector) && (hasSelection || sector !== dataKeys[0])) {
-                        exploreContainer.innerHTML += renderSector(sector);
-                    }
-                });
-
-                if (selectedInterests.length === dataKeys.length) {
-                    document.querySelector('.explore-trigger').style.display = 'none';
-                }
 
                 // Dynamic Team Data Population
                 const teamNameEl = document.querySelector('.dynamic-team-name');
@@ -2061,17 +2188,104 @@
                 if (settingsDescInput) settingsDescInput.value = `The ${storedOrgName} Investor Portal is powered by AngelList. Here you can access all your files, manage transactions, and see latest insights and data from our organization.`;
             });
 
-            function toggleExplore() {
-                const container = document.getElementById('exploreContainer');
-                const btn = document.querySelector('.explore-trigger');
-                if (container.style.display === 'none') {
-                    container.style.display = 'block';
-                    btn.innerHTML = '<i class="fas fa-minus"></i> Hide sections';
+            // NEW: Interest Filter Logic
+
+            // State
+            const allSectors = Object.keys(companyData);
+
+            // Load from localStorage or use default
+            let visibleSectors;
+            const savedSectors = localStorage.getItem('dataroom_visible_sectors');
+            if (savedSectors) {
+                try {
+                    visibleSectors = new Set(JSON.parse(savedSectors));
+                } catch (e) {
+                    visibleSectors = new Set(['Oil and Gas', 'Electricity & Utilities', 'Renewable Energy']);
+                }
+            } else {
+                visibleSectors = new Set(['Oil and Gas', 'Electricity & Utilities', 'Renewable Energy']);
+            }
+
+            function renderVisibleSectors() {
+                const container = document.getElementById('companyContentArea');
+                if (!container) return;
+                container.innerHTML = '';
+
+                // Sort by default order in companyData keys if possible, or just append
+                const orderedSectors = allSectors.filter(s => visibleSectors.has(s));
+
+                orderedSectors.forEach(sector => {
+                    container.innerHTML += renderSector(sector);
+                });
+            }
+
+            // Initialize view
+            renderVisibleSectors();
+
+            function toggleInterestFilter(event) {
+                event.stopPropagation();
+                const dropdown = document.getElementById('interestFilterDropdown');
+                const btn = event.currentTarget.closest('.icon-filter-btn');
+
+                if (dropdown.style.display === 'none') {
+                    // Render options if empty
+                    const container = document.getElementById('interestOptionsContainer');
+                    if (container.children.length === 0) {
+                        renderInterestOptions();
+                    }
+
+                    dropdown.style.display = 'block';
+                    if (btn) btn.classList.add('active');
                 } else {
-                    container.style.display = 'none';
-                    btn.innerHTML = '<i class="fas fa-plus"></i> Open more sections';
+                    dropdown.style.display = 'none';
+                    const activeBtn = document.querySelector('.icon-filter-btn.active');
+                    if (activeBtn) activeBtn.classList.remove('active');
                 }
             }
+
+            function renderInterestOptions() {
+                const container = document.getElementById('interestOptionsContainer');
+                container.innerHTML = allSectors.map(sector => `
+                    <label class="filter-option-row">
+                        <input type="checkbox" style="display:none;" 
+                            value="${sector}" 
+                            ${visibleSectors.has(sector) ? 'checked' : ''}
+                            onchange="toggleSectorVisibility('${sector}', this.checked)">
+                        <span class="custom-checkbox"></span>
+                        <span class="option-label">${sector}</span>
+                    </label>
+                `).join('');
+            }
+
+            function toggleSectorVisibility(sector, isVisible) {
+                if (isVisible) {
+                    visibleSectors.add(sector);
+                } else {
+                    visibleSectors.delete(sector);
+                }
+                localStorage.setItem('dataroom_visible_sectors', JSON.stringify([...visibleSectors]));
+                renderVisibleSectors();
+            }
+
+            function resetInterestFilter() {
+                visibleSectors = new Set(['Oil and Gas', 'Electricity & Utilities', 'Renewable Energy']);
+                localStorage.setItem('dataroom_visible_sectors', JSON.stringify([...visibleSectors]));
+                renderVisibleSectors();
+                renderInterestOptions();
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                const dropdown = document.getElementById('interestFilterDropdown');
+                const btn = document.querySelector('.icon-filter-btn');
+
+                if (dropdown && dropdown.style.display !== 'none' &&
+                    !dropdown.contains(e.target) &&
+                    btn && !btn.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                    btn.classList.remove('active');
+                }
+            });
         </script>
 </body>
 
@@ -2536,6 +2750,130 @@
         margin: 8px 0;
     }
 
+    /* Interest Filter Styles */
+    .icon-filter-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
+        background: white;
+        color: #6b7280;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        margin-left: 10px;
+    }
+
+    .icon-filter-btn:hover,
+    .icon-filter-btn.active {
+        border-color: #9ca3af;
+        color: #374151;
+        background: #f9fafb;
+    }
+
+    .interest-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 4px;
+        width: 280px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+        overflow: hidden;
+    }
+
+    .filter-dropdown-header {
+        padding: 12px 16px;
+        border-bottom: 1px solid #f3f4f6;
+        font-size: 13px;
+        font-weight: 600;
+        color: #111827;
+        background: #f9fafb;
+    }
+
+    .filter-options {
+        padding: 8px 0;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .filter-option-row {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 8px 16px;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+
+    .filter-option-row:hover {
+        background: #f3f4f6;
+    }
+
+    .option-label {
+        font-size: 13px;
+        color: #374151;
+    }
+
+    .custom-checkbox {
+        width: 16px;
+        height: 16px;
+        border: 1.5px solid #d1d5db;
+        border-radius: 4px;
+        position: relative;
+        transition: all 0.2s;
+    }
+
+    input[type="checkbox"]:checked+.custom-checkbox {
+        background: #0d3d44;
+        border-color: #0d3d44;
+    }
+
+    input[type="checkbox"]:checked+.custom-checkbox::after {
+        content: '';
+        position: absolute;
+        width: 4px;
+        height: 8px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .filter-dropdown-footer {
+        padding: 12px 16px;
+        border-top: 1px solid #f3f4f6;
+        display: flex;
+        justify-content: space-between;
+        background: #f9fafb;
+    }
+
+    .btn-reset {
+        font-size: 12px;
+        color: #6b7280;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-apply {
+        font-size: 12px;
+        font-weight: 600;
+        color: white;
+        background: #0d3d44;
+        padding: 6px 12px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+    }
+
     .popup-item {
         display: block;
         padding: 8px 20px;
@@ -2548,6 +2886,97 @@
     .popup-item:hover {
         background: #f9fafb;
         color: #111827;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+        .page-header {
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            margin-bottom: 16px !important;
+            gap: 12px;
+        }
+
+        .page-title {
+            font-size: 20px !important;
+            margin-bottom: 0 !important;
+        }
+
+        .create-btn {
+            font-size: 13px !important;
+            padding: 8px 12px !important;
+            white-space: nowrap;
+        }
+
+        .filter-bar {
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 10px !important;
+            flex-wrap: wrap;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        /* Ensure dropdowns fit on screen */
+        .status-dropdown,
+        .interest-dropdown {
+            left: 0;
+            right: auto;
+            width: 90vw;
+            max-width: 300px;
+        }
+
+        .interest-dropdown {
+            right: 0;
+            left: auto;
+            /* Keep right aligned but constrain width */
+        }
+    }
+
+    /* Mobile Sidebar Styles */
+    @media (max-width: 768px) {
+        .context-sidebar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 260px !important;
+            background: #fff;
+            z-index: 1000;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            display: flex !important;
+            /* Force display flex but hidden via transform */
+            flex-direction: column;
+        }
+
+        .context-sidebar.mobile-open {
+            transform: translateX(0);
+        }
+
+        /* Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
     }
 </style>
 
@@ -2633,7 +3062,7 @@
         document.querySelectorAll('.profile-popup').forEach(p => p.classList.remove('visible'));
     }
 
-    // Close on outside click
+    // Close on outside click for popups
     document.addEventListener('click', function (event) {
         const popups = document.querySelectorAll('.profile-popup.visible');
         popups.forEach(popup => {
@@ -2641,7 +3070,35 @@
                 popup.classList.remove('visible');
             }
         });
+
+        // Mobile Sidebar Close on Overlay Click
+        const sidebar = document.querySelector('.context-sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        if (overlay && overlay.classList.contains('active') && overlay.contains(event.target)) {
+            toggleMobileContentMenu();
+        }
     });
+
+    // Mobile Menu Logic
+    function toggleMobileContentMenu(event) {
+        if (event) event.stopPropagation();
+        const sidebar = document.querySelector('.context-sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+
+        if (!overlay) {
+            // Lazy create overlay if missing
+            const ov = document.createElement('div');
+            ov.className = 'sidebar-overlay';
+            ov.onclick = () => toggleMobileContentMenu();
+            document.body.appendChild(ov);
+            // Re-select
+            setTimeout(() => toggleMobileContentMenu(), 10);
+            return;
+        }
+
+        sidebar.classList.toggle('mobile-open');
+        overlay.classList.toggle('active');
+    }
 </script>
 </body>
 
