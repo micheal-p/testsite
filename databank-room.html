@@ -804,13 +804,14 @@
             <span class="nav-label">Investor Management</span>
         </div>
 
-        <div class="icon-nav-item" title="Apps">
+        <a href="databank/deals.html" class="icon-nav-item" title="Deal and investment"
+            style="text-decoration: none; width: 100%; justify-content: flex-start; padding-left: 12px; box-sizing: border-box;">
             <div
                 style="width: 36px; height: 36px; min-width: 36px; display: flex; align-items: center; justify-content: center;">
                 <i class="fas fa-th-large"></i>
             </div>
-            <span class="nav-label">Explore more apps</span>
-        </div>
+            <span class="nav-label" style="white-space: nowrap; margin-left: 8px;">Deal and investment</span>
+        </a>
 
         <div class="icon-nav-bottom" style="position: relative;">
             <!-- User Profile -->
@@ -1784,6 +1785,7 @@
             }
         </style>
 
+        <script src="js/company-data.js"></script>
         <script>
             // View Switching Logic
             function showSection(sectionId) {
@@ -1894,123 +1896,6 @@
             }
 
             // Company Data
-            const companyData = {
-                "Oil and Gas": {
-                    icon: "fa-gas-pump",
-                    style: "sector-oil",
-                    desc: "Fossil Fuels backbone.",
-                    nigerian: [
-                        "NNPC Ltd", "Seplat Energy", "Aradel Holdings", "Oando PLC", "Shell Nigeria (SPDC)",
-                        "TotalEnergies Marketing", "Conoil PLC", "MRS Oil", "Eterna PLC", "11 PLC (Mobil)",
-                        "Famfa Oil", "Sahara Group", "Niger Delta Petroleum", "Lekoil", "Neconde",
-                        "Matrix Energy", "Petrolex", "Shoreline Natural Resources", "AMNI Petroleum", "Aiteo"
-                    ],
-                    global: [
-                        "ExxonMobil", "Chevron", "Shell PLC", "BP", "Saudi Aramco",
-                        "TotalEnergies", "Petrobras", "Eni", "Equinor", "ConocoPhillips",
-                        "Occidental Petroleum", "Valero Energy", "Marathon Petroleum", "Phillips 66", "Halliburton",
-                        "Schlumberger (SLB)", "Baker Hughes", "Cheniere Energy", "Enbridge", "TC Energy",
-                        "Woodside Energy", "CNOOC", "Petronas", "Lukoil", "Repsol", "Gazprom", "Hess Corp"
-                    ]
-                },
-                "Electricity & Utilities": {
-                    icon: "fa-bolt",
-                    style: "sector-elec",
-                    desc: "GenCos, DisCos, and grid.",
-                    nigerian: [
-                        "Geregu Power", "Transcorp Power", "Egbin Power PLC", "Ikeja Electric", "Eko DisCo",
-                        "Mainstream Energy", "Abuja DisCo (AEDC)", "Benin DisCo (BEDC)", "Enugu DisCo", "Ibadan DisCo",
-                        "Azura-Edo Power", "First Independent Power", "Sapele Power", "Ibom Power", "Kaduna DisCo",
-                        "Port Harcourt DisCo", "Yola DisCo", "Kano DisCo", "Jos DisCo", "Niger Delta Power (NDPHC)"
-                    ],
-                    global: [
-                        "NextEra Energy", "Duke Energy", "Southern Company", "Enel", "Iberdrola",
-                        "National Grid", "Engie", "EDF (France)", "Constellation Energy", "American Electric Power",
-                        "Dominion Energy", "Exelon", "PG&E", "Vistra Corp", "Ørsted",
-                        "RWE", "SSE PLC", "Fortum", "AES Corp", "E.ON",
-                        "Xcel Energy", "Entergy", "Consolidated Edison", "Public Service Enterprise Group"
-                    ]
-                },
-                "Renewable Energy": {
-                    icon: "fa-solar-panel",
-                    style: "sector-renew",
-                    desc: "DARES program scale-up.",
-                    nigerian: [
-                        "Daystar Power", "Starsight Energy", "Arnergy", "Lumos Nigeria", "Auxano Solar",
-                        "Rensource Energy", "Havenhill Systems", "GVE Projects", "Rubitec Solar", "Solntra Energy",
-                        "Creeds Energy", "Aspire Power", "Blue Camel Energy", "D.light Nigeria", "Baobab Plus",
-                        "A4&T Power", "Green Village Electricity", "Nayo Tropical Tech", "Prado Power", "Sosai Renewables"
-                    ],
-                    global: [
-                        "Brookfield Renewable", "First Solar", "SolarEdge", "Enphase Energy", "Vestas",
-                        "Canadian Solar", "JinkoSolar", "Sunrun", "Orsted (Wind)", "Nordex",
-                        "Plug Power (Hydrogen)", "Bloom Energy", "Siemens Gamesa", "Meyer Burger", "TPI Composites",
-                        "Scatec", "Acciona Energia", "Neoen", "EDP Renovaveis", "Shoals Technologies",
-                        "Clearway Energy", "Atlantica Sustainable Infrastructure", "Boralex"
-                    ]
-                },
-                "Nuclear Energy": {
-                    icon: "fa-atom",
-                    style: "sector-nuc",
-                    desc: "Niche strategic sector.",
-                    nigerian: [
-                        "NAEC (Atomic Energy Comm.)", "Nig. Nuclear Regulatory Authority", "Rosatom Nigeria", "Center for Energy Research Zaria", "FGN Nuclear Fund",
-                        "KAERI Nigeria", "Nigerian Uranium Mining Co", "NNPC New Energy Division", "NASENI", "Julius Berger (Nuclear Infra)",
-                        "Etco Nigeria", "ABB Nigeria", "GE Vernova Nigeria"
-                    ],
-                    global: [
-                        "Cameco Corp", "BWX Technologies", "Westinghouse", "TerraPower", "NuScale Power",
-                        "Kazatomprom", "Denison Mines", "NexGen Energy", "Energy Fuels", "Uranerz",
-                        "Mitsubishi Heavy Industries", "Hitachi-GE", "Rolls-Royce SMR", "Framatome", "Centrus Energy",
-                        "Uranium Energy Corp", "Paladin Energy", "Yellow Cake PLC", "Jacobs Solutions"
-                    ]
-                },
-                "Energy Storage": {
-                    icon: "fa-battery-full",
-                    style: "sector-store",
-                    desc: "Mini-grid revolution.",
-                    nigerian: [
-                        "Arnergy (Storage Div)", "Zola Electric", "PowerGen Renewable", "All On (Investor)", "Sterling Bank (Green Bond)",
-                        "Koolboks", "SunFi", "Beacon Power Services", "Infibranches", "Reeddi",
-                        "Gennex Technologies", "Simba Power", "Wavetra", "Jubaili Bros"
-                    ],
-                    global: [
-                        "Tesla (Powerwall)", "BYD", "CATL", "Fluence Energy", "Stem Inc",
-                        "LG Energy Solution", "Samsung SDI", "Panasonic", "QuantumScape", "Solid Power",
-                        "Albemarle (Lithium)", "Ganfeng Lithium", "Sigma Lithium", "ESS Tech", "Eos Energy"
-                    ]
-                },
-                "Smart Grid": {
-                    icon: "fa-network-wired",
-                    style: "sector-grid",
-                    desc: "Modern transmission network.",
-                    nigerian: [
-                        "TCN (Transmission Co.)", "MainData Nigeria", "Beacon Power", "Cloud Energy", "Power Control Ltd",
-                        "Metering Services Ltd", "Mojec International", "Unistar Hi-Tech", "Momas Electricity", "Adroit Metering",
-                        "Resourcery", "Zinox (Smart Power)", "CWG PLC", "MainOne (Equinix)", "VDT Communications"
-                    ],
-                    global: [
-                        "Schneider Electric", "Siemens AG", "GE Vernova", "ABB", "Itron",
-                        "Landis+Gyr", "Eaton", "Rockwell Automation", "Quanta Services", "Hubbell",
-                        "Honeywell", "Oracle (Utilities)", "Cisco (Smart Grid)", "SAP (Energy)", "Emerson Electric"
-                    ]
-                },
-                "Bioenergy": {
-                    icon: "fa-leaf",
-                    style: "sector-bio",
-                    desc: "Biomass and biofuels.",
-                    nigerian: [
-                        "Dangote Sugar (Ethanol)", "BUA Foods (Biofuel)", "Green Energy Biofuels", "Homefort", "Gas360",
-                        "West Africa ENRG", "Carbon Circles", "Aiteo (Bio-division)", "Flour Mills of Nig", "Presco PLC",
-                        "Okomu Oil", "Notore Chemical", "Golden Sugar", "Global Biofuels Nig"
-                    ],
-                    global: [
-                        "Archer-Daniels-Midland (ADM)", "Darling Ingredients", "Neste", "Drax Group", "Enviva",
-                        "Green Plains", "Renewable Energy Group", "Verbio", "Gevo", "Amyris",
-                        "Pacific Bioenergy", "Enerkem", "Lignetics", "POET", "Babcock & Wilcox"
-                    ]
-                }
-            };
 
 
 
@@ -2064,7 +1949,7 @@
                     const initialLimit = 8;
                     items.forEach((company, index) => {
                         const displayStyle = index >= initialLimit ? 'display: none' : '';
-                        html += `<a href="construction.html" class="company-chip" title="View ${company}" style="${displayStyle}">
+                        html += `<a href="databank/company-profile.html?company=${encodeURIComponent(company)}" class="company-chip" title="View ${company}" style="${displayStyle}">
                             <span class="company-avatar ${type}">${getInitials(company)}</span>
                             <span class="company-chip-name">${company}</span>
                             <i class="fas fa-arrow-right company-chip-arrow"></i>

@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile - NEIIA Databank</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            /* Palette - Clean Light Theme */
+            --bg-dark: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent: #2563eb;
+            --accent-glow: rgba(37, 99, 235, 0.2);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+
+            --glass: none;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Typography */
+        h1,
+        h2,
+        h3,
+        .brand-font {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #000000;
+            color: white;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            z-index: 100;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .nav-menu {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+        }
+
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        /* Access Button */
+        .access-btn {
+            background: linear-gradient(135deg, var(--accent), #2563eb);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--accent-glow);
+            transition: transform 0.2s;
+        }
+
+        .access-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Main Area */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 40px;
+            padding-bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -32px;
+            left: 40px;
+            right: 40px;
+            height: 1px;
+            background: linear-gradient(to right, var(--border), transparent);
+        }
+
+        .company-title h1 {
+            font-size: 42px;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .company-meta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .badge {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .badge-verified {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .badge-sector {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .stat-block {
+            text-align: right;
+        }
+
+        .stat-val {
+            font-family: 'Space Grotesk';
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Grid System */
+        .content-grid {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .b-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .b-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            background: var(--bg-card-hover);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-icon {
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .text-content {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #cbd5e1;
+            white-space: pre-line;
+        }
+
+        /* Metric List */
+        .metric-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: var(--bg-card-hover);
+            border-radius: 8px;
+        }
+
+        .metric-name {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .metric-num {
+            font-family: 'Space Grotesk';
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .trend-badge {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trend-up {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+        }
+
+        .trend-down {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+        }
+
+        /* Risk Cards */
+        .risk-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .risk-pill {
+            padding: 12px;
+            border-radius: 8px;
+            background: var(--bg-card-hover);
+            border-left: 3px solid #64748b;
+        }
+
+        .risk-high {
+            border-left-color: var(--danger);
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.05), transparent);
+        }
+
+        .risk-med {
+            border-left-color: var(--warning);
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.05), transparent);
+        }
+
+        .risk-low {
+            border-left-color: var(--text-muted);
+        }
+
+        .risk-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .risk-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .risk-impact {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Timeline */
+        .timeline-box {
+            padding-left: 12px;
+            border-left: 1px solid var(--border);
+        }
+
+        .t-item {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .t-item::before {
+            content: '';
+            position: absolute;
+            left: -16px;
+            top: 6px;
+            width: 7px;
+            height: 7px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .t-date {
+            font-size: 11px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .t-event {
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        /* Chart Container */
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Team */
+        .team-strip {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+            margin-top: 12px;
+        }
+
+        .member-card {
+            min-width: 140px;
+            background: var(--bg-card);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .member-role {
+            font-size: 10px;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .member-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                overflow: auto;
+                height: auto;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                position: sticky;
+                top: 0;
+                background: #0f1115;
+            }
+
+            .hero {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px;
+                padding: 24px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="logo-area">
+            <i class="fas fa-layer-group" style="color: var(--accent);"></i> <span id="uiSidebarName">NEIIA Data</span>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+            <a href="../databank-room.html"
+                style="color: var(--text-muted); text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 8px; transition: color 0.2s;">
+                <i class="fas fa-arrow-left"></i> Back to Room
+            </a>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="#" class="nav-item active" onclick="switchTab('overview')"><i class="fas fa-columns"></i>
+                Highlights</a>
+            <a href="#" class="nav-item" onclick="switchTab('financials')"><i class="fas fa-chart-bar"></i>
+                Financials</a>
+            <a href="#" class="nav-item" onclick="switchTab('report')"><i class="fas fa-file-alt"></i> Intelligence</a>
+            <a href="#" class="nav-item" onclick="switchTab('risks')"><i class="fas fa-shield-alt"></i> Risk Profile</a>
+        </nav>
+
+        <button class="access-btn"
+            onclick="window.location.href='deals.html?request_deal=' + encodeURIComponent(companyName)">Request Deal
+            Access</button>
+    </aside>
+
+    <main class="main-content">
+        <header class="hero">
+            <div class="company-title">
+                <h1><span id="uiHeaderName">Loading...</span></h1>
+                <div class="company-meta">
+                    <span class="badge badge-verified"><i class="fas fa-check-circle"></i> Verified Asset</span>
+                    <span class="badge badge-sector" id="uiSectorContext">Energy</span>
+                </div>
+            </div>
+            <div class="stat-block">
+                <div class="stat-val" id="uiHeaderValuation">...</div>
+                <div class="stat-label">Est. Valuation</div>
+            </div>
+        </header>
+
+        <!-- HIGHLIGHTS TAB -->
+        <div id="tab-overview" class="tab-content active">
+            <div class="content-grid">
+                <!-- Col 1 -->
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    <div class="b-card">
+                        <div class="card-header">
+                            <div class="card-title">Investment Thesis</div>
+                            <i class="fas fa-lightbulb card-icon"></i>
+                        </div>
+                        <p id="uiThesis" class="text-content" style="color: var(--text-main);">Loading...</p>
+                    </div>
+
+                    <div class="b-card">
+                        <div class="card-header">
+                            <div class="card-title">Growth Trajectory</div>
+                            <div style="display: flex; gap: 8px;">
+                                <span class="badge badge-sector">Revenue</span>
+                                <span class="badge badge-sector">EBITDA</span>
+                            </div>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="growthChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Col 2 -->
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    <div class="b-card">
+                        <div class="card-header">
+                            <div class="card-title">Key Performance</div>
+                        </div>
+                        <div class="metric-list">
+                            <div class="metric-item">
+                                <span class="metric-name">Annual Revenue</span>
+                                <div style="text-align: right;">
+                                    <div class="metric-num" id="uiRevenue">...</div>
+                                    <div class="trend-badge trend-up" id="uiRevGrowth"><i class="fas fa-arrow-up"></i>
+                                        ...</div>
+                                </div>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-name">EBITDA Margin</span>
+                                <div style="text-align: right;">
+                                    <div class="metric-num" id="uiMargin">...</div>
+                                    <div class="trend-badge trend-up"><i class="fas fa-arrow-up"></i> Expanding</div>
+                                </div>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-name">Burn Rate</span>
+                                <div style="text-align: right;">
+                                    <div class="metric-num" id="uiBurn">...</div>
+                                    <span class="trend-badge"
+                                        style="background: rgba(255,255,255,0.1); color: #94a3b8;">Stable</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="b-card">
+                        <div class="card-header">
+                            <div class="card-title">Recent Activity</div>
+                        </div>
+                        <div class="timeline-box" id="uiMilestones">
+                            <!-- Dynamic -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FINANCIALS TAB -->
+        <div id="tab-financials" class="tab-content">
+            <div class="content-grid">
+                <div class="b-card" style="grid-column: 1 / -1;">
+                    <div class="card-header">
+                        <div class="card-title">Financial Performance</div>
+                    </div>
+                    <div class="chart-wrapper" style="height: 400px;">
+                        <canvas id="financialChart"></canvas>
+                    </div>
+                    <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+                        <h3 style="font-size: 14px; color: var(--text-main); margin-bottom: 8px;">Performance Analysis
+                        </h3>
+                        <p id="uiFinancialAnalysis" class="text-content" style="color: var(--text-main);">Loading
+                            analysis...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTELLIGENCE TAB -->
+        <div id="tab-report" class="tab-content">
+            <div class="content-grid">
+                <div class="b-card" style="grid-column: 1 / -1;">
+                    <div class="card-header">
+                        <div class="card-title">Market Opportunity</div>
+                        <button class="access-btn" style="padding: 8px 16px; font-size: 13px;"><i
+                                class="fas fa-download"></i> Full Report</button>
+                    </div>
+                    <p id="uiMarketOpp" class="text-content" style="color: var(--text-main);">Loading market data...</p>
+                </div>
+
+                <!-- Additional generic intelligence placeholder -->
+                <div class="b-card">
+                    <div class="card-header">
+                        <div class="card-title">Competitive Landscape</div>
+                    </div>
+                    <p class="text-content" style="color: var(--text-main);">
+                        Primary competitors include regional players and international conglomerates.
+                        <span id="uiCompName">The Company</span> maintains a competitive edge through proprietary
+                        technology and exclusive government contracts.
+                    </p>
+                </div>
+                <div class="b-card">
+                    <div class="card-header">
+                        <div class="card-title">Regulatory Environment</div>
+                    </div>
+                    <p class="text-content" style="color: var(--text-main);">
+                        Operating within a favorable regulatory framework with recent government incentives for
+                        infrastructure development.
+                        Compliance rating: AAA.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- RISK TAB -->
+        <div id="tab-risks" class="tab-content">
+            <div class="content-grid">
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    <div class="b-card">
+                        <div class="card-header">
+                            <div class="card-title">Risk Analysis</div>
+                            <span class="badge badge-verified"
+                                style="background: rgba(239,68,68,0.1); color: #f87171; border-color: rgba(239,68,68,0.2);">High
+                                Priority</span>
+                        </div>
+                        <div class="risk-grid" id="uiRisks">
+                            <!-- Dynamic -->
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="b-card">
+                        <div class="card-header">
+                            <div class="card-title">Leadership Team</div>
+                        </div>
+                        <div id="uiTeam" style="display: grid; gap: 12px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="../js/company-data.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const companyName = urlParams.get('company') || "Unknown Asset";
+
+        let data = typeof getCompanyDetails === 'function' ? getCompanyDetails(companyName) : { name: companyName };
+
+        // Populate
+        document.title = `${data.name} | NEIIA Intelligence`;
+        document.getElementById('uiHeaderName').textContent = data.name;
+        document.getElementById('uiSidebarName').textContent = data.name + " Data";
+        document.getElementById('uiHeaderValuation').textContent = data.financial?.valuation || "$--M";
+        document.getElementById('uiSectorContext').textContent = data.sector_context || "Sector Leader";
+
+        document.getElementById('uiThesis').textContent = data.investment_thesis || "No thesis available.";
+
+        document.getElementById('uiRevenue').textContent = data.revenue?.current || "$--";
+        document.getElementById('uiRevGrowth').innerHTML = `<i class="fas fa-arrow-up"></i> ${data.revenue?.growth || "0%"}`;
+        document.getElementById('uiMargin').textContent = data.financial?.margin || "--%";
+        document.getElementById('uiBurn').textContent = data.financial?.burn_rate || "--";
+
+        // Financial Analysis
+        const analysisText = `<strong>${data.name}</strong> has demonstrated robust financial health with a <strong style="color: var(--success)">${data.revenue?.growth || 'steady'}</strong> year-over-year revenue increase. ` +
+            `The company's diverse revenue streams and disciplined cost management have resulted in a healthy EBITDA margin of <strong>${data.financial?.margin || '--%'}</strong>. ` +
+            `Projected performance indicates continued upward momentum as operational efficiencies scale.`;
+        if (document.getElementById('uiFinancialAnalysis')) document.getElementById('uiFinancialAnalysis').innerHTML = analysisText;
+
+        // Intelligence
+        document.getElementById('uiMarketOpp').textContent = data.market_opportunity || "Market data currently unavailable for this asset.";
+        if (document.getElementById('uiCompName')) document.getElementById('uiCompName').textContent = data.name;
+
+        // Milestones
+        const milestonesEl = document.getElementById('uiMilestones');
+        if (data.milestones) {
+            data.milestones.forEach(m => {
+                milestonesEl.innerHTML += `
+                    <div class="t-item">
+                        <div class="t-date">${m.year}</div>
+                        <div class="t-event">${m.event}</div>
+                    </div>
+                `;
+            });
+        }
+
+        // Risks
+        const risksEl = document.getElementById('uiRisks');
+        if (data.risks) {
+            data.risks.forEach(r => {
+                const levelClass = r.level === 'High' ? 'risk-high' : r.level === 'Medium' ? 'risk-med' : 'risk-low';
+                risksEl.innerHTML += `
+                    <div class="risk-pill ${levelClass}">
+                        <div class="risk-header">
+                            <span class="risk-title">${r.description || r}</span> <!-- Support old array format or new obj -->
+                             <span class="risk-impact" style="color: ${r.level === 'High' ? '#f87171' : '#94a3b8'}">${r.level || 'General'} Risk</span>
+                        </div>
+                        ${r.impact ? `<div style="font-size: 11px; color: #94a3b8;">Impact: ${r.impact}</div>` : ''}
+                    </div>
+                `;
+            });
+        }
+
+        // Team
+        const teamEl = document.getElementById('uiTeam');
+        if (data.team) {
+            data.team.forEach(t => {
+                teamEl.innerHTML += `
+                    <div class="member-card" style="width: 100%; display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 32px; height: 32px; background: rgba(59,130,246,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #60a5fa; font-weight: 700;">${t.name.charAt(0)}</div>
+                        <div>
+                             <div class="member-name">${t.name}</div>
+                             <div class="member-role">${t.role}</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Charts
+        Chart.defaults.color = '#64748b';
+        Chart.defaults.font.family = 'Inter';
+
+        const ctxGrowth = document.getElementById('growthChart').getContext('2d');
+        const gradient = ctxGrowth.createLinearGradient(0, 0, 0, 300);
+        gradient.addColorStop(0, 'rgba(59, 130, 246, 0.25)');
+        gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+
+        new Chart(ctxGrowth, {
+            type: 'line',
+            data: {
+                labels: ['2021', '2022', '2023', '2024', '2025'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: data.revenue?.history || [100, 120, 140, 180, 220],
+                    borderColor: '#3b82f6',
+                    backgroundColor: gradient,
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#0f1115',
+                    pointBorderColor: '#3b82f6',
+                    pointBorderWidth: 2,
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, border: { display: false } }
+                }
+            }
+        });
+
+        const ctxFin = document.getElementById('financialChart').getContext('2d');
+        new Chart(ctxFin, {
+            type: 'bar',
+            data: {
+                labels: ['2023', '2024', '2025 (P)', '2026 (P)'],
+                datasets: [
+                    {
+                        label: 'Revenue',
+                        data: [200, 250, 320, 410],
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 4,
+                        barPercentage: 0.6
+                    },
+                    {
+                        label: 'EBITDA',
+                        data: [40, 60, 90, 130],
+                        backgroundColor: '#10b981',
+                        borderRadius: 4,
+                        barPercentage: 0.6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, border: { display: false } }
+                }
+            }
+        });
+
+        // Tabs
+        window.switchTab = function (tabId) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+        }
+    </script>
+</body>
+
+</html>
