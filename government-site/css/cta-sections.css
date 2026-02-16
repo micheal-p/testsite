@@ -38,6 +38,7 @@
 }
 
 .w-cta-btn {
+  display: inline-block;
   background-color: #0b161a;
   color: var(--white);
   padding: var(--space-4) var(--space-8);
@@ -45,6 +46,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: opacity 0.2s;
+  text-decoration: none;
 }
 
 .w-cta-btn:hover {
@@ -62,7 +64,7 @@
   .w-cta-headline {
     font-size: 32px;
   }
-  
+
   .w-cta-card {
     padding: var(--space-12) var(--space-6);
   }
