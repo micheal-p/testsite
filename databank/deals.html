@@ -208,6 +208,116 @@
             background: #f9fafb;
         }
 
+        /* Mobile Responsive Styles */
+        @media screen and (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .icon-sidebar {
+                width: 100%;
+                height: 60px;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 0;
+                border-right: none;
+                border-top: 1px solid #333;
+                order: 3;
+                /* Move to bottom */
+                position: fixed;
+                bottom: 0;
+                z-index: 100;
+            }
+
+            .icon-nav-item {
+                margin-bottom: 0;
+            }
+
+            .context-sidebar {
+                display: none;
+                /* Hide context sidebar on mobile for now */
+            }
+
+            .main-content {
+                padding: 20px 16px;
+                margin-bottom: 60px;
+                /* Space for bottom nav */
+            }
+
+            .page-header {
+                margin-bottom: 24px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            /* Stack Table Rows */
+            .deal-table thead {
+                display: none;
+            }
+
+            .deal-table,
+            .deal-table tbody,
+            .deal-table tr,
+            .deal-table td {
+                display: block;
+                width: 100%;
+            }
+
+            .deal-table tr {
+                margin-bottom: 16px;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                padding: 12px;
+                background: #fff;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            }
+
+            .deal-table td {
+                padding: 8px 0;
+                border-bottom: none;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                text-align: right;
+            }
+
+            .deal-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--text-gray);
+                text-align: left;
+                margin-right: 12px;
+                font-size: 13px;
+            }
+
+            /* First cell (Company) specific styling */
+            .deal-table td:first-child {
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 12px;
+                margin-bottom: 8px;
+                justify-content: flex-start;
+            }
+
+            .deal-table td:first-child::before {
+                display: none;
+            }
+
+            /* Modal Responsive */
+            .modal-content {
+                width: 90%;
+                margin: 20px auto;
+                padding: 20px;
+                max-height: 85vh;
+                overflow-y: auto;
+            }
+
+            .wp-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* Print Styles */
         @media print {
             body * {
@@ -442,8 +552,8 @@
     <div class="context-sidebar">
         <div class="context-header">Deal Management</div>
         <div class="context-nav-item active">My Deals</div>
-        <div class="context-nav-item">Watchlist</div>
-        <div class="context-nav-item">Archived</div>
+        <a href="watchlist.html" class="context-nav-item">Watchlist</a>
+        <a href="watchlist.html?view=starred" class="context-nav-item">Starred</a>
     </div>
 
     <main class="main-content">
@@ -466,19 +576,20 @@
             <tbody id="dealTableBody">
                 <!-- Static Example -->
                 <tr>
-                    <td>
+                    <td data-label="Company">
                         <div class="company-cell">
                             <div class="company-logo">A</div>
                             Arnergy
                         </div>
                     </td>
-                    <td><span class="badge" style="background: #d1fae5; color: #059669;">Energy</span></td>
-                    <td>Series A</td>
-                    <td>$10M</td>
-                    <td><span class="badge status-review">Due Diligence</span></td>
-                    <td>Feb 10, 2026</td>
-                    <td>
-                        <div style="display: flex; gap: 8px;">
+                    <td data-label="Sector"><span class="badge"
+                            style="background: #d1fae5; color: #059669;">Energy</span></td>
+                    <td data-label="Stage">Series A</td>
+                    <td data-label="Deal Size">$10M</td>
+                    <td data-label="Status"><span class="badge status-review">Due Diligence</span></td>
+                    <td data-label="Last Updated">Feb 10, 2026</td>
+                    <td data-label="Action">
+                        <div style="display: flex; gap: 8px; justify-content: flex-end;">
                             <button class="action-btn" onclick="openSandbox('Arnergy')" title="Structure Deal"
                                 style="color: var(--primary-green); border-color: var(--primary-green);">
                                 <i class="fas fa-arrow-right"></i>
@@ -489,19 +600,20 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td data-label="Company">
                         <div class="company-cell">
                             <div class="company-logo">N</div>
                             NNPC
                         </div>
                     </td>
-                    <td><span class="badge" style="background: #fee2e2; color: #dc2626;">Oil and Gas</span></td>
-                    <td>Pre-IPO</td>
-                    <td>$500M</td>
-                    <td><span class="badge status-review">Due Diligence</span></td>
-                    <td>Feb 12, 2026</td>
-                    <td>
-                        <div style="display: flex; gap: 8px;">
+                    <td data-label="Sector"><span class="badge" style="background: #fee2e2; color: #dc2626;">Oil and
+                            Gas</span></td>
+                    <td data-label="Stage">Pre-IPO</td>
+                    <td data-label="Deal Size">$500M</td>
+                    <td data-label="Status"><span class="badge status-review">Due Diligence</span></td>
+                    <td data-label="Last Updated">Feb 12, 2026</td>
+                    <td data-label="Action">
+                        <div style="display: flex; gap: 8px; justify-content: flex-end;">
                             <button class="action-btn" onclick="openSandbox('NNPC')" title="Structure Deal"
                                 style="color: var(--primary-green); border-color: var(--primary-green);">
                                 <i class="fas fa-arrow-right"></i>
@@ -667,12 +779,12 @@
             companySpan.textContent = companyName;
             step1.classList.remove('hidden');
             step2.classList.add('hidden');
-            
+
             // Reset fields
             document.getElementById('investAmount').value = '';
             document.getElementById('investSignature').value = '';
             document.getElementById('investEntity').value = '';
-            
+
             modal.style.display = 'block';
         }
 
@@ -685,12 +797,12 @@
             const sig = document.getElementById('investSignature').value;
             const entity = document.getElementById('investEntity').value;
             const duration = document.getElementById('investDuration').value;
-            
-            if(!amount || !sig || !entity) {
+
+            if (!amount || !sig || !entity) {
                 alert("Please fill in all fields (Entity, Amount, Signature).");
                 return;
             }
-            
+
             // Populate White Paper
             document.getElementById('wpCompany').textContent = currentCompany;
             document.getElementById('wpEntity').textContent = entity;
@@ -710,7 +822,7 @@
         }
 
         // Close on outside click
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == modal) {
                 closeSandbox();
             }
@@ -727,7 +839,7 @@
             // Find sector from companyData
             let sector = "General";
             let badgeStyle = "background: #f3f4f6; color: #6b7280;"; // Default gray
-            
+
             for (const [key, value] of Object.entries(companyData)) {
                 if (value.nigerian.includes(newDeal) || value.global.includes(newDeal)) {
                     sector = key;
@@ -743,20 +855,21 @@
             const tbody = document.getElementById('dealTableBody');
             const row = document.createElement('tr');
             row.style.backgroundColor = "#fefce8"; // Highlight new
+            row.style.backgroundColor = "#fefce8"; // Highlight new
             row.innerHTML = `
-                <td>
+                <td data-label="Company">
                     <div class="company-cell">
                         <div class="company-logo" style="background: #e0e7ff; color: #4f46e5;">${newDeal.charAt(0)}</div>
                         ${newDeal}
                     </div>
                 </td>
-                <td><span class="badge" style="${badgeStyle}">${sector}</span></td>
-                <td>Unknown</td>
-                <td>--</td>
-                <td><span class="badge status-review">Due Diligence</span></td>
-                <td>Just now</td>
-                <td>
-                    <div style="display: flex; gap: 8px;">
+                <td data-label="Sector"><span class="badge" style="${badgeStyle}">${sector}</span></td>
+                <td data-label="Stage">Unknown</td>
+                <td data-label="Deal Size">--</td>
+                <td data-label="Status"><span class="badge status-review">Due Diligence</span></td>
+                <td data-label="Last Updated">Just now</td>
+                <td data-label="Action">
+                    <div style="display: flex; gap: 8px; justify-content: flex-end;">
                         <button class="action-btn" onclick="openSandbox('${newDeal}')" title="Structure Deal" style="color: var(--primary-green); border-color: var(--primary-green);">
                             <i class="fas fa-arrow-right"></i>
                         </button>
