@@ -515,13 +515,41 @@
 
             /* Page Header */
             .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
+                flex-direction: row !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                gap: 8px;
+                flex-wrap: nowrap !important;
+            }
+
+            .page-title {
+                font-size: 20px !important;
+                white-space: nowrap;
+                margin-bottom: 0 !important;
             }
 
             .page-header .create-btn {
-                width: 100%;
+                width: auto !important;
+                font-size: 12px !important;
+                padding: 6px 12px !important;
+                white-space: nowrap;
+                height: 32px;
+                display: flex;
+                align-items: center;
+            }
+
+            /* Hide "data bank" text on mobile */
+            .create-btn span {
+                display: none;
+            }
+
+            .create-btn::after {
+                content: "Create";
+            }
+
+            /* Hide People Table Header on Mobile */
+            .people-table-header {
+                display: none !important;
             }
 
             /* Filter Bar */
@@ -1000,7 +1028,7 @@
             <!-- Page Header -->
             <div class="page-header">
                 <h1 class="page-title">Data Banks</h1>
-                <button class="create-btn" onclick="openCreateDataRoomModal()">Create data bank</button>
+                <button class="create-btn" onclick="openCreateDataRoomModal()"><span>Create data bank</span></button>
             </div>
 
             <!-- Filter Bar -->
@@ -1040,6 +1068,17 @@
 
         <!-- PEOPLE VIEW (Hidden by default) -->
         <div id="peopleView" style="display: none; padding: 40px;">
+            <!-- Mobile Header (Visible only on mobile) -->
+            <div class="mobile-header-bar"
+                style="display: none; height: 56px; padding: 0 16px; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e7eb; background: #fff; margin: -40px -40px 24px -40px;">
+                <div style="font-weight: 600; font-size: 16px; color: #111827;">People</div>
+                <div style="flex: 1;"></div> <!-- Spacer -->
+                <button class="mobile-menu-btn" onclick="toggleMobileContentMenu(event)"
+                    style="background:none; border:none; font-size: 20px; color: #111827; cursor:pointer; padding: 0;">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
             <div class="page-header"
                 style="padding: 0; margin-bottom: 32px; border: none; flex-direction: column; align-items: flex-start;">
                 <h1 style="font-size: 24px; font-weight: 600; color: #111827; margin-bottom: 8px;">People</h1>
@@ -1085,6 +1124,17 @@
 
         <!-- TEAM VIEW (Hidden by default) -->
         <div id="teamView" style="display: none; padding: 40px;">
+            <!-- Mobile Header (Visible only on mobile) -->
+            <div class="mobile-header-bar"
+                style="display: none; height: 56px; padding: 0 16px; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e7eb; background: #fff; margin: -40px -40px 24px -40px;">
+                <div style="font-weight: 600; font-size: 16px; color: #111827;">Team</div>
+                <div style="flex: 1;"></div> <!-- Spacer -->
+                <button class="mobile-menu-btn" onclick="toggleMobileContentMenu(event)"
+                    style="background:none; border:none; font-size: 20px; color: #111827; cursor:pointer; padding: 0;">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
             <div class="page-header"
                 style="padding: 0; margin-bottom: 32px; border: none; flex-direction: column; align-items: flex-start;">
                 <h1 style="font-size: 24px; font-weight: 600; color: #111827; margin-bottom: 8px;">Team</h1>
@@ -1128,54 +1178,32 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn-new-member" onclick="openInvitePanel()">New member</button>
+                <div class="popup-email dynamic-team-email" style="font-size: 13px; color: #6b7280;"></div>
             </div>
-
-            <!-- Table Header -->
-            <div class="team-table-header"
-                style="display: grid; grid-template-columns: 2.5fr 1.5fr 1fr 1fr 1fr 0.5fr; padding: 12px 0; border-bottom: 1px solid #e5e7eb; margin-bottom: 0;">
-                <div class="th-cell">Member</div>
-                <div class="th-cell">Permissions</div>
-                <div class="th-cell">Status</div>
-                <div class="th-cell">Date added</div>
-                <div class="th-cell">Last active</div>
-                <div class="th-cell"></div>
-            </div>
-
-            <!-- User Row -->
-            <div class="team-row"
-                style="display: grid; grid-template-columns: 2.5fr 1.5fr 1fr 1fr 1fr 0.5fr; padding: 16px 0; border-bottom: 1px solid #f3f4f6; align-items: center;">
-                <div class="td-cell" style="display: flex; align-items: center; gap: 12px;">
-                    <div class="popup-avatar dynamic-team-avatar"
-                        style="width: 32px; height: 32px; font-size: 12px; background: #d1fae5; color: #065f46;"></div>
-                    <div>
-                        <div class="popup-name dynamic-team-name" style="font-size: 14px; color: #111827;"></div>
-                        <div class="popup-email dynamic-team-email" style="font-size: 13px; color: #6b7280;"></div>
-                    </div>
-                </div>
-                <div class="td-cell">
-                    <a href="#"
-                        style="color: #6b7280; font-size: 13px; text-decoration: underline; text-decoration-color: #d1d5db;">3
-                        permissions</a>
-                </div>
-                <div class="td-cell">
-                    <span
-                        style="background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">Active</span>
-                </div>
-                <div class="td-cell" style="font-size: 13px; color: #374151;">31 Jan 2026</div>
-                <div class="td-cell" style="font-size: 13px; color: #374151;">3 Feb 2026</div>
-                <div class="td-cell" style="text-align: right; color: #9ca3af; cursor: pointer; position: relative;">
-                    <i class="fas fa-ellipsis-h" onclick="toggleTeamDropdown(event)"></i>
-                    <!-- Dropdown Menu -->
-                    <div id="teamDropdown" class="team-dropdown-menu"
-                        style="display: none; position: absolute; right: 0; top: 100%; background: white; border: 1px solid #e5e7eb; border-radius: 6px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); z-index: 10; width: 160px; text-align: left; padding: 4px 0;">
-                        <div class="dropdown-item" onclick="openEditMemberPanel()"
-                            style="padding: 8px 16px; font-size: 13px; color: #374151; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-                            <i class="fas fa-pen" style="font-size: 12px; color: #6b7280;"></i> Edit details
-                        </div>
-                    </div>
+        </div>
+        <div class="td-cell">
+            <a href="#"
+                style="color: #6b7280; font-size: 13px; text-decoration: underline; text-decoration-color: #d1d5db;">3
+                permissions</a>
+        </div>
+        <div class="td-cell">
+            <span
+                style="background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">Active</span>
+        </div>
+        <div class="td-cell" style="font-size: 13px; color: #374151;">31 Jan 2026</div>
+        <div class="td-cell" style="font-size: 13px; color: #374151;">3 Feb 2026</div>
+        <div class="td-cell" style="text-align: right; color: #9ca3af; cursor: pointer; position: relative;">
+            <i class="fas fa-ellipsis-h" onclick="toggleTeamDropdown(event)"></i>
+            <!-- Dropdown Menu -->
+            <div id="teamDropdown" class="team-dropdown-menu"
+                style="display: none; position: absolute; right: 0; top: 100%; background: white; border: 1px solid #e5e7eb; border-radius: 6px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); z-index: 10; width: 160px; text-align: left; padding: 4px 0;">
+                <div class="dropdown-item" onclick="openEditMemberPanel()"
+                    style="padding: 8px 16px; font-size: 13px; color: #374151; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-pen" style="font-size: 12px; color: #6b7280;"></i> Edit details
                 </div>
             </div>
+        </div>
+        </div>
         </div>
 
         <!-- SETTINGS VIEW (Hidden by default) -->
@@ -2800,7 +2828,8 @@
             align-items: center !important;
             justify-content: space-between !important;
             margin-bottom: 16px !important;
-            gap: 12px;
+            gap: 8px;
+            flex-wrap: nowrap !important;
         }
 
         .page-title {
@@ -2809,9 +2838,12 @@
         }
 
         .create-btn {
-            font-size: 13px !important;
-            padding: 8px 12px !important;
+            font-size: 12px !important;
+            padding: 6px 10px !important;
             white-space: nowrap;
+            height: 32px;
+            display: flex;
+            align-items: center;
         }
 
         .filter-bar {
