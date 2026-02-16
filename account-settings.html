@@ -795,11 +795,6 @@
             background: #f9fafb;
         }
 
-        .powered-by {
-            font-size: 12px;
-            color: #6b7280;
-        }
-
         .confirm-btn {
             background: #0c4a4c;
             color: white;
@@ -809,6 +804,131 @@
             font-weight: 600;
             border: none;
             cursor: pointer;
+        }
+
+        .powered-by {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 16px;
+            }
+
+            .settings-container {
+                flex-direction: column;
+                padding: 20px 16px;
+                gap: 32px;
+            }
+
+            .settings-sidebar {
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap;
+                display: flex;
+                gap: 12px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid #e5e7eb;
+                margin-bottom: 0;
+            }
+
+            .settings-content {
+                width: 100%;
+            }
+
+            .page-header {
+                display: none;
+                /* Hide 'Settings' header in sidebar on mobile to save space */
+            }
+
+            .nav-item {
+                display: inline-block;
+                width: auto;
+                padding: 8px 16px;
+                background: #f9fafb;
+                border-radius: 20px;
+                border: 1px solid #e5e7eb;
+                margin-bottom: 0;
+                font-size: 13px;
+                flex-shrink: 0;
+            }
+
+            .nav-item.active {
+                background-color: #0c4a4c;
+                color: white;
+                border-color: #0c4a4c;
+                padding-left: 16px;
+                /* Reset padding override */
+            }
+
+            .form-input-row {
+                flex-direction: column;
+                max-width: 100%;
+            }
+
+            .danger-row {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .danger-row .btn {
+                width: 100%;
+                margin-top: 8px;
+            }
+
+            .email-list-item {
+                /* Return to row layout for better space usage, but handle truncation */
+                flex-direction: row;
+                align-items: center;
+                gap: 12px;
+                width: 100%;
+            }
+
+            .email-list-item>div:first-child {
+                min-width: 0;
+                /* Allow shrinking */
+                flex: 1;
+            }
+
+            .email-address {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .add-email-row {
+                flex-direction: column;
+            }
+
+            .add-email-row .btn {
+                width: 100%;
+            }
+
+            /* Fix 2FA file download overflow */
+            .file-download-box {
+                align-items: center;
+                padding: 12px;
+            }
+
+            .file-info {
+                min-width: 0;
+                flex: 1;
+                margin-right: 12px;
+            }
+
+            .file-info>div:last-child {
+                min-width: 0;
+                overflow: hidden;
+            }
+
+            .file-info>div:last-child>div:first-child {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         }
     </style>
 </head>
