@@ -1,0 +1,233 @@
+/* Landing Page Styles */
+
+body {
+  font-family: var(--font-primary);
+  color: var(--gray-800);
+  background: linear-gradient(135deg, var(--accent-beige) 0%, var(--accent-purple) 100%);
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-8);
+  background: transparent;
+  position: relative;
+  z-index: 100;
+}
+
+.logo-fixed {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.logo-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.brand-logo {
+  width: 100%;
+  height: auto;
+}
+
+.brand-text {
+  font-size: 0.35rem;
+  font-weight: 800;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+  color: rgb(0, 99, 65);
+  max-width: 140px;
+  line-height: 1.2;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background-color: var(--primary-dark);
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-3);
+}
+
+.nav-menu li {
+  position: relative;
+}
+
+.nav-item {
+  position: relative;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: #FFFFFFD9;
+  transition: color var(--transition-fast);
+  padding: var(--space-2) var(--space-4);
+  white-space: nowrap;
+}
+
+.nav-item:hover {
+  color: #FFFFFF;
+}
+
+.dropdown-icon {
+  font-size: 0.85em;
+  margin-left: 4px;
+}
+
+/* Nav Actions (Sign In + Join) */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.nav-signin {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--gray-800);
+  transition: color var(--transition-fast);
+}
+
+.nav-signin:hover {
+  color: var(--primary-dark);
+}
+
+.btn-join {
+  background-color: var(--gray-900);
+  color: var(--white);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  transition: all var(--transition-fast);
+}
+
+.btn-join:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+
+/* Hero Section */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  padding: var(--space-16) var(--space-8) var(--space-20);
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+}
+
+.hero-badge {
+  margin-bottom: var(--space-6);
+}
+
+.hero-title {
+  font-size: var(--text-hero);
+  font-weight: var(--weight-bold);
+  line-height: 1.1;
+  color: var(--gray-900);
+  margin-bottom: var(--space-8);
+  max-width: 900px;
+}
+
+.hero-cta {
+  margin-bottom: var(--space-12);
+}
+
+/* Dashboard Preview Image */
+.dashboard-preview {
+  width: 100%;
+  max-width: 1000px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-preview-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.mobile-menu-toggle span {
+  width: 24px;
+  height: 2px;
+  background-color: var(--gray-800);
+  transition: all var(--transition-fast);
+}
+
+/* Responsive Design */
+@media (max-width: 1023px) {
+  .hero-title {
+    font-size: var(--text-3xl);
+  }
+  
+  .dashboard-preview {
+    max-width: 100%;
+  }
+
+  /* Show hamburger on tablet */
+  .nav-menu {
+    display: none;
+  }
+  
+  .nav-actions {
+    display: none;
+  }
+  
+  .mobile-menu-toggle {
+    display: flex;
+  }
+}
+
+@media (max-width: 767px) {
+  .header {
+    padding: var(--space-4);
+  }
+  
+  /* nav-menu, nav-actions, mobile-menu-toggle logic moved up to 1023px */
+  
+  .hero {
+    padding: var(--space-12) var(--space-4);
+  }
+  
+  .hero-title {
+    font-size: var(--text-2xl);
+  }
+  
+  .brand-logo {
+    max-width: 90px !important;
+  }
+}

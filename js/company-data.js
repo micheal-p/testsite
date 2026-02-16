@@ -184,6 +184,269 @@ const companyData = {
     }
 };
 
+// Company domain mapping for logo resolution
+const companyDomains = {
+    // Oil and Gas - Nigerian
+    "NNPC": "nnpcgroup.com",
+    "Seplat Energy": "seplatenergy.com",
+    "Oando PLC": "oandoplc.com",
+    "TotalEnergies Nig": "totalenergies.com",
+    "Shell Nig (SPDC)": "shell.com",
+    "Chevron Nig": "chevron.com",
+    "ExxonMobil Nig": "exxonmobil.com",
+    "NLNG": "nlng.com",
+    "Ardova PLC": "ardovaplc.com",
+    "Conoil": "conoilplc.com",
+    "MRS Oil Nig": "maboreoil.com",
+    "Eterna PLC": "eternaplc.com",
+    "Rainoil": "rainoil.com.ng",
+    // Oil and Gas - Global
+    "Saudi Aramco": "aramco.com",
+    "ExxonMobil": "exxonmobil.com",
+    "Chevron": "chevron.com",
+    "Shell": "shell.com",
+    "TotalEnergies": "totalenergies.com",
+    "BP": "bp.com",
+    "ConocoPhillips": "conocophillips.com",
+    "Equinor": "equinor.com",
+    "Eni": "eni.com",
+    "PetroChina": "petrochina.com.cn",
+    "Sinopec": "sinopec.com",
+    "Petrobras": "petrobras.com.br",
+
+    // Electricity & Utilities - Nigerian
+    "Transcorp Power": "transcorppower.com",
+    "Geregu Power": "geregupowerplc.com",
+    "Ikeja Electric": "ikejaelectric.com",
+    "Eko Disco": "eloelec.com",
+    "Abuja Disco": "aborndisco.com",
+    "Egbin Power": "egbin-power.com",
+    "Azura Power": "azura-group.com",
+    // Electricity - Global
+    "NextEra Energy": "nexteraenergy.com",
+    "Duke Energy": "duke-energy.com",
+    "Southern Company": "southerncompany.com",
+    "Dominion Energy": "dominionenergy.com",
+    "Exelon": "exeloncorp.com",
+    "Enel": "enel.com",
+    "Iberdrola": "iberdrola.com",
+    "EDF": "edf.fr",
+    "Engie": "engie.com",
+    "E.ON": "eon.com",
+    "RWE": "rwe.com",
+    "National Grid": "nationalgrid.com",
+    "Orsted": "orsted.com",
+    "SSE": "sse.com",
+
+    // Renewable Energy - Nigerian
+    "Auxano Solar": "auxanosolar.com",
+    "Arnergy": "arnergy.com",
+    "Starsight Energy": "starsightenergy.com",
+    "Daystar Power": "daystarpower.com",
+    "Lumos Nigeria": "lumos.com.ng",
+    "Rubitec Solar": "rubitecsolar.com",
+    // Renewable - Global
+    "Vestas": "vestas.com",
+    "Siemens Gamesa": "siemensgamesa.com",
+    "First Solar": "firstsolar.com",
+    "Canadian Solar": "canadiansolar.com",
+    "JinkoSolar": "jinkosolar.com",
+    "SunPower": "sunpower.com",
+    "Enphase Energy": "enphase.com",
+    "SolarEdge": "solaredge.com",
+    "Brookfield Renewable": "brookfieldrenewable.com",
+    "Plug Power": "plugpower.com",
+    "Bloom Energy": "bloomenergy.com",
+    "Ballard Power": "ballard.com",
+    "SunRun": "sunrun.com",
+
+    // Infrastructure - Nigerian
+    "Julius Berger": "julius-berger.com",
+    "Dangote Cement": "dangotecement.com",
+    "BUA Cement": "buacement.com",
+    "Lafarge Africa": "lafarge.com",
+    // Infrastructure - Global
+    "Vinci": "vinci.com",
+    "Bechtel": "bechtel.com",
+    "Bouygues": "bouygues.com",
+    "ACS Group": "grupoacs.com",
+    "Hochtief": "hochtief.com",
+    "Skanska": "skanska.com",
+    "Balfour Beatty": "balfourbeatty.com",
+    "Fluor": "fluor.com",
+    "Larsen & Toubro": "larsentoubro.com",
+    "Strabag": "strabag.com",
+    "Technip Energies": "technipenergies.com",
+    "Jacobs": "jacobs.com",
+
+    // Mining - Nigerian
+    "Thor Explorations": "thorexplorations.com",
+    // Mining - Global
+    "BHP": "bhp.com",
+    "Rio Tinto": "riotinto.com",
+    "Vale": "vale.com",
+    "Glencore": "glencore.com",
+    "Anglo American": "angloamerican.com",
+    "Freeport-McMoRan": "fcx.com",
+    "Barrick Gold": "barrick.com",
+    "Newmont": "newmont.com",
+    "Teck Resources": "teck.com",
+    "Nutrien": "nutrien.com",
+    "Mosaic": "mosaicco.com",
+    "Albemarle": "albemarle.com",
+
+    // Agriculture - Nigerian
+    "Olam Nigeria": "olamgroup.com",
+    "Flour Mills of Nig": "fmnplc.com",
+    "Dangote Sugar": "dangotesugar.com.ng",
+    "BUA Foods": "buafoods.com",
+    "Notore Chemical": "notore.com",
+    "Presco PLC": "presco.com",
+    "Okomu Oil": "okomuoil.com",
+    // Agriculture - Global
+    "Cargill": "cargill.com",
+    "Archer-Daniels-Midland": "adm.com",
+    "Bayer (Crop)": "bayer.com",
+    "Corteva": "corteva.com",
+    "John Deere": "deere.com",
+    "Syngenta": "syngenta.com",
+    "Wilmar": "wilmar-international.com",
+    "Bunge": "bunge.com",
+    "Tyson Foods": "tysonfoods.com",
+    "JBS": "jbs.com.br",
+    "Nestle": "nestle.com",
+    "Danone": "danone.com",
+    "Yara": "yara.com",
+
+    // Technology - Nigerian
+    "Interswitch": "interswitchgroup.com",
+    "Flutterwave": "flutterwave.com",
+    "Paystack": "paystack.com",
+    "Andela": "andela.com",
+    "MainOne": "mainone.net",
+    "SystemSpecs": "systemspecs.com.ng",
+    "Kobo360": "kobo360.com",
+    "PiggyVest": "piggyvest.com",
+    "Kuda Bank": "kuda.com",
+    "Moniepoint": "moniepoint.com",
+    "Opay": "opayweb.com",
+    "Bamboo": "investbamboo.com",
+    "Cowrywise": "cowrywise.com",
+    "Terragon Group": "terragongroup.com",
+    // Technology - Global
+    "Apple": "apple.com",
+    "Microsoft": "microsoft.com",
+    "Google (Alphabet)": "google.com",
+    "Amazon": "amazon.com",
+    "NVIDIA": "nvidia.com",
+    "Meta": "meta.com",
+    "Tesla": "tesla.com",
+    "TSMC": "tsmc.com",
+    "Samsung": "samsung.com",
+    "Tencent": "tencent.com",
+    "Alibaba": "alibaba.com",
+    "Oracle": "oracle.com",
+    "Salesforce": "salesforce.com",
+    "Adobe": "adobe.com",
+    "Intel": "intel.com",
+
+    // Healthcare - Nigerian
+    "Fidson Healthcare": "fidsonhealthcare.com",
+    "Emzor Pharma": "emzorpharma.com",
+    "May & Baker": "may-baker.com",
+    "GlaxoSmithKline Nig": "gsk.com",
+    "Evercare": "evercare.com",
+    "AXA Mansard Health": "axamansard.com",
+    "54gene": "54gene.com",
+    // Healthcare - Global
+    "Johnson & Johnson": "jnj.com",
+    "Pfizer": "pfizer.com",
+    "Merck": "merck.com",
+    "AbbVie": "abbvie.com",
+    "Roche": "roche.com",
+    "Novartis": "novartis.com",
+    "AstraZeneca": "astrazeneca.com",
+    "Sanofi": "sanofi.com",
+    "Bristol Myers Squibb": "bms.com",
+    "Eli Lilly": "lilly.com",
+    "Novo Nordisk": "novonordisk.com",
+    "Amgen": "amgen.com",
+    "Gilead": "gilead.com",
+    "Moderna": "modernatx.com",
+    "Bayer": "bayer.com",
+
+    // Transport & Logistics - Nigerian
+    "Air Peace": "flyairpeace.com",
+    "Dana Air": "flydanaair.com",
+    "GIG Logistics": "giglogistics.com",
+    "Red Star Express": "redstarexpress.com",
+    "NAHCO": "nahcoaviance.com",
+    "Sifax Group": "saborlegroupng.com",
+    "Dangote Transport": "dangote.com",
+    // Transport - Global
+    "UPS": "ups.com",
+    "FedEx": "fedex.com",
+    "DHL": "dhl.com",
+    "Maersk": "maersk.com",
+    "CMA CGM": "cma-cgm.com",
+    "Union Pacific": "up.com",
+    "Delta Airlines": "delta.com",
+    "United Airlines": "united.com",
+    "American Airlines": "aa.com",
+    "Emirates": "emirates.com",
+    "Lufthansa": "lufthansa.com",
+    "Uber": "uber.com",
+
+    // Real Estate - Nigerian
+    "UPDC": "updcplc.com",
+    "Mixta Africa": "mixtaafrica.com",
+    "Landwey": "landwey.com",
+    "RevolutionPlus": "revolutionplusproperty.com",
+    "Adron Homes": "adronhomesproperties.com",
+    // Real Estate - Global
+    "Brookfield Asset Mgmt": "brookfield.com",
+    "Blackstone": "blackstone.com",
+    "Prologis": "prologis.com",
+    "Simon Property": "simon.com",
+    "CBRE": "cbre.com",
+    "JLL": "jll.com",
+    "Cushman & Wakefield": "cushmanwakefield.com",
+    "D.R. Horton": "drhorton.com",
+    "Lennar": "lennar.com",
+    "Emaar": "emaar.com",
+
+    // Water & Sanitation - Global
+    "Veolia": "veolia.com",
+    "Suez": "suez.com",
+    "American Water": "amwater.com",
+    "United Utilities": "unitedutilities.com",
+    "Severn Trent": "severntrent.com",
+    "Xylem": "xylem.com",
+    "Ecolab": "ecolab.com",
+    "Pentair": "pentair.com",
+    "Waste Management": "wm.com",
+    "Republic Services": "republicservices.com",
+    "Clean Harbors": "cleanharbors.com",
+
+    // Biomass & Biofuels
+    "Dangote Sugar (Ethanol)": "dangote.com",
+    "BUA Foods (Biofuel)": "buafoods.com",
+    "Neste": "neste.com",
+    "Drax Group": "drax.com",
+    "Archer-Daniels-Midland (ADM)": "adm.com",
+    "Darling Ingredients": "darlingii.com",
+    "Babcock & Wilcox": "babcock.com"
+};
+
+// Helper function to get company logo URL
+function getCompanyLogoUrl(companyName) {
+    const domain = companyDomains[companyName];
+    if (domain) {
+        return `https://logo.clearbit.com/${domain}?size=128`;
+    }
+    return null;
+}
+
 const extendedCompanyDetails = {
     // Helper to generate random data if explicit data is missing
     generate: (name) => {

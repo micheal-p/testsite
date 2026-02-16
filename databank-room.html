@@ -505,7 +505,7 @@
 
             /* Mobile Header */
             .mobile-header-bar {
-                display: flex;
+                display: flex !important;
                 align-items: center;
                 justify-content: space-between;
                 padding-bottom: 16px;
@@ -560,6 +560,75 @@
             .filter-dropdown {
                 width: 100%;
                 justify-content: space-between;
+            }
+
+            /* Sub-view padding override */
+            #peopleView,
+            #teamView,
+            #settingsView {
+                padding: 0 16px 16px !important;
+            }
+
+            /* People View Table → Card */
+            .people-table-header {
+                display: none !important;
+            }
+
+            /* Team View Table → Card */
+            .team-table-header {
+                display: none !important;
+            }
+
+            .team-row {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
+                padding: 16px 0 !important;
+                grid-template-columns: none !important;
+            }
+
+            .team-row .td-cell {
+                width: 100%;
+                padding: 0;
+            }
+
+            /* Team filter bar */
+            #teamView .filter-bar {
+                flex-direction: column !important;
+                align-items: stretch !important;
+            }
+
+            #teamView .filter-bar>div {
+                flex-direction: column !important;
+                gap: 8px;
+            }
+
+            #teamView .search-container {
+                max-width: 100% !important;
+            }
+
+            #teamView .search-container input {
+                width: 100% !important;
+            }
+
+            .btn-new-member {
+                width: 100%;
+                text-align: center;
+            }
+
+            /* People filter bar */
+            #peopleView .filter-bar {
+                flex-direction: column !important;
+                align-items: stretch !important;
+            }
+
+            #peopleView .search-container {
+                max-width: 100% !important;
+            }
+
+            #peopleView .filter-btn {
+                margin-left: 0 !important;
+                width: 100%;
             }
 
             /* Team View Table */
@@ -1063,6 +1132,16 @@
 
         <!-- PEOPLE VIEW (Hidden by default) -->
         <div id="peopleView" style="display: none; padding: 40px;">
+            <!-- Mobile Header -->
+            <div class="mobile-header-bar"
+                style="display: none; height: 56px; padding: 0 16px; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e7eb; background: #fff;">
+                <div style="font-weight: 600; font-size: 16px; color: #111827;">Investor Management</div>
+                <div style="flex: 1;"></div>
+                <button class="mobile-menu-btn" onclick="toggleMobileContentMenu(event)"
+                    style="background:none; border:none; font-size: 20px; color: #111827; cursor:pointer; padding: 0;">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
             <div class="page-header"
                 style="padding: 0; margin-bottom: 32px; border: none; flex-direction: column; align-items: flex-start;">
                 <h1 style="font-size: 24px; font-weight: 600; color: #111827; margin-bottom: 8px;">People</h1>
@@ -1108,6 +1187,16 @@
 
         <!-- TEAM VIEW (Hidden by default) -->
         <div id="teamView" style="display: none; padding: 40px;">
+            <!-- Mobile Header -->
+            <div class="mobile-header-bar"
+                style="display: none; height: 56px; padding: 0 16px; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e7eb; background: #fff;">
+                <div style="font-weight: 600; font-size: 16px; color: #111827;">Investor Management</div>
+                <div style="flex: 1;"></div>
+                <button class="mobile-menu-btn" onclick="toggleMobileContentMenu(event)"
+                    style="background:none; border:none; font-size: 20px; color: #111827; cursor:pointer; padding: 0;">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
             <div class="page-header"
                 style="padding: 0; margin-bottom: 32px; border: none; flex-direction: column; align-items: flex-start;">
                 <h1 style="font-size: 24px; font-weight: 600; color: #111827; margin-bottom: 8px;">Team</h1>
@@ -1203,6 +1292,16 @@
 
         <!-- SETTINGS VIEW (Hidden by default) -->
         <div id="settingsView" style="display: none; padding: 40px;">
+            <!-- Mobile Header -->
+            <div class="mobile-header-bar"
+                style="display: none; height: 56px; padding: 0 16px; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e7eb; background: #fff;">
+                <div style="font-weight: 600; font-size: 16px; color: #111827;">Investor Management</div>
+                <div style="flex: 1;"></div>
+                <button class="mobile-menu-btn" onclick="toggleMobileContentMenu(event)"
+                    style="background:none; border:none; font-size: 20px; color: #111827; cursor:pointer; padding: 0;">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
             <div class="page-header" style="padding: 0; margin-bottom: 24px; border: none; display: block;">
                 <h1 style="font-size: 24px; font-weight: 600; color: #111827; margin-bottom: 24px;">Settings</h1>
 
@@ -1881,6 +1980,17 @@
                         navSettings.style.fontWeight = '600';
                     }
                 }
+
+                // Save current view to localStorage
+                localStorage.setItem('neiis_current_view', sectionId);
+
+                // Close mobile sidebar when switching views
+                if (window.innerWidth <= 768) {
+                    const sidebar = document.querySelector('.context-sidebar');
+                    const overlay = document.querySelector('.sidebar-overlay');
+                    if (sidebar) sidebar.classList.remove('mobile-open');
+                    if (overlay) overlay.classList.remove('active');
+                }
             }
 
 
@@ -2035,7 +2145,7 @@
             document.addEventListener('DOMContentLoaded', () => {
                 // Mobile Check
                 if (window.innerWidth <= 768) {
-                    document.querySelector('.mobile-header-bar').style.display = 'flex';
+                    document.querySelectorAll('.mobile-header-bar').forEach(el => el.style.display = 'flex');
                 }
 
                 // Dynamic Name Loading
@@ -2231,9 +2341,9 @@
     <div class="popup-divider"></div>
     <a href="account-settings.html" class="popup-item">Account settings</a>
     <a href="help-center.html" class="popup-item">Help center</a>
-    <a href="#" class="popup-item">Feedback</a>
+    <a href="mailto:support@neiia.com?subject=Feedback" class="popup-item">Feedback</a>
     <div class="popup-divider"></div>
-    <a href="#" class="popup-item">Sign out</a>
+    <a href="index.html" class="popup-item" onclick="localStorage.clear()">Sign out</a>
 </div>
 
 <style>
@@ -3025,34 +3135,39 @@
             }
         });
 
-        // Mobile Sidebar Close on Overlay Click
-        const sidebar = document.querySelector('.context-sidebar');
-        const overlay = document.querySelector('.sidebar-overlay');
-        if (overlay && overlay.classList.contains('active') && overlay.contains(event.target)) {
-            toggleMobileContentMenu();
-        }
     });
 
     // Mobile Menu Logic
     function toggleMobileContentMenu(event) {
         if (event) event.stopPropagation();
         const sidebar = document.querySelector('.context-sidebar');
-        const overlay = document.querySelector('.sidebar-overlay');
+        let overlay = document.querySelector('.sidebar-overlay');
 
         if (!overlay) {
             // Lazy create overlay if missing
-            const ov = document.createElement('div');
-            ov.className = 'sidebar-overlay';
-            ov.onclick = () => toggleMobileContentMenu();
-            document.body.appendChild(ov);
-            // Re-select
-            setTimeout(() => toggleMobileContentMenu(), 10);
-            return;
+            overlay = document.createElement('div');
+            overlay.className = 'sidebar-overlay';
+            document.body.appendChild(overlay);
         }
+
+        // Set up overlay click handler
+        overlay.onclick = function (e) {
+            e.stopPropagation();
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('active');
+        };
 
         sidebar.classList.toggle('mobile-open');
         overlay.classList.toggle('active');
     }
+
+    // Restore view from localStorage on load
+    document.addEventListener('DOMContentLoaded', function () {
+        const savedView = localStorage.getItem('neiis_current_view');
+        if (savedView && savedView !== 'dataroom') {
+            showSection(savedView);
+        }
+    });
 </script>
 </body>
 

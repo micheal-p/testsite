@@ -166,6 +166,38 @@
             background: linear-gradient(to right, var(--border), transparent);
         }
 
+        .company-header-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .company-logo-container {
+            width: 72px;
+            height: 72px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
+            background: #fff;
+            border-radius: 14px;
+        }
+
         .company-title h1 {
             font-size: 42px;
             margin-bottom: 8px;
@@ -522,10 +554,15 @@
     <main class="main-content">
         <header class="hero">
             <div class="company-title">
-                <h1><span id="uiHeaderName">Loading...</span></h1>
-                <div class="company-meta">
-                    <span class="badge badge-verified"><i class="fas fa-check-circle"></i> Verified Asset</span>
-                    <span class="badge badge-sector" id="uiSectorContext">Energy</span>
+                <div class="company-header-row">
+                    <div class="company-logo-container" id="companyLogo"></div>
+                    <div>
+                        <h1><span id="uiHeaderName">Loading...</span></h1>
+                        <div class="company-meta">
+                            <span class="badge badge-verified"><i class="fas fa-check-circle"></i> Verified Asset</span>
+                            <span class="badge badge-sector" id="uiSectorContext">Energy</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="stat-block">
@@ -704,6 +741,42 @@
         document.getElementById('uiSidebarName').textContent = data.name + " Data";
         document.getElementById('uiHeaderValuation').textContent = data.financial?.valuation || "$--M";
         document.getElementById('uiSectorContext').textContent = data.sector_context || "Sector Leader";
+
+        // Company Logo - try real logo first, fallback to initials
+        const logoEl = document.getElementById('companyLogo');
+        const initials = data.name.split(/[\s&]+/).filter(w => w.length > 1).slice(0, 2).map(w => w[0].toUpperCase()).join('');
+        // Generate a consistent color from company name
+        let hash = 0;
+        for (let i = 0; i < data.name.length; i++) { hash = data.name.charCodeAt(i) + ((hash << 5) - hash); }
+        const hue = Math.abs(hash) % 360;
+
+        // Try loading real logo
+        const logoUrl = typeof getCompanyLogoUrl === 'function' ? getCompanyLogoUrl(companyName) : null;
+        if (logoUrl) {
+            const img = new Image();
+            img.onload = function () {
+                logoEl.innerHTML = '';
+                logoEl.style.background = '#ffffff';
+                logoEl.style.border = '2px solid #e2e8f0';
+                const imgEl = document.createElement('img');
+                imgEl.src = logoUrl;
+                imgEl.alt = data.name + ' logo';
+                logoEl.appendChild(imgEl);
+            };
+            img.onerror = function () {
+                // Fallback to initials
+                logoEl.style.background = `linear-gradient(135deg, hsl(${hue}, 65%, 45%), hsl(${(hue + 40) % 360}, 55%, 35%))`;
+                logoEl.textContent = initials || data.name[0];
+            };
+            img.src = logoUrl;
+            // Show initials while loading
+            logoEl.style.background = `linear-gradient(135deg, hsl(${hue}, 65%, 45%), hsl(${(hue + 40) % 360}, 55%, 35%))`;
+            logoEl.textContent = initials || data.name[0];
+        } else {
+            // No domain mapped, use initials
+            logoEl.style.background = `linear-gradient(135deg, hsl(${hue}, 65%, 45%), hsl(${(hue + 40) % 360}, 55%, 35%))`;
+            logoEl.textContent = initials || data.name[0];
+        }
 
         document.getElementById('uiThesis').textContent = data.investment_thesis || "No thesis available.";
 

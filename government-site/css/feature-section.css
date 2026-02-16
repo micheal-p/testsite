@@ -1,0 +1,210 @@
+
+/* Feature Section Styles */
+.feature-section {
+  background-color: #011d21; /* Dark Teal Background */
+  padding-top: var(--space-20);
+  padding-bottom: 0; /* Bars sit at the bottom */
+  padding-left: 0;
+  padding-right: 0;
+  color: var(--white);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  margin-bottom: var(--space-20); /* Space before bars */
+}
+
+/* Left Content */
+.feature-content {
+  flex: 1;
+  max-width: 500px;
+}
+
+.feature-title {
+  font-size: var(--text-4xl); /* ~36px */
+  font-weight: var(--weight-semibold);
+  margin-bottom: var(--space-6);
+  line-height: 1.2;
+  color: var(--white);
+}
+
+.feature-desc {
+  font-size: var(--text-lg);
+  color: #94a3b8; /* Slate 400 */
+  margin-bottom: var(--space-8);
+  line-height: 1.6;
+}
+
+.btn-demo-light {
+  display: inline-block;
+  background-color: #b4b0ff; /* Light purple */
+  color: #1e1b4b; /* Dark indigo text */
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.btn-demo-light:hover {
+  background-color: #a5a1f5;
+  transform: translateY(-1px);
+}
+
+/* Right Visual */
+.feature-visual {
+  flex: 1.2;
+  position: relative;
+}
+
+.feature-image-wrapper {
+  position: relative;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  /* Removed overflow:hidden to allow modal to slightly pop if needed, but keeping it for border-radius */
+  overflow: hidden;
+}
+
+.feature-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: all 0.7s ease;
+}
+
+/* Hover Overlay (Modal Style) */
+.feature-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: transparent; /* Transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* Let clicks pass unless on modal */
+}
+
+/* The Modal Box */
+.overlay-modal {
+  background-color: #0b161a; /* Dark Ink */
+  padding: 32px;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 280px;
+  
+  opacity: 0;
+  transform: translateY(16px);
+  transition: all 0.3s ease 0.1s;
+  pointer-events: auto; /* Re-enable clicks */
+}
+
+/* SVG Icon in Modal */
+.overlay-logo-icon {
+  color: var(--white);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.overlay-title {
+  font-size: 16px; 
+  font-weight: 500;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+
+/* Hover Effects */
+.feature-image-wrapper:hover .feature-img {
+  transform: scale(1.03);
+  opacity: 0.7;
+  filter: blur(2px);
+}
+
+.feature-image-wrapper:hover .overlay-modal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Bars Animation */
+.feature-bars {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bar-container {
+  height: 20px; /* Matching screenshotted height */
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  /* Animation for Expand/Contract Effect */
+  animation: barPulse 3s infinite ease-in-out;
+  transform-origin: center;
+}
+
+.bar-overlay {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+@keyframes barPulse {
+  0%, 100% {
+    transform: scaleY(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scaleY(0.6); /* Contract */
+    opacity: 0.7;
+  }
+}
+
+/* Staggered animation for bars */
+.bar-container:nth-child(1) { animation-delay: 0s; }
+.bar-container:nth-child(2) { animation-delay: 0.2s; }
+.bar-container:nth-child(3) { animation-delay: 0.4s; }
+.bar-container:nth-child(4) { animation-delay: 0.6s; }
+.bar-container:nth-child(5) { animation-delay: 0.8s; }
+.bar-container:nth-child(6) { animation-delay: 1.0s; }
+
+
+/* Responsive */
+@media (max-width: 1023px) {
+  .feature-container {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-12);
+  }
+  
+  .feature-content {
+    max-width: 100%;
+  }
+  
+  .feature-title {
+    font-size: var(--text-3xl);
+  }
+}
+
+@media (max-width: 767px) {
+  .feature-section {
+    padding-top: var(--space-12);
+  }
+  
+  /* Mobile Stack: Image stacks below text (already done by flex-col) */
+  .feature-image-wrapper {
+    pointer-events: none; /* Disable hover interactions */
+  }
+  
+  .feature-overlay {
+    display: none; /* Hide overlay content completely */
+  }
+}
+

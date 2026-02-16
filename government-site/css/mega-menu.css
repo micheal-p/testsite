@@ -1,0 +1,227 @@
+
+/* Mega Menu Styles - Refined for "Scattered" Fix */
+
+/* Parent Nav Item */
+.nav-item.dropdown {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.nav-link.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: #FFFFFFD9;
+  transition: color var(--transition-fast);
+  padding: var(--space-2) var(--space-4);
+  white-space: nowrap;
+}
+
+.nav-link.dropdown-toggle:hover {
+  color: #FFFFFF;
+}
+
+/* Mega Menu Container */
+.mega-menu {
+  position: absolute;
+  top: 100%;
+  left: -220px;
+  width: 960px; /* Fixed width matching screenshot scale */
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.2s ease-out;
+  z-index: 1000;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+/* Hover state */
+.nav-item.dropdown:hover .mega-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Left Content Area */
+.mm-main {
+  flex: 1.5;
+  background-color: #fff;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.mm-grid {
+  display: flex;
+  gap: 60px; /* Space between the two main columns */
+}
+
+.mm-col {
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* Space between column groups */
+}
+
+/* Headers */
+.mm-header {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #8b8b8b;
+  letter-spacing: 0.5px;
+  margin-bottom: 20px;
+}
+
+/* Lists */
+.mm-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mm-list li a {
+  font-size: 17px;
+  color: #0f172a; /* Darker, almost black */
+  text-decoration: none;
+  font-weight: 400;
+  display: block;
+}
+
+.mm-list li a:hover {
+  color: var(--primary-teal);
+}
+
+/* Beta Badge */
+.badge-beta {
+  font-size: 10px;
+  background-color: #f3f4f6;
+  color: #6b7280;
+  padding: 2px 6px;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-left: 8px;
+  font-weight: 600;
+  border: 1px solid #e5e7eb;
+}
+
+.beta-link {
+  display: flex;
+  align-items: center;
+}
+
+/* Footer in Left Panel */
+.mm-footer {
+  margin-top: 80px; /* Push to bottom */
+  font-size: 15px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+}
+
+.mm-footer a {
+  color: #6b7280;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  margin: 0 4px;
+  transition: color 0.15s;
+}
+
+.mm-footer a:hover {
+  color: var(--primary-dark);
+}
+
+.footer-arrow {
+  font-size: 14px;
+  color: #6b7280;
+  transform: rotate(-45deg);
+  margin-left: 4px;
+}
+
+/* Right Sidebar */
+.mm-sidebar {
+  flex: 1;
+  background-color: #fbfbfb; /* Light gray background */
+  padding: 40px;
+  border-left: 1px solid #f3f4f6;
+}
+
+/* Product Cards */
+.mm-product-card {
+  display: flex;
+  gap: 16px;
+  text-decoration: none;
+  padding: 0;
+  margin-bottom: 32px;
+  align-items: flex-start;
+  transition: transform 0.15s;
+}
+
+.mm-product-card:hover {
+  transform: translateX(4px);
+}
+
+.mm-product-card:last-child {
+  margin-bottom: 0;
+}
+
+.mm-product-icon {
+  width: 56px;
+  height: 56px;
+  background-color: #0f172a; /* Dark background */
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mm-product-icon i {
+  font-size: 24px;
+  color: #a5b4fc; /* Light purple/blue icon color */
+}
+
+.mm-product-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.mm-product-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.mm-product-desc {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+/* Chevron Rotation */
+.nav-item.dropdown:hover .fa-chevron-down {
+  transform: rotate(180deg);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .mega-menu {
+    width: 700px;
+  }
+  
+  .mm-grid {
+    gap: 30px;
+  }
+}

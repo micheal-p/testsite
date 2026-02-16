@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Intelligent investor onboarding for all fund structures">
+  <title>NEIIA - Digital Subscriptions</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/mega-menu.css">
+  <link rel="stylesheet" href="css/mobile-menu.css">
+  <link rel="stylesheet" href="css/trusted-section.css">
+  <link rel="stylesheet" href="css/feature-section.css">
+  <link rel="stylesheet" href="css/key-features.css">
+  <link rel="stylesheet" href="css/advanced-features.css">
+  <link rel="stylesheet" href="css/customer-spotlight.css">
+  <link rel="stylesheet" href="css/cta-sections.css">
+  <link rel="stylesheet" href="css/tailored-needs.css">
+  <link rel="stylesheet" href="css/explore-section.css">
+  <link rel="stylesheet" href="css/faq-section.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../auth-check.js"></script>
+</head>
+
+<body>
+  <!-- Logo (Separate from Pill Navbar) -->
+  <a href="../index.html" class="logo-fixed">
+    <div class="logo-wrapper">
+      <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
+        style="max-width: 120px;">
+      <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
+        style="max-width: 120px; display: none;">
+      <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
+    </div>
+  </a>
+
+  <!-- Navigation (Pill Style - Links Only) -->
+  <nav class="navbar pill-nav">
+    <div class="nav-links">
+      <div class="nav-item dropdown">
+        <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down"
+            style="font-size: 12px; margin-left: 6px; transition: transform 0.2s;"></i></span>
+        <div class="mega-menu">
+          <div class="mm-left-columns">
+            <div class="mm-column">
+              <h4>Fund Administration</h4>
+              <ul class="mm-list">
+                <li><a href="../construction.html">Venture Funds</a></li>
+                <li><a href="../construction.html">Rolling Funds</a></li>
+                <li><a href="../construction.html">Scout Funds</a></li>
+                <li><a href="../construction.html">SPVs</a></li>
+                <li><a href="../construction.html">Roll Up Vehicles</a></li>
+              </ul>
+            </div>
+            <div class="mm-column">
+              <h4>Investor Management</h4>
+              <ul class="mm-list">
+                <li><a href="../construction.html">Digital Subscriptions</a></li>
+                <li><a href="../databank.html">Data Bank</a></li>
+              </ul>
+              <div style="margin-top: 24px;">
+                <h4>Intelligence</h4>
+                <ul class="mm-list">
+                  <li><a href="../construction.html">Fin <span
+                        style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="mm-footer"
+              style="border-top: none; padding-top: 10px; margin-top: auto; color: #6b7280; font-size: 15px;">
+              Looking for tools for startups? Explore <a href="../construction.html"
+                style="color: #6b7280 !important; text-decoration: underline; margin-left: 2px;">Rollups.</a>
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="none"
+                style="margin-left: 4px; display: inline-block;">
+                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+          </div>
+          <div class="mm-right-panel">
+            <div class="mm-column">
+              <h4>Product Suites</h4>
+              <a href="../construction.html" class="mm-card">
+                <div class="mm-icon"><img src="../assets/images/fund_administration.png" alt="Fund Administration">
+                </div>
+                <div class="mm-content">
+                  <h5>Fund Administration</h5>
+                  <p>All-in-one partner to launch an investment vehicle</p>
+                </div>
+              </a>
+              <a href="../investor-management.html" class="mm-card">
+                <div class="mm-icon"><img src="../assets/images/investor_management.png" alt="Investor Management">
+                </div>
+                <div class="mm-content">
+                  <h5>Investor Management</h5>
+                  <p>Explore all offerings to streamline the investor experience.</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="../finance.html">Energy Finance & Capital</a>
+      <a href="../dashboard.html">Energy Ecosystem</a>
+      <a href="../citibim.html">NEIIA</a>
+    </div>
+  </nav>
+
+  <!-- Auth Links (Separate from Pill) -->
+  <div class="auth-fixed">
+    <a href="../signin.html" class="nav-link">Sign In</a>
+    <a href="../newsletter.html" class="btn btn-black">Join</a>
+  </div>
+
+  <!-- Mobile Menu Button -->
+  <button class="mobile-menu-btn" aria-label="Menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="badge badge-outline">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="14" height="13" rx="1" stroke="currentColor" stroke-width="1.5" />
+            <path d="M3 7h14M7 4v3M13 4v3" stroke="currentColor" stroke-width="1.5" />
+          </svg>
+          Digital Subscriptions
+        </span>
+      </div>
+
+      <h1 class="hero-title">
+        Intelligent investor onboarding<br>for all fund structures
+      </h1>
+
+      <div class="hero-cta">
+        <button class="btn btn-primary">Talk to an expert</button>
+      </div>
+
+      <!-- Dashboard Preview Image -->
+      <div class="dashboard-preview desktop-preview">
+        <img src="assets/images/dashboard-preview.png" alt="Dashboard preview showing transactions and onboarding"
+          class="dashboard-preview-img">
+      </div>
+
+      <!-- Mobile Dashboard Preview Image -->
+      <div class="dashboard-preview mobile-preview">
+        <img src="assets/images/mobile-dashboard-preview.png" alt="Mobile Dashboard preview"
+          class="dashboard-preview-img">
+      </div>
+    </section>
+
+    <!-- Trusted Section -->
+    <section class="trusted-section">
+      <h2 class="trusted-title">Trusted by top firms + service providers</h2>
+      <div class="trusted-grid">
+        <div class="trusted-item">PANTERA</div>
+        <div class="trusted-item">VAC</div>
+        <div class="trusted-item">VanEck</div>
+        <div class="trusted-item">orrick</div>
+        <div class="trusted-item">SIDLEY</div>
+        <div class="trusted-item">SECURITIZE</div>
+      </div>
+    </section>
+
+    <!-- Exceed Expectations Feature Section -->
+    <section class="feature-section">
+      <div class="feature-container">
+        <!-- Left Content -->
+        <div class="feature-content">
+          <h2 class="feature-title">Exceed investor expectations</h2>
+          <p class="feature-desc">Delight LPs with flexible digital workflows, modernizing the manual subscription
+            paperwork process. Reduce friction and errors by collaborating with your service providers in real-time
+            within a single dashboard.</p>
+          <a href="#" class="btn btn-demo-light">Explore demo</a>
+        </div>
+
+        <!-- Right Image Content -->
+        <div class="feature-visual">
+          <div class="feature-image-wrapper">
+            <img src="assets/images/dashboard-preview.png" alt="Transactions Dashboard" class="feature-img">
+
+            <!-- Hover Overlay (Modal Style) -->
+            <div class="feature-overlay">
+              <div class="overlay-modal">
+                <div class="overlay-logo-icon">
+                  <svg fill="none" viewBox="0 0 82 24" xmlns="http://www.w3.org/2000/svg" width="82" height="24">
+                    <path
+                      d="m5.08978 4.67345-5.08978 14.19485h2.21088l1.47392-4.1769h5.53196l1.46914 4.1769h2.2894l-5.09458-14.19485zm-.71319 8.04955 2.07776-5.87671 2.06824 5.88141zm18.06741-3.03109c.3353.62529.4993 1.32819.4755 2.03739v7.1318h-2.1776v-6.761c0-.756-.1973-1.3075-.5872-1.6522-.4317-.3591-.982-.54396-1.5429-.51826-.378-.00006-.7525.07256-1.103.21396-.3584.1437-.6655.3912-.882.7108-.2473.3862-.3678.84-.3447 1.298v6.7325h-2.2204v-10.64551h2.2109v1.25996c.1246-.18383.2706-.35222.435-.50161.3554-.31468.7689-.55694 1.2172-.71318.4641-.16808.9541-.25338 1.4477-.252.6245-.01015 1.2415.13614 1.7949.42554.5388.28155.9859.7113 1.2885 1.23857zm9.1645-2.63404c-.4319.27191-.7459.69616-.8796 1.18865-.5057-.16088-1.0336-.2411-1.5643-.23773-.7474-.01145-1.4873.15134-2.1609.47546-.6099.29537-1.1283.75051-1.5001 1.31702-.3817.60613-.5753 1.31173-.5563 2.02783-.0202.7009.1667 1.3922.5373 1.9874.1881.2919.4198.5532.687.775l-.0998.0452c-.3596.1839-.6664.4563-.8915.7916-.2112.324-.3328.6982-.3524 1.0844-.0196.3863.0634.7709.2406 1.1146.1696.329.4337.5998.7584.7774-.344.0742-.6681.2209-.9509.4303-.2319.171-.4182.3964-.5425.6563-.1244.2599-.183.5464-.1707.8342 0 .8622.4255 1.5239 1.2766 1.9851s1.9795.691 3.3853.6894c1.6102 0 2.8915-.3003 3.844-.901.4519-.2663.8231-.6501 1.0742-1.1106.2512-.4604.3729-.9803.3522-1.5044.0172-.3585-.0438-.7165-.1789-1.049-.135-.3325-.3409-.6317-.6032-.8766-.576-.4946-1.3195-.7498-2.0778-.7132-.1355 0-.3613 0-.6775 0s-.6537.0166-1.0056.0285c-.3518.0119-.6751.0238-.9723.0309s-.4992 0-.6086 0c-.3254.0169-.6488-.0598-.9319-.2211-.1099-.0678-.1997-.1637-.2603-.2777-.0606-.1141-.0897-.2422-.0844-.3713-.0015-.1309.0258-.2605.08-.3797.0543-.1191.1341-.2249.2338-.3097.0672-.0599.1387-.1147.214-.164.5757.2207 1.1878.3312 1.8043.3257.7387.0131 1.4706-.143 2.1396-.4565.4604-.2408.8671-.5726 1.1955-.9754.3283-.4027.5715-.8679.7146-1.3674.1432-.4995.1834-1.0229.1182-1.5384s-.2344-1.0124-.4973-1.46055c-.1859-.28438-.4135-.53921-.6752-.75597.089-.09246.1968-.16463.3162-.21158.4065-.15453 1.027-.14502 1.8662.0309v-2.02545c-1.0555-.21396-1.9161-.11173-2.5841.31618zm-.668 11.75333c.3251-.0217.6466.0792.9009.2829.1042.0947.1865.2109.2411.3407.0546.1297.0802.2698.0751.4105 0 .5397-.2781.9509-.832 1.2362s-1.3242.4256-2.3108.4256c-.9509 0-1.6641-.1348-2.1395-.4042-.4755-.2694-.7132-.6276-.7132-1.0745.0073-.3055.1256-.5979.3328-.8226.2235-.2631.626-.3946 1.2077-.3946zm-.2853-5.4939c-.297.3141-.6827.5302-1.1057.6194-.4229.0893-.8631.0474-1.2616-.12-.3986-.1673-.7366-.4523-.9691-.8168-.2324-.3644-.3481-.7911-.3318-1.2231-.0144-.2773.0284-.5547.1258-.8148.0973-.2601.2471-.4974.44-.6972.2102-.1919.4567-.34002.7249-.43554.2682-.09553.5527-.13656.837-.12071.2817-.01508.5636.02729.8284.12456s.5071.24739.7121.44119c.3666.4222.5685.9624.5685 1.5215s-.2019 1.0994-.5685 1.5215zm11.7604-4.73558c-.7258-.37643-1.5335-.56753-2.3511-.55629-.8813-.0097-1.7505.20636-2.5247.62761-.7851.43573-1.4261 1.09084-1.8448 1.88516-.4886.9668-.7257 2.0411-.6894 3.1238-.0225.9884.1782 1.9693.5872 2.8694.3657.7885.9638 1.4463 1.714 1.8852.8271.4587 1.7624.6861 2.7078.6585 1.0739.0297 2.1301-.2788 3.0191-.882.8444-.5967 1.4314-1.4912 1.6427-2.5033h-2.2489c-.1175.454-.3986.8485-.7892 1.1078-.4536.2792-.9798.4174-1.512.397-.9509 0-1.6736-.328-2.1681-.9842-.4429-.6204-.6957-1.3564-.7274-2.1181h7.4979c.0143-.2164.0214-.447.0214-.6894 0-1.2584-.2131-2.2822-.6395-3.0715-.3747-.74145-.9658-1.35161-1.695-1.74968zm-4.4503 2.21088c.2462-.3119.563-.5608.9242-.7261.3613-.16533.7567-.24239 1.1536-.22482.4749-.00878.9435.1094 1.3574.34232.422.258.749.6459.9319 1.1055.1465.3681.227.7592.2378 1.1553h-5.2776c.0806-.5988.3121-1.1674.6727-1.6522zm8.6891-6.11915h2.2085v14.19485h-2.2085zm6.9131 12.20735h6.5281v1.9875h-8.739v-14.19485h2.2109zm8.0685-8.64141h2.2109v10.64551h-2.2109zm2.0374-3.85121c.1224.12184.2188.26726.2833.42744.0646.16018.096.33179.0923.50445.0045.17561-.0265.35032-.091.5137s-.1613.31208-.2846.43722c-.1184.12499-.2616.22382-.4205.29015-.1588.06633-.3298.09868-.5019.09497-.1767.00625-.3527-.02482-.5165-.09118-.1639-.06636-.3119-.16652-.4344-.29394-.1233-.12514-.2201-.27384-.2846-.43722-.0646-.16338-.0955-.33809-.091-.5137-.0037-.17266.0277-.34427.0922-.50445.0646-.16018.161-.3056.2834-.42744.1224-.12774.2703-.22826.4342-.29502.1638-.06676.3399-.09828.5167-.09248.1714-.00479.3419.02614.5007.0908.1588.06467.3024.16166.4217.28481zm3.9843 6.79192c-.0097.1495.0145.2992.0709.438.0564.1387.1435.2629.2548.3631.2648.205.573.3465.901.4137.3851.0951.8281.183 1.3289.2639.4569.068.9099.1592 1.3574.2734.4339.1108.85.2821 1.2362.5087.3744.2167.6858.5272.9034.901.2398.448.3555.9519.3352 1.4597 0 1.0555-.3819 1.8669-1.1458 2.4343-.764.5674-1.7814.8511-3.0525.8511-.8493.0284-1.6942-.134-2.4724-.4755-.6098-.2713-1.133-.7057-1.5119-1.2552-.335-.4979-.5469-1.0683-.6181-1.6641h2.1395c.1.486.3739.9188.7703 1.2172.4073.3169.9818.4754 1.7235.4754.5273.0265 1.0513-.0963 1.512-.3542.1761-.1052.3206-.2558.4185-.4361.0979-.1802.1455-.3835.1378-.5885.0171-.2246-.0414-.4485-.1664-.636-.125-.1874-.3091-.3276-.5231-.3981-.6105-.2118-1.2428-.3545-1.8851-.4256-.4503-.0538-.8972-.1332-1.3385-.2377-.43-.1032-.8431-.2673-1.2266-.4873-.3674-.2134-.6743-.5169-.8915-.882-.2412-.4441-.3571-.9453-.3352-1.4502-.026-.6794.1646-1.3496.5444-1.91367.3651-.5177.8719-.91891 1.4596-1.15537 1.285-.49732 2.7042-.52594 4.0081-.08083.5082.18605.9756.46859 1.3765.83206.3527.31778.6422.69928.8534 1.12441.1857.3703.2926.775.3138 1.1887h-2.1395c-.0891-.4756-.3352-.9076-.6989-1.2267-.3733-.33044-.9296-.49685-1.6641-.49685-.5031-.02706-1.002.1043-1.4264.37565-.1727.1101-.314.2629-.4102.4437-.0962.1807-.1441.3833-.139.588zm11.304-1.0389v4.9662c-.0263.4921.0892.9814.3329 1.4097.2171.3455.6609.5183 1.3313.5183.3417-.0036.6821-.0443 1.0151-.1213v1.928c-.5031.0838-1.0116.1307-1.5215.1403-1.1617 0-2.0167-.3075-2.5651-.9224s-.8218-1.5167-.8202-2.7054v-5.2134h-2.0064v-1.90181h2.0064v-2.54608h2.2275v2.54608h2.6864v1.90181z"
+                      fill="currentColor"></path>
+                  </svg>
+                </div>
+                <h3 class="overlay-title">See Digital Subscriptions in action</h3>
+                <a href="#" class="btn btn-demo-light">Explore demo</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Animated Bars Effect (Full Width Bottom) -->
+      <div class="feature-bars">
+        <div class="bar-container"
+          style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+          <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.9)"></span>
+        </div>
+        <div class="bar-container"
+          style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+          <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.8)"></span>
+        </div>
+        <div class="bar-container"
+          style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+          <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.6)"></span>
+        </div>
+        <div class="bar-container"
+          style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+          <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.4)"></span>
+        </div>
+        <div class="bar-container"
+          style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+          <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.2)"></span>
+        </div>
+        <div class="bar-container"
+          style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+          <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.05)"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section class="key-features-section">
+      <div class="kf-grid-container">
+
+        <!-- Left Column: Label (Spans Full Height) -->
+        <div class="kf-cell-label">
+          <div class="kf-sticky-label">
+            <span class="kf-dot"></span>Key features
+          </div>
+        </div>
+
+        <!-- Right Column Row 1: Headline -->
+        <div class="kf-cell-headline">
+          <h2 class="kf-headline">Modernize the fund subscription process</h2>
+        </div>
+
+        <!-- Right Column Row 2: Content (List + Cards) -->
+        <div class="kf-cell-cards">
+
+          <!-- Absolute List Container -->
+          <div class="kf-list-container">
+            <ul class="kf-sticky-list">
+              <li class="kf-nav-item active" data-target="card-1">Investor passport</li>
+              <li class="kf-nav-item" data-target="card-2">Custom onboarding workflows</li>
+              <li class="kf-nav-item" data-target="card-3">Service provider collaboration</li>
+              <li class="kf-nav-item" data-target="card-4">DocuSign integration</li>
+            </ul>
+          </div>
+
+          <div class="kf-cards-wrapper">
+
+            <!-- Card 1 -->
+            <div class="kf-card" id="card-1" style="--stagger: 0rem">
+              <div class="kf-card-content">
+                <h3 class="kf-card-title">Investor passport</h3>
+                <div class="kf-card-desc">
+                  Make it easy for investors to reinvest by removing friction from the process. After the first
+                  commitment, NEIIA creates a reusable profile that securely stores their essential
+                  information—enabling them to invest in minutes.
+                </div>
+              </div>
+              <div class="kf-card-visual">
+                <div class="kf-image-container">
+                  <img src="assets/images/dashboard-preview.png" alt="Investor Passport" class="kf-image">
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="kf-card" id="card-2" style="--stagger: 2rem">
+              <div class="kf-card-content">
+                <h3 class="kf-card-title">Custom onboarding workflows</h3>
+                <div class="kf-card-desc">
+                  Request only what’s needed from each LP, with real-time data validation to reduce errors. Onboarding
+                  flows are built in partnership with our team and customized to match your fund’s subscription
+                  documents.
+                </div>
+              </div>
+              <div class="kf-card-visual">
+                <div class="kf-image-container">
+                  <img src="assets/images/dashboard-preview.png" alt="Onboarding Workflows" class="kf-image">
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="kf-card" id="card-3" style="--stagger: 4rem">
+              <div class="kf-card-content">
+                <h3 class="kf-card-title">Service provider collaboration</h3>
+                <div class="kf-card-desc">
+                  Set up dedicated dashboards with entity-level permissions for your fund admin & law firm partners to
+                  review LP submissions, conduct KYC/AML checks, and flag errors within a single platform.
+                </div>
+              </div>
+              <div class="kf-card-visual">
+                <div class="kf-image-container">
+                  <img src="assets/images/dashboard-preview.png" alt="Collaboration" class="kf-image">
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="kf-card" id="card-4" style="--stagger: 6rem">
+              <div class="kf-card-content">
+                <h3 class="kf-card-title">DocuSign integration</h3>
+                <div class="kf-card-desc">
+                  Enable investors to sign finalized subscription documents effortlessly. Review and countersign
+                  everything from one centralized login.
+                </div>
+              </div>
+              <div class="kf-card-visual">
+                <div class="kf-image-container">
+                  <img src="assets/images/dashboard-preview.png" alt="DocuSign Integration" class="kf-image">
+                </div>
+              </div>
+            </div>
+
+          </div> <!-- End kf-cards-wrapper -->
+        </div> <!-- End kf-cell-cards -->
+
+      </div> <!-- End kf-grid-container -->
+    </section>
+
+    <!-- Advanced Features Section -->
+    <section class="advanced-features-section">
+      <div class="af-grid-container">
+        <!-- Label -->
+        <div class="af-cell-label">
+          <div class="af-sticky-label"><span class="af-dot"></span>Advanced features</div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="af-content-grid">
+          <!-- Item 1 -->
+          <div class="af-item">
+            <div class="af-icon"><i class="fas fa-layer-group"></i></div>
+            <h3 class="af-title">Asset class agnostic</h3>
+            <p class="af-desc">Digital Subscriptions can be configured for all asset classes and fund structures.</p>
+          </div>
+          <!-- Item 2 -->
+          <div class="af-item">
+            <div class="af-icon"><i class="fas fa-history"></i></div>
+            <h3 class="af-title">Activity tracking</h3>
+            <p class="af-desc">View exactly where each investor is in the onboarding process and send reminders.</p>
+          </div>
+          <!-- Item 3 -->
+          <div class="af-item">
+            <div class="af-icon"><i class="fas fa-code"></i></div>
+            <h3 class="af-title">API integration</h3>
+            <p class="af-desc">Use our APIs to set up straight through processing and eliminate manual data entry.</p>
+          </div>
+          <!-- Item 4 -->
+          <div class="af-item">
+            <div class="af-icon"><i class="fas fa-shield-alt"></i></div>
+            <h3 class="af-title">SOC2 certification</h3>
+            <p class="af-desc">All data processed by NEIIA products meets SOC2 certification standards for security
+              & privacy.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section (from Investor Management) -->
+    <style>
+      /* Testimonials CSS Variables */
+      :root {
+        --im-bg-dark: #001D21;
+        --im-bg-dark-alt: #002B31;
+        --im-bg-light: #F9F9F7;
+        --im-bg-card: #F3F4F2;
+        --im-text-dark: #001D21;
+        --im-text-light: #F9F9F7;
+        --im-button-primary: #BDBBFF;
+        --im-accent-tan: #8A744A;
+      }
+
+      .im-testimonials {
+        background: var(--im-bg-light);
+        color: var(--im-text-dark);
+        padding: 80px 24px;
+        overflow: hidden;
+      }
+
+      .im-testimonials-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .testimonials-carousel {
+        display: flex;
+        gap: 24px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 20px 0;
+      }
+
+      .testimonials-carousel::-webkit-scrollbar {
+        display: none;
+      }
+
+      .testimonial-slide {
+        flex: 0 0 min(85%, 900px);
+        scroll-snap-align: start;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-radius: 24px;
+        overflow: hidden;
+        min-height: 400px;
+      }
+
+      .testimonial-slide.dark {
+        background: var(--im-bg-dark-alt);
+        color: var(--im-text-light);
+      }
+
+      .testimonial-slide.tan {
+        background: var(--im-accent-tan);
+        color: var(--im-text-light);
+      }
+
+      .testimonial-slide.lavender {
+        background: var(--im-button-primary);
+        color: var(--im-text-dark);
+      }
+
+      .testimonial-content {
+        padding: 48px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .testimonial-quote {
+        font-size: 24px;
+        line-height: 1.5;
+        font-weight: 400;
+        margin: 0 0 32px;
+      }
+
+      .testimonial-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+
+      .testimonial-author {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .testimonial-author h4 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .testimonial-author p {
+        font-size: 14px;
+        opacity: 0.7;
+        margin: 0;
+      }
+
+      .testimonial-photo-container {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .testimonial-photo-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .carousel-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 32px;
+      }
+
+      .carousel-dots {
+        display: flex;
+        gap: 8px;
+      }
+
+      .carousel-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(0, 29, 33, 0.2);
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .carousel-dot.active {
+        background: var(--im-text-dark);
+        width: 24px;
+        border-radius: 4px;
+      }
+
+      .carousel-arrows {
+        display: flex;
+        gap: 8px;
+      }
+
+      .carousel-arrow {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 29, 33, 0.15);
+        background: transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        color: var(--im-text-dark);
+      }
+
+      .carousel-arrow:hover {
+        background: rgba(0, 29, 33, 0.05);
+      }
+
+      @media (max-width: 768px) {
+        .im-testimonials {
+          padding: 40px 0;
+        }
+
+        .im-testimonials-inner {
+          width: 100%;
+          overflow: hidden;
+        }
+
+        .testimonials-carousel {
+          padding: 0 24px;
+          scroll-padding-left: 24px;
+          gap: 16px;
+          justify-content: flex-start;
+        }
+
+        .testimonial-slide {
+          flex: 0 0 85%;
+          width: 85%;
+          margin-right: 0;
+          grid-template-columns: 1fr;
+          min-height: auto;
+          max-height: none;
+          display: flex;
+          flex-direction: column;
+          height: auto;
+          scroll-snap-align: center;
+        }
+
+        .testimonial-content {
+          padding: 32px 32px 24px;
+          order: 1;
+          flex: 1;
+        }
+
+        .testimonial-quote {
+          font-size: 18px;
+          line-height: 1.5;
+          margin-bottom: 24px;
+        }
+
+        .testimonial-footer {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+
+        .testimonial-photo-container {
+          height: 240px;
+          max-height: 240px;
+          order: 2;
+          overflow: hidden;
+          width: 100%;
+          flex-shrink: 0;
+          margin-top: auto;
+        }
+
+        .testimonial-photo-container img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 20%;
+          display: block;
+        }
+      }
+    </style>
+
+    <section class="im-testimonials">
+      <div class="im-testimonials-inner">
+        <div class="testimonials-carousel" id="testimonials-carousel">
+          <!-- Slide 1 -->
+          <div class="testimonial-slide dark">
+            <div class="testimonial-content">
+              <p class="testimonial-quote">"Partnering with NEIIA has revolutionized our approach to national
+                energy data management. The Data Bank provides the transparency and intelligence required to
+                drive sustainable investment and power Nigeria's future."</p>
+              <div class="testimonial-footer">
+                <div class="testimonial-author">
+                  <h4>Dr. Mustapha Abdullahi</h4>
+                  <p>Director General (DG)</p>
+                </div>
+                <span
+                  style="font-family: serif; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; max-width: 150px; text-align: right;">Energy
+                  Commission of Nigeria</span>
+              </div>
+            </div>
+            <div class="testimonial-photo-container">
+              <img src="../assets/images/investor-management/mustapha-dg.jpeg" alt="Dr. Mustapha Abdullahi">
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="testimonial-slide lavender">
+            <div class="testimonial-content">
+              <p class="testimonial-quote">"Accelerating Nigeria's energy transition requires robust
+                partnerships and innovative data systems. NEIIA gives us the strategic oversight needed to
+                harmonize public policy with private sector execution."</p>
+              <div class="testimonial-footer">
+                <div class="testimonial-author">
+                  <h4>Mrs. Olu Verheijen</h4>
+                  <p>Special Adviser (SA) to the President on Energy</p>
+                </div>
+                <span
+                  style="font-family: serif; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; max-width: 150px; text-align: right; color: var(--im-text-dark);">Presidential
+                  Chair Representative</span>
+              </div>
+            </div>
+            <div class="testimonial-photo-container">
+              <img src="../assets/images/investor-management/olu.jpeg" alt="Mrs. Olu Verheijen">
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="testimonial-slide tan">
+            <div class="testimonial-content">
+              <p class="testimonial-quote">"The National Energy Fund is committed to unlocking capital for
+                critical infrastructure. NEIIA's platform provides the rigorous financial tracking and
+                project visibility essential for banking institutions and global investors."</p>
+              <div class="testimonial-footer">
+                <div class="testimonial-author">
+                  <h4>Dr. Kassim Gidado</h4>
+                  <p>Chairman, National Energy Fund (NEFUND)</p>
+                </div>
+                <span
+                  style="font-family: serif; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; max-width: 150px; text-align: right;">Board
+                  Chairman, Polaris Bank</span>
+              </div>
+            </div>
+            <div class="testimonial-photo-container">
+              <img src="../assets/images/investor-management/kas.png" alt="Dr. Kassim Gidado">
+            </div>
+          </div>
+
+          <!-- Slide 4 -->
+          <div class="testimonial-slide dark">
+            <div class="testimonial-content">
+              <p class="testimonial-quote">"J.P. Morgan's partnership with NEIIA exemplifies how global
+                financial institutions can effectively participate in Nigeria's energy sector. The robust
+                regulatory framework and transparent data access provide the confidence needed for
+                large-scale capital deployment."</p>
+              <div class="testimonial-footer">
+                <div class="testimonial-author">
+                  <h4>Dapo Olagunju</h4>
+                  <p>Managing Director at JPMorgan</p>
+                </div>
+                <span
+                  style="font-family: serif; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; max-width: 150px; text-align: right;">J.P.
+                  Morgan Nigeria</span>
+              </div>
+            </div>
+            <div class="testimonial-photo-container">
+              <img src="../assets/images/investor-management/daps.jpg.webp" alt="Dapo Olagunju">
+            </div>
+          </div>
+
+          <!-- Slide 5 -->
+          <div class="testimonial-slide tan">
+            <div class="testimonial-content">
+              <p class="testimonial-quote">"CardinalStone relies on accurate data to drive local investment
+                strategies. NEIIA's intelligence platforms provide the granular insights we need to identify
+                high-potential energy assets and confidently mobilize domestic capital."</p>
+              <div class="testimonial-footer">
+                <div class="testimonial-author">
+                  <h4>Mariam Bolakale</h4>
+                  <p>Executive Director</p>
+                </div>
+                <span
+                  style="font-family: serif; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; max-width: 150px; text-align: right;">CardinalStone
+                  Asset Management</span>
+              </div>
+            </div>
+            <div class="testimonial-photo-container">
+              <img src="../assets/images/investor-management/mariam.png" alt="Mariam Bolakale">
+            </div>
+          </div>
+
+          <!-- Slide 6 -->
+          <div class="testimonial-slide lavender">
+            <div class="testimonial-content">
+              <p class="testimonial-quote">"FirstCap leverages NEIIA's comprehensive market data to structure
+                complex public finance and corporate advisory deals. The platform's transparency ensures we
+                can align capital market opportunities with national development goals effectively."</p>
+              <div class="testimonial-footer">
+                <div class="testimonial-author">
+                  <h4>Oluseun Olatidoye</h4>
+                  <p>Head, Capital Markets</p>
+                </div>
+                <span
+                  style="font-family: serif; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; max-width: 150px; text-align: right; color: var(--im-text-dark);">FirstCap</span>
+              </div>
+            </div>
+            <div class="testimonial-photo-container">
+              <img src="../assets/images/investor-management/oluola.jpg" alt="Oluseun Olatidoye">
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <div class="carousel-controls">
+          <div class="carousel-dots">
+            <button class="carousel-dot active" data-slide="0"></button>
+            <button class="carousel-dot" data-slide="1"></button>
+            <button class="carousel-dot" data-slide="2"></button>
+            <button class="carousel-dot" data-slide="3"></button>
+            <button class="carousel-dot" data-slide="4"></button>
+            <button class="carousel-dot" data-slide="5"></button>
+          </div>
+          <div class="carousel-arrows">
+            <button class="carousel-arrow" id="prev-slide"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-arrow" id="next-slide"><i class="fas fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Testimonials Carousel
+      (function () {
+        const carousel = document.getElementById('testimonials-carousel');
+        if (!carousel) return;
+        const slides = carousel.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const prevBtn = document.getElementById('prev-slide');
+        const nextBtn = document.getElementById('next-slide');
+        let currentSlide = 0;
+
+        function goToSlide(index) {
+          if (index < 0) index = slides.length - 1;
+          if (index >= slides.length) index = 0;
+          currentSlide = index;
+          slides[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+          dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+        if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+        dots.forEach(dot => {
+          dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.slide)));
+        });
+
+        // Auto-detect current slide on scroll
+        let scrollTimeout;
+        carousel.addEventListener('scroll', () => {
+          clearTimeout(scrollTimeout);
+          scrollTimeout = setTimeout(() => {
+            const scrollLeft = carousel.scrollLeft;
+            const slideWidth = slides[0].offsetWidth + 24;
+            const newIndex = Math.round(scrollLeft / slideWidth);
+            if (newIndex !== currentSlide && newIndex >= 0 && newIndex < slides.length) {
+              currentSlide = newIndex;
+              dots.forEach((dot, i) => dot.classList.toggle('active', i === currentSlide));
+            }
+          }, 100);
+        });
+      })();
+    </script>
+
+    <!-- Simplify Workflow CTA -->
+    <section class="workflow-cta-section">
+      <div class="w-cta-container">
+        <div class="w-cta-card">
+          <h2 class="w-cta-headline">Simplify your most complex workflow</h2>
+          <p class="w-cta-subheadline">Partner with NEIIA to streamline your subscription workflows and remove
+            friction for investors. Talk to one of our experts to get started.</p>
+          <button class="w-cta-btn">Talk to an expert</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tailored for your needs Section -->
+    <section class="tailored-needs-section">
+      <div class="tn-container">
+        <div class="tn-cell-label">
+          <div class="tn-sticky-label">
+            <span class="tn-dot"></span> Pricing
+          </div>
+        </div>
+        <div class="tn-content">
+          <h2 class="tn-headline">Tailored for your needs</h2>
+          <p class="tn-subheadline">Our implementation team works with you to design custom investor onboarding flows
+            and eliminate the manual work of transactions.</p>
+
+          <div class="tn-list-label">Digital Subscriptions include:</div>
+          <ul class="tn-checklist">
+            <li class="tn-check-item">
+              <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg></span>
+              Custom subscription workflows for all asset classes
+            </li>
+            <li class="tn-check-item">
+              <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg></span>
+              Reusable investor profiles to speed up transactions
+            </li>
+            <li class="tn-check-item">
+              <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg></span>
+              Enterprise implementation and onboarding support
+            </li>
+            <li class="tn-check-item">
+              <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg></span>
+              Access for law firms & fund administrators
+            </li>
+            <li class="tn-check-item">
+              <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg></span>
+              Review and revision approval workflows
+            </li>
+            <li class="tn-check-item">
+              <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg></span>
+              E-signatures via DocuSign integration
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Explore Product Suites Section -->
+      <section class="explore-section">
+        <div class="ex-container">
+          <h2 class="ex-headline">Explore the NEIIA product suites</h2>
+
+          <div class="ex-grid">
+            <a href="#" class="ex-card">
+              <div class="ex-icon-top">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                  </path>
+                </svg>
+              </div>
+              <div class="ex-footer">
+                <div class="ex-title">Investor Management</div>
+                <div class="ex-arrow-circle">
+                  <i class="fas fa-arrow-right"></i>
+                </div>
+              </div>
+            </a>
+
+            <a href="#" class="ex-card">
+              <div class="ex-icon-top">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              </div>
+              <div class="ex-footer">
+                <div class="ex-title">Fund Administration</div>
+                <div class="ex-arrow-circle">
+                  <i class="fas fa-arrow-right"></i>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="faq-section">
+        <div class="faq-container">
+          <div class="faq-cell-label">
+            <div class="faq-sticky-label">
+              <span class="faq-dot"></span> FAQs
+            </div>
+          </div>
+          <div class="faq-content">
+            <h4 class="faq-headline">Your questions answered</h4>
+
+            <div class="faq-list">
+              <div class="faq-item">
+                <button class="faq-question-btn">
+                  Can we use our law firm's legal documents?
+                  <span class="faq-icon-toggle"></span>
+                </button>
+                <div class="faq-answer">
+                  Yes. NEIIA Digital Subscriptions can take your law firm's subscription booklet and create custom
+                  workflows based on those unique documents. We've digitized subscription booklets from over 40 law
+                  firms for our clients.
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <button class="faq-question-btn">
+                  Is there an API integration for data transfers?
+                  <span class="faq-icon-toggle"></span>
+                </button>
+                <div class="faq-answer">
+                  Yes, NEIIA Digital Subscriptions has an open API and can support other preferred data transfer
+                  methods.
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <button class="faq-question-btn">
+                  What types of documents or subscription paperwork can NEIIA Digital Subscriptions turn into
+                  workflows?
+                  <span class="faq-icon-toggle"></span>
+                </button>
+                <div class="faq-answer">
+                  NEIIA Digital Subscriptions supports any type of paperwork or form, including investor suitability
+                  questionnaires, on-shore and off-shore subscription booklets, SPV and Sidecar subscription documents,
+                  co-investment documents, addition forms, redemption forms, and transfer form.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+  </main>
+
+  <footer class="footer"
+    style="margin-top: 0; padding: 60px 20px; background-color: #001D21; color: #F9F9F7; border-top: 1px solid rgba(255, 255, 255, 0.1); width: 100%;">
+    <div class="footer-grid"
+      style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto; text-align: left;">
+      <div class="footer-col">
+        <h4 style="margin-bottom: 20px; font-weight: 600; color: #F9F9F7;">Products</h4>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="margin-bottom: 12px;"><a href="../construction.html"
+              style="color: rgba(249, 249, 247, 0.7); text-decoration: none;">Venture Funds</a></li>
+          <li style="margin-bottom: 12px;"><a href="../construction.html"
+              style="color: rgba(249, 249, 247, 0.7); text-decoration: none;">Rolling Funds</a></li>
+          <li style="margin-bottom: 12px;"><a href="../construction.html"
+              style="color: rgba(249, 249, 247, 0.7); text-decoration: none;">SPVs</a></li>
+          <li style="margin-bottom: 12px;"><a href="../construction.html"
+              style="color: rgba(249, 249, 247, 0.7); text-decoration: none;">Scout Funds</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 style="margin-bottom: 20px; font-weight: 600; color: #F9F9F7;">Administration</h4>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="margin-bottom: 12px;"><a href="../construction.html"
+              style="color: rgba(249, 249, 247, 0.7); text-decoration: none;">About NEIIA</a></li>
+          <li style="margin-bottom: 12px;"><a href="../construction.html"
+              style="color: rgba(249, 249, 247, 0.7); text-decoration: none;">Mandate & Governance</a></li>
+          <li style="margin-bottom: 12px;"><a href="../construction.html"
+              style="color: rgba(249, 249, 247, 0.7); text-decoration: none;">Careers</a></li>
+          <li style="margin-bottom: 12px;"><a href="../newsletter.html"
+              style="color: rgba(249, 249, 247, 0.7); text-decoration: none;">News & Updates</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 style="margin-bottom: 20px; font-weight: 600; color: #F9F9F7;">Engagement</h4>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="margin-bottom: 12px;"><a href="../construction.html"
+              style="color: rgba(249, 249, 247, 0.7); text-decoration: none;">Support & Enquiries</a></li>
+          <li style="margin-bottom: 12px;"><a href="../contact.html"
+              style="color: rgba(249, 249, 247, 0.7); text-decoration: none;">Contact NEIIA</a></li>
+        </ul>
+      </div>
+    </div>
+    <p
+      style="margin-top: 40px; color: rgba(249, 249, 247, 0.5); font-size: 0.9rem; max-width: 1200px; margin-left: auto; margin-right: auto;">
+      © 2026 NEIIA</p>
+  </footer>
+
+  <!-- Mobile Navigation Overlay -->
+  <div class="mobile-nav-overlay">
+    <div class="mobile-nav-header">
+      <a href="../index.html">
+        <img src="../assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
+      </a>
+      <button class="mobile-close-btn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="mobile-nav-content">
+      <ul class="mobile-nav-list">
+        <li><a href="../finance.html">Energy Finance & Capital <i class="fas fa-arrow-right"></i></a></li>
+        <li><a href="../dashboard.html">Energy Ecosystem <i class="fas fa-arrow-right"></i></a></li>
+        <li><a href="../citibim.html">NEIIA <i class="fas fa-arrow-right"></i></a></li>
+        <li><a href="#" id="mobile-resources-link">NEFUND <i class="fas fa-chevron-right"></i></a></li>
+      </ul>
+      <div class="mobile-nav-footer">
+        <a href="../contact.html" class="btn btn-primary full-width">Contact Support</a>
+        <a href="../signin.html" class="btn btn-secondary full-width">Sign in</a>
+      </div>
+    </div>
+
+    <!-- Resources Submenu -->
+    <div class="mobile-submenu" id="resources-submenu">
+      <div class="submenu-header">
+        <button class="submenu-back-btn" id="submenu-back-btn">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <button class="mobile-close-btn-sub">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="submenu-content">
+        <div class="submenu-section">
+          <span class="submenu-label">Fund Administration</span>
+          <ul class="submenu-list">
+            <li><a href="../construction.html">Venture Funds</a></li>
+            <li><a href="../construction.html">Rolling Funds</a></li>
+            <li><a href="../construction.html">Scout Funds</a></li>
+            <li><a href="../construction.html">SPVs</a></li>
+            <li><a href="../construction.html">Roll Up Vehicles</a></li>
+          </ul>
+        </div>
+        <div class="submenu-section">
+          <span class="submenu-label">Investor Management</span>
+          <ul class="submenu-list">
+            <li><a href="../investor-management.html">Digital Subscriptions</a></li>
+            <li><a href="../databank.html">Data Bank</a></li>
+          </ul>
+        </div>
+        <div class="submenu-section">
+          <span class="submenu-label">Intelligence</span>
+          <ul class="submenu-list">
+            <li><a href="../construction.html">Fin <span class="beta-badge">Beta</span></a></li>
+          </ul>
+        </div>
+
+        <!-- Product Suites Box -->
+        <div class="product-suites-box">
+          <span class="submenu-label" style="margin-bottom: 24px; display: block;">Product Suites</span>
+          <a href="../construction.html" class="suite-card">
+            <div class="suite-icon">
+              <i class="fas fa-circle-notch" style="color: #A3E635; font-size: 24px;"></i>
+            </div>
+            <div class="suite-info">
+              <h4>Fund Administration</h4>
+              <p>All-in-one partner to launch an investment vehicle</p>
+            </div>
+          </a>
+          <a href="../investor-management.html" class="suite-card">
+            <div class="suite-icon">
+              <i class="fas fa-layer-group" style="color: #A3E635; font-size: 24px;"></i>
+            </div>
+            <div class="suite-info">
+              <h4>Investor Management</h4>
+              <p>Explore all offerings to streamline the investor experience.</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- Footer Links/Buttons -->
+        <a href="../construction.html" class="submenu-footer-link">
+          Looking for tools for startups? Explore Rollups. <i class="fas fa-arrow-right" style="font-size: 12px;"></i>
+        </a>
+        <div class="submenu-btn-group">
+          <a href="../contact.html" class="btn-lavender">Contact sales</a>
+          <a href="../signin.html" class="btn-gray-light">Sign in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/landing.js"></script>
+  <script src="../script.js"></script>
+</body>
+
+</html>
