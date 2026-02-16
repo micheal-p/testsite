@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New to Data Bank? | Help Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'AngelList';
+            src: url('assets/databank/fonts/AngelList-VF.3bb41c0a.woff2') format('woff2');
+            font-weight: 100 900;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'AngelList', Inter, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #111827;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Reused Navbar */
+        .navbar {
+            height: 60px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .brand-logo {
+            font-weight: 700;
+            font-size: 20px;
+            color: #0c4a4c;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 14px;
+            font-weight: 500;
+            margin-right: 20px;
+        }
+
+        .nav-links a.active {
+            color: #111827;
+            font-weight: 600;
+        }
+
+        .user-avatar-top {
+            width: 32px;
+            height: 32px;
+            background: #e5e7eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* Profile Dropdown */
+        .profile-dropdown-menu {
+            position: absolute;
+            top: 50px;
+            right: 40px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 240px;
+            display: none;
+            z-index: 200;
+            border: 1px solid #f3f4f6;
+            padding: 16px 0 8px 0;
+        }
+
+        .profile-dropdown-menu.visible {
+            display: block;
+        }
+
+        .dropdown-header {
+            padding: 0 16px 12px 16px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #f3f4f6;
+            margin-bottom: 8px;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: #111827;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.15s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f9fafb;
+        }
+
+        .dropdown-item i {
+            width: 16px;
+            color: #9ca3af;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #f3f4f6;
+            margin: 8px 0;
+        }
+
+        /* Help Center Specific Styles */
+        .help-hero {
+            background-color: #f9fafb;
+            padding: 60px 0;
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .help-hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #111827;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 20px 16px 48px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            font-size: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #0c4a4c;
+            box-shadow: 0 4px 12px -2px rgba(12, 74, 76, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 18px;
+        }
+
+        /* Main Content Layout */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 60px;
+        }
+
+        /* Sidebar */
+        .sidebar-menu {
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-menu h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #6b7280;
+            margin-bottom: 16px;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .menu-item {
+            display: block;
+            padding: 8px 12px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 4px;
+            font-size: 14px;
+            transition: background 0.15s;
+        }
+
+        .menu-item:hover {
+            background-color: #f3f4f6;
+            color: #111827;
+        }
+
+        .menu-item.active {
+            background-color: #edf7f7;
+            color: #0c4a4c;
+            font-weight: 600;
+        }
+
+        /* Content Area */
+        .content-section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #111827;
+        }
+
+        /* Footer */
+        .feedback-section {
+            border-top: 1px solid #e5e7eb;
+            margin-top: 60px;
+            padding-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .feedback-text {
+            color: #4b5563;
+            font-size: 14px;
+        }
+
+        .feedback-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .feedback-btn {
+            padding: 8px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            background: white;
+            color: #4b5563;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feedback-btn:hover {
+            border-color: #d1d5db;
+            background-color: #f9fafb;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 16px;
+                height: auto;
+                display: block;
+                position: relative;
+            }
+
+            .nav-left {
+                display: block;
+                width: 100%;
+            }
+
+            .brand-logo {
+                display: block;
+                margin-bottom: 12px;
+            }
+
+            .nav-links {
+                display: flex;
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 4px;
+                gap: 16px;
+                margin-right: 0;
+                width: 100%;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-links a {
+                margin-right: 0;
+                font-size: 14px;
+                flex-shrink: 0;
+            }
+
+            .user-avatar-top {
+                position: absolute;
+                top: 12px;
+                right: 16px;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                padding: 0 20px;
+                margin: 20px auto;
+                gap: 30px;
+            }
+
+            .sidebar-menu {
+                position: static;
+                padding-bottom: 20px;
+                border-bottom: 1px solid #e5e7eb;
+                margin-bottom: 20px;
+                display: flex;
+                overflow-x: auto;
+                gap: 12px;
+            }
+
+            .sidebar-menu h3 {
+                display: none; /* Hide headers on mobile sidebar to save space */
+            }
+
+            .menu-item {
+                flex-shrink: 0;
+                background: #f9fafb;
+                border: 1px solid #e5e7eb;
+                padding: 8px 16px;
+                border-radius: 20px;
+                font-size: 13px;
+                margin-bottom: 0;
+            }
+            
+            .menu-item.active {
+                background: #edf7f7;
+                border-color: #0c4a4c;
+            }
+
+            .help-hero {
+                padding: 40px 20px;
+            }
+
+            .help-hero h1 {
+                font-size: 24px;
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html" class="brand-logo">Data Bank</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="help-center.html" class="active">Help Center</a>
+                <a href="databank-room.html">Data Room</a>
+                <a href="investor-management.html">Investor Portal</a>
+            </div>
+        </div>
+        <div class="user-avatar-top" onclick="toggleProfileDropdown()">
+            <i class="fas fa-user"></i>
+        </div>
+
+        <!-- Profile Dropdown Menu -->
+        <div id="profileDropdownMenu" class="profile-dropdown-menu">
+            <div class="dropdown-header">ANIE PIUS</div>
+            <a href="account-settings.html" class="dropdown-item">
+                <i class="fas fa-cog"></i>
+                Account Settings
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="help-center.html" class="dropdown-item">
+                <i class="far fa-question-circle"></i>
+                Help Center
+            </a>
+            <a href="#" class="dropdown-item">
+                <i class="far fa-envelope"></i>
+                Feedback
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="index.html" class="dropdown-item">
+                <i class="fas fa-sign-out-alt"></i>
+                Log Out
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Search -->
+    <div class="help-hero">
+        <h1>How can we help you?</h1>
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" placeholder="Search for articles, guides, and more...">
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar-menu">
+            <h3>Start Here</h3>
+            <a href="help-center.html" class="menu-item">Overview</a>
+            <a href="help-onboarding.html" class="menu-item active">Getting Started</a>
+            <a href="help-platform.html" class="menu-item">Platform Guide</a>
+
+            <h3 style="margin-top: 24px;">Topics</h3>
+            <a href="help-account.html" class="menu-item">Account & Settings</a>
+            <a href="help-dataroom.html" class="menu-item">Data Room</a>
+            <a href="help-security.html" class="menu-item">Privacy & Security</a>
+            <a href="help-subscription.html" class="menu-item">Subscription Docs</a>
+        </aside>
+
+        <!-- Content Area -->
+        <main>
+            <div class="content-section">
+                <!-- Breadcrumbs -->
+                <div style="margin-bottom: 24px; font-size: 14px; color: #6b7280;">
+                    <a href="help-center.html" style="color: #6b7280; text-decoration: none;">Help Center</a>
+                    <span style="margin: 0 8px;">/</span>
+                    <span style="color: #111827;">Getting Started</span>
+                </div>
+
+                <h2 class="section-title" style="font-size: 32px; margin-bottom: 16px;">New to Data Bank?</h2>
+
+                <div class="article-content" style="font-size: 16px; line-height: 1.6; color: #374151;">
+                    <p style="margin-bottom: 24px;">Welcome to Data Bank! We're excited to have you on board. This guide
+                        will walk you through the essentials of setting up your account and navigating the platform.</p>
+
+                    <h3 style="font-size: 20px; font-weight: 600; color: #111827; margin: 32px 0 16px 0;">Setting up
+                        your Profile</h3>
+                    <p style="margin-bottom: 16px;">The first step to using Data Bank is effectively setting up your
+                        profile. Ensure your contact details are up to date and you have enabled Two-Factor
+                        Authentication (2FA) for added security.</p>
+                    <p style="margin-bottom: 16px;">You can manage your profile settings by clicking on your avatar in
+                        the top right corner and selecting "Account Settings".</p>
+
+                    <h3 style="font-size: 20px; font-weight: 600; color: #111827; margin: 32px 0 16px 0;">Navigating the
+                        Dashboard</h3>
+                    <p style="margin-bottom: 16px;">Your dashboard is the central hub for all your activities. Here you
+                        can view key metrics, recent deal flows, and upcoming tasks. Use the sidebar navigation to
+                        quickly access different sections like the Data Room or Investor Portal.</p>
+
+                    <h3 style="font-size: 20px; font-weight: 600; color: #111827; margin: 32px 0 16px 0;">Managing Deal
+                        Flows</h3>
+                    <p style="margin-bottom: 16px;">Deal flows are the core of Data Bank. You can create new deals,
+                        track their progress, and invite investors to view your data room. Check the "Deals" section for
+                        more detailed guides.</p>
+                </div>
+            </div>
+
+            <div class="feedback-section">
+                <span class="feedback-text">Was this page helpful?</span>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn"><i class="far fa-thumbs-up"></i> Yes</button>
+                    <button class="feedback-btn"><i class="far fa-thumbs-down"></i> No</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleProfileDropdown() {
+            const menu = document.getElementById('profileDropdownMenu');
+            menu.classList.toggle('visible');
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function (e) {
+            const menu = document.getElementById('profileDropdownMenu');
+            const avatar = document.querySelector('.user-avatar-top');
+
+            if (menu.classList.contains('visible') && !menu.contains(e.target) && !avatar.contains(e.target)) {
+                menu.classList.remove('visible');
+            }
+        });
+    </script>
+</body>
+
+</html>
