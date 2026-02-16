@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watchlist | NEIIA Databank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Inherit Styles from Deals Page */
+        @font-face {
+            font-family: 'AngelList';
+            src: url('../assets/databank/fonts/AngelList-VF.3bb41c0a.woff2') format('woff2');
+            font-weight: 100 900;
+        }
+
+        :root {
+            --sidebar-dark: #121212;
+            --sidebar-light: #f9fafb;
+            --primary-green: #0B1F24;
+            --text-dark: #111827;
+            --text-gray: #6b7280;
+            --border-color: #e5e7eb;
+            --bg-white: #ffffff;
+            --accent-blue: #2563eb;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        /* Icon Sidebar */
+        .icon-sidebar {
+            width: 60px;
+            background: var(--sidebar-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
+            border-right: 1px solid #333;
+            flex-shrink: 0;
+        }
+
+        .icon-nav-item {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            color: #9ca3af;
+            cursor: pointer;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .icon-nav-item:hover,
+        .icon-nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* Context Sidebar */
+        .context-sidebar {
+            width: 240px;
+            background: var(--sidebar-light);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .context-header {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 24px;
+            padding: 0 8px;
+        }
+
+        .context-nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 6px;
+            margin-bottom: 2px;
+            cursor: pointer;
+        }
+
+        .context-nav-item:hover {
+            background: #f3f4f6;
+            color: var(--text-dark);
+        }
+
+        .context-nav-item.active {
+            background: #e5e7eb;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px 60px;
+            overflow-y: auto;
+            background: #fff;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* Filters Bar */
+        .filters-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        /* Search Bar Styling */
+        .search-container {
+            position: relative;
+            margin-bottom: 16px;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            /* Well curved per user request */
+            font-size: 14px;
+            background: #f9fafb;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .search-input:focus {
+            background: #fff;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-gray);
+            pointer-events: none;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text-dark);
+            background: white;
+            min-width: 150px;
+        }
+
+        /* Watchlist Table */
+        .watchlist-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .watchlist-table th {
+            text-align: left;
+            padding: 12px 16px;
+            color: var(--text-gray);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .watchlist-table th:hover {
+            color: var(--text-dark);
+        }
+
+        .watchlist-table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-dark);
+            vertical-align: middle;
+        }
+
+        .company-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+
+        .company-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-gray);
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .trend-up {
+            color: var(--accent-green);
+            font-weight: 500;
+        }
+
+        .trend-down {
+            color: var(--accent-red);
+            font-weight: 500;
+        }
+
+        .watchlist-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #d1d5db;
+            /* Inactive star color */
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+
+        .watchlist-toggle.active {
+            color: #fbbf24;
+            /* Active star color (gold) */
+        }
+
+        .watchlist-toggle:hover {
+            color: #fbbf24;
+        }
+
+        /* Mobile Responsive */
+        @media screen and (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .icon-sidebar {
+                width: 100%;
+                height: 60px;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 0;
+                border-right: none;
+                border-top: 1px solid #333;
+                order: 3;
+                position: fixed;
+                bottom: 0;
+                z-index: 100;
+            }
+
+            .context-sidebar {
+                display: none;
+            }
+
+            .main-content {
+                padding: 20px 16px;
+                margin-bottom: 60px;
+            }
+
+            /* Stack Table Rows */
+            .watchlist-table thead {
+                display: none;
+            }
+
+            .watchlist-table,
+            .watchlist-table tbody,
+            .watchlist-table tr,
+            .watchlist-table td {
+                display: block;
+                width: 100%;
+            }
+
+            .watchlist-table tr {
+                margin-bottom: 16px;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                padding: 12px;
+                background: #fff;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                position: relative;
+            }
+
+            .watchlist-table td {
+                padding: 8px 0;
+                border-bottom: none;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                text-align: right;
+            }
+
+            .watchlist-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--text-gray);
+                text-align: left;
+                margin-right: 12px;
+                font-size: 13px;
+            }
+
+            /* First cell (Rank & Company) styling */
+            .watchlist-table td:first-child {
+                /* Rank */
+                display: none;
+                /* Hide rank on mobile to save space, or put in corner */
+            }
+
+            .watchlist-table td:nth-child(2) {
+                /* Company */
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 12px;
+                margin-bottom: 8px;
+                justify-content: flex-start;
+            }
+
+            .watchlist-table td:nth-child(2)::before {
+                display: none;
+            }
+
+            /* Action button absolute positioning */
+            .watchlist-table td:last-child {
+                position: absolute;
+                top: 12px;
+                right: 12px;
+                padding: 0;
+                width: auto;
+            }
+
+            .watchlist-table td:last-child::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="icon-sidebar">
+        <a href="../databank-room.html" class="icon-nav-item" title="Back to Room">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="icon-nav-item active">
+            <i class="fas fa-briefcase"></i>
+        </div>
+    </div>
+
+    <div class="context-sidebar">
+        <div class="context-header">Deal Management</div>
+        <a href="deals.html" class="context-nav-item">My Deals</a>
+        <a href="watchlist.html" class="context-nav-item" id="nav-watchlist">Watchlist</a>
+        <a href="?view=starred" class="context-nav-item" id="nav-starred">Starred</a>
+    </div>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title" id="pageTitle">Market Watchlist</h1>
+            <button id="clearBtn" onclick="clearWatchlist()"
+                style="display: none; padding: 8px 16px; background: #fee2e2; color: #dc2626; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; font-size: 14px;">
+                <i class="fas fa-trash-alt" style="margin-right: 6px;"></i> Clear Watchlist
+            </button>
+        </div>
+
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search companies, sectors...">
+        </div>
+
+        <div class="filters-bar" id="filtersBar">
+            <select class="filter-select" id="benchmarkFilter">
+                <option value="all">Benchmark: All Markets</option>
+                <option value="ngx30">NGX 30 Index</option>
+                <option value="energy">Energy & Power Index</option>
+                <option value="tech">Tech Growth Index</option>
+            </select>
+
+            <select class="filter-select" id="marketTypeFilter">
+                <option value="all">Market Type: All</option>
+                <option value="public">Public (Listed)</option>
+                <option value="private">Private (OTC)</option>
+            </select>
+
+            <select class="filter-select" id="sectorFilter">
+                <option value="all">Sector: All Sectors</option>
+                <!-- Dynamically populated -->
+            </select>
+        </div>
+
+        <table class="watchlist-table">
+            <thead>
+                <tr>
+                    <th style="width: 50px;">#</th>
+                    <th>Company</th>
+                    <th>Sector</th>
+                    <th>Market Type</th>
+                    <th>Valuation / Cap</th>
+                    <th>Daily Change</th>
+                    <th style="width: 50px;">Watch</th>
+                </tr>
+            </thead>
+            <tbody id="watchlistBody">
+                <!-- Dynamically populated -->
+            </tbody>
+        </table>
+    </main>
+
+    <script src="../js/company-data.js"></script>
+    <script>
+        // Check URL Params
+        const urlParams = new URLSearchParams(window.location.search);
+        const viewMode = urlParams.get('view');
+
+        // Navigation Active State
+        if (viewMode === 'starred') {
+            document.getElementById('nav-starred').classList.add('active');
+            document.getElementById('pageTitle').textContent = "My Starred Watchlist";
+            document.getElementById('clearBtn').style.display = "block";
+        } else {
+            document.getElementById('nav-watchlist').classList.add('active');
+            document.getElementById('clearBtn').style.display = "none";
+        }
+
+        // Data Generation and Rendering Logic
+        const watchlistBody = document.getElementById('watchlistBody');
+        const sectorFilter = document.getElementById('sectorFilter');
+        const benchmarkFilter = document.getElementById('benchmarkFilter');
+        const marketTypeFilter = document.getElementById('marketTypeFilter');
+
+        // Populate Sector Filter
+        for (const sector in companyData) {
+            const option = document.createElement('option');
+            option.value = sector;
+            option.textContent = sector;
+            sectorFilter.appendChild(option);
+        }
+
+        // Generate Watchlist Data
+        let allCompanies = [];
+
+        function generateMarketData() {
+            allCompanies = [];
+            let idCounter = 1;
+
+            for (const [sector, data] of Object.entries(companyData)) {
+                // Combine Nigerian and Global for a rich list
+                const companies = [...data.nigerian, ...data.global];
+
+                companies.forEach(company => {
+                    // Random Market Data
+                    const isPublic = Math.random() > 0.4;
+                    const valuation = (Math.random() * 50 + 0.5).toFixed(1); // Billions or Millions
+                    const change = (Math.random() * 10 - 4).toFixed(2); // -4% to +6%
+                    const unit = Math.random() > 0.7 ? "B" : "M";
+
+                    // Starred Logic: simulate persistent starred state or random for demo
+                    const storageKey = `neia_watch_${company}`;
+                    const isStarred = localStorage.getItem(storageKey) === 'true';
+
+                    allCompanies.push({
+                        id: idCounter++,
+                        name: company,
+                        sector: sector,
+                        style: data.style,
+                        market: isPublic ? "Public" : "Private",
+                        valuation: `$${valuation}${unit}`,
+                        change: parseFloat(change),
+                        watched: isStarred // Load from storage
+                    });
+                });
+            }
+
+            // No auto-star logic here anymore!
+
+            // Sort by Valuation (Mock Ranking)
+            allCompanies.sort((a, b) => {
+                const valA = parseFloat(a.valuation.replace('$', '').replace('B', '000').replace('M', ''));
+                const valB = parseFloat(b.valuation.replace('$', '').replace('B', '000').replace('M', ''));
+                return valB - valA;
+            });
+
+            renderTable();
+        }
+
+        function renderTable() {
+            watchlistBody.innerHTML = '';
+
+            // Filter Data
+            const selectedSector = sectorFilter.value;
+            const selectedMarket = marketTypeFilter.value;
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+
+            let filtered = allCompanies.filter(c => {
+                if (viewMode === 'starred' && !c.watched) return false; // Starred View Filter
+
+                if (selectedSector !== 'all' && c.sector !== selectedSector) return false;
+                if (selectedMarket !== 'all' && c.market.toLowerCase() !== selectedMarket) return false;
+                if (searchQuery && !c.name.toLowerCase().includes(searchQuery)) return false;
+
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                watchlistBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 40px; color: #6b7280;">No companies found${viewMode === 'starred' ? ' in your starred list' : ''}.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach((company, index) => {
+                const row = document.createElement('tr');
+
+                // Determine Badge/Trend Colors
+                const trendClass = company.change >= 0 ? 'trend-up' : 'trend-down';
+                const trendIcon = company.change >= 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+                const trendSign = company.change >= 0 ? '+' : '';
+
+                // Sector Badge Style
+                let badgeStyle = "background: #f3f4f6; color: #6b7280;";
+                if (company.style === 'sector-oil') badgeStyle = "background: #fee2e2; color: #dc2626;";
+                if (company.style === 'sector-power') badgeStyle = "background: #fef3c7; color: #d97706;";
+                if (company.style === 'sector-renew') badgeStyle = "background: #d1fae5; color: #059669;";
+                if (company.style === 'sector-infra') badgeStyle = "background: #e0e7ff; color: #4f46e5;";
+
+                // Correct Rank Calculation
+                const globalRank = allCompanies.findIndex(item => item.name === company.name) + 1;
+
+                row.innerHTML = `
+                    <td data-label="Rank" style="color: #9ca3af; font-weight: 500;">${globalRank}</td>
+                    <td data-label="Company">
+                        <div class="company-cell">
+                            <div class="company-logo" style="background: #e0e7ff; color: #4f46e5;">${company.name.charAt(0)}</div>
+                            ${company.name}
+                        </div>
+                    </td>
+                    <td data-label="Sector"><span class="badge" style="${badgeStyle}">${company.sector}</span></td>
+                    <td data-label="Market Type">${company.market}</td>
+                    <td data-label="Valuation">${company.valuation}</td>
+                    <td data-label="Daily Change" class="${trendClass}">
+                        ${trendSign}${company.change}% <i class="fas ${trendIcon}" style="font-size: 10px;"></i>
+                    </td>
+                    <td data-label="Watch">
+                        <button class="watchlist-toggle ${company.watched ? 'active' : ''}" onclick="toggleWatch(this, '${company.name}')">
+                            <i class="fas fa-star"></i>
+                        </button>
+                    </td>
+                `;
+                watchlistBody.appendChild(row);
+            });
+        }
+
+        // Toggle Watch Logic
+        window.toggleWatch = function (btn, companyName) {
+            btn.classList.toggle('active');
+            const isActive = btn.classList.contains('active');
+
+            // Update Local State
+            const company = allCompanies.find(c => c.name === companyName);
+            if (company) {
+                company.watched = isActive;
+                localStorage.setItem(`neia_watch_${companyName}`, isActive);
+            }
+
+            // If in starred view and untoggled, refresh table
+            if (viewMode === 'starred' && !isActive) {
+                renderTable();
+            }
+        }
+
+        // Filter Listeners
+        sectorFilter.addEventListener('change', renderTable);
+        marketTypeFilter.addEventListener('change', renderTable);
+        benchmarkFilter.addEventListener('change', renderTable);
+
+        // Clear Watchlist Logic
+        window.clearWatchlist = function () {
+            if (confirm('Are you sure you want to clear your entire watchlist?')) {
+                // Clear all keys matching neia_watch_
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith('neia_watch_')) {
+                        localStorage.removeItem(key);
+                    }
+                });
+
+                // Update in-memory state
+                allCompanies.forEach(c => c.watched = false);
+
+                // Re-render
+                renderTable();
+            }
+        }
+
+        // Search Filter Logic
+        document.getElementById('searchInput').addEventListener('input', function (e) {
+            renderTable();
+        });
+
+        // Initialize
+        generateMarketData();
+    </script>
+</body>
+
+</html>
