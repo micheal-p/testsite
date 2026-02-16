@@ -959,7 +959,27 @@
             </div>
         </div>
 
+        <!-- Mobile Only Profile Section -->
+        <div class="mobile-profile-section mobile-only"
+            style="margin-top: auto; border-top: 1px solid #e5e7eb; padding-top: 16px;">
+            <div class="context-nav-item" onclick="toggleProfilePopup(event)" style="justify-content: flex-start;">
+                <div
+                    style="width: 24px; height: 24px; background: #374151; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; margin-right: 12px;">
+                    A</div>
+                <div style="font-size: 13px; font-weight: 500; color: #374151;">ANIE PIUS</div>
+            </div>
+        </div>
+        <style>
+            .mobile-only {
+                display: none;
+            }
 
+            @media (max-width: 768px) {
+                .mobile-only {
+                    display: block;
+                }
+            }
+        </style>
     </nav>
 
     <!-- 3. Main Content -->
@@ -969,12 +989,12 @@
             <!-- Mobile Header (Visible only on mobile) -->
             <div class="mobile-header-bar"
                 style="display: none; height: 56px; padding: 0 16px; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e7eb; background: #fff;">
+                <div style="font-weight: 600; font-size: 16px; color: #111827;">Investor Management</div>
+                <div style="flex: 1;"></div> <!-- Spacer -->
                 <button class="mobile-menu-btn" onclick="toggleMobileContentMenu(event)"
                     style="background:none; border:none; font-size: 20px; color: #111827; cursor:pointer; padding: 0;">
                     <i class="fas fa-bars"></i>
                 </button>
-                <div style="font-weight: 600; font-size: 16px; color: #111827;">Investor Management</div>
-                <div style="width: 20px;"></div> <!-- Spacer -->
             </div>
 
             <!-- Page Header -->
