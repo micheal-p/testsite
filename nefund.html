@@ -56,10 +56,15 @@
             color: #0b161a !important;
         }
 
-        /* Ensure Pill Nav Text (NEFUND) is White */
-        .pill-nav .nav-link,
-        .pill-nav a {
+        /* Ensure Top Level Pill Nav Links (NEFUND + Others) are White */
+        .pill-nav .nav-links>a,
+        .pill-nav .nav-links>.nav-item>.nav-link {
             color: #ffffff !important;
+        }
+
+        /* Ensure Mega Menu Links remain visible (Dark) */
+        .mega-menu a {
+            color: #050c26 !important;
         }
     </style>
 </head>
