@@ -32,6 +32,44 @@
   <link rel="stylesheet" href="css/footer.css">
   <link rel="stylesheet" href="../styles.css">
   <script src="../auth-check.js"></script>
+  <style>
+    /* Fix Safari/Legacy Browser Support for inset-0 */
+    .inset-0 {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    /* Force Light Mode Logo on digital.html Page (Overrides Dark Mode Script) */
+    body.dark-mode .light-mode-logo {
+      display: block !important;
+    }
+
+    body.dark-mode .dark-mode-logo {
+      display: none !important;
+    }
+
+    body.dark-mode .brand-text {
+      color: #006341 !important;
+    }
+
+    /* Force Sign In Link Dark */
+    body.dark-mode .auth-fixed .nav-link {
+      color: #0b161a !important;
+    }
+
+    /* Ensure Top Level Pill Nav Links (NEFUND + Others) are White */
+    .pill-nav .nav-links>a,
+    .pill-nav .nav-links>.nav-item>.nav-link {
+      color: #ffffff !important;
+    }
+
+    /* Ensure Mega Menu Links remain visible (Dark) */
+    .mega-menu a {
+      color: #050c26 !important;
+    }
+  </style>
 </head>
 
 <body>
