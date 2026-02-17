@@ -30,6 +30,31 @@
         h6 {
             font-family: var(--font-display) !important;
         }
+
+        /* Fix Safari/Legacy Browser Support for inset-0 */
+        .inset-0 {
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        /* Force Light Mode Logo on NEFUND Page (Overrides Dark Mode Script) */
+        body.dark-mode .light-mode-logo {
+            display: block !important;
+        }
+
+        body.dark-mode .dark-mode-logo {
+            display: none !important;
+        }
+
+        body.dark-mode .brand-text {
+            color: #006341 !important;
+        }
+
+        body.dark-mode .nav-link {
+            color: #0b161a !important;
+        }
     </style>
 </head>
 
