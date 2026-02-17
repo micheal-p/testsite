@@ -2592,3 +2592,22 @@ body:not(.dark-mode) .light-mode-logo {
 body:not(.dark-mode) .dark-mode-logo {
     display: none !important;
 }
+
+/* Data Bank Sticky Feature Cards */
+@media (min-width: 1024px) {
+    .db-stagger-card {
+        position: sticky;
+        top: calc(140px + var(--stagger, 0rem));
+        margin-top: var(--stagger, 0rem);
+        margin-bottom: 40vh;
+        z-index: 10;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        /* Ensure background is solid for stacking */
+    }
+
+    .db-stagger-card:last-child {
+        margin-bottom: 0;
+    }
+}
