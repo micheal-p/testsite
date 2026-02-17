@@ -3,6 +3,7 @@
 body {
   font-family: var(--font-primary);
   color: var(--gray-800);
+  background: -webkit-linear-gradient(315deg, var(--accent-beige) 0%, var(--accent-purple) 100%);
   background: linear-gradient(135deg, var(--accent-beige) 0%, var(--accent-purple) 100%);
   min-height: 100vh;
 }
@@ -161,6 +162,7 @@ body {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -193,7 +195,7 @@ body {
   .hero-title {
     font-size: var(--text-3xl);
   }
-  
+
   .dashboard-preview {
     max-width: 100%;
   }
@@ -202,11 +204,11 @@ body {
   .nav-menu {
     display: none;
   }
-  
+
   .nav-actions {
     display: none;
   }
-  
+
   .mobile-menu-toggle {
     display: flex;
   }
@@ -216,17 +218,17 @@ body {
   .header {
     padding: var(--space-4);
   }
-  
+
   /* nav-menu, nav-actions, mobile-menu-toggle logic moved up to 1023px */
-  
+
   .hero {
     padding: var(--space-12) var(--space-4);
   }
-  
+
   .hero-title {
     font-size: var(--text-2xl);
   }
-  
+
   .brand-logo {
     max-width: 90px !important;
   }

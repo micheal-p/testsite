@@ -1,9 +1,10 @@
-
 /* Feature Section Styles */
 .feature-section {
-  background-color: #011d21; /* Dark Teal Background */
+  background-color: #011d21;
+  /* Dark Teal Background */
   padding-top: var(--space-20);
-  padding-bottom: 0; /* Bars sit at the bottom */
+  padding-bottom: 0;
+  /* Bars sit at the bottom */
   padding-left: 0;
   padding-right: 0;
   color: var(--white);
@@ -20,7 +21,8 @@
   display: flex;
   align-items: center;
   gap: var(--space-16);
-  margin-bottom: var(--space-20); /* Space before bars */
+  margin-bottom: var(--space-20);
+  /* Space before bars */
 }
 
 /* Left Content */
@@ -30,7 +32,8 @@
 }
 
 .feature-title {
-  font-size: var(--text-4xl); /* ~36px */
+  font-size: var(--text-4xl);
+  /* ~36px */
   font-weight: var(--weight-semibold);
   margin-bottom: var(--space-6);
   line-height: 1.2;
@@ -39,15 +42,18 @@
 
 .feature-desc {
   font-size: var(--text-lg);
-  color: #94a3b8; /* Slate 400 */
+  color: #94a3b8;
+  /* Slate 400 */
   margin-bottom: var(--space-8);
   line-height: 1.6;
 }
 
 .btn-demo-light {
   display: inline-block;
-  background-color: #b4b0ff; /* Light purple */
-  color: #1e1b4b; /* Dark indigo text */
+  background-color: #b4b0ff;
+  /* Light purple */
+  color: #1e1b4b;
+  /* Dark indigo text */
   padding: var(--space-3) var(--space-6);
   border-radius: var(--radius-md);
   font-weight: var(--weight-semibold);
@@ -84,26 +90,33 @@
 /* Hover Overlay (Modal Style) */
 .feature-overlay {
   position: absolute;
-  inset: 0;
-  background-color: transparent; /* Transparent background */
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: transparent;
+  /* Transparent background */
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none; /* Let clicks pass unless on modal */
+  pointer-events: none;
+  /* Let clicks pass unless on modal */
 }
 
 /* The Modal Box */
 .overlay-modal {
-  background-color: #0b161a; /* Dark Ink */
+  background-color: #0b161a;
+  /* Dark Ink */
   padding: 32px;
   border-radius: 8px;
   text-align: center;
   min-width: 280px;
-  
+
   opacity: 0;
   transform: translateY(16px);
   transition: all 0.3s ease 0.1s;
-  pointer-events: auto; /* Re-enable clicks */
+  pointer-events: auto;
+  /* Re-enable clicks */
 }
 
 /* SVG Icon in Modal */
@@ -115,7 +128,7 @@
 }
 
 .overlay-title {
-  font-size: 16px; 
+  font-size: 16px;
   font-weight: 500;
   color: var(--white);
   margin-bottom: 16px;
@@ -123,8 +136,10 @@
 
 /* Hover Effects */
 .feature-image-wrapper:hover .feature-img {
+  -webkit-transform: scale(1.03);
   transform: scale(1.03);
   opacity: 0.7;
+  -webkit-filter: blur(2px);
   filter: blur(2px);
 }
 
@@ -141,39 +156,85 @@
 }
 
 .bar-container {
-  height: 20px; /* Matching screenshotted height */
+  height: 20px;
+  /* Matching screenshotted height */
   width: 100%;
   position: relative;
   overflow: hidden;
   /* Animation for Expand/Contract Effect */
+  -webkit-animation: barPulse 3s infinite ease-in-out;
   animation: barPulse 3s infinite ease-in-out;
+  -webkit-transform-origin: center;
   transform-origin: center;
 }
 
 .bar-overlay {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: block;
 }
 
-@keyframes barPulse {
-  0%, 100% {
+@-webkit-keyframes barPulse {
+
+  0%,
+  100% {
+    -webkit-transform: scaleY(1);
     transform: scaleY(1);
     opacity: 0.9;
   }
+
   50% {
-    transform: scaleY(0.6); /* Contract */
+    -webkit-transform: scaleY(0.6);
+    transform: scaleY(0.6);
+    /* Contract */
+    opacity: 0.7;
+  }
+}
+
+@keyframes barPulse {
+
+  0%,
+  100% {
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1);
+    opacity: 0.9;
+  }
+
+  50% {
+    -webkit-transform: scaleY(0.6);
+    transform: scaleY(0.6);
+    /* Contract */
     opacity: 0.7;
   }
 }
 
 /* Staggered animation for bars */
-.bar-container:nth-child(1) { animation-delay: 0s; }
-.bar-container:nth-child(2) { animation-delay: 0.2s; }
-.bar-container:nth-child(3) { animation-delay: 0.4s; }
-.bar-container:nth-child(4) { animation-delay: 0.6s; }
-.bar-container:nth-child(5) { animation-delay: 0.8s; }
-.bar-container:nth-child(6) { animation-delay: 1.0s; }
+.bar-container:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.bar-container:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.bar-container:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.bar-container:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+.bar-container:nth-child(5) {
+  animation-delay: 0.8s;
+}
+
+.bar-container:nth-child(6) {
+  animation-delay: 1.0s;
+}
 
 
 /* Responsive */
@@ -183,11 +244,11 @@
     text-align: center;
     gap: var(--space-12);
   }
-  
+
   .feature-content {
     max-width: 100%;
   }
-  
+
   .feature-title {
     font-size: var(--text-3xl);
   }
@@ -197,14 +258,15 @@
   .feature-section {
     padding-top: var(--space-12);
   }
-  
+
   /* Mobile Stack: Image stacks below text (already done by flex-col) */
   .feature-image-wrapper {
-    pointer-events: none; /* Disable hover interactions */
+    pointer-events: none;
+    /* Disable hover interactions */
   }
-  
+
   .feature-overlay {
-    display: none; /* Hide overlay content completely */
+    display: none;
+    /* Hide overlay content completely */
   }
 }
-
