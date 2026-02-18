@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileAccordion();
     initUserProfile();
     initCrudeOilFilters();
+    initExportFunctionality();
 });
 
 /* ---------- 1. CURSOR GRADIENT ---------- */
@@ -179,6 +180,10 @@ function initCrudeOilFilters() {
     }
 
     filterBtn.addEventListener('click', () => {
+        const productEl = document.getElementById('filterProduct');
+        const yearFromEl = document.getElementById('filterYearFrom');
+        const yearToEl = document.getElementById('filterYearTo');
+
         const product = productEl.value;
         const yearFrom = parseInt(yearFromEl.value);
         const yearTo = parseInt(yearToEl.value);
@@ -189,10 +194,23 @@ function initCrudeOilFilters() {
         }
 
         const rows = document.querySelectorAll('.data-table tbody tr');
+        let visibleCount = 0;
+        // Create No Data Row if it doesn't exist - ensuring we get it even if not in variable
+        noDataRow = document.getElementById('no-data-row');
+        if (!noDataRow) {
+            const tbody = document.querySelector('.data-table tbody');
+            noDataRow = document.createElement('tr');
+            noDataRow.id = 'no-data-row';
+            noDataRow.style.display = 'none'; // Hidden by default
+            noDataRow.innerHTML = '<td colspan="5" style="text-align:center; padding: 20px; color: #666; font-style: italic;">No records found matching your criteria.</td>';
+            tbody.appendChild(noDataRow);
+        }
 
         rows.forEach(row => {
+            if (row.id === 'no-data-row') return; // Skip the no-data row itself
+
             const cells = row.querySelectorAll('td');
-            if (cells.length < 5) return; // Expect 5 cols: S/No, Desc, Year, Value, Unit
+            if (cells.length < 5) return;
 
             const desc = cells[1].textContent.trim();
             const yearText = cells[2].textContent.trim();
@@ -207,10 +225,101 @@ function initCrudeOilFilters() {
             const matchYear = (year >= yearFrom) && (year <= yearTo);
 
             if (matchProduct && matchYear) {
-                row.style.display = '';
+                row.style.display = ''; // Reset to default (table-row)
+                visibleCount++;
             } else {
                 row.style.display = 'none';
             }
         });
+
+        // Toggle No Data Row
+        if (visibleCount === 0) {
+            noDataRow.style.display = 'table-row'; // Explicitly show as table-row
+        } else {
+            noDataRow.style.display = 'none';
+        }
+    });
+}
+
+/* ---------- 9. EXPORT REPORT FUNCTIONALITY ---------- */
+function initExportFunctionality() {
+    const exportBtn = document.getElementById('exportBtn');
+    if (!exportBtn) return;
+
+    exportBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // 1. Get the data table and page title
+        const table = document.querySelector('.data-table');
+        const pageTitle = document.querySelector('.page-header h1')?.innerText || 'Report';
+
+        if (!table) {
+            alert('No data to export!');
+            return;
+        }
+
+        // 2. Open a new window for printing
+        const printWindow = window.open('', '', 'height=800,width=1000');
+
+        // 3. Construct the HTML for the print window
+        const htmlContent = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Export ${pageTitle}</title>
+                <style>
+                    body { font-family: 'Inter', sans-serif; padding: 40px; color: #000; }
+                    .header { text-align: left; margin-bottom: 30px; border-bottom: 2px solid #16a34a; padding-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+                    .logo { height: 60px; width: auto; }
+                    .header-text { display: flex; flex-direction: column; }
+                    .site-name { font-size: 1.2rem; font-weight: 700; color: #0a0a0a; letter-spacing: 1px; text-transform: uppercase; }
+                    .report-title { font-size: 1.5rem; font-weight: 600; margin: 20px 0; color: #0a0a0a; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9rem; }
+                    th, td { border: 1px solid #e5e7eb; padding: 10px; text-align: left; }
+                    th { background-color: #f9fafb; font-weight: 600; color: #374151; }
+                    tr:nth-child(even) { background-color: #f9fafb; }
+                    .footer { margin-top: 40px; font-size: 0.8rem; color: #6b7280; text-align: center; border-top: 1px solid #e5e7eb; padding-top: 20px; }
+                    @media print {
+                        body { padding: 0; }
+                        .no-print { display: none; }
+                        table { page-break-inside: auto; }
+                        tr { page-break-inside: avoid; page-break-after: auto; }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="header">
+                    <img src="assets/ecnlogo.png" alt="ECN Logo" class="logo">
+                    <div class="header-text">
+                        <span class="site-name">National Energy Data Bank</span>
+                        <span style="font-size: 0.9rem; color: #666;">Energy Commission of Nigeria</span>
+                    </div>
+                </div>
+                
+                <h2 class="report-title">${pageTitle}</h2>
+                <div style="font-size: 0.9rem; margin-bottom: 20px; color: #555;">Generated on: ${new Date().toLocaleDateString()}</div>
+
+                ${table.outerHTML}
+
+                <div class="footer">
+                    &copy; ${new Date().getFullYear()} National Energy Data Bank. All rights reserved.
+                </div>
+
+                <script>
+                    window.onload = function() {
+                        window.print();
+                        window.onafterprint = function() {
+                            window.close();
+                        }
+                    }
+                </script>
+            </body>
+            </html>
+        `;
+
+        // 4. Write content to the new window
+        printWindow.document.write(htmlContent);
+        printWindow.document.close();
     });
 }
