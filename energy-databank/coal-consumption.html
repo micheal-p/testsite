@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Electricity Consumption Statistics - NEDB</title>
+    <title>Coal Consumption Statistics - NEDB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
@@ -29,10 +29,10 @@
             <a href="index.html" class="nav-link">Home</a>
 
             <div class="nav-item dropdown">
-                <span class="nav-link dropdown-toggle active">Petroleum Statistics<i
+                <span class="nav-link dropdown-toggle">Petroleum Statistics <i
                         class="fas fa-chevron-down"></i></span>
                 <div class="drop-menu">
-                    <a href="crude-oil.html" class="drop-item active">Crude Oil Statistics</a>
+                    <a href="crude-oil.html" class="drop-item">Crude Oil Statistics</a>
                     <a href="pms.html" class="drop-item">PMS Statistics</a>
                     <a href="lpg.html" class="drop-item">LPG Statistics</a>
                     <a href="ago.html" class="drop-item">AGO Statistics</a>
@@ -45,16 +45,16 @@
             </div>
 
             <div class="nav-item dropdown">
-                <span class="nav-link dropdown-toggle active">Electricity <i class="fas fa-chevron-down"></i></span>
+                <span class="nav-link dropdown-toggle">Electricity <i class="fas fa-chevron-down"></i></span>
                 <div class="drop-menu">
-                    <a href="electricity-consumption.html" class="drop-item active">Electricity Consumption</a>
-                    <a href="electricity-sent-out.html" class="drop-item">Electricity Sent Out</a>
-                    <a href="electricity-generation.html" class="drop-item">Electricity Generation</a>
+                    <a href="#" class="drop-item">Electricity Consumption</a>
+                    <a href="#" class="drop-item">Electricity Sent Out</a>
+                    <a href="#" class="drop-item">Electricity Generation</a>
                 </div>
             </div>
 
             <div class="nav-item dropdown">
-                <span class="nav-link dropdown-toggle">Biomass &amp; Coal <i class="fas fa-chevron-down"></i></span>
+                <span class="nav-link dropdown-toggle active">Biomass &amp; Coal <i class="fas fa-chevron-down"></i></span>
                 <div class="drop-menu">
                     <a href="fuelwood-consumption.html" class="drop-item">Fuelwood Consumption</a>
                     <a href="charcoal-consumption.html" class="drop-item">Charcoal Consumption</a>
@@ -114,7 +114,7 @@
 
                 <li class="mobile-nav-item">
                     <div class="mobile-nav-link mobile-dropdown-header">
-                        Petroleum Statistics<i class="fas fa-chevron-down"></i>
+                        Petroleum Statistics <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="mobile-dropdown-content">
                         <a href="crude-oil.html">Crude Oil Statistics</a>
@@ -134,9 +134,9 @@
                         Electricity Statistics <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="mobile-dropdown-content">
-                        <a href="electricity-consumption.html">Electricity Consumption</a>
-                        <a href="electricity-sent-out.html">Electricity Sent Out</a>
-                        <a href="electricity-generation.html">Electricity Generation</a>
+                        <a href="#">Electricity Consumption</a>
+                        <a href="#">Electricity Sent Out</a>
+                        <a href="#">Electricity Generation</a>
                     </div>
                 </li>
 
@@ -186,13 +186,13 @@
             <!-- Breadcrumb -->
             <div class="breadcrumb">
                 <a href="index.html">Home</a> <i class="fas fa-chevron-right"></i>
-                <span>Electricity Statistics</span> <i class="fas fa-chevron-right"></i>
-                <span class="current">Electricity Consumption Statistics</span>
+                <span>Biomass & Coal Statistics</span> <i class="fas fa-chevron-right"></i>
+                <span class="current">Coal Consumption Statistics</span>
             </div>
 
             <div class="page-header">
-                <h1>Electricity Consumption Statistics</h1>
-                <p>Comprehensive data on electricity consumption, export, and refining in Nigeria.</p>
+                <h1>Coal Consumption Statistics</h1>
+                <p>Comprehensive data on coal consumption in Nigeria.</p>
             </div>
 
             <!-- Filters & Actions -->
@@ -202,25 +202,10 @@
                         <label>Product Description</label>
                         <select class="form-select" style="min-width: 200px;" id="filterProduct">
                             <option value="all">All Descriptions</option>
-                            <option>Electricity Consumption in Industry</option>
-                            <option>Electricity Consumption in Commercial</option>
-                            <option>Electricity Consumption in Residential</option>
-                            <option>Electricity Exported</option>
-                            <option>Electricity Supplied by Thermal</option>
-                            <option>Electricity Supplied by Hydro</option>
-                            <option>Total Electricity Supply</option>
-                            <option>Electricity Consumption in Commercial - Kaduna</option>
-                            <option>Electricity Consumption in Industry - Kaduna</option>
-                            <option>Electricity Consumption in Residential - Kaduna</option>
-                            <option>Electricity Consumption in Commercial - Zamfara</option>
-                            <option>Electricity Consumption in Industry - Zamfara</option>
-                            <option>Electricity Consumption in Residential - Zamfara</option>
-                            <option>Electricity Consumption in Residential - Sokoto</option>
-                            <option>Electricity Consumption in Commercial - Sokoto</option>
-                            <option>Electricity Consumption in Industry - Sokoto</option>
-                            <option>Electricity Consumption in Residential - Kebbi</option>
-                            <option>Electricity Consumption in Commercial - Kebbi</option>
-                            <option>Electricity Consumption in Industry - Kebbi</option>
+                            <option>Coal Consumption in Steel Industry</option>
+                            <option>Coal Consumption in Cement Plants</option>
+                            <option>Coal Consumption in Rail Transport</option>
+                            <option>Total Coal Consumption</option>
                         </select>
                     </div>
                     <div class="filter-item">
@@ -390,91 +375,91 @@
                         <!-- 2023 Data -->
                         <tr>
                             <td>1</td>
-                            <td>Electricity Consumption in Industry</td>
+                            <td>Coal Consumption Total</td>
                             <td>2023</td>
                             <td>525,480,123</td>
-                            <td>GWh</td>
+                            <td>Tonnes</td>
                         </tr>
                         <tr>
                             <td>2</td>
-                            <td>Electricity Consumption Export</td>
+                            <td>Coal Consumption Export</td>
                             <td>2023</td>
                             <td>480,210,500</td>
-                            <td>GWh</td>
+                            <td>Tonnes</td>
                         </tr>
                         <tr>
                             <td>3</td>
-                            <td>Electricity Consumption Sent to Grid</td>
+                            <td>Coal Consumption - Industrial</td>
                             <td>2023</td>
                             <td>15,120,000</td>
-                            <td>GWh</td>
+                            <td>Tonnes</td>
                         </tr>
                         <tr>
                             <td>4</td>
-                            <td>Electricity Consumption Distributed</td>
+                            <td>Coal Consumption - Commercial</td>
                             <td>2023</td>
                             <td>12,050,000</td>
-                            <td>GWh</td>
+                            <td>Tonnes</td>
                         </tr>
 
                         <!-- 2022 Data -->
                         <tr>
                             <td>5</td>
-                            <td>Electricity Consumption in Industry</td>
+                            <td>Coal Consumption Total</td>
                             <td>2022</td>
                             <td>490,120,800</td>
-                            <td>GWh</td>
+                            <td>Tonnes</td>
                         </tr>
                         <tr>
                             <td>6</td>
-                            <td>Electricity Consumption Export</td>
+                            <td>Coal Consumption Export</td>
                             <td>2022</td>
                             <td>450,880,200</td>
-                            <td>GWh</td>
+                            <td>Tonnes</td>
                         </tr>
                         <tr>
                             <td>7</td>
-                            <td>Electricity Consumption Sent to Grid</td>
+                            <td>Coal Consumption - Industrial</td>
                             <td>2022</td>
                             <td>10,500,000</td>
-                            <td>GWh</td>
+                            <td>Tonnes</td>
                         </tr>
                         <tr>
                             <td>8</td>
-                            <td>Electricity Consumption Distributed</td>
+                            <td>Coal Consumption - Commercial</td>
                             <td>2022</td>
                             <td>8,200,000</td>
-                            <td>GWh</td>
+                            <td>Tonnes</td>
                         </tr>
 
                         <!-- 2021 Data -->
                         <tr>
                             <td>9</td>
-                            <td>Electricity Consumption in Industry</td>
+                            <td>Coal Consumption Total</td>
                             <td>2021</td>
                             <td>560,330,000</td>
-                            <td>GWh</td>
+                            <td>Tonnes</td>
                         </tr>
                         <tr>
                             <td>10</td>
-                            <td>Electricity Consumption Export</td>
+                            <td>Coal Consumption Export</td>
                             <td>2021</td>
                             <td>510,100,500</td>
-                            <td>GWh</td>
+                            <td>Tonnes</td>
                         </tr>
                         <tr>
                             <td>11</td>
-                            <td>Electricity Consumption Sent to Grid</td>
+                            <td>Coal Consumption - Industrial</td>
                             <td>2021</td>
                             <td>8,400,000</td>
-                            <td>GWh</td>
+                            <td>Tonnes</td>
                         </tr>
                         <tr>
                             <td>12</td>
-                            <td>Electricity Consumption Distributed</td>
+                            <td>Coal Consumption - Commercial</td>
                             <td>2021</td>
                             <td>5,100,000</td>
-                            <td>GWh</td>
+                            <td>Tonnes</td>
                         </tr>
                     </tbody>
                 </table>
