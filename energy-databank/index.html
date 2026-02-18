@@ -31,15 +31,15 @@
             <div class="nav-item dropdown">
                 <span class="nav-link dropdown-toggle">Petroleum Statistics <i class="fas fa-chevron-down"></i></span>
                 <div class="drop-menu">
-                    <a href="#" class="drop-item">Crude Oil Statistics</a>
-                    <a href="#" class="drop-item">PMS Statistics</a>
-                    <a href="#" class="drop-item">LPG Statistics</a>
-                    <a href="#" class="drop-item">AGO Statistics</a>
-                    <a href="#" class="drop-item">HHK Statistics</a>
-                    <a href="#" class="drop-item">Fuel Oil Statistics</a>
-                    <a href="#" class="drop-item">DPK Statistics</a>
-                    <a href="#" class="drop-item">ATK Statistics</a>
-                    <a href="#" class="drop-item">Natural Gas Statistics</a>
+                    <a href="crude-oil.html" class="drop-item">Crude Oil Statistics</a>
+                    <a href="pms.html" class="drop-item">PMS Statistics</a>
+                    <a href="lpg.html" class="drop-item">LPG Statistics</a>
+                    <a href="ago.html" class="drop-item">AGO Statistics</a>
+                    <a href="hhk.html" class="drop-item">HHK Statistics</a>
+                    <a href="fuel-oil.html" class="drop-item">Fuel Oil Statistics</a>
+                    <a href="dpk.html" class="drop-item">DPK Statistics</a>
+                    <a href="atk.html" class="drop-item">ATK Statistics</a>
+                    <a href="natural-gas.html" class="drop-item">Natural Gas Statistics</a>
                 </div>
             </div>
 
@@ -84,8 +84,16 @@
 
     <!-- AUTH LINKS -->
     <div class="auth-fixed">
-        <a href="../signin.html" class="nav-link">Sign In</a>
-        <a href="../databank-onboarding.html" class="btn btn-black">Get Access</a>
+        <div class="user-profile-wrap">
+            <div class="user-avatar" id="userProfileBtn">
+                <img src="assets/user-avatar.png" alt="User Profile">
+            </div>
+            <div class="user-dropdown" id="userProfileMenu">
+                <a href="#" class="user-drop-item"><i class="fas fa-cog"></i> Settings</a>
+                <div class="user-drop-divider"></div>
+                <a href="#" class="user-drop-item text-red"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
     </div>
 
     <!-- MOBILE BUTTON -->
@@ -101,17 +109,84 @@
     <!-- MOBILE OVERLAY -->
     <div class="mobile-nav-overlay" id="mobileOverlay">
         <div class="mobile-nav-header">
-            <span style="font-weight:800;font-size:1rem;letter-spacing:2px;">ECN</span>
+            <img src="assets/ecnlogo.png" alt="ECN Logo" class="mobile-nav-logo">
             <button class="mobile-close-btn" id="mobileCloseBtn"><i class="fas fa-times"></i></button>
         </div>
         <div class="mobile-nav-content">
             <ul class="mobile-nav-list">
-                <li><a href="#">Petroleum Statistics <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="#">Electricity Statistics <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="#">Biomass &amp; Coal <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="#">Energy Balances <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="#">EnerGIS <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="#">Socio Economic <i class="fas fa-arrow-right"></i></a></li>
+                <!-- Direct Link -->
+                <li class="mobile-nav-item">
+                    <a href="../index.html" class="mobile-nav-link">Home</a>
+                </li>
+
+                <!-- Accordion: Petroleum -->
+                <li class="mobile-nav-item">
+                    <div class="mobile-nav-link mobile-dropdown-header">
+                        Petroleum Statistics <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="mobile-dropdown-content">
+                        <a href="crude-oil.html">Crude Oil Statistics</a>
+                        <a href="pms.html">PMS Statistics</a>
+                        <a href="lpg.html">LPG Statistics</a>
+                        <a href="ago.html">AGO Statistics</a>
+                        <a href="hhk.html">HHK Statistics</a>
+                        <a href="fuel-oil.html">Fuel Oil Statistics</a>
+                        <a href="dpk.html">DPK Statistics</a>
+                        <a href="atk.html">ATK Statistics</a>
+                        <a href="natural-gas.html">Natural Gas Statistics</a>
+                    </div>
+                </li>
+
+                <!-- Accordion: Electricity -->
+                <li class="mobile-nav-item">
+                    <div class="mobile-nav-link mobile-dropdown-header">
+                        Electricity <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="mobile-dropdown-content">
+                        <a href="#">Electricity Consumption</a>
+                        <a href="#">Electricity Sent Out</a>
+                        <a href="#">Electricity Generation</a>
+                    </div>
+                </li>
+
+                <!-- Accordion: Biomass & Coal -->
+                <li class="mobile-nav-item">
+                    <div class="mobile-nav-link mobile-dropdown-header">
+                        Biomass & Coal <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="mobile-dropdown-content">
+                        <a href="#">Fuelwood Consumption</a>
+                        <a href="#">Charcoal Consumption</a>
+                        <a href="#">Coal Consumption</a>
+                        <a href="#">Coal Export</a>
+                        <a href="#">Coal for Electricity</a>
+                    </div>
+                </li>
+
+                <!-- Accordion: Energy Laws (with PDFs) -->
+                <li class="mobile-nav-item">
+                    <div class="mobile-nav-link mobile-dropdown-header">
+                        Energy Laws <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="mobile-dropdown-content">
+                        <a href="document/Energy_Policy_Document.pdf" target="_blank">Energy Policy</a>
+                        <a href="document/ecn_act.pdf">ECN Act</a>
+                        <a href="document/Petroleum_Industry_Act_2021.pdf">PIA Act 2021</a>
+                        <a href="document/Petroleum_Technology_Development_Fund_Act.pdf">PTDF Act</a>
+                        <a href="document/Nigerian_Atomic_Energy_Commission_Act.pdf">NAEC Act</a>
+                        <a href="document/Nuclear_Safety_and_Radiation_Protection_Act.pdf">NSRP Act</a>
+                        <a href="document/Hydrocarbon_Oil_Refinery_Act.pdf">HOR Act</a>
+                        <a href="document/Petroleum_Traning_Institute_Act.pdf">PTIF Act</a>
+                    </div>
+                </li>
+
+                <!-- Direct Links -->
+                <li class="mobile-nav-item">
+                    <a href="#" class="mobile-nav-link">EnerGIS</a>
+                </li>
+                <li class="mobile-nav-item">
+                    <a href="#" class="mobile-nav-link">Socio Economic</a>
+                </li>
             </ul>
             <div class="mobile-nav-footer">
                 <a href="#" class="btn btn-black full-width">Get Access</a>
@@ -225,23 +300,23 @@
                 <div class="logos-grid">
                     <div class="logo-item">
                         <img src="assets/ecnlogo.png" alt="ECN" style="height: 45px; width: auto;">
-                        <span>Energy Commission of Nigeria</span>
+
                     </div>
                     <div class="logo-item">
                         <img src="assets/nnpc-logo.77c29e8.png" alt="NNPC" style="height: 48px; width: auto;">
-                        <span>NNPC Limited</span>
+
                     </div>
                     <div class="logo-item">
                         <img src="assets/cbn.webp" alt="CBN" style="height: 48px; width: auto;">
-                        <span>CBN</span>
+
                     </div>
                     <div class="logo-item">
                         <img src="assets/nbs.png" alt="NBS" style="height: 48px; width: auto;">
-                        <span>NBS</span>
+
                     </div>
                     <div class="logo-item">
                         <img src="assets/nuprc.png" alt="NUPRC" style="height: 48px; width: auto;">
-                        <span>NUPRC</span>
+
                     </div>
                 </div>
             </div>

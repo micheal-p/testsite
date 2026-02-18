@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initFAQ();
     initNavDropdowns();
+    initMobileAccordion();
+    initUserProfile();
+    initCrudeOilFilters();
 });
 
 /* ---------- 1. CURSOR GRADIENT ---------- */
@@ -120,3 +123,94 @@ const realObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.feature-card, .adv-item, .suite-card-link').forEach(el => {
     realObserver.observe(el);
 });
+
+/* ---------- 6. MOBILE ACCORDION ---------- */
+function initMobileAccordion() {
+    const headers = document.querySelectorAll('.mobile-dropdown-header');
+
+    headers.forEach(header => {
+        header.addEventListener('click', (e) => {
+            e.preventDefault();
+            const parent = header.closest('.mobile-nav-item');
+
+            // Toggle current
+            parent.classList.toggle('open');
+
+            // Close others (optional, but cleaner)
+            document.querySelectorAll('.mobile-nav-item').forEach(item => {
+                if (item !== parent) item.classList.remove('open');
+            });
+        });
+    });
+}
+
+/* ---------- 7. USER PROFILE DROPDOWN ---------- */
+function initUserProfile() {
+    const btn = document.getElementById('userProfileBtn');
+    const menu = document.getElementById('userProfileMenu');
+
+    if (!btn || !menu) return;
+
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menu.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && !btn.contains(e.target)) {
+            menu.classList.remove('show');
+        }
+    });
+}
+
+/* ---------- 8. CRUDE OIL PAGE FILTERS ---------- */
+function initCrudeOilFilters() {
+    const filterBtn = document.getElementById('filterBtn');
+    if (!filterBtn) return;
+
+    // Get filter elements
+    const productEl = document.getElementById('filterProduct');
+    const yearFromEl = document.getElementById('filterYearFrom');
+    const yearToEl = document.getElementById('filterYearTo');
+
+    if (!productEl || !yearFromEl || !yearToEl) {
+        console.error('Missing filter elements for Crude Oil page');
+        return;
+    }
+
+    filterBtn.addEventListener('click', () => {
+        const product = productEl.value;
+        const yearFrom = parseInt(yearFromEl.value);
+        const yearTo = parseInt(yearToEl.value);
+
+        if (isNaN(yearFrom) || isNaN(yearTo)) {
+            console.error('Invalid year range');
+            return;
+        }
+
+        const rows = document.querySelectorAll('.data-table tbody tr');
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length < 5) return; // Expect 5 cols: S/No, Desc, Year, Value, Unit
+
+            const desc = cells[1].textContent.trim();
+            const yearText = cells[2].textContent.trim();
+            const year = parseInt(yearText);
+
+            if (isNaN(year)) return;
+
+            // Check Product
+            const matchProduct = (product === 'all') || (desc === product);
+
+            // Check Year
+            const matchYear = (year >= yearFrom) && (year <= yearTo);
+
+            if (matchProduct && matchYear) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+}
