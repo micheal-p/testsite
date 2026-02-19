@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initUserProfile();
     initCrudeOilFilters();
     initExportFunctionality();
+    initLogout();
+    initSettings();
+    updateMobileMenuAuth();
 });
 
 /* ---------- 1. CURSOR GRADIENT ---------- */
@@ -41,6 +44,66 @@ function initMobileMenu() {
     overlay.addEventListener('click', (e) => {
         if (e.target === overlay) overlay.classList.remove('open');
     });
+}
+
+/* ---------- 2b. MOBILE MENU AUTH ---------- */
+function updateMobileMenuAuth() {
+    const isLoggedIn = localStorage.getItem('nedb_is_logged_in') === 'true';
+    const getAccessBtn = document.getElementById('mobileGetAccessBtn');
+    const signInBtn = document.getElementById('mobileSignInBtn');
+    const footer = document.querySelector('.mobile-nav-footer');
+
+    if (!footer) return;
+
+    if (isLoggedIn) {
+        // Hide auth buttons
+        if (getAccessBtn) getAccessBtn.style.display = 'none';
+        if (signInBtn) signInBtn.style.display = 'none';
+
+        // Add Settings/Logout if not present
+        if (!document.getElementById('mobileSettingsBtn')) {
+            // Settings Button
+            const settingsBtn = document.createElement('a');
+            settingsBtn.href = '#';
+            settingsBtn.className = 'btn btn-outline full-width';
+            settingsBtn.id = 'mobileSettingsBtn';
+            settingsBtn.innerHTML = '<i class="fas fa-cog"></i> Settings';
+
+            settingsBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const modal = document.getElementById('settingsModal');
+                if (modal) modal.classList.add('open');
+                document.getElementById('mobileOverlay')?.classList.remove('open');
+            });
+
+            // Logout Button
+            const logoutBtn = document.createElement('a');
+            logoutBtn.href = '#';
+            logoutBtn.className = 'btn btn-outline full-width text-red'; // Using outline and red text for logout to match desktop
+            logoutBtn.id = 'mobileLogoutBtn';
+            logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+            logoutBtn.style.marginTop = '8px';
+            logoutBtn.style.borderColor = '#ef4444';
+            logoutBtn.style.color = '#ef4444';
+
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('nedb_is_logged_in');
+                window.location.href = 'register.html';
+            });
+
+            footer.appendChild(settingsBtn);
+            footer.appendChild(logoutBtn);
+        }
+    } else {
+        // Show auth buttons
+        if (getAccessBtn) getAccessBtn.style.display = '';
+        if (signInBtn) signInBtn.style.display = '';
+
+        // Remove Settings/Logout
+        document.getElementById('mobileSettingsBtn')?.remove();
+        document.getElementById('mobileLogoutBtn')?.remove();
+    }
 }
 
 /* ---------- 3. FAQ ACCORDION ---------- */
@@ -322,4 +385,68 @@ function initExportFunctionality() {
         printWindow.document.write(htmlContent);
         printWindow.document.close();
     });
+}
+
+/* ---------- 10. LOGOUT FUNCTIONALITY ---------- */
+function initLogout() {
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (!logoutBtn) return;
+
+    logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Clear login state
+        localStorage.removeItem('nedb_is_logged_in');
+
+        // Redirect to login page
+        window.location.href = 'register.html';
+    });
+}
+
+/* ---------- 11. SETTINGS MODAL ---------- */
+function initSettings() {
+    const settingsBtn = document.getElementById('settingsBtn');
+    const modal = document.getElementById('settingsModal');
+    const closeBtn = document.getElementById('closeSettingsBtn');
+    const saveBtn = document.getElementById('saveSettingsBtn');
+
+    if (!settingsBtn || !modal || !closeBtn) return;
+
+    // Open Modal
+    settingsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        modal.classList.add('open');
+        // Close dropdown if open
+        const dropdown = document.getElementById('userProfileMenu');
+        if (dropdown) dropdown.classList.remove('show');
+    });
+
+    // Close Modal
+    function closeModal() {
+        modal.classList.remove('open');
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+
+    // Close on overlay click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    // Save Logic (Mock)
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            const originalText = saveBtn.innerText;
+            saveBtn.innerText = 'Saving...';
+
+            setTimeout(() => {
+                saveBtn.innerText = 'Saved!';
+                setTimeout(() => {
+                    closeModal();
+                    saveBtn.innerText = originalText;
+                }, 800);
+            }, 800);
+        });
+    }
 }
