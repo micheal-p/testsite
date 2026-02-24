@@ -36,6 +36,16 @@
         h6 {
             font-family: var(--font-display) !important;
         }
+
+        /* Logo: stay at top, do NOT scroll with page */
+        .logo-fixed {
+            position: absolute !important;
+        }
+
+        /* Sign In: black text on light/white backgrounds */
+        .auth-fixed .nav-link {
+            color: #000 !important;
+        }
     </style>
     <script src="../auth-check.js"></script>
 </head>
@@ -45,11 +55,10 @@
     <!-- Logo (Separate from Pill Navbar) -->
     <a href="../index.html" class="logo-fixed">
         <div class="logo-wrapper">
-            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
-                style="max-width: 120px;">
-            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
-                style="max-width: 120px; display: none;">
-            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
+            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo"
+                style="max-width: 120px; display: block !important;">
+            <div style="color: #0d3d44;" class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION
+            </div>
         </div>
     </a>
 
@@ -254,7 +263,8 @@
                     <div class="flex flex-col gap-0">
                         <section class="group w-full overflow-hidden pt-header">
                             <div id="cursor-gradient-container"
-                                class="pointer-events-none absolute left-0 top-0 size-px" style="-webkit-transform:none; transform:none">
+                                class="pointer-events-none absolute left-0 top-0 size-px"
+                                style="-webkit-transform:none; transform:none">
                                 <div id="cursor-gradient"
                                     class="absolute left-0 top-0 size-[305px] -translate-x-1/2 -translate-y-1/2 rounded-full md:size-[600px]"
                                     style="background-image:radial-gradient(50% 50% at 50% 50%, rgba(189,187,255,1) 0%, rgba(189,187,255,0) 100%); -webkit-transition: transform 0.15s ease-out; transition: transform 0.15s ease-out;">
@@ -621,8 +631,9 @@
                                 <div
                                     class="relative grid before:absolute before:-left-6 before:h-full before:border-l before:border-surface-stroke-primary odd:before:hidden md:odd:[&:not(:first-child)]:before:block after:absolute after:-top-3 after:left-0 after:border-b after:border-surface-stroke-primary even:after:-left-5 md:after:hidden [&:nth-child(-n+2)]:after:hidden after:w-[calc(100%+24px)]">
                                     <div class="col-start-1 row-start-1 size-full max-w-32 [&_svg]:w-full text-surface-text-muted"
-                                        style="-webkit-transform:scale(0.97); transform:scale(0.97)"><svg width="128" height="64" viewBox="0 0 128 64"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        style="-webkit-transform:scale(0.97); transform:scale(0.97)"><svg width="128"
+                                            height="64" viewBox="0 0 128 64" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M16.1113 31.8902V35.4102H16.6669H17.2113L17.2447 34.0572L17.278 32.7152L20.0002 32.6602C23.1113 32.5942 23.2224 32.5722 23.7891 31.6922C24.1002 31.2192 24.1224 31.1092 24.0891 30.4382C24.0558 29.8222 24.0002 29.6352 23.7113 29.2832C23.5224 29.0522 23.1558 28.7552 22.8891 28.6122C22.4113 28.3812 22.3002 28.3702 19.2558 28.3702H16.1113V31.8902ZM22.5447 29.5142C23.178 29.8442 23.3113 30.8232 22.8002 31.3402C22.378 31.7472 21.978 31.8022 19.3891 31.7582L17.278 31.7252L17.2447 30.5372L17.2113 29.3602H19.7224C21.678 29.3602 22.3002 29.3932 22.5447 29.5142Z"
                                                 fill="currentColor"></path>
@@ -650,8 +661,9 @@
                                 <div
                                     class="relative grid before:absolute before:-left-6 before:h-full before:border-l before:border-surface-stroke-primary odd:before:hidden md:odd:[&:not(:first-child)]:before:block after:absolute after:-top-3 after:left-0 after:border-b after:border-surface-stroke-primary even:after:-left-5 md:after:hidden [&:nth-child(-n+2)]:after:hidden after:w-[calc(100%+24px)]">
                                     <div class="col-start-1 row-start-1 size-full max-w-32 [&_svg]:w-full text-surface-text-muted"
-                                        style="-webkit-transform:scale(0.97); transform:scale(0.97)"><svg width="128" height="64" viewBox="0 0 128 64"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        style="-webkit-transform:scale(0.97); transform:scale(0.97)"><svg width="128"
+                                            height="64" viewBox="0 0 128 64" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.5"
                                                 d="M75.8236 37.9404L66.85 15.9678H61.594L52.4922 37.9716H57.6693L59.7105 33.0392H68.7334C69.5391 34.3186 70.5828 35.4126 71.8014 36.2551C73.0201 37.0975 74.3884 37.6709 75.8236 37.9404ZM61.4264 28.8648L64.2072 22.1359L66.988 28.8648H61.4264Z"
                                                 fill="currentColor"></path>
@@ -670,8 +682,9 @@
                                 <div
                                     class="relative grid before:absolute before:-left-6 before:h-full before:border-l before:border-surface-stroke-primary odd:before:hidden md:odd:[&:not(:first-child)]:before:block after:absolute after:-top-3 after:left-0 after:border-b after:border-surface-stroke-primary even:after:-left-5 md:after:hidden [&:nth-child(-n+2)]:after:hidden after:w-[calc(100%+24px)]">
                                     <div class="col-start-1 row-start-1 size-full max-w-32 [&_svg]:w-full text-surface-text-muted"
-                                        style="-webkit-transform:scale(0.97); transform:scale(0.97)"><svg width="128" height="64" viewBox="0 0 128 64"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        style="-webkit-transform:scale(0.97); transform:scale(0.97)"><svg width="128"
+                                            height="64" viewBox="0 0 128 64" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M25.3676 43.2155C25.2091 43.5964 25.0824 43.818 24.7661 43.818C24.4498 43.818 24.3231 43.5964 24.1639 43.2155L16.217 23.9839C15.3927 21.9872 14 22.8114 14 22.1139C14 21.9242 14.1267 21.7663 14.38 21.7663C16.0578 21.7663 17.7364 21.8293 19.4142 21.8293C21.0297 21.8293 22.6446 21.7663 24.2594 21.7663C24.7342 21.7663 24.9557 21.8293 24.9557 22.0828C24.9557 22.6846 23.0246 22.3363 23.0246 23.8572C23.0246 24.4597 23.5312 25.7583 27.4579 35.6753H27.5202C30.2758 28.6734 31.3203 26.5818 31.3203 25.1246C31.3203 21.9567 28.598 22.9388 28.598 22.1146C28.598 21.8611 28.7246 21.7663 29.1358 21.7663C30.2446 21.7663 31.5425 21.83 32.3655 21.83C33.8225 21.83 34.804 21.7663 35.8803 21.7663C36.1655 21.7663 36.3877 21.83 36.3877 22.0197C36.3877 22.8439 34.0758 21.893 32.2706 26.329L25.3676 43.2155ZM39.8991 30.7324C39.8991 29.7185 39.5828 29.4331 38.9494 29.4331C37.9361 29.4331 37.1768 29.9719 37.1768 30.9222C37.1768 31.6515 37.3027 32.4431 37.3027 33.2035C37.3027 34.6289 36.3212 35.6435 34.6116 35.6435C32.8694 35.6435 32.173 34.883 32.173 33.7105C32.173 31.1757 36.8279 28.6727 40.9443 28.6727C44.4273 28.6727 45.6621 30.098 45.6621 32.6647V41.1883C45.6621 41.5678 45.8525 41.7908 46.2006 41.7908C47.0555 41.7908 47.1822 40.6495 47.657 40.6495C47.8155 40.6495 47.9422 40.8081 47.9422 40.9341C47.9422 41.2513 46.8658 43.5638 43.4776 43.5638C41.4191 43.5638 40.5013 42.8034 40.1213 41.536C38.4116 42.899 36.9234 43.5638 35.3397 43.5638C32.6797 43.5638 31.6034 42.0436 31.6034 40.6806C31.6034 38.2095 33.4404 37.449 39.8991 35.1677V30.7324ZM39.8991 35.8333C37.9361 36.6256 37.3657 37.5439 37.3657 38.9706C37.3657 41.0615 37.8413 41.5997 38.6643 41.5997C39.2028 41.5997 39.6146 41.2194 39.8991 40.9348V35.8333ZM82.8762 28.6727C86.9296 28.6727 89.1785 31.3973 89.1785 33.457C89.1785 35.2626 88.1014 36.0867 86.7081 36.0867C85.4096 36.0867 84.3014 35.1677 84.3014 33.457C84.3014 32.4431 84.4917 31.3973 84.4917 30.7636C84.4917 29.7185 83.8584 29.2427 82.908 29.2427C81.3887 29.2427 80.1857 31.2712 80.1857 33.6786C80.1857 37.9242 82.7191 40.1418 85.1251 40.1418C88.3548 40.1418 88.1963 38.0828 88.8933 38.0828C89.1148 38.0828 89.1785 38.2095 89.1785 38.4C89.1785 39.2241 87.2784 43.5645 82.0851 43.5645C78.665 43.5645 75.0553 41.0615 75.0553 36.4358C75.0553 31.9042 78.9184 28.6727 82.8762 28.6727ZM96.9682 41.4418C96.9682 42.9938 98.8045 42.392 98.8045 43.0575C98.8045 43.2155 98.7415 43.3741 98.4564 43.3741C97.2527 43.3741 95.8919 43.3103 94.2763 43.3103C92.6622 43.3103 91.3 43.3741 90.097 43.3741C89.8118 43.3741 89.7488 43.2155 89.7488 43.0575C89.7488 42.392 91.5851 42.9938 91.5851 41.4418V23.9202C91.5851 22.3363 89.6214 22.7483 89.6214 22.1458C89.6214 21.4172 91.5215 22.2414 96.9682 20.1816V41.4418ZM98.0445 35.5798C100.895 33.1398 101.592 32.5068 101.592 31.4291C101.592 29.2427 99.7549 29.8452 99.7549 29.1478C99.7549 28.9262 99.9127 28.8624 100.198 28.8624C100.8 28.8624 102.098 28.9262 103.396 28.9262C104.948 28.9262 106.056 28.8624 106.69 28.8624C107.069 28.8624 107.196 28.9899 107.196 29.1796C107.196 29.8133 105.011 29.1478 101.908 32.601L106.975 41.4729C107.892 43.0576 109.065 42.3283 109.065 43.0575C109.065 43.3103 108.905 43.3741 108.273 43.3741C107.038 43.3741 105.771 43.3103 104.283 43.3103C102.985 43.3103 101.718 43.3741 100.419 43.3741C100.103 43.3741 99.9127 43.3103 99.9127 43.0257C99.9127 42.5187 100.99 42.8352 100.99 41.9169C100.99 41.4418 100.673 40.8711 100.388 40.3004L98.0445 35.5798ZM73.5021 26.7473C73.5692 26.9384 73.8516 26.8879 73.8503 26.685L73.808 21.8702C73.808 21.866 73.8073 21.8466 73.7976 21.8258C73.7796 21.7898 73.7423 21.7663 73.6994 21.767C69.8391 21.7981 65.947 21.8293 61.8999 21.8293C59.588 21.8293 57.7835 21.7656 56.5487 21.7656C56.1998 21.7656 56.0738 21.8605 56.0738 22.1465C56.0738 23.1597 58.7338 21.956 58.7338 24.1737V26.6171C58.7338 26.8152 58.9297 26.9578 59.1146 26.8886C59.6683 26.6822 60.2636 26.5686 60.8844 26.5686C62.32 26.5686 63.6206 27.1684 64.5779 28.1408C64.7578 28.3222 65.0666 28.1899 65.0666 27.9351V22.8231C65.0666 22.6604 65.1981 22.5281 65.3607 22.5343C66.8288 22.5842 68.8555 22.8183 70.0938 23.425C71.2491 23.9915 71.9482 24.3337 72.603 25.1239C73.0979 25.7209 73.3463 26.3068 73.5021 26.7473ZM58.0756 43.3741C57.7897 43.3741 57.7267 43.2155 57.7267 43.0575C57.7267 42.392 59.3097 42.9938 59.3097 41.4418V32.5386C59.3097 31.1445 58.5816 30.6375 57.8216 30.6375C56.9979 30.6375 56.1119 31.2394 55.4467 31.8731V41.4418C55.4467 42.9938 57.0297 42.392 57.0297 43.0575C57.0297 43.2155 56.9667 43.3741 56.6822 43.3741C55.7319 43.3741 54.3704 43.3103 52.7555 43.3103C51.1407 43.3103 49.7792 43.3741 48.5755 43.3741C48.2903 43.3741 48.2273 43.2155 48.2273 43.0575C48.2273 42.392 50.0637 42.9938 50.0637 41.4418V32.38C50.0637 30.2261 47.974 30.6057 47.974 30.0038C47.974 29.4968 49.9688 30.0675 55.4467 28.6734V30.8591C57.6637 29.1485 58.9304 28.6734 60.6719 28.6734C63.8386 28.6734 64.6935 30.6375 64.6935 33.394V41.4418C64.6935 42.268 65.2133 42.4827 65.6999 42.6046C67.0393 42.6953 68.7455 42.2549 69.8169 41.7229C70.9694 41.1509 71.6664 40.8046 72.3178 40.0123C72.8092 39.4125 73.0556 38.8252 73.2093 38.3833C73.2757 38.1922 73.5582 38.242 73.5575 38.4443L73.5395 43.2591C73.5395 43.2639 73.5395 43.2826 73.5291 43.3034C73.5118 43.3394 73.4744 43.3637 73.4308 43.3637L58.0756 43.3741Z"
                                                 fill="currentColor"></path>
@@ -687,8 +700,9 @@
                                 <div
                                     class="relative grid before:absolute before:-left-6 before:h-full before:border-l before:border-surface-stroke-primary odd:before:hidden md:odd:[&:not(:first-child)]:before:block after:absolute after:-top-3 after:left-0 after:border-b after:border-surface-stroke-primary even:after:-left-5 md:after:hidden [&:nth-child(-n+2)]:after:hidden after:w-[calc(100%+24px)]">
                                     <div class="col-start-1 row-start-1 size-full max-w-32 [&_svg]:w-full text-surface-text-muted"
-                                        style="-webkit-transform:scale(0.97); transform:scale(0.97)"><svg width="128" height="64" viewBox="0 0 128 64"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        style="-webkit-transform:scale(0.97); transform:scale(0.97)"><svg width="128"
+                                            height="64" viewBox="0 0 128 64" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
 
                                             <path
                                                 d="M25.3662 34.4008C25.4505 34.0637 25.4589 34.0429 25.4743 33.9491C25.5922 33.2292 25.7803 32.531 26.0676 31.8577C26.3926 31.096 26.8322 30.4088 27.3597 29.7746C28.1003 28.8842 28.9901 28.175 30.0243 27.6603C30.9319 27.2085 31.8943 26.9297 32.9095 26.8258C34.191 26.6946 35.4387 26.8205 36.6462 27.2678C38.7091 28.0318 40.2707 29.375 41.288 31.336C41.7619 32.2495 42.0604 33.2197 42.1697 34.2402C42.3765 36.1716 41.98 37.9755 40.9545 39.6312C40.1317 40.9597 39.0255 41.9856 37.6302 42.6942C36.8753 43.0775 36.0804 43.3429 35.2459 43.4899C35.1686 43.5035 35.0956 43.5421 35.0162 43.592C34.2204 43.615 33.429 43.615 32.604 43.592C32.4957 43.5409 32.4232 43.5007 32.346 43.4866C31.67 43.3634 31.0149 43.1723 30.3881 42.8895C29.2571 42.3792 28.2799 41.6627 27.4618 40.7255C26.7575 39.9185 26.2094 39.0205 25.8786 38.0029C25.7094 37.4828 25.6055 36.9414 25.4729 36.4094C25.4516 36.3238 25.3881 36.0858 25.3662 35.9173C25.3662 35.2715 25.3662 35.2433 25.3662 34.4008ZM35.2838 41.4283C36.4982 41.1389 37.5341 40.5386 38.4019 39.6427C39.8167 38.182 40.3795 36.418 40.1663 34.4235C39.9994 32.8614 39.2975 31.539 38.1285 30.4741C36.6298 29.1089 34.8622 28.5531 32.8719 28.8523C30.8714 29.153 29.329 30.2055 28.2782 31.9491C27.4654 33.2977 27.2358 34.7658 27.4897 36.2971C27.6906 37.5089 28.2233 38.5875 29.0605 39.4982C30.0486 40.573 31.2659 41.237 32.7029 41.5058C33.2069 41.6001 33.7108 41.6033 34.2167 41.5607C34.5564 41.5321 34.8942 41.4809 35.2838 41.4283Z"
@@ -714,8 +728,9 @@
                                 <div
                                     class="relative grid before:absolute before:-left-6 before:h-full before:border-l before:border-surface-stroke-primary odd:before:hidden md:odd:[&:not(:first-child)]:before:block after:absolute after:-top-3 after:left-0 after:border-b after:border-surface-stroke-primary even:after:-left-5 md:after:hidden [&:nth-child(-n+2)]:after:hidden after:w-[calc(100%+24px)]">
                                     <div class="col-start-1 row-start-1 size-full max-w-32 [&_svg]:w-full text-surface-text-muted"
-                                        style="-webkit-transform:scale(0.97); transform:scale(0.97)"><svg width="128" height="64" viewBox="0 0 128 64"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        style="-webkit-transform:scale(0.97); transform:scale(0.97)"><svg width="128"
+                                            height="64" viewBox="0 0 128 64" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M26.7955 25.6317C26.3126 25.0563 25.6999 24.604 25.008 24.3121C24.3028 23.9643 23.5281 23.7805 22.7419 23.7745C22.2843 23.7741 21.8283 23.83 21.3842 23.9407C20.9482 24.0488 20.5325 24.2271 20.1535 24.4685C19.7852 24.7062 19.4747 25.0235 19.2452 25.3971C18.9997 25.8139 18.8778 26.2919 18.8935 26.7754C18.8808 27.2194 18.9889 27.6586 19.2061 28.0461C19.4189 28.4054 19.7092 28.7127 20.0559 28.9454C20.463 29.2152 20.9028 29.432 21.3647 29.5905C21.8791 29.773 22.4457 29.9587 23.0643 30.1477C23.6829 30.3366 24.4089 30.594 25.2424 30.9199C25.9827 31.2024 26.6797 31.5873 27.3131 32.0635C27.9653 32.5302 28.5112 33.1298 28.915 33.823C29.3426 34.6526 29.5511 35.578 29.5206 36.511C29.5476 37.5735 29.3269 38.6278 28.8759 39.5901C28.468 40.4358 27.8775 41.1803 27.1471 41.7698C26.3961 42.3633 25.5369 42.8049 24.6173 43.0699C23.6245 43.3609 22.5946 43.5057 21.5601 43.5C20.1327 43.4977 18.7183 43.2292 17.3893 42.7082C16.0942 42.2288 14.9439 41.4243 14.0488 40.372L16.8326 37.772C17.3895 38.5301 18.1286 39.1352 18.9814 39.5314C19.8003 39.9438 20.7021 40.1644 21.6187 40.1766C22.0859 40.1758 22.5514 40.12 23.0057 40.0104C23.465 39.9015 23.8993 39.7058 24.2852 39.4337C24.6602 39.1774 24.9765 38.8442 25.2131 38.4562C25.4611 37.9978 25.5824 37.4816 25.5647 36.9607C25.5842 36.4516 25.4442 35.9493 25.1643 35.5238C24.8733 35.1274 24.5043 34.7947 24.0801 34.5463C23.575 34.2457 23.0376 34.003 22.4782 33.823L20.5247 33.1778C19.8604 32.9661 19.2083 32.7181 18.5712 32.4349C17.8972 32.1464 17.2765 31.7466 16.7349 31.2522C16.1969 30.7595 15.7619 30.1648 15.4554 29.5025C15.0999 28.69 14.9297 27.8085 14.9572 26.922C14.9299 25.9195 15.1692 24.9277 15.6507 24.0482C16.1087 23.2702 16.7323 22.6028 17.4772 22.0933C18.2585 21.5551 19.1279 21.1581 20.0461 20.9203C21.0013 20.6609 21.9866 20.5294 22.9764 20.5293C24.1275 20.5365 25.2695 20.7347 26.3559 21.1158C27.4619 21.4854 28.4771 22.085 29.335 22.8752L26.7955 25.6317Z"
                                                 fill="currentColor"></path>
@@ -738,8 +753,9 @@
                                 <div
                                     class="relative grid before:absolute before:-left-6 before:h-full before:border-l before:border-surface-stroke-primary odd:before:hidden md:odd:[&:not(:first-child)]:before:block after:absolute after:-top-3 after:left-0 after:border-b after:border-surface-stroke-primary even:after:-left-5 md:after:hidden [&:nth-child(-n+2)]:after:hidden after:w-[calc(100%+24px)]">
                                     <div class="col-start-1 row-start-1 size-full max-w-32 [&_svg]:w-full text-surface-text-muted"
-                                        style="-webkit-transform:scale(0.97); transform:scale(0.97)"><svg width="128" height="64" viewBox="0 0 128 64"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        style="-webkit-transform:scale(0.97); transform:scale(0.97)"><svg width="128"
+                                            height="64" viewBox="0 0 128 64" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M15.1437 32.0002C15.144 30.6886 15.4625 29.3967 16.0718 28.2352C16.6811 27.0738 17.5631 26.0776 18.642 25.332C19.7208 24.5864 20.9645 24.1137 22.2662 23.9545C23.5679 23.7952 24.8888 23.9542 26.1155 24.4177C26.2645 24.0507 26.4919 23.7207 26.7819 23.4509C24.9608 22.6981 22.9468 22.5467 21.0336 23.0188C19.1202 23.491 17.4078 24.5619 16.1458 26.0756C14.8837 27.5893 14.138 29.4666 14.0174 31.4338C13.8967 33.4009 14.4074 35.3552 15.475 37.0119C15.6836 36.6731 15.9627 36.3834 16.2934 36.1623C15.5394 34.905 15.142 33.4662 15.1437 32.0002ZM30.9529 26.8823C30.7431 27.2177 30.4633 27.5038 30.1327 27.721C31.0307 29.1679 31.4504 30.8608 31.3323 32.5597C31.2142 34.2585 30.5642 35.8771 29.4746 37.1858C28.3851 38.4944 26.9112 39.4267 25.2619 39.8504C23.6127 40.274 21.872 40.1676 20.2867 39.5461C20.1241 39.9096 19.8835 40.2328 19.5819 40.4928C21.4123 41.2832 23.4492 41.4609 25.3888 40.9993C27.3285 40.5377 29.0671 39.4616 30.3454 37.9314C31.6239 36.4012 32.3737 34.4988 32.4832 32.5077C32.5926 30.5167 32.0559 28.5435 30.9529 26.8823ZM28.6879 27.0142C29.5828 27.0142 30.3082 26.2887 30.3082 25.3937C30.3082 24.4987 29.5828 23.7732 28.6879 23.7732C27.7931 23.7732 27.0677 24.4987 27.0677 25.3937C27.0677 26.2887 27.7931 27.0142 28.6879 27.0142ZM17.7655 40.1247C18.6604 40.1247 19.3858 39.3991 19.3858 38.5042C19.3858 37.6092 18.6604 36.8837 17.7655 36.8837C16.8707 36.8837 16.1453 37.6092 16.1453 38.5042C16.1453 39.3991 16.8707 40.1247 17.7655 40.1247Z"
                                                 fill="currentColor"></path>
@@ -767,56 +783,8 @@
                 </div>
             </section>
         </div>
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="ink">
-                <div class="w-full">
-                    <div class="flex flex-col gap-0">
-                        <div class="relative grid w-full overflow-hidden">
-                            <div
-                                class="relative z-10 flex w-full items-center pt-16 md:col-start-1 md:row-start-1 md:py-10">
-                                <div
-                                    class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12">
-                                    <div class="flex max-w-2xl flex-col items-start gap-4 md:col-span-5">
-                                        <h2 class="text-headline-400">See the private market like never before</h2>
-                                        <p class="mb-4 text-body-400 text-surface-text-muted">Every investor touchpoint
-                                            matters. Make the right first impression with NEIIA Data bank’s modern
-                                            design, intuitive permissions, and advanced analytics​​​​‌‌–all completely
-                                            free.</p><a
-                                            class="[&_svg]:[stroke-width-2] inline-flex items-center justify-center gap-2 rounded-[4px] font-sans text-[1rem] leading-normal tracking-[-0.002em] no-underline transition-colors duration-200 hover:no-underline focus-visible:outline-1 focus-visible:ring-1 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-60 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0 h-12 px-4 bg-raw-purple-2 text-raw-ink-1 hover:bg-cta-primary-bg hover:text-cta-primary-text focus-visible:bg-cta-primary-bg focus-visible:text-cta-primary-text active:bg-cta-primary-bg active:text-cta-primary-text"
-                                            href="../contact.html">Request beta access</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid w-full md:col-start-1 md:row-start-1 md:grid-cols-2">
-                                <div class="isolate aspect-square w-full overflow-hidden"><img _type="image" alt=""
-                                        loading="lazy" width="1408" height="1408" decoding="async" data-nimg="1"
-                                        class="w-full object-cover object-center md:hidden" style="color:transparent"
-                                        srcset="../assets/databank/images/image_25.png 1x, assets/databank/images/image.png 2x"
-                                        src="../assets/databank/images/image.png"></div>
-                            </div>
-                            <div
-                                class="group absolute left-1/2 top-0 z-10 hidden h-full w-1/2 cursor-pointer overflow-hidden md:flex">
-                                <img _type="image" alt="" loading="lazy" width="1408" height="1408" decoding="async"
-                                    data-nimg="1"
-                                    class="absolute inset-0 size-full object-cover object-center transition-all duration-700 group-hover:scale-[1.03] group-hover:opacity-70 group-hover:blur-[2px]"
-                                    style="color:transparent"
-                                    srcset="../assets/databank/images/image_25.png 1x, assets/databank/images/image.png 2x"
-                                    src="../assets/databank/images/image.png">
-                                <div
-                                    class="absolute inset-0 flex translate-y-4 items-center justify-center opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-hover:delay-100">
-                                    <div class="ml-[5%] mt-[10%] inline-flex min-w-[280px] flex-col items-center gap-2 rounded-lg bg-raw-ink-2 p-8 text-center text-surface-text-primary"
-                                        data-theme="ink">
-                                        <p class="text-body-500">Explore Fin's AI-powered intelligence</p><button
-                                            class="[&_svg]:[stroke-width-2] inline-flex items-center justify-center gap-2 rounded-[4px] font-sans text-[1rem] leading-normal tracking-[-0.002em] no-underline transition-colors duration-200 hover:no-underline focus-visible:outline-1 focus-visible:ring-1 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-60 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0 h-12 px-4 bg-raw-purple-2 text-raw-ink-1 hover:bg-cta-primary-bg hover:text-cta-primary-text focus-visible:bg-cta-primary-bg focus-visible:text-cta-primary-text active:bg-cta-primary-bg active:text-cta-primary-text mt-4">Explore
-                                            demo</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
+
+
         <div>
             <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="ink"
                 style="width: 100vw; margin-left: calc(-50vw + 50%); margin-top: 0; padding: 0;">
@@ -878,44 +846,15 @@
                                         class="sticky top-header-spaced-24 flex flex-col gap-4 bg-surface text-body-100 before:bottom-full before:left-0 before:absolute before:h-12 before:w-full before:bg-gradient-to-t before:from-surface before:to-transparent">
                                         <li
                                             class="cursor-pointer transition-colors hover:text-surface-text-primary text-surface-text-primary">
-                                            Real-time market intelligence</li>
-                                        <li
-                                            class="text-surface-text-muted cursor-pointer transition-colors hover:text-surface-text-primary">
                                             Portfolio analytics & benchmarking</li>
                                         <li
                                             class="text-surface-text-muted cursor-pointer transition-colors hover:text-surface-text-primary">
                                             Fund performance tracking</li>
-                                        <li
-                                            class="text-surface-text-muted cursor-pointer transition-colors hover:text-surface-text-primary">
-                                            AI-powered deal insights</li>
                                     </ul>
-                                </div>
-                                <div id="card-537d9f00873f"
-                                    class="db-stagger-card top-header-spaced-8 grid scroll-m-28 gap-8 rounded-lg bg-card-primary p-5 py-8 odd:bg-card-primary-active sm:grid-cols-2 md:gap-16 md:rounded-xl md:p-8 lg:p-10 vhmd:sticky"
-                                    style="--stagger: 0rem">
-                                    <div class="flex flex-col justify-between gap-6">
-                                        <h3 class="text-headline-200">Real-time market intelligence</h3>
-                                        <div
-                                            class="border-l-4 border-surface-accent-purple pl-5 text-body-400 text-surface-text-muted md:pl-7 md:text-body-500">
-                                            A crisp layout helps potential investors focus on the message and data that
-                                            matters. Customize your data bank experience with your firm’s logo, colors,
-                                            and messaging to ensure potential investors remember your brand.</div>
-                                    </div>
-                                    <div class="flex w-full justify-end">
-                                        <div
-                                            class="relative isolate aspect-square w-full overflow-hidden rounded-lg bg-card-primary-hover sm:max-w-[500px]">
-                                            <img _type="image" alt="" loading="lazy" width="1000" height="1000"
-                                                decoding="async" data-nimg="1"
-                                                class="size-full object-cover object-center" style="color:transparent"
-                                                sizes="500px"
-                                                srcset="../assets/databank/images/image_5.png 32w, assets/databank/images/image_15.png 48w, assets/databank/images/image_7.png 64w, assets/databank/images/image_6.png 96w, assets/databank/images/image_20.png 128w, assets/databank/images/image_14.png 256w, assets/databank/images/image_24.png 384w, assets/databank/images/image_16.png 640w, assets/databank/images/image_48.png 750w, assets/databank/images/image_10.png 828w, assets/databank/images/image_8.png 1080w, assets/databank/images/image_18.png 1200w, assets/databank/images/image_12.png 1920w, assets/databank/images/image_9.png 2048w, assets/databank/images/image_1.png 3840w"
-                                                src="../assets/databank/images/image_1.png">
-                                        </div>
-                                    </div>
                                 </div>
                                 <div id="card-e76e7618346f"
                                     class="db-stagger-card top-header-spaced-8 grid scroll-m-28 gap-8 rounded-lg bg-card-primary p-5 py-8 odd:bg-card-primary-active sm:grid-cols-2 md:gap-16 md:rounded-xl md:p-8 lg:p-10 vhmd:sticky"
-                                    style="--stagger: 2rem">
+                                    style="--stagger: 0rem">
                                     <div class="flex flex-col justify-between gap-6">
                                         <h3 class="text-headline-200">Portfolio analytics & benchmarking</h3>
                                         <div
@@ -932,15 +871,13 @@
                                             <img _type="image" alt="" loading="lazy" width="1000" height="1000"
                                                 decoding="async" data-nimg="1"
                                                 class="size-full object-cover object-center" style="color:transparent"
-                                                sizes="500px"
-                                                srcset="../assets/databank/images/image_17.png 32w, assets/databank/images/image_31.png 48w, assets/databank/images/image_11.png 64w, assets/databank/images/image_19.png 96w, assets/databank/images/image_26.png 128w, assets/databank/images/image_22.png 256w, assets/databank/images/image_35.png 384w, assets/databank/images/image_42.png 640w, assets/databank/images/image_27.png 750w, assets/databank/images/image_33.png 828w, assets/databank/images/image_13.png 1080w, assets/databank/images/image_59.png 1200w, assets/databank/images/image_30.png 1920w, assets/databank/images/image_58.png 2048w, assets/databank/images/image_4.png 3840w"
-                                                src="../assets/databank/images/image_4.png">
+                                                sizes="500px" src="../assets/databank/images/portfolio_analytics.png">
                                         </div>
                                     </div>
                                 </div>
                                 <div id="card-c95e5e6c3c40"
                                     class="db-stagger-card top-header-spaced-8 grid scroll-m-28 gap-8 rounded-lg bg-card-primary p-5 py-8 odd:bg-card-primary-active sm:grid-cols-2 md:gap-16 md:rounded-xl md:p-8 lg:p-10 vhmd:sticky"
-                                    style="--stagger: 4rem">
+                                    style="--stagger: 2rem">
                                     <div class="flex flex-col justify-between gap-6">
                                         <h3 class="text-headline-200">Fund performance tracking</h3>
                                         <div
@@ -958,32 +895,7 @@
                                             <img _type="image" alt="" loading="lazy" width="1000" height="1000"
                                                 decoding="async" data-nimg="1"
                                                 class="size-full object-cover object-center" style="color:transparent"
-                                                sizes="500px"
-                                                srcset="../assets/databank/images/image_43.png 32w, assets/databank/images/image_52.png 48w, assets/databank/images/image_21.png 64w, assets/databank/images/image_23.png 96w, assets/databank/images/image_32.png 128w, assets/databank/images/image_44.png 256w, assets/databank/images/image_56.png 384w, assets/databank/images/image_29.png 640w, assets/databank/images/image_34.png 750w, assets/databank/images/image_40.png 828w, assets/databank/images/image_28.png 1080w, assets/databank/images/image_53.png 1200w, assets/databank/images/image_50.png 1920w, assets/databank/images/image_54.png 2048w, assets/databank/images/image_2.png 3840w"
-                                                src="../assets/databank/images/image_2.png">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="card-5ff9db180357"
-                                    class="db-stagger-card top-header-spaced-8 grid scroll-m-28 gap-8 rounded-lg bg-card-primary p-5 py-8 odd:bg-card-primary-active sm:grid-cols-2 md:gap-16 md:rounded-xl md:p-8 lg:p-10 vhmd:sticky"
-                                    style="--stagger: 6rem">
-                                    <div class="flex flex-col justify-between gap-6">
-                                        <h3 class="text-headline-200">AI-powered deal insights</h3>
-                                        <div
-                                            class="border-l-4 border-surface-accent-purple pl-5 text-body-400 text-surface-text-muted md:pl-7 md:text-body-500">
-                                            Leverage machine learning to identify the most promising deal flow,
-                                            surface emerging sectors, and predict portfolio outcomes. Fin learns from
-                                            your investment thesis to deliver personalized intelligence.</div>
-                                    </div>
-                                    <div class="flex w-full justify-end">
-                                        <div
-                                            class="relative isolate aspect-square w-full overflow-hidden rounded-lg bg-card-primary-hover sm:max-w-[500px]">
-                                            <img _type="image" alt="" loading="lazy" width="1000" height="1000"
-                                                decoding="async" data-nimg="1"
-                                                class="size-full object-cover object-center" style="color:transparent"
-                                                sizes="500px"
-                                                srcset="../assets/databank/images/image_36.png 32w, assets/databank/images/image_41.png 48w, assets/databank/images/image_46.png 64w, assets/databank/images/image_47.png 96w, assets/databank/images/image_45.png 128w, assets/databank/images/image_49.png 256w, assets/databank/images/image_38.png 384w, assets/databank/images/image_51.png 640w, assets/databank/images/image_61.png 750w, assets/databank/images/image_57.png 828w, assets/databank/images/image_37.png 1080w, assets/databank/images/image_60.png 1200w, assets/databank/images/image_55.png 1920w, assets/databank/images/image_39.png 2048w, assets/databank/images/image_3.png 3840w"
-                                                src="../assets/databank/images/image_3.png">
+                                                sizes="500px" src="../assets/databank/images/fund_performance.png">
                                         </div>
                                     </div>
                                 </div>
@@ -991,7 +903,8 @@
                         </div>
                     </div>
                 </div>
-            </section>
+        </div>
+        </section>
         </div>
         <div>
             <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="white">
@@ -1213,7 +1126,7 @@
                             </div>
                             <div class="grid gap-6 sm:gap-4 md:gap-8 items-stretch grid-cols-1 sm:grid-cols-2"><a
                                     class="group relative flex overflow-hidden rounded-lg bg-card-primary p-6 aspect-square xs:aspect-auto lg:aspect-[5/3]"
-                                    href="/investor-management">
+                                    href="../investor-management.html">
                                     <div class="absolute left-0 top-0 opacity-0 transition-[background,opacity] duration-700"
                                         style="background-image:radial-gradient(50% 50% at 50% 50%, rgba(189, 187, 255, 1) 0%, rgba(189, 187, 255, 0) 100%);width:0px;height:0px;-webkit-transform:none; transform:none">
                                     </div>
@@ -1249,7 +1162,7 @@
                                     </div>
                                 </a><a
                                     class="group relative flex overflow-hidden rounded-lg bg-card-primary p-6 aspect-square xs:aspect-auto lg:aspect-[5/3]"
-                                    href="/fund-administration/venture-funds">
+                                    href="../fund-administration/fund-administration.html">
                                     <div class="absolute left-0 top-0 opacity-0 transition-[background,opacity] duration-700"
                                         style="background-image:radial-gradient(50% 50% at 50% 50%, rgba(189, 187, 255, 1) 0%, rgba(189, 187, 255, 0) 100%);width:0px;height:0px;-webkit-transform:none; transform:none">
                                     </div>
@@ -1317,9 +1230,15 @@
                                                 <path d="M2 10h8m0 0h8m-8 0V2m0 8v8" stroke="currentColor"
                                                     vector-effect="non-scaling-stroke"></path>
                                             </svg></span></button>
-                                    <div class="overflow-hidden" style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
+                                    <div class="overflow-hidden"
+                                        style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
                                         <div class="flex max-w-[70ch] flex-col gap-6 pb-6 text-surface-text-muted">
-                                            <p class="w-full ">Fin is an AI-powered private market intelligence tool built by NEIIA. Think of it like ChatGPT, but specifically designed for the investment ecosystem. You can research companies, analyze portfolios, benchmark valuations, track deal flow, and generate LP updates — all through a simple conversational interface powered by NEIIA's proprietary data network.</p>
+                                            <p class="w-full ">Fin is an AI-powered private market intelligence tool
+                                                built by NEIIA. Think of it like ChatGPT, but specifically designed for
+                                                the investment ecosystem. You can research companies, analyze
+                                                portfolios, benchmark valuations, track deal flow, and generate LP
+                                                updates — all through a simple conversational interface powered by
+                                                NEIIA's proprietary data network.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1333,7 +1252,8 @@
                                                 <path d="M2 10h8m0 0h8m-8 0V2m0 8v8" stroke="currentColor"
                                                     vector-effect="non-scaling-stroke"></path>
                                             </svg></span></button>
-                                    <div class="overflow-hidden" style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
+                                    <div class="overflow-hidden"
+                                        style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
                                         <div class="flex max-w-[70ch] flex-col gap-6 pb-6 text-surface-text-muted">
                                             <p class="w-full ">Fin is currently in private beta, available to firms
                                                 on the NEIIA platform. You can join the waitlist and our team will
@@ -1351,7 +1271,8 @@
                                                 <path d="M2 10h8m0 0h8m-8 0V2m0 8v8" stroke="currentColor"
                                                     vector-effect="non-scaling-stroke"></path>
                                             </svg></span></button>
-                                    <div class="overflow-hidden" style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
+                                    <div class="overflow-hidden"
+                                        style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
                                         <div class="flex max-w-[70ch] flex-col gap-6 pb-6 text-surface-text-muted">
                                             <p class="w-full ">Fin draws on NEIIA's proprietary data network,
                                                 aggregating real-time information from thousands of funds, portfolio
@@ -1379,7 +1300,8 @@
                                                 <path d="M2 10h8m0 0h8m-8 0V2m0 8v8" stroke="currentColor"
                                                     vector-effect="non-scaling-stroke"></path>
                                             </svg></span></button>
-                                    <div class="overflow-hidden" style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
+                                    <div class="overflow-hidden"
+                                        style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
                                         <div class="flex max-w-[70ch] flex-col gap-6 pb-6 text-surface-text-muted">
                                             <p class="w-full ">Unlike traditional market data providers, Fin is built
                                                 natively on top of NEIIA's infrastructure. This gives you access to
@@ -1398,7 +1320,8 @@
                                                 <path d="M2 10h8m0 0h8m-8 0V2m0 8v8" stroke="currentColor"
                                                     vector-effect="non-scaling-stroke"></path>
                                             </svg></span></button>
-                                    <div class="overflow-hidden" style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
+                                    <div class="overflow-hidden"
+                                        style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
                                         <div class="flex max-w-[70ch] flex-col gap-6 pb-6 text-surface-text-muted">
                                             <p class="w-full ">Pricing details for Fin will be announced closer to
                                                 the public launch. Beta participants will receive special early-adopter
@@ -1419,7 +1342,8 @@
                                                 <path d="M2 10h8m0 0h8m-8 0V2m0 8v8" stroke="currentColor"
                                                     vector-effect="non-scaling-stroke"></path>
                                             </svg></span></button>
-                                    <div class="overflow-hidden" style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
+                                    <div class="overflow-hidden"
+                                        style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
                                         <div class="flex max-w-[70ch] flex-col gap-6 pb-6 text-surface-text-muted">
                                             <p class="w-full ">Yes, Fin will offer an API for programmatic access to
                                                 private market data and intelligence. During the beta period, API access
@@ -1443,7 +1367,8 @@
                                                 <path d="M2 10h8m0 0h8m-8 0V2m0 8v8" stroke="currentColor"
                                                     vector-effect="non-scaling-stroke"></path>
                                             </svg></span></button>
-                                    <div class="overflow-hidden" style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
+                                    <div class="overflow-hidden"
+                                        style="height:0px;-webkit-transform:translateY(-10px); transform:translateY(-10px)">
                                         <div class="flex max-w-[70ch] flex-col gap-6 pb-6 text-surface-text-muted">
                                             <p class="w-full ">Yes. Fin is designed to work seamlessly with NEIIA
                                                 <a class="hover:opacity-85 underline underline-offset-4"
@@ -1453,7 +1378,8 @@
                                                     href="../investor-management.html"><span>Investor
                                                         Management</span></a>,
                                                 and <a class="hover:opacity-85 underline underline-offset-4"
-                                                    href="../databank.html"><span>Data Bank</span></a>. Your Fin insights
+                                                    href="../databank.html"><span>Data Bank</span></a>. Your Fin
+                                                insights
                                                 flow directly into your existing workflows.
                                             </p>
                                         </div>
