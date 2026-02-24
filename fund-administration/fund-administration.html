@@ -884,20 +884,59 @@
         }
 
         .vehicle-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            display: flex;
             gap: 24px;
-            max-width: 1400px;
-            /* Allow cards to breath and be wider */
-            margin: 0 auto;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 16px;
+            scrollbar-width: none;
+        }
+
+        .vehicle-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .vehicle-carousel-wrapper {
+            position: relative;
+        }
+
+        .vehicle-carousel-nav {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .vehicle-nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid rgba(13, 61, 68, 0.15);
+            background: #fff;
+            color: #0d3d44;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .vehicle-nav-btn:hover {
+            background: #0d3d44;
+            color: #fff;
+            border-color: #0d3d44;
         }
 
         .vehicle-card {
             background: #f4f4f2;
             border-radius: 16px;
             padding: 32px;
-            /* Reduced from 48px 40px */
             height: 400px;
+            min-width: 320px;
+            flex: 0 0 calc(25% - 18px);
+            scroll-snap-align: start;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -1591,9 +1630,11 @@
 
         .footer-bottom {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 40px;
+            padding-top: 24px;
+            margin-top: 48px;
             font-size: 14px;
             color: rgba(255, 255, 255, 0.5);
+            text-align: center;
         }
 
         /* Responsive Footer */
@@ -1615,6 +1656,187 @@
 
         .page-content {
             padding-top: 100px;
+        }
+
+        /* =============================================
+           COMPREHENSIVE MOBILE FIXES (≤480px)
+           ============================================= */
+        @media (max-width: 480px) {
+
+            /* Prevent horizontal overflow */
+            html,
+            body {
+                overflow-x: hidden;
+                width: 100%;
+            }
+
+            /* Vehicle cards: single column on phones */
+            .vehicle-grid {
+                grid-template-columns: 1fr !important;
+                gap: 12px;
+            }
+
+            .vehicle-card {
+                height: auto;
+                min-height: 200px;
+                padding: 20px 16px;
+            }
+
+            .vehicle-section {
+                padding: 60px 16px;
+            }
+
+            .vehicle-section h2 {
+                font-size: 26px;
+            }
+
+            /* Metrics: smaller values */
+            .metric-value {
+                font-size: 40px;
+            }
+
+            .metrics-section {
+                padding: 50px 16px;
+            }
+
+            /* Testimonials: fit mobile viewport */
+            .testimonial-slide {
+                min-width: 280px !important;
+                flex: 0 0 280px !important;
+                padding: 24px !important;
+                border-radius: 16px !important;
+            }
+
+            .testimonial-quote {
+                font-size: 16px !important;
+                line-height: 1.5 !important;
+            }
+
+            .testimonial-photo-container {
+                width: 100% !important;
+                height: 180px !important;
+            }
+
+            .im-testimonials {
+                padding: 60px 0;
+            }
+
+            .im-testimonials-inner {
+                padding: 0 16px;
+            }
+
+            /* CTA section */
+            .cta-section {
+                padding: 60px 16px;
+            }
+
+            .cta-card {
+                padding: 40px 20px;
+            }
+
+            .cta-heading {
+                font-size: 28px !important;
+                letter-spacing: -0.5px;
+            }
+
+            .cta-text {
+                font-size: 15px;
+            }
+
+            /* FAQ section */
+            .faq-section {
+                padding: 60px 16px;
+            }
+
+            .faq-section h2 {
+                font-size: 28px;
+            }
+
+            /* Footer: single column on phones */
+            .footer-grid {
+                grid-template-columns: 1fr !important;
+                gap: 32px;
+            }
+
+            .site-footer {
+                padding: 40px 16px 24px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            /* Features section */
+            .features-section {
+                padding: 60px 16px;
+            }
+
+            .features-header h2 {
+                font-size: 26px !important;
+            }
+
+            .feature-item {
+                font-size: 16px;
+            }
+
+            /* Hero adjustments */
+            .hero h1 {
+                font-size: 32px !important;
+                letter-spacing: -1px;
+            }
+
+            .hero-subtext {
+                font-size: 15px !important;
+            }
+
+            .hero-inner {
+                padding: 80px 16px 40px !important;
+            }
+
+            /* Partners / Trusted section */
+            .trusted-section {
+                padding: 40px 16px;
+            }
+
+            .partner-logo {
+                max-height: 24px;
+                max-width: 80px;
+            }
+        }
+
+        /* =============================================
+           TABLET FIXES (≤768px) — additional
+           ============================================= */
+        @media (max-width: 768px) {
+
+            html,
+            body {
+                overflow-x: hidden;
+            }
+
+            /* Ensure vehicle cards stack on small tablets too */
+            .vehicle-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Testimonials */
+            .testimonial-slide {
+                min-width: 300px;
+                flex: 0 0 300px;
+            }
+
+            /* Footer */
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -1715,7 +1937,7 @@
     </div>
 
     <!-- Mobile Menu Button -->
-    <button class="mobile-menu-btn" aria-label="Menu" style="color: #ffffff;">
+    <button class="mobile-menu-btn" aria-label="Menu" style="color: #0d3d44;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -1837,56 +2059,7 @@
             </div>
         </section>
 
-        <!-- ==========================================
-             FEATURES SECTION
-             ========================================== -->
-        <section class="features-section">
-            <div class="features-inner">
-                <div class="features-header">
-                    <h2>Focus on deals, not admin, while delivering more to your investors</h2>
-                </div>
 
-                <div class="features-main-grid">
-                    <!-- Text Column -->
-                    <div class="features-list">
-                        <div class="feature-item">
-                            Elevate investor experiences
-                            <p class="feature-desc">Simplify onboarding with a digital-first process, and give LPs a
-                                single, secure portal to access documents, fulfill capital calls, and receive
-                                distributions—no back-and-forth, no friction.</p>
-                        </div>
-                        <div class="feature-item">
-                            Manage portfolio performance
-                            <p class="feature-desc">Track performance metrics, initiate capital calls, and engage with
-                                investors, all within a modern platform backed by white-glove support.</p>
-                        </div>
-                        <div class="feature-item">
-                            Keep financials accurate and accessible
-                            <p class="feature-desc">Ensure accurate data and reporting with accountant-verified
-                                financial records, accessible directly through your dashboard for full transparency.</p>
-                        </div>
-                        <div class="feature-item">
-                            Receive compliance and tax support
-                            <p class="feature-desc">Our integrated compliance tools and expert tax support ensure your
-                                fund meets all regulatory obligations, so you can focus on finding the next unicorn.</p>
-                        </div>
-                    </div>
-
-                    <!-- Image Column -->
-                    <div class="features-image-container">
-                        <img src="assets/images/hero-ring.png" alt="Orbital Rings" class="features-img base-img">
-                        <img src="assets/images/elevation_investor_experiences.webp" alt="Elevate Investor Experiences"
-                            class="features-img sync-img sync-img-1">
-                        <img src="assets/images/manage_portfolio_performance.webp" alt="Manage Portfolio Performance"
-                            class="features-img sync-img sync-img-2">
-                        <img src="assets/images/keep_financials_accurate_and_accessible.webp"
-                            alt="Keep Financials Accurate and Accessible" class="features-img sync-img sync-img-3">
-                        <img src="assets/images/receive_compliance_and_tax_support.webp"
-                            alt="Receive Compliance and Tax Support" class="features-img sync-img sync-img-4">
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- ==========================================
              VEHICLE SUPPORT SECTION
@@ -1894,70 +2067,88 @@
         <section class="vehicle-section">
             <div class="vehicle-inner">
                 <h2>Access customized, full-service support for every investment vehicle</h2>
-                <div class="vehicle-grid">
-                    <!-- Card 1: Venture Funds -->
-                    <div class="vehicle-card">
-                        <div class="vehicle-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                            </svg>
+                <div class="vehicle-carousel-wrapper">
+                    <div class="vehicle-grid" id="vehicle-carousel">
+                        <!-- Card 1: Venture Funds -->
+                        <div class="vehicle-card">
+                            <div class="vehicle-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                </svg>
+                            </div>
+                            <div class="vehicle-desc">Raise capital, close deals, and manage your portfolio, while we
+                                handle
+                                your overhead and back-office.</div>
+                            <div class="vehicle-card-footer">
+                                <div class="vehicle-title">Venture Funds</div>
+                                <div class="vehicle-arrow">→</div>
+                            </div>
                         </div>
-                        <div class="vehicle-desc">Raise capital, close deals, and manage your portfolio, while we handle
-                            your overhead and back-office.</div>
-                        <div class="vehicle-card-footer">
-                            <div class="vehicle-title">Venture Funds</div>
-                            <div class="vehicle-arrow">→</div>
+                        <!-- Card 2: Rolling Funds -->
+                        <div class="vehicle-card">
+                            <div class="vehicle-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" />
+                                </svg>
+                            </div>
+                            <div class="vehicle-desc">Fundraise continuously. LPs subscribe quarterly to Rolling Funds®,
+                                so
+                                you can regularly accept capital.</div>
+                            <div class="vehicle-card-footer">
+                                <div class="vehicle-title">Rolling Funds</div>
+                                <div class="vehicle-arrow">→</div>
+                            </div>
+                        </div>
+                        <!-- Card 3: Scout Funds -->
+                        <div class="vehicle-card">
+                            <div class="vehicle-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                </svg>
+                            </div>
+                            <div class="vehicle-desc">Grow your scout program, expand your network, and increase deal
+                                flow—with no extra back-office burden.</div>
+                            <div class="vehicle-card-footer">
+                                <div class="vehicle-title">Scout Funds</div>
+                                <div class="vehicle-arrow">→</div>
+                            </div>
+                        </div>
+                        <!-- Card 4: SPVs -->
+                        <div class="vehicle-card">
+                            <div class="vehicle-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="12" y1="8" x2="12" y2="16" />
+                                    <line x1="8" y1="12" x2="16" y2="12" />
+                                </svg>
+                            </div>
+                            <div class="vehicle-desc">Raise privately on a deal-by-deal basis with proven SPV
+                                infrastructure.</div>
+                            <div class="vehicle-card-footer">
+                                <div class="vehicle-title">SPVs</div>
+                                <div class="vehicle-arrow">→</div>
+                            </div>
                         </div>
                     </div>
-                    <!-- Card 2: Rolling Funds -->
-                    <div class="vehicle-card">
-                        <div class="vehicle-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    <div class="vehicle-carousel-nav">
+                        <button class="vehicle-nav-btn" id="vehicle-prev" aria-label="Previous">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="M12 6v6l4 2" />
+                                <path d="M15 18l-6-6 6-6" />
                             </svg>
-                        </div>
-                        <div class="vehicle-desc">Fundraise continuously. LPs subscribe quarterly to Rolling Funds®, so
-                            you can regularly accept capital.</div>
-                        <div class="vehicle-card-footer">
-                            <div class="vehicle-title">Rolling Funds</div>
-                            <div class="vehicle-arrow">→</div>
-                        </div>
-                    </div>
-                    <!-- Card 3: Scout Funds -->
-                    <div class="vehicle-card">
-                        <div class="vehicle-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        </button>
+                        <button class="vehicle-nav-btn" id="vehicle-next" aria-label="Next">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
-                                <circle cx="11" cy="11" r="8" />
-                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                <path d="M9 18l6-6-6-6" />
                             </svg>
-                        </div>
-                        <div class="vehicle-desc">Grow your scout program, expand your network, and increase deal
-                            flow—with no extra back-office burden.</div>
-                        <div class="vehicle-card-footer">
-                            <div class="vehicle-title">Scout Funds</div>
-                            <div class="vehicle-arrow">→</div>
-                        </div>
-                    </div>
-                    <!-- Card 4: SPVs -->
-                    <div class="vehicle-card">
-                        <div class="vehicle-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                                <line x1="12" y1="8" x2="12" y2="16" />
-                                <line x1="8" y1="12" x2="16" y2="12" />
-                            </svg>
-                        </div>
-                        <div class="vehicle-desc">Raise privately on a deal-by-deal basis with proven SPV
-                            infrastructure.</div>
-                        <div class="vehicle-card-footer">
-                            <div class="vehicle-title">SPVs</div>
-                            <div class="vehicle-arrow">→</div>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1986,152 +2177,7 @@
                 </div>
             </div>
         </section>
-        <!-- ==========================================
-             PREMIUM TESTIMONIAL SECTION
-             ========================================== -->
-        <section class="im-testimonials">
-            <div class="im-testimonials-inner">
-                <div class="testimonials-carousel" id="testimonials-carousel">
-                    <!-- Slide 1 -->
-                    <div class="testimonial-slide lavender">
-                        <div class="testimonial-content">
-                            <p class="testimonial-quote">"Partnering with NEIIA has revolutionized our approach to
-                                national
-                                energy data management. The Data Bank provides the transparency and intelligence
-                                required to
-                                drive sustainable investment and power Nigeria's future."</p>
-                            <div class="testimonial-footer">
-                                <div class="testimonial-author">
-                                    <h4>Dr. Mustapha Abdullahi</h4>
-                                    <p>Director General (DG)</p>
-                                </div>
-                                <span
-                                    style="font-family: serif; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; max-width: 150px; text-align: right; color: #050c26;">Energy
-                                    Commission of Nigeria</span>
-                            </div>
-                        </div>
-                        <div class="testimonial-photo-container">
-                            <img src="assets/images/investor-management/mustapha-dg.jpeg" alt="Dr. Mustapha Abdullahi">
-                        </div>
-                    </div>
 
-                    <!-- Slide 2 -->
-                    <div class="testimonial-slide tan">
-                        <div class="testimonial-content">
-                            <p class="testimonial-quote">"Accelerating Nigeria's energy transition requires robust
-                                partnerships and innovative data systems. NEIIA gives us the strategic oversight needed
-                                to
-                                harmonize public policy with private sector execution."</p>
-                            <div class="testimonial-footer">
-                                <div class="testimonial-author">
-                                    <h4>Mrs. Olu Verheijen</h4>
-                                    <p>Special Adviser (SA) to the President on Energy</p>
-                                </div>
-                                <span
-                                    style="font-family: serif; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; max-width: 150px; text-align: right; color: #ffffff;">Presidential
-                                    Chair Representative</span>
-                            </div>
-                        </div>
-                        <div class="testimonial-photo-container">
-                            <img src="assets/images/investor-management/olu.jpeg" alt="Mrs. Olu Verheijen">
-                        </div>
-                    </div>
-
-                    <!-- Slide 3 -->
-                    <div class="testimonial-slide dark">
-                        <div class="testimonial-content">
-                            <p class="testimonial-quote">"J.P. Morgan's partnership with NEIIA exemplifies how global
-                                financial institutions can effectively participate in Nigeria's energy sector. The
-                                robust
-                                regulatory framework and transparent data access provide the confidence needed for
-                                large-scale capital deployment."</p>
-                            <div class="testimonial-footer">
-                                <div class="testimonial-author">
-                                    <h4>Dapo Olagunju</h4>
-                                    <p>Managing Director at JPMorgan</p>
-                                </div>
-                                <span
-                                    style="font-family: serif; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; max-width: 150px; text-align: right; color: #ffffff;">J.P.
-                                    Morgan Nigeria</span>
-                            </div>
-                        </div>
-                        <div class="testimonial-photo-container">
-                            <img src="assets/images/investor-management/daps.jpg.webp" alt="Dapo Olagunju">
-                        </div>
-                    </div>
-
-                    <!-- Slide 4 -->
-                    <div class="testimonial-slide tan">
-                        <div class="testimonial-content">
-                            <p class="testimonial-quote">"CardinalStone relies on accurate data to drive local
-                                investment
-                                strategies. NEIIA's intelligence platforms provide the granular insights we need to
-                                identify
-                                high-potential energy assets and confidently mobilize domestic capital."</p>
-                            <div class="testimonial-footer">
-                                <div class="testimonial-author">
-                                    <h4>Mariam Bolakale</h4>
-                                    <p>Executive Director</p>
-                                </div>
-                                <span
-                                    style="font-family: serif; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; max-width: 150px; text-align: right; color: #ffffff;">CardinalStone
-                                    Asset Management</span>
-                            </div>
-                        </div>
-                        <div class="testimonial-photo-container">
-                            <img src="assets/images/investor-management/mariam.png" alt="Mariam Bolakale">
-                        </div>
-                    </div>
-
-                    <!-- Slide 5 -->
-                    <div class="testimonial-slide lavender">
-                        <div class="testimonial-content">
-                            <p class="testimonial-quote">"FirstCap leverages NEIIA’s comprehensive market data to
-                                structure
-                                complex public finance and corporate advisory deals. The platform’s transparency ensures
-                                we
-                                can align capital market opportunities with national development goals effectively."</p>
-                            <div class="testimonial-footer">
-                                <div class="testimonial-author">
-                                    <h4>Oluseun Olatidoye</h4>
-                                    <p>Head, Capital Markets</p>
-                                </div>
-                                <span
-                                    style="font-family: serif; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; max-width: 150px; text-align: right; color: #050c26;">FirstCap</span>
-                            </div>
-                        </div>
-                        <div class="testimonial-photo-container">
-                            <img src="assets/images/investor-management/oluola.jpg" alt="Oluseun Olatidoye">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Carousel Controls -->
-                <div class="carousel-controls">
-                    <div class="carousel-dots">
-                        <button class="carousel-dot active" data-slide="0"></button>
-                        <button class="carousel-dot" data-slide="1"></button>
-                        <button class="carousel-dot" data-slide="2"></button>
-                        <button class="carousel-dot" data-slide="3"></button>
-                        <button class="carousel-dot" data-slide="4"></button>
-                    </div>
-                    <div class="carousel-arrows">
-                        <button class="carousel-arrow" id="prev-slide">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M15 18l-6-6 6-6" />
-                            </svg>
-                        </button>
-                        <button class="carousel-arrow" id="next-slide">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M9 18l6-6-6-6" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- ==========================================
              CTA SECTION (Launch Fund)
@@ -2290,6 +2336,26 @@
          JAVASCRIPT
          ========================================== -->
     <script>
+        // ===== VEHICLE CAROUSEL =====
+        const vehicleCarousel = document.getElementById('vehicle-carousel');
+        const vehiclePrev = document.getElementById('vehicle-prev');
+        const vehicleNext = document.getElementById('vehicle-next');
+
+        if (vehicleCarousel && vehiclePrev && vehicleNext) {
+            const scrollAmount = () => {
+                const card = vehicleCarousel.querySelector('.vehicle-card');
+                return card ? card.offsetWidth + 24 : 340;
+            };
+
+            vehicleNext.addEventListener('click', () => {
+                vehicleCarousel.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+            });
+
+            vehiclePrev.addEventListener('click', () => {
+                vehicleCarousel.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+            });
+        }
+
         // ===== TESTIMONIALS CAROUSEL =====
         const carousel = document.getElementById('testimonials-carousel');
         const slides = carousel ? carousel.querySelectorAll('.testimonial-slide') : [];
