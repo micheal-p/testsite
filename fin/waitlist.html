@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join the Fin Beta Waitlist — NEIIA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #050d10;
+            --bg-card: #0a1e23;
+            --bg-input: #0f2a30;
+            --border-color: #1a3f48;
+            --accent: #A3E635;
+            --accent-hover: #b8f048;
+            --text-primary: #e8f0f2;
+            --text-muted: #7a9da6;
+            --text-dim: #4a7580;
+            --purple: #BDBBFF;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-gradient {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-gradient::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(163, 230, 53, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(189, 187, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(10, 30, 35, 1) 0%, var(--bg-primary) 100%);
+            -webkit-animation: bgShift 20s ease-in-out infinite alternate;
+
+            animation: bgShift 20s ease-in-out infinite alternate;
+        }
+
+        @-webkit-keyframes bgShift {
+            0% {
+                -webkit-transform: translate(0, 0) rotate(0deg);
+
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: translate(-2%, -2%) rotate(1deg);
+
+                transform: translate(-2%, -2%) rotate(1deg);
+            }
+        }
+
+@keyframes bgShift {
+            0% {
+                -webkit-transform: translate(0, 0) rotate(0deg);
+
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: translate(-2%, -2%) rotate(1deg);
+
+                transform: translate(-2%, -2%) rotate(1deg);
+            }
+        }
+
+        /* Navigation */
+        .nav-bar {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .nav-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .nav-logo img {
+            width: 110px;
+            height: auto;
+        }
+
+        .nav-logo span {
+            font-size: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            max-width: 180px;
+            line-height: 1.2;
+        }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            -webkit-transition: color 0.2s;
+
+            transition: color 0.2s;
+        }
+
+        .nav-back:hover {
+            color: var(--accent);
+        }
+
+        /* Main Layout */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px 20px;
+        }
+
+        .waitlist-card {
+            width: 100%;
+            max-width: 520px;
+            position: relative;
+        }
+
+        /* Sparkle Icon */
+        .sparkle-wrapper {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .sparkle-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(163, 230, 53, 0.15), rgba(163, 230, 53, 0.05));
+            border: 1px solid rgba(163, 230, 53, 0.2);
+            -webkit-animation: sparkleGlow 3s ease-in-out infinite;
+
+            animation: sparkleGlow 3s ease-in-out infinite;
+        }
+
+        @-webkit-keyframes sparkleGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(163, 230, 53, 0.1);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(163, 230, 53, 0.2);
+            }
+        }
+
+@keyframes sparkleGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(163, 230, 53, 0.1);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(163, 230, 53, 0.2);
+            }
+        }
+
+        /* Header */
+        .waitlist-header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .waitlist-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 100px;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .waitlist-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            -webkit-animation: pulse 2s ease-in-out infinite;
+
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @-webkit-keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+@keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        .waitlist-header h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 6px;
+            letter-spacing: -0.02em;
+        }
+
+        .waitlist-header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Form */
+        .waitlist-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 8px 12px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-family: inherit;
+            outline: none;
+            -webkit-transition: border-color 0.2s, box-shadow 0.2s;
+
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(163, 230, 53, 0.1);
+        }
+
+        .form-group select {
+            -webkit-appearance: none;
+
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%237a9da6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+            cursor: pointer;
+        }
+
+        .form-group select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px 24px;
+            background: var(--accent);
+            color: #050d10;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: inherit;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            -webkit-transition: all 0.2s;
+
+            transition: all 0.2s;
+            margin-top: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-hover);
+            -webkit-transform: translateY(-1px);
+
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(163, 230, 53, 0.25);
+        }
+
+        .submit-btn:active {
+            -webkit-transform: translateY(0);
+
+            transform: translateY(0);
+        }
+
+        .submit-btn .btn-shimmer {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            -webkit-transform: translateX(-100%);
+
+            transform: translateX(-100%);
+            -webkit-animation: shimmer 3s ease-in-out infinite;
+
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @-webkit-keyframes shimmer {
+            100% {
+                -webkit-transform: translateX(100%);
+
+                transform: translateX(100%);
+            }
+        }
+
+@keyframes shimmer {
+            100% {
+                -webkit-transform: translateX(100%);
+
+                transform: translateX(100%);
+            }
+        }
+
+        /* Disclaimer */
+        .form-disclaimer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+            margin-top: 4px;
+        }
+
+        .form-disclaimer a {
+            color: var(--text-muted);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        /* Social Proof */
+        .social-proof {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(26, 63, 72, 0.5);
+        }
+
+        .avatar-stack {
+            display: flex;
+        }
+
+        .avatar-stack .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid var(--bg-primary);
+            margin-left: -8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .avatar-stack .avatar:first-child {
+            margin-left: 0;
+        }
+
+        .avatar-1 {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+        }
+
+        .avatar-2 {
+            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+            color: white;
+        }
+
+        .avatar-3 {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+        }
+
+        .avatar-4 {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: white;
+        }
+
+        .social-proof-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .social-proof-text strong {
+            color: var(--text-primary);
+        }
+
+        /* Features Strip */
+        .features-strip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .feature-item svg {
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        /* Success State */
+        .success-state {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .success-state.active {
+            display: block;
+            -webkit-animation: fadeIn 0.5s ease-out;
+
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @-webkit-keyframes fadeIn {
+            from {
+                opacity: 0;
+                -webkit-transform: translateY(10px);
+
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                -webkit-transform: translateY(0);
+
+                transform: translateY(0);
+            }
+        }
+
+@keyframes fadeIn {
+            from {
+                opacity: 0;
+                -webkit-transform: translateY(10px);
+
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                -webkit-transform: translateY(0);
+
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(163, 230, 53, 0.2), rgba(163, 230, 53, 0.05));
+            border: 2px solid rgba(163, 230, 53, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .success-state h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .success-state p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 380px;
+            margin: 0 auto 24px;
+        }
+
+        .back-to-fin {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: inherit;
+            border-radius: 10px;
+            text-decoration: none;
+            -webkit-transition: all 0.2s;
+
+            transition: all 0.2s;
+        }
+
+        .back-to-fin:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .nav-bar {
+                padding: 12px 16px;
+            }
+
+            .main-container {
+                padding: 16px 16px 40px;
+                align-items: flex-start;
+                padding-top: 10px;
+            }
+
+            .waitlist-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .features-strip {
+                gap: 12px;
+            }
+
+            .nav-logo span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="bg-gradient"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="../index.html" class="nav-logo">
+            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA">
+            <span>NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</span>
+        </a>
+        <a href="fin.html" class="nav-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="19" y1="12" x2="5" y2="12" />
+                <polyline points="12 19 5 12 12 5" />
+            </svg>
+            Back to Fin
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <div class="waitlist-card">
+
+            <!-- Header -->
+            <div class="waitlist-header">
+                <div class="waitlist-badge">
+                    <span class="dot"></span>
+                    Private Beta — Limited Access
+                </div>
+                <h1>Get early access to Fin</h1>
+                <p>Join the waitlist to be among the first to use AI-powered private market intelligence.</p>
+            </div>
+
+            <!-- Form -->
+            <form class="waitlist-form" id="waitlistForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First name</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="Jane" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last name</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="Smith" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Work email</label>
+                    <input type="email" id="email" name="email" placeholder="jane@venture.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="company">Company / Firm</label>
+                    <input type="text" id="company" name="company" placeholder="Acme Ventures">
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Your role</label>
+                    <select id="role" name="role">
+                        <option value="" disabled selected>Select your role</option>
+                        <option value="gp">General Partner</option>
+                        <option value="lp">Limited Partner</option>
+                        <option value="analyst">Analyst / Associate</option>
+                        <option value="portfolio">Portfolio Manager</option>
+                        <option value="cfo">CFO / Fund Controller</option>
+                        <option value="ir">Investor Relations</option>
+                        <option value="founder">Founder / CEO</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <span class="btn-shimmer"></span>
+                    Join the waitlist
+                </button>
+
+                <p class="form-disclaimer">
+                    By joining, you agree to NEIIA's <a href="../contact.html">Terms</a> and <a
+                        href="../contact.html">Privacy Policy</a>.
+                </p>
+            </form>
+
+            <!-- Success State -->
+            <div class="success-state" id="successState">
+                <div class="success-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A3E635" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                </div>
+                <h2>You're on the list!</h2>
+                <p>Thanks for your interest in Fin. We'll reach out when your access is ready. In the meantime, explore
+                    what Fin can do.</p>
+                <a href="fin.html" class="back-to-fin">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12" />
+                        <polyline points="12 19 5 12 12 5" />
+                    </svg>
+                    Explore Fin Beta
+                </a>
+            </div>
+
+            <!-- Social Proof -->
+            <div class="social-proof">
+                <div class="avatar-stack">
+                    <div class="avatar avatar-1">JD</div>
+                    <div class="avatar avatar-2">MK</div>
+                    <div class="avatar avatar-3">AS</div>
+                    <div class="avatar avatar-4">+</div>
+                </div>
+                <div class="social-proof-text">
+                    <strong>250+</strong> investors already on the waitlist
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="features-strip">
+                <div class="feature-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    Free during beta
+                </div>
+                <div class="feature-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    No credit card
+                </div>
+                <div class="feature-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    Priority access
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('waitlistForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Animate button
+            const btn = this.querySelector('.submit-btn');
+            btn.textContent = 'Joining...';
+            btn.style.pointerEvents = 'none';
+            btn.style.opacity = '0.7';
+
+            // Simulate submission
+            setTimeout(function () {
+                document.getElementById('waitlistForm').style.display = 'none';
+                document.getElementById('successState').classList.add('active');
+            }, 1200);
+        });
+    </script>
+</body>
+
+</html>
