@@ -1,0 +1,3445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venture Funds | NEIIA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ============================================
+           CUSTOM FONTS
+           ============================================ */
+        @font-face {
+            font-family: 'NEIIA';
+            src: url('../assets/font/NEIIA_VF-s.p.3bb41c0a.woff2') format('woff2');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'NEIIA';
+            src: url('../assets/font/NEIIA_Italic_VF-s.p.31e87b9d.woff2') format('woff2');
+            font-weight: 100 900;
+            font-style: italic;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'NEIIA Display';
+            src: url('../assets/font/NEIIADisplay_Regular-s.p.9a576876.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* ============================================
+           CSS VARIABLES
+           ============================================ */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7f9fa;
+            --text-primary: #050c26;
+            --text-secondary: #5e6d8a;
+            --accent-color: #000000;
+            --border-color: #e6e9ed;
+            --font-family: 'NEIIA', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            --font-display: 'NEIIA Display', 'NEIIA', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-size-base: 16px;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --pill-bg: #fff;
+            --pill-text: #050c26;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 32px;
+            --spacing-xl: 64px;
+            --container-max-width: 1200px;
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            height: 100vh;
+            overflow-y: scroll;
+        }
+
+        body {
+            font-family: var(--font-family);
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: var(--font-display);
+            font-weight: 500;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: opacity 0.2s;
+        }
+
+        a:hover {
+            opacity: 0.8;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .container {
+            max-width: var(--container-max-width);
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+            border: 1px solid var(--accent-color);
+        }
+
+        .btn-black {
+            background-color: black;
+            color: white;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: black;
+            color: white;
+            border-color: black;
+        }
+
+        /* ============================================
+           FIXED LOGO
+           ============================================ */
+        .logo-fixed {
+            position: absolute;
+            top: 32px;
+            left: 40px;
+            z-index: 1001;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .dark-mode-logo {
+            display: none !important;
+        }
+
+        .brand-text {
+            font-size: 0.35rem;
+            font-weight: 800;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+            color: #006341;
+            max-width: 140px;
+            line-height: 1.2;
+        }
+
+        /* ============================================
+           AUTH LINKS (FIXED)
+           ============================================ */
+        .auth-fixed {
+            position: fixed;
+            top: 32px;
+            right: 40px;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .auth-fixed .nav-link {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .auth-fixed .btn-primary {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* ============================================
+           NAVBAR
+           ============================================ */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) 0;
+            height: 80px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+        }
+
+        .nav-links {
+            display: none;
+            gap: 24px;
+            font-weight: 500;
+        }
+
+        .nav-links a {
+            position: relative;
+            color: #000000;
+        }
+
+        .nav-links a:hover {
+            color: #333333;
+            opacity: 1;
+        }
+
+        /* ============================================
+           PILL NAVBAR
+           ============================================ */
+        .navbar.pill-nav {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            min-width: auto;
+            max-width: 90%;
+            height: 50px;
+            background-color: #0d3d44;
+            border-radius: 100px;
+            color: white;
+            padding: 0 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .navbar.pill-nav::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(150px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                    rgba(185, 182, 255, 0.35),
+                    transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+            border-radius: 100px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .navbar.pill-nav:hover::before {
+            opacity: 1;
+        }
+
+        .navbar.pill-nav>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar.pill-nav .nav-links {
+            display: flex;
+            gap: 24px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .navbar.pill-nav .nav-links a {
+            color: rgba(255, 255, 255, 0.85);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+        }
+
+        .navbar.pill-nav .nav-links a:hover {
+            color: #fff;
+        }
+
+        /* ============================================
+           MEGA MENU
+           ============================================ */
+        .nav-item.dropdown {
+            position: static;
+        }
+
+        .mega-menu {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            width: 90vw;
+            max-width: 980px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            padding: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 1200;
+            color: #050c26;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.6fr;
+            gap: 0;
+            text-align: left;
+            cursor: default;
+            overflow: hidden;
+        }
+
+        .mm-left-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-column: 1 / 3;
+            gap: 40px;
+            padding: 40px 0 40px 40px;
+        }
+
+        .mm-right-panel {
+            background: #fcfcfc;
+            padding: 40px;
+            grid-column: 3;
+        }
+
+        .nav-item.dropdown:hover .mega-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .mm-column h4 {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #8890a0;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .mm-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mm-list li {
+            margin-bottom: 12px;
+        }
+
+        .mm-list a {
+            display: block;
+            color: #050c26 !important;
+            font-size: 15px;
+            font-weight: 400;
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .mm-list a:hover {
+            color: #4f46e5 !important;
+            background: none !important;
+        }
+
+        .nav-link.dropdown-toggle {
+            cursor: default;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+        }
+
+        .nav-link.dropdown-toggle:hover {
+            color: #fff;
+        }
+
+        .nav-item.dropdown:hover .dropdown-toggle i {
+            transform: rotate(180deg);
+        }
+
+        /* Product Suite Cards */
+        .mm-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            padding: 16px;
+            border-radius: 8px;
+            transition: background 0.1s;
+            cursor: pointer;
+            text-decoration: none !important;
+            margin-bottom: 24px;
+        }
+
+        .mm-card:hover {
+            background: transparent;
+        }
+
+        .mm-icon {
+            width: 80px;
+            height: 80px;
+            background: #051b22;
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .mm-icon img {
+            width: 60px !important;
+            height: 60px !important;
+            object-fit: contain;
+        }
+
+        .mm-content h5 {
+            margin: 0 0 8px 0;
+            font-size: 17px;
+            font-weight: 500;
+            color: #050c26;
+            letter-spacing: -0.3px;
+        }
+
+        .mm-content p {
+            margin: 0;
+            font-size: 15px;
+            color: #5e6d8a;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .mm-footer {
+            grid-column: 1 / -1;
+            border-top: 1px solid #e6e9ed;
+            padding-top: 20px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #5e6d8a;
+        }
+
+        .mm-footer a {
+            color: #4f46e5 !important;
+            font-weight: 500;
+            margin-left: 4px;
+        }
+
+        /* ============================================
+           MOBILE MENU BUTTON
+           ============================================ */
+        .mobile-menu-btn {
+            display: block;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .mobile-nav-overlay {
+            display: none;
+        }
+
+        @media (min-width: 769px) {
+            .nav-links {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+
+        /* ============================================
+           MOBILE STYLES
+           ============================================ */
+        @media (max-width: 768px) {
+            .logo-fixed {
+                top: 20px;
+                left: 20px;
+                position: absolute;
+            }
+
+            .auth-fixed {
+                display: none;
+                position: absolute;
+            }
+
+            .navbar.pill-nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1100;
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: var(--text-primary);
+            }
+
+            .mobile-nav-overlay {
+                position: fixed;
+                top: 0 !important;
+                left: 0;
+                width: 100vw !important;
+                height: 100vh !important;
+                background: #fff;
+                z-index: 2000;
+                padding: 0;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .mobile-nav-overlay.open {
+                transform: translateX(0);
+                display: flex;
+            }
+
+            .mobile-nav-overlay ul {
+                list-style: none;
+            }
+
+            .mobile-nav-overlay ul li {
+                margin-bottom: 0;
+            }
+
+            .mobile-nav-overlay ul li a {
+                font-size: 1.1rem;
+                font-weight: 500;
+                color: #333;
+            }
+
+            /* Header */
+            .mobile-nav-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 24px;
+                border-bottom: 1px solid #eee;
+            }
+
+            .mobile-nav-header h3 {
+                font-family: var(--font-display);
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin: 0;
+                color: #000;
+            }
+
+            .mobile-close-btn {
+                position: static;
+                font-size: 1.5rem;
+                color: #666;
+                padding: 8px;
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
+
+            /* Content Area */
+            .mobile-nav-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                padding: 0;
+                overflow-y: auto;
+            }
+
+            .mobile-nav-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+            }
+
+            .mobile-nav-list li {
+                margin: 0;
+                border-bottom: 1px solid #f5f5f5;
+            }
+
+            .mobile-nav-list li a {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 24px;
+                font-size: 1.1rem;
+                font-weight: 500;
+                color: #333;
+                text-decoration: none;
+            }
+
+            .mobile-nav-list li a i {
+                color: #ccc;
+                font-size: 0.9rem;
+            }
+
+            /* Footer Buttons */
+            .mobile-nav-footer {
+                padding: 24px;
+                margin-top: auto;
+                border-top: 1px solid #eee;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .mobile-nav-footer .btn {
+                width: 100%;
+                text-align: center;
+                padding: 14px;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 1rem;
+            }
+
+            .mobile-nav-footer .btn-primary {
+                background: #000;
+                color: #fff;
+                border: 1px solid #000;
+            }
+
+            .mobile-nav-footer .btn-secondary {
+                background: #f5f5f5;
+                color: #333;
+                border: none;
+            }
+        }
+
+        /* ============================================
+           MOBILE SUBMENU (SLIDING PANEL)
+           ============================================ */
+        .mobile-submenu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 2005;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .mobile-submenu.active {
+            transform: translateX(0);
+        }
+
+        .submenu-header {
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .submenu-back-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            font-weight: 500;
+            color: #050c26;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .mobile-close-btn-sub {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #050c26;
+            cursor: pointer;
+        }
+
+        .submenu-content {
+            padding: 24px;
+            flex: 1;
+        }
+
+        .submenu-section {
+            margin-bottom: 40px;
+        }
+
+        .submenu-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(0, 29, 33, 0.5);
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .submenu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .submenu-list li a {
+            font-size: 18px;
+            font-weight: 400;
+            color: #050c26;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .beta-badge {
+            font-size: 10px;
+            background: #F3F4F6;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #6B7280;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        /* Product Suites Box */
+        .product-suites-box {
+            background: #F9FAFB;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 0 -12px 40px;
+        }
+
+        .suite-card {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .suite-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .suite-icon {
+            width: 48px;
+            height: 48px;
+            background: #0C1618;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .suite-icon img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .suite-info h4 {
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0 0 4px;
+            color: #111827;
+        }
+
+        .suite-info p {
+            font-size: 14px;
+            color: #6B7280;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Submenu Footer */
+        .submenu-footer-link {
+            font-size: 14px;
+            color: #4B5563;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+
+        .submenu-btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-lavender {
+            background: #BBBBEE;
+            color: #000;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-gray-light {
+            background: #E5E7EB;
+            color: #1F2937;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            position: relative;
+            min-height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            background: #ffffff;
+            color: #000000;
+            padding-bottom: 100px;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(600px circle at var(--hero-mouse-x, 50%) var(--hero-mouse-y, 50%),
+                    rgba(185, 182, 255, 0.25),
+                    transparent 40%);
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .hero:hover::before {
+            opacity: 1;
+        }
+
+        .hero>* {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 140px 32px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 24px;
+            background: transparent;
+            color: #01000e;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            border-radius: 100px;
+            border: 1px solid #01000e;
+        }
+
+        .hero-pill-dot {
+            display: none;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.1;
+            color: #000000;
+            letter-spacing: -1.5px;
+            max-width: 880px;
+            text-shadow: none;
+        }
+
+
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 36px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            background: #000000;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            text-decoration: none;
+            font-family: inherit;
+            margin-top: 16px;
+        }
+
+        .hero-cta:hover {
+            background: #001D21;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+
+        .hero-image {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 48px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Hero responsive */
+        @media (max-width: 768px) {
+            .hero {
+                min-height: 80vh;
+            }
+
+            .hero-inner {
+                padding: 100px 24px 60px;
+                gap: 24px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+                letter-spacing: -1.0px;
+            }
+
+            .hero-pill {
+                padding: 6px 16px;
+                font-size: 13px;
+            }
+
+            .hero-cta {
+                padding: 14px 28px;
+                font-size: 15px;
+            }
+
+            .hero-image {
+                margin-top: 32px;
+            }
+        }
+
+        /* =============================================
+           PREMIUM TESTIMONIAL SECTION
+           ============================================= */
+        .testimonial-section {
+            background: #fff;
+            padding: 100px 0;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            /* Full width */
+        }
+
+        .testimonial-carousel-container {
+            width: 100%;
+            /* max-width: 1400px; */
+            /* Removed to make it flush with screen */
+            margin: 0;
+            position: relative;
+        }
+
+        .testimonial-track-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            display: flex;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .testimonial-track-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .testimonial-track {
+            display: flex;
+            gap: 24px;
+            padding: 40px calc(37% - 450px);
+            width: auto;
+            will-change: transform;
+        }
+
+        .testimonial-slide {
+            flex: 0 0 900px;
+            scroll-snap-align: center;
+            opacity: 0.6;
+            transition: opacity 0.4s ease;
+            display: flex;
+            justify-content: center;
+        }
+
+        .testimonial-slide.active {
+            opacity: 1;
+        }
+
+        .testimonial-card {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            height: 460px;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.06);
+            background: #fff;
+        }
+
+        .card-panel-content {
+            flex: 1;
+            padding: 48px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .testimonial-slide[data-theme="teal"] .card-panel-content {
+            background-color: #062b2b;
+            color: #fff;
+        }
+
+        .testimonial-slide[data-theme="purple"] .card-panel-content {
+            background-color: #d1d7ff;
+            color: #062b2b;
+        }
+
+        .quote-text {
+            font-size: 24px;
+            line-height: 1.4;
+            font-weight: 500;
+            margin: 0;
+            text-align: left;
+            letter-spacing: -0.3px;
+        }
+
+        .card-footer-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 40px;
+        }
+
+        .author-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .author-name-bold {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .author-role-sub {
+            font-size: 13px;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        .vest-logo-text {
+            font-family: var(--font-family);
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .card-panel-image {
+            flex: 0 0 38%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .card-panel-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0 40px 40px 0;
+        }
+
+        .carousel-bottom-nav {
+            max-width: 1100px;
+            margin: 60px auto 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 48px;
+            padding: 0 24px;
+        }
+
+        .carousel-dots-centered {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            background: #d1d5db;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .carousel-dot.active {
+            background: #001D21;
+            width: 24px;
+        }
+
+        .carousel-arrows-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-arrow-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #001D21;
+            transition: all 0.3s ease;
+        }
+
+        .nav-arrow-btn:hover {
+            background: #0d3d44;
+            color: #fff;
+            border-color: #0d3d44;
+            transform: translateY(-2px);
+        }
+
+
+        /* ==========================================
+           FEATURE SECTION (EXCEED EXPECTATIONS)
+           ========================================== */
+        .feature-section {
+            background-color: #011d21;
+            /* Dark Teal Background */
+            padding-top: 80px;
+            padding-bottom: 0;
+            padding-left: 0;
+            padding-right: 0;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .feature-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 64px;
+            margin-bottom: 80px;
+        }
+
+        .feature-content {
+            flex: 1;
+            max-width: 450px;
+        }
+
+        .feature-title {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            line-height: 1.2;
+            color: #ffffff;
+        }
+
+        .feature-desc {
+            font-size: 18px;
+            color: #94a3b8;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .btn-demo-light {
+            display: inline-block;
+            background-color: #b4b0ff;
+            color: #1e1b4b;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 150ms ease-in-out;
+        }
+
+        .btn-demo-light:hover {
+            background-color: #a5a1f5;
+            transform: translateY(-1px);
+        }
+
+        .feature-visual {
+            flex: 1.8;
+            position: relative;
+        }
+
+        .feature-image-wrapper {
+            position: relative;
+            border-radius: 8px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .feature-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: all 0.7s ease;
+        }
+
+        .feature-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .overlay-modal {
+            background-color: #0b161a;
+            padding: 32px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 280px;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: all 0.3s ease 0.1s;
+            pointer-events: auto;
+        }
+
+        .overlay-logo-icon {
+            color: #ffffff;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .overlay-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 16px;
+        }
+
+        .feature-image-wrapper:hover .feature-img {
+            transform: scale(1.03);
+            opacity: 0.7;
+            filter: blur(2px);
+        }
+
+        .feature-image-wrapper:hover .overlay-modal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-bars {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bar-container {
+            height: 20px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            animation: barPulse 3s infinite ease-in-out;
+            transform-origin: center;
+        }
+
+        .bar-overlay {
+            position: absolute;
+            inset: 0;
+            display: block;
+        }
+
+        @keyframes barPulse {
+
+            0%,
+            100% {
+                transform: scaleY(1);
+                opacity: 0.9;
+            }
+
+            50% {
+                transform: scaleY(0.6);
+                opacity: 0.7;
+            }
+        }
+
+        .bar-container:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .bar-container:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .bar-container:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .bar-container:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+
+        .bar-container:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+
+        .bar-container:nth-child(6) {
+            animation-delay: 1.0s;
+        }
+
+        /* ============================================
+           KEY FEATURES SECTION (STACKING)
+           ============================================ */
+        .key-features-section {
+            background-color: #ffffff;
+            color: #0b161a;
+            position: relative;
+            padding-top: 80px;
+            padding-bottom: 128px;
+        }
+
+        .kf-grid-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 40px;
+            position: relative;
+            align-items: start;
+        }
+
+        .kf-cell-label {
+            grid-column: 1;
+            grid-row: 1 / -1;
+            height: 100%;
+        }
+
+        .kf-sticky-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #8a744a;
+            position: sticky;
+            top: 100px;
+        }
+
+        .kf-dot {
+            width: 10px;
+            height: 10px;
+            background-color: currentColor;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .kf-cell-headline {
+            grid-column: 2;
+            grid-row: 1;
+            padding-bottom: 48px;
+        }
+
+        .kf-headline {
+            font-size: 40px;
+            font-weight: 500;
+            color: #0b161a;
+            line-height: 1.1;
+            max-width: 100%;
+        }
+
+        .kf-cell-cards {
+            grid-column: 2;
+            grid-row: 2;
+            position: relative;
+        }
+
+        .kf-list-container {
+            position: absolute;
+            top: 0;
+            left: calc(-280px - 40px);
+            width: 280px;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .kf-sticky-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            list-style: none;
+            position: sticky;
+            top: 160px;
+            pointer-events: auto;
+        }
+
+        .kf-nav-item {
+            font-size: 16px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 4px 0;
+        }
+
+        .kf-nav-item:hover,
+        .kf-nav-item.active {
+            color: #0b161a;
+            font-weight: 500;
+        }
+
+        .kf-cards-wrapper {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 100px;
+        }
+
+        .kf-card {
+            background-color: #f9f9f7;
+            border-radius: 24px;
+            padding: 48px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+            position: sticky;
+            top: 120px;
+            margin-bottom: 80px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.02);
+            z-index: 1;
+        }
+
+        /* Calculated Offsets for Staging Stacking Effect */
+        #card-1 {
+            top: 120px;
+            z-index: 10;
+        }
+
+        #card-2 {
+            top: 140px;
+            z-index: 11;
+        }
+
+        #card-3 {
+            top: 160px;
+            z-index: 12;
+        }
+
+        #card-4 {
+            top: 180px;
+            z-index: 13;
+        }
+
+
+        .kf-card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 72px;
+        }
+
+        .kf-card-title {
+            font-size: 32px;
+            font-weight: 500;
+            color: #0b161a;
+            margin-bottom: 0;
+        }
+
+        .kf-card-desc {
+            font-size: 18px;
+            color: #64748b;
+            line-height: 1.6;
+            padding-left: 20px;
+            border-left: 4px solid #006341;
+        }
+
+        .kf-image-container {
+            width: 100%;
+            aspect-ratio: 16/10;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #e2e8f0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .kf-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Last card margin to allow previous cards to stack fully before section ends */
+        .kf-card:last-child {
+            margin-bottom: 400px;
+        }
+
+        /* ============================================
+           ADVANCED FEATURES SECTION
+           ============================================ */
+        .advanced-features-section {
+            padding: 80px 0 128px;
+            background-color: #ffffff;
+            color: #0b161a;
+            position: relative;
+            z-index: 100;
+            /* Higher z-index to slide over sticky cards */
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .af-grid-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 0;
+            align-items: start;
+        }
+
+        .af-cell-label {
+            grid-column: 1;
+            grid-row: 1 / span 2;
+        }
+
+        .af-cell-headline {
+            grid-column: 2;
+            grid-row: 1;
+            padding-bottom: 64px;
+        }
+
+        .af-headline {
+            font-size: 56px;
+            font-weight: 500;
+            color: #0b161a;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .af-sticky-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #8a744a;
+            position: sticky;
+            top: 100px;
+        }
+
+        .af-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #8a744a;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .af-content-grid {
+            grid-column: 2;
+            grid-row: 2;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+        }
+
+        .af-item {
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            align-items: flex-start;
+            border-left: 1px solid #e2e8f0;
+        }
+
+        .af-item:first-child {
+            border-left: none;
+            padding-left: 0;
+        }
+
+        .af-icon {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            color: #8a744a;
+            margin-bottom: 32px;
+        }
+
+        .af-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #0b161a;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .af-desc {
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* Tailored Needs Section Styles (Pricing) */
+        .tailored-needs-section {
+            padding: 6rem 0 4rem;
+            background-color: #0b161a;
+            color: #ffffff;
+        }
+
+        .tn-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 16px 4rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .tn-cell-label {
+            grid-column: 1;
+        }
+
+        .tn-sticky-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #bdbbff;
+            position: sticky;
+            top: 100px;
+        }
+
+        .tn-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #bdbbff;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .tn-content {
+            grid-column: 2;
+            max-width: 800px;
+        }
+
+        .tn-headline {
+            font-size: 56px;
+            font-weight: 500;
+            line-height: 1.1;
+            margin-bottom: 32px;
+            letter-spacing: -0.02em;
+        }
+
+        .tn-subheadline {
+            font-size: 20px;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-bottom: 64px;
+        }
+
+        .tn-list-label {
+            font-size: 14px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .tn-checklist {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tn-check-item {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 24px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 18px;
+            color: #ffffff;
+        }
+
+        .tn-check-item:first-child {
+            border-top: none;
+        }
+
+        .tn-icon {
+            color: #64748b;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        @media (max-width: 1023px) {
+            .tailored-needs-section {
+                padding: 4rem 0;
+            }
+
+            .tn-container {
+                grid-template-columns: 1fr;
+                gap: 32px;
+                padding: 4rem 16px;
+            }
+
+            .tn-headline {
+                font-size: 40px;
+            }
+
+            .tn-sticky-label {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        /* Infrastructure Comparison Section */
+        .infra-comparison-section {
+            padding: 8rem 0;
+            background-color: #ffffff;
+        }
+
+        .infra-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .infra-heading {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 500;
+            color: #0b161a;
+            margin-bottom: 4rem;
+            font-family: var(--font-display);
+        }
+
+        .infra-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .infra-card {
+            background-color: #051d1d;
+            /* Dark teal/cyan from screenshot */
+            border-radius: 12px;
+            padding: 40px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            color: #ffffff;
+        }
+
+        .infra-card-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 32px;
+            z-index: 2;
+        }
+
+        /* Legacy Pills (Scattered) */
+        .infra-legacy-pills {
+            position: relative;
+            flex: 1;
+            width: 100%;
+        }
+
+        .infra-pill {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            padding: 8px 16px;
+            font-size: 14px;
+            white-space: nowrap;
+            color: rgba(255, 255, 255, 0.9);
+            position: absolute;
+        }
+
+        /* Modern Pills (Structured) */
+        .infra-modern-pills {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            align-content: center;
+            justify-items: center;
+        }
+
+        .infra-modern-pill {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            /* Muted as per screenshot */
+            width: 100%;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .infra-center-pill {
+            grid-column: 2;
+            grid-row: 2;
+            background-color: #bdbbff;
+            /* Light purple from screenshot/prev instruction */
+            color: #051d1d;
+            font-size: 24px;
+            font-weight: 500;
+            padding: 16px 32px;
+            border-radius: 999px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 3;
+            border: none;
+            width: auto;
+            min-width: 160px;
+        }
+
+        @media (max-width: 1023px) {
+            .infra-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .infra-card {
+                height: 400px;
+            }
+
+            .infra-heading {
+                font-size: 28px;
+                margin-bottom: 2rem;
+            }
+        }
+
+        /* =============================================
+           CTA SECTION
+           ============================================= */
+        .cta-section {
+            padding: 120px 24px;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cta-card {
+            max-width: 1210px;
+            width: 100%;
+            background: linear-gradient(135deg, #ced2fd 0%, #f9d8e3 100%);
+            border-radius: 32px;
+            padding: 96px 60px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            box-sizing: border-box;
+        }
+
+        .cta-heading {
+            font-size: 64px;
+            font-weight: 400;
+            color: #061b1b;
+            letter-spacing: -1.5px;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .cta-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #061b1b;
+            max-width: 820px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .cta-button-dark {
+            background-color: #061b1b;
+            color: #fff;
+            padding: 18px 36px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button-dark:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 1024px) {
+            .cta-heading {
+                font-size: 48px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cta-section {
+                padding: 80px 20px;
+            }
+
+            .cta-card {
+                padding: 60px 24px;
+                border-radius: 24px;
+            }
+
+            .cta-heading {
+                font-size: 36px;
+                letter-spacing: -1px;
+            }
+
+            .cta-text {
+                font-size: 16px;
+            }
+
+            .cta-button-dark {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+
+        /* =============================================
+           FAQ SECTION
+           ============================================= */
+        .faq-section {
+            padding: 120px 24px;
+            background: #fff;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .faq-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .faq-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #8b8b9e;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 24px;
+        }
+
+        .faq-badge::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #a38b6d;
+            border-radius: 50%;
+        }
+
+        .faq-section h2 {
+            font-size: 56px;
+            font-weight: 400;
+            color: #0d3d44;
+            margin-bottom: 80px;
+            letter-spacing: -1.5px;
+        }
+
+        .faq-accordion {
+            border-top: 1px solid #eef1f0;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #eef1f0;
+        }
+
+        .faq-trigger {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 32px 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .faq-trigger:hover span {
+            color: #0d3d44;
+        }
+
+        .faq-trigger span {
+            font-size: 18px;
+            font-weight: 400;
+            color: #1a1a2e;
+            line-height: 1.4;
+            padding-right: 40px;
+            transition: color 0.2s;
+        }
+
+        .faq-icon {
+            position: relative;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .faq-icon::before,
+        .faq-icon::after {
+            content: "";
+            position: absolute;
+            background-color: #1a1a2e;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+        }
+
+        .faq-icon::before {
+            width: 100%;
+            height: 1.5px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        .faq-icon::after {
+            width: 1.5px;
+            height: 100%;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+        }
+
+        .faq-item.active .faq-icon::after {
+            transform: translateX(-50%) rotate(90deg);
+            opacity: 0;
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
+            opacity: 0;
+        }
+
+        .faq-item.active .faq-content {
+            max-height: 400px;
+            /* Adjust based on content */
+            opacity: 1;
+        }
+
+        .faq-answer {
+            padding-bottom: 32px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #4b5563;
+            max-width: 900px;
+        }
+
+        @media (max-width: 768px) {
+            .faq-section h2 {
+                font-size: 36px;
+                margin-bottom: 40px;
+            }
+
+            .faq-trigger {
+                padding: 24px 0;
+            }
+
+            .faq-trigger span {
+                font-size: 16px;
+            }
+        }
+
+        /* =============================================
+           FOOTER SECTION
+           ============================================= */
+        .site-footer {
+            background: #001D21;
+            /* Matches hero and navbar bg */
+            padding: 80px 24px 40px;
+            color: #fff;
+        }
+
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .footer-col-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 24px;
+        }
+
+        .footer-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .footer-link {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 40px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Responsive Footer */
+        @media (max-width: 768px) {
+            .site-footer {
+                padding: 60px 20px 30px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+                margin-bottom: 60px;
+            }
+
+            .footer-col-title {
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .af-grid-container {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .af-cell-headline {
+                grid-column: 1;
+                padding-bottom: 32px;
+            }
+
+            .af-cell-label {
+                grid-column: 1;
+                grid-row: auto;
+                margin-bottom: 24px;
+            }
+
+            .af-content-grid {
+                grid-column: 1;
+                grid-template-columns: 1fr;
+            }
+
+            .af-item {
+                padding: 40px 0;
+                border-left: none;
+                border-top: 1px solid #e2e8f0;
+            }
+
+            .af-item:first-child {
+                border-top: none;
+                padding-top: 0;
+            }
+
+            .feature-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 48px;
+            }
+
+            .feature-content {
+                max-width: 100%;
+            }
+
+            .feature-title {
+                font-size: 30px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .feature-section {
+                padding-top: 48px;
+            }
+
+            .feature-image-wrapper {
+                pointer-events: none;
+            }
+
+            .feature-overlay {
+                display: none;
+            }
+        }
+
+        @media (max-width: 1150px) {
+            .testimonial-slide {
+                flex: 0 0 calc(100% - 80px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .testimonial-section {
+                padding: 40px 0;
+            }
+
+            .testimonial-track {
+                gap: 16px;
+                padding: 20px calc(50% - 40%);
+            }
+
+            .testimonial-slide {
+                flex: 0 0 80%;
+                max-width: 80%;
+                opacity: 0.6;
+            }
+
+            .testimonial-slide.active {
+                opacity: 1;
+            }
+
+            .testimonial-card {
+                flex-direction: column;
+                height: auto;
+                border-radius: 20px;
+            }
+
+            .card-panel-content {
+                padding: 30px 20px;
+                order: 1;
+            }
+
+            .quote-text {
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+
+            .card-panel-image {
+                flex: 0 0 280px;
+                width: 100%;
+                order: 2;
+            }
+
+            .card-panel-image img {
+                object-position: center 20%;
+                border-radius: 0 0 20px 20px;
+            }
+
+            .card-footer-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Logo (Separate from Pill Navbar) -->
+    <a href="../index.html" class="logo-fixed">
+        <div class="logo-wrapper">
+            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
+                style="max-width: 120px;">
+            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
+                style="max-width: 120px; display: none;">
+            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
+        </div>
+    </a>
+
+    <!-- Navigation (Pill Style - Links Only) -->
+    <nav class="navbar pill-nav">
+        <!-- Pill Links (No Logo Inside) -->
+        <div class="nav-links">
+            <div class="nav-item dropdown">
+                <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down"
+                        style="font-size: 12px; margin-left: 6px; transition: transform 0.2s;"></i></span>
+                <div class="mega-menu">
+                    <div class="mm-left-columns">
+                        <div class="mm-column">
+                            <h4>Fund Administration</h4>
+                            <ul class="mm-list">
+                                <li><a href="venturefunds.html">Venture Funds</a></li>
+                                <li><a href="../construction.html">Rolling Funds</a></li>
+                                <li><a href="../construction.html">Scout Funds</a></li>
+                                <li><a href="../construction.html">SPVs</a></li>
+                                <li><a href="../construction.html">Roll Up Vehicles</a></li>
+                            </ul>
+                        </div>
+                        <div class="mm-column">
+                            <h4>Investor Management</h4>
+                            <ul class="mm-list">
+                                <li><a href="../construction.html">Digital Subscriptions</a></li>
+                                <li><a href="../databank.html">Data Bank</a></li>
+                            </ul>
+                            <div style="margin-top: 24px;">
+                                <h4>Intelligence</h4>
+                                <ul class="mm-list">
+                                    <li><a href="../construction.html">Fin <span
+                                                style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mm-footer"
+                            style="border-top: none; padding-top: 10px; margin-top: auto; color: #6b7280; font-size: 15px;">
+                            Looking for tools for startups? Explore <a href="../construction.html"
+                                style="color: #6b7280 !important; text-decoration: underline; margin-left: 2px;">Rollups.</a>
+                            <svg width="10" height="10" viewBox="0 0 12 12" fill="none"
+                                style="margin-left: 4px; display: inline-block;">
+                                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="#6b7280" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mm-right-panel">
+                        <div class="mm-column">
+                            <h4>Product Suites</h4>
+                            <a href="../construction.html" class="mm-card">
+                                <div class="mm-icon"><img src="../assets/images/fund_administration.png"
+                                        alt="Fund Administration"></div>
+                                <div class="mm-content">
+                                    <h5>Fund Administration</h5>
+                                    <p>All-in-one partner to launch an investment vehicle</p>
+                                </div>
+                            </a>
+                            <a href="../investor-management.html" class="mm-card">
+                                <div class="mm-icon"><img src="../assets/images/investor_management.png"
+                                        alt="Investor Management"></div>
+                                <div class="mm-content">
+                                    <h5>Investor Management</h5>
+                                    <p>Explore all offerings to streamline the investor experience.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="../finance.html">Energy Finance & Capital</a>
+            <a href="../dashboard.html">Energy Ecosystem</a>
+            <a href="../citibim.html">NEIIA</a>
+        </div>
+    </nav>
+
+    <!-- Auth Links (Separate from Pill) -->
+    <div class="auth-fixed">
+        <a href="../signin.html" class="nav-link">Sign In</a>
+        <a href="../newsletter.html" class="btn btn-black">Join</a>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <div class="mobile-nav-header">
+            <a href="../index.html">
+                <img src="images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
+            </a>
+            <button class="mobile-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-nav-content">
+            <ul class="mobile-nav-list">
+                <li><a href="../finance.html">Energy Finance & Capital <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="../dashboard.html">Energy Ecosystem <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="../citibim.html">NEIIA <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#" id="mobile-resources-link">NEFUND <i class="fas fa-chevron-right"></i></a></li>
+            </ul>
+            <div class="mobile-nav-footer">
+                <a href="../contact.html" class="btn btn-primary full-width">Contact Support</a>
+                <a href="../signin.html" class="btn btn-secondary full-width">Sign in</a>
+            </div>
+        </div>
+
+        <!-- Resources Submenu -->
+        <div class="mobile-submenu" id="resources-submenu">
+            <div class="submenu-header">
+                <button class="submenu-back-btn" id="submenu-back-btn">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="mobile-close-btn-sub">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="submenu-content">
+
+                <div class="submenu-section">
+                    <span class="submenu-label">Fund Administration</span>
+                    <ul class="submenu-list">
+                        <li><a href="venturefunds.html">Venture Funds</a></li>
+                        <li><a href="../construction.html">Rolling Funds</a></li>
+                        <li><a href="../construction.html">Scout Funds</a></li>
+                        <li><a href="../construction.html">SPVs</a></li>
+                        <li><a href="../construction.html">Roll Up Vehicles</a></li>
+                    </ul>
+                </div>
+
+                <div class="submenu-section">
+                    <span class="submenu-label">Investor Management</span>
+                    <ul class="submenu-list">
+                        <li><a href="../investor-management.html">Digital Subscriptions</a></li>
+                        <li><a href="../databank.html">Data Bank</a></li>
+                    </ul>
+                </div>
+
+                <div class="submenu-section">
+                    <span class="submenu-label">Intelligence</span>
+                    <ul class="submenu-list">
+                        <li><a href="../construction.html">Fin <span class="beta-badge">Beta</span></a></li>
+                    </ul>
+                </div>
+
+                <!-- Product Suites Box -->
+                <div class="product-suites-box">
+                    <span class="submenu-label" style="margin-bottom: 24px; display: block;">Product Suites</span>
+
+                    <a href="../construction.html" class="suite-card">
+                        <div class="suite-icon">
+                            <i class="fas fa-circle-notch" style="color: #A3E635; font-size: 24px;"></i>
+                        </div>
+                        <div class="suite-info">
+                            <h4>Fund Administration</h4>
+                            <p>All-in-one partner to launch an investment vehicle</p>
+                        </div>
+                    </a>
+
+                    <a href="../investor-management.html" class="suite-card">
+                        <div class="suite-icon">
+                            <i class="fas fa-layer-group" style="color: #A3E635; font-size: 24px;"></i>
+                        </div>
+                        <div class="suite-info">
+                            <h4>Investor Management</h4>
+                            <p>Explore all offerings to streamline the investor experience.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Footer Links/Buttons -->
+                <a href="../construction.html" class="submenu-footer-link">
+                    Looking for tools for startups? Explore Rollups. <i class="fas fa-arrow-right"
+                        style="font-size: 12px;"></i>
+                </a>
+
+                <div class="submenu-btn-group">
+                    <a href="../contact.html" class="btn-lavender">Contact sales</a>
+                    <a href="../signin.html" class="btn-gray-light">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         HERO SECTION
+         ========================================== -->
+    <section class="hero" id="hero">
+        <div class="hero-inner">
+            <div class="hero-pill">
+                Venture Funds
+            </div>
+            <h1><span class="highlight">Fund administration</span> engineered for venture capital</h1>
+            <a href="#" class="hero-cta">
+                Talk to expert
+            </a>
+            <div class="hero-image">
+                <img src="images/venture-hero.png" alt="Venture Funds Hero">
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         PREMIUM TESTIMONIAL SECTION
+         ========================================== -->
+    <section class="testimonial-section">
+        <div class="testimonial-carousel-container">
+            <div class="testimonial-track-wrapper">
+                <div class="testimonial-track" id="testimonialTrack">
+
+                    <!-- Slide 1: Purple (Dr. Mustapha Abdullahi) -->
+                    <div class="testimonial-slide active" data-theme="purple" data-index="0">
+                        <div class="testimonial-card">
+                            <div class="card-panel-content">
+                                <blockquote class="quote-text">“Partnering with NEIIA has revolutionized our approach to
+                                    national energy data management. The Data Bank provides the transparency and
+                                    intelligence required to drive sustainable investment and power Nigeria's future.”
+                                </blockquote>
+                                <div class="card-footer-info">
+                                    <div class="author-details">
+                                        <span class="author-name-bold">Dr. Mustapha Abdullahi</span>
+                                        <span class="author-role-sub">Director General (DG)</span>
+                                    </div>
+                                    <div class="vest-logo-text" style="font-size: 12px; letter-spacing: 1px;">Energy
+                                        Commission of Nigeria</div>
+                                </div>
+                            </div>
+                            <div class="card-panel-image">
+                                <img src="../assets/images/investor-management/mustapha-dg.jpeg"
+                                    alt="Dr. Mustapha Abdullahi">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2: Teal (Olu Verheijen) -->
+                    <div class="testimonial-slide" data-theme="teal" data-index="1">
+                        <div class="testimonial-card">
+                            <div class="card-panel-content">
+                                <blockquote class="quote-text">“Accelerating Nigeria's energy transition requires robust
+                                    partnerships and innovative data systems. NEIIA gives us the strategic oversight
+                                    needed to harmonize public policy with private sector execution.”</blockquote>
+                                <div class="card-footer-info">
+                                    <div class="author-details">
+                                        <span class="author-name-bold">Mrs. Olu Verheijen</span>
+                                        <span class="author-role-sub">Special Adviser (SA) to the President on
+                                            Energy</span>
+                                    </div>
+                                    <div class="vest-logo-text" style="font-size: 12px; letter-spacing: 1px;">
+                                        Presidential Chair Representative</div>
+                                </div>
+                            </div>
+                            <div class="card-panel-image">
+                                <img src="../assets/images/investor-management/olu.jpeg" alt="Olu">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3: Purple (Dapo Olagunju) -->
+                    <div class="testimonial-slide" data-theme="purple" data-index="2">
+                        <div class="testimonial-card">
+                            <div class="card-panel-content">
+                                <blockquote class="quote-text">“J.P. Morgan's partnership with NEIIA exemplifies how
+                                    global financial institutions can effectively participate in Nigeria's energy
+                                    sector. The robust regulatory framework and transparent data access provide the
+                                    confidence needed for large-scale capital deployment.”</blockquote>
+                                <div class="card-footer-info">
+                                    <div class="author-details">
+                                        <span class="author-name-bold">Dapo Olagunju</span>
+                                        <span class="author-role-sub">Managing Director at JPMorgan</span>
+                                    </div>
+                                    <div class="vest-logo-text" style="font-size: 12px; letter-spacing: 1px;">J.P.
+                                        Morgan Nigeria</div>
+                                </div>
+                            </div>
+                            <div class="card-panel-image">
+                                <img src="../assets/images/investor-management/daps.jpg.webp" alt="Dapo Olagunju">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4: Teal (Dr. Kassim Gidado) -->
+                    <div class="testimonial-slide" data-theme="teal" data-index="3">
+                        <div class="testimonial-card">
+                            <div class="card-panel-content">
+                                <blockquote class="quote-text">“The National Energy Fund is committed to unlocking
+                                    capital for critical infrastructure. NEIIA's platform provides the rigorous
+                                    financial tracking and project visibility essential for banking institutions and
+                                    global investors.”</blockquote>
+                                <div class="card-footer-info">
+                                    <div class="author-details">
+                                        <span class="author-name-bold">Dr. Kassim Gidado</span>
+                                        <span class="author-role-sub">Chairman, National Energy Fund (NEFUND)</span>
+                                    </div>
+                                    <div class="vest-logo-text" style="font-size: 12px; letter-spacing: 1px;">Board
+                                        Chairman, Polaris Bank</div>
+                                </div>
+                            </div>
+                            <div class="card-panel-image">
+                                <img src="../assets/images/investor-management/kas.png" alt="Dr. Kassim Gidado">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 5: Purple (Mariam Bolakale) -->
+                    <div class="testimonial-slide" data-theme="purple" data-index="4">
+                        <div class="testimonial-card">
+                            <div class="card-panel-content">
+                                <blockquote class="quote-text">“CardinalStone relies on accurate data to drive local
+                                    investment strategies. NEIIA's intelligence platforms provide the granular insights
+                                    we need to identify high-potential energy assets and confidently mobilize domestic
+                                    capital.”</blockquote>
+                                <div class="card-footer-info">
+                                    <div class="author-details">
+                                        <span class="author-name-bold">Mariam Bolakale</span>
+                                        <span class="author-role-sub">Executive Director</span>
+                                    </div>
+                                    <div class="vest-logo-text" style="font-size: 12px; letter-spacing: 1px;">
+                                        CardinalStone Asset Management</div>
+                                </div>
+                            </div>
+                            <div class="card-panel-image">
+                                <img src="../assets/images/investor-management/mariam.png" alt="Mariam Bolakale">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 6: Teal (Oluseun Olatidoye) -->
+                    <div class="testimonial-slide" data-theme="teal" data-index="5">
+                        <div class="testimonial-card">
+                            <div class="card-panel-content">
+                                <blockquote class="quote-text">“FirstCap leverages NEIIA's comprehensive market data to
+                                    structure complex public finance and corporate advisory deals. The platform's
+                                    transparency ensures we can align capital market opportunities with national
+                                    development goals effectively.”</blockquote>
+                                <div class="card-footer-info">
+                                    <div class="author-details">
+                                        <span class="author-name-bold">Oluseun Olatidoye</span>
+                                        <span class="author-role-sub">Head, Capital Markets</span>
+                                    </div>
+                                    <div class="vest-logo-text" style="font-size: 12px; letter-spacing: 1px;">FirstCap
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-panel-image">
+                                <img src="../assets/images/investor-management/oluola.jpg" alt="Oluseun Olatidoye">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="carousel-bottom-nav">
+                <div class="carousel-dots-centered" id="carouselDots">
+                    <!-- Generated by JS -->
+                </div>
+                <div class="carousel-arrows-right">
+                    <button class="nav-arrow-btn" id="prevBtn" aria-label="Previous slide">←</button>
+                    <button class="nav-arrow-btn" id="nextBtn" aria-label="Next slide">→</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         EXCEED EXPECTATIONS FEATURE SECTION
+         ========================================== -->
+    <section class="feature-section">
+        <div class="feature-container">
+            <!-- Left Content -->
+            <div class="feature-content">
+                <h2 class="feature-title">Exceed investor expectations</h2>
+                <p class="feature-desc">Delight LPs with flexible digital workflows, modernizing the manual subscription
+                    paperwork process. Reduce friction and errors by collaborating with your service providers in
+                    real-time within a single dashboard.</p>
+                <a href="#" class="btn btn-demo-light">Explore demo</a>
+            </div>
+
+            <!-- Right Image Content -->
+            <div class="feature-visual">
+                <div class="feature-image-wrapper">
+                    <img src="../assets/images/data.png" alt="Transactions Dashboard" class="feature-img">
+
+                    <!-- Hover Overlay (Modal Style) -->
+                    <div class="feature-overlay">
+                        <div class="overlay-modal">
+                            <div class="overlay-logo-icon">
+                                <svg fill="none" viewBox="0 0 82 24" xmlns="http://www.w3.org/2000/svg" width="82"
+                                    height="24">
+                                    <path
+                                        d="m5.08978 4.67345-5.08978 14.19485h2.21088l1.47392-4.1769h5.53196l1.46914 4.1769h2.2894l-5.09458-14.19485zm-.71319 8.04955 2.07776-5.87671 2.06824 5.88141zm18.06741-3.03109c.3353.62529.4993 1.32819.4755 2.03739v7.1318h-2.1776v-6.761c0-.756-.1973-1.3075-.5872-1.6522-.4317-.3591-.982-.54396-1.5429-.51826-.378-.00006-.7525.07256-1.103.21396-.3584.1437-.6655.3912-.882.7108-.2473.3862-.3678.84-.3447 1.298v6.7325h-2.2204v-10.64551h2.2109v1.25996c.1246-.18383.2706-.35222.435-.50161.3554-.31468.7689-.55694 1.2172-.71318.4641-.16808.9541-.25338 1.4477-.252.6245-.01015 1.2415.13614 1.7949.42554.5388.28155.9859.7113 1.2885 1.23857zm9.1645-2.63404c-.4319.27191-.7459.69616-.8796 1.18865-.5057-.16088-1.0336-.2411-1.5643-.23773-.7474-.01145-1.4873.15134-2.1609.47546-.6099.29537-1.1283.75051-1.5001 1.31702-.3817.60613-.5753 1.31173-.5563 2.02783-.0202.7009.1667 1.3922.5373 1.9874.1881.2919.4198.5532.687.775l-.0998.0452c-.3596.1839-.6664.4563-.8915.7916-.2112.324-.3328.6982-.3524 1.0844-.0196.3863.0634.7709.2406 1.1146.1696.329.4337.5998.7584.7774-.344.0742-.6681.2209-.9509.4303-.2319.171-.4182.3964-.5425.6563-.1244.2599-.183.5464-.1707.8342 0 .8622.4255 1.5239 1.2766 1.9851s1.9795.691 3.3853.6894c1.6102 0 2.8915-.3003 3.844-.901.4519-.2663.8231-.6501 1.0742-1.1106.2512-.4604.3729-.9803.3522-1.5044.0172-.3585-.0438-.7165-.1789-1.049-.135-.3325-.3409-.6317-.6032-.8766-.576-.4946-1.3195-.7498-2.0778-.7132-.1355 0-.3613 0-.6775 0s-.6537.0166-1.0056.0285c-.3518.0119-.6751.0238-.9723.0309s-.4992 0-.6086 0c-.3254.0169-.6488-.0598-.9319-.2211-.1099-.0678-.1997-.1637-.2603-.2777-.0606-.1141-.0897-.2422-.0844-.3713-.0015-.1309.0258-.2605.08-.3797.0543-.1191.1341-.2249.2338-.3097.0672-.0599.1387-.1147.214-.164.5757.2207 1.1878.3312 1.8043.3257.7387.0131 1.4706-.143 2.1396-.4565.4604-.2408.8671-.5726 1.1955-.9754.3283-.4027.5715-.8679.7146-1.3674.1432-.4995.1834-1.0229.1182-1.5384s-.2344-1.0124-.4973-1.46055c-.1859-.28438-.4135-.53921-.6752-.75597.089-.09246.1968-.16463.3162-.21158.4065-.15453 1.027-.14502 1.8662.0309v-2.02545c-1.0555-.21396-1.9161-.11173-2.5841.31618zm-.668 11.75333c.3251-.0217.6466.0792.9009.2829.1042.0947.1865.2109.2411.3407.0546.1297.0802.2698.0751.4105 0 .5397-.2781.9509-.832 1.2362s-1.3242.4256-2.3108.4256c-.9509 0-1.6641-.1348-2.1395-.4042-.4755-.2694-.7132-.6276-.7132-1.0745.0073-.3055.1256-.5979.3328-.8226.2235-.2631.626-.3946 1.2077-.3946zm-.2853-5.4939c-.297.3141-.6827.5302-1.1057.6194-.4229.0893-.8631.0474-1.2616-.12-.3986-.1673-.7366-.4523-.9691-.8168-.2324-.3644-.3481-.7911-.3318-1.2231-.0144-.2773.0284-.5547.1258-.8148.0973-.2601.2471-.4974.44-.6972.2102-.1919.4567-.34002.7249-.43554.2682-.09553.5527-.13656.837-.12071.2817-.01508.5636.02729.8284.12456s.5071.24739.7121.44119c.3666.4222.5685.9624.5685 1.5215s-.2019 1.0994-.5685 1.5215zm11.7604-4.73558c-.7258-.37643-1.5335-.56753-2.3511-.55629-.8813-.0097-1.7505.20636-2.5247.62761-.7851.43573-1.4261 1.09084-1.8448 1.88516-.4886.9668-.7257 2.0411-.6894 3.1238-.0225.9884.1782 1.9693.5872 2.8694.3657.7885.9638 1.4463 1.714 1.8852.8271.4587 1.7624.6861 2.7078.6585 1.0739.0297 2.1301-.2788 3.0191-.882.8444-.5967 1.4314-1.4912 1.6427-2.5033h-2.2489c-.1175.454-.3986.8485-.7892 1.1078-.4536.2792-.9798.4174-1.512.397-.9509 0-1.6736-.328-2.1681-.9842-.4429-.6204-.6957-1.3564-.7274-2.1181h7.4979c.0143-.2164.0214-.447.0214-.6894 0-1.2584-.2131-2.2822-.6395-3.0715-.3747-.74145-.9658-1.35161-1.695-1.74968zm-4.4503 2.21088c.2462-.3119.563-.5608.9242-.7261.3613-.16533.7567-.24239 1.1536-.22482.4749-.00878.9435.1094 1.3574.34232.422.258.749.6459.9319 1.1055.1465.3681.227.7592.2378 1.1553h-5.2776c.0806-.5988.3121-1.1674.6727-1.6522zm8.6891-6.11915h2.2085v14.19485h-2.2085zm6.9131 12.20735h6.5281v1.9875h-8.739v-14.19485h2.2109zm8.0685-8.64141h2.2109v10.64551h-2.2109zm2.0374-3.85121c.1224.12184.2188.26726.2833.42744.0646.16018.096.33179.0923.50445.0045.17561-.0265.35032-.091.5137s-.1613.31208-.2846.43722c-.1184.12499-.2616.22382-.4205.29015-.1588.06633-.3298.09868-.5019.09497-.1767.00625-.3527-.02482-.5165-.09118-.1639-.06636-.3119-.16652-.4344-.29394-.1233-.12514-.2201-.27384-.2846-.43722-.0646-.16338-.0955-.33809-.091-.5137-.0037-.17266.0277-.34427.0922-.50445.0646-.16018.161-.3056.2834-.42744.1224-.12774.2703-.22826.4342-.29502.1638-.06676.3399-.09828.5167-.09248.1714-.00479.3419.02614.5007.0908.1588.06467.3024.16166.4217.28481zm3.9843 6.79192c-.0097.1495.0145.2992.0709.438.0564.1387.1435.2629.2548.3631.2648.205.573.3465.901.4137.3851.0951.8281.183 1.3289.2639.4569.068.9099.1592 1.3574.2734.4339.1108.85.2821 1.2362.5087.3744.2167.6858.5272.9034.901.2398.448.3555.9519.3352 1.4597 0 1.0555-.3819 1.8669-1.1458 2.4343-.764.5674-1.7814.8511-3.0525.8511-.8493.0284-1.6942-.134-2.4724-.4755-.6098-.2713-1.133-.7057-1.5119-1.2552-.335-.4979-.5469-1.0683-.6181-1.6641h2.1395c.1.486.3739.9188.7703 1.2172.4073.3169.9818.4754 1.7235.4754.5273.0265 1.0513-.0963 1.512-.3542.1761-.1052.3206-.2558.4185-.4361.0979-.1802.1455-.3835.1378-.5885.0171-.2246-.0414-.4485-.1664-.636-.125-.1874-.3091-.3276-.5231-.3981-.6105-.2118-1.2428-.3545-1.8851-.4256-.4503-.0538-.8972-.1332-1.3385-.2377-.43-.1032-.8431-.2673-1.2266-.4873-.3674-.2134-.6743-.5169-.8915-.882-.2412-.4441-.3571-.9453-.3352-1.4502-.026-.6794.1646-1.3496.5444-1.91367.3651-.5177.8719-.91891 1.4596-1.15537 1.285-.49732 2.7042-.52594 4.0081-.08083.5082.18605.9756.46859 1.3765.83206.3527.31778.6422.69928.8534 1.12441.1857.3703.2926.775.3138 1.1887h-2.1395c-.0891-.4756-.3352-.9076-.6989-1.2267-.3733-.33044-.9296-.49685-1.6641-.49685-.5031-.02706-1.002.1043-1.4264.37565-.1727.1101-.314.2629-.4102.4437-.0962.1807-.1441.3833-.139.588zm11.304-1.0389v4.9662c-.0263.4921.0892.9814.3329 1.4097.2171.3455.6609.5183 1.3313.5183.3417-.0036.6821-.0443 1.0151-.1213v1.928c-.5031.0838-1.0116.1307-1.5215.1403-1.1617 0-2.0167-.3075-2.5651-.9224s-.8218-1.5167-.8202-2.7054v-5.2134h-2.0064v-1.90181h2.0064v-2.54608h2.2275v2.54608h2.6864v1.90181z"
+                                        fill="currentColor"></path>
+                                </svg>
+                            </div>
+                            <h3 class="overlay-title">See Digital Subscriptions in action</h3>
+                            <a href="#" class="btn btn-demo-light">Explore demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Animated Bars Effect (Full Width Bottom) -->
+        <div class="feature-bars">
+            <div class="bar-container"
+                style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+                <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.9)"></span>
+            </div>
+            <div class="bar-container"
+                style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+                <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.8)"></span>
+            </div>
+            <div class="bar-container"
+                style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+                <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.6)"></span>
+            </div>
+            <div class="bar-container"
+                style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+                <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.4)"></span>
+            </div>
+            <div class="bar-container"
+                style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+                <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.2)"></span>
+            </div>
+            <div class="bar-container"
+                style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+                <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.05)"></span>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- ==========================================
+         ADVANCED FEATURES SECTION
+         ========================================== -->
+    <section class="advanced-features-section">
+        <div class="af-grid-container">
+            <!-- Label -->
+            <div class="af-cell-label">
+                <div class="af-sticky-label"><span class="af-dot"></span>Advanced features</div>
+            </div>
+
+
+            <!-- Headline -->
+            <div class="af-cell-headline">
+                <h2 class="af-headline">Launching a venture fund is complex.<br>We make it easier.</h2>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="af-content-grid">
+                <!-- Item 1 -->
+                <div class="af-item">
+                    <div class="af-icon">
+                        <svg width="38" height="38" viewBox="0 0 42 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.5 7.5L5.5 12.5M10.5 7.5L13.5 4.5M10.5 7.5V11.5M13.5 4.5L16.5 7.5M13.5 4.5V1M16.5 7.5L19.5 4.5M16.5 7.5V11.5M19.5 4.5L22.5 7.5M19.5 4.5V1M22.5 7.5L25.5 12.5M22.5 7.5V11.5M25.5 12.5H35.5C38.2614 12.5 40.5 14.7386 40.5 17.5V21.5C40.5 24.2614 38.2614 26.5 35.5 26.5H7.5C4.73858 26.5 2.5 24.2614 2.5 21.5L4.5 19.5M4.53239 12.4411C4.42621 12.2359 4.36437 12.0162 4.32115 11.7915L3.63665 8.24072C3.41437 7.08745 4.16853 5.97541 5.3218 5.75313C6.47507 5.53084 7.58712 6.28501 7.8094 7.43828L8.5 11"
+                                stroke="#8a744a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="af-title">Custom agreements</h3>
+                    <p class="af-desc">Work with external counsel to draft fund documents or leverage our templated
+                        documents.</p>
+                </div>
+                <!-- Item 2 -->
+                <div class="af-item">
+                    <div class="af-icon">
+                        <svg width="32" height="32" viewBox="0 0 28 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2.5" y="2.5" width="23" height="27" rx="1.5" stroke="#8a744a" stroke-width="1.2" />
+                            <path
+                                d="M7.5 8.5H9.5M7.5 13.5H9.5M7.5 18.5H9.5M7.5 23.5H9.5M13.5 8.5H20.5M13.5 13.5H20.5M13.5 18.5H20.5M13.5 23.5H20.5"
+                                stroke="#8a744a" stroke-width="1.2" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h3 class="af-title">Digital subscriptions</h3>
+                    <p class="af-desc">Fully digital investor onboarding and configurable offline workflows for
+                        institutional LPs.</p>
+                </div>
+                <!-- Item 3 -->
+                <div class="af-item">
+                    <div class="af-icon">
+                        <svg width="36" height="36" viewBox="0 0 40 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M2.5 11.5H12.5M12.5 11.5L9.5 8.5M12.5 11.5L9.5 14.5M2.5 20.5H12.5M2.5 20.5L5.5 17.5M2.5 20.5L5.5 23.5"
+                                stroke="#8a744a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M25.5 6.5C25.5 6.5 23.5 6.5 21.5 6.5C19.5 6.5 17.5 8.5 17.5 10.5C17.5 12.5 19.5 14.5 21.5 14.5H23.5C25.5 14.5 27.5 16.5 27.5 18.5C27.5 20.5 25.5 22.5 23.5 22.5H16.5"
+                                stroke="#8a744a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M22.5 2.5V26.5" stroke="#8a744a" stroke-width="1.2" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h3 class="af-title">Fundraising control</h3>
+                    <p class="af-desc">Privately fundraise from your LPs or make the fund discoverable to the 72k
+                        investors on Neiia.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tailored for your needs Section (Pricing) -->
+    <section class="tailored-needs-section">
+        <div class="tn-container">
+            <div class="tn-cell-label">
+                <div class="tn-sticky-label">
+                    <span class="tn-dot"></span> Pricing
+                </div>
+            </div>
+            <div class="tn-content">
+                <h2 class="tn-headline">Tailored for your needs</h2>
+                <p class="tn-subheadline">Our implementation team works with you to design custom investor onboarding
+                    flows and eliminate the manual work of transactions.</p>
+
+                <div class="tn-list-label">NEIIA Venture Fund integrations include:</div>
+                <ul class="tn-checklist">
+                    <li class="tn-check-item">
+                        <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span>
+                        Custom subscription workflows for all asset classes
+                    </li>
+                    <li class="tn-check-item">
+                        <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span>
+                        Reusable investor profiles to speed up transactions
+                    </li>
+                    <li class="tn-check-item">
+                        <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span>
+                        Enterprise implementation and onboarding support
+                    </li>
+                    <li class="tn-check-item">
+                        <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span>
+                        Access for law firms & fund administrators
+                    </li>
+                    <li class="tn-check-item">
+                        <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span>
+                        Review and revision approval workflows
+                    </li>
+                    <li class="tn-check-item">
+                        <span class="tn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span>
+                        E-signatures via DocuSign integration
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Infrastructure Comparison Section -->
+    <section class="infra-comparison-section">
+        <div class="infra-container">
+            <h2 class="infra-heading">50+ fund services from one partner</h2>
+            <div class="infra-grid">
+                <!-- Legacy Card -->
+                <div class="infra-card infra-legacy-card">
+                    <h3 class="infra-card-title">Legacy fund operations</h3>
+                    <div class="infra-legacy-pills">
+                        <div class="infra-pill" style="top: 10%; left: 5%; transform: rotate(-5deg); opacity: 0.8;">
+                            Valuation support</div>
+                        <div class="infra-pill" style="top: 50%; left: 70%; transform: rotate(10deg); opacity: 0.6;">
+                            Audit support</div>
+                        <div class="infra-pill" style="top: 20%; left: 40%; transform: rotate(2deg); opacity: 0.9;">Data
+                            room</div>
+                        <div class="infra-pill" style="top: 15%; left: 15%; transform: rotate(-8deg); opacity: 0.7;">
+                            Audit support</div>
+                        <div class="infra-pill" style="top: 30%; left: 60%; transform: rotate(5deg); opacity: 0.5;">GP
+                            dashboard</div>
+                        <div class="infra-pill" style="top: 45%; left: 10%; transform: rotate(-3deg); opacity: 0.9;">
+                            Investor closing</div>
+                        <div class="infra-pill" style="top: 25%; left: 80%; transform: rotate(12deg); opacity: 0.4;">
+                            Fundraising platform</div>
+                        <div class="infra-pill" style="top: 70%; left: 20%; transform: rotate(4deg); opacity: 0.7;">Fund
+                            filings</div>
+                        <div class="infra-pill" style="top: 60%; left: 50%; transform: rotate(-6deg); opacity: 0.8;">
+                            K-1s</div>
+                        <div class="infra-pill" style="top: 80%; left: 10%; transform: rotate(8deg); opacity: 0.5;">
+                            Capital calls</div>
+                        <div class="infra-pill" style="top: 15%; left: 75%; transform: rotate(-10deg); opacity: 0.6;">
+                            Fund formation</div>
+                        <div class="infra-pill" style="top: 55%; left: 5%; transform: rotate(2deg); opacity: 0.4;">
+                            Accreditation checks</div>
+                        <div class="infra-pill" style="top: 40%; left: 45%; transform: rotate(-4deg); opacity: 0.9;">LP
+                            portal</div>
+                        <div class="infra-pill" style="top: 65%; left: 75%; transform: rotate(7deg); opacity: 0.7;">KYC
+                            & AML checks</div>
+                        <div class="infra-pill" style="top: 85%; left: 60%; transform: rotate(-2deg); opacity: 0.6;">
+                            Fund banking & wiring</div>
+                        <div class="infra-pill" style="top: 5%; left: 45%; transform: rotate(5deg); opacity: 0.3;">
+                            Capital calls</div>
+                        <div class="infra-pill" style="top: 35%; left: 25%; transform: rotate(-12deg); opacity: 0.2;">
+                            Fund filings</div>
+                        <div class="infra-pill" style="top: 75%; left: 40%; transform: rotate(15deg); opacity: 0.1;">GP
+                            dashboard</div>
+                    </div>
+                </div>
+                <!-- Modern Card -->
+                <div class="infra-card infra-modern-card">
+                    <h3 class="infra-card-title">Modern fund infrastructure</h3>
+                    <div class="infra-modern-pills">
+                        <div class="infra-modern-pill">Investor closing</div>
+                        <div class="infra-modern-pill">Audit support</div>
+                        <div class="infra-modern-pill">Fund accounting</div>
+                        <div class="infra-modern-pill">LP portal</div>
+                        <div class="infra-modern-pill">Fund formation</div>
+                        <div class="infra-modern-pill">Fund banking & wiring</div>
+                        <div class="infra-modern-pill">Data room</div>
+                        <div class="infra-center-pill">NEIIA</div>
+                        <div class="infra-modern-pill">GP dashboard</div>
+                        <div class="infra-modern-pill">Fundraising platform</div>
+                        <div class="infra-modern-pill">K-1s</div>
+                        <div class="infra-modern-pill">Valuation support</div>
+                        <div class="infra-modern-pill">Capital calls</div>
+                        <div class="infra-modern-pill">Fund filings</div>
+                        <div class="infra-modern-pill">KYC & AML checks</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION (Launch Fund) -->
+    <section class="cta-section">
+        <div class="cta-card">
+            <h2 class="cta-heading">Ready to launch your fund?</h2>
+            <p class="cta-text">Run your fund confidently. Streamline your setup, automate operations, access
+                transparent reporting, and gain full-service support for any fund size or stage.</p>
+            <div class="cta-actions">
+                <button class="cta-button-dark">Talk to an expert</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="faq-section">
+        <div class="faq-inner">
+            <div class="faq-badge">FAQ</div>
+            <h2>Your questions answered</h2>
+
+            <div class="faq-accordion">
+                <!-- FAQ 1 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span>What types of venture capital firms use NEIIA for fund administration?</span>
+                        <div class="faq-icon"></div>
+                    </button>
+                    <div class="faq-content" aria-hidden="true">
+                        <div class="faq-answer">
+                            NEIIA supports a wide range of venture capital firms, from emerging managers launching their
+                            first funds to established institutions managing billions in AUM. Our platform is designed
+                            to handle the complexity of venture-specific fund structures with ease.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span>How does NEIIA support funds raising institutional capital?</span>
+                        <div class="faq-icon"></div>
+                    </button>
+                    <div class="faq-content" aria-hidden="true">
+                        <div class="faq-answer">
+                            We provide institutional-grade fund administration, including comprehensive reporting, audit
+                            support, and tax preparation. Our tools ensure transparency and compliance, meeting the high
+                            standards required by institutional LPs.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span>How does NEIIA software simplify venture capital operations?</span>
+                        <div class="faq-icon"></div>
+                    </button>
+                    <div class="faq-content" aria-hidden="true">
+                        <div class="faq-answer">
+                            Our software automates the most time-consuming aspects of fund management, from capital
+                            calls and distributions to investor onboarding. By consolidating your tech stack into a
+                            single dashboard, we eliminate manual errors and save your team hundreds of hours.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span>What makes NEIIA a top fund administrator for venture capital?</span>
+                        <div class="faq-icon"></div>
+                    </button>
+                    <div class="faq-content" aria-hidden="true">
+                        <div class="faq-answer">
+                            Unlike traditional administrators, NEIIA is a technology-first company. We combine deep
+                            venture expertise with a powerful software platform, allowing for faster closing times,
+                            cleaner data, and a superior experience for both GPs and LPs.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span>How does NEIIA help emerging managers with full-stack launch support?</span>
+                        <div class="faq-icon"></div>
+                    </button>
+                    <div class="faq-content" aria-hidden="true">
+                        <div class="faq-answer">
+                            We offer a complete "fund-in-a-box" solution for emerging managers, covering entity
+                            formation, bank account opening, tax ID registration, and more. Our team guides you through
+                            every step of the launch process, so you can focus on raising capital.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER SECTION -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <!-- Column 1: Products -->
+                <div class="footer-col">
+                    <h4 class="footer-col-title">Products</h4>
+                    <nav>
+                        <ul class="footer-nav">
+                            <li><a href="venturefunds.html" class="footer-link">Venture Funds</a></li>
+                            <li><a href="#" class="footer-link">Rolling Funds</a></li>
+                            <li><a href="#" class="footer-link">SPVs</a></li>
+                            <li><a href="#" class="footer-link">Scout Funds</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Column 2: Administration -->
+                <div class="footer-col">
+                    <h4 class="footer-col-title">Administration</h4>
+                    <nav>
+                        <ul class="footer-nav">
+                            <li><a href="#" class="footer-link">About NEIIA</a></li>
+                            <li><a href="#" class="footer-link">Mandate & Governance</a></li>
+                            <li><a href="#" class="footer-link">Careers</a></li>
+                            <li><a href="#" class="footer-link">News & Updates</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Column 3: Engagement -->
+                <div class="footer-col">
+                    <h4 class="footer-col-title">Engagement</h4>
+                    <nav>
+                        <ul class="footer-nav">
+                            <li><a href="#" class="footer-link">Support & Enquiries</a></li>
+                            <li><a href="#" class="footer-link">Contact NEIIA</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 NEIIA</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         INLINE JAVASCRIPT
+         ============================================ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ==========================================
+            // MOBILE MENU LOGIC
+            // ==========================================
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            const mobileNav = document.querySelector('.mobile-nav-overlay');
+            const mobileCloseBtn = document.querySelector('.mobile-close-btn');
+
+            if (mobileBtn && mobileNav) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileNav.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+            if (mobileCloseBtn && mobileNav) {
+                mobileCloseBtn.addEventListener('click', () => {
+                    mobileNav.classList.remove('open');
+                    document.body.style.overflow = '';
+                });
+            }
+
+            // ==========================================
+            // MOBILE SUBMENU LOGIC
+            // ==========================================
+            const mobileResourcesLink = document.getElementById('mobile-resources-link');
+            const resourcesSubmenu = document.getElementById('resources-submenu');
+            const submenuBackBtn = document.getElementById('submenu-back-btn');
+            const mobileCloseBtnSub = document.querySelector('.mobile-close-btn-sub');
+            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+
+            if (mobileResourcesLink && resourcesSubmenu) {
+                mobileResourcesLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    resourcesSubmenu.classList.add('active');
+                });
+            }
+
+            if (submenuBackBtn && resourcesSubmenu) {
+                submenuBackBtn.addEventListener('click', () => {
+                    resourcesSubmenu.classList.remove('active');
+                });
+            }
+
+            if (mobileCloseBtnSub && resourcesSubmenu) {
+                mobileCloseBtnSub.addEventListener('click', () => {
+                    resourcesSubmenu.classList.remove('active');
+                    if (mobileNavOverlay) {
+                        mobileNavOverlay.classList.remove('open');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+
+            // ==========================================
+            // DESKTOP APP LAUNCHER LOGIC
+            // ==========================================
+            const launcherBtn = document.querySelector('.app-launcher-btn');
+            const appDropdown = document.querySelector('.app-dropdown');
+
+            if (launcherBtn && appDropdown) {
+                launcherBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isExpanded = launcherBtn.getAttribute('aria-expanded') === 'true';
+                    launcherBtn.setAttribute('aria-expanded', !isExpanded);
+                    launcherBtn.classList.toggle('active');
+                    appDropdown.classList.toggle('show');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!launcherBtn.contains(e.target) && !appDropdown.contains(e.target)) {
+                        launcherBtn.setAttribute('aria-expanded', 'false');
+                        launcherBtn.classList.remove('active');
+                        appDropdown.classList.remove('show');
+                    }
+                });
+            }
+            // ==========================================
+            // MOUSE-TRACKING GRADIENT — HERO
+            // ==========================================
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.addEventListener('mousemove', (e) => {
+                    const rect = hero.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    hero.style.setProperty('--hero-mouse-x', x + '%');
+                    hero.style.setProperty('--hero-mouse-y', y + '%');
+                });
+            }
+
+            // ==========================================
+            // MOUSE-TRACKING GRADIENT — PILL NAV
+            // ==========================================
+            const pillNav = document.querySelector('.navbar.pill-nav');
+            if (pillNav) {
+                pillNav.addEventListener('mousemove', (e) => {
+                    const rect = pillNav.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    pillNav.style.setProperty('--mouse-x', x + '%');
+                    pillNav.style.setProperty('--mouse-y', y + '%');
+                });
+            }
+            // ==========================================
+            // TESTIMONIAL CAROUSEL LOGIC
+            // ==========================================
+            const track = document.getElementById('testimonialTrack');
+            const slides = document.querySelectorAll('.testimonial-slide');
+            const dotsContainer = document.getElementById('carouselDots');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            let currentIndex = 0;
+
+            if (track && slides.length > 0 && dotsContainer) {
+                // Generate Dots
+                slides.forEach((_, idx) => {
+                    const dot = document.createElement('span');
+                    dot.classList.add('carousel-dot');
+                    if (idx === 0) dot.classList.add('active');
+                    dot.setAttribute('data-index', idx);
+                    dotsContainer.appendChild(dot);
+                });
+
+                const dots = document.querySelectorAll('.carousel-dot');
+                const trackWrapper = track.parentElement;
+                let isScrolling = false;
+
+                function updateActiveState() {
+                    const scrollLeft = trackWrapper.scrollLeft;
+                    const wrapperWidth = trackWrapper.offsetWidth;
+                    const slideWidth = slides[0].offsetWidth;
+
+                    const centerPoint = scrollLeft + (wrapperWidth / 2);
+                    let closestIndex = 0;
+                    let minDistance = Infinity;
+
+                    slides.forEach((slide, idx) => {
+                        const slideCenter = slide.offsetLeft + (slideWidth / 2);
+                        const distance = Math.abs(centerPoint - slideCenter);
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            closestIndex = idx;
+                        }
+                    });
+
+                    if (closestIndex !== currentIndex) {
+                        currentIndex = closestIndex;
+                        slides.forEach((slide, idx) => {
+                            slide.classList.toggle('active', idx === currentIndex);
+                        });
+                        dots.forEach((dot, idx) => {
+                            dot.classList.toggle('active', idx === currentIndex);
+                        });
+                    }
+                }
+
+                trackWrapper.addEventListener('scroll', () => {
+                    if (!isScrolling) {
+                        window.requestAnimationFrame(() => {
+                            updateActiveState();
+                            isScrolling = false;
+                        });
+                        isScrolling = true;
+                    }
+                });
+
+                function scrollToSlide(index) {
+                    const slideWidth = slides[0].offsetWidth;
+                    const scrollTarget = slides[index].offsetLeft - (trackWrapper.offsetWidth / 2) + (slideWidth / 2);
+
+                    trackWrapper.scrollTo({
+                        left: scrollTarget,
+                        behavior: 'smooth'
+                    });
+                }
+
+                dots.forEach((dot, idx) => {
+                    dot.onclick = () => scrollToSlide(idx);
+                });
+
+                if (nextBtn) {
+                    nextBtn.onclick = () => {
+                        const nextIndex = (currentIndex + 1) % slides.length;
+                        scrollToSlide(nextIndex);
+                    };
+                }
+
+                if (prevBtn) {
+                    prevBtn.onclick = () => {
+                        const prevIndex = (currentIndex - 1 + slides.length) % slides.length;
+                        scrollToSlide(prevIndex);
+                    };
+                }
+
+                window.addEventListener('load', () => scrollToSlide(0));
+                window.addEventListener('resize', () => scrollToSlide(currentIndex));
+            }
+
+            // ==========================================
+            // KEY FEATURES SCROLL LOGIC
+            // ==========================================
+            const kfCards = document.querySelectorAll('.kf-card');
+            const kfNavItems = document.querySelectorAll('.kf-nav-item');
+
+            if (kfCards.length && kfNavItems.length) {
+                // 1. Click Handling for Smooth Scroll
+                kfNavItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const targetId = item.getAttribute('data-target');
+                        const targetCard = document.getElementById(targetId);
+                        if (targetCard) {
+                            const headerOffset = 150;
+                            const elementPosition = targetCard.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: "smooth"
+                            });
+                        }
+                    });
+                });
+
+                // 2. Scroll Spy using IntersectionObserver
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '-20% 0px -20% 0px',
+                    threshold: 0.2
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const id = entry.target.id;
+                            kfNavItems.forEach(item => item.classList.remove('active'));
+                            const activeItem = document.querySelector(`.kf-nav-item[data-target="${id}"]`);
+                            if (activeItem) {
+                                activeItem.classList.add('active');
+                            }
+                        }
+                    });
+                }, observerOptions);
+
+                kfCards.forEach(card => observer.observe(card));
+            }
+
+            // --- FAQ Accordion ---
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const trigger = item.querySelector('.faq-trigger');
+                if (trigger) {
+                    trigger.addEventListener('click', () => {
+                        const isOpen = item.classList.contains('active');
+
+                        // Close all items
+                        faqItems.forEach(otherItem => {
+                            otherItem.classList.remove('active');
+                            const otherTrigger = otherItem.querySelector('.faq-trigger');
+                            const otherContent = otherItem.querySelector('.faq-content');
+                            if (otherTrigger) otherTrigger.setAttribute('aria-expanded', 'false');
+                            if (otherContent) otherContent.setAttribute('aria-hidden', 'true');
+                        });
+
+                        // Open clicked item if it was closed
+                        if (!isOpen) {
+                            item.classList.add('active');
+                            trigger.setAttribute('aria-expanded', 'true');
+                            const content = item.querySelector('.faq-content');
+                            if (content) content.setAttribute('aria-hidden', 'false');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
