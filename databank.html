@@ -43,13 +43,15 @@
 <body>
 
     <!-- Logo (Separate from Pill Navbar) -->
-    <a href="index.html" class="logo-fixed">
+    <a href="index.html" class="logo-fixed" style="position: absolute;">
         <div class="logo-wrapper">
+            <!-- Ensure green logo is shown and white logo is hidden -->
             <img src="assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
-                style="max-width: 120px;">
+                style="max-width: 120px; display: block !important;">
             <img src="assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
-                style="max-width: 120px; display: none;">
-            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
+                style="max-width: 120px; display: none !important;">
+            <div class="brand-text" style="color: #65a30d !important;">NATIONAL ENERGY INVESTMENT & INTELLIGENCE
+                ADMINISTRATION</div>
         </div>
     </a>
 
@@ -1149,7 +1151,8 @@
                                             <p class="w-full ">Yes. NEIIA Data bank is automatically included for
                                                 all fund managers running NEIIA <a
                                                     class="hover:opacity-85 underline underline-offset-4"
-                                                    href="venture-funds/venturefunds.html"><span>Venture Funds</span></a> and <a
+                                                    href="venture-funds/venturefunds.html"><span>Venture
+                                                        Funds</span></a> and <a
                                                     class="hover:opacity-85 underline underline-offset-4"
                                                     href="/syndicates"><span>SPVs</span></a>, accessible through the GP
                                                 dashboard.</p>
@@ -1209,8 +1212,42 @@
             style="margin-top: 40px; color: var(--text-secondary); font-size: 0.9rem; max-width: 1200px; margin-left: auto; margin-right: auto;">
             &copy; 2026 NEIIA</p>
     </footer>
-
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const authLink = document.querySelector('.auth-fixed .nav-link');
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const sections = document.querySelectorAll('section[data-theme]');
+
+            if ((authLink || mobileMenuBtn) && sections.length > 0) {
+                const observerOptions = {
+                    root: null,
+                    // Check intersection near the top right where auth links sit
+                    rootMargin: '-24px 0px -90% 0px',
+                    threshold: 0
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const theme = entry.target.getAttribute('data-theme');
+                            if (theme === 'ink' || theme === 'gray') {
+                                // Dark/green background -> text white
+                                if (authLink) authLink.style.setProperty('color', '#ffffff', 'important');
+                                if (mobileMenuBtn) mobileMenuBtn.style.setProperty('color', '#ffffff', 'important');
+                            } else {
+                                // White background -> text black
+                                if (authLink) authLink.style.setProperty('color', '#000000', 'important');
+                                if (mobileMenuBtn) mobileMenuBtn.style.setProperty('color', '#000000', 'important');
+                            }
+                        }
+                    });
+                }, observerOptions);
+
+                sections.forEach(section => observer.observe(section));
+            }
+        });
+    </script>
 </body>
 
 </html>
