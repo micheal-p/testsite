@@ -189,7 +189,7 @@
             overflow: hidden;
             background: #001D21;
             color: #FFFFFF;
-            padding-bottom: 100px;
+            padding-bottom: 60px;
         }
 
         .hero-inner {
@@ -202,7 +202,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 32px;
+            gap: 20px;
         }
 
         /* ... pill, headline, subtext, cta styles remain same ... */
@@ -357,12 +357,12 @@
         /* Hero responsive */
         @media (max-width: 768px) {
             .hero {
-                min-height: 80vh;
+                min-height: auto;
             }
 
             .hero-inner {
-                padding: 100px 24px 60px;
-                gap: 24px;
+                padding: 32px 24px 40px;
+                gap: 16px;
             }
 
             .hero h1 {
@@ -1685,7 +1685,7 @@
         }
 
         .page-content {
-            padding-top: 100px;
+            padding-top: 80px;
         }
 
         /* =============================================
@@ -1813,8 +1813,20 @@
             }
 
             /* Hero adjustments */
+            .page-content {
+                padding-top: 60px;
+            }
+
+            .hero {
+                padding-bottom: 40px;
+            }
+
+            .hero-inner {
+                gap: 16px;
+            }
+
             .hero h1 {
-                font-size: 32px !important;
+                font-size: 40px !important;
                 letter-spacing: -1px;
             }
 
