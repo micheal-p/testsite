@@ -454,8 +454,6 @@
 
             /* Vehicle Section Mobile */
             .vehicle-grid {
-                grid-template-columns: 1fr 1fr;
-                /* 2 columns */
                 gap: 16px;
             }
 
@@ -870,17 +868,18 @@
             max-width: 1200px;
             margin: 0 auto;
             text-align: left;
+            width: 100%;
         }
 
         .vehicle-section h2 {
             font-size: 48px;
             font-weight: 500;
-            /* Reduced from bold */
             line-height: 1.1;
             color: #0d3d44;
             max-width: 800px;
             margin: 0 0 80px;
             letter-spacing: -1.5px;
+            width: 100%;
         }
 
         .vehicle-grid {
@@ -891,6 +890,7 @@
             -webkit-overflow-scrolling: touch;
             padding-bottom: 16px;
             scrollbar-width: none;
+            width: 100%;
         }
 
         .vehicle-grid::-webkit-scrollbar {
@@ -899,13 +899,43 @@
 
         .vehicle-carousel-wrapper {
             position: relative;
+            width: 100%;
+        }
+
+        .carousel-controls-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(13, 61, 68, 0.2);
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            width: 24px;
+            background: #0d3d44;
+            border-radius: 4px;
         }
 
         .vehicle-carousel-nav {
             display: flex;
-            justify-content: flex-end;
             gap: 12px;
-            margin-top: 24px;
         }
 
         .vehicle-nav-btn {
@@ -1672,8 +1702,9 @@
 
             /* Vehicle cards: single column on phones */
             .vehicle-grid {
-                grid-template-columns: 1fr !important;
                 gap: 12px;
+                /* Show partial next card */
+                padding-right: 20%;
             }
 
             .vehicle-card {
@@ -1818,7 +1849,8 @@
 
             /* Ensure vehicle cards stack on small tablets too */
             .vehicle-grid {
-                grid-template-columns: 1fr;
+                gap: 16px;
+                padding-right: 15%;
             }
 
             /* Testimonials */
@@ -2136,19 +2168,27 @@
                             </div>
                         </div>
                     </div>
-                    <div class="vehicle-carousel-nav">
-                        <button class="vehicle-nav-btn" id="vehicle-prev" aria-label="Previous">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M15 18l-6-6 6-6" />
-                            </svg>
-                        </button>
-                        <button class="vehicle-nav-btn" id="vehicle-next" aria-label="Next">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M9 18l6-6-6-6" />
-                            </svg>
-                        </button>
+                    <div class="carousel-controls-wrapper">
+                        <div class="carousel-dots" id="vehicle-dots">
+                            <button class="carousel-dot active" data-index="0" aria-label="Go to slide 1"></button>
+                            <button class="carousel-dot" data-index="1" aria-label="Go to slide 2"></button>
+                            <button class="carousel-dot" data-index="2" aria-label="Go to slide 3"></button>
+                            <button class="carousel-dot" data-index="3" aria-label="Go to slide 4"></button>
+                        </div>
+                        <div class="vehicle-carousel-nav">
+                            <button class="vehicle-nav-btn" id="vehicle-prev" aria-label="Previous">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M15 18l-6-6 6-6" />
+                                </svg>
+                            </button>
+                            <button class="vehicle-nav-btn" id="vehicle-next" aria-label="Next">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M9 18l6-6-6-6" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2340,19 +2380,40 @@
         const vehicleCarousel = document.getElementById('vehicle-carousel');
         const vehiclePrev = document.getElementById('vehicle-prev');
         const vehicleNext = document.getElementById('vehicle-next');
+        const vehicleDots = document.querySelectorAll('#vehicle-dots .carousel-dot');
 
         if (vehicleCarousel && vehiclePrev && vehicleNext) {
-            const scrollAmount = () => {
+            const getScrollAmount = () => {
                 const card = vehicleCarousel.querySelector('.vehicle-card');
                 return card ? card.offsetWidth + 24 : 340;
             };
 
+            const updateDots = () => {
+                const scrollLeft = vehicleCarousel.scrollLeft;
+                const cardWidth = getScrollAmount();
+                const activeIndex = Math.round(scrollLeft / cardWidth);
+
+                vehicleDots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === activeIndex);
+                });
+            };
+
             vehicleNext.addEventListener('click', () => {
-                vehicleCarousel.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+                vehicleCarousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
             });
 
             vehiclePrev.addEventListener('click', () => {
-                vehicleCarousel.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+                vehicleCarousel.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+            });
+
+            vehicleCarousel.addEventListener('scroll', () => {
+                requestAnimationFrame(updateDots);
+            });
+
+            vehicleDots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    vehicleCarousel.scrollTo({ left: index * getScrollAmount(), behavior: 'smooth' });
+                });
             });
         }
 
