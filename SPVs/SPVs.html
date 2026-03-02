@@ -69,8 +69,6 @@
 
         html {
             scroll-behavior: smooth;
-            height: 100vh;
-            overflow-y: scroll;
         }
 
         body {
@@ -159,7 +157,7 @@
            FIXED LOGO — nuclear override
            ============================================ */
         .logo-fixed {
-            position: fixed !important;
+            position: absolute !important;
             top: 32px !important;
             left: 40px !important;
             z-index: 9999 !important;
@@ -167,7 +165,7 @@
 
         @media (max-width: 768px) {
             .logo-fixed {
-                position: fixed !important;
+                position: absolute !important;
                 top: 20px !important;
                 left: 20px !important;
             }
@@ -534,7 +532,7 @@
                 width: 100vw !important;
                 height: 100vh !important;
                 background: #fff;
-                z-index: 2000;
+                z-index: 10000;
                 padding: 0;
                 transform: translateX(100%);
                 transition: transform 0.3s ease;
@@ -2217,7 +2215,7 @@
 <body>
 
     <!-- Logo (Separate from Pill Navbar) -->
-    <a href="../index.html" class="logo-fixed" style="position: fixed; top: 32px; left: 40px; z-index: 1200;">
+    <a href="../index.html" class="logo-fixed" style="position: absolute; top: 32px; left: 40px; z-index: 1200;">
         <div class="logo-wrapper">
             <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
                 style="max-width: 120px; display: block !important;">
