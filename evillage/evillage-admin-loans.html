@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor Dashboard | eVillage Portal</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css?v=2.0" />
+    <!-- <script src="../auth-check.js?v=2.0"></script> -->
+    <style>
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "SF Pro Display",
+          "SF Pro Text",
+          "Helvetica Neue",
+          Arial,
+          sans-serif;
+        background: var(--bg-primary, #f3f4f6);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        min-height: 100vh;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Sidebar - Inherited exactly from standard dashboard */
+      .sidebar {
+        width: 260px;
+        background: #0d3d44;
+        color: white;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        z-index: 100;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 40px;
+        text-decoration: none;
+        color: white;
+        padding: 0 12px;
+      }
+
+      .sidebar-brand i {
+        font-size: 24px;
+        color: #10b981;
+      }
+
+      .nav-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex: 1;
+      }
+      .nav-item {
+        margin-bottom: 8px;
+      }
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.2s;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+      .nav-link i {
+        width: 20px;
+        text-align: center;
+      }
+
+      .user-profile {
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: auto;
+      }
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        background: #10b981;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: #0d3d44;
+      }
+      .user-info {
+        flex: 1;
+        overflow: hidden;
+      }
+      .user-name {
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .user-role {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        margin-left: 260px;
+        padding: 32px 40px;
+        max-width: 1400px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+      .welcome-text h1 {
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--text-primary, #111827);
+        margin-bottom: 4px;
+      }
+      .welcome-text p {
+        color: var(--text-secondary, #6b7280);
+        font-size: 15px;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 16px;
+      }
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid var(--border-color, #e5e7eb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary, #6b7280);
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+      }
+      .icon-btn:hover {
+        color: #0d3d44;
+        border-color: #0d3d44;
+      }
+
+      /* Dashboard Grid: Vendor Stats (1. Vendor Stats) */
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        margin-bottom: 40px;
+      }
+      .stat-card {
+        background: white;
+        padding: 24px;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        transition: transform 0.2s;
+      }
+      .stat-card:hover {
+        transform: translateY(-2px);
+      }
+      .stat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+      .bg-teal {
+        background: rgba(13, 61, 68, 0.1);
+        color: #0d3d44;
+      }
+      .bg-green {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+      }
+      .bg-orange {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+      }
+      .bg-blue {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+      }
+
+      .stat-content h3 {
+        font-size: 14px;
+        color: var(--text-secondary, #6b7280);
+        margin-bottom: 4px;
+        font-weight: 500;
+      }
+      .stat-value {
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--text-primary, #111827);
+      }
+      .stat-trend {
+        font-size: 13px;
+        color: #10b981;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 500;
+      }
+
+      /* Section Headers */
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+      .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-primary, #111827);
+      }
+      .btn-primary {
+        background: #0d3d44;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 14px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* Data Tables (2. Product Inventory & 4. Admin Queue) */
+      .card-container {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 40px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .data-table th {
+        text-align: left;
+        padding: 12px 16px;
+        font-size: 13px;
+        color: var(--text-secondary, #6b7280);
+        font-weight: 500;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .data-table td {
+        padding: 16px;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
+        vertical-align: middle;
+      }
+      .data-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .product-info {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .product-img {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+      .product-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-primary, #111827);
+        margin-bottom: 4px;
+      }
+      .product-specs {
+        font-size: 13px;
+        color: var(--text-secondary, #6b7280);
+      }
+
+      .badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-block;
+      }
+      .badge-success {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .badge-warning {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .badge-danger {
+        background: #fee2e2;
+        color: #b91c1c;
+      }
+
+      .price-text {
+        font-weight: 600;
+        color: var(--text-primary, #111827);
+      }
+
+      /* Split View (3. Active Installations & Bids) */
+      .split-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 40px;
+      }
+
+      .list-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
+      }
+      .list-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .item-main {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .item-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-primary, #111827);
+      }
+      .item-sub {
+        font-size: 13px;
+        color: var(--text-secondary, #6b7280);
+      }
+
+      .install-progress-container {
+        width: 120px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        align-items: flex-end;
+      }
+      .progress-bar-bg {
+        width: 100%;
+        height: 6px;
+        background: #e5e7eb;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .progress-bar-fill {
+        height: 100%;
+        background: #10b981;
+        border-radius: 4px;
+      }
+      .progress-text {
+        font-size: 12px;
+        font-weight: 600;
+        color: #10b981;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 8px;
+      }
+      .btn-outline {
+        background: transparent;
+        border: 1px solid var(--border-color, #e5e7eb);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-primary, #111827);
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .btn-outline:hover {
+        border-color: #0d3d44;
+        color: #0d3d44;
+      }
+      .btn-outline.admit:hover {
+        border-color: #10b981;
+        color: #10b981;
+        background: #d1fae5;
+      }
+      .btn-outline.reject:hover {
+        border-color: #ef4444;
+        color: #ef4444;
+        background: #fee2e2;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="evillage.html" class="sidebar-brand">
+        <i class="fas fa-leaf"></i>
+        <span>eVillage Admin</span>
+      </a>
+
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a
+            href="evillage-admin-dashboard.html"
+            class="nav-link"
+            id="nav-dashboard"
+          >
+            <i class="fas fa-chart-pie"></i>
+            <span>Overview</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            href="evillage-admin-compliance.html"
+            class="nav-link"
+            id="nav-compliance"
+          >
+            <i class="fas fa-shield-alt"></i>
+            <span>Compliance Center</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="evillage-admin-loans.html" class="nav-link" id="nav-loans">
+            <i class="fas fa-hand-holding-usd"></i>
+            <span>Loan Management</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            href="evillage-admin-directory.html"
+            class="nav-link"
+            id="nav-directory"
+          >
+            <i class="fas fa-users-cog"></i>
+            <span>Global Directory</span>
+          </a>
+        </li>
+        <li
+          class="nav-item"
+          style="
+            margin-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 12px;
+          "
+        >
+          <a href="#" class="nav-link">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Sign Out</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="user-profile">
+        <div class="user-avatar" style="background: #3b82f6; color: white">
+          SA
+        </div>
+        <div class="user-info">
+          <div class="user-name">Super Admin</div>
+          <div class="user-role">System Administrator</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="header">
+        <div class="welcome-text">
+          <h1>Loan Management Desk</h1>
+          <p>Review customer applications and manage financing.</p>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn">
+            <i class="far fa-bell"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Controls -->
+      <div
+        class="card-container"
+        style="
+          padding: 20px 24px;
+          margin-bottom: 24px;
+          display: flex;
+          gap: 16px;
+          align-items: center;
+        "
+      >
+        <div
+          style="
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text-secondary);
+          "
+        >
+          Filter Applications:
+        </div>
+
+        <select
+          id="region-filter"
+          style="
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color, #e5e7eb);
+            outline: none;
+          "
+        >
+          <option value="">All Regions</option>
+          <!-- Populated by JS -->
+        </select>
+
+        <select
+          id="state-filter"
+          style="
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color, #e5e7eb);
+            outline: none;
+          "
+          disabled
+        >
+          <option value="">All States</option>
+          <!-- Populated by JS -->
+        </select>
+      </div>
+
+      <!-- Loan Management Table -->
+      <div class="section-header">
+        <div class="section-title">Active Applications</div>
+      </div>
+      <div class="card-container" style="overflow-x: auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Customer Name</th>
+              <th>Loan Amount</th>
+              <th>State (Region)</th>
+              <th>Linked Vendor</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="loans-tbody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- Logic Script -->
+    <script src="evillage-admin-logic.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Set active nav
+        document.getElementById("nav-loans").classList.add("active");
+
+        const { geoData, loans } = window.evillageData;
+
+        const regionSelect = document.getElementById("region-filter");
+        const stateSelect = document.getElementById("state-filter");
+
+        // Populate Region Dropdown
+        geoData.forEach((g) => {
+          const opt = document.createElement("option");
+          opt.value = g.region;
+          opt.textContent = g.region;
+          regionSelect.appendChild(opt);
+        });
+
+        // Handle Region Change
+        regionSelect.addEventListener("change", (e) => {
+          const selectedRegion = e.target.value;
+          stateSelect.innerHTML = '<option value="">All States</option>';
+
+          if (selectedRegion) {
+            stateSelect.disabled = false;
+            const regionObj = geoData.find((g) => g.region === selectedRegion);
+            regionObj.states.forEach((s) => {
+              const opt = document.createElement("option");
+              opt.value = s;
+              opt.textContent = s;
+              stateSelect.appendChild(opt);
+            });
+          } else {
+            stateSelect.disabled = true;
+          }
+          renderTable();
+        });
+
+        // Handle State Change
+        stateSelect.addEventListener("change", renderTable);
+
+        // Render Table Function
+        function renderTable() {
+          const tbody = document.getElementById("loans-tbody");
+          const selectedRegion = regionSelect.value;
+          const selectedState = stateSelect.value;
+
+          let filteredLoans = loans;
+
+          if (selectedRegion) {
+            filteredLoans = filteredLoans.filter(
+              (l) => l.location.region === selectedRegion,
+            );
+          }
+          if (selectedState) {
+            filteredLoans = filteredLoans.filter(
+              (l) => l.location.state === selectedState,
+            );
+          }
+
+          if (filteredLoans.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No loans match the selected filters.</td></tr>`;
+            return;
+          }
+
+          tbody.innerHTML = filteredLoans
+            .map((l) => {
+              let badgeClass = "badge-warning";
+              if (l.status === "Given") badgeClass = "badge-success";
+              if (l.status === "Denied") badgeClass = "badge-danger";
+
+              return `
+                    <tr>
+                        <td style="font-weight: 500; color: #111827;">
+                            ${l.customer}
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">ID: ${l.loanId}</div>
+                        </td>
+                        <td class="price-text">₦${l.amount.toLocaleString()}</td>
+                        <td>${l.location.state} <span style="font-size:12px; color:var(--text-secondary);">(${l.location.region})</span></td>
+                        <td>
+                            <div style="display:flex; align-items:center; gap: 8px;">
+                                <div style="width:24px; height:24px; background:#e5e7eb; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:10px;">${l.vendor.substring(0, 2).toUpperCase()}</div>
+                                ${l.vendor}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge ${badgeClass}">
+                                ${l.status}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                ${
+                                  l.status === "In Progress"
+                                    ? `
+                                    <button class="btn-outline admit" onclick="handleLoanChange('${l.loanId}', 'Given')" title="Approve"><i class="fas fa-check"></i></button>
+                                    <button class="btn-outline reject" onclick="handleLoanChange('${l.loanId}', 'Denied')" title="Deny"><i class="fas fa-times"></i></button>
+                                `
+                                    : `
+                                    <span style="font-size:13px; color:var(--text-secondary);">Processed</span>
+                                `
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            })
+            .join("");
+        }
+
+        // Global handlers exposed
+        window.handleLoanChange = (id, newStatus) => {
+          const loanIndex = loans.findIndex((l) => l.loanId === id);
+          if (loanIndex > -1) {
+            const loan = loans[loanIndex];
+            loan.status = newStatus;
+
+            if (newStatus === "Given") {
+              window.evillageData.showMockEmail(
+                `Great news! Your loan for ₦${loan.amount.toLocaleString()} has been 'Given'. ${loan.vendor} will contact you for installation.`,
+              );
+            } else if (newStatus === "Denied") {
+              window.evillageData.showMockEmail(
+                `Notice: Your loan application for ₦${loan.amount.toLocaleString()} has been Denied.`,
+              );
+            }
+
+            // Re-render
+            renderTable();
+          }
+        };
+
+        // Initial render
+        renderTable();
+      });
+    </script>
+  </body>
+</html>
