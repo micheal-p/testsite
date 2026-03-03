@@ -1,0 +1,2976 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPVs | NEIIA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* ============================================
+           CUSTOM FONTS
+           ============================================ */
+        @font-face {
+            font-family: 'NEIIA';
+            src: url('../assets/font/NEIIA_VF-s.p.3bb41c0a.woff2') format('woff2');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'NEIIA';
+            src: url('../assets/font/NEIIA_Italic_VF-s.p.31e87b9d.woff2') format('woff2');
+            font-weight: 100 900;
+            font-style: italic;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'NEIIA Display';
+            src: url('../assets/font/NEIIADisplay_Regular-s.p.9a576876.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* ============================================
+           CSS VARIABLES
+           ============================================ */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7f9fa;
+            --text-primary: #050c26;
+            --text-secondary: #5e6d8a;
+            --accent-color: #000000;
+            --border-color: #e6e9ed;
+            --font-family: 'NEIIA', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            --font-display: 'NEIIA Display', 'NEIIA', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-size-base: 16px;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --pill-bg: #fff;
+            --pill-text: #050c26;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 32px;
+            --spacing-xl: 64px;
+            --container-max-width: 1200px;
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: var(--font-display);
+            font-weight: 500;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: opacity 0.2s;
+        }
+
+        a:hover {
+            opacity: 0.8;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .container {
+            max-width: var(--container-max-width);
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+            border: 1px solid var(--accent-color);
+        }
+
+        .btn-black {
+            background-color: black;
+            color: white;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: black;
+            color: white;
+            border-color: black;
+        }
+
+        /* ============================================
+           FIXED LOGO — nuclear override
+           ============================================ */
+        .logo-fixed {
+            position: absolute !important;
+            top: 32px !important;
+            left: 40px !important;
+            z-index: 9999 !important;
+        }
+
+        @media (max-width: 768px) {
+            .logo-fixed {
+                position: absolute !important;
+                top: 20px !important;
+                left: 20px !important;
+            }
+        }
+
+        .logo-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .dark-mode-logo {
+            display: none !important;
+        }
+
+        .brand-text {
+            font-size: 0.35rem;
+            font-weight: 800;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+            color: #006341;
+            max-width: 140px;
+            line-height: 1.2;
+        }
+
+        /* ============================================
+           AUTH LINKS (FIXED)
+           ============================================ */
+        .auth-fixed {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .auth-fixed .nav-link {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .auth-fixed .btn-primary {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* ============================================
+           NAVBAR
+           ============================================ */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) 0;
+            height: 80px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+        }
+
+        .nav-links {
+            display: none;
+            gap: 24px;
+            font-weight: 500;
+        }
+
+        .nav-links a {
+            position: relative;
+            color: #000000;
+        }
+
+        .nav-links a:hover {
+            color: #333333;
+            opacity: 1;
+        }
+
+        /* ============================================
+           PILL NAVBAR — overrides for this page
+           ============================================ */
+        /* No position override — inherits position:fixed from styles.css */
+        .navbar.pill-nav {
+            width: auto;
+            min-width: auto;
+            max-width: 90%;
+            height: 50px;
+            background-color: #0d3d44;
+            border-radius: 100px;
+            color: white;
+            padding: 0 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            pointer-events: auto;
+        }
+
+        .navbar.pill-nav::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(150px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                    rgba(185, 182, 255, 0.35),
+                    transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+            border-radius: 100px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .navbar.pill-nav:hover::before {
+            opacity: 1;
+        }
+
+        .navbar.pill-nav>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar.pill-nav .nav-links {
+            display: flex;
+            gap: 24px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .navbar.pill-nav .nav-links a {
+            color: rgba(255, 255, 255, 0.85);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+        }
+
+        .navbar.pill-nav .nav-links a:hover {
+            color: #fff;
+        }
+
+        /* ============================================
+           MEGA MENU
+           ============================================ */
+        .nav-item.dropdown {
+            position: static;
+        }
+
+        .mega-menu {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            width: 90vw;
+            max-width: 980px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            padding: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 1200;
+            color: #050c26;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.6fr;
+            gap: 0;
+            text-align: left;
+            cursor: default;
+            overflow: hidden;
+        }
+
+        .mm-left-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-column: 1 / 3;
+            gap: 40px;
+            padding: 40px 0 40px 40px;
+        }
+
+        .mm-right-panel {
+            background: #fcfcfc;
+            padding: 40px;
+            grid-column: 3;
+        }
+
+        .nav-item.dropdown:hover .mega-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .mm-column h4 {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #8890a0;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .mm-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mm-list li {
+            margin-bottom: 12px;
+        }
+
+        .mm-list a {
+            display: block;
+            color: #050c26 !important;
+            font-size: 15px;
+            font-weight: 400;
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .mm-list a:hover {
+            color: #4f46e5 !important;
+            background: none !important;
+        }
+
+        .nav-link.dropdown-toggle {
+            cursor: default;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+        }
+
+        .nav-link.dropdown-toggle:hover {
+            color: #fff;
+        }
+
+        .nav-item.dropdown:hover .dropdown-toggle i {
+            transform: rotate(180deg);
+        }
+
+        /* Product Suite Cards */
+        .mm-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            padding: 16px;
+            border-radius: 8px;
+            transition: background 0.1s;
+            cursor: pointer;
+            text-decoration: none !important;
+            margin-bottom: 24px;
+        }
+
+        .mm-card:hover {
+            background: transparent;
+        }
+
+        .mm-icon {
+            width: 80px;
+            height: 80px;
+            background: #051b22;
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .mm-icon img {
+            width: 60px !important;
+            height: 60px !important;
+            object-fit: contain;
+        }
+
+        .mm-content h5 {
+            margin: 0 0 8px 0;
+            font-size: 17px;
+            font-weight: 500;
+            color: #050c26;
+            letter-spacing: -0.3px;
+        }
+
+        .mm-content p {
+            margin: 0;
+            font-size: 15px;
+            color: #5e6d8a;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .mm-footer {
+            grid-column: 1 / -1;
+            border-top: 1px solid #e6e9ed;
+            padding-top: 20px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #5e6d8a;
+        }
+
+        .mm-footer a {
+            color: #4f46e5 !important;
+            font-weight: 500;
+            margin-left: 4px;
+        }
+
+        /* ============================================
+           MOBILE MENU BUTTON
+           ============================================ */
+        .mobile-menu-btn {
+            display: block;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .mobile-nav-overlay {
+            display: none;
+        }
+
+        @media (min-width: 769px) {
+            .nav-links {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+
+        /* ============================================
+           MOBILE STYLES
+           ============================================ */
+        @media (max-width: 768px) {
+            .logo-fixed {
+                top: 20px;
+                left: 20px;
+            }
+
+            .auth-fixed {
+                display: none;
+                position: absolute;
+            }
+
+            .navbar.pill-nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: var(--text-primary);
+            }
+
+            .mobile-nav-overlay {
+                position: fixed;
+                top: 0 !important;
+                left: 0;
+                width: 100vw !important;
+                height: 100vh !important;
+                background: #fff;
+                z-index: 10000;
+                padding: 0;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .mobile-nav-overlay.open {
+                transform: translateX(0);
+                display: flex;
+            }
+
+            .mobile-nav-overlay ul {
+                list-style: none;
+            }
+
+            .mobile-nav-overlay ul li {
+                margin-bottom: 0;
+            }
+
+            .mobile-nav-overlay ul li a {
+                font-size: 1.1rem;
+                font-weight: 500;
+                color: #333;
+            }
+
+            /* Header */
+            .mobile-nav-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 24px;
+                border-bottom: 1px solid #eee;
+            }
+
+            .mobile-nav-header h3 {
+                font-family: var(--font-display);
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin: 0;
+                color: #000;
+            }
+
+            .mobile-close-btn {
+                position: static;
+                font-size: 1.5rem;
+                color: #666;
+                padding: 8px;
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
+
+            /* Content Area */
+            .mobile-nav-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                padding: 0;
+                overflow-y: auto;
+            }
+
+            .mobile-nav-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+            }
+
+            .mobile-nav-list li {
+                margin: 0;
+                border-bottom: 1px solid #f5f5f5;
+            }
+
+            .mobile-nav-list li a {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 24px;
+                font-size: 1.1rem;
+                font-weight: 500;
+                color: #333;
+                text-decoration: none;
+            }
+
+            .mobile-nav-list li a i {
+                color: #ccc;
+                font-size: 0.9rem;
+            }
+
+            /* Footer Buttons */
+            .mobile-nav-footer {
+                padding: 24px;
+                margin-top: auto;
+                border-top: 1px solid #eee;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .mobile-nav-footer .btn {
+                width: 100%;
+                text-align: center;
+                padding: 14px;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 1rem;
+            }
+
+            .mobile-nav-footer .btn-primary {
+                background: #000;
+                color: #fff;
+                border: 1px solid #000;
+            }
+
+            .mobile-nav-footer .btn-secondary {
+                background: #f5f5f5;
+                color: #333;
+                border: none;
+            }
+        }
+
+
+
+        /* ============================================
+           MOBILE SUBMENU (SLIDING PANEL)
+           ============================================ */
+        .mobile-submenu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 2005;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .mobile-submenu.active {
+            transform: translateX(0);
+        }
+
+        .submenu-header {
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .submenu-back-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            font-weight: 500;
+            color: #050c26;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .mobile-close-btn-sub {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #050c26;
+            cursor: pointer;
+        }
+
+        .submenu-content {
+            padding: 24px;
+            flex: 1;
+        }
+
+        .submenu-section {
+            margin-bottom: 40px;
+        }
+
+        .submenu-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(0, 29, 33, 0.5);
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .submenu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .submenu-list li a {
+            font-size: 18px;
+            font-weight: 400;
+            color: #050c26;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .beta-badge {
+            font-size: 10px;
+            background: #F3F4F6;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #6B7280;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        /* Product Suites Box */
+        .product-suites-box {
+            background: #F9FAFB;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 0 -12px 40px;
+        }
+
+        .suite-card {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .suite-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .suite-icon {
+            width: 48px;
+            height: 48px;
+            background: #0C1618;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .suite-icon img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .suite-info h4 {
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0 0 4px;
+            color: #111827;
+        }
+
+        .suite-info p {
+            font-size: 14px;
+            color: #6B7280;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Submenu Footer */
+        .submenu-footer-link {
+            font-size: 14px;
+            color: #4B5563;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+
+        .submenu-btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-lavender {
+            background: #BBBBEE;
+            color: #000;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-gray-light {
+            background: #E5E7EB;
+            color: #1F2937;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* ============================================
+           HERO SECTION — SPV-SPECIFIC
+           ============================================ */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            background: #ffffff;
+            color: #000000;
+            padding: 0;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(600px circle at var(--hero-mouse-x, 50%) var(--hero-mouse-y, 50%),
+                    rgba(185, 182, 255, 0.25),
+                    transparent 40%);
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .hero:hover::before {
+            opacity: 1;
+        }
+
+        .hero>* {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 100px 32px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 24px;
+            background: transparent;
+            color: #01000e;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            border-radius: 100px;
+            border: 1px solid #01000e;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 6vw, 68px);
+            font-weight: 700;
+            line-height: 1.05;
+            color: #000000;
+            letter-spacing: -2.5px;
+            max-width: 880px;
+            margin: 0;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 36px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            background: #000000;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            text-decoration: none;
+            font-family: inherit;
+            margin-top: 16px;
+        }
+
+        .hero-cta:hover {
+            background: #001D21;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 24px;
+            border-radius: 16px 16px 0 0;
+            overflow: hidden;
+            box-shadow: 0 -8px 48px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.06);
+            max-height: 280px;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ============================================
+           INFRASTRUCTURE COMPARISON SECTION
+           ============================================ */
+        .infra-comparison-section {
+            padding: 120px 0;
+            background-color: #ffffff;
+        }
+
+        .infra-container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .infra-heading {
+            text-align: center;
+            font-size: 56px;
+            font-weight: 500;
+            color: #0b161a;
+            margin-bottom: 80px;
+            font-family: 'NEIIA Display', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .infra-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        .infra-card {
+            background-color: #051d1d;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.08);
+            line-height: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .infra-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .infra-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
+            .infra-heading {
+                font-size: 42px;
+                margin-bottom: 48px;
+            }
+
+            .infra-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .infra-card {
+                border-radius: 20px;
+            }
+        }
+
+        /* ==========================================
+           FEATURE SECTION (EXCEED EXPECTATIONS)
+           ========================================== */
+        .feature-section {
+            background-color: #011d21;
+            /* Dark Teal Background */
+            padding-top: 80px;
+            padding-bottom: 0;
+            padding-left: 0;
+            padding-right: 0;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .feature-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 64px;
+            margin-bottom: 80px;
+        }
+
+        .feature-content {
+            flex: 1;
+            max-width: 450px;
+        }
+
+        .feature-title {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            line-height: 1.2;
+            color: #ffffff;
+        }
+
+        .feature-desc {
+            font-size: 18px;
+            color: #94a3b8;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .btn-demo-light {
+            display: inline-block;
+            background-color: #b4b0ff;
+            color: #1e1b4b;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 150ms ease-in-out;
+        }
+
+        .btn-demo-light:hover {
+            background-color: #a5a1f5;
+            transform: translateY(-1px);
+        }
+
+        /* ==========================================
+           KEY FEATURES SECTION (STACKING CARDS)
+           ========================================== */
+        .key-features-section {
+            background-color: #ffffff;
+            color: #0b161a;
+            position: relative;
+            padding-top: 80px;
+            padding-bottom: 128px;
+        }
+
+        .kf-grid-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 40px;
+            position: relative;
+            align-items: start;
+        }
+
+        .kf-cell-label {
+            grid-column: 1;
+            grid-row: 1 / -1;
+            height: 100%;
+        }
+
+        .kf-sticky-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #8a744a;
+            position: sticky;
+            top: 100px;
+        }
+
+        .kf-dot {
+            width: 10px;
+            height: 10px;
+            background-color: currentColor;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .kf-cell-headline {
+            grid-column: 2;
+            grid-row: 1;
+            padding-bottom: 48px;
+        }
+
+        .kf-headline {
+            font-size: 40px;
+            font-weight: 500;
+            color: #0b161a;
+            line-height: 1.1;
+            max-width: 100%;
+        }
+
+        .kf-cell-cards {
+            grid-column: 2;
+            grid-row: 2;
+            position: relative;
+        }
+
+        .kf-list-container {
+            position: absolute;
+            top: 0;
+            left: calc(-280px - 40px);
+            width: 280px;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .kf-sticky-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            list-style: none;
+            position: sticky;
+            top: 160px;
+            pointer-events: auto;
+        }
+
+        .kf-nav-item {
+            font-size: 16px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 4px 0;
+        }
+
+        .kf-nav-item:hover,
+        .kf-nav-item.active {
+            color: #0b161a;
+            font-weight: 500;
+        }
+
+        .kf-cards-wrapper {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 100px;
+        }
+
+        .kf-card {
+            background-color: #f9f9f7;
+            border-radius: 24px;
+            padding: 48px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+            position: sticky;
+            top: 120px;
+            margin-bottom: 80px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.02);
+            z-index: 1;
+        }
+
+        /* Calculated Offsets for Staging Stacking Effect */
+        #card-1 {
+            top: 120px;
+            z-index: 10;
+        }
+
+        #card-2 {
+            top: 140px;
+            z-index: 11;
+        }
+
+        #card-3 {
+            top: 160px;
+            z-index: 12;
+        }
+
+        #card-4 {
+            top: 180px;
+            z-index: 13;
+        }
+
+
+        .kf-card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 72px;
+        }
+
+        .kf-card-title {
+            font-size: 32px;
+            font-weight: 500;
+            color: #0b161a;
+            margin-bottom: 0;
+        }
+
+        .kf-card-desc {
+            font-size: 18px;
+            color: #64748b;
+            line-height: 1.6;
+            padding-left: 20px;
+            border-left: 4px solid #006341;
+        }
+
+        .kf-image-container {
+            width: 100%;
+            aspect-ratio: 16/10;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #e2e8f0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .kf-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Last card margin to allow previous cards to stack fully before section ends */
+        .kf-card:last-child {
+            margin-bottom: 400px;
+        }
+
+        @media (max-width: 768px) {
+            .key-features-section {
+                padding-top: 40px !important;
+                padding-bottom: 40px !important;
+            }
+
+            .key-features-section .kf-list-container,
+            .key-features-section .kf-cell-label {
+                display: none !important;
+            }
+
+            .key-features-section .kf-cell-headline {
+                padding-bottom: 32px !important;
+            }
+
+            .key-features-section .kf-grid-container {
+                display: block !important;
+                padding: 0 16px !important;
+            }
+
+            .key-features-section .kf-cards-wrapper {
+                padding-bottom: 0 !important;
+            }
+
+            .key-features-section .kf-card {
+                display: flex !important;
+                flex-direction: column !important;
+                padding: 32px 24px !important;
+                gap: 32px !important;
+                margin-bottom: 24px !important;
+            }
+
+            .key-features-section .kf-card-content {
+                gap: 16px !important;
+            }
+
+            .key-features-section .kf-card-title {
+                font-size: 24px !important;
+            }
+
+            .key-features-section .kf-card-desc {
+                font-size: 16px !important;
+            }
+
+            .key-features-section .kf-image-container {
+                aspect-ratio: auto !important;
+            }
+        }
+
+
+        .feature-visual {
+            flex: 1.8;
+            position: relative;
+        }
+
+        .feature-image-wrapper {
+            position: relative;
+            border-radius: 8px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .feature-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: all 0.7s ease;
+        }
+
+        .feature-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .overlay-modal {
+            background-color: #0b161a;
+            padding: 32px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 280px;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: all 0.3s ease 0.1s;
+            pointer-events: auto;
+        }
+
+        .overlay-logo-icon {
+            color: #ffffff;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .overlay-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 16px;
+        }
+
+        .feature-image-wrapper:hover .feature-img {
+            transform: scale(1.03);
+            opacity: 0.7;
+            filter: blur(2px);
+        }
+
+        .feature-image-wrapper:hover .overlay-modal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-bars {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bar-container {
+            height: 20px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            animation: barPulse 3s infinite ease-in-out;
+            transform-origin: center;
+        }
+
+        .bar-overlay {
+            position: absolute;
+            inset: 0;
+            display: block;
+        }
+
+        @keyframes barPulse {
+
+            0%,
+            100% {
+                transform: scaleY(1);
+                opacity: 0.9;
+            }
+
+            50% {
+                transform: scaleY(0.6);
+                opacity: 0.7;
+            }
+        }
+
+        .bar-container:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .bar-container:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .bar-container:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .bar-container:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+
+        .bar-container:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+
+        .bar-container:nth-child(6) {
+            animation-delay: 1.0s;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .hero-inner {
+                padding: 80px 24px 60px;
+                gap: 24px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+                letter-spacing: -1.2px;
+            }
+
+            .hero-pill {
+                padding: 6px 16px;
+                font-size: 13px;
+            }
+
+            .hero-cta {
+                padding: 14px 28px;
+                font-size: 15px;
+            }
+
+            .hero-image {
+                margin-top: 32px;
+                border-radius: 10px;
+            }
+        }
+
+        /* ============================================
+           ADVANCED FEATURES SECTION (4-COLUMN)
+           ========================================== */
+        .advanced-features-section {
+            padding: 80px 0 128px;
+            background-color: #ffffff;
+            color: #0b161a;
+            position: relative;
+            z-index: 100;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .af-grid-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 0;
+            align-items: start;
+        }
+
+        .af-cell-label {
+            grid-column: 1;
+            grid-row: 1 / span 2;
+        }
+
+        .af-cell-headline {
+            grid-column: 2;
+            grid-row: 1;
+            padding-bottom: 64px;
+        }
+
+        .af-headline {
+            font-size: 56px;
+            font-weight: 500;
+            color: #0b161a;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .af-subheadline {
+            font-size: 20px;
+            color: #64748b;
+            line-height: 1.5;
+            margin-top: 24px;
+            max-width: 800px;
+            font-weight: 400;
+        }
+
+        .af-sticky-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #8a744a;
+            position: sticky;
+            top: 100px;
+        }
+
+        .af-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #8a744a;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .af-content-grid {
+            grid-column: 2;
+            grid-row: 2;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+        }
+
+        .af-item {
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            align-items: flex-start;
+            border-left: 1px solid #e2e8f0;
+        }
+
+        .af-item:first-child {
+            border-left: none;
+            padding-left: 0;
+        }
+
+        .af-number {
+            font-size: 48px;
+            font-weight: 500;
+            color: #8a744a;
+            margin-bottom: 32px;
+            line-height: 1;
+        }
+
+        .af-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #0b161a;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .af-desc {
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 1024px) {
+            .af-grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            .af-cell-label {
+                display: none;
+            }
+
+            .af-cell-headline {
+                grid-column: 1;
+            }
+
+            .af-content-grid {
+                grid-column: 1;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+
+            .af-headline {
+                font-size: 42px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .how-it-works .af-content-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 40px 16px !important;
+            }
+
+            .how-it-works .af-item {
+                border-left: 1px solid #e2e8f0 !important;
+                padding-left: 16px !important;
+                padding-right: 0 !important;
+                margin-bottom: 0px !important;
+            }
+
+            .how-it-works .af-item:first-child {
+                border-left: 1px solid #e2e8f0 !important;
+                padding-left: 16px !important;
+            }
+
+            .how-it-works .af-number {
+                font-size: 38px !important;
+                margin-bottom: 8px !important;
+            }
+
+            .how-it-works .af-title {
+                font-size: 18px !important;
+                margin-bottom: 6px !important;
+            }
+
+            .how-it-works .af-desc {
+                font-size: 13px !important;
+            }
+
+            .how-it-works .af-headline {
+                font-size: 32px !important;
+            }
+
+            .how-it-works .af-subheadline {
+                font-size: 15px !important;
+            }
+        }
+
+        /* ============================================
+           PRICING SECTION
+           ============================================ */
+        .pricing-section {
+            padding: 80px 24px;
+            background-color: var(--bg-primary);
+        }
+
+        .pricing-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: #fcfcfc;
+        }
+
+        .pricing-left {
+            flex: 1;
+            background-color: #f4f5f5;
+            /* Light gray */
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .pricing-right {
+            flex: 1;
+            background-color: #fcfcfc;
+            /* Lighter box */
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-headline {
+            font-size: 32px;
+            font-weight: 400;
+            color: #0b161a;
+            margin-bottom: 16px;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .pricing-subheadline {
+            font-size: 14px;
+            color: #5e6d8a;
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        .pricing-btn {
+            align-self: flex-start;
+            background-color: #051b22;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: opacity 0.2s;
+            margin-bottom: 80px;
+            /* To push the bottom link down */
+        }
+
+        .pricing-btn:hover {
+            opacity: 0.9;
+        }
+
+        .pricing-link {
+            font-size: 13px;
+            color: #5e6d8a;
+            text-decoration: underline;
+            font-weight: 500;
+            margin-top: auto;
+        }
+
+        /* Right Side */
+        .pricing-setup-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #0b161a;
+            margin-bottom: 24px;
+        }
+
+        .pricing-price {
+            font-size: 40px;
+            font-weight: 500;
+            color: #082132;
+            margin-bottom: 32px;
+            line-height: 1;
+            font-family: var(--font-display);
+        }
+
+        .pricing-divider {
+            height: 1px;
+            background-color: #e6e9ed;
+            margin-bottom: 24px;
+            width: 100%;
+        }
+
+        .pricing-features-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #0b161a;
+            margin-bottom: 16px;
+        }
+
+        .pricing-features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pricing-features-list li {
+            font-size: 13px;
+            color: #3b4b60;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-features-list li .pricing-icon {
+            color: #2e8b57;
+            /* Green check/plus color */
+            font-size: 11px;
+            width: 14px;
+            display: inline-flex;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .pricing-container {
+                flex-direction: column;
+            }
+
+            .pricing-left,
+            .pricing-right {
+                padding: 40px 30px;
+            }
+
+            .pricing-btn {
+                margin-bottom: 40px;
+            }
+
+            .pricing-headline {
+                font-size: 28px;
+            }
+        }
+
+        /* ============================================
+           FOOTER SECTION
+           ============================================ */
+        .site-footer {
+            background: #001D21;
+            padding: 80px 24px 40px;
+            color: #fff;
+        }
+
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .footer-col-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 24px;
+        }
+
+        .footer-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .footer-link {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 40px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .site-footer {
+                padding: 60px 20px 30px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+                margin-bottom: 60px;
+            }
+        }
+
+        /* =============================================
+           EXPLORE NEW VEHICLES SECTION
+           ============================================= */
+        .ev-section {
+            background: #fff;
+            padding: 100px 24px;
+        }
+
+        .ev-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .ev-section h2 {
+            font-size: 48px;
+            font-weight: 500;
+            line-height: 1.1;
+            color: #0d3d44;
+            max-width: 800px;
+            margin: 0 0 80px;
+            letter-spacing: -1.5px;
+        }
+
+        .ev-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .ev-card {
+            background: #f4f4f2;
+            border-radius: 16px;
+            padding: 32px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            text-align: left;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid transparent;
+            overflow: hidden;
+            text-decoration: none !important;
+        }
+
+        .ev-card>* {
+            position: relative;
+            z-index: 2;
+        }
+
+        .ev-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                    rgba(185, 182, 255, 0.25),
+                    transparent 40%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .ev-card:hover::before {
+            opacity: 1;
+        }
+
+        .ev-card:hover {
+            transform: translateY(-8px);
+            background: #fff;
+            box-shadow: 0 20px 40px rgba(13, 61, 68, 0.08);
+            border-color: rgba(13, 61, 68, 0.05);
+        }
+
+        .ev-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+        }
+
+        .ev-card-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+        }
+
+        .ev-title {
+            font-size: 20px;
+            font-weight: 400;
+            color: #0d3d44;
+            margin: 0;
+            line-height: 1.2;
+            transition: color 0.3s ease;
+        }
+
+        .ev-desc {
+            font-size: 14px;
+            color: #4b5e58;
+            line-height: 1.6;
+            margin-top: 16px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+
+        .ev-card:hover .ev-desc {
+            opacity: 1;
+            transform: translateY(0);
+            max-height: 100px;
+        }
+
+        .ev-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(13, 61, 68, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0d3d44;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            background: #0D3D441A;
+        }
+
+        .ev-card:hover .ev-arrow {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        /* Responsive Explore Vehicles */
+        @media (max-width: 768px) {
+            .ev-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .ev-card {
+                height: 300px;
+                padding: 24px 20px;
+            }
+
+            .ev-section h2 {
+                font-size: 32px;
+            }
+        }
+
+        /* =============================================
+           FAQ SECTION
+           ============================================= */
+        .faq-section {
+            padding: 120px 24px;
+            background: #fff;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .faq-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .faq-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #8b8b9e;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 24px;
+        }
+
+        .faq-badge::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #a38b6d;
+            border-radius: 50%;
+        }
+
+        .faq-section h2 {
+            font-size: 56px;
+            font-weight: 400;
+            color: #0d3d44;
+            margin-bottom: 80px;
+            letter-spacing: -1.5px;
+        }
+
+        .faq-accordion {
+            border-top: 1px solid #eef1f0;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #eef1f0;
+        }
+
+        .faq-trigger {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 32px 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .faq-trigger:hover span {
+            color: #0d3d44;
+        }
+
+        .faq-trigger span {
+            font-size: 18px;
+            font-weight: 400;
+            color: #1a1a2e;
+            line-height: 1.4;
+            padding-right: 40px;
+            transition: color 0.2s;
+        }
+
+        .faq-icon {
+            position: relative;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .faq-icon::before,
+        .faq-icon::after {
+            content: "";
+            position: absolute;
+            background-color: #1a1a2e;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+        }
+
+        .faq-icon::before {
+            width: 100%;
+            height: 1.5px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        .faq-icon::after {
+            width: 1.5px;
+            height: 100%;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+        }
+
+        .faq-item.active .faq-icon::after {
+            transform: translateX(-50%) rotate(90deg);
+            opacity: 0;
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
+            opacity: 0;
+        }
+
+        .faq-item.active .faq-content {
+            max-height: 400px;
+            /* Adjust based on content */
+            opacity: 1;
+        }
+
+        .faq-answer {
+            padding-bottom: 32px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #4b5563;
+            max-width: 900px;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 768px) {
+            .faq-section h2 {
+                font-size: 36px;
+                margin-bottom: 40px;
+            }
+
+            .faq-trigger {
+                padding: 24px 0;
+            }
+
+            .faq-trigger span {
+                font-size: 16px;
+            }
+
+            .faq-answer {
+                font-size: 15px;
+            }
+
+            .faq-item.active .faq-content {
+                max-height: 600px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Logo (Separate from Pill Navbar) -->
+    <a href="../index.html" class="logo-fixed" style="position: absolute; top: 32px; left: 40px; z-index: 1200;">
+        <div class="logo-wrapper">
+            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
+                style="max-width: 120px; display: block !important;">
+            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
+                style="max-width: 120px; display: none !important;">
+            <div class="brand-text" style="color: #65a30d !important;">NATIONAL ENERGY INVESTMENT & INTELLIGENCE
+                ADMINISTRATION</div>
+        </div>
+    </a>
+
+    <!-- Navigation (Pill Style - Links Only) -->
+    <nav class="navbar pill-nav">
+        <div class="nav-links">
+            <div class="nav-item dropdown">
+                <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down"
+                        style="font-size: 12px; margin-left: 6px; transition: transform 0.2s;"></i></span>
+                <div class="mega-menu">
+                    <div class="mm-left-columns">
+                        <div class="mm-column">
+                            <h4>Fund Administration</h4>
+                            <ul class="mm-list">
+                                <li><a href="../construction.html">Sub Funds</a></li>
+                                <li><a href="../venture-funds/venturefunds.html">Venture Funds</a></li>
+                                <li><a href="../rolling-funds/rollingfunds.html">Rolling Funds</a></li>
+                                <li><a href="../construction.html">Scout Funds</a></li>
+                                <li><a href="SPVs.html">SPVs</a></li>
+                                <li><a href="../construction.html">Roll Up Vehicles</a></li>
+                            </ul>
+                        </div>
+                        <div class="mm-column">
+                            <h4>Investor Management</h4>
+                            <ul class="mm-list">
+                                <li><a href="../government-site/digital.html">Digital Subscriptions</a></li>
+                                <li><a href="../databank.html">Data Bank</a></li>
+                            </ul>
+                            <div style="margin-top: 24px;">
+                                <h4>Intelligence</h4>
+                                <ul class="mm-list">
+                                    <li><a href="../fin/fin.html">Fin <span
+                                                style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a>
+                                    </li>
+                                    <li><a href="../construction.html">Edu Center</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mm-footer"
+                            style="border-top: none; padding-top: 10px; margin-top: auto; color: #6b7280; font-size: 15px;">
+                            Looking for tools for startups? Explore <a href="../construction.html"
+                                style="color: #6b7280 !important; text-decoration: underline; margin-left: 2px;">Rollups.</a>
+                            <svg width="10" height="10" viewBox="0 0 12 12" fill="none"
+                                style="margin-left: 4px; display: inline-block;">
+                                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="#6b7280" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mm-right-panel">
+                        <div class="mm-column">
+                            <h4>Product Suites</h4>
+                            <a href="../fund-administration/fund-administration.html" class="mm-card">
+                                <div class="mm-icon"><img src="../assets/images/fund_administration.png"
+                                        alt="Fund Administration"></div>
+                                <div class="mm-content">
+                                    <h5>Fund Administration</h5>
+                                    <p>All-in-one partner to launch an investment vehicle</p>
+                                </div>
+                            </a>
+                            <a href="../investor-management.html" class="mm-card">
+                                <div class="mm-icon"><img src="../assets/images/investor_management.png"
+                                        alt="Investor Management"></div>
+                                <div class="mm-content">
+                                    <h5>Investor Management</h5>
+                                    <p>Explore all offerings to streamline the investor experience.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="../finance.html">Energy Finance & Capital</a>
+            <a href="../dashboard.html">Energy Ecosystem</a>
+            <a href="../citibim.html">NEIIA</a>
+        </div>
+    </nav>
+
+    <!-- Auth Links (Separate from Pill) -->
+    <div class="auth-fixed">
+        <a href="../signin.html" class="nav-link">Sign In</a>
+        <a href="../newsletter.html" class="btn btn-black">Join</a>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <div class="mobile-nav-header">
+            <a href="../index.html">
+                <img src="../assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
+            </a>
+            <button class="mobile-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-nav-content">
+            <ul class="mobile-nav-list">
+                <li><a href="../finance.html">Energy Finance & Capital <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="../dashboard.html">Energy Ecosystem <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="../citibim.html">NEIIA <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#" id="mobile-resources-link">NEFUND <i class="fas fa-chevron-right"></i></a></li>
+            </ul>
+            <div class="mobile-nav-footer">
+                <a href="../contact.html" class="btn btn-primary full-width">Contact Support</a>
+                <a href="../signin.html" class="btn btn-secondary full-width">Sign in</a>
+            </div>
+        </div>
+
+        <!-- Resources Submenu -->
+        <div class="mobile-submenu" id="resources-submenu">
+            <div class="submenu-header">
+                <button class="submenu-back-btn" id="submenu-back-btn">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="mobile-close-btn-sub">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="submenu-content">
+
+                <div class="submenu-section">
+                    <span class="submenu-label">Fund Administration</span>
+                    <ul class="submenu-list">
+                        <li><a href="../venture-funds/venturefunds.html">Venture Funds</a></li>
+                        <li><a href="../rolling-funds/rollingfunds.html">Rolling Funds</a></li>
+                        <li><a href="../construction.html">Scout Funds</a></li>
+                        <li><a href="SPVs.html">SPVs</a></li>
+                        <li><a href="../construction.html">Roll Up Vehicles</a></li>
+                    </ul>
+                </div>
+
+                <div class="submenu-section">
+                    <span class="submenu-label">Investor Management</span>
+                    <ul class="submenu-list">
+                        <li><a href="../investor-management.html">Digital Subscriptions</a></li>
+                        <li><a href="../databank.html">Data Bank</a></li>
+                    </ul>
+                </div>
+
+                <div class="submenu-section">
+                    <span class="submenu-label">Intelligence</span>
+                    <ul class="submenu-list">
+                        <li><a href="../fin/fin.html">Fin <span class="beta-badge">Beta</span></a></li>
+                    </ul>
+                </div>
+
+                <!-- Product Suites Box -->
+                <div class="product-suites-box">
+                    <span class="submenu-label" style="margin-bottom: 24px; display: block;">Product Suites</span>
+
+                    <a href="../fund-administration/fund-administration.html" class="suite-card">
+                        <div class="suite-icon">
+                            <i class="fas fa-circle-notch" style="color: #A3E635; font-size: 24px;"></i>
+                        </div>
+                        <div class="suite-info">
+                            <h4>Fund Administration</h4>
+                            <p>All-in-one partner to launch an investment vehicle</p>
+                        </div>
+                    </a>
+
+                    <a href="../investor-management.html" class="suite-card">
+                        <div class="suite-icon">
+                            <i class="fas fa-layer-group" style="color: #A3E635; font-size: 24px;"></i>
+                        </div>
+                        <div class="suite-info">
+                            <h4>Investor Management</h4>
+                            <p>Explore all offerings to streamline the investor experience.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Footer Links/Buttons -->
+                <a href="../construction.html" class="submenu-footer-link">
+                    Looking for tools for startups? Explore Rollups. <i class="fas fa-arrow-right"
+                        style="font-size: 12px;"></i>
+                </a>
+
+                <div class="submenu-btn-group">
+                    <a href="../contact.html" class="btn-lavender">Contact sales</a>
+                    <a href="../signin.html" class="btn-gray-light">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         HERO SECTION — SPVs
+         ========================================== -->
+    <section class="hero" id="hero">
+        <div class="hero-inner">
+            <div class="hero-pill">
+                SPVs
+            </div>
+            <h1><span class="highlight">Proven infrastructure for SPVs</h1>
+            <a href="#" class="hero-cta">
+                Get Started
+            </a>
+            <div class="hero-image">
+                <img src="assest/images/spvs-hero.png" alt="SPV Dashboard Preview">
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- ==========================================
+         EXCEED EXPECTATIONS FEATURE SECTION
+         ========================================== -->
+    <section class="feature-section">
+        <div class="feature-container">
+            <!-- Left Content -->
+            <div class="feature-content">
+                <h2 class="feature-title">Launch and run SPVs on one platform</h2>
+                <p class="feature-desc">Raise privately on a deal-by-deal basis, or elect to submit your Special Purpose
+                    Vehicle (SPV) for additional targeted exposure within the NEIIA ecosystem.</p>
+                <a href="#" class="btn btn-demo-light">Explore demo</a>
+            </div>
+
+            <!-- Right Image Content -->
+            <div class="feature-visual">
+                <div class="feature-image-wrapper">
+                    <img src="../assets/images/data.png" alt="Transactions Dashboard" class="feature-img">
+
+                    <!-- Hover Overlay (Modal Style) -->
+                    <div class="feature-overlay">
+                        <div class="overlay-modal">
+                            <div class="overlay-logo-icon"
+                                style="display:flex;align-items:center;justify-content:center;padding:8px 0">
+                                <span
+                                    style="font-size:20px;font-weight:700;color:#fff;letter-spacing:-0.5px;">NEIIA</span>
+                            </div>
+                            <h3 class="overlay-title">See SPVs in action</h3>
+                            <a href="#" class="btn btn-demo-light">Explore demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Animated Bars Effect (Full Width Bottom) -->
+        <div class="feature-bars">
+            <div class="bar-container"
+                style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+                <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.9)"></span>
+            </div>
+            <div class="bar-container"
+                style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+                <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.8)"></span>
+            </div>
+            <div class="bar-container"
+                style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+                <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.6)"></span>
+            </div>
+            <div class="bar-container"
+                style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+                <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.4)"></span>
+            </div>
+            <div class="bar-container"
+                style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+                <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.2)"></span>
+            </div>
+            <div class="bar-container"
+                style="background: linear-gradient(90deg, rgb(54, 78, 93) 0%, rgb(50, 75, 89) 20%, rgb(71, 86, 88) 42.58%, rgb(100, 106, 96) 60.27%, rgb(141, 136, 125) 74.93%, rgb(157, 149, 164) 85.11%, rgb(156, 151, 189) 92.8%, rgb(189, 187, 255) 100%);">
+                <span class="bar-overlay" style="background:rgba(1, 29, 33, 0.05)"></span>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+    <!-- ==========================================
+         ADVANCED FEATURES SECTION (HOW IT WORKS)
+         ========================================== -->
+    <section class="advanced-features-section how-it-works">
+        <div class="af-grid-container">
+            <!-- Left: Label -->
+            <div class="af-cell-label">
+                <div class="af-sticky-label">
+                    <span class="af-dot"></span>How it works
+                </div>
+            </div>
+
+            <!-- Right: Headline & Subheadline -->
+            <div class="af-cell-headline">
+                <h2 class="af-headline">Start your SPVs with Syndicates</h2>
+                <p class="af-subheadline">Through NEIIA Syndicates, you can launch one, several, or hundreds of SPVs
+                    from your unique Syndicate profile. Capture interest and speed up fundraising on future deals by
+                    sharing your Syndicate with investors.</p>
+            </div>
+
+            <!-- Right: Content Grid -->
+            <div class="af-content-grid">
+                <!-- Item 1 -->
+                <div class="af-item">
+                    <div class="af-number">1</div>
+                    <h3 class="af-title">Create</h3>
+                    <p class="af-desc">Set up your dedicated Syndicate profile in just minutes, at no cost.</p>
+                </div>
+                <!-- Item 2 -->
+                <div class="af-item">
+                    <div class="af-number">2</div>
+                    <h3 class="af-title">Submit</h3>
+                    <p class="af-desc">Submit your SPV. We'll review your deal and create a private deal page for you.
+                    </p>
+                </div>
+                <!-- Item 3 -->
+                <div class="af-item">
+                    <div class="af-number">3</div>
+                    <h3 class="af-title">Invite</h3>
+                    <p class="af-desc">Invite LPs and investors to the deal. After KYC checks, they close into the SPV
+                        electronically.</p>
+                </div>
+                <!-- Item 4 -->
+                <div class="af-item">
+                    <div class="af-number">4</div>
+                    <h3 class="af-title">Deploy</h3>
+                    <p class="af-desc">Deploy capital when you're ready. NEIIA wires funds directly to the company.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         PRICING SECTION
+         ========================================== -->
+    <section class="pricing-section">
+        <div class="pricing-container">
+            <!-- Left Side -->
+            <div class="pricing-left">
+                <h2 class="pricing-headline">Flat pricing for every deal size</h2>
+                <p class="pricing-subheadline">Transparent pricing, so you know your SPV costs upfront.</p>
+                <a href="#" class="pricing-btn">Get started</a>
+                <a href="#" class="pricing-link">See SPV pricing</a>
+            </div>
+
+            <!-- Right Side -->
+            <div class="pricing-right">
+                <div class="pricing-setup-label">One-time setup fee</div>
+                <div class="pricing-price">$8k</div>
+
+                <div class="pricing-divider"></div>
+
+                <div class="pricing-features-label">Features</div>
+                <ul class="pricing-features-list">
+                    <li><i class="pricing-icon fa-solid fa-check"></i> SPV administration</li>
+                    <li><i class="pricing-icon fa-solid fa-check"></i> Investor closings</li>
+                    <li><i class="pricing-icon fa-solid fa-check"></i> Distributions included</li>
+                    <li><i class="pricing-icon fa-solid fa-check"></i> Transaction review &amp; execution</li>
+                    <li><i class="pricing-icon fa-solid fa-plus"></i> Optional add-on services</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         EXPLORE NEW VEHICLES SECTION
+         ========================================== -->
+    <section class="ev-section">
+        <div class="ev-inner">
+            <h2>Explore new vehicles</h2>
+            <div class="ev-grid">
+                <!-- Card 1: Venture Funds -->
+                <div class="ev-card">
+                    <div class="ev-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                        </svg>
+                    </div>
+                    <div class="ev-desc">Raise capital, close deals, and manage your portfolio, while we handle your
+                        overhead and back-office.</div>
+                    <div class="ev-card-footer">
+                        <div class="ev-title">Venture Funds</div>
+                        <div class="ev-arrow">→</div>
+                    </div>
+                </div>
+                <!-- Card 2: Rolling Funds -->
+                <div class="ev-card">
+                    <div class="ev-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                    </div>
+                    <div class="ev-desc">Accept capital on a rolling basis. Simplify fundraising by running quarterly
+                        funds consecutively.</div>
+                    <div class="ev-card-footer">
+                        <div class="ev-title">Rolling Funds</div>
+                        <div class="ev-arrow">→</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="faq-section">
+        <div class="faq-inner">
+            <div class="faq-badge">FAQs</div>
+            <h2>Your questions answered</h2>
+
+            <div class="faq-accordion">
+                <!-- FAQ 1 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span>What is the minimum raise for SPVs on NEIIA?</span>
+                        <div class="faq-icon"></div>
+                    </button>
+                    <div class="faq-content" aria-hidden="true">
+                        <div class="faq-answer">The minimum raise for SPVs is $80K, or $50K for follow-on investments.
+
+                            If your SPV does not raise the minimum amount, it can still be run as long as a fee
+                            contribution is made toward setup and state regulatory fees. This ensures that LPs don’t pay
+                            more than 10% of their commitment in fees (excluding optional add-ons).</div>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span>What is the minimum I personally have to invest in each deal?</span>
+                        <div class="faq-icon"></div>
+                    </button>
+                    <div class="faq-content" aria-hidden="true">
+                        <div class="faq-answer">We recommend that deal leads invest at least 2% of the allocation (or
+                            $10K, whichever is lower) to demonstrate skin-in-the-game to their LPs. However, you are
+                            only required to invest $1,000.
+
+                            You can invest directly into the syndicate, or you can make an investment alongside (i.e.,
+                            separate from) the syndicate.
+
+                            If you'd like to raise money from Canadian LPs, you must invest at least $10,000 or 2% of
+                            the allocation (whichever is lower).</div>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span>How much does it cost to set up a deal?</span>
+                        <div class="faq-icon"></div>
+                    </button>
+                    <div class="faq-content" aria-hidden="true">
+                        <div class="faq-answer">The setup fee for most deals is $8K plus a flat state regulatory fee of
+                            $2K. The setup fee covers formation costs and our back-office team, who handle all the
+                            administrative aspects of your syndicate for its lifetime.
+
+                            Each deal you run is set up as a separate vehicle, so each deal incurs this cost.
+
+                            SPV fees are distributed across all LPs who invest in a given deal and prorated based on
+                            their investment amount.
+
+                            For pro-rata / follow-on deals, where the previous deal was also run on the same Syndicate
+                            via NEIIA, the setup costs are $5K, with a flat blue sky fee of $2K.
+
+                            For more on SPV pricing, see the Pricing page.</div>
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span>How do I invite LPs to my deal?</span>
+                        <div class="faq-icon"></div>
+                    </button>
+                    <div class="faq-content" aria-hidden="true">
+                        <div class="faq-answer">You can invite LPs from the Data Room tab of your GP Dashboard.
+
+                            Sending personalized invites is the most secure way to invite LPs, as each LP receives a
+                            personalized invitation with a URL that cannot be opened by anyone else.
+
+                            You can set custom minimums, maximums, and carry when sending personalized invitations.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span>Are deals private?</span>
+                        <div class="faq-icon"></div>
+                    </button>
+                    <div class="faq-content" aria-hidden="true">
+                        <div class="faq-answer">Each time you set up a deal, you can decide whether you'd like it to be
+                            private to your LP network.
+
+                            If you do, your deal will only be viewable to the LPs you directly invite or those who back
+                            your syndicate.</div>
+                    </div>
+                </div>
+
+                <!-- FAQ 6 -->
+                <div class="faq-item">
+                    <button class="faq-trigger" aria-expanded="false">
+                        <span>Can I access additional capital sources via NEIIA?</span>
+                        <div class="faq-icon"></div>
+                    </button>
+                    <div class="faq-content" aria-hidden="true">
+                        <div class="faq-answer">All SPV information you submit remains private and is only shared with
+                            NEIIA.
+
+                            If your deal is approved to tap into the NEIIA network, you can send invites to NEIIA LPs
+                            from the Data Room tab of your GP dashboard.
+
+                            There is no guarantee that any specific deal or fund will be eligible for any additional
+                            capital from any sources, nor is there a guarantee that an eligible deal or fund will
+                            receive any additional capital.</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <!-- Column 1: Products -->
+                <div class="footer-col">
+                    <h4 class="footer-col-title">Products</h4>
+                    <nav>
+                        <ul class="footer-nav">
+                            <li><a href="venturefunds.html" class="footer-link">Venture Funds</a></li>
+                            <li><a href="rollingfunds.html" class="footer-link">Rolling Funds</a></li>
+                            <li><a href="SPVs.html" class="footer-link">SPVs</a></li>
+                            <li><a href="construction.html" class="footer-link">Scout Funds</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Column 2: Administration -->
+                <div class="footer-col">
+                    <h4 class="footer-col-title">Administration</h4>
+                    <nav>
+                        <ul class="footer-nav">
+                            <li><a href="construction.html" class="footer-link">Digital Subscriptions</a></li>
+                            <li><a href="databank.html" class="footer-link">Data Bank</a></li>
+                            <li><a href="construction.html" class="footer-link">Fund Accounting</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Column 3: Engagement -->
+                <div class="footer-col">
+                    <h4 class="footer-col-title">Engagement</h4>
+                    <nav>
+                        <ul class="footer-nav">
+                            <li><a href="#" class="footer-link">Support &amp; Enquiries</a></li>
+                            <li><a href="#" class="footer-link">Contact NEIIA</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 NEIIA</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         INLINE JAVASCRIPT
+         ============================================ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // ==========================================
+            // MOBILE MENU LOGIC
+            // ==========================================
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            const mobileNav = document.querySelector('.mobile-nav-overlay');
+            const mobileCloseBtn = document.querySelector('.mobile-close-btn');
+
+            if (mobileBtn && mobileNav) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileNav.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+            if (mobileCloseBtn && mobileNav) {
+                mobileCloseBtn.addEventListener('click', () => {
+                    mobileNav.classList.remove('open');
+                    document.body.style.overflow = '';
+                });
+            }
+
+            // ==========================================
+            // MOBILE SUBMENU LOGIC
+            // ==========================================
+            const mobileResourcesLink = document.getElementById('mobile-resources-link');
+            const resourcesSubmenu = document.getElementById('resources-submenu');
+            const submenuBackBtn = document.getElementById('submenu-back-btn');
+            const mobileCloseBtnSub = document.querySelector('.mobile-close-btn-sub');
+            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+
+            if (mobileResourcesLink && resourcesSubmenu) {
+                mobileResourcesLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    resourcesSubmenu.classList.add('active');
+                });
+            }
+
+            if (submenuBackBtn && resourcesSubmenu) {
+                submenuBackBtn.addEventListener('click', () => {
+                    resourcesSubmenu.classList.remove('active');
+                });
+            }
+
+            if (mobileCloseBtnSub && resourcesSubmenu) {
+                mobileCloseBtnSub.addEventListener('click', () => {
+                    resourcesSubmenu.classList.remove('active');
+                    if (mobileNavOverlay) {
+                        mobileNavOverlay.classList.remove('open');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+
+            // ==========================================
+            // MOUSE-TRACKING GRADIENT — HERO
+            // ==========================================
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.addEventListener('mousemove', (e) => {
+                    const rect = hero.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    hero.style.setProperty('--hero-mouse-x', x + '%');
+                    hero.style.setProperty('--hero-mouse-y', y + '%');
+                });
+            }
+
+            // ==========================================
+            // MOUSE-TRACKING GRADIENT — PILL NAV
+            // ==========================================
+            const pillNav = document.querySelector('.navbar.pill-nav');
+            if (pillNav) {
+                pillNav.addEventListener('mousemove', (e) => {
+                    const rect = pillNav.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    pillNav.style.setProperty('--mouse-x', x + '%');
+                    pillNav.style.setProperty('--mouse-y', y + '%');
+                });
+            }
+
+            // ==========================================
+            // KEY FEATURES SCROLL LOGIC
+            // ==========================================
+            const kfCards = document.querySelectorAll('.kf-card');
+            const kfNavItems = document.querySelectorAll('.kf-nav-item');
+
+            if (kfCards.length && kfNavItems.length) {
+                // 1. Click Handling for Smooth Scroll
+                kfNavItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const targetId = item.getAttribute('data-target');
+                        const targetCard = document.getElementById(targetId);
+                        if (targetCard) {
+                            const headerOffset = 150;
+                            const elementPosition = targetCard.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: "smooth"
+                            });
+                        }
+                    });
+                });
+
+                // 2. Scroll Spy using IntersectionObserver
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '-20% 0px -20% 0px',
+                    threshold: 0.2
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const id = entry.target.id;
+                            kfNavItems.forEach(item => item.classList.remove('active'));
+                            const activeItem = document.querySelector(`.kf-nav-item[data-target="${id}"]`);
+                            if (activeItem) {
+                                activeItem.classList.add('active');
+                            }
+                        }
+                    });
+                }, observerOptions);
+
+                kfCards.forEach(card => observer.observe(card));
+            }
+
+            // ==========================================
+            // FAQ ACCORDION LOGIC
+            // ==========================================
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const trigger = item.querySelector('.faq-trigger');
+                if (trigger) {
+                    trigger.addEventListener('click', () => {
+                        const isOpen = item.classList.contains('active');
+
+                        // Close all items
+                        faqItems.forEach(otherItem => {
+                            otherItem.classList.remove('active');
+                            const otherTrigger = otherItem.querySelector('.faq-trigger');
+                            const otherContent = otherItem.querySelector('.faq-content');
+                            if (otherTrigger) otherTrigger.setAttribute('aria-expanded', 'false');
+                            if (otherContent) otherContent.setAttribute('aria-hidden', 'true');
+                        });
+
+                        // Open clicked item if it was closed
+                        if (!isOpen) {
+                            item.classList.add('active');
+                            trigger.setAttribute('aria-expanded', 'true');
+                            const content = item.querySelector('.faq-content');
+                            if (content) content.setAttribute('aria-hidden', 'false');
+                        }
+                    });
+                }
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>
