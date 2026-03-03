@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor Dashboard | eVillage Portal</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css?v=2.0" />
+    <!-- <script src="../auth-check.js?v=2.0"></script> -->
+    <style>
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "SF Pro Display",
+          "SF Pro Text",
+          "Helvetica Neue",
+          Arial,
+          sans-serif;
+        background: var(--bg-primary, #f3f4f6);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        min-height: 100vh;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Sidebar - Inherited exactly from standard dashboard */
+      .sidebar {
+        width: 260px;
+        background: #0d3d44;
+        color: white;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        z-index: 100;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 40px;
+        text-decoration: none;
+        color: white;
+        padding: 0 12px;
+      }
+
+      .sidebar-brand i {
+        font-size: 24px;
+        color: #10b981;
+      }
+
+      .nav-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex: 1;
+      }
+      .nav-item {
+        margin-bottom: 8px;
+      }
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.2s;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+      .nav-link i {
+        width: 20px;
+        text-align: center;
+      }
+
+      .user-profile {
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: auto;
+      }
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        background: #10b981;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: #0d3d44;
+      }
+      .user-info {
+        flex: 1;
+        overflow: hidden;
+      }
+      .user-name {
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .user-role {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        margin-left: 260px;
+        padding: 32px 40px;
+        max-width: 1400px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+      .welcome-text h1 {
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--text-primary, #111827);
+        margin-bottom: 4px;
+      }
+      .welcome-text p {
+        color: var(--text-secondary, #6b7280);
+        font-size: 15px;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 16px;
+      }
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid var(--border-color, #e5e7eb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary, #6b7280);
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+      }
+      .icon-btn:hover {
+        color: #0d3d44;
+        border-color: #0d3d44;
+      }
+
+      /* Dashboard Grid: Vendor Stats (1. Vendor Stats) */
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        margin-bottom: 40px;
+      }
+      .stat-card {
+        background: white;
+        padding: 24px;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        transition: transform 0.2s;
+      }
+      .stat-card:hover {
+        transform: translateY(-2px);
+      }
+      .stat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+      .bg-teal {
+        background: rgba(13, 61, 68, 0.1);
+        color: #0d3d44;
+      }
+      .bg-green {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+      }
+      .bg-orange {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+      }
+      .bg-blue {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+      }
+
+      .stat-content h3 {
+        font-size: 14px;
+        color: var(--text-secondary, #6b7280);
+        margin-bottom: 4px;
+        font-weight: 500;
+      }
+      .stat-value {
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--text-primary, #111827);
+      }
+      .stat-trend {
+        font-size: 13px;
+        color: #10b981;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 500;
+      }
+
+      /* Section Headers */
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+      .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-primary, #111827);
+      }
+      .btn-primary {
+        background: #0d3d44;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 14px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* Data Tables (2. Product Inventory & 4. Admin Queue) */
+      .card-container {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 40px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .data-table th {
+        text-align: left;
+        padding: 12px 16px;
+        font-size: 13px;
+        color: var(--text-secondary, #6b7280);
+        font-weight: 500;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .data-table td {
+        padding: 16px;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
+        vertical-align: middle;
+      }
+      .data-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .product-info {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .product-img {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+      .product-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-primary, #111827);
+        margin-bottom: 4px;
+      }
+      .product-specs {
+        font-size: 13px;
+        color: var(--text-secondary, #6b7280);
+      }
+
+      .badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-block;
+      }
+      .badge-success {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .badge-warning {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .badge-danger {
+        background: #fee2e2;
+        color: #b91c1c;
+      }
+
+      .price-text {
+        font-weight: 600;
+        color: var(--text-primary, #111827);
+      }
+
+      /* Split View (3. Active Installations & Bids) */
+      .split-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 40px;
+      }
+
+      .list-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border-color, #e5e7eb);
+      }
+      .list-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .item-main {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .item-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-primary, #111827);
+      }
+      .item-sub {
+        font-size: 13px;
+        color: var(--text-secondary, #6b7280);
+      }
+
+      .install-progress-container {
+        width: 120px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        align-items: flex-end;
+      }
+      .progress-bar-bg {
+        width: 100%;
+        height: 6px;
+        background: #e5e7eb;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .progress-bar-fill {
+        height: 100%;
+        background: #10b981;
+        border-radius: 4px;
+      }
+      .progress-text {
+        font-size: 12px;
+        font-weight: 600;
+        color: #10b981;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 8px;
+      }
+      .btn-outline {
+        background: transparent;
+        border: 1px solid var(--border-color, #e5e7eb);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-primary, #111827);
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .btn-outline:hover {
+        border-color: #0d3d44;
+        color: #0d3d44;
+      }
+      .btn-outline.admit:hover {
+        border-color: #10b981;
+        color: #10b981;
+        background: #d1fae5;
+      }
+      .btn-outline.reject:hover {
+        border-color: #ef4444;
+        color: #ef4444;
+        background: #fee2e2;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="evillage.html" class="sidebar-brand">
+        <i class="fas fa-leaf"></i>
+        <span>eVillage Admin</span>
+      </a>
+
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a
+            href="evillage-admin-dashboard.html"
+            class="nav-link"
+            id="nav-dashboard"
+          >
+            <i class="fas fa-chart-pie"></i>
+            <span>Overview</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            href="evillage-admin-compliance.html"
+            class="nav-link"
+            id="nav-compliance"
+          >
+            <i class="fas fa-shield-alt"></i>
+            <span>Compliance Center</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="evillage-admin-loans.html" class="nav-link" id="nav-loans">
+            <i class="fas fa-hand-holding-usd"></i>
+            <span>Loan Management</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            href="evillage-admin-directory.html"
+            class="nav-link"
+            id="nav-directory"
+          >
+            <i class="fas fa-users-cog"></i>
+            <span>Global Directory</span>
+          </a>
+        </li>
+        <li
+          class="nav-item"
+          style="
+            margin-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 12px;
+          "
+        >
+          <a href="#" class="nav-link">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Sign Out</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="user-profile">
+        <div class="user-avatar" style="background: #3b82f6; color: white">
+          SA
+        </div>
+        <div class="user-info">
+          <div class="user-name">Super Admin</div>
+          <div class="user-role">System Administrator</div>
+        </div>
+      </div>
+    </aside>
+
+    <style>
+      /* Modal Styles */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-overlay.active {
+        display: flex;
+      }
+
+      .modal-content {
+        background: white;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 800px;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 32px;
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        animation: modalFadeIn 0.3s ease-out;
+      }
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 24px;
+      }
+      .modal-title h2 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 8px 0;
+      }
+      .modal-title .badges {
+        display: flex;
+        gap: 8px;
+      }
+      .close-modal {
+        background: #f3f4f6;
+        border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #6b7280;
+        transition: 0.2s;
+      }
+      .close-modal:hover {
+        background: #e5e7eb;
+        color: #111827;
+      }
+
+      .modal-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 32px;
+      }
+      .info-card {
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+      }
+      .info-card h4 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #64748b;
+        margin: 0 0 16px 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .info-item {
+        margin-bottom: 12px;
+      }
+      .info-item:last-child {
+        margin-bottom: 0;
+      }
+      .info-label {
+        font-size: 12px;
+        color: #64748b;
+        margin-bottom: 2px;
+      }
+      .info-value {
+        font-size: 14px;
+        color: #0f172a;
+        font-weight: 500;
+      }
+    </style>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="header">
+        <div class="welcome-text">
+          <h1>Global Directory</h1>
+          <p>Manage all registered vendors and business statuses.</p>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn">
+            <i class="far fa-bell"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Global Directory Table -->
+      <div class="section-header">
+        <div class="section-title">Vendor Directory</div>
+      </div>
+      <div class="card-container" style="overflow-x: auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Business Name</th>
+              <th>Total Products</th>
+              <th>Total Installs / Rating</th>
+              <th>Status</th>
+              <th>Quick Action</th>
+            </tr>
+          </thead>
+          <tbody id="directory-tbody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- Vendor Details Modal -->
+    <div class="modal-overlay" id="vendor-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">
+            <h2 id="modal-business-name">Business Name</h2>
+            <div class="badges" id="modal-badges"></div>
+          </div>
+          <button class="close-modal" onclick="closeModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="modal-grid">
+          <!-- Left Col: Details -->
+          <div style="display: flex; flex-direction: column; gap: 24px">
+            <div class="info-card">
+              <h4>Business Profile</h4>
+              <div class="info-item">
+                <div class="info-label">Vendor ID</div>
+                <div class="info-value" id="modal-id"></div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Owner Name</div>
+                <div class="info-value" id="modal-owner"></div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Location</div>
+                <div class="info-value" id="modal-location"></div>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <h4>KYC Documents</h4>
+              <div class="info-item">
+                <div class="info-label">National Identity Number (NIN)</div>
+                <div
+                  class="info-value"
+                  style="font-family: monospace"
+                  id="modal-nin"
+                ></div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">CAC Registration Number</div>
+                <div
+                  class="info-value"
+                  style="font-family: monospace"
+                  id="modal-cac"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Col: Products -->
+          <div>
+            <h3
+              style="
+                font-size: 16px;
+                font-weight: 600;
+                color: #111827;
+                margin: 0 0 16px 0;
+                border-bottom: 2px solid #e5e7eb;
+                padding-bottom: 8px;
+              "
+            >
+              Product Inventory (<span id="modal-product-count">0</span>)
+            </h3>
+
+            <div
+              id="modal-products-list"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                max-height: 400px;
+                overflow-y: auto;
+                padding-right: 8px;
+              "
+            >
+              <!-- JS populated products -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logic Script -->
+    <script src="evillage-admin-logic.js"></script>
+    <script>
+      // Set active nav outside DOMContent loaded so it triggers faster
+      document.getElementById("nav-directory").classList.add("active");
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const renderTable = () => {
+          const tbody = document.getElementById("directory-tbody");
+          const vendors = window.evillageData.vendors;
+
+          if (!vendors || vendors.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No vendors in directory.</td></tr>`;
+            return;
+          }
+
+          tbody.innerHTML = vendors
+            .map(
+              (v) => `
+                    <tr>
+                        <td style="font-weight: 500; color: #111827;">
+                            <div style="display:flex; align-items:center; gap: 12px;">
+                                <div style="width:32px; height:32px; background:#e5e7eb; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600;">${v.businessName.substring(0, 2).toUpperCase()}</div>
+                                <div>
+                                    <div>${v.businessName}</div>
+                                    <div style="font-size:12px; color:#6b7280; font-weight:400; margin-top:2px;">${v.ownerName} • ${v.location.state}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${v.metrics.listedProducts}</td>
+                        <td>
+                            ${v.metrics.totalInstallments}
+                            <span style="display:inline-block; margin-left:8px; background:#fffbeb; color:#d97706; padding:2px 6px; border-radius:12px; font-size:11px; font-weight:600;">
+                                <i class="fas fa-star" style="font-size:10px;"></i> ${v.metrics.rating.toFixed(1)}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge ${v.status === "Active" ? "badge-success" : "badge-danger"}">
+                                ${v.status}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-outline" style="background:#f3f4f6;" onclick="window.openVendorModal('${v.vendorId}')">View</button>
+                                ${
+                                  v.status === "Active"
+                                    ? `<button class="btn-outline reject" onclick="handleStatusToggle('${v.vendorId}', 'Suspended')">Strike Out</button>`
+                                    : `<button class="btn-outline admit" onclick="handleStatusToggle('${v.vendorId}', 'Active')">Reactivate</button>`
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                `,
+            )
+            .join("");
+        };
+
+        // Status Toggle Action
+        window.handleStatusToggle = (id, newStatus) => {
+          const vendorIndex = window.evillageData.vendors.findIndex(
+            (v) => v.vendorId === id,
+          );
+          if (vendorIndex > -1) {
+            const vendor = window.evillageData.vendors[vendorIndex];
+            vendor.status = newStatus;
+
+            if (newStatus === "Suspended") {
+              const reason = prompt("Enter reason for suspension:");
+              if (reason !== null) {
+                window.evillageData.showMockEmail(
+                  `Important: Your vendor access has been revoked due to ${reason || "policy violations"}. All associated products have been unlisted.`,
+                );
+              } else {
+                // Cancelled prompt
+                vendor.status = "Active";
+                return;
+              }
+            } else if (newStatus === "Active") {
+              window.evillageData.showMockEmail(
+                `Notice: Your vendor account for ${vendor.businessName} has been Reactivated.`,
+              );
+            }
+
+            renderTable();
+          }
+        };
+
+        // Modal Logic
+        window.openVendorModal = (id) => {
+          const vendor = window.evillageData.vendors.find(
+            (v) => v.vendorId === id,
+          );
+          if (!vendor) return;
+
+          document.getElementById("modal-business-name").textContent =
+            vendor.businessName;
+          document.getElementById("modal-id").textContent = vendor.vendorId;
+          document.getElementById("modal-owner").textContent = vendor.ownerName;
+          document.getElementById("modal-location").textContent =
+            `${vendor.location.state} (${vendor.location.region})`;
+          document.getElementById("modal-nin").textContent = vendor.kyc.nin;
+          document.getElementById("modal-cac").textContent =
+            vendor.kyc.cacNumber;
+
+          // Badges
+          const isVerified = vendor.verificationStatus === "Admitted";
+          document.getElementById("modal-badges").innerHTML = `
+                    <span class="badge ${vendor.status === "Active" ? "badge-success" : "badge-danger"}">${vendor.status}</span>
+                    <span class="badge ${isVerified ? "badge-success" : "badge-warning"}"><i class="fas ${isVerified ? "fa-check" : "fa-clock"}" style="margin-right:4px;"></i>${vendor.verificationStatus}</span>
+                `;
+
+          // Products
+          document.getElementById("modal-product-count").textContent =
+            vendor.products.length;
+          const productsList = document.getElementById("modal-products-list");
+
+          if (vendor.products.length === 0) {
+            productsList.innerHTML = `<div style="text-align:center; padding:32px; color:#9ca3af; background:#f9fafb; border-radius:8px;">No products listed by this vendor yet.</div>`;
+          } else {
+            productsList.innerHTML = vendor.products
+              .map(
+                (p) => `
+                        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s;">
+                            <div>
+                                <div style="font-weight: 600; color: #111827; font-size: 14px;">${p.name}</div>
+                                <div style="font-size: 12px; color: #6b7280; display:flex; gap: 12px; margin-top: 4px;">
+                                    <span><i class="fas fa-tag"></i> ${p.category}</span>
+                                    <span><i class="fas fa-box"></i> Stock: <span style="font-weight: ${p.stock < 10 ? "600" : "500"}; color: ${p.stock < 10 ? "#ef4444" : "inherit"};">${p.stock} units</span></span>
+                                </div>
+                            </div>
+                            <div style="font-weight: 600; color: #0d3d44; font-size: 15px;">
+                                ₦${p.price.toLocaleString()}
+                            </div>
+                        </div>
+                    `,
+              )
+              .join("");
+          }
+
+          // Show modal
+          document.getElementById("vendor-modal").classList.add("active");
+        };
+
+        window.closeModal = () => {
+          document.getElementById("vendor-modal").classList.remove("active");
+        };
+
+        // Close on background click
+        document
+          .getElementById("vendor-modal")
+          .addEventListener("click", (e) => {
+            if (e.target === e.currentTarget) window.closeModal();
+          });
+
+        // Initial render
+        renderTable();
+      });
+    </script>
+  </body>
+</html>
