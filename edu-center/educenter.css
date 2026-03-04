@@ -496,3 +496,23 @@
     color: #ffffff !important;
     border: 1px solid #000000 !important;
 }
+
+/* ============================================
+   Edu Center Global Mobile Overrides
+   ============================================ */
+body {
+    overflow-x: hidden;
+}
+
+.edu-hero {
+    overflow-x: hidden;
+}
+
+.mobile-menu-btn {
+    color: #ffffff !important;
+    transition: color 0.3s ease;
+}
+
+.mobile-menu-btn.scrolled {
+    color: #050c26 !important;
+}

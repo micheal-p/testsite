@@ -49,14 +49,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Scroll Logic for Auth Links Color Change
     const authFixed = document.querySelector('.auth-fixed');
     const heroSection = document.querySelector('.edu-hero');
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn'); // For Mobile Burger Color
 
-    if (authFixed && heroSection) {
+    if (heroSection) {
         const handleScroll = () => {
             // Check if we've scrolled past the hero section
             if (window.scrollY > (heroSection.offsetHeight - 60)) {
-                authFixed.classList.add('scrolled');
+                if (authFixed) authFixed.classList.add('scrolled');
+                if (mobileMenuBtn) mobileMenuBtn.classList.add('scrolled');
             } else {
-                authFixed.classList.remove('scrolled');
+                if (authFixed) authFixed.classList.remove('scrolled');
+                if (mobileMenuBtn) mobileMenuBtn.classList.remove('scrolled');
             }
         };
 
