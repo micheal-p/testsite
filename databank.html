@@ -1259,6 +1259,7 @@
                 btn.addEventListener('click', () => {
                     const answerDiv = btn.nextElementSibling;
                     const icon = btn.querySelector('svg');
+                    // Check if expanded (using class or inline style)
                     const isOpen = answerDiv.style.height !== '0px' && answerDiv.style.height !== '';
 
                     // Close all other FAQs
@@ -1267,7 +1268,10 @@
                         const otherIcon = otherBtn.querySelector('svg');
                         if (otherBtn !== btn && otherAnswer) {
                             otherAnswer.style.height = '0px';
+                            otherAnswer.style.paddingTop = '0px';
+                            otherAnswer.style.paddingBottom = '0px';
                             otherAnswer.style.transform = 'translateY(-10px)';
+                            otherAnswer.style.opacity = '0';
                             if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
                         }
                     });
@@ -1275,11 +1279,20 @@
                     // Toggle current FAQ
                     if (isOpen) {
                         answerDiv.style.height = '0px';
+                        answerDiv.style.paddingTop = '0px';
+                        answerDiv.style.paddingBottom = '0px';
                         answerDiv.style.transform = 'translateY(-10px)';
+                        answerDiv.style.opacity = '0';
                         if (icon) icon.style.transform = 'rotate(0deg)';
                     } else {
-                        answerDiv.style.height = answerDiv.scrollHeight + 'px';
+                        // Expand
+                        answerDiv.style.height = 'auto'; // allow natural height
+                        answerDiv.style.paddingTop = '10px';
+                        answerDiv.style.paddingBottom = '5px';
                         answerDiv.style.transform = 'translateY(0px)';
+                        answerDiv.style.opacity = '1';
+                        // Add transition directly if it doesn't already have opacity/padding transitions
+                        answerDiv.style.transition = 'all 0.3s ease';
                         if (icon) icon.style.transform = 'rotate(45deg)';
                     }
                 });
