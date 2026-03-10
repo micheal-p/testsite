@@ -17,6 +17,11 @@
 
     <style>
         /* Force Project Fonts */
+        html, body {
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+
         body, p, li, a, span, div {
             font-family: var(--font-family) !important;
         }
@@ -150,6 +155,8 @@
             .hero-title { font-size: 2.25rem; }
             .hero-subtitle { font-size: 1rem; margin-bottom: 2rem; }
             .hero-section { padding: 160px 20px 60px; min-height: 50vh; border-bottom: none; }
+            .hero-content { padding: 0 10px; }
+            #cursor-gradient-container { display: none; }
             .hero-badge { margin-bottom: 1.5rem; font-size: 0.875rem; height: 2.25rem; }
             .hero-section a[href="#book-chat"] { padding: 12px 24px !important; font-size: 1rem !important; }
             
