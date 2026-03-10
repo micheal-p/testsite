@@ -817,7 +817,11 @@
                 if (index >= pillarCards.length) index = 0;
                 pillarIndex = index;
 
-                pillarCards[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                const card = pillarCards[index];
+                const gridRect = pillarGrid.getBoundingClientRect();
+                const cardRect = card.getBoundingClientRect();
+                const scrollOffset = cardRect.left - gridRect.left + pillarGrid.scrollLeft;
+                pillarGrid.scrollTo({ left: scrollOffset, behavior: 'smooth' });
                 updatePillarDots();
             }
 
