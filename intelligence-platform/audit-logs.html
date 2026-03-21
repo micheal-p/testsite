@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Logs | NEIIA Intelligence</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard-body">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA" class="sidebar-logo">
+            <span class="platform-name">Risk & ESG</span>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">OVERVIEW</div>
+            <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="spatial-tracking.html" class="nav-item"><i class="fas fa-globe-africa"></i><span>Spatial Tracking</span></a>
+            <a href="risk-models.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Risk Models</span></a>
+            <div class="nav-section">COMPLIANCE</div>
+            <a href="regulatory-reports.html" class="nav-item"><i class="fas fa-file-contract"></i><span>Regulatory Reports</span></a>
+            <a href="audit-logs.html" class="nav-item active"><i class="fas fa-tasks"></i><span>Audit Logs</span></a>
+            <div class="nav-section">ASSETS</div>
+            <a href="power-plants.html" class="nav-item"><i class="fas fa-bolt"></i><span>Power Plants</span></a>
+            <a href="carbon-credits.html" class="nav-item"><i class="fas fa-leaf"></i><span>Carbon Credits</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../risk-esg/index.html" class="nav-item"><i class="fas fa-arrow-left"></i><span>Back to Hub</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <button class="mobile-sidebar-btn" onclick="document.querySelector('.sidebar').classList.toggle('mobile-open')">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search logs, users, actions...">
+            </div>
+            <div class="topbar-actions">
+                <div class="dropdown-wrapper">
+                    <button class="icon-btn" onclick="toggleDropdown('notif-dropdown', event)"><i class="fas fa-bell"></i><span class="notif-badge">3</span></button>
+                    <div class="action-dropdown" id="notif-dropdown">
+                        <div class="dropdown-header">Notifications (3)</div>
+                        <a href="risk-models.html" class="dropdown-item">
+                            <i class="fas fa-exclamation-triangle" style="color:var(--danger)"></i>
+                            <div>
+                                <div style="font-weight:600; color:var(--text-main); margin-bottom:2px;">Critical Emission Alert</div>
+                                <div style="font-size:12px; color:var(--text-muted); line-height:1.4;">NG-TPP-014 has exceeded its quarterly carbon threshold. Immediate review required to avoid compliance penalties.</div>
+                            </div>
+                        </a>
+                        <a href="regulatory-reports.html" class="dropdown-item">
+                            <i class="fas fa-file-contract" style="color:var(--info)"></i>
+                            <div>
+                                <div style="font-weight:600; color:var(--text-main); margin-bottom:2px;">Compliance Report Ready</div>
+                                <div style="font-size:12px; color:var(--text-muted); line-height:1.4;">The Q1 ESG Compliance Data Export has finished generating and is ready for download.</div>
+                            </div>
+                        </a>
+                        <a href="power-plants.html" class="dropdown-item">
+                            <i class="fas fa-check-circle" style="color:var(--success)"></i>
+                            <div>
+                                <div style="font-weight:600; color:var(--text-main); margin-bottom:2px;">Asset Verification Complete</div>
+                                <div style="font-size:12px; color:var(--text-muted); line-height:1.4;">Zungeru Hydroelectric Power Station has been successfully registered and verified on the grid.</div>
+                            </div>
+                        </a>
+                        <a href="audit-logs.html" class="dropdown-item" style="justify-content:center; border-top:1px solid var(--border); color:var(--primary); font-weight:600;">
+                            View All Activity
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="dropdown-wrapper">
+                    <button class="icon-btn" onclick="toggleDropdown('settings-dropdown', event)"><i class="fas fa-cog"></i></button>
+                    <div class="action-dropdown" id="settings-dropdown">
+                        <div class="dropdown-header">Platform Settings</div>
+                        <a href="preferences.html" class="dropdown-item"><i class="fas fa-sliders-h"></i> Preferences</a>
+                        <a href="security.html" class="dropdown-item"><i class="fas fa-shield-alt"></i> Security & Access</a>
+                        <a href="integrations.html" class="dropdown-item"><i class="fas fa-plug"></i> Integrations</a>
+                    </div>
+                </div>
+
+                <div class="dropdown-wrapper">
+                    <div class="user-profile" onclick="toggleDropdown('profile-dropdown', event)">
+                        <img src="https://ui-avatars.com/api/?name=Admin+User&background=0D8F4F&color=fff" alt="User">
+                    </div>
+                    <div class="action-dropdown" id="profile-dropdown">
+                        <div class="dropdown-header" style="display:flex; align-items:center; gap:12px;">
+                            <img src="https://ui-avatars.com/api/?name=Admin+User&background=0D8F4F&color=fff" style="width:32px; height:32px; border-radius:50%">
+                            <div>
+                                <div>Admin User</div>
+                                <div style="font-size:11px; color:var(--text-muted); font-weight:400;">admin@neiia.gov.ng</div>
+                            </div>
+                        </div>
+                        <a href="profile.html" class="dropdown-item"><i class="fas fa-user"></i> My Profile</a>
+                        <a href="../index.html" class="dropdown-item" style="color:var(--danger)"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <div>
+                    <h1>Audit Logs</h1>
+                    <p>Comprehensive activity trail for compliance, security, and governance auditing.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="document.getElementById('filter-modal').classList.add('show')"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="btn btn-primary" onclick="document.getElementById('export-modal').classList.add('show')"><i class="fas fa-download"></i> Export Logs</button>
+                </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">Total Events (30d)</span>
+                        <i class="fas fa-list" style="color: #0ea5e9;"></i>
+                    </div>
+                    <div class="metric-value">12,847</div>
+                    <div class="metric-trend up"><i class="fas fa-arrow-up"></i> Normal volume</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">Security Events</span>
+                        <i class="fas fa-lock" style="color: #ef4444;"></i>
+                    </div>
+                    <div class="metric-value">24</div>
+                    <div class="metric-trend down"><i class="fas fa-arrow-down"></i> No breaches</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">Active Users</span>
+                        <i class="fas fa-users" style="color: #10b981;"></i>
+                    </div>
+                    <div class="metric-value">38</div>
+                    <div class="metric-trend up"><i class="fas fa-arrow-up"></i> +6 this month</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">Data Exports</span>
+                        <i class="fas fa-file-export" style="color: #8b5cf6;"></i>
+                    </div>
+                    <div class="metric-value">156</div>
+                    <div class="metric-trend up"><i class="fas fa-arrow-up"></i> All authorized</div>
+                </div>
+            </div>
+
+            <!-- Audit Log Table -->
+            <div class="chart-card">
+                <div class="card-header">
+                    <h3>Activity Log</h3>
+                    <div style="display:flex; gap:8px;">
+                        <select class="select-sm">
+                            <option>All Categories</option>
+                            <option>Login/Logout</option>
+                            <option>Data Access</option>
+                            <option>Report Generation</option>
+                            <option>Settings Change</option>
+                            <option>Security</option>
+                        </select>
+                        <select class="select-sm">
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                            <option>Last 90 days</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>User</th>
+                                <th>Action</th>
+                                <th>Category</th>
+                                <th>IP Address</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="white-space:nowrap;">Mar 21, 03:42 AM</td>
+                                <td>admin@neiia.gov.ng</td>
+                                <td>Exported Emissions Report Q1 2026</td>
+                                <td><span class="badge badge-low" style="position:static;">Data Export</span></td>
+                                <td>10.0.12.44</td>
+                                <td><span class="status good">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td style="white-space:nowrap;">Mar 21, 02:18 AM</td>
+                                <td>ops.manager@neiia.gov.ng</td>
+                                <td>Updated risk threshold for NG-TPP-014</td>
+                                <td><span class="badge badge-med" style="position:static;">Settings</span></td>
+                                <td>10.0.12.88</td>
+                                <td><span class="status good">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td style="white-space:nowrap;">Mar 21, 01:56 AM</td>
+                                <td>analyst.k@neiia.gov.ng</td>
+                                <td>Ran Monte Carlo simulation — Oil Shock</td>
+                                <td><span class="badge badge-low" style="position:static;">Computation</span></td>
+                                <td>10.0.12.67</td>
+                                <td><span class="status good">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td style="white-space:nowrap;">Mar 20, 11:30 PM</td>
+                                <td>unknown</td>
+                                <td>Failed login attempt (3 retries)</td>
+                                <td><span class="badge badge-high" style="position:static;">Security</span></td>
+                                <td>196.12.48.91</td>
+                                <td><span class="status pending">Flagged</span></td>
+                            </tr>
+                            <tr>
+                                <td style="white-space:nowrap;">Mar 20, 10:12 PM</td>
+                                <td>compliance@neiia.gov.ng</td>
+                                <td>Filed TCFD Disclosure Report</td>
+                                <td><span class="badge badge-low" style="position:static;">Report</span></td>
+                                <td>10.0.12.21</td>
+                                <td><span class="status good">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td style="white-space:nowrap;">Mar 20, 08:44 PM</td>
+                                <td>admin@neiia.gov.ng</td>
+                                <td>Added new user: field.ops@neiia.gov.ng</td>
+                                <td><span class="badge badge-med" style="position:static;">Admin</span></td>
+                                <td>10.0.12.44</td>
+                                <td><span class="status good">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td style="white-space:nowrap;">Mar 20, 06:15 PM</td>
+                                <td>esg.lead@neiia.gov.ng</td>
+                                <td>Viewed Carbon Credits portfolio summary</td>
+                                <td><span class="badge badge-low" style="position:static;">Data Access</span></td>
+                                <td>10.0.12.55</td>
+                                <td><span class="status good">Success</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Filter Modal -->
+    <div class="modal-backdrop" id="filter-modal" onclick="if(event.target===this) this.classList.remove('show')">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-filter" style="margin-right:8px;"></i> Filter Audit Logs</h2>
+                <button class="modal-close" onclick="document.getElementById('filter-modal').classList.remove('show')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group" style="margin-bottom:16px;">
+                    <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Date Range</label>
+                    <div style="display:flex; gap:12px;">
+                        <input type="date" style="flex:1; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                        <input type="date" style="flex:1; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                    </div>
+                </div>
+                <div class="setting-group" style="margin-bottom:16px;">
+                    <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">User Email</label>
+                    <input type="text" placeholder="e.g. j.doe@neiia.gov.ng" style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                </div>
+                <div class="setting-group" style="margin-bottom:16px;">
+                    <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Category</label>
+                    <select style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                        <option>All Categories</option>
+                        <option>Login/Logout</option>
+                        <option>Data Access</option>
+                        <option>Settings Change</option>
+                        <option>Security Event</option>
+                        <option>Report Generation</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Status</label>
+                    <select style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                        <option>All Statuses</option>
+                        <option>Success</option>
+                        <option>Failed</option>
+                        <option>Flagged</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="document.getElementById('filter-modal').classList.remove('show')">Reset Filters</button>
+                <button class="btn btn-primary" onclick="document.getElementById('filter-modal').classList.remove('show')">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal-backdrop" id="export-modal" onclick="if(event.target===this) this.classList.remove('show')">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-file-export" style="margin-right:8px;"></i> Export Audit Logs</h2>
+                <button class="modal-close" onclick="document.getElementById('export-modal').classList.remove('show')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group" style="margin-bottom:16px;">
+                    <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Export Format</label>
+                    <select style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                        <option>CSV Dataset (*.csv)</option>
+                        <option>Secure PDF Report (*.pdf)</option>
+                        <option>JSON Array (*.json)</option>
+                    </select>
+                </div>
+                <div class="setting-group" style="margin-bottom:16px;">
+                    <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Time Range</label>
+                    <select style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                        <option>Last 7 Days</option>
+                        <option>Current Month</option>
+                        <option>Year to Date (YTD)</option>
+                        <option>Custom Date Range</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Include Fields</label>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="checkbox" checked> Timestamp & User ID</label>
+                        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="checkbox" checked> Action Description</label>
+                        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="checkbox" checked> Origin IP Address</label>
+                        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="checkbox" checked> Computed Risk Status</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="document.getElementById('export-modal').classList.remove('show')">Cancel</button>
+                <button class="btn btn-primary" onclick="document.getElementById('export-modal').classList.remove('show')">Download Export</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+        // Dropdown Toggle
+        window.toggleDropdown = function(id, e) {
+            e.stopPropagation();
+            const current = document.getElementById(id);
+            const isCurrentlyActive = current.classList.contains('active');
+            
+            document.querySelectorAll('.action-dropdown').forEach(d => d.classList.remove('active'));
+            
+            if (!isCurrentlyActive) {
+                current.classList.add('active');
+            }
+        };
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown-wrapper')) {
+                document.querySelectorAll('.action-dropdown').forEach(d => d.classList.remove('active'));
+            }
+        });
+
+        // Search Functionality
+            const searchInput = document.getElementById('global-search');
+            const searchResults = document.getElementById('search-results');
+            
+            const searchData = [
+                { title: 'NG-TPP-014 (South South)', desc: 'Power Plant Asset', icon: 'fa-bolt', link: 'power-plants.html' },
+                { title: 'NG-HYD-002 (North Central)', desc: 'Hydropower Asset', icon: 'fa-water', link: 'power-plants.html' },
+                { title: 'Emissions Threshold Exceeded', desc: 'Active Risk Alert', icon: 'fa-exclamation-triangle', link: 'risk-models.html' },
+                { title: 'Community Relations Report Due', desc: 'Compliance Alert', icon: 'fa-file-contract', link: 'regulatory-reports.html' },
+                { title: 'Delta Region Spatial Map', desc: 'Spatial Tracking', icon: 'fa-globe-africa', link: 'spatial-tracking.html' },
+                { title: 'Katsina Solar Facility VER', desc: 'Carbon Credits', icon: 'fa-leaf', link: 'carbon-credits.html' },
+                { title: 'Quarterly ESG Audit Log', desc: 'Audit Logs', icon: 'fa-tasks', link: 'audit-logs.html' }
+            ];
+
+            if (searchInput && searchResults) {
+                searchInput.addEventListener('input', (e) => {
+                    const q = e.target.value.toLowerCase().trim();
+                    if (!q) {
+                        searchResults.style.display = 'none';
+                        return;
+                    }
+                    
+                    const filtered = searchData.filter(item => 
+                        item.title.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q)
+                    );
+
+                    if (filtered.length > 0) {
+                        searchResults.innerHTML = filtered.map(item => `
+                            <a href="${item.link}" class="search-result-item">
+                                <div class="search-result-icon"><i class="fas ${item.icon}"></i></div>
+                                <div class="search-result-text">
+                                    <h4>${item.title}</h4>
+                                    <p>${item.desc}</p>
+                                </div>
+                            </a>
+                        `).join('');
+                        searchResults.style.display = 'block';
+                    } else {
+                        searchResults.innerHTML = `<div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 13px;">No results found for "${q}"</div>`;
+                        searchResults.style.display = 'block';
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                        searchResults.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(e) {
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarBtn = document.querySelector('.mobile-sidebar-btn');
+            
+            if (sidebar && sidebar.classList.contains('mobile-open')) {
+                // If the click is NOT inside the sidebar and NOT on the toggle button
+                if (!sidebar.contains(e.target) && (!sidebarBtn || !sidebarBtn.contains(e.target))) {
+                    sidebar.classList.remove('mobile-open');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

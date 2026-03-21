@@ -3,65 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Access Intelligence Platform | NEIIA</title>
+    <title>Spatial Tracking | NEIIA Intelligence</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="dashboard-body">
-    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
             <img src="../assets/images/neiis-logo-green.png" alt="NEIIA" class="sidebar-logo">
             <span class="platform-name">Risk & ESG</span>
         </div>
-        
         <nav class="sidebar-nav">
             <div class="nav-section">OVERVIEW</div>
-            <a href="index.html" class="nav-item active">
-                <i class="fas fa-home"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="spatial-tracking.html" class="nav-item">
-                <i class="fas fa-globe-africa"></i>
-                <span>Spatial Tracking</span>
-            </a>
-            <a href="risk-models.html" class="nav-item">
-                <i class="fas fa-chart-line"></i>
-                <span>Risk Models</span>
-            </a>
-            
+            <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="spatial-tracking.html" class="nav-item active"><i class="fas fa-globe-africa"></i><span>Spatial Tracking</span></a>
+            <a href="risk-models.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Risk Models</span></a>
             <div class="nav-section">COMPLIANCE</div>
-            <a href="regulatory-reports.html" class="nav-item">
-                <i class="fas fa-file-contract"></i>
-                <span>Regulatory Reports</span>
-            </a>
-            <a href="audit-logs.html" class="nav-item">
-                <i class="fas fa-tasks"></i>
-                <span>Audit Logs</span>
-            </a>
-            
+            <a href="regulatory-reports.html" class="nav-item"><i class="fas fa-file-contract"></i><span>Regulatory Reports</span></a>
+            <a href="audit-logs.html" class="nav-item"><i class="fas fa-tasks"></i><span>Audit Logs</span></a>
             <div class="nav-section">ASSETS</div>
-            <a href="power-plants.html" class="nav-item">
-                <i class="fas fa-bolt"></i>
-                <span>Power Plants</span>
-            </a>
-            <a href="carbon-credits.html" class="nav-item">
-                <i class="fas fa-leaf"></i>
-                <span>Carbon Credits</span>
-            </a>
+            <a href="power-plants.html" class="nav-item"><i class="fas fa-bolt"></i><span>Power Plants</span></a>
+            <a href="carbon-credits.html" class="nav-item"><i class="fas fa-leaf"></i><span>Carbon Credits</span></a>
         </nav>
-        
         <div class="sidebar-footer">
-            <a href="../risk-esg/index.html" class="nav-item">
-                <i class="fas fa-arrow-left"></i>
-                <span>Back to Hub</span>
-            </a>
+            <a href="../risk-esg/index.html" class="nav-item"><i class="fas fa-arrow-left"></i><span>Back to Hub</span></a>
         </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="main-content">
         <header class="topbar">
             <button class="mobile-sidebar-btn" onclick="document.querySelector('.sidebar').classList.toggle('mobile-open')">
@@ -69,8 +38,7 @@
             </button>
             <div class="search-bar">
                 <i class="fas fa-search"></i>
-                <input type="text" id="global-search" placeholder="Search assets, reports, or risks..." autocomplete="off">
-                <div id="search-results" class="search-dropdown" style="display: none;"></div>
+                <input type="text" placeholder="Search locations, assets...">
             </div>
             <div class="topbar-actions">
                 <div class="dropdown-wrapper">
@@ -136,189 +104,136 @@
         <div class="dashboard-container">
             <div class="dashboard-header">
                 <div>
-                    <h1>National ESG Overview</h1>
-                    <p>Real-time intelligence across monitored energy assets in Nigeria.</p>
+                    <h1>Spatial Tracking</h1>
+                    <p>Real-time geospatial monitoring of energy assets and environmental indicators across Nigeria.</p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn btn-outline"><i class="fas fa-download"></i> Export Report</button>
-                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Asset</button>
+                    <button class="btn btn-outline"><i class="fas fa-layer-group"></i> Toggle Layers</button>
+                    <button class="btn btn-primary"><i class="fas fa-download"></i> Export Map</button>
                 </div>
             </div>
 
-            <!-- Key Metrics -->
+            <!-- Map Placeholder -->
+            <div class="chart-card" style="margin-bottom:24px;">
+                <div class="card-header">
+                    <h3>Asset Distribution Map — Nigeria</h3>
+                    <div class="card-actions">
+                        <select class="select-sm">
+                            <option>All Regions</option>
+                            <option>South South</option>
+                            <option>North Central</option>
+                            <option>South West</option>
+                            <option>North West</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body" style="position:relative; min-height:400px; background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%); border-radius: 0 0 16px 16px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px;">
+                    <i class="fas fa-map-marked-alt" style="font-size:64px; color:#0B1F24; opacity:0.15;"></i>
+                    <p style="color:#6b7280; font-size:15px; max-width:400px; text-align:center;">Interactive geospatial map with satellite imagery, asset pins, and environmental heatmaps. Connect to the NEIIA Spatial API for live data.</p>
+                    <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+                        <span style="background:#dcfce7; color:#15803d; padding:6px 14px; border-radius:100px; font-size:12px; font-weight:600;"><i class="fas fa-circle" style="font-size:8px; margin-right:4px;"></i> 42 Solar Sites</span>
+                        <span style="background:#fee2e2; color:#b91c1c; padding:6px 14px; border-radius:100px; font-size:12px; font-weight:600;"><i class="fas fa-circle" style="font-size:8px; margin-right:4px;"></i> 18 Thermal Plants</span>
+                        <span style="background:#dbeafe; color:#1d4ed8; padding:6px 14px; border-radius:100px; font-size:12px; font-weight:600;"><i class="fas fa-circle" style="font-size:8px; margin-right:4px;"></i> 7 Hydro Stations</span>
+                        <span style="background:#fef3c7; color:#b45309; padding:6px 14px; border-radius:100px; font-size:12px; font-weight:600;"><i class="fas fa-circle" style="font-size:8px; margin-right:4px;"></i> 5 Wind Farms</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics -->
             <div class="metrics-grid">
                 <div class="metric-card">
                     <div class="metric-header">
-                        <span class="metric-title">Portfolio ESG Score</span>
-                        <i class="fas fa-leaf" style="color: #10b981;"></i>
+                        <span class="metric-title">Monitored Area</span>
+                        <i class="fas fa-map" style="color: #0ea5e9;"></i>
                     </div>
-                    <div class="metric-value">A-</div>
-                    <div class="metric-trend up"><i class="fas fa-arrow-up"></i> 2.4% vs last quarter</div>
+                    <div class="metric-value">1.2M <span class="unit">km²</span></div>
+                    <div class="metric-trend up"><i class="fas fa-arrow-up"></i> 8 new zones added</div>
                 </div>
-                
                 <div class="metric-card">
                     <div class="metric-header">
-                        <span class="metric-title">Total Emissions</span>
-                        <i class="fas fa-smog" style="color: #64748b;"></i>
+                        <span class="metric-title">Active Sensors</span>
+                        <i class="fas fa-satellite-dish" style="color: #10b981;"></i>
                     </div>
-                    <div class="metric-value">1.42M <span class="unit">tCO2e</span></div>
-                    <div class="metric-trend down"><i class="fas fa-arrow-down"></i> 4.1% vs last quarter</div>
+                    <div class="metric-value">347</div>
+                    <div class="metric-trend up"><i class="fas fa-arrow-up"></i> 99.2% online</div>
                 </div>
-                
                 <div class="metric-card">
                     <div class="metric-header">
-                        <span class="metric-title">Active Risks</span>
-                        <i class="fas fa-exclamation-triangle" style="color: #f59e0b;"></i>
+                        <span class="metric-title">Environmental Alerts</span>
+                        <i class="fas fa-exclamation-circle" style="color: #f59e0b;"></i>
                     </div>
-                    <div class="metric-value">12 <span class="unit">Alerts</span></div>
-                    <div class="metric-trend down"><i class="fas fa-arrow-down"></i> 2 Critical Resolved</div>
+                    <div class="metric-value">5</div>
+                    <div class="metric-trend down"><i class="fas fa-arrow-down"></i> 2 resolved today</div>
                 </div>
-                
                 <div class="metric-card">
                     <div class="metric-header">
-                        <span class="metric-title">Compliance Rate</span>
-                        <i class="fas fa-shield-alt" style="color: #0ea5e9;"></i>
+                        <span class="metric-title">Satellite Passes</span>
+                        <i class="fas fa-satellite" style="color: #8b5cf6;"></i>
                     </div>
-                    <div class="metric-value">98.5%</div>
-                    <div class="metric-trend up"><i class="fas fa-arrow-up"></i> Fully aligned with NDC</div>
+                    <div class="metric-value">12 <span class="unit">/day</span></div>
+                    <div class="metric-trend up"><i class="fas fa-arrow-up"></i> High-res imagery</div>
                 </div>
             </div>
 
-            <!-- Charts & Tables -->
-            <div class="content-grid">
-                <div class="chart-card span-2">
-                    <div class="card-header">
-                        <h3>Emissions vs Targets (YTD)</h3>
-                        <div class="card-actions">
-                            <select class="select-sm"><option>2026</option><option>2025</option></select>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="emissionsChart" height="250"></canvas>
-                    </div>
+            <!-- Recent Spatial Events -->
+            <div class="chart-card span-3">
+                <div class="card-header">
+                    <h3>Recent Spatial Events</h3>
+                    <button class="btn btn-sm btn-outline">View All</button>
                 </div>
-                
-                <div class="chart-card">
-                    <div class="card-header">
-                        <h3>Risk Exposure by Sector</h3>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="riskChart" height="250"></canvas>
-                    </div>
-                </div>
-                
-                <div class="chart-card span-3">
-                    <div class="card-header">
-                        <h3>Recent Compliance Alerts</h3>
-                        <button class="btn btn-sm btn-outline">View All</button>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Asset ID</th>
-                                    <th>Region</th>
-                                    <th>Alert Type</th>
-                                    <th>Severity</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>NG-TPP-014</td>
-                                    <td>South South</td>
-                                    <td>Emissions Threshold Exceeded</td>
-                                    <td><span class="badge badge-high" style="position:static;">High</span></td>
-                                    <td><span class="status pending">Investigating</span></td>
-                                    <td><button class="btn-link">Review</button></td>
-                                </tr>
-                                <tr>
-                                    <td>NG-HYD-002</td>
-                                    <td>North Central</td>
-                                    <td>Water Level Variance</td>
-                                    <td><span class="badge badge-med" style="position:static;">Medium</span></td>
-                                    <td><span class="status pending">Action Required</span></td>
-                                    <td><button class="btn-link">Review</button></td>
-                                </tr>
-                                <tr>
-                                    <td>NG-SOL-088</td>
-                                    <td>North West</td>
-                                    <td>Community Relations Report Due</td>
-                                    <td><span class="badge badge-low" style="position:static;">Low</span></td>
-                                    <td><span class="status good">On Track</span></td>
-                                    <td><button class="btn-link">Submit</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Location</th>
+                                <th>Event Type</th>
+                                <th>Detected</th>
+                                <th>Severity</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Niger Delta Basin, Rivers</td>
+                                <td>Oil Spill Anomaly</td>
+                                <td>2h ago</td>
+                                <td><span class="badge badge-high" style="position:static;">Critical</span></td>
+                                <td><span class="status pending">Investigating</span></td>
+                                <td><button class="btn-link">View on Map</button></td>
+                            </tr>
+                            <tr>
+                                <td>Kainji Dam, Niger State</td>
+                                <td>Water Level Change</td>
+                                <td>6h ago</td>
+                                <td><span class="badge badge-med" style="position:static;">Medium</span></td>
+                                <td><span class="status pending">Monitoring</span></td>
+                                <td><button class="btn-link">View on Map</button></td>
+                            </tr>
+                            <tr>
+                                <td>Jigawa Solar Array</td>
+                                <td>Vegetation Encroachment</td>
+                                <td>1d ago</td>
+                                <td><span class="badge badge-low" style="position:static;">Low</span></td>
+                                <td><span class="status good">Scheduled</span></td>
+                                <td><button class="btn-link">View on Map</button></td>
+                            </tr>
+                            <tr>
+                                <td>Lekki Offshore, Lagos</td>
+                                <td>Thermal Anomaly</td>
+                                <td>2d ago</td>
+                                <td><span class="badge badge-med" style="position:static;">Medium</span></td>
+                                <td><span class="status good">Resolved</span></td>
+                                <td><button class="btn-link">View on Map</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </main>
-
     <script>
-        // Chart.js initialization
         document.addEventListener('DOMContentLoaded', () => {
-            const ctx1 = document.getElementById('emissionsChart').getContext('2d');
-            new Chart(ctx1, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    datasets: [
-                        {
-                            label: 'Actual Emissions',
-                            data: [125, 120, 118, 122, 115, 110, 108, 105, 102, 98, 95, 90],
-                            borderColor: '#0B1F24',
-                            backgroundColor: 'rgba(11, 31, 36, 0.05)',
-                            borderWidth: 2,
-                            fill: true,
-                            tension: 0.4
-                        },
-                        {
-                            label: 'Target Trajectory',
-                            data: [125, 123, 121, 119, 117, 115, 113, 111, 109, 107, 105, 103],
-                            borderColor: '#A3E635',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            fill: false,
-                            tension: 0.4
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8 } } },
-                    scales: {
-                        y: { beginAtZero: false, grid: { borderDash: [2, 4], color: '#e5e7eb' } },
-                        x: { grid: { display: false } }
-                    }
-                }
-            });
-
-            const ctx2 = document.getElementById('riskChart').getContext('2d');
-            new Chart(ctx2, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Regulatory', 'Operational', 'Environmental', 'Social'],
-                    datasets: [{
-                        data: [35, 25, 30, 10],
-                        backgroundColor: ['#0B1F24', '#0ea5e9', '#10b981', '#f59e0b'],
-                        borderWidth: 0,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '70%',
-                    plugins: {
-                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
-                    }
-                }
-            });
-
             
         // Dropdown Toggle
         window.toggleDropdown = function(id, e) {

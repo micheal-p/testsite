@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Credits | NEIIA Intelligence</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dashboard-body">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA" class="sidebar-logo">
+            <span class="platform-name">Risk & ESG</span>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">OVERVIEW</div>
+            <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="spatial-tracking.html" class="nav-item"><i class="fas fa-globe-africa"></i><span>Spatial Tracking</span></a>
+            <a href="risk-models.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Risk Models</span></a>
+            <div class="nav-section">COMPLIANCE</div>
+            <a href="regulatory-reports.html" class="nav-item"><i class="fas fa-file-contract"></i><span>Regulatory Reports</span></a>
+            <a href="audit-logs.html" class="nav-item"><i class="fas fa-tasks"></i><span>Audit Logs</span></a>
+            <div class="nav-section">ASSETS</div>
+            <a href="power-plants.html" class="nav-item"><i class="fas fa-bolt"></i><span>Power Plants</span></a>
+            <a href="carbon-credits.html" class="nav-item active"><i class="fas fa-leaf"></i><span>Carbon Credits</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../risk-esg/index.html" class="nav-item"><i class="fas fa-arrow-left"></i><span>Back to Hub</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <button class="mobile-sidebar-btn" onclick="document.querySelector('.sidebar').classList.toggle('mobile-open')">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search credits, projects...">
+            </div>
+            <div class="topbar-actions">
+                <div class="dropdown-wrapper">
+                    <button class="icon-btn" onclick="toggleDropdown('notif-dropdown', event)"><i class="fas fa-bell"></i><span class="notif-badge">3</span></button>
+                    <div class="action-dropdown" id="notif-dropdown">
+                        <div class="dropdown-header">Notifications (3)</div>
+                        <a href="risk-models.html" class="dropdown-item">
+                            <i class="fas fa-exclamation-triangle" style="color:var(--danger)"></i>
+                            <div>
+                                <div style="font-weight:600; color:var(--text-main); margin-bottom:2px;">Critical Emission Alert</div>
+                                <div style="font-size:12px; color:var(--text-muted); line-height:1.4;">NG-TPP-014 has exceeded its quarterly carbon threshold. Immediate review required to avoid compliance penalties.</div>
+                            </div>
+                        </a>
+                        <a href="regulatory-reports.html" class="dropdown-item">
+                            <i class="fas fa-file-contract" style="color:var(--info)"></i>
+                            <div>
+                                <div style="font-weight:600; color:var(--text-main); margin-bottom:2px;">Compliance Report Ready</div>
+                                <div style="font-size:12px; color:var(--text-muted); line-height:1.4;">The Q1 ESG Compliance Data Export has finished generating and is ready for download.</div>
+                            </div>
+                        </a>
+                        <a href="power-plants.html" class="dropdown-item">
+                            <i class="fas fa-check-circle" style="color:var(--success)"></i>
+                            <div>
+                                <div style="font-weight:600; color:var(--text-main); margin-bottom:2px;">Asset Verification Complete</div>
+                                <div style="font-size:12px; color:var(--text-muted); line-height:1.4;">Zungeru Hydroelectric Power Station has been successfully registered and verified on the grid.</div>
+                            </div>
+                        </a>
+                        <a href="audit-logs.html" class="dropdown-item" style="justify-content:center; border-top:1px solid var(--border); color:var(--primary); font-weight:600;">
+                            View All Activity
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="dropdown-wrapper">
+                    <button class="icon-btn" onclick="toggleDropdown('settings-dropdown', event)"><i class="fas fa-cog"></i></button>
+                    <div class="action-dropdown" id="settings-dropdown">
+                        <div class="dropdown-header">Platform Settings</div>
+                        <a href="preferences.html" class="dropdown-item"><i class="fas fa-sliders-h"></i> Preferences</a>
+                        <a href="security.html" class="dropdown-item"><i class="fas fa-shield-alt"></i> Security & Access</a>
+                        <a href="integrations.html" class="dropdown-item"><i class="fas fa-plug"></i> Integrations</a>
+                    </div>
+                </div>
+
+                <div class="dropdown-wrapper">
+                    <div class="user-profile" onclick="toggleDropdown('profile-dropdown', event)">
+                        <img src="https://ui-avatars.com/api/?name=Admin+User&background=0D8F4F&color=fff" alt="User">
+                    </div>
+                    <div class="action-dropdown" id="profile-dropdown">
+                        <div class="dropdown-header" style="display:flex; align-items:center; gap:12px;">
+                            <img src="https://ui-avatars.com/api/?name=Admin+User&background=0D8F4F&color=fff" style="width:32px; height:32px; border-radius:50%">
+                            <div>
+                                <div>Admin User</div>
+                                <div style="font-size:11px; color:var(--text-muted); font-weight:400;">admin@neiia.gov.ng</div>
+                            </div>
+                        </div>
+                        <a href="profile.html" class="dropdown-item"><i class="fas fa-user"></i> My Profile</a>
+                        <a href="../index.html" class="dropdown-item" style="color:var(--danger)"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <div>
+                    <h1>Carbon Credits</h1>
+                    <p>Track carbon offset portfolios, verified credits, and emission reduction projects.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="document.getElementById('trade-modal').classList.add('show')"><i class="fas fa-exchange-alt"></i> Trade Credits</button>
+                    <button class="btn btn-primary" onclick="document.getElementById('project-modal').classList.add('show')"><i class="fas fa-plus"></i> New Project</button>
+                </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">Credits Balance</span>
+                        <i class="fas fa-coins" style="color: #A3E635;"></i>
+                    </div>
+                    <div class="metric-value">48,200 <span class="unit">VCUs</span></div>
+                    <div class="metric-trend up"><i class="fas fa-arrow-up"></i> +12,400 issued</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">Portfolio Value</span>
+                        <i class="fas fa-dollar-sign" style="color: #10b981;"></i>
+                    </div>
+                    <div class="metric-value">$1.34M</div>
+                    <div class="metric-trend up"><i class="fas fa-arrow-up"></i> +18% YTD</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">Avg Credit Price</span>
+                        <i class="fas fa-chart-line" style="color: #0ea5e9;"></i>
+                    </div>
+                    <div class="metric-value">$27.80</div>
+                    <div class="metric-trend up"><i class="fas fa-arrow-up"></i> +$3.20 since Q1</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">Active Projects</span>
+                        <i class="fas fa-project-diagram" style="color: #8b5cf6;"></i>
+                    </div>
+                    <div class="metric-value">11</div>
+                    <div class="metric-trend up"><i class="fas fa-arrow-up"></i> 3 pending verification</div>
+                </div>
+            </div>
+
+            <!-- Charts & Table -->
+            <div class="content-grid">
+                <div class="chart-card span-2">
+                    <div class="card-header">
+                        <h3>Credit Price & Volume Trend</h3>
+                        <select class="select-sm"><option>12 Months</option><option>6 Months</option></select>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="creditTrendChart" height="250"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h3>Credits by Project Type</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="creditTypeChart" height="250"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card span-3">
+                    <div class="card-header">
+                        <h3>Offset Projects</h3>
+                        <button class="btn btn-sm btn-outline">View All</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Project</th>
+                                    <th>Type</th>
+                                    <th>Location</th>
+                                    <th>Credits Issued</th>
+                                    <th>Standard</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Sahel Reforestation Initiative</td>
+                                    <td>REDD+</td>
+                                    <td>North East</td>
+                                    <td>18,400 VCUs</td>
+                                    <td>Verra VCS</td>
+                                    <td><span class="status good">Verified</span></td>
+                                    <td><button class="btn-link">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Lagos Methane Capture</td>
+                                    <td>Methane Avoidance</td>
+                                    <td>South West</td>
+                                    <td>12,800 VCUs</td>
+                                    <td>Gold Standard</td>
+                                    <td><span class="status good">Verified</span></td>
+                                    <td><button class="btn-link">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Rural Solar Cookstoves</td>
+                                    <td>Clean Energy</td>
+                                    <td>North Central</td>
+                                    <td>8,600 VCUs</td>
+                                    <td>Gold Standard</td>
+                                    <td><span class="status good">Verified</span></td>
+                                    <td><button class="btn-link">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Mangrove Restoration Delta</td>
+                                    <td>Blue Carbon</td>
+                                    <td>South South</td>
+                                    <td>—</td>
+                                    <td>Verra VCS</td>
+                                    <td><span class="status pending">Validation</span></td>
+                                    <td><button class="btn-link">Track</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Industrial EE — Kaduna</td>
+                                    <td>Energy Efficiency</td>
+                                    <td>North West</td>
+                                    <td>—</td>
+                                    <td>CDM</td>
+                                    <td><span class="status pending">Registration</span></td>
+                                    <td><button class="btn-link">Track</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Trade Credits Modal -->
+    <div class="modal-backdrop" id="trade-modal" onclick="if(event.target===this) this.classList.remove('show')">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-exchange-alt" style="margin-right:8px;"></i> Trade Carbon Credits</h2>
+                <button class="modal-close" onclick="document.getElementById('trade-modal').classList.remove('show')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div style="display:flex; gap:16px; margin-bottom:16px;">
+                    <button class="btn btn-primary" style="flex:1;">Buy Credits</button>
+                    <button class="btn btn-outline" style="flex:1;">Sell Credits</button>
+                </div>
+                <div class="setting-group" style="margin-bottom:16px;">
+                    <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Credit Standard / Type</label>
+                    <select style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                        <option>Verra (VCS) - Nature Based</option>
+                        <option>Gold Standard (GS) - Energy</option>
+                        <option>Clean Development Mechanism (CDM)</option>
+                        <option>Nigerian Sovereign Green Bond</option>
+                    </select>
+                </div>
+                <div style="display:flex; gap:16px; margin-bottom:16px;">
+                    <div class="setting-group" style="flex:1;">
+                        <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Volume (VCUs)</label>
+                        <input type="number" placeholder="e.g. 5000" style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                    </div>
+                    <div class="setting-group" style="flex:1;">
+                        <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Limit Price (USD)</label>
+                        <input type="number" placeholder="e.g. 26.50" style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                    </div>
+                </div>
+                <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:12px; border-radius:8px; color:#166534; font-size:13px;">
+                    <strong>Estimated Total Size:</strong> $132,500.00
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="document.getElementById('trade-modal').classList.remove('show')">Cancel</button>
+                <button class="btn btn-primary" onclick="document.getElementById('trade-modal').classList.remove('show')">Place Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Project Modal -->
+    <div class="modal-backdrop" id="project-modal" onclick="if(event.target===this) this.classList.remove('show')">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-plus" style="margin-right:8px;"></i> Register Offset Project</h2>
+                <button class="modal-close" onclick="document.getElementById('project-modal').classList.remove('show')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group" style="margin-bottom:16px;">
+                    <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Project Name</label>
+                    <input type="text" placeholder="e.g. Cross River Mangrove Restoration" style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                </div>
+                <div class="setting-group" style="margin-bottom:16px;">
+                    <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Methodology Type</label>
+                    <select style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                        <option>REDD+ (Avoided Deforestation)</option>
+                        <option>Blue Carbon (Mangroves/Wetlands)</option>
+                        <option>Methane Avoidance</option>
+                        <option>Renewable Energy Distribution</option>
+                        <option>Energy Efficiency deployment</option>
+                    </select>
+                </div>
+                <div style="display:flex; gap:16px; margin-bottom:16px;">
+                    <div class="setting-group" style="flex:1;">
+                        <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Target Registry</label>
+                        <select style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                            <option>Verra (VCS)</option>
+                            <option>Gold Standard</option>
+                            <option>American Carbon Registry</option>
+                        </select>
+                    </div>
+                    <div class="setting-group" style="flex:1;">
+                        <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Region</label>
+                        <select style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                            <option>South South</option>
+                            <option>North West</option>
+                            <option>South West</option>
+                            <option>North East</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <label style="display:block; font-size:13px; font-weight:500; color:var(--text-muted); margin-bottom:8px;">Est. Annual Vintage (VCUs)</label>
+                    <input type="number" placeholder="e.g. 15000" style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--text-main);">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="document.getElementById('project-modal').classList.remove('show')">Cancel</button>
+                <button class="btn btn-primary" onclick="document.getElementById('project-modal').classList.remove('show')">Submit for Review</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            new Chart(document.getElementById('creditTrendChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+                    datasets: [
+                        { label: 'Credit Price ($/VCU)', data: [18.5,19.2,20.1,21.0,22.4,23.1,24.0,24.8,25.5,26.2,27.0,27.8], borderColor: '#A3E635', backgroundColor: 'rgba(163,230,53,0.08)', borderWidth: 2, fill: true, tension: 0.4, yAxisID: 'y' },
+                        { label: 'Volume Traded (k VCUs)', data: [3.2,2.8,4.1,3.5,5.2,4.8,6.1,5.5,7.2,6.8,8.4,9.1], borderColor: '#0B1F24', borderWidth: 2, fill: false, tension: 0.4, yAxisID: 'y1' }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8 } } },
+                    scales: {
+                        y: { position: 'left', grid: { borderDash: [2,4], color: '#e5e7eb' }, title: { display: true, text: '$/VCU' } },
+                        y1: { position: 'right', grid: { display: false }, title: { display: true, text: 'Volume (k)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('creditTypeChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['REDD+ / Forestry', 'Methane Avoidance', 'Clean Energy', 'Blue Carbon', 'Energy Efficiency'],
+                    datasets: [{ data: [38, 26, 18, 12, 6], backgroundColor: ['#10b981', '#0B1F24', '#A3E635', '#0ea5e9', '#f59e0b'], borderWidth: 0, hoverOffset: 4 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 12, font: { size: 12 } } } } }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+        // Dropdown Toggle
+        window.toggleDropdown = function(id, e) {
+            e.stopPropagation();
+            const current = document.getElementById(id);
+            const isCurrentlyActive = current.classList.contains('active');
+            
+            document.querySelectorAll('.action-dropdown').forEach(d => d.classList.remove('active'));
+            
+            if (!isCurrentlyActive) {
+                current.classList.add('active');
+            }
+        };
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown-wrapper')) {
+                document.querySelectorAll('.action-dropdown').forEach(d => d.classList.remove('active'));
+            }
+        });
+
+        // Search Functionality
+            const searchInput = document.getElementById('global-search');
+            const searchResults = document.getElementById('search-results');
+            
+            const searchData = [
+                { title: 'NG-TPP-014 (South South)', desc: 'Power Plant Asset', icon: 'fa-bolt', link: 'power-plants.html' },
+                { title: 'NG-HYD-002 (North Central)', desc: 'Hydropower Asset', icon: 'fa-water', link: 'power-plants.html' },
+                { title: 'Emissions Threshold Exceeded', desc: 'Active Risk Alert', icon: 'fa-exclamation-triangle', link: 'risk-models.html' },
+                { title: 'Community Relations Report Due', desc: 'Compliance Alert', icon: 'fa-file-contract', link: 'regulatory-reports.html' },
+                { title: 'Delta Region Spatial Map', desc: 'Spatial Tracking', icon: 'fa-globe-africa', link: 'spatial-tracking.html' },
+                { title: 'Katsina Solar Facility VER', desc: 'Carbon Credits', icon: 'fa-leaf', link: 'carbon-credits.html' },
+                { title: 'Quarterly ESG Audit Log', desc: 'Audit Logs', icon: 'fa-tasks', link: 'audit-logs.html' }
+            ];
+
+            if (searchInput && searchResults) {
+                searchInput.addEventListener('input', (e) => {
+                    const q = e.target.value.toLowerCase().trim();
+                    if (!q) {
+                        searchResults.style.display = 'none';
+                        return;
+                    }
+                    
+                    const filtered = searchData.filter(item => 
+                        item.title.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q)
+                    );
+
+                    if (filtered.length > 0) {
+                        searchResults.innerHTML = filtered.map(item => `
+                            <a href="${item.link}" class="search-result-item">
+                                <div class="search-result-icon"><i class="fas ${item.icon}"></i></div>
+                                <div class="search-result-text">
+                                    <h4>${item.title}</h4>
+                                    <p>${item.desc}</p>
+                                </div>
+                            </a>
+                        `).join('');
+                        searchResults.style.display = 'block';
+                    } else {
+                        searchResults.innerHTML = `<div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 13px;">No results found for "${q}"</div>`;
+                        searchResults.style.display = 'block';
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                        searchResults.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(e) {
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarBtn = document.querySelector('.mobile-sidebar-btn');
+            
+            if (sidebar && sidebar.classList.contains('mobile-open')) {
+                // If the click is NOT inside the sidebar and NOT on the toggle button
+                if (!sidebar.contains(e.target) && (!sidebarBtn || !sidebarBtn.contains(e.target))) {
+                    sidebar.classList.remove('mobile-open');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
