@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Energy Assets | NEIIA</title>
+    <meta name="description" content="Manage your energy trading portfolio, create listings, and track your orders.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dash-wrapper { padding: 100px 20px 60px; max-width: var(--container-max); margin: 0 auto; }
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+        .dash-header h1 { font-size: 28px; font-weight: 700; color: var(--text-white); }
+        .dash-header-actions { display: flex; gap: 12px; }
+        .btn-sm { padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: var(--font-family); border: none; }
+        .btn-sm.primary { background: var(--green-accent); color: var(--bg-dark); }
+        .btn-sm.outline { background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); }
+        .btn-sm.danger { background: transparent; color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+        .btn-sm:hover { transform: translateY(-1px); }
+
+        /* Stats row */
+        .dash-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 32px; }
+        .dash-stat { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 24px; }
+        .dash-stat .ds-label { font-size: 13px; color: var(--text-dim); margin-bottom: 8px; }
+        .dash-stat .ds-val { font-size: 28px; font-weight: 700; color: var(--text-white); font-family: var(--font-display); }
+        .dash-stat .ds-val span { color: var(--green-accent); }
+
+        /* Tabs */
+        .dash-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border-color); margin-bottom: 24px; }
+        .dash-tab { padding: 12px 20px; font-size: 14px; font-weight: 600; color: var(--text-dim); cursor: pointer; background: none; border: none; border-bottom: 2px solid transparent; font-family: var(--font-family); transition: var(--transition); }
+        .dash-tab.active { color: var(--green-accent); border-bottom-color: var(--green-accent); }
+
+        /* Content panels */
+        .dash-panel { display: none; }
+        .dash-panel.active { display: block; }
+
+        /* My listings */
+        .my-listing { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .my-listing h3 { font-size: 15px; color: var(--text-white); font-weight: 600; }
+        .my-listing p { font-size: 13px; color: var(--text-muted); }
+        .ml-price { font-size: 18px; font-weight: 700; color: var(--green-accent); }
+
+        /* Create listing form */
+        .create-form { max-width: 600px; }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 14px 16px; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-white); font-size: 15px; font-family: var(--font-family); }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--green-accent); }
+        .form-input::placeholder, .form-textarea::placeholder { color: var(--text-dim); }
+        .form-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
+        .form-select option { background: var(--bg-card); }
+        .form-textarea { resize: vertical; min-height: 80px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .btn-create { padding: 16px 32px; background: var(--green-accent); color: var(--bg-dark); border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: var(--font-family); }
+        
+        /* File Upload Zone */
+        .file-dropzone {
+            border: 2px dashed var(--border-color);
+            border-radius: 10px;
+            padding: 32px 20px;
+            text-align: center;
+            background: rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 20px;
+        }
+        .file-dropzone:hover { border-color: var(--green-accent); background: rgba(163,230,53,0.05); }
+        .file-dropzone svg { color: var(--green-accent); margin-bottom: 12px; }
+        .file-dropzone p { font-size: 14px; color: var(--text-muted); margin-bottom: 4px; }
+        .file-dropzone span { font-size: 12px; color: var(--text-dim); }
+        .file-list { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .file-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--bg-input); border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; }
+        .file-item i { color: var(--green-accent); margin-right: 8px; }
+        .file-item button { background: none; border: none; color: var(--red); cursor: pointer; }
+        
+        /* Tabs internal inside create panel */
+        .sub-tabs { display: flex; gap: 12px; margin-bottom: 24px; border-bottom: 1px solid var(--border-color); }
+        .sub-tab { padding: 8px 16px; font-size: 14px; font-weight: 600; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; }
+        .sub-tab.active { color: var(--green-accent); border-bottom-color: var(--green-accent); }
+        .sub-panel { display: none; }
+        .sub-panel.active { display: block; }
+
+        /* Bids table */
+        .bids-table { width: 100%; border-collapse: collapse; }
+        .bids-table th { text-align: left; padding: 12px 16px; font-size: 12px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; border-bottom: 1px solid var(--border-color); letter-spacing: 0.5px; }
+        .bids-table td { padding: 14px 16px; font-size: 14px; color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
+        .bids-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .status-badge { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+        .status-badge.open { background: rgba(163,230,53,0.1); color: var(--green-accent); }
+        .status-badge.filled { background: rgba(59,130,246,0.1); color: #3b82f6; }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-dim); }
+        .empty-state p { margin-bottom: 20px; }
+
+        @media (max-width: 768px) {
+            .dash-stats { grid-template-columns: 1fr; }
+            .dash-header { flex-direction: column; align-items: flex-start; }
+            .form-row { grid-template-columns: 1fr; }
+            .my-listing { flex-direction: column; align-items: flex-start; }
+            .bids-table { font-size: 12px; }
+            .bids-table th, .bids-table td { padding: 10px 8px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Logo -->
+    <a href="index.html" class="logo-fixed">
+        <div class="logo-wrapper">
+            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo" style="max-width: 120px;">
+            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo" style="max-width: 120px;">
+            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
+        </div>
+    </a>
+
+    <!-- Pill Navbar -->
+    <nav class="navbar pill-nav">
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="marketplace.html">Marketplace</a>
+            <a href="dashboard.html" style="color:#fff;">Dashboard</a>
+            <a href="#" onclick="EA.logout(); return false;">Sign Out</a>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <button class="mobile-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="mobile-nav-overlay">
+        <div class="mobile-nav-header">
+            <a href="index.html"><img src="../assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height:40px;"></a>
+            <button class="mobile-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="mobile-nav-content">
+            <ul class="mobile-nav-list">
+                <li><a href="marketplace.html">Marketplace <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="dashboard.html">Dashboard <i class="fas fa-arrow-right"></i></a></li>
+            </ul>
+            <div class="mobile-nav-footer">
+                <a href="#" class="btn btn-primary" onclick="EA.logout(); return false;">Sign Out</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         DASHBOARD
+         ========================================== -->
+    <div class="dash-wrapper">
+        <div class="dash-header">
+            <h1 id="dash-greeting">Dashboard</h1>
+            <div class="dash-header-actions">
+                <button class="btn-sm primary" onclick="switchTab('create')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px; margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    New Listing
+                </button>
+                <button class="btn-sm outline" onclick="EA.logout()">Sign Out</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="dash-stats">
+            <div class="dash-stat">
+                <div class="ds-label">My Listings</div>
+                <div class="ds-val" id="ds-listings"><span>0</span></div>
+            </div>
+            <div class="dash-stat">
+                <div class="ds-label">Total Bids Received</div>
+                <div class="ds-val" id="ds-bids"><span>0</span></div>
+            </div>
+            <div class="dash-stat">
+                <div class="ds-label">Portfolio Value</div>
+                <div class="ds-val" id="ds-portfolio">$<span>0</span></div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="dash-tabs">
+            <button class="dash-tab active" data-panel="my-listings">My Listings</button>
+            <button class="dash-tab" data-panel="my-bids">My Bids</button>
+            <button class="dash-tab" data-panel="create">Asset & Doc Uploads</button>
+        </div>
+
+        <!-- My Listings Panel -->
+        <div class="dash-panel active" id="panel-my-listings">
+            <div id="my-listings-container"></div>
+        </div>
+
+        <!-- My Bids Panel -->
+        <div class="dash-panel" id="panel-my-bids">
+            <div id="my-bids-container"></div>
+        </div>
+
+        <!-- Asset & Doc Uploads Panel -->
+        <div class="dash-panel" id="panel-create">
+            <div class="sub-tabs">
+                <div class="sub-tab active" data-sub="asset">1. Upload Asset (Listing)</div>
+                <div class="sub-tab" data-sub="docs">2. Compliance Documents</div>
+            </div>
+
+            <!-- Upload Asset Sub-panel -->
+            <div class="sub-panel active" id="sub-asset">
+                <form class="create-form" id="create-form">
+                    <div class="form-group">
+                        <label class="form-label">Asset Type</label>
+                        <select class="form-select" id="new-type">
+                            <option value="electricity">Electricity</option>
+                            <option value="gas">Natural Gas</option>
+                            <option value="carbon">Carbon Credits</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Listing Title (Asset Name)</label>
+                        <input type="text" class="form-input" id="new-title" placeholder="e.g. Lagos Zone Grid Power" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Asset Origin / Location</label>
+                        <input type="text" class="form-input" id="new-origin" placeholder="e.g. Ikeja, Lagos State" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Proof of Generating Capacity / Asset Ownership (Upload)</label>
+                        <div class="file-dropzone" onclick="document.getElementById('asset-file').click()">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            <p>Click to upload asset proofs (PDF, JPG, PNG)</p>
+                            <span>Max file size: 10MB</span>
+                            <input type="file" id="asset-file" style="display: none;" accept=".pdf,.jpg,.jpeg,.png">
+                        </div>
+                        <div class="file-list" id="asset-file-list"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Detailed Description</label>
+                        <textarea class="form-textarea" id="new-desc" placeholder="Describe the asset, delivery terms, technical specs, etc." required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Quantity</label>
+                            <input type="number" class="form-input" id="new-qty" placeholder="50000" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Unit</label>
+                            <select class="form-select" id="new-unit">
+                                <option value="kWh">kWh</option>
+                                <option value="MMBtu">MMBtu</option>
+                                <option value="tCO2">tCO2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Price (USD)</label>
+                            <input type="number" step="0.0001" class="form-input" id="new-price" placeholder="0.0847" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Trading Pair</label>
+                            <select class="form-select" id="new-pair">
+                                <option value="USD">USD</option>
+                                <option value="NGN">NGN</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-create">Publish Listing</button>
+                </form>
+            </div>
+
+            <!-- Compliance Docs Sub-panel -->
+            <div class="sub-panel" id="sub-docs">
+                <div class="create-form">
+                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Please upload your verification documents to complete compliance checks. The NEIIA Admin will review these before full trading permissions are granted.</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Identity / Corporate Document (NIN/BVN/CAC)</label>
+                        <div class="file-dropzone" onclick="document.getElementById('id-doc-file').click()">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            <p>Click to upload Identity Docs</p>
+                            <span>PDF or Image</span>
+                            <input type="file" id="id-doc-file" style="display: none;" accept=".pdf,.jpg,.jpeg,.png">
+                        </div>
+                        <div class="file-list" id="id-doc-list"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Utility Bill / Address Proof</label>
+                        <div class="file-dropzone" onclick="document.getElementById('address-file').click()">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            <p>Click to upload Address Proof</p>
+                            <span>Recent utility bill within 3 months</span>
+                            <input type="file" id="address-file" style="display: none;" accept=".pdf,.jpg,.jpeg,.png">
+                        </div>
+                        <div class="file-list" id="address-list"></div>
+                    </div>
+
+                    <button class="btn-create" onclick="submitDocs()">Submit Documents for Review</button>
+                    <p id="doc-success" style="color: var(--green-accent); font-size: 13px; margin-top: 12px; display: none;"><i class="fas fa-check-circle"></i> Documents submitted successfully. Pending admin review.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Auth guard
+        if (!EA.isLoggedIn()) { window.location.href = 'login.html'; }
+        const user = EA.getCurrentUser();
+
+        // Greeting
+        const name = user['First Name'] || user['Organisation Name'] || user['Representative Name'] || 'Trader';
+        document.getElementById('dash-greeting').textContent = 'Welcome, ' + name;
+
+        // Tab switching
+        function switchTab(panel) {
+            document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+            const targetTab = document.querySelector(`.dash-tab[data-panel="${panel}"]`);
+            if (targetTab) targetTab.classList.add('active');
+            document.getElementById('panel-' + panel).classList.add('active');
+        }
+        document.querySelectorAll('.dash-tab').forEach(tab => {
+            tab.addEventListener('click', () => switchTab(tab.dataset.panel));
+        });
+
+        // Render my listings
+        function renderMyListings() {
+            const listings = EA.getListings().filter(l => l.ownerId === user.id);
+            const container = document.getElementById('my-listings-container');
+            document.getElementById('ds-listings').innerHTML = '<span>' + listings.length + '</span>';
+
+            let totalBids = 0;
+            let portfolioVal = 0;
+            listings.forEach(l => { totalBids += (l.bids || 0); portfolioVal += l.priceUSD * l.qty; });
+            document.getElementById('ds-bids').innerHTML = '<span>' + totalBids + '</span>';
+            document.getElementById('ds-portfolio').innerHTML = EA.formatUSD(portfolioVal);
+
+            if (listings.length === 0) {
+                container.innerHTML = `<div class="empty-state"><p>You haven't created any listings yet.</p><button class="btn-sm primary" onclick="switchTab('create')">Create your first listing</button></div>`;
+                return;
+            }
+            container.innerHTML = listings.map(l => `
+                <div class="my-listing">
+                    <div>
+                        <h3>${l.title}</h3>
+                        <p>${l.type} &middot; ${EA.formatNumber(l.qty)} ${l.unit} &middot; ${l.bids || 0} bids</p>
+                    </div>
+                    <div class="ml-price">$${l.priceUSD.toFixed(4)}</div>
+                </div>
+            `).join('');
+        }
+
+        // Render my bids
+        function renderMyBids() {
+            const bids = EA.getBids().filter(b => b.bidderId === user.id);
+            const container = document.getElementById('my-bids-container');
+            if (bids.length === 0) {
+                container.innerHTML = `<div class="empty-state"><p>You haven't placed any bids yet.</p><a href="marketplace.html" class="btn-sm primary">Browse Marketplace</a></div>`;
+                return;
+            }
+            container.innerHTML = `<table class="bids-table"><thead><tr><th>Listing</th><th>Bid Price</th><th>Quantity</th><th>Status</th><th>Date</th></tr></thead><tbody>${bids.map(b => {
+                const listing = EA.getListing(b.listingId);
+                return `<tr><td>${listing ? listing.title : b.listingId}</td><td>$${b.amount.toFixed(4)}</td><td>${EA.formatNumber(b.qty)}</td><td><span class="status-badge ${b.status}">${b.status}</span></td><td>${new Date(b.createdAt).toLocaleDateString()}</td></tr>`;
+            }).join('')}</tbody></table>`;
+        }
+
+        // Create listing / Upload Asset
+        document.getElementById('create-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Get mock uploaded file string if exists
+            const valFile = document.getElementById('asset-file').files[0];
+            const proofName = valFile ? valFile.name : 'No file uploaded';
+
+            EA.createListing({
+                type: document.getElementById('new-type').value,
+                title: document.getElementById('new-title').value,
+                origin: document.getElementById('new-origin').value || 'Unknown',
+                proofOfCapacity: proofName,
+                desc: document.getElementById('new-desc').value,
+                qty: document.getElementById('new-qty').value,
+                unit: document.getElementById('new-unit').value,
+                priceUSD: document.getElementById('new-price').value,
+                pair: document.getElementById('new-pair').value,
+                ownerId: user.id,
+                ownerName: user['First Name'] ? user['First Name'] + ' ' + (user['Last Name'] || '') : (user['Organisation Name'] || 'Trader')
+            });
+            document.getElementById('create-form').reset();
+            document.getElementById('asset-file-list').innerHTML = '';
+            switchTab('my-listings');
+            renderMyListings();
+            alert('Asset successfully uploaded and marketplace listing created!');
+        });
+
+        // Sub-tab switching
+        document.querySelectorAll('.sub-tab').forEach(t => {
+            t.addEventListener('click', () => {
+                document.querySelectorAll('.sub-tab').forEach(st => st.classList.remove('active'));
+                document.querySelectorAll('.sub-panel').forEach(sp => sp.classList.remove('active'));
+                t.classList.add('active');
+                document.getElementById('sub-' + t.dataset.sub).classList.add('active');
+            });
+        });
+
+        // File upload UI simulation
+        function handleFileSelect(inputId, listId) {
+            document.getElementById(inputId).addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    document.getElementById(listId).innerHTML = `
+                        <div class="file-item">
+                            <span><i class="fas fa-file-pdf"></i> ${file.name} (Ready to upload)</span>
+                            <button type="button" onclick="document.getElementById('${inputId}').value=''; document.getElementById('${listId}').innerHTML='';"><i class="fas fa-times"></i></button>
+                        </div>
+                    `;
+                }
+            });
+        }
+        handleFileSelect('asset-file', 'asset-file-list');
+        handleFileSelect('id-doc-file', 'id-doc-list');
+        handleFileSelect('address-file', 'address-list');
+
+        function submitDocs() {
+            const idDoc = document.getElementById('id-doc-file').files[0];
+            const addrDoc = document.getElementById('address-file').files[0];
+            if (!idDoc && !addrDoc) {
+                alert('Please select a file to submit.'); return;
+            }
+            
+            // In a real app we'd send these to the server.
+            // For now, we update local storage to reflect documents submitted.
+            const users = JSON.parse(localStorage.getItem('ea_users') || '[]');
+            const idx = users.findIndex(u => u.id === user.id);
+            if(idx > -1) {
+                users[idx].docsSubmitted = true;
+                if(idDoc) users[idx].idDocument = idDoc.name;
+                if(addrDoc) users[idx].addressDocument = addrDoc.name;
+                localStorage.setItem('ea_users', JSON.stringify(users));
+                // Update active session memory
+                user.docsSubmitted = true;
+                localStorage.setItem('ea_current_user', JSON.stringify(user));
+            }
+
+            document.getElementById('doc-success').style.display = 'block';
+            setTimeout(() => { document.getElementById('doc-success').style.display = 'none'; }, 5000);
+        }
+
+        // Mobile menu
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        const overlay = document.querySelector('.mobile-nav-overlay');
+        const closeBtn = document.querySelector('.mobile-close-btn');
+        if (menuBtn) menuBtn.addEventListener('click', () => overlay.classList.add('open'));
+        if (closeBtn) closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
+
+        // Pill nav hover
+        const pillNav = document.querySelector('.pill-nav');
+        if (pillNav) pillNav.addEventListener('mousemove', (e) => { const r = pillNav.getBoundingClientRect(); pillNav.style.setProperty('--mouse-x', `${e.clientX-r.left}px`); pillNav.style.setProperty('--mouse-y', `${e.clientY-r.top}px`); });
+
+        // Init
+        renderMyListings();
+        renderMyBids();
+    </script>
+</body>
+</html>

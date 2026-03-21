@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace | Energy Assets | NEIIA</title>
+    <meta name="description" content="Browse active energy asset listings, view anonymous order books, and place bids on electricity, gas, and carbon credits.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .market-page { padding: 100px 20px 60px; max-width: var(--container-max); margin: 0 auto; }
+
+        /* Overview bar */
+        .market-overview { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 40px; }
+        .overview-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 20px; text-align: center; }
+        .overview-card .ov-val { font-size: 24px; font-weight: 700; color: var(--text-white); font-family: var(--font-display); }
+        .overview-card .ov-val span { color: var(--green-accent); }
+        .overview-card .ov-label { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+
+        /* Tabs */
+        .market-tabs { display: flex; gap: 4px; background: var(--bg-card); border-radius: 10px; padding: 4px; margin-bottom: 32px; width: fit-content; border: 1px solid var(--border-color); }
+        .market-tab { padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--text-dim); cursor: pointer; transition: var(--transition); background: none; border: none; font-family: var(--font-family); }
+        .market-tab.active { background: var(--green-accent); color: var(--bg-dark); }
+
+        /* Two-column layout */
+        .market-main { display: grid; grid-template-columns: 320px 1fr; gap: 24px; }
+
+        /* Order book */
+        .order-book { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 20px; height: fit-content; position: sticky; top: 100px; }
+        .ob-title { font-size: 14px; font-weight: 700; color: var(--text-white); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .ob-header { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); margin-bottom: 8px; }
+        .ob-header span { font-size: 11px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+        .ob-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 6px 0; font-size: 13px; position: relative; }
+        .ob-row.ask .ob-price { color: var(--red); }
+        .ob-row.bid .ob-price { color: var(--green-accent); }
+        .ob-qty { color: var(--text-muted); text-align: right; }
+        .ob-total { color: var(--text-dim); text-align: right; font-size: 12px; }
+        .ob-spread { text-align: center; padding: 10px 0; font-size: 18px; font-weight: 700; color: var(--text-white); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); margin: 8px 0; }
+        .ob-spread small { font-size: 12px; color: var(--text-dim); font-weight: 400; display: block; margin-top: 2px; }
+
+        /* Listings grid */
+        .listings-area h2 { font-size: 20px; font-weight: 600; color: var(--text-white); margin-bottom: 20px; }
+        .listings-grid { display: flex; flex-direction: column; gap: 16px; }
+        .listing-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 24px; transition: var(--transition); display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; }
+        .listing-card:hover { border-color: var(--border-hover); }
+        .listing-info h3 { font-size: 16px; font-weight: 600; color: var(--text-white); margin-bottom: 6px; }
+        .listing-info p { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px; }
+        .listing-meta { display: flex; gap: 20px; flex-wrap: wrap; }
+        .listing-meta span { font-size: 13px; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+        .listing-meta svg { flex-shrink: 0; }
+        .listing-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+        .listing-price { font-size: 22px; font-weight: 700; color: var(--green-accent); font-family: var(--font-display); }
+        .listing-unit { font-size: 12px; color: var(--text-dim); }
+        .listing-bid-range { font-size: 12px; color: var(--text-muted); text-align: right; }
+        .btn-bid { padding: 10px 20px; background: var(--green-accent); color: var(--bg-dark); border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: var(--font-family); }
+        .btn-bid:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(163,230,53,0.25); }
+        .type-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+        .type-badge.elec { background: rgba(250,204,21,0.1); color: #facc15; }
+        .type-badge.gas { background: rgba(59,130,246,0.1); color: #3b82f6; }
+        .type-badge.carbon { background: rgba(34,197,94,0.1); color: #22c55e; }
+
+        /* Bid modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 3000; display: none; align-items: center; justify-content: center; }
+        .modal-overlay.open { display: flex; }
+        .modal-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 32px; max-width: 440px; width: 90%; }
+        .modal-card h2 { font-size: 20px; font-weight: 700; color: var(--text-white); margin-bottom: 20px; }
+        .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--text-dim); font-size: 20px; cursor: pointer; }
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+        .form-input { width: 100%; padding: 12px 14px; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-white); font-size: 14px; font-family: var(--font-family); }
+        .form-input:focus { outline: none; border-color: var(--green-accent); }
+        .btn-submit-bid { width: 100%; padding: 14px; background: var(--green-accent); color: var(--bg-dark); border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: var(--font-family); }
+        .modal-card .form-input::placeholder { color: var(--text-dim); }
+
+        .no-results { text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 16px; }
+
+        @media (max-width: 768px) {
+            .market-overview { grid-template-columns: repeat(2,1fr); }
+            .market-main { grid-template-columns: 1fr; }
+            .order-book { position: static; }
+            .market-tabs { width: 100%; }
+            .market-tab { flex: 1; text-align: center; }
+            .listing-card { grid-template-columns: 1fr; }
+            .listing-right { align-items: flex-start; flex-direction: row; justify-content: space-between; width: 100%; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Logo -->
+    <a href="index.html" class="logo-fixed">
+        <div class="logo-wrapper">
+            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo" style="max-width: 120px;">
+            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo" style="max-width: 120px;">
+            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
+        </div>
+    </a>
+
+    <!-- Pill Navbar -->
+    <nav class="navbar pill-nav">
+        <div class="nav-links">
+            <a href="index.html">Market Home</a>
+            <a href="marketplace.html" style="color:#fff;">Marketplace</a>
+            <a href="login.html">Sign In</a>
+            <a href="signup.html">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+
+    <!-- Mobile Nav -->
+    <div class="mobile-nav-overlay">
+        <div class="mobile-nav-header">
+            <a href="index.html"><img src="../assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height:40px;"></a>
+            <button class="mobile-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="mobile-nav-content">
+            <ul class="mobile-nav-list">
+                <li><a href="index.html">Market Home <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="marketplace.html">Marketplace <i class="fas fa-arrow-right"></i></a></li>
+            </ul>
+            <div class="mobile-nav-footer">
+                <a href="signup.html" class="btn btn-primary">Get Started</a>
+                <a href="login.html" class="btn btn-secondary">Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MARKETPLACE
+         ========================================== -->
+    <div class="market-page">
+        <!-- Overview -->
+        <div class="market-overview" id="market-overview">
+            <div class="overview-card">
+                <div class="ov-val" id="ov-networth">$<span>0</span></div>
+                <div class="ov-label">Total Net Worth</div>
+            </div>
+            <div class="overview-card">
+                <div class="ov-val" id="ov-volume">$<span>0</span></div>
+                <div class="ov-label">24h Volume</div>
+            </div>
+            <div class="overview-card">
+                <div class="ov-val" id="ov-listings"><span>0</span></div>
+                <div class="ov-label">Active Listings</div>
+            </div>
+            <div class="overview-card">
+                <div class="ov-val" id="ov-bids"><span>0</span></div>
+                <div class="ov-label">Open Bids</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="market-tabs">
+            <button class="market-tab active" data-type="all">All Assets</button>
+            <button class="market-tab" data-type="electricity">Electricity</button>
+            <button class="market-tab" data-type="gas">Gas</button>
+            <button class="market-tab" data-type="carbon">Carbon</button>
+        </div>
+
+        <!-- Main -->
+        <div class="market-main">
+            <!-- Order Book -->
+            <div class="order-book" id="order-book">
+                <div class="ob-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    Order Book
+                </div>
+                <div class="ob-header">
+                    <span>Price (USD)</span>
+                    <span style="text-align:right;">Quantity</span>
+                    <span style="text-align:right;">Total</span>
+                </div>
+                <div id="ob-asks"></div>
+                <div class="ob-spread" id="ob-spread">—</div>
+                <div id="ob-bids"></div>
+            </div>
+
+            <!-- Listings -->
+            <div class="listings-area">
+                <h2 id="listings-title">All Active Listings</h2>
+                <div class="listings-grid" id="listings-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bid Modal -->
+    <div class="modal-overlay" id="bid-modal">
+        <div class="modal-card">
+            <h2 id="bid-modal-title">Place a Bid</h2>
+            <form id="bid-form">
+                <input type="hidden" id="bid-listing-id">
+                <div class="form-group">
+                    <label class="form-label">Your Bid Price (USD)</label>
+                    <input type="number" step="0.0001" class="form-input" id="bid-amount" placeholder="0.0000" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Quantity</label>
+                    <input type="number" class="form-input" id="bid-qty" placeholder="1000" required>
+                </div>
+                <button type="submit" class="btn-submit-bid">Submit Bid</button>
+                <button type="button" class="btn-submit-bid" style="background:transparent; color:var(--text-dim); border:1px solid var(--border-color); margin-top:8px;" onclick="closeBidModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        let currentType = 'all';
+
+        function renderOverview() {
+            const nw = EA.calculateNetWorth();
+            const vol = EA.get24hVolume();
+            const listings = EA.getActiveListings();
+            const bids = EA.getBids().filter(b => b.status === 'open');
+            document.getElementById('ov-networth').innerHTML = EA.formatUSD(nw);
+            document.getElementById('ov-volume').innerHTML = EA.formatUSD(vol);
+            document.getElementById('ov-listings').innerHTML = '<span>' + listings.length + '</span>';
+            document.getElementById('ov-bids').innerHTML = '<span>' + bids.length + '</span>';
+        }
+
+        function renderOrderBook(type) {
+            const t = type === 'all' ? 'electricity' : type;
+            const ob = EA.getOrderBook(t);
+            const asksDiv = document.getElementById('ob-asks');
+            const bidsDiv = document.getElementById('ob-bids');
+
+            asksDiv.innerHTML = ob.asks.slice(0, 5).reverse().map(a =>
+                `<div class="ob-row ask"><span class="ob-price">${a.price.toFixed(4)}</span><span class="ob-qty">${EA.formatNumber(a.qty)}</span><span class="ob-total">${EA.formatUSD(a.total)}</span></div>`
+            ).join('');
+
+            const spread = ob.asks.length && ob.bids.length
+                ? (ob.asks[0].price - ob.bids[0].price).toFixed(4)
+                : '—';
+            const midPrice = ob.asks.length && ob.bids.length
+                ? ((ob.asks[0].price + ob.bids[0].price) / 2).toFixed(4)
+                : '—';
+            document.getElementById('ob-spread').innerHTML = `$${midPrice}<small>Spread: $${spread}</small>`;
+
+            bidsDiv.innerHTML = ob.bids.slice(0, 5).map(b =>
+                `<div class="ob-row bid"><span class="ob-price">${b.price.toFixed(4)}</span><span class="ob-qty">${EA.formatNumber(b.qty)}</span><span class="ob-total">${EA.formatUSD(b.total)}</span></div>`
+            ).join('');
+        }
+
+        function getTypeBadge(type) {
+            const icons = {
+                electricity: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
+                gas: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c0 0-8 7.5-8 13a8 8 0 0016 0c0-5.5-8-13-8-13z"/></svg>',
+                carbon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12a4 4 0 008 0 4 4 0 00-8 0z"/></svg>'
+            };
+            const cls = type === 'electricity' ? 'elec' : type === 'gas' ? 'gas' : 'carbon';
+            return `<span class="type-badge ${cls}">${icons[type]} ${type.charAt(0).toUpperCase() + type.slice(1)}</span>`;
+        }
+
+        function renderListings(type) {
+            const listings = type === 'all' ? EA.getActiveListings() : EA.getListingsByType(type);
+            const grid = document.getElementById('listings-grid');
+            const title = document.getElementById('listings-title');
+            const typeName = type === 'all' ? 'All Active' : type.charAt(0).toUpperCase() + type.slice(1);
+            title.textContent = typeName + ' Listings';
+
+            if (listings.length === 0) {
+                grid.innerHTML = '<div class="no-results">No active listings found for this category.</div>';
+                return;
+            }
+
+            grid.innerHTML = listings.map(l => {
+                const br = EA.getBidRange(l.id);
+                const bidInfo = br ? `Bids: $${br.low.toFixed(4)} — $${br.high.toFixed(4)} (${br.count})` : `${l.bids} bids`;
+                return `
+                <a href="listing-details.html?id=${l.id}" class="listing-card" style="text-decoration:none; color:inherit;">
+                    <div class="listing-info">
+                        ${getTypeBadge(l.type)}
+                        <h3 style="margin-top:10px;">${l.title}</h3>
+                        <p>${l.desc.substring(0,80)}...</p>
+                        <div class="listing-meta">
+                            <span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+                                ${EA.formatNumber(l.qty)} ${l.unit}
+                            </span>
+                            <span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                                ${l.pair}
+                            </span>
+                            <span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                ${l.ownerName}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="listing-right">
+                        <div class="listing-price">$${l.priceUSD.toFixed(4)}</div>
+                        <div class="listing-unit">per ${l.unit}</div>
+                        <div class="listing-bid-range">${bidInfo}</div>
+                        <button class="btn-bid" onclick="event.preventDefault(); event.stopPropagation(); openBidModal('${l.id}', '${l.title.replace(/'/g, "\\'")}')">Place Bid</button>
+                    </div>
+                </a>`;
+            }).join('');
+        }
+
+        // Tabs
+        document.querySelectorAll('.market-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.market-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentType = tab.dataset.type;
+                renderListings(currentType);
+                renderOrderBook(currentType);
+            });
+        });
+
+        // Bid modal
+        function openBidModal(listingId, title) {
+            if (!EA.isLoggedIn()) {
+                if (confirm('You need to sign in to place a bid. Go to login?')) {
+                    window.location.href = 'login.html';
+                }
+                return;
+            }
+            document.getElementById('bid-listing-id').value = listingId;
+            document.getElementById('bid-modal-title').textContent = 'Bid on: ' + title;
+            document.getElementById('bid-modal').classList.add('open');
+        }
+        function closeBidModal() { document.getElementById('bid-modal').classList.remove('open'); }
+
+        document.getElementById('bid-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = EA.getCurrentUser();
+            EA.placeBid({
+                listingId: document.getElementById('bid-listing-id').value,
+                bidderId: user.id || 'ANON',
+                amount: document.getElementById('bid-amount').value,
+                qty: document.getElementById('bid-qty').value
+            });
+            closeBidModal();
+            renderListings(currentType);
+            renderOrderBook(currentType);
+            renderOverview();
+            alert('Bid placed successfully!');
+        });
+
+        // Mobile menu
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        const overlay = document.querySelector('.mobile-nav-overlay');
+        const closeBtn = document.querySelector('.mobile-close-btn');
+        if (menuBtn) menuBtn.addEventListener('click', () => overlay.classList.add('open'));
+        if (closeBtn) closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
+
+        // Pill nav hover
+        const pillNav = document.querySelector('.pill-nav');
+        if (pillNav) pillNav.addEventListener('mousemove', (e) => {
+            const r = pillNav.getBoundingClientRect();
+            pillNav.style.setProperty('--mouse-x', `${e.clientX - r.left}px`);
+            pillNav.style.setProperty('--mouse-y', `${e.clientY - r.top}px`);
+        });
+
+        // Init
+        renderOverview();
+        renderListings('all');
+        renderOrderBook('all');
+    </script>
+</body>
+</html>

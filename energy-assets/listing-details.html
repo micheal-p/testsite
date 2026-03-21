@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Details | Energy Assets | NEIIA</title>
+    <meta name="description" content="View detailed market data and description for energy assets.">
+    <!-- FontAwesome & Custom Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .details-wrapper { padding: 100px 20px 60px; max-width: var(--container-max); margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr; gap: 32px; }
+        
+        .main-column { display: flex; flex-direction: column; gap: 24px; }
+        .side-column { display: flex; flex-direction: column; gap: 24px; }
+
+        .details-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .details-header h1 { font-size: 32px; font-weight: 700; color: var(--text-white); margin-bottom: 8px; }
+        .breadcrumb { font-size: 13px; color: var(--text-dim); margin-bottom: 16px; }
+        .breadcrumb a { color: var(--green-accent); transition: var(--transition); }
+        .breadcrumb a:hover { text-decoration: underline; }
+
+        .tag-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+        .type-tag { padding: 6px 14px; border-radius: 100px; font-size: 13px; font-weight: 600; text-transform: capitalize; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-white); }
+        .type-tag i { margin-right: 6px; }
+
+        /* Chart section */
+        .chart-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 24px; }
+        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .chart-header h3 { font-size: 18px; font-weight: 600; color: var(--text-white); }
+        .chart-controls { display: flex; gap: 8px; }
+        .chart-btn { background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-muted); padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); }
+        .chart-btn.active { background: rgba(163,230,53,0.1); color: var(--green-accent); border-color: rgba(163,230,53,0.3); }
+
+        /* Info Section */
+        .info-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 32px 24px; }
+        .info-card h3 { font-size: 20px; font-weight: 600; color: var(--text-white); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .info-card h3 i { color: var(--green-accent); }
+        .info-card p { font-size: 15px; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px; white-space: pre-wrap; }
+        
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 1px solid var(--border-color); padding-top: 24px; }
+        .info-block span { display: block; font-size: 12px; color: var(--text-dim); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .info-block strong { display: block; font-size: 15px; color: var(--text-white); font-weight: 500; }
+
+        /* Action Card (Sidebar) */
+        .action-card { background: var(--bg-darker); border: 1px solid var(--green-accent); border-radius: var(--radius); padding: 32px 24px; text-align: center; position: sticky; top: 100px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+        .price-huge { font-size: 40px; font-weight: 800; color: var(--green-accent); font-family: var(--font-display); line-height: 1; margin-bottom: 8px; }
+        .price-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; }
+        
+        .btn-bid { width: 100%; padding: 16px; background: var(--green-accent); color: var(--bg-dark); border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: var(--transition); margin-bottom: 16px; }
+        .btn-bid:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(163,230,53,0.25); }
+        
+        .action-meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-dim); border-top: 1px solid var(--border-color); padding-top: 16px; margin-top: 16px; }
+
+        @media (max-width: 992px) {
+            .details-wrapper { grid-template-columns: 1fr; }
+            .action-card { position: static; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Logo -->
+    <a href="index.html" class="logo-fixed">
+        <div class="logo-wrapper">
+            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo" style="max-width: 120px;">
+            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo" style="max-width: 120px;">
+            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
+        </div>
+    </a>
+
+    <!-- Pill Navbar -->
+    <nav class="navbar pill-nav">
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="marketplace.html" style="color:#fff;">Marketplace</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="#" id="auth-state">Sign In</a>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="details-wrapper" id="details-content">
+        <!-- Content injected by JS -->
+    </div>
+
+    <!-- Bid Modal -->
+    <div id="bid-modal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9000; align-items:center; justify-content:center;">
+        <div class="modal-content" style="background:var(--bg-card); width:90%; max-width:400px; padding:32px; border-radius:16px; border:1px solid var(--border-color);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+                <h3 style="font-size:20px; color:#fff;">Place Bid</h3>
+                <button onclick="closeBidModal()" style="background:none; border:none; color:var(--text-muted); font-size:20px; cursor:pointer;"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <form id="bid-form">
+                <input type="hidden" id="bid-listing-id">
+                <div style="margin-bottom:16px;">
+                    <label style="display:block; font-size:13px; color:var(--text-muted); margin-bottom:8px;">Bid Amount (USD)</label>
+                    <input type="number" step="0.0001" id="bid-amount" style="width:100%; padding:12px; background:var(--bg-input); border:1px solid var(--border-color); border-radius:8px; color:#fff; font-size:15px;" required>
+                </div>
+                <div style="margin-bottom:24px;">
+                    <label style="display:block; font-size:13px; color:var(--text-muted); margin-bottom:8px;">Quantity Required</label>
+                    <input type="number" id="bid-qty" style="width:100%; padding:12px; background:var(--bg-input); border:1px solid var(--border-color); border-radius:8px; color:#fff; font-size:15px;" required>
+                </div>
+                <button type="submit" class="btn-bid" style="margin:0;">Submit Bid Anonymously</button>
+                <p style="font-size:12px; color:var(--text-dim); text-align:center; margin-top:12px;">Your identity will remain hidden from the seller until the bid is accepted.</p>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Update nav state
+        if(EA.isLoggedIn()) {
+            document.getElementById('auth-state').textContent = 'Dashboard';
+            document.getElementById('auth-state').href = 'dashboard.html';
+        } else {
+            document.getElementById('auth-state').textContent = 'Sign In';
+            document.getElementById('auth-state').href = 'login.html';
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const listingId = urlParams.get('id');
+        let currentListing = null;
+
+        function renderPage() {
+            if(!listingId) {
+                document.getElementById('details-content').innerHTML = `<h2>Listing not found.</h2><a href="marketplace.html" style="color:var(--green-accent)">Return to Marketplace</a>`;
+                return;
+            }
+
+            const listings = EA.getListings();
+            currentListing = listings.find(l => l.id === listingId);
+
+            if(!currentListing) {
+                document.getElementById('details-content').innerHTML = `<h2>Listing not found.</h2><a href="marketplace.html" style="color:var(--green-accent)">Return to Marketplace</a>`;
+                return;
+            }
+
+            // Icons & formatting
+            let icon = 'fa-bolt'; let color = '#facc15';
+            if (currentListing.type === 'gas') { icon = 'fa-fire'; color = '#3b82f6'; }
+            if (currentListing.type === 'carbon') { icon = 'fa-leaf'; color = '#22c55e'; }
+
+            const origin = currentListing.origin || 'Regulated Grid Zone';
+            const proof = currentListing.proofOfCapacity || 'Verified with NEIIA';
+            const desc = currentListing.desc || 'No detailed description provided by the seller.';
+
+            const html = `
+                <div class="main-column">
+                    <div class="breadcrumb">
+                        <a href="index.html">Home</a> &nbsp;/&nbsp; <a href="marketplace.html">Marketplace</a> &nbsp;/&nbsp; <span>${currentListing.title}</span>
+                    </div>
+
+                    <div class="details-header">
+                        <div>
+                            <h1>${currentListing.title}</h1>
+                            <div class="tag-row">
+                                <span class="type-tag" style="color:${color}; border-color:${color};"><i class="fas ${icon}"></i> ${currentListing.type}</span>
+                                <span class="type-tag" style="color:var(--text-white);"><i class="fas fa-map-marker-alt"></i> ${origin}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chart -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Market Price History (Estimated)</h3>
+                            <div class="chart-controls">
+                                <button class="chart-btn">1H</button>
+                                <button class="chart-btn active">1D</button>
+                                <button class="chart-btn">1W</button>
+                                <button class="chart-btn">1M</button>
+                            </div>
+                        </div>
+                        <canvas id="priceChart" height="100"></canvas>
+                    </div>
+
+                    <!-- Detailed Info Block -->
+                    <div class="info-card">
+                        <h3><i class="fas fa-info-circle"></i> Asset Information & Delivery Terms</h3>
+                        <p>${desc}</p>
+                        
+                        <div class="info-grid">
+                            <div class="info-block">
+                                <span>Total Volume Available</span>
+                                <strong>${EA.formatNumber(currentListing.qty)} ${currentListing.unit}</strong>
+                            </div>
+                            <div class="info-block">
+                                <span>Verification Status</span>
+                                <strong style="color:var(--green-accent)"><i class="fas fa-check-circle"></i> Compliance Verified</strong>
+                            </div>
+                            <div class="info-block">
+                                <span>Proof of Asset capacity</span>
+                                <strong>${proof}</strong>
+                            </div>
+                            <div class="info-block">
+                                <span>Seller Identity</span>
+                                <strong style="color:var(--text-dim)"><i class="fas fa-user-secret"></i> Anonymous Organization</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="side-column">
+                    <div class="action-card">
+                        <div class="price-sub">Current Asking Price</div>
+                        <div class="price-huge">$${currentListing.priceUSD.toFixed(4)}</div>
+                        <div style="font-size:14px; color:var(--text-white); margin-bottom:24px;">per ${currentListing.unit}</div>
+
+                        <button class="btn-bid" onclick="openBidModal()">Place Bid</button>
+                        
+                        <div class="action-meta">
+                            <span>Listed on</span>
+                            <span style="color:var(--text-white); font-weight:600;">${new Date(currentListing.createdAt).toLocaleDateString()}</span>
+                        </div>
+                        <div class="action-meta">
+                            <span>Trading Pair</span>
+                            <span style="color:var(--text-white); font-weight:600;">${currentListing.pair} / USD</span>
+                        </div>
+                        <div class="action-meta">
+                            <span>Active Bids</span>
+                            <span style="color:var(--text-white); font-weight:600;">${currentListing.bids || 0}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('details-content').innerHTML = html;
+            initChart();
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            
+            // Generate some fake volatile data based on the current price
+            const basePrice = currentListing.priceUSD;
+            const labels = ['10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00'];
+            const data = labels.map((_, i) => basePrice * (1 + (Math.random() * 0.1 - 0.05)));
+            // Ensure the last point is the current price
+            data[data.length - 1] = basePrice;
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Price USD',
+                        data: data,
+                        borderColor: '#A3E635',
+                        backgroundColor: 'rgba(163,230,53,0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#011d21',
+                        pointBorderColor: '#A3E635',
+                        pointHoverBackgroundColor: '#A3E635',
+                        pointBorderWidth: 2,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } },
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } }
+                    },
+                    interaction: { mode: 'index', intersect: false }
+                }
+            });
+        }
+
+        function openBidModal() {
+            if(!EA.isLoggedIn()) {
+                window.location.href = 'login.html';
+                return;
+            }
+            if(EA.getCurrentUser().id === currentListing.ownerId) {
+                alert("You cannot bid on your own listing.");
+                return;
+            }
+            document.getElementById('bid-listing-id').value = currentListing.id;
+            document.getElementById('bid-amount').value = currentListing.priceUSD.toFixed(4);
+            document.getElementById('bid-qty').max = currentListing.qty;
+            document.getElementById('bid-modal').style.display = 'flex';
+        }
+
+        function closeBidModal() {
+            document.getElementById('bid-modal').style.display = 'none';
+        }
+
+        document.getElementById('bid-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const amt = parseFloat(document.getElementById('bid-amount').value);
+            const qty = parseFloat(document.getElementById('bid-qty').value);
+            
+            EA.placeBid(currentListing.id, amt, qty);
+            closeBidModal();
+            alert('Your anonymous bid has been placed securely!');
+            renderPage(); // Refresh bids count
+        });
+
+        // Initialize
+        renderPage();
+    </script>
+</body>
+</html>

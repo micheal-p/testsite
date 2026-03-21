@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Assets Marketplace | NEIIA</title>
+    <meta name="description" content="Secure marketplace for energy trading — electricity, gas, and renewable carbon credits. Standardized contracts, anonymous bidding, and regulatory compliance.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Logo -->
+    <a href="../index.html" class="logo-fixed">
+        <div class="logo-wrapper">
+            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo" style="max-width: 120px;">
+            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo" style="max-width: 120px;">
+            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
+        </div>
+    </a>
+
+    <!-- Pill Navbar -->
+    <nav class="navbar pill-nav">
+        <div class="nav-links">
+            <div class="nav-item dropdown">
+                <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down" style="font-size: 12px; margin-left: 6px; transition: transform 0.2s;"></i></span>
+                <div class="mega-menu">
+                    <div class="mm-left-columns">
+                        <div class="mm-column">
+                            <h4>Fund Administration</h4>
+                            <ul class="mm-list">
+                                <li><a href="../sub-funds/subfunds.html">Sub Funds</a></li>
+                                <li><a href="../venture-funds/venturefunds.html">Venture Funds</a></li>
+                                <li><a href="../rolling-funds/rollingfunds.html">Rolling Funds</a></li>
+                                <li><a href="../scout-funds/scout.html">Scout Funds</a></li>
+                                <li><a href="../SPVs/SPVs.html">SPVs</a></li>
+                                <li><a href="../roll-up-vehicles/rollup.html">Roll Up Vehicles</a></li>
+                            </ul>
+                        </div>
+                        <div class="mm-column">
+                            <h4>Investor Management</h4>
+                            <ul class="mm-list">
+                                <li><a href="../government-site/digital.html">Digital Subscriptions</a></li>
+                                <li><a href="../databank.html">Data Bank</a></li>
+                            </ul>
+                            <div style="margin-top: 24px;">
+                                <h4>Intelligence</h4>
+                                <ul class="mm-list">
+                                    <li><a href="../fin/fin.html">Fin <span style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a></li>
+                                    <li><a href="../edu-center/educenter.html">Edu Center</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mm-right-panel">
+                        <div class="mm-column">
+                            <h4>Product Suites</h4>
+                            <a href="../fund-administration/fund-administration.html" class="mm-card">
+                                <div class="mm-icon"><img src="../assets/images/fund_administration.png" alt="Fund Administration"></div>
+                                <div class="mm-content">
+                                    <h5>Fund Administration</h5>
+                                    <p>All-in-one partner to launch an investment vehicle</p>
+                                </div>
+                            </a>
+                            <a href="../investor-management.html" class="mm-card">
+                                <div class="mm-icon"><img src="../assets/images/investor_management.png" alt="Investor Management"></div>
+                                <div class="mm-content">
+                                    <h5>Investor Management</h5>
+                                    <p>Explore all offerings to streamline the investor experience.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="../finance.html">Energy Finance & Capital</a>
+            <a href="../dashboard.html">Energy Ecosystem</a>
+            <a href="../citibim.html">NEIIA</a>
+        </div>
+    </nav>
+
+    <!-- Auth Links -->
+    <div class="auth-fixed">
+        <a href="login.html" class="nav-link">Sign In</a>
+        <a href="signup.html" class="btn-accent">Get Started</a>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <div class="mobile-nav-header">
+            <a href="../index.html">
+                <img src="../assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
+            </a>
+            <button class="mobile-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="mobile-nav-content">
+            <ul class="mobile-nav-list">
+                <li><a href="../finance.html">Energy Finance & Capital <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="../dashboard.html">Energy Ecosystem <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="../citibim.html">NEIIA <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="../nefund.html" id="mobile-resources-link">NEFUND <i class="fas fa-chevron-right"></i></a></li>
+            </ul>
+            <div class="mobile-nav-footer">
+                <a href="signup.html" class="btn btn-primary full-width">Get Started</a>
+                <a href="login.html" class="btn btn-secondary full-width">Sign in</a>
+            </div>
+        </div>
+
+        <!-- Resources Submenu -->
+        <div class="mobile-submenu" id="resources-submenu">
+            <div class="submenu-header">
+                <button class="submenu-back-btn" id="submenu-back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <button class="mobile-close-btn-sub"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="submenu-content">
+                <div class="submenu-section">
+                    <span class="submenu-label">Fund Administration</span>
+                    <ul class="submenu-list">
+                        <li><a href="../sub-funds/subfunds.html">Sub Funds</a></li>
+                        <li><a href="../venture-funds/venturefunds.html">Venture Funds</a></li>
+                        <li><a href="../rolling-funds/rollingfunds.html">Rolling Funds</a></li>
+                        <li><a href="../scout-funds/scout.html">Scout Funds</a></li>
+                        <li><a href="../SPVs/SPVs.html">SPVs</a></li>
+                        <li><a href="../roll-up-vehicles/rollup.html">Roll Up Vehicles</a></li>
+                    </ul>
+                </div>
+                <div class="submenu-section">
+                    <span class="submenu-label">Investor Management</span>
+                    <ul class="submenu-list">
+                        <li><a href="../government-site/digital.html">Digital Subscriptions</a></li>
+                        <li><a href="../databank.html">Data Bank</a></li>
+                    </ul>
+                </div>
+                <div class="submenu-section">
+                    <span class="submenu-label">Intelligence</span>
+                    <ul class="submenu-list">
+                        <li><a href="../fin/fin.html">Fin <span class="beta-badge">Beta</span></a></li>
+                        <li><a href="../edu-center/educenter.html">Edu Center</a></li>
+                    </ul>
+                </div>
+                <div class="submenu-btn-group">
+                    <a href="signup.html" class="btn-lavender">Get Started</a>
+                    <a href="login.html" class="btn-gray-light">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         HERO SECTION
+         ========================================== -->
+    <section class="hero" id="hero">
+        <div class="hero-inner">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    Energy Assets Marketplace
+                </div>
+                <h1>Secure marketplace for <span>energy trading</span></h1>
+                <p class="hero-subtitle">Trade electricity, gas, and renewable carbon credits with standardized contracts, anonymous bidding, and full regulatory compliance. Built for individuals and organisations.</p>
+                <div class="hero-actions">
+                    <a href="signup.html" class="btn-primary-lg">
+                        Start Trading
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="marketplace.html" class="btn-outline-lg">
+                        Explore Market
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Live ticker simulation -->
+            <div class="hero-visual">
+                <div class="mini-ticker">
+                    <div class="ticker-row">
+                        <div class="ticker-pair">
+                            <div class="pair-icon elec">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                            </div>
+                            <div>
+                                <div class="pair-name">ELEC/USD</div>
+                                <div class="pair-label">Electricity</div>
+                            </div>
+                        </div>
+                        <div class="ticker-price">
+                            <div class="price">$0.0847</div>
+                            <div class="change up">+2.14%</div>
+                        </div>
+                    </div>
+                    <div class="ticker-row">
+                        <div class="ticker-pair">
+                            <div class="pair-icon gas">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c0 0-8 7.5-8 13a8 8 0 0016 0c0-5.5-8-13-8-13z"/></svg>
+                            </div>
+                            <div>
+                                <div class="pair-name">GAS/USD</div>
+                                <div class="pair-label">Natural Gas</div>
+                            </div>
+                        </div>
+                        <div class="ticker-price">
+                            <div class="price">$2.847</div>
+                            <div class="change down">-0.73%</div>
+                        </div>
+                    </div>
+                    <div class="ticker-row">
+                        <div class="ticker-pair">
+                            <div class="pair-icon carbon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12a4 4 0 008 0 4 4 0 00-8 0z"/></svg>
+                            </div>
+                            <div>
+                                <div class="pair-name">CRBN/USD</div>
+                                <div class="pair-label">Carbon Credit</div>
+                            </div>
+                        </div>
+                        <div class="ticker-price">
+                            <div class="price">$48.32</div>
+                            <div class="change up">+5.61%</div>
+                        </div>
+                    </div>
+                    <div class="ticker-row">
+                        <div class="ticker-pair">
+                            <div class="pair-icon elec">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                            </div>
+                            <div>
+                                <div class="pair-name">ELEC/NGN</div>
+                                <div class="pair-label">Electricity</div>
+                            </div>
+                        </div>
+                        <div class="ticker-price">
+                            <div class="price">&#8358;127.05</div>
+                            <div class="change up">+1.89%</div>
+                        </div>
+                    </div>
+                    <div class="ticker-row">
+                        <div class="ticker-pair">
+                            <div class="pair-icon gas">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c0 0-8 7.5-8 13a8 8 0 0016 0c0-5.5-8-13-8-13z"/></svg>
+                            </div>
+                            <div>
+                                <div class="pair-name">GAS/NGN</div>
+                                <div class="pair-label">Natural Gas</div>
+                            </div>
+                        </div>
+                        <div class="ticker-price">
+                            <div class="price">&#8358;4,270</div>
+                            <div class="change up">+0.45%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         STATS BAR
+         ========================================== -->
+    <section class="stats-bar">
+        <div class="stats-inner">
+            <div class="stat-item">
+                <div class="stat-value" id="stat-networth">$<span>2.4B</span></div>
+                <div class="stat-label">Total Net Worth</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">$<span>184M</span></div>
+                <div class="stat-label">24h Volume</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value"><span>1,247</span></div>
+                <div class="stat-label">Active Listings</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value"><span>892</span></div>
+                <div class="stat-label">Verified Traders</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FEATURES SECTION
+         ========================================== -->
+    <section class="features-section">
+        <div class="features-header">
+            <div class="section-tag">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Why Trade on NEIIA
+            </div>
+            <h2>Infrastructure you can trust</h2>
+            <p>Purpose-built for energy commodity trading with institutional-grade security and regulatory oversight.</p>
+        </div>
+
+        <div class="features-grid">
+            <!-- Feature 1 -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0110 0v4"/>
+                    </svg>
+                </div>
+                <h3>Secure Marketplace</h3>
+                <p>Enterprise-grade encryption protects every transaction. All trades are verified and settled through secure, auditable channels with full traceability.</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                </div>
+                <h3>Standardized Contracts</h3>
+                <p>Pre-built contract templates for electricity, gas, and carbon credit trades. Automated settlement mechanisms boost investor confidence and reduce disputes.</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="M9 12l2 2 4-4"/>
+                    </svg>
+                </div>
+                <h3>Regulatory Compliance</h3>
+                <p>Full integration with Nigerian regulatory frameworks. NIN/BVN verification for individuals, CAC registration for organisations. Every trade is compliant by design.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         ASSET CATEGORIES
+         ========================================== -->
+    <section class="assets-section">
+        <div class="assets-header">
+            <div class="section-tag">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Asset Classes
+            </div>
+            <h2>What you can trade</h2>
+            <p>Three core energy asset categories, each with dedicated order books and settlement mechanisms.</p>
+        </div>
+
+        <div class="assets-grid">
+            <!-- Electricity -->
+            <div class="asset-card">
+                <img src="images/electricity.jpg" alt="Electricity trading" class="asset-card-image">
+                <div class="asset-card-body">
+                    <h3>Electricity</h3>
+                    <p>Trade power generation and distribution contracts. Spot and forward markets for grid electricity across Nigerian distribution zones.</p>
+                    <div class="asset-card-meta">
+                        <span class="meta-price">$0.0847/kWh</span>
+                        <span class="meta-vol">Vol: 42.3M</span>
+                    </div>
+                    <a href="marketplace.html" class="asset-card-link">
+                        View market
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Gas -->
+            <div class="asset-card">
+                <img src="images/gas.jpg" alt="Natural gas trading" class="asset-card-image">
+                <div class="asset-card-body">
+                    <h3>Natural Gas</h3>
+                    <p>Access natural gas contracts for industrial, commercial, and power generation use. Pipeline and LNG delivery options with transparent pricing.</p>
+                    <div class="asset-card-meta">
+                        <span class="meta-price">$2.847/MMBtu</span>
+                        <span class="meta-vol">Vol: 89.1M</span>
+                    </div>
+                    <a href="marketplace.html" class="asset-card-link">
+                        View market
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Carbon Credits -->
+            <div class="asset-card">
+                <img src="images/carbon-credit.jpg" alt="Carbon credit trading" class="asset-card-image">
+                <div class="asset-card-body">
+                    <h3>Carbon Credits</h3>
+                    <p>Buy and sell verified carbon offset certificates. Support renewable energy projects while meeting ESG mandates and sustainability targets.</p>
+                    <div class="asset-card-meta">
+                        <span class="meta-price">$48.32/tCO2</span>
+                        <span class="meta-vol">Vol: 52.6M</span>
+                    </div>
+                    <a href="marketplace.html" class="asset-card-link">
+                        View market
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         HOW IT WORKS
+         ========================================== -->
+    <section class="how-section">
+        <div class="how-header">
+            <div class="section-tag">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                Getting Started
+            </div>
+            <h2>How it works</h2>
+            <p>From registration to your first trade in four simple steps.</p>
+        </div>
+
+        <div class="how-grid">
+            <!-- Step 1 -->
+            <div class="how-step">
+                <div class="how-step-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
+                <div class="how-step-num">1</div>
+                <h3>Register</h3>
+                <p>Sign up as an individual (NIN/BVN) or organisation (CAC). Choose your trading preferences.</p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="how-step">
+                <div class="how-step-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                </div>
+                <div class="how-step-num">2</div>
+                <h3>Get Verified</h3>
+                <p>Submit your documents for KYC/AML review. Admin approval ensures platform integrity.</p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="how-step">
+                <div class="how-step-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+                    </svg>
+                </div>
+                <div class="how-step-num">3</div>
+                <h3>List or Bid</h3>
+                <p>List your energy assets for sale or place anonymous bids on existing listings. All bids are confidential.</p>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="how-step">
+                <div class="how-step-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                        <polyline points="17 6 23 6 23 12"/>
+                    </svg>
+                </div>
+                <div class="how-step-num">4</div>
+                <h3>Settle & Track</h3>
+                <p>Trades settle via standardised contracts. Track your portfolio, profits and transaction history in real-time.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         CTA SECTION
+         ========================================== -->
+    <section class="cta-section">
+        <div class="cta-inner">
+            <h2>Ready to trade energy?</h2>
+            <p>Join verified traders on Nigeria's premier energy asset marketplace. Whether you're an individual investor or an energy company, there's a place for you.</p>
+            <a href="signup.html" class="btn-cta-white">
+                Create Your Account
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Marketplace</h4>
+                <ul>
+                    <li><a href="marketplace.html">Browse Market</a></li>
+                    <li><a href="marketplace.html">Electricity</a></li>
+                    <li><a href="marketplace.html">Natural Gas</a></li>
+                    <li><a href="marketplace.html">Carbon Credits</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="signup.html">Create Account</a></li>
+                    <li><a href="login.html">Sign In</a></li>
+                    <li><a href="../about.html">About NEIIA</a></li>
+                    <li><a href="../governance.html">Governance</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="../contact.html">Contact Us</a></li>
+                    <li><a href="../construction.html">Help Centre</a></li>
+                    <li><a href="../construction.html">API Documentation</a></li>
+                    <li><a href="../terms-service.html">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 NEIIA — National Energy Investment & Intelligence Administration</div>
+    </footer>
+
+    <!-- JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Pill nav hover
+            const pillNav = document.querySelector('.pill-nav');
+            if (pillNav) {
+                pillNav.addEventListener('mousemove', (e) => {
+                    const rect = pillNav.getBoundingClientRect();
+                    pillNav.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                    pillNav.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+                });
+            }
+
+            // Mobile menu
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            const overlay = document.querySelector('.mobile-nav-overlay');
+            const closeBtn = document.querySelector('.mobile-close-btn');
+            const resourcesLink = document.getElementById('mobile-resources-link');
+            const submenu = document.getElementById('resources-submenu');
+            const backBtn = document.getElementById('submenu-back-btn');
+            const closeSubBtn = document.querySelector('.mobile-close-btn-sub');
+
+            if (menuBtn && overlay) menuBtn.addEventListener('click', () => overlay.classList.add('open'));
+            if (closeBtn && overlay) closeBtn.addEventListener('click', () => { overlay.classList.remove('open'); if (submenu) submenu.classList.remove('active'); });
+            if (resourcesLink && submenu) resourcesLink.addEventListener('click', (e) => { e.preventDefault(); submenu.classList.add('active'); });
+            if (backBtn && submenu) backBtn.addEventListener('click', () => submenu.classList.remove('active'));
+            if (closeSubBtn && overlay && submenu) closeSubBtn.addEventListener('click', () => { overlay.classList.remove('open'); submenu.classList.remove('active'); });
+
+            // Simulate ticker price animation
+            const prices = document.querySelectorAll('.ticker-price .price');
+            setInterval(() => {
+                prices.forEach(el => {
+                    const currentText = el.textContent;
+                    const isNaira = currentText.includes('\u20A6');
+                    const prefix = isNaira ? '\u20A6' : '$';
+                    const numStr = currentText.replace(/[^0-9.]/g, '');
+                    const num = parseFloat(numStr);
+                    if (!isNaN(num)) {
+                        const delta = num * (Math.random() * 0.004 - 0.002);
+                        const newNum = num + delta;
+                        el.textContent = prefix + (newNum < 1 ? newNum.toFixed(4) : newNum < 100 ? newNum.toFixed(3) : newNum.toLocaleString('en-US', { maximumFractionDigits: 0 }));
+                    }
+                });
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
