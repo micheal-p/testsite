@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk & ESG Intelligence | NEIIA</title>
+    <meta name="description"
+        content="Comprehensive environmental, social, and governance analytics powering sustainable energy investments in Nigeria.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Logo — fixed, direct child of body so position:fixed works -->
+    <a href="../index.html" class="logo-fixed">
+        <div class="logo-wrapper">
+            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
+                style="max-width: 120px;">
+            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
+                style="max-width: 120px; display: none;">
+            <div class="brand-text">NATIONAL ENERGY INVESTMENT &amp; INTELLIGENCE ADMINISTRATION</div>
+        </div>
+    </a>
+
+    <header>
+        <!-- Spacer to maintain layout height -->
+        <div class="header-brand"></div>
+    </header>
+
+    <!-- =============================================
+         STICKY ZONE — lives at body level so its containing
+         block is <body> (full page height), enabling true
+         sticky for the entire scroll.
+         margin-top: -80px aligns it with the logo row above.
+         ============================================= -->
+    <div class="nav-sticky-zone">
+        <!-- Pill Navigation -->
+        <nav class="navbar pill-nav">
+            <!-- Links only — no logo inside the pill -->
+            <div class="nav-links">
+                <div class="nav-item dropdown">
+                    <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down"
+                            style="font-size: 12px; margin-left: 6px; transition: transform 0.2s;"></i></span>
+                    <div class="mega-menu">
+                        <div class="mm-left-columns">
+                            <div class="mm-column">
+                                <h4>Fund Administration</h4>
+                                <ul class="mm-list">
+                                    <li><a href="../sub-funds/subfunds.html">Sub Funds</a></li>
+                                    <li><a href="../venture-funds/venturefunds.html">Venture Funds</a></li>
+                                    <li><a href="../rolling-funds/rollingfunds.html">Rolling Funds</a></li>
+                                    <li><a href="scout.html">Scout Funds</a></li>
+                                    <li><a href="../SPVs/SPVs.html">SPVs</a></li>
+                                    <li><a href="../roll-up-vehicles/rollup.html">Roll Up Vehicles</a></li>
+                                </ul>
+                            </div>
+                            <div class="mm-column">
+                                <h4>Investor Management</h4>
+                                <ul class="mm-list">
+                                    <li><a href="../government-site/digital.html">Digital Subscriptions</a></li>
+                                    <li><a href="../databank.html">Data Bank</a></li>
+                                </ul>
+                                <div style="margin-top: 24px;">
+                                    <h4>Intelligence</h4>
+                                    <ul class="mm-list">
+                                        <li><a href="../fin/fin.html">Fin <span
+                                                    style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a>
+                                        </li>
+                                        <li><a href="../edu-center/educenter.html">Edu Center</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="mm-footer"
+                                style="border-top: none; padding-top: 10px; margin-top: auto; color: #6b7280; font-size: 15px;">
+                                Looking for tools for startups? Explore <a href="../construction.html"
+                                    style="color: #6b7280 !important; text-decoration: underline; margin-left: 2px;">Rollups.</a>
+                                <svg width="10" height="10" viewBox="0 0 12 12" fill="none"
+                                    style="margin-left: 4px; display: inline-block;">
+                                    <path d="M1 11L11 1M11 1H3M11 1V9" stroke="#6b7280" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="mm-right-panel">
+                            <div class="mm-column">
+                                <h4>Product Suites</h4>
+                                <a href="../fund-administration/fund-administration.html" class="mm-card">
+                                    <div class="mm-icon"><img src="../assets/images/fund_administration.png"
+                                            alt="Fund Administration"></div>
+                                    <div class="mm-content">
+                                        <h5>Fund Administration</h5>
+                                        <p>All-in-one partner to launch an investment vehicle</p>
+                                    </div>
+                                </a>
+                                <a href="../investor-management.html" class="mm-card">
+                                    <div class="mm-icon"><img src="../assets/images/investor_management.png"
+                                            alt="Investor Management"></div>
+                                    <div class="mm-content">
+                                        <h5>Investor Management</h5>
+                                        <p>Explore all offerings to streamline the investor experience.</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="../finance.html">Energy Finance &amp; Capital</a>
+                <a href="../dashboard.html">Energy Ecosystem</a>
+                <a href="../citibim.html">NEIIA</a>
+            </div>
+        </nav>
+
+        <!-- Auth: Sign In + Join (desktop, in the sticky bar) -->
+        <div class="auth-sticky">
+            <a href="signin.html" class="nav-link">Sign In</a>
+            <a href="signup.html" class="btn btn-black">Join</a>
+        </div>
+
+        <!-- Mobile Menu Button (only visible on mobile) -->
+        <div class="mobile-btn-sticky-container">
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <div class="mobile-nav-header">
+            <a href="../index.html">
+                <img src="../assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
+            </a>
+            <button class="mobile-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-nav-content">
+            <ul class="mobile-nav-list">
+                <li><a href="../finance.html">Energy Finance &amp; Capital <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="../dashboard.html">Energy Ecosystem <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="../citibim.html">NEIIA <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="../nefund.html" id="mobile-resources-link">NEFUND <i class="fas fa-chevron-right"></i></a>
+                </li>
+            </ul>
+            <div class="mobile-nav-footer">
+                <a href="../contact.html" class="btn btn-primary full-width">Contact Support</a>
+                <a href="signin.html" class="btn btn-secondary full-width">Sign in</a>
+            </div>
+        </div>
+
+        <!-- Resources Submenu -->
+        <div class="mobile-submenu" id="resources-submenu">
+            <div class="submenu-header">
+                <button class="submenu-back-btn" id="submenu-back-btn">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="mobile-close-btn-sub">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="submenu-content">
+                <div class="submenu-section">
+                    <span class="submenu-label">Fund Administration</span>
+                    <ul class="submenu-list">
+                        <li><a href="../sub-funds/subfunds.html">Sub Funds</a></li>
+                        <li><a href="../venture-funds/venturefunds.html">Venture Funds</a></li>
+                        <li><a href="../rolling-funds/rollingfunds.html">Rolling Funds</a></li>
+                        <li><a href="../scout-funds/scout.html">Scout Funds</a></li>
+                        <li><a href="../SPVs/SPVs.html">SPVs</a></li>
+                        <li><a href="../roll-up-vehicles/rollup.html">Roll Up Vehicles</a></li>
+                    </ul>
+                </div>
+                <div class="submenu-section">
+                    <span class="submenu-label">Investor Management</span>
+                    <ul class="submenu-list">
+                        <li><a href="../government-site/digital.html">Digital Subscriptions</a></li>
+                        <li><a href="../databank.html">Data Bank</a></li>
+                    </ul>
+                </div>
+                <div class="submenu-section">
+                    <span class="submenu-label">Intelligence</span>
+                    <ul class="submenu-list">
+                        <li><a href="../fin/fin.html">Fin <span class="beta-badge">Beta</span></a></li>
+                        <li><a href="../edu-center/educenter.html">Edu Center</a></li>
+                    </ul>
+                </div>
+                <div class="product-suites-box">
+                    <span class="submenu-label" style="margin-bottom: 24px; display: block;">Product Suites</span>
+                    <a href="../fund-administration/fund-administration.html" class="suite-card">
+                        <div class="suite-icon">
+                            <i class="fas fa-circle-notch" style="color: #A3E635; font-size: 24px;"></i>
+                        </div>
+                        <div class="suite-info">
+                            <h4>Fund Administration</h4>
+                            <p>All-in-one partner to launch an investment vehicle</p>
+                        </div>
+                    </a>
+                    <a href="../investor-management.html" class="suite-card">
+                        <div class="suite-icon">
+                            <i class="fas fa-layer-group" style="color: #A3E635; font-size: 24px;"></i>
+                        </div>
+                        <div class="suite-info">
+                            <h4>Investor Management</h4>
+                            <p>Explore all offerings to streamline the investor experience.</p>
+                        </div>
+                    </a>
+                </div>
+                <a href="../construction.html" class="submenu-footer-link">
+                    Looking for tools for startups? Explore Rollups. <i class="fas fa-arrow-right"
+                        style="font-size: 12px;"></i>
+                </a>
+                <div class="submenu-btn-group">
+                    <a href="../contact.html" class="btn-lavender">Contact sales</a>
+                    <a href="signin.html" class="btn-gray-light">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         HERO SECTION
+         ========================================== -->
+    <section class="hero" id="hero">
+        <div class="hero-inner">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+                    </svg>
+                    Enterprise ESG Intelligence
+                </div>
+                <h1>Intelligence powering <span>sustainable growth</span></h1>
+                <p class="hero-subtitle">Comprehensive environmental, social, and governance analytics driving
+                    intelligent energy investments in Nigeria. Access predictive risk models, real-time spatial data,
+                    and compliance automation.</p>
+                <div class="hero-actions">
+                    <a href="signin.html" class="btn-primary-lg">
+                        Access Platform
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                    <a href="#features" class="btn-outline-lg">
+                        Explore Features
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Live ticker / Dashboard Simulation -->
+            <div class="hero-visual">
+                <div class="dashboard-sim">
+                    <div class="sim-header">
+                        <div class="sim-dots"><span></span><span></span><span></span></div>
+                        <div class="sim-title">Live ESG Metrics &middot; Nigeria</div>
+                    </div>
+                    <div class="sim-body">
+                        <div class="sim-row">
+                            <div class="sim-metric">
+                                <i class="fas fa-leaf" style="color: #10b981;"></i>
+                                <div class="metric-info">
+                                    <div class="metric-name">National ESG Score</div>
+                                    <div class="metric-val">A- Tier</div>
+                                </div>
+                            </div>
+                            <div class="sim-change up">+2.4%</div>
+                        </div>
+                        <div class="sim-row">
+                            <div class="sim-metric">
+                                <i class="fas fa-smog" style="color: #64748b;"></i>
+                                <div class="metric-info">
+                                    <div class="metric-name">Carbon Intensity</div>
+                                    <div class="metric-val" id="ticker-carbon">214 gCO2e</div>
+                                </div>
+                            </div>
+                            <div class="sim-change down">-1.2%</div>
+                        </div>
+                        <div class="sim-row">
+                            <div class="sim-metric">
+                                <i class="fas fa-shield-alt" style="color: #0ea5e9;"></i>
+                                <div class="metric-info">
+                                    <div class="metric-name">Risk Exposure Index</div>
+                                    <div class="metric-val">Low (1.14)</div>
+                                </div>
+                            </div>
+                            <div class="sim-change neutral">Stable</div>
+                        </div>
+                        <div class="sim-chart">
+                            <div class="bar" style="height: 40%"></div>
+                            <div class="bar" style="height: 60%"></div>
+                            <div class="bar" style="height: 50%"></div>
+                            <div class="bar" style="height: 80%"></div>
+                            <div class="bar" style="height: 70%"></div>
+                            <div class="bar" style="height: 90%" id="active-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         STATS BAR
+         ========================================== -->
+    <section class="stats-bar">
+        <div class="stats-inner">
+            <div class="stat-item">
+                <div class="stat-value"><span>300+</span></div>
+                <div class="stat-label">Monitored Assets</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value"><span>14M</span></div>
+                <div class="stat-label">Data Points Daily</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value"><span>50+</span></div>
+                <div class="stat-label">Regulatory Mappings</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value"><span>99.9%</span></div>
+                <div class="stat-label">Platform Uptime</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FEATURES SECTION
+         ========================================== -->
+    <section class="features-section" id="features">
+        <div class="features-header">
+            <div class="section-tag">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                Core Capabilities
+            </div>
+            <h2>Intelligence you can act on</h2>
+            <p>Purpose-built tools for monitoring, analyzing, and mitigating ESG and regulatory risks across energy
+                portfolios.</p>
+        </div>
+
+        <div class="features-grid">
+            <!-- Feature 1 -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Predictive Risk Modeling</h3>
+                <p>Leverage advanced machine learning algorithms to forecast regulatory, financial, and environmental
+                    risks across the Nigerian energy ecosystem before they impact your investment portfolio.</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-globe-africa"></i>
+                </div>
+                <h3>Geospatial Tracking</h3>
+                <p>Visualize environmental impact, social integration, and governance compliance through real-time
+                    satellite imagery and on-the-ground sensor networks seamlessly integrated.</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-file-contract"></i>
+                </div>
+                <h3>Compliance Automation</h3>
+                <p>Streamline complex regulatory reporting with automated data collection mechanisms that map directly
+                    to local policies and international ESG frameworks.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         CTA SECTION
+         ========================================== -->
+    <section class="cta-section">
+        <div class="cta-inner">
+            <h2>Ready to optimize your portfolio?</h2>
+            <p>Access our comprehensive suite of Risk and ESG tools to make smarter, more sustainable energy investments
+                today.</p>
+            <a href="signin.html" class="btn-cta-white">
+                Access Platform Access
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Capabilities</h4>
+                <ul>
+                    <li><a href="predictive-risk.html">Predictive Risk</a></li>
+                    <li><a href="esg-scoring.html">ESG Scoring</a></li>
+                    <li><a href="regulatory-mapping.html">Regulatory Mapping</a></li>
+                    <li><a href="carbon-tracking.html">Carbon Tracking</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="signin.html">Access Platform</a></li>
+                    <li><a href="../dashboard.html">Energy Dashboard</a></li>
+                    <li><a href="../about.html">About NEIIA</a></li>
+                    <li><a href="../governance.html">Governance</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="../contact.html">Contact Us</a></li>
+                    <li><a href="#">Help Centre</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="terms-of-service.html">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 NEIIA &mdash; Risk & ESG Intelligence Division</div>
+    </footer>
+
+    <!-- JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ticker animation
+            const carbonTicker = document.getElementById('ticker-carbon');
+            const activeBar = document.getElementById('active-bar');
+            setInterval(() => {
+                if (carbonTicker) {
+                    const base = 214;
+                    const diff = Math.floor(Math.random() * 5) - 2;
+                    carbonTicker.textContent = `${base + diff} gCO2e`;
+                }
+                if (activeBar) {
+                    const height = 80 + Math.random() * 15;
+                    activeBar.style.height = `${height}%`;
+                }
+            }, 2500);
+
+            // ==========================================
+            // MOBILE MENU LOGIC
+            // ==========================================
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            const mobileNav = document.querySelector('.mobile-nav-overlay');
+            const mobileCloseBtn = document.querySelector('.mobile-close-btn');
+
+            if (mobileBtn && mobileNav) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileNav.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+            if (mobileCloseBtn && mobileNav) {
+                mobileCloseBtn.addEventListener('click', () => {
+                    mobileNav.classList.remove('open');
+                    document.body.style.overflow = '';
+                });
+            }
+
+            // ==========================================
+            // MOBILE SUBMENU LOGIC
+            // ==========================================
+            const mobileResourcesLink = document.getElementById('mobile-resources-link');
+            const resourcesSubmenu = document.getElementById('resources-submenu');
+            const submenuBackBtn = document.getElementById('submenu-back-btn');
+            const mobileCloseBtnSub = document.querySelector('.mobile-close-btn-sub');
+            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+
+            if (mobileResourcesLink && resourcesSubmenu) {
+                mobileResourcesLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    resourcesSubmenu.classList.add('active');
+                });
+            }
+
+            if (submenuBackBtn && resourcesSubmenu) {
+                submenuBackBtn.addEventListener('click', () => {
+                    resourcesSubmenu.classList.remove('active');
+                });
+            }
+
+            if (mobileCloseBtnSub && resourcesSubmenu) {
+                mobileCloseBtnSub.addEventListener('click', () => {
+                    resourcesSubmenu.classList.remove('active');
+                    if (mobileNavOverlay) {
+                        mobileNavOverlay.classList.remove('open');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
