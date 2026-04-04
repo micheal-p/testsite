@@ -1,0 +1,518 @@
+/* =========================================
+   EDU CENTER SPECIFIC STYLES
+   ========================================= */
+
+/* Hero Section */
+.edu-hero {
+    background-color: #021a1f;
+    /* Dark background matching image */
+    padding: 180px 0 80px;
+    /* Extra top padding to account for fixed header logo */
+    border-bottom: 1px solid #11292d;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.edu-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.edu-hero-content {
+    max-width: 800px;
+}
+
+.edu-hero-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #e2e8f0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+}
+
+.edu-hero-label .box {
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    display: inline-block;
+}
+
+.edu-hero-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.15;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin: 0 0 40px 0;
+    /* Space below title for search bar */
+}
+
+/* Edu Search Bar */
+.edu-search-container {
+    max-width: 500px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.edu-search-input {
+    width: 100%;
+    padding: 16px 20px 16px 48px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+    color: #333;
+    outline: none;
+}
+
+.edu-search-input::placeholder {
+    color: #94a3b8;
+}
+
+.edu-search-icon {
+    position: absolute;
+    left: 16px;
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.edu-search-shortcut {
+    position: absolute;
+    right: 12px;
+    background-color: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: #64748b;
+    font-family: monospace;
+}
+
+/* Categories Grid */
+.edu-categories-section {
+    padding: 60px 0 80px;
+    background-color: #ffffff;
+    /* Light background */
+    border-bottom: 1px solid #eaeaea;
+}
+
+.edu-categories-header {
+    margin-bottom: 24px;
+}
+
+.edu-categories-title {
+    color: #111111;
+    font-size: 0.95rem;
+    font-weight: 400;
+    margin: 0;
+}
+
+.edu-categories-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 0;
+    /* Removing gap to create seamless grid */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    padding-bottom: 0px;
+    border-top: 1px solid #eaeaea;
+    border-left: 1px solid #eaeaea;
+}
+
+.edu-categories-grid::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari and Opera */
+}
+
+.edu-category-card {
+    flex: 0 0 clamp(280px, 30vw, 320px);
+    scroll-snap-align: start;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-right: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+    transition: background-color 0.2s ease;
+    padding: 16px;
+    /* Added internal padding around the image block to match screenshot */
+}
+
+.edu-category-card:hover {
+    background-color: #fafafa;
+}
+
+.edu-category-img-box {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: block;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.edu-category-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.edu-category-text h3 {
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: #111;
+    margin: 0 0 8px 0;
+}
+
+.edu-category-text p {
+    font-size: 0.95rem;
+    color: #666;
+    /* Muted gray text for subtitle */
+    margin: 0;
+}
+
+/* Category Controls (Dots & Arrows) */
+.edu-categories-controls {
+    display: none;
+    /* Hidden on desktop by default as user requested mobile specifically, but can be shown if needed */
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 32px;
+}
+
+@media (max-width: 768px) {
+    .edu-categories-controls {
+        display: flex;
+    }
+}
+
+.edu-categories-dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.edu-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #334155;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.edu-dot.active {
+    width: 16px;
+    border-radius: 100px;
+    background-color: #f1f5f9;
+}
+
+.edu-categories-arrows {
+    display: flex;
+    gap: 12px;
+}
+
+.edu-arrow-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #334155;
+    background: transparent;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.edu-arrow-btn:hover {
+    color: #fff;
+    border-color: #64748b;
+}
+
+.edu-arrow-btn:active {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Latest Articles (Featured) */
+.edu-articles-section {
+    padding: 80px 0;
+    background-color: #fafafa;
+}
+
+.edu-section-title {
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: #111;
+    margin-bottom: 48px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #111;
+}
+
+.edu-articles-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 40px;
+    padding-bottom: 24px;
+    /* for scrollbar if any */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.edu-articles-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.edu-article-card {
+    flex: 0 0 clamp(300px, 35vw, 400px);
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+}
+
+.edu-article-card:hover .edu-article-title {
+    color: #4f46e5;
+}
+
+.edu-article-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    background-color: #eee;
+}
+
+.edu-article-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.edu-article-card:hover .edu-article-image img {
+    transform: scale(1.03);
+}
+
+.edu-article-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.edu-article-category {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: #666;
+}
+
+.edu-article-title {
+    font-size: 1.75rem;
+    line-height: 1.3;
+    font-weight: 500;
+    color: #111;
+    margin: 0;
+    transition: color 0.2s ease;
+}
+
+.edu-article-excerpt {
+    font-size: 1.125rem;
+    color: #666;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Base resets & adjustments */
+.main-content {
+    padding-top: 0;
+    /* Removing generic databank padding */
+}
+
+/* Article Page Specifics */
+@media (max-width: 768px) {
+    .edu-hero {
+        padding: 180px 0 60px;
+        /* Increased padding top to prevent overlap with logo text */
+        min-height: auto;
+    }
+}
+
+.edu-article-page {
+    background-color: #fff;
+    padding-bottom: 80px;
+}
+
+.edu-article-header {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 80px 0 40px;
+    text-align: center;
+}
+
+.edu-article-header .edu-article-category {
+    font-size: 1rem;
+    color: #4f46e5;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: inline-block;
+}
+
+.edu-article-header .edu-article-title {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.2;
+    font-weight: 500;
+    color: #111;
+    letter-spacing: -0.02em;
+    margin: 0 0 24px 0;
+}
+
+.edu-article-subtitle {
+    font-size: 1.25rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 0 0 48px 0;
+}
+
+.edu-article-hero-image {
+    width: 100%;
+    aspect-ratio: 21 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #eee;
+    margin-bottom: 64px;
+}
+
+.edu-article-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.edu-article-body {
+    max-width: 720px;
+    margin: 0 auto;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #333;
+}
+
+.edu-article-body h2 {
+    font-size: 2rem;
+    font-weight: 500;
+    color: #111;
+    margin: 48px 0 24px;
+    letter-spacing: -0.01em;
+}
+
+.edu-article-body h3 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #111;
+    margin: 32px 0 16px;
+}
+
+.edu-article-body p {
+    margin-bottom: 24px;
+}
+
+.edu-article-body blockquote {
+    margin: 32px 0;
+    padding: 24px 32px;
+    border-left: 4px solid #4f46e5;
+    background-color: #f9f9f9;
+    font-size: 1.25rem;
+    font-style: italic;
+    color: #111;
+}
+
+.edu-article-body ul {
+    margin-bottom: 24px;
+    padding-left: 24px;
+}
+
+.edu-article-body li {
+    margin-bottom: 12px;
+}
+
+/* Mobile Logo Spacing & Layout */
+#edu-hero-logo {
+    position: absolute !important;
+    top: 32px;
+    left: 40px;
+    z-index: 1200;
+}
+
+@media (max-width: 768px) {
+    #edu-hero-logo {
+        top: 20px;
+        left: 20px;
+    }
+
+    .logo-wrapper {
+        gap: 6px !important;
+    }
+
+    .logo-wrapper .brand-text {
+        margin-top: 0 !important;
+    }
+}
+
+/* ============================================
+   Dynamic Auth Links Colors
+   ============================================ */
+.auth-fixed .nav-link {
+    color: #ffffff !important;
+    transition: color 0.3s ease;
+}
+
+.auth-fixed.scrolled .nav-link {
+    color: #050c26 !important;
+}
+
+.auth-fixed .btn-black {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #ffffff !important;
+    transition: all 0.3s ease;
+}
+
+.auth-fixed.scrolled .btn-black {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid #000000 !important;
+}
+
+/* ============================================
+   Edu Center Global Mobile Overrides
+   ============================================ */
+body {
+    overflow-x: hidden;
+}
+
+.edu-hero {
+    overflow-x: hidden;
+}
+
+.mobile-menu-btn {
+    color: #ffffff !important;
+    transition: color 0.3s ease;
+}
+
+.mobile-menu-btn.scrolled {
+    color: #050c26 !important;
+}

@@ -1008,201 +1008,6 @@
             }
         }
 
-        /* =============================================
-           PREMIUM TESTIMONIAL SECTION
-           ============================================= */
-        .testimonial-section {
-            background: #fff;
-            padding: 100px 0;
-            overflow: hidden;
-            position: relative;
-            width: 100%;
-            /* Full width */
-        }
-
-        .testimonial-carousel-container {
-            width: 100%;
-            /* max-width: 1400px; */
-            /* Removed to make it flush with screen */
-            margin: 0;
-            position: relative;
-        }
-
-        .testimonial-track-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            display: flex;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        .testimonial-track-wrapper::-webkit-scrollbar {
-            display: none;
-        }
-
-        .testimonial-track {
-            display: flex;
-            gap: 24px;
-            padding: 40px calc(37% - 450px);
-            width: auto;
-            will-change: transform;
-        }
-
-        .testimonial-slide {
-            flex: 0 0 900px;
-            scroll-snap-align: center;
-            opacity: 0.6;
-            transition: opacity 0.4s ease;
-            display: flex;
-            justify-content: center;
-        }
-
-        .testimonial-slide.active {
-            opacity: 1;
-        }
-
-        .testimonial-card {
-            display: flex;
-            width: 100%;
-            max-width: 1200px;
-            height: 460px;
-            border-radius: 32px;
-            overflow: hidden;
-            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.06);
-            background: #fff;
-        }
-
-        .card-panel-content {
-            flex: 1;
-            padding: 48px 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-        }
-
-        .testimonial-slide[data-theme="teal"] .card-panel-content {
-            background-color: #062b2b;
-            color: #fff;
-        }
-
-        .testimonial-slide[data-theme="purple"] .card-panel-content {
-            background-color: #d1d7ff;
-            color: #062b2b;
-        }
-
-        .quote-text {
-            font-size: 24px;
-            line-height: 1.4;
-            font-weight: 500;
-            margin: 0;
-            text-align: left;
-            letter-spacing: -0.3px;
-        }
-
-        .card-footer-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-top: 40px;
-        }
-
-        .author-details {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .author-name-bold {
-            font-size: 15px;
-            font-weight: 700;
-        }
-
-        .author-role-sub {
-            font-size: 13px;
-            opacity: 0.8;
-            font-weight: 400;
-        }
-
-        .vest-logo-text {
-            font-family: var(--font-family);
-            font-weight: 800;
-            font-size: 20px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .card-panel-image {
-            flex: 0 0 38%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .card-panel-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 0 40px 40px 0;
-        }
-
-        .carousel-bottom-nav {
-            max-width: 1100px;
-            margin: 60px auto 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 48px;
-            padding: 0 24px;
-        }
-
-        .carousel-dots-centered {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .carousel-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 4px;
-            background: #d1d5db;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .carousel-dot.active {
-            background: #001D21;
-            width: 24px;
-        }
-
-        .carousel-arrows-right {
-            display: flex;
-            gap: 12px;
-        }
-
-        .nav-arrow-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 1px solid #e5e7eb;
-            background: #fff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: #001D21;
-            transition: all 0.3s ease;
-        }
-
-        .nav-arrow-btn:hover {
-            background: #0d3d44;
-            color: #fff;
-            border-color: #0d3d44;
-            transform: translateY(-2px);
-        }
 
 
         /* ==========================================
@@ -1579,6 +1384,34 @@
             margin-bottom: 400px;
         }
 
+        @media (max-width: 1023px) {
+            .kf-grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            .kf-cell-headline {
+                grid-column: 1;
+            }
+
+            .kf-list-container {
+                display: none;
+            }
+
+            .kf-card {
+                grid-template-columns: 1fr;
+                gap: 32px;
+                padding: 32px;
+            }
+
+            .kf-card-content {
+                gap: 24px;
+            }
+
+            .kf-card:last-child {
+                margin-bottom: 40px;
+            }
+        }
+
         /* ============================================
            ADVANCED FEATURES SECTION
            ============================================ */
@@ -1921,6 +1754,30 @@
             .infra-heading {
                 font-size: 28px;
                 margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .infra-card {
+                height: auto;
+                min-height: 480px;
+            }
+
+            .infra-modern-pills {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
+
+            .infra-modern-pill,
+            .infra-center-pill {
+                width: auto;
+                flex-grow: 1;
+            }
+
+            .infra-center-pill {
+                text-align: center;
             }
         }
 
@@ -2302,66 +2159,6 @@
                 display: none;
             }
         }
-
-        @media (max-width: 1150px) {
-            .testimonial-slide {
-                flex: 0 0 calc(100% - 80px);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .testimonial-section {
-                padding: 40px 0;
-            }
-
-            .testimonial-track {
-                gap: 16px;
-                padding: 20px calc(50% - 40%);
-            }
-
-            .testimonial-slide {
-                flex: 0 0 80%;
-                max-width: 80%;
-                opacity: 0.6;
-            }
-
-            .testimonial-slide.active {
-                opacity: 1;
-            }
-
-            .testimonial-card {
-                flex-direction: column;
-                height: auto;
-                border-radius: 20px;
-            }
-
-            .card-panel-content {
-                padding: 30px 20px;
-                order: 1;
-            }
-
-            .quote-text {
-                font-size: 18px;
-                margin-bottom: 20px;
-            }
-
-            .card-panel-image {
-                flex: 0 0 280px;
-                width: 100%;
-                order: 2;
-            }
-
-            .card-panel-image img {
-                object-position: center 20%;
-                border-radius: 0 0 20px 20px;
-            }
-
-            .card-footer-info {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 24px;
-            }
-        }
     </style>
 </head>
 
@@ -2390,25 +2187,27 @@
                         <div class="mm-column">
                             <h4>Fund Administration</h4>
                             <ul class="mm-list">
+                                <li><a href="../construction.html">Sub Funds</a></li>
                                 <li><a href="venturefunds.html">Venture Funds</a></li>
                                 <li><a href="../rolling-funds/rollingfunds.html">Rolling Funds</a></li>
                                 <li><a href="../construction.html">Scout Funds</a></li>
-                                <li><a href="../construction.html">SPVs</a></li>
+                                <li><a href="../SPVs/SPVs.html">SPVs</a></li>
                                 <li><a href="../construction.html">Roll Up Vehicles</a></li>
                             </ul>
                         </div>
                         <div class="mm-column">
                             <h4>Investor Management</h4>
                             <ul class="mm-list">
-                                <li><a href="../construction.html">Digital Subscriptions</a></li>
+                                <li><a href="../government-site/digital.html">Digital Subscriptions</a></li>
                                 <li><a href="../databank.html">Data Bank</a></li>
                             </ul>
                             <div style="margin-top: 24px;">
                                 <h4>Intelligence</h4>
                                 <ul class="mm-list">
-                                    <li><a href="../construction.html">Fin <span
+                                    <li><a href="../fin/fin.html">Fin <span
                                                 style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a>
                                     </li>
+                                    <li><a href="../edu-center/educenter.html">Edu Center</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -2506,10 +2305,11 @@
                 <div class="submenu-section">
                     <span class="submenu-label">Fund Administration</span>
                     <ul class="submenu-list">
+                        <li><a href="../construction.html">Sub Funds</a></li>
                         <li><a href="venturefunds.html">Venture Funds</a></li>
                         <li><a href="../rolling-funds/rollingfunds.html">Rolling Funds</a></li>
                         <li><a href="../construction.html">Scout Funds</a></li>
-                        <li><a href="../construction.html">SPVs</a></li>
+                        <li><a href="../SPVs/SPVs.html">SPVs</a></li>
                         <li><a href="../construction.html">Roll Up Vehicles</a></li>
                     </ul>
                 </div>
@@ -2517,7 +2317,7 @@
                 <div class="submenu-section">
                     <span class="submenu-label">Investor Management</span>
                     <ul class="submenu-list">
-                        <li><a href="../investor-management.html">Digital Subscriptions</a></li>
+                        <li><a href="../government-site/digital.html">Digital Subscriptions</a></li>
                         <li><a href="../databank.html">Data Bank</a></li>
                     </ul>
                 </div>
@@ -2525,7 +2325,8 @@
                 <div class="submenu-section">
                     <span class="submenu-label">Intelligence</span>
                     <ul class="submenu-list">
-                        <li><a href="../construction.html">Fin <span class="beta-badge">Beta</span></a></li>
+                        <li><a href="../fin/fin.html">Fin <span class="beta-badge">Beta</span></a></li>
+                        <li><a href="../edu-center/educenter.html">Edu Center</a></li>
                     </ul>
                 </div>
 
@@ -2586,167 +2387,7 @@
         </div>
     </section>
 
-    <!-- ==========================================
-         PREMIUM TESTIMONIAL SECTION
-         ========================================== -->
-    <section class="testimonial-section">
-        <div class="testimonial-carousel-container">
-            <div class="testimonial-track-wrapper">
-                <div class="testimonial-track" id="testimonialTrack">
 
-                    <!-- Slide 1: Purple (Dr. Mustapha Abdullahi) -->
-                    <div class="testimonial-slide active" data-theme="purple" data-index="0">
-                        <div class="testimonial-card">
-                            <div class="card-panel-content">
-                                <blockquote class="quote-text">“Partnering with NEIIA has revolutionized our approach to
-                                    national energy data management. The Data Bank provides the transparency and
-                                    intelligence required to drive sustainable investment and power Nigeria's future.”
-                                </blockquote>
-                                <div class="card-footer-info">
-                                    <div class="author-details">
-                                        <span class="author-name-bold">Dr. Mustapha Abdullahi</span>
-                                        <span class="author-role-sub">Director General (DG)</span>
-                                    </div>
-                                    <div class="vest-logo-text" style="font-size: 12px; letter-spacing: 1px;">Energy
-                                        Commission of Nigeria</div>
-                                </div>
-                            </div>
-                            <div class="card-panel-image">
-                                <img src="../assets/images/investor-management/mustapha-dg.jpeg"
-                                    alt="Dr. Mustapha Abdullahi">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 2: Teal (Olu Verheijen) -->
-                    <div class="testimonial-slide" data-theme="teal" data-index="1">
-                        <div class="testimonial-card">
-                            <div class="card-panel-content">
-                                <blockquote class="quote-text">“Accelerating Nigeria's energy transition requires robust
-                                    partnerships and innovative data systems. NEIIA gives us the strategic oversight
-                                    needed to harmonize public policy with private sector execution.”</blockquote>
-                                <div class="card-footer-info">
-                                    <div class="author-details">
-                                        <span class="author-name-bold">Mrs. Olu Verheijen</span>
-                                        <span class="author-role-sub">Special Adviser (SA) to the President on
-                                            Energy</span>
-                                    </div>
-                                    <div class="vest-logo-text" style="font-size: 12px; letter-spacing: 1px;">
-                                        Presidential Chair Representative</div>
-                                </div>
-                            </div>
-                            <div class="card-panel-image">
-                                <img src="../assets/images/investor-management/olu.jpeg" alt="Olu">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 3: Purple (Dapo Olagunju) -->
-                    <div class="testimonial-slide" data-theme="purple" data-index="2">
-                        <div class="testimonial-card">
-                            <div class="card-panel-content">
-                                <blockquote class="quote-text">“J.P. Morgan's partnership with NEIIA exemplifies how
-                                    global financial institutions can effectively participate in Nigeria's energy
-                                    sector. The robust regulatory framework and transparent data access provide the
-                                    confidence needed for large-scale capital deployment.”</blockquote>
-                                <div class="card-footer-info">
-                                    <div class="author-details">
-                                        <span class="author-name-bold">Dapo Olagunju</span>
-                                        <span class="author-role-sub">Managing Director at JPMorgan</span>
-                                    </div>
-                                    <div class="vest-logo-text" style="font-size: 12px; letter-spacing: 1px;">J.P.
-                                        Morgan Nigeria</div>
-                                </div>
-                            </div>
-                            <div class="card-panel-image">
-                                <img src="../assets/images/investor-management/daps.jpg.webp" alt="Dapo Olagunju">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 4: Teal (Dr. Kassim Gidado) -->
-                    <div class="testimonial-slide" data-theme="teal" data-index="3">
-                        <div class="testimonial-card">
-                            <div class="card-panel-content">
-                                <blockquote class="quote-text">“The National Energy Fund is committed to unlocking
-                                    capital for critical infrastructure. NEIIA's platform provides the rigorous
-                                    financial tracking and project visibility essential for banking institutions and
-                                    global investors.”</blockquote>
-                                <div class="card-footer-info">
-                                    <div class="author-details">
-                                        <span class="author-name-bold">Dr. Kassim Gidado</span>
-                                        <span class="author-role-sub">Chairman, National Energy Fund (NEFUND)</span>
-                                    </div>
-                                    <div class="vest-logo-text" style="font-size: 12px; letter-spacing: 1px;">Board
-                                        Chairman, Polaris Bank</div>
-                                </div>
-                            </div>
-                            <div class="card-panel-image">
-                                <img src="../assets/images/investor-management/kas.png" alt="Dr. Kassim Gidado">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 5: Purple (Mariam Bolakale) -->
-                    <div class="testimonial-slide" data-theme="purple" data-index="4">
-                        <div class="testimonial-card">
-                            <div class="card-panel-content">
-                                <blockquote class="quote-text">“CardinalStone relies on accurate data to drive local
-                                    investment strategies. NEIIA's intelligence platforms provide the granular insights
-                                    we need to identify high-potential energy assets and confidently mobilize domestic
-                                    capital.”</blockquote>
-                                <div class="card-footer-info">
-                                    <div class="author-details">
-                                        <span class="author-name-bold">Mariam Bolakale</span>
-                                        <span class="author-role-sub">Executive Director</span>
-                                    </div>
-                                    <div class="vest-logo-text" style="font-size: 12px; letter-spacing: 1px;">
-                                        CardinalStone Asset Management</div>
-                                </div>
-                            </div>
-                            <div class="card-panel-image">
-                                <img src="../assets/images/investor-management/mariam.png" alt="Mariam Bolakale">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 6: Teal (Oluseun Olatidoye) -->
-                    <div class="testimonial-slide" data-theme="teal" data-index="5">
-                        <div class="testimonial-card">
-                            <div class="card-panel-content">
-                                <blockquote class="quote-text">“FirstCap leverages NEIIA's comprehensive market data to
-                                    structure complex public finance and corporate advisory deals. The platform's
-                                    transparency ensures we can align capital market opportunities with national
-                                    development goals effectively.”</blockquote>
-                                <div class="card-footer-info">
-                                    <div class="author-details">
-                                        <span class="author-name-bold">Oluseun Olatidoye</span>
-                                        <span class="author-role-sub">Head, Capital Markets</span>
-                                    </div>
-                                    <div class="vest-logo-text" style="font-size: 12px; letter-spacing: 1px;">FirstCap
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-panel-image">
-                                <img src="../assets/images/investor-management/oluola.jpg" alt="Oluseun Olatidoye">
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="carousel-bottom-nav">
-                <div class="carousel-dots-centered" id="carouselDots">
-                    <!-- Generated by JS -->
-                </div>
-                <div class="carousel-arrows-right">
-                    <button class="nav-arrow-btn" id="prevBtn" aria-label="Previous slide">←</button>
-                    <button class="nav-arrow-btn" id="nextBtn" aria-label="Next slide">→</button>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- ==========================================
          EXCEED EXPECTATIONS FEATURE SECTION
@@ -3263,100 +2904,6 @@
                     pillNav.style.setProperty('--mouse-x', x + '%');
                     pillNav.style.setProperty('--mouse-y', y + '%');
                 });
-            }
-            // ==========================================
-            // TESTIMONIAL CAROUSEL LOGIC
-            // ==========================================
-            const track = document.getElementById('testimonialTrack');
-            const slides = document.querySelectorAll('.testimonial-slide');
-            const dotsContainer = document.getElementById('carouselDots');
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            let currentIndex = 0;
-
-            if (track && slides.length > 0 && dotsContainer) {
-                // Generate Dots
-                slides.forEach((_, idx) => {
-                    const dot = document.createElement('span');
-                    dot.classList.add('carousel-dot');
-                    if (idx === 0) dot.classList.add('active');
-                    dot.setAttribute('data-index', idx);
-                    dotsContainer.appendChild(dot);
-                });
-
-                const dots = document.querySelectorAll('.carousel-dot');
-                const trackWrapper = track.parentElement;
-                let isScrolling = false;
-
-                function updateActiveState() {
-                    const scrollLeft = trackWrapper.scrollLeft;
-                    const wrapperWidth = trackWrapper.offsetWidth;
-                    const slideWidth = slides[0].offsetWidth;
-
-                    const centerPoint = scrollLeft + (wrapperWidth / 2);
-                    let closestIndex = 0;
-                    let minDistance = Infinity;
-
-                    slides.forEach((slide, idx) => {
-                        const slideCenter = slide.offsetLeft + (slideWidth / 2);
-                        const distance = Math.abs(centerPoint - slideCenter);
-                        if (distance < minDistance) {
-                            minDistance = distance;
-                            closestIndex = idx;
-                        }
-                    });
-
-                    if (closestIndex !== currentIndex) {
-                        currentIndex = closestIndex;
-                        slides.forEach((slide, idx) => {
-                            slide.classList.toggle('active', idx === currentIndex);
-                        });
-                        dots.forEach((dot, idx) => {
-                            dot.classList.toggle('active', idx === currentIndex);
-                        });
-                    }
-                }
-
-                trackWrapper.addEventListener('scroll', () => {
-                    if (!isScrolling) {
-                        window.requestAnimationFrame(() => {
-                            updateActiveState();
-                            isScrolling = false;
-                        });
-                        isScrolling = true;
-                    }
-                });
-
-                function scrollToSlide(index) {
-                    const slideWidth = slides[0].offsetWidth;
-                    const scrollTarget = slides[index].offsetLeft - (trackWrapper.offsetWidth / 2) + (slideWidth / 2);
-
-                    trackWrapper.scrollTo({
-                        left: scrollTarget,
-                        behavior: 'smooth'
-                    });
-                }
-
-                dots.forEach((dot, idx) => {
-                    dot.onclick = () => scrollToSlide(idx);
-                });
-
-                if (nextBtn) {
-                    nextBtn.onclick = () => {
-                        const nextIndex = (currentIndex + 1) % slides.length;
-                        scrollToSlide(nextIndex);
-                    };
-                }
-
-                if (prevBtn) {
-                    prevBtn.onclick = () => {
-                        const prevIndex = (currentIndex - 1 + slides.length) % slides.length;
-                        scrollToSlide(prevIndex);
-                    };
-                }
-
-                window.addEventListener('load', () => scrollToSlide(0));
-                window.addEventListener('resize', () => scrollToSlide(currentIndex));
             }
 
             // ==========================================
