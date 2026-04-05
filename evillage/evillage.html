@@ -36,25 +36,27 @@
         })();
     </script>
     <style>
-        /* Apple-style Font Stack */
+
+        /* Institutional Style Font Stack */
         .evillage-page {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Inter', 'Public Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             letter-spacing: -0.01em;
+            line-height: 1.6;
         }
 
         .evillage-page h1,
         .evillage-page h2,
         .evillage-page h3 {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
-            font-weight: 600;
-            letter-spacing: -0.025em;
+            font-family: 'Inter', 'Public Sans', system-ui, -apple-system, sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
         .ev-stat-number {
-            font-weight: 500;
-            letter-spacing: -0.03em;
+            font-weight: 600;
+            letter-spacing: -0.02em;
         }
 
         /* Page-specific overrides - FORCE LIGHT MODE */
@@ -64,10 +66,11 @@
             background: #ffffff !important;
             color: #050c26 !important;
             --bg-primary: #ffffff !important;
-            --bg-secondary: #f7f9fa !important;
+            --bg-secondary: #f3f5f8 !important; /* Slightly darker for contrast */
             --text-primary: #050c26 !important;
-            --text-secondary: #5e6d8a !important;
-            --border-color: #e6e9ed !important;
+            --text-secondary: #4a5568 !important; /* Darker secondary for readability */
+            --border-color: #cbd5e1 !important; /* Stronger borders */
+            --brand-color: #0d3d44 !important;
         }
 
         /* Logo Styles */
@@ -75,9 +78,10 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            color: #0d3d44;
-            font-weight: 600;
+            color: var(--brand-color);
+            font-weight: 700;
             font-size: 18px;
+            letter-spacing: -0.01em;
         }
 
         .evillage-logo i {
@@ -89,141 +93,216 @@
             color: white;
         }
 
-        /* Hero Section - eVillage specific */
+        /* Hero Section - Institutional Redesigned */
         .ev-hero {
-            padding: 180px 40px 100px;
-            text-align: center;
-            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            padding: 160px 40px 100px;
+            background: var(--bg-primary);
             position: relative;
             overflow: hidden;
+            background-image: radial-gradient(circle at 100% 0%, rgba(13, 61, 68, 0.04) 0%, transparent 40%),
+                              radial-gradient(circle at 0% 100%, rgba(13, 61, 68, 0.02) 0%, transparent 40%);
         }
 
-        /* Coat of Arms Watermark */
-        .ev-hero::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            height: 500px;
-            background: url('../assets/images/nigerian_coat_of_arms.png') center center no-repeat;
-            background-size: contain;
-            opacity: 0.07;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .ev-hero>* {
+        .ev-hero > * {
             position: relative;
-            z-index: 1;
+            z-index: 2;
+        }
+
+        .ev-hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .ev-hero-content {
+            text-align: left;
         }
 
         .ev-hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(13, 61, 68, 0.1);
-            color: #0d3d44;
-            padding: 10px 20px;
-            border-radius: 30px;
+            background: white;
+            color: var(--brand-color);
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 32px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
         .ev-hero h1 {
-            font-family: var(--font-display);
-            font-size: 56px;
-            font-weight: 500;
+            font-size: 60px;
             color: var(--text-primary);
             margin-bottom: 24px;
             line-height: 1.1;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
+            letter-spacing: -0.03em;
         }
 
         .ev-hero h1 span {
-            color: #0d3d44;
+            color: var(--brand-color);
+            position: relative;
+            display: inline-block;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .ev-hero h1 span::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: rgba(13, 61, 68, 0.15);
+            z-index: -1;
         }
 
         .ev-hero-desc {
-            font-size: 18px;
+            font-size: 20px;
             color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 40px;
-            line-height: 1.7;
+            margin-bottom: 48px;
+            line-height: 1.6;
+            max-width: 580px;
         }
 
         .ev-hero-cta {
             display: flex;
-            justify-content: center;
             gap: 16px;
-            margin-bottom: 64px;
+        }
+        
+        .ev-btn-primary i {
+            margin-left: 8px;
+            transition: transform 0.2s;
+        }
+        
+        .ev-btn-primary:hover i {
+            transform: translateX(4px);
+        }
+        
+        /* The visual side (Glassmorphism & Rich Aesthetics) */
+        .ev-hero-visual {
+            position: relative;
         }
 
-        .ev-btn-primary {
-            background: #0d3d44;
-            color: white;
-            padding: 14px 32px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            transition: all 0.2s;
-            border: 1px solid #0d3d44;
+        .ev-glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,1);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.04), inset 0 0 0 1px rgba(255,255,255,0.5);
+            border-radius: 12px;
+            padding: 48px;
+            position: relative;
+            z-index: 2;
         }
 
-        .ev-btn-primary:hover {
-            background: #0a2e33;
-        }
-
-        .ev-btn-secondary {
-            background: transparent;
-            color: var(--text-primary);
-            padding: 14px 32px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            border: 1px solid var(--border-color);
-            transition: all 0.2s;
-        }
-
-        .ev-btn-secondary:hover {
-            background: #000;
-            color: #fff;
-            border-color: #000;
-        }
-
-        /* Stats Bar */
-        .ev-stats-bar {
+        .ev-hero-stats-grid {
             display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .ev-stat-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .ev-stat-row:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .ev-stat-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 80px;
+            font-size: 24px;
+            color: var(--brand-color);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.03);
+            flex-shrink: 0;
         }
 
-        .ev-stat-item {
-            text-align: center;
-        }
-
-        .ev-stat-number {
-            font-family: var(--font-display);
-            font-size: 48px;
-            font-weight: 500;
+        .ev-stat-info .ev-stat-number {
+            font-size: 40px;
             color: var(--text-primary);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
         }
 
-        .ev-stat-label {
+        .ev-stat-info .ev-stat-label {
             font-size: 14px;
+            font-weight: 600;
             color: var(--text-secondary);
-            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Subtle Background Decoration */
+        .ev-hero-blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: url('../assets/images/arms.png') center center no-repeat;
+            background-size: contain;
+            opacity: 0.08;
+            top: 50%;
+            right: -100px;
+            transform: translateY(-50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Responsive overrides for the new Hero layout */
+        @media (max-width: 1024px) {
+            .ev-hero-container {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+            
+            .ev-hero-blob {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .ev-glass-panel {
+                padding: 32px 24px;
+            }
+            .ev-stat-row {
+                gap: 16px;
+            }
+            .ev-stat-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+            .ev-stat-info .ev-stat-number {
+                font-size: 32px;
+            }
         }
 
         /* Section Styles */
         .ev-section {
             padding: 100px 40px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .ev-section-container {
@@ -232,212 +311,82 @@
         }
 
         .ev-section-header {
-            text-align: center;
-            margin-bottom: 64px;
+            text-align: left;
+            margin-bottom: 56px;
+            max-width: 800px;
         }
 
         .ev-section-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #0d3d44;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--brand-color);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.05em;
             margin-bottom: 16px;
+            border-bottom: 2px solid var(--brand-color);
+            padding-bottom: 4px;
         }
 
         .ev-section-title {
-            font-family: var(--font-display);
-            font-size: 42px;
+            font-size: 36px;
             color: var(--text-primary);
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            line-height: 1.2;
         }
 
         .ev-section-desc {
             font-size: 18px;
             color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
+            line-height: 1.6;
         }
 
-        /* Objectives Carousel */
-        /* Objectives Grid (Desktop Default) */
+        /* Objectives Grid (Institutional) */
         .ev-objectives-wrapper {
             position: relative;
-            background: rgba(13, 61, 68, 0.03);
-            border-radius: 24px;
-            padding: 40px 0;
-            overflow: hidden;
-            margin: 0;
             width: 100%;
-            display: block;
         }
 
         .ev-objectives-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 24px;
-            padding: 40px;
             width: 100%;
-            margin: 0;
-            overflow: visible;
         }
 
         .ev-objective-card {
-            background: #fff;
+            background: var(--bg-primary);
             padding: 32px 24px;
-            border-radius: 12px;
-            text-align: center;
             border: 1px solid var(--border-color);
-            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 4px;
+            text-align: left;
+            transition: border-color 0.2s, background 0.2s;
             height: 100%;
-            /* Match height */
-            box-shadow: none;
-            min-height: auto;
-            flex: none;
-            display: block;
+            display: flex;
+            flex-direction: column;
         }
 
         .ev-objective-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+            border-color: var(--brand-color);
+            background: var(--bg-secondary);
         }
 
         .ev-objective-icon {
-            width: 64px;
-            height: 64px;
-            background: #0d3d44;
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            background: var(--brand-color);
+            color: white;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 28px;
-            color: white;
-            box-shadow: none;
+            font-size: 20px;
+            margin-bottom: 24px;
         }
 
         .ev-objective-card h3 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-
-        /* Carousel Dots (Hidden on Desktop) */
-        .ev-carousel-dots {
-            display: none;
-        }
-
-        .ev-objective-card p {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-            max-width: none;
-        }
-
-        /* Mobile Carousel Styles */
-        @media (max-width: 768px) {
-            .ev-objectives-wrapper {
-                background: transparent;
-                border-radius: 0;
-                padding: 0 0 20px 0;
-                /* Reduced top padding */
-                display: flex;
-                flex-direction: column;
-                /* Stack dots below */
-                align-items: center;
-                margin: 0 -20px;
-                width: calc(100% + 40px);
-            }
-
-            .ev-objectives-grid {
-                display: flex;
-                gap: 16px;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                -webkit-scroll-snap-type: x mandatory;
-                scroll-snap-type: x mandatory;
-                scroll-behavior: smooth;
-                padding: 20px 20px 40px 20px;
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-                align-items: stretch;
-                grid-template-columns: none;
-
-                /* Mobile breakout */
-                width: 100vw;
-                margin-left: calc(-50vw + 50%);
-                margin-right: calc(-50vw + 50%);
-                box-sizing: border-box;
-            }
-
-            .ev-objective-card {
-                padding: 40px 32px;
-                border-radius: 24px;
-                flex: 0 0 85vw;
-                min-width: 85vw;
-                scroll-snap-align: center;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                min-height: 360px;
-                /* Slightly reduced height */
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            }
-
-            .ev-objective-icon {
-                width: 80px;
-                height: 80px;
-                border-radius: 20px;
-                margin-bottom: 24px;
-                font-size: 32px;
-                box-shadow: 0 8px 16px rgba(13, 61, 68, 0.2);
-            }
-
-            .ev-objective-card h3 {
-                font-size: 24px;
-                margin-bottom: 12px;
-            }
-
-            .ev-objective-card p {
-                font-size: 16px;
-                line-height: 1.5;
-                max-width: 260px;
-                margin: 0 auto;
-            }
-
-            /* Center dots on mobile and show them */
-            .ev-carousel-dots {
-                display: flex;
-                margin-top: 0;
-                margin-bottom: 0;
-            }
-        }
-
-        .ev-objective-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-        }
-
-        .ev-objective-icon {
-            width: 80px;
-            height: 80px;
-            background: #0d3d44;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 32px;
-            font-size: 32px;
-            color: white;
-            box-shadow: 0 8px 16px rgba(13, 61, 68, 0.2);
-        }
-
-        .ev-objective-card h3 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 16px;
+            font-size: 20px;
+            margin-bottom: 12px;
             color: var(--text-primary);
         }
 
@@ -445,27 +394,7 @@
             font-size: 16px;
             color: var(--text-secondary);
             line-height: 1.6;
-            max-width: 260px;
-            margin: 0 auto;
-        }
-
-
-        .ev-carousel-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(13, 61, 68, 0.2);
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 0;
-            margin: 0 4px;
-        }
-
-        .ev-carousel-dot.active {
-            width: 24px;
-            border-radius: 4px;
-            background: #0d3d44;
+            margin-top: auto;
         }
 
         /* Modules Section */
@@ -476,9 +405,9 @@
         .ev-module-block {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 64px;
-            align-items: center;
-            margin-bottom: 80px;
+            gap: 80px;
+            align-items: flex-start; /* Align top for institutional feel */
+            margin-bottom: 100px;
         }
 
         .ev-module-block:last-child {
@@ -489,82 +418,95 @@
             direction: rtl;
         }
 
-        .ev-module-block.reverse>* {
+        .ev-module-block.reverse > * {
             direction: ltr;
         }
 
         .ev-module-content {
-            padding: 0 20px;
+            padding: 0;
         }
 
         .ev-module-label {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(13, 61, 68, 0.1);
-            color: #0d3d44;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
+            background: white;
+            color: var(--brand-color);
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .ev-module-content h2 {
-            font-family: var(--font-display);
             font-size: 32px;
             color: var(--text-primary);
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            line-height: 1.2;
         }
 
-        .ev-module-content>p {
-            font-size: 16px;
+        .ev-module-content > p {
+            font-size: 18px;
             color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 24px;
+            line-height: 1.6;
+            margin-bottom: 32px;
         }
 
         .ev-feature-list {
             list-style: none;
+            padding: 0;
         }
 
         .ev-feature-list li {
             display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 14px;
-            font-size: 15px;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+            font-size: 16px;
             color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+        
+        .ev-feature-list li:last-child {
+            border-bottom: none;
         }
 
         .ev-feature-list li i {
-            color: #0d3d44;
-            font-size: 16px;
-            margin-top: 3px;
+            color: var(--brand-color);
+            font-size: 18px;
         }
 
         .ev-module-image {
-            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            background: white;
+            padding: 8px;
         }
 
         .ev-module-image img {
             width: 100%;
-            height: 380px;
+            height: auto;
+            aspect-ratio: 4/3;
             object-fit: cover;
             display: block;
+            border-radius: 2px;
         }
 
-        /* User Roles */
+        /* User Roles - High Contrast */
         .ev-roles {
-            background: #0d3d44;
+            background: var(--text-primary); /* Very dark background */
             color: white;
+            border-bottom: none;
         }
 
         .ev-roles .ev-section-label {
-            color: rgba(255, 255, 255, 0.7);
+            color: #cbd5e1;
+            border-bottom-color: #cbd5e1;
         }
 
         .ev-roles .ev-section-title {
@@ -572,47 +514,36 @@
         }
 
         .ev-roles .ev-section-desc {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Roles Wrapper (Desktop Default) */
-        .ev-roles-wrapper {
-            position: relative;
-            width: 100%;
-            display: block;
+            color: #94a3b8;
         }
 
         .ev-roles-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-            width: 100%;
-            overflow: visible;
+            gap: 24px;
         }
 
         .ev-role-card {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 40px 32px;
-            border-radius: 16px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.2s;
-            height: 100%;
-            display: block;
-            flex: none;
+            background: transparent;
+            padding: 32px 24px;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            text-align: left;
+            transition: background 0.2s, border-color 0.2s;
         }
 
         .ev-role-card:hover {
-            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #cbd5e1;
         }
 
         .ev-role-avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+            border-radius: 4px;
             overflow: hidden;
-            margin: 0 auto 24px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 24px;
+            border: 2px solid #334155;
         }
 
         .ev-role-avatar img {
@@ -622,198 +553,51 @@
         }
 
         .ev-role-card h3 {
-            font-size: 20px;
-            font-weight: 600;
+            font-size: 22px;
             color: white;
             margin-bottom: 12px;
         }
 
         .ev-role-card p {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            color: #94a3b8;
             line-height: 1.6;
-        }
-
-        /* Roles Carousel Mobile Styles */
-        @media (max-width: 768px) {
-            .ev-roles-wrapper {
-                padding: 0 0 20px 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin: 0 -20px;
-                width: calc(100% + 40px);
-            }
-
-            .ev-roles-grid {
-                display: flex;
-                gap: 16px;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                -webkit-scroll-snap-type: x mandatory;
-                scroll-snap-type: x mandatory;
-                scroll-behavior: smooth;
-                padding: 20px 20px 40px 20px;
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-                align-items: stretch;
-                grid-template-columns: none;
-
-                /* Mobile breakout */
-                width: 100vw;
-                margin-left: calc(-50vw + 50%);
-                margin-right: calc(-50vw + 50%);
-                box-sizing: border-box;
-            }
-
-            .ev-roles-grid::-webkit-scrollbar {
-                display: none;
-            }
-
-            .ev-role-card {
-                flex: 0 0 85vw;
-                min-width: 85vw;
-                scroll-snap-align: center;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                min-height: 320px;
-            }
-
-            /* Custom white dots for dark background */
-            .ev-roles-wrapper .ev-carousel-dots {
-                display: flex;
-                /* Show on mobile */
-                margin-top: 0;
-            }
-
-            .ev-roles-wrapper .ev-carousel-dot {
-                background: rgba(255, 255, 255, 0.3);
-            }
-
-            .ev-roles-wrapper .ev-carousel-dot.active {
-                background: #fff;
-            }
         }
 
         /* Impact Section */
         .ev-impact {
-            background: linear-gradient(135deg, #e8f5f0 0%, #d4ede5 100%);
-        }
-
-        /* Impact Wrapper (Desktop Default) */
-        .ev-impact-wrapper {
-            position: relative;
-            width: 100%;
-            display: block;
+            background: var(--bg-primary);
         }
 
         .ev-impact-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-            width: 100%;
-            overflow: visible;
+            gap: 24px;
         }
 
         .ev-impact-card {
-            background: white;
-            padding: 40px 32px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-            height: 100%;
-            display: block;
-            flex: none;
+            background: var(--bg-primary);
+            padding: 32px 24px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-align: left;
+            border-left: 4px solid var(--brand-color);
         }
 
         .ev-impact-icon {
-            width: 60px;
-            height: 60px;
-            background: #0d3d44;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 24px;
-            color: white;
-            box-shadow: 0 4px 12px rgba(13, 61, 68, 0.15);
-        }
-
-        /* Impact Carousel Mobile Styles */
-        @media (max-width: 768px) {
-            .ev-impact-wrapper {
-                padding: 0 0 20px 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin: 0 -20px;
-                width: calc(100% + 40px);
-            }
-
-            .ev-impact-grid {
-                display: flex;
-                gap: 16px;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                -webkit-scroll-snap-type: x mandatory;
-                scroll-snap-type: x mandatory;
-                scroll-behavior: smooth;
-                padding: 20px 20px 40px 20px;
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-                align-items: stretch;
-                grid-template-columns: none;
-
-                /* Mobile breakout */
-                width: 100vw;
-                margin-left: calc(-50vw + 50%);
-                margin-right: calc(-50vw + 50%);
-                box-sizing: border-box;
-            }
-
-            .ev-impact-grid::-webkit-scrollbar {
-                display: none;
-            }
-
-            .ev-impact-card {
-                flex: 0 0 85vw;
-                min-width: 85vw;
-                scroll-snap-align: center;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                min-height: 300px;
-            }
-
-            /* Custom dark dots for light background */
-            .ev-impact-wrapper .ev-carousel-dots {
-                display: flex;
-                /* Show on mobile */
-                margin-top: 0;
-            }
-
-            .ev-impact-wrapper .ev-carousel-dot {
-                background: rgba(13, 61, 68, 0.2);
-            }
-
-            .ev-impact-wrapper .ev-carousel-dot.active {
-                background: #0d3d44;
-            }
+            color: var(--brand-color);
+            font-size: 28px;
+            margin-bottom: 20px;
         }
 
         .ev-impact-card h3 {
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 20px;
             margin-bottom: 12px;
             color: var(--text-primary);
         }
 
         .ev-impact-card p {
-            font-size: 14px;
+            font-size: 16px;
             color: var(--text-secondary);
             line-height: 1.6;
         }
@@ -821,42 +605,63 @@
         /* CTA Section */
         .ev-cta {
             padding: 100px 40px;
-            text-align: center;
-            background: #fff;
+            text-align: left;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .ev-cta .ev-section-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+        
+        .ev-cta-content {
+            max-width: 600px;
         }
 
         .ev-cta h2 {
-            font-family: var(--font-display);
-            font-size: 42px;
+            font-size: 36px;
             color: var(--text-primary);
             margin-bottom: 16px;
+            line-height: 1.2;
         }
 
         .ev-cta p {
-            font-size: 18px;
+            font-size: 20px;
             color: var(--text-secondary);
-            margin-bottom: 40px;
+            margin-bottom: 0;
         }
 
         .ev-cta-buttons {
             display: flex;
-            justify-content: center;
             gap: 16px;
+            flex-shrink: 0;
         }
 
         /* Footer */
         .ev-footer {
             padding: 40px;
-            background: #0d3d44;
-            text-align: center;
+            background: var(--bg-primary);
+            text-align: left;
+            border-top: 1px solid var(--border-color);
         }
-
+        
         .ev-footer p {
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--text-secondary);
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* Responsive */
+        /* Hide Desktop Carousels Logic, we will just use CSS grids with overflow on mobile */
+        .ev-carousel-dots {
+            display: none;
+        }
+
+        /* Responsive Institutional Layout */
         @media (max-width: 1024px) {
             .ev-objectives-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -866,78 +671,160 @@
             .ev-module-block.reverse {
                 grid-template-columns: 1fr;
                 direction: ltr;
+                gap: 40px;
             }
 
             .ev-roles-grid,
             .ev-impact-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .ev-cta .ev-section-container {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
 
         @media (max-width: 768px) {
+            .ev-hero {
+                padding: 120px 20px 60px;
+            }
+
             .ev-hero h1 {
-                font-size: 32px;
+                font-size: 40px;
             }
 
             .ev-hero-desc {
-                font-size: 16px;
+                font-size: 18px;
             }
 
             .ev-hero-cta {
-                flex-direction: row;
-                align-items: center;
-                gap: 12px;
+                flex-direction: column;
+            }
+            
+            .ev-btn-primary, .ev-btn-secondary {
+                text-align: center;
+                width: 100%;
             }
 
             .ev-stats-bar {
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 24px;
-                justify-content: center;
-            }
-
-            .ev-stat-number {
-                font-size: 32px;
-            }
-
-            .ev-stat-label {
-                font-size: 12px;
-            }
-
-            .ev-section-title {
-                font-size: 28px;
-            }
-
-            .ev-objectives-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .ev-module-content h2 {
-                font-size: 26px;
-            }
-
-            .ev-cta h2 {
-                font-size: 28px;
-            }
-
-            .ev-cta-buttons {
-                flex-direction: row;
-                align-items: center;
-                gap: 12px;
+                flex-direction: column;
+                gap: 32px;
+                padding-top: 32px;
             }
 
             .ev-section {
                 padding: 60px 20px;
             }
 
-            .ev-hero {
-                padding: 140px 20px 60px;
+            .ev-section-title {
+                font-size: 32px;
+            }
+
+            .ev-objectives-grid,
+            .ev-roles-grid,
+            .ev-impact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ev-module-content h2 {
+                font-size: 28px;
+            }
+
+            .ev-cta h2 {
+                font-size: 32px;
+            }
+
+            .ev-cta-buttons {
+                flex-direction: column;
+                width: 100%;
             }
         }
 
-        /* Dark Mode Overrides - When bulb is OFF (dark mode) */
-        /* Dark Mode Overrides Removed to force light theme */
-    </style>
+    
+        /* Advanced Mobile Overrides to Fix Overlap */
+        html, body { overflow-x: hidden !important; width: 100%; box-sizing: border-box; }
+        @media (max-width: 768px) {
+            /* Containers and Spacing */
+            .main-content { 
+                margin-left: 0 !important; 
+                padding: 80px 16px 40px 16px !important; 
+                max-width: 100vw !important; 
+                box-sizing: border-box !important; 
+            }
+            .card-container, .activity-section, .property-list-section { 
+                overflow-x: auto !important; 
+                width: 100% !important; 
+                box-sizing: border-box !important; 
+                padding: 16px !important; 
+            }
+            
+            /* Destroy Inline Grids */
+            [style*="display: grid"] { 
+                grid-template-columns: 1fr !important; 
+                gap: 16px !important; 
+            }
+            .dashboard-grid, .actions-row, .grid, .actions-grid { 
+                grid-template-columns: 1fr !important; 
+            }
+            .form-group div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Squeeze Fixes for Filter Bars and Flex layout */
+            .filter-bar { 
+                flex-direction: column !important; 
+                width: 100% !important; 
+                gap: 12px !important; 
+            }
+            .filter-bar > * { 
+                width: 100% !important; 
+                box-sizing: border-box !important; 
+            }
+            .header-actions { 
+                flex-wrap: wrap !important; 
+            }
+
+            /* Tables Boundary Fix */
+            .data-table { 
+                min-width: 600px !important; 
+                display: table !important; 
+            }
+            
+            /* Modals Screen Bleed Fix */
+            .modal-container { 
+                margin: 16px !important; 
+                width: calc(100% - 32px) !important; 
+                max-width: none !important; 
+            }
+            
+            /* Table Button Fixes */
+            td > button { 
+                margin-bottom: 8px !important; 
+                width: 100% !important; 
+                white-space: normal !important;
+            }
+            
+            /* Property Layout Fixes */
+            .property-item {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+            }
+            .prop-image {
+                width: 100% !important;
+                height: 160px !important;
+                margin-bottom: 12px !important;
+                margin-right: 0 !important;
+            }
+            .prop-action-btn {
+                margin-left: 0 !important;
+                margin-top: 12px !important;
+                width: 100% !important;
+                text-align: center !important;
+            }
+        }
+
+</style>
 </head>
 
 <body class="evillage-page">
@@ -1007,28 +894,50 @@
 
     <!-- Hero -->
     <section class="ev-hero">
+        <div class="ev-hero-blob"></div>
+        <div class="ev-hero-container">
+            <!-- Left Content -->
+            <div class="ev-hero-content">
+                <div class="ev-hero-badge">
+                    <i class="fas fa-certificate"></i> Official Portal
+                </div>
+                <h1>Powering <span>5 Million+</span> Households with Clean Energy</h1>
+                <p class="ev-hero-desc">Your central hub for solar financing, mini-grid connections, utility payments, and
+                    subsidy management — accelerating Nigeria’s energy transition.</p>
 
-        <h1>Powering <span>5 Million+</span> Households with Clean Energy</h1>
-        <p class="ev-hero-desc">Your central hub for solar financing, mini-grid connections, utility payments, and
-            subsidy management — accelerating Nigeria’s energy transition.</p>
-
-        <div class="ev-hero-cta">
-            <a href="evillage-signup.html" class="ev-btn-primary">Get Started</a>
-            <a href="#modules" class="ev-btn-secondary">Explore Services</a>
-        </div>
-
-        <div class="ev-stats-bar">
-            <div class="ev-stat-item">
-                <div class="ev-stat-number" data-target="248" data-suffix="K+">0</div>
-                <div class="ev-stat-label">Solar Systems Deployed</div>
+                <div class="ev-hero-cta">
+                    <a href="evillage-signup.html" class="ev-btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
+                    <a href="#modules" class="ev-btn-secondary">Explore Services</a>
+                </div>
             </div>
-            <div class="ev-stat-item">
-                <div class="ev-stat-number" data-target="36">0</div>
-                <div class="ev-stat-label">States Covered</div>
-            </div>
-            <div class="ev-stat-item">
-                <div class="ev-stat-number" data-target="92" data-suffix="MW">0</div>
-                <div class="ev-stat-label">Total Capacity Installed</div>
+            
+            <!-- Right Content (Glass Card containing stats) -->
+            <div class="ev-hero-visual">
+                <div class="ev-glass-panel">
+                    <div class="ev-hero-stats-grid">
+                        <div class="ev-stat-row">
+                            <div class="ev-stat-icon"><i class="fas fa-home"></i></div>
+                            <div class="ev-stat-info">
+                                <div class="ev-stat-number" data-target="248" data-suffix="K+">0</div>
+                                <div class="ev-stat-label">Solar Systems Deployed</div>
+                            </div>
+                        </div>
+                        <div class="ev-stat-row">
+                            <div class="ev-stat-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="ev-stat-info">
+                                <div class="ev-stat-number" data-target="36">0</div>
+                                <div class="ev-stat-label">States Covered</div>
+                            </div>
+                        </div>
+                        <div class="ev-stat-row">
+                            <div class="ev-stat-icon"><i class="fas fa-bolt"></i></div>
+                            <div class="ev-stat-info">
+                                <div class="ev-stat-number" data-target="92" data-suffix="MW">0</div>
+                                <div class="ev-stat-label">Total Capacity Installed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1251,8 +1160,10 @@
     <!-- CTA -->
     <section class="ev-cta">
         <div class="ev-section-container">
-            <h2>Ready to Join the Clean Energy Revolution?</h2>
-            <p>Access solar financing, connect to mini-grids, and power your home sustainably</p>
+            <div class="ev-cta-content">
+                <h2>Ready to Join the Clean Energy Revolution?</h2>
+                <p>Access solar financing, connect to mini-grids, and power your home sustainably</p>
+            </div>
             <div class="ev-cta-buttons">
                 <a href="evillage-signup.html" class="ev-btn-primary">Get Started</a>
                 <a href="../construction.html" class="ev-btn-secondary">Learn More</a>
