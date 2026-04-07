@@ -50,6 +50,117 @@
         .form-group label { display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px; }
         .form-control { width: 100%; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 15px; font-family: inherit; box-sizing: border-box; }
 
+        /* Modern Branch Cards */
+        .branch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 24px;
+        }
+        .branch-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #f3f4f6;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .branch-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #e5e7eb;
+        }
+        
+        .branch-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .branch-type {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+        .hq .branch-type { background: #dbeafe; color: #1e40af; }
+        .regional .branch-type { background: #dcfce7; color: #166534; }
+
+        .branch-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .branch-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .info-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            color: #4b5563;
+            font-size: 14px;
+        }
+        .info-item i {
+            width: 20px;
+            color: #9ca3af;
+            font-size: 16px;
+            margin-top: 2px;
+        }
+        .info-item a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .info-item a:hover { text-decoration: underline; }
+
+        .branch-footer {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid #f3f4f6;
+            display: flex;
+            gap: 12px;
+        }
+        .branch-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            color: #374151;
+        }
+        .branch-btn:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+        .branch-btn.primary {
+            background: #0f172a;
+            color: white;
+            border: none;
+        }
+        .branch-btn.primary:hover {
+            background: #1e293b;
+        }
+
         /* Modals */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);
@@ -109,18 +220,46 @@
         <div class="section-title">Registered Branches</div>
         <button class="btn-primary" onclick="openModal('addBranchModal')"><i class="fas fa-plus"></i> Add New Branch</button>
     </div>
-    <div id="branchList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-        <div class="card-container" style="border-left: 4px solid #0f172a;">
-            <span class="badge badge-success">Headquarters</span>
-            <h2 style="font-size: 20px; color:#111827; margin: 16px 0 8px 0;">FirstBank of Nigeria PLC</h2>
-            <p style="color: #6b7280; font-size: 15px; margin: 0 0 16px 0;"><i class="fas fa-map-marker-alt"></i> Samuel Asabia House, 35 Marina, Lagos</p>
-            <p style="margin: 0; font-size: 14px; font-weight: 500;">Contact: <a href="#">hq-relations@firstbank.example.ng</a></p>
+    <div id="branchList" class="branch-grid">
+        <div class="branch-card hq">
+            <div class="branch-header">
+                <span class="branch-type">Headquarters</span>
+                <div style="color: #2563eb; font-size: 18px;"><i class="fas fa-certificate"></i></div>
+            </div>
+            <h2 class="branch-title">FirstBank of Nigeria PLC</h2>
+            <div class="branch-info">
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="addr">Samuel Asabia House, 35 Marina, Lagos Island, Lagos State</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:hq-relations@firstbank.example.ng" class="email">hq-relations@firstbank.example.ng</a>
+                </div>
+            </div>
+            <div class="branch-footer">
+                <button class="branch-btn primary" onclick="openEditModal(this)"><i class="fas fa-edit"></i> Edit Details</button>
+            </div>
         </div>
-        <div class="card-container" style="border-left: 4px solid #cbd5e1;">
-            <span class="badge badge-info">Regional Office</span>
-            <h2 style="font-size: 20px; color:#111827; margin: 16px 0 8px 0;">Abuja Energy Desk</h2>
-            <p style="color: #6b7280; font-size: 15px; margin: 0 0 16px 0;"><i class="fas fa-map-marker-alt"></i> FBN Building, Central Business District, Abuja</p>
-            <p style="margin: 0; font-size: 14px; font-weight: 500;">Contact: <a href="#">abuja-energy@firstbank.example.ng</a></p>
+        <div class="branch-card regional">
+            <div class="branch-header">
+                <span class="branch-type">Regional Office</span>
+                <div style="color: #10b981; font-size: 18px;"><i class="fas fa-leaf"></i></div>
+            </div>
+            <h2 class="branch-title">Abuja Energy Desk</h2>
+            <div class="branch-info">
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="addr">FBN Building, Plot 284, Central Business District, Abuja</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:abuja-energy@firstbank.example.ng" class="email">abuja-energy@firstbank.example.ng</a>
+                </div>
+            </div>
+            <div class="branch-footer">
+                <button class="branch-btn primary" onclick="openEditModal(this)"><i class="fas fa-edit"></i> Edit Details</button>
+            </div>
         </div>
     </div>
     </main>
@@ -153,9 +292,62 @@
         </div>
     </div>
 
+    <!-- Edit Branch Modal -->
+    <div class="modal-overlay" id="editBranchModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Branch Details</h3>
+                <button class="close-btn" onclick="closeModal('editBranchModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Branch Name</label>
+                    <input type="text" class="form-control" id="editBranchName">
+                </div>
+                <div class="form-group">
+                    <label>Street Address</label>
+                    <input type="text" class="form-control" id="editBranchAddress">
+                </div>
+                <div class="form-group">
+                    <label>Contact Email</label>
+                    <input type="email" class="form-control" id="editBranchEmail">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline" onclick="closeModal('editBranchModal')">Cancel</button>
+                <button class="btn-primary" onclick="saveBranchChanges()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        let currentEditingCard = null;
+
+        function openEditModal(btn) {
+            currentEditingCard = btn.closest('.branch-card');
+            const name = currentEditingCard.querySelector('.branch-title').innerText;
+            const address = currentEditingCard.querySelector('.addr').innerText;
+            const email = currentEditingCard.querySelector('.email').innerText;
+
+            document.getElementById('editBranchName').value = name;
+            document.getElementById('editBranchAddress').value = address;
+            document.getElementById('editBranchEmail').value = email;
+
+            openModal('editBranchModal');
+        }
+
+        function saveBranchChanges() {
+            if (currentEditingCard) {
+                currentEditingCard.querySelector('.branch-title').innerText = document.getElementById('editBranchName').value;
+                currentEditingCard.querySelector('.addr').innerText = document.getElementById('editBranchAddress').value;
+                currentEditingCard.querySelector('.email').innerText = document.getElementById('editBranchEmail').value;
+                currentEditingCard.querySelector('.email').href = `mailto:${document.getElementById('editBranchEmail').value}`;
+            }
+            closeModal('editBranchModal');
+        }
 
         function addNewBranch() {
             const name = document.getElementById('branchName').value || 'New Branch';
@@ -163,11 +355,25 @@
             const email = document.getElementById('branchEmail').value || 'no-reply@example.com';
 
             const newCard = `
-                <div class="card-container" style="border-left: 4px solid #cbd5e1; opacity: 0; animation: fadeIn 0.3s forwards;">
-                    <span class="badge badge-info">Local Branch</span>
-                    <h2 style="font-size: 20px; color:#111827; margin: 16px 0 8px 0;">${name}</h2>
-                    <p style="color: #6b7280; font-size: 15px; margin: 0 0 16px 0;"><i class="fas fa-map-marker-alt"></i> ${address}</p>
-                    <p style="margin: 0; font-size: 14px; font-weight: 500;">Contact: <a href="mailto:${email}">${email}</a></p>
+                <div class="branch-card" style="opacity: 0; animation: fadeIn 0.3s forwards;">
+                    <div class="branch-header">
+                        <span class="branch-type">Local Branch</span>
+                        <div style="color: #9ca3af; font-size: 18px;"><i class="fas fa-building"></i></div>
+                    </div>
+                    <h2 class="branch-title">${name}</h2>
+                    <div class="branch-info">
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span class="addr">${address}</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:${email}" class="email">${email}</a>
+                        </div>
+                    </div>
+                    <div class="branch-footer">
+                        <button class="branch-btn primary" onclick="openEditModal(this)"><i class="fas fa-edit"></i> Edit Details</button>
+                    </div>
                 </div>
             `;
 

@@ -184,13 +184,46 @@
         /* Split layout for Address and Credit Gauge */
         .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
         
-        /* Custom Button */
+        /* Custom Buttons */
         .btn-outline { 
             background: transparent; border: 1px solid var(--border-color, #e5e7eb); 
-            padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;
+            padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
             color: var(--text-primary, #111827); cursor: pointer; transition: 0.2s;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .btn-outline:hover { border-color: #0f172a; color: #0f172a; }
+        .btn-outline:hover { border-color: #0f172a; color: #0f172a; background: #f9fafb; }
+
+        .btn-primary {
+            background: #2563eb; color: white; border: 1px solid #2563eb;
+            padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
+            cursor: pointer; transition: all 0.2s;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-primary:hover { background: #1d4ed8; border-color: #1d4ed8; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); }
+
+        .btn-danger {
+            background: #ef4444; color: white; border: 1px solid #ef4444;
+            padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
+            cursor: pointer; transition: all 0.2s;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-danger:hover { background: #dc2626; border-color: #dc2626; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2); }
+
+        .btn-warning {
+            background: #f59e0b; color: white; border: 1px solid #f59e0b;
+            padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
+            cursor: pointer; transition: all 0.2s;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-warning:hover { background: #d97706; border-color: #d97706; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.2); }
+
+        .btn-info {
+            background: #0ea5e9; color: white; border: 1px solid #0ea5e9;
+            padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
+            cursor: pointer; transition: all 0.2s;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-info:hover { background: #0284c7; border-color: #0284c7; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.2); }
 
         /* Modals */
         .modal-overlay {
@@ -215,6 +248,58 @@
         .form-control { width: 100%; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; font-family: inherit; box-sizing: border-box; }
 
     
+        /* Notifications Dropdown */
+        .notifications-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 320px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .notifications-dropdown.active { display: flex; }
+        .notifications-header {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notifications-header h3 { margin: 0; font-size: 16px; font-weight: 600; color: #111827; }
+        .notifications-list { max-height: 400px; overflow-y: auto; }
+        .notification-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            gap: 12px;
+            transition: background 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .notification-item:hover { background: #f9fafb; }
+        .notification-item:last-child { border-bottom: none; }
+        .notification-icon {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            font-size: 14px;
+        }
+        .notification-content { flex: 1; }
+        .notification-title { font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 2px; }
+        .notification-time { font-size: 12px; color: #6b7280; }
+        .notifications-footer {
+            padding: 12px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+        .notifications-footer a { font-size: 13px; font-weight: 500; color: #2563eb; text-decoration: none; }
+
         /* Mobile Overlay and Header */
         .mobile-header { display: none; padding: 16px 20px; background: #0f172a; color: white; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 99; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .mobile-menu-toggle { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
@@ -392,10 +477,60 @@
                 <p>Monitor your loan portfolios, review credit histories, and manage applications.</p>
             </div>
             <div class="header-actions">
-                <button class="icon-btn">
-                    <i class="far fa-bell"></i>
-                    <span class="badge-dot" style="position: absolute; top: 10px; right: 10px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%;"></span>
-                </button>
+                <div style="position: relative;">
+                    <button class="icon-btn" id="notificationBtn" onclick="toggleNotifications(event)">
+                        <i class="far fa-bell"></i>
+                        <span class="badge-dot" style="position: absolute; top: 10px; right: 10px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%;"></span>
+                    </button>
+                    
+                    <div class="notifications-dropdown" id="notificationsDropdown">
+                        <div class="notifications-header">
+                            <h3>Notifications</h3>
+                            <button class="btn-outline" style="font-size: 11px; padding: 4px 8px;" onclick="markAllAsRead()">Mark all read</button>
+                        </div>
+                        <div class="notifications-list">
+                            <div class="notification-item">
+                                <div class="notification-icon" style="background: rgba(37, 99, 235, 0.1); color: #2563eb;">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <div class="notification-title">New application received</div>
+                                    <div class="notification-time">2 mins ago • Zuma Energy</div>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <div class="notification-title">Repayment confirmed</div>
+                                    <div class="notification-time">1 hour ago • APP-2026-850</div>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <div class="notification-title">Pending verification</div>
+                                    <div class="notification-time">3 hours ago • GreenTech Coop</div>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon" style="background: rgba(107, 114, 128, 0.1); color: #6b7280;">
+                                    <i class="fas fa-user-shield"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <div class="notification-title">System Update</div>
+                                    <div class="notification-time">Yesterday</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notifications-footer">
+                            <a href="#">View all notifications</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -634,9 +769,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-outline" style="border-color: #ef4444; color: #ef4444;" onclick="closeModal('evaluateModal')">Reject</button>
-                <button class="btn-outline" onclick="closeModal('evaluateModal')">Request Info</button>
-                <button class="btn-primary" onclick="closeModal('evaluateModal')">Approve Loan</button>
+                <button class="btn-danger" onclick="closeModal('evaluateModal')"><i class="fas fa-times"></i> Reject</button>
+                <button class="btn-warning" onclick="closeModal('evaluateModal')"><i class="fas fa-question-circle"></i> Request Info</button>
+                <button class="btn-primary" onclick="closeModal('evaluateModal')"><i class="fas fa-check"></i> Approve Loan</button>
             </div>
         </div>
     </div>
@@ -665,8 +800,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-outline" onclick="closeModal('detailsModal')">Remind Applicant</button>
-                <button class="btn-primary" onclick="closeModal('detailsModal')">Close Assessment</button>
+                <button class="btn-outline" onclick="closeModal('detailsModal')">Cancel</button>
+                <button class="btn-warning" onclick="closeModal('detailsModal')"><i class="fas fa-paper-plane"></i> Remind Applicant</button>
+                <button class="btn-primary" onclick="closeModal('detailsModal')">Complete Assessment</button>
             </div>
         </div>
     </div>
@@ -693,12 +829,22 @@
             </div>
             <div class="modal-footer">
                 <button class="btn-outline" onclick="closeModal('contractModal')"><i class="fas fa-file-pdf"></i> Download PDF</button>
-                <button class="btn-primary" onclick="closeModal('contractModal')">Initiate Disbursement</button>
+                <button class="btn-primary" onclick="closeModal('contractModal')"><i class="fas fa-hand-holding-usd"></i> Initiate Disbursement</button>
             </div>
         </div>
     </div>
 
     <script>
+        function toggleNotifications(event) {
+            event.stopPropagation();
+            document.getElementById('notificationsDropdown').classList.toggle('active');
+        }
+
+        function markAllAsRead() {
+            const badge = document.querySelector('#notificationBtn .badge-dot');
+            if (badge) badge.style.display = 'none';
+        }
+
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
@@ -724,6 +870,13 @@
 
         window.addEventListener('click', function(e) {
             if (e.target.classList.contains('modal-overlay')) { e.target.classList.remove('active'); }
+            
+            // Close notifications if clicking outside
+            const dropdown = document.getElementById('notificationsDropdown');
+            const btn = document.getElementById('notificationBtn');
+            if (dropdown && !dropdown.contains(e.target) && !btn.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
         });
     </script>
 
