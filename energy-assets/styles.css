@@ -451,7 +451,28 @@ input, select, textarea { font-family: var(--font-family); }
     font-size: 15px; color: var(--text-muted); line-height: 1.7;
 }
 @media (max-width: 768px) {
-    .features-grid { grid-template-columns: 1fr; }
+    .features-grid { 
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        gap: 16px;
+        padding-bottom: 24px;
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    .features-grid::-webkit-scrollbar {
+        display: none;
+    }
+    .feature-card {
+        flex: 0 0 85%;
+        scroll-snap-align: center;
+    }
     .features-header h2 { font-size: 28px; }
     .features-section { padding: 60px 20px; }
 }
@@ -513,7 +534,28 @@ input, select, textarea { font-family: var(--font-family); }
 }
 .asset-card-link:hover { gap: 10px; }
 @media (max-width: 768px) {
-    .assets-grid { grid-template-columns: 1fr; }
+    .assets-grid {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        gap: 16px;
+        padding-bottom: 24px;
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    .assets-grid::-webkit-scrollbar {
+        display: none;
+    }
+    .asset-card {
+        flex: 0 0 85%;
+        scroll-snap-align: center;
+    }
     .assets-header h2 { font-size: 28px; }
     .assets-section { padding: 60px 20px; }
 }
@@ -572,12 +614,30 @@ input, select, textarea { font-family: var(--font-family); }
     color: var(--green-accent);
 }
 @media (max-width: 768px) {
-    .how-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .how-grid {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        gap: 16px;
+        padding-bottom: 24px;
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    .how-grid::-webkit-scrollbar {
+        display: none;
+    }
+    .how-step {
+        flex: 0 0 85%;
+        scroll-snap-align: center;
+    }
     .how-header h2 { font-size: 28px; }
     .how-section { padding: 60px 20px; }
-}
-@media (max-width: 480px) {
-    .how-grid { grid-template-columns: 1fr; }
 }
 
 /* ============================================
