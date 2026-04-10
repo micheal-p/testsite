@@ -74,7 +74,7 @@ input, select, textarea { font-family: var(--font-family); }
    LOGO
    ============================================ */
 .logo-fixed {
-    position: fixed;
+    position: absolute;
     top: 32px;
     left: 40px;
     z-index: 1001;
@@ -97,7 +97,7 @@ input, select, textarea { font-family: var(--font-family); }
    AUTH LINKS
    ============================================ */
 .auth-fixed {
-    position: fixed;
+    position: absolute;
     top: 32px;
     right: 40px;
     z-index: 1001;
@@ -126,7 +126,7 @@ input, select, textarea { font-family: var(--font-family); }
 .nav-link { font-weight: 500; }
 .nav-links { display: none; gap: 24px; font-weight: 500; }
 .navbar.pill-nav {
-    position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+    position: absolute; top: 24px; left: 50%; transform: translateX(-50%);
     width: auto; min-width: auto; max-width: 90%; height: 50px;
     background-color: rgba(1,29,33,0.85); border-radius: 100px; color: white;
     padding: 0 24px;
@@ -190,10 +190,10 @@ input, select, textarea { font-family: var(--font-family); }
    MOBILE NAV OVERLAY
    ============================================ */
 @media (max-width: 768px) {
-    .logo-fixed { top: 20px; left: 20px; position: fixed; }
+    .logo-fixed { top: 20px; left: 20px; position: absolute; }
     .auth-fixed { display: none; }
     .navbar.pill-nav { display: none; }
-    .mobile-menu-btn { position: fixed; top: 20px; right: 20px; z-index: 1100; }
+    .mobile-menu-btn { position: absolute; top: 20px; right: 20px; z-index: 1100; }
     .mobile-nav-overlay {
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
         background: #fff; z-index: 2000;

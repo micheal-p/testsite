@@ -78,6 +78,12 @@
 
         .no-results { text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 16px; }
 
+        /* Toast Notification */
+        .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 4000; display: flex; flex-direction: column; gap: 12px; }
+        .toast { background: var(--bg-card); border: 1px solid var(--green-accent); border-radius: 8px; padding: 16px 20px; display: flex; align-items: center; gap: 12px; color: var(--text-white); box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .toast.show { transform: translateX(0); }
+        .toast-icon { width: 24px; height: 24px; border-radius: 50%; background: rgba(163,230,53,0.2); color: var(--green-accent); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+
         @media (max-width: 768px) {
             .market-overview { grid-template-columns: repeat(2,1fr); }
             .market-main { grid-template-columns: 1fr; }
@@ -212,6 +218,24 @@
         </div>
     </div>
 
+    <!-- Auth Required Modal -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal-card" style="text-align: center; max-width: 360px;">
+            <div style="font-size: 40px; color: var(--red); margin-bottom: 16px;">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2 style="margin-bottom: 12px; font-size: 24px;">Sign in required</h2>
+            <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 24px; line-height: 1.5;">You need to sign in to your NEIIA account to place bids on the marketplace.</p>
+            <div style="display: flex; gap: 12px; flex-direction: column;">
+                <a href="login.html" class="btn-submit-bid" style="text-align: center; text-decoration: none; display: block; background: var(--text-white); color: var(--bg-dark);">Go to Login</a>
+                <button type="button" class="btn-submit-bid" style="background:transparent; color:var(--text-dim); border:1px solid var(--border-color);" onclick="closeAuthModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast-container" class="toast-container"></div>
+
     <script src="app.js"></script>
     <script>
         let currentType = 'all';
@@ -320,9 +344,7 @@
         // Bid modal
         function openBidModal(listingId, title) {
             if (!EA.isLoggedIn()) {
-                if (confirm('You need to sign in to place a bid. Go to login?')) {
-                    window.location.href = 'login.html';
-                }
+                document.getElementById('auth-modal').classList.add('open');
                 return;
             }
             document.getElementById('bid-listing-id').value = listingId;
@@ -330,6 +352,7 @@
             document.getElementById('bid-modal').classList.add('open');
         }
         function closeBidModal() { document.getElementById('bid-modal').classList.remove('open'); }
+        function closeAuthModal() { document.getElementById('auth-modal').classList.remove('open'); }
 
         document.getElementById('bid-form').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -344,8 +367,27 @@
             renderListings(currentType);
             renderOrderBook(currentType);
             renderOverview();
-            alert('Bid placed successfully!');
+            showToast('Bid placed successfully!');
         });
+
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<div class="toast-icon"><i class="fas fa-check"></i></div><div style="font-size: 14px; font-weight: 500;">${message}</div>`;
+            container.appendChild(toast);
+            
+            // Trigger animation
+            requestAnimationFrame(() => {
+                setTimeout(() => toast.classList.add('show'), 10);
+            });
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
 
         // Mobile menu
         const menuBtn = document.querySelector('.mobile-menu-btn');
