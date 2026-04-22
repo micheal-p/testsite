@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institution Sign In | eVillage Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=2.0">
+    <style>
+        :root {
+            --portal-primary: #0f172a;
+            --portal-primary-dark: #020617;
+            --portal-accent: #2563eb;
+            --portal-accent-soft: rgba(37, 99, 235, 0.12);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: -0.01em;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, var(--portal-primary) 0%, var(--portal-primary-dark) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .signin-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 480px;
+            width: 100%;
+            padding: 60px;
+        }
+
+        .portal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: var(--portal-accent-soft);
+            color: var(--portal-accent);
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .logo-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+            text-decoration: none;
+            color: var(--portal-primary);
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .logo-link i { font-size: 24px; }
+
+        .signin-header { margin-bottom: 24px; }
+        .signin-header h1 { font-size: 30px; font-weight: 600; margin-bottom: 8px; color: #111827; }
+        .signin-header p { font-size: 15px; color: #6b7280; margin: 0; }
+
+        .form-error {
+            display: none;
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .form-error.visible { display: block; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 15px; font-weight: 600; color: #111827; margin-bottom: 6px; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 13px 16px;
+            font-size: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: all 0.2s;
+            background: white;
+            color: #111827;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--portal-accent);
+            box-shadow: 0 0 0 3px var(--portal-accent-soft);
+        }
+
+        .password-wrapper { position: relative; }
+        .password-wrapper input { padding-right: 48px; }
+        .toggle-password {
+            position: absolute; right: 14px; top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none; cursor: pointer;
+            color: #6b7280; font-size: 15px; padding: 4px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .toggle-password:hover { color: #111827; }
+
+        .form-footer { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+        .forgot-link {
+            font-size: 14px;
+            color: var(--portal-accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .forgot-link:hover { text-decoration: underline; }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            background: var(--portal-accent);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .submit-btn:hover { background: #1d4ed8; }
+        .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+        @media (max-width: 640px) {
+            .signin-card { padding: 40px 24px; }
+            .signin-header h1 { font-size: 26px; }
+        }
+    </style>
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+
+<body>
+    <div class="signin-card">
+        <a href="evillage.html" class="logo-link">
+            <i class="fas fa-university"></i>
+            <span>eVillage Portal</span>
+        </a>
+
+        <span class="portal-badge"><i class="fas fa-landmark"></i> Institution Portal</span>
+
+        <div class="signin-header">
+            <h1>Institution sign in</h1>
+            <p>Lending partner access for reviewing and disbursing loans.</p>
+        </div>
+
+        <div id="signinError" class="form-error" role="alert" aria-live="polite"></div>
+
+        <form id="signinForm" novalidate>
+            <div class="form-group">
+                <label for="email">Work email</label>
+                <input type="email" id="email" name="email" placeholder="lending@yourbank.ng" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <button type="button" class="toggle-password" id="togglePassword" aria-label="Show password">
+                        <i class="far fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <a href="evillage-forgot-password.html" class="forgot-link">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">Sign In as Institution</button>
+        </form>
+    </div>
+
+    <script src="config.js?v=1.0"></script>
+    <script src="evillage-api.js?v=1.0"></script>
+    <script src="evillage-loans.js?v=1.0"></script>
+    <script>
+        (function () {
+            const DEMO_PASSWORD = 'Password123!';
+            const AUTH_KEY = 'evillage_auth';
+            const LEGACY_FLAG = 'neiia_authenticated';
+            const DESTINATION = 'evillage-institution-dashboard.html';
+
+            // Dummy credential roster — one demo email per seeded institution.
+            // Keyed by email for fast lookup on submit.
+            const DEMO_CREDENTIALS_BY_EMAIL = {
+                'lending@zenith.demo':     { institution_id: 'inst_zenith'   },
+                'credit@gtco.demo':        { institution_id: 'inst_gtco'     },
+                'energy@fcmb.demo':        { institution_id: 'inst_fcmb'     },
+                'greenlife@sterling.demo': { institution_id: 'inst_sterling' }
+            };
+
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const form = document.getElementById('signinForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const errorBox = document.getElementById('signinError');
+            const toggleBtn = document.getElementById('togglePassword');
+
+            const institutions = (window.EvillageLoans && window.EvillageLoans.listInstitutions())
+                ? window.EvillageLoans.listInstitutions()
+                : [];
+
+            // Password eye toggle
+            toggleBtn.addEventListener('click', function () {
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                this.querySelector('i').className = isPassword ? 'far fa-eye-slash' : 'far fa-eye';
+                this.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+            });
+
+            function showError(msg) {
+                errorBox.textContent = msg;
+                errorBox.classList.add('visible');
+            }
+            function clearError() {
+                errorBox.textContent = '';
+                errorBox.classList.remove('visible');
+            }
+
+            // Store a fake auth record that mirrors the real shape, so the rest
+            // of the app (guard, signout, /me helpers) keeps working.
+            function writeDemoAuth(institutionId, institutionName, email) {
+                const payload = {
+                    token: 'demo-institution-' + Math.random().toString(36).slice(2, 10),
+                    role: 'institution',
+                    status: 'active',
+                    user_id: institutionId,
+                    expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+                    institution_id: institutionId,
+                    institution_name: institutionName,
+                    email: email
+                };
+                try {
+                    sessionStorage.setItem(AUTH_KEY, JSON.stringify(payload));
+                    sessionStorage.setItem(LEGACY_FLAG, 'true');
+                    localStorage.removeItem(AUTH_KEY);
+                    localStorage.removeItem(LEGACY_FLAG);
+                } catch (e) { /* quota / private-mode */ }
+                return payload;
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                clearError();
+
+                const email = (emailInput.value || '').trim().toLowerCase();
+                const password = passwordInput.value || '';
+
+                if (!email || !password) { showError('Please enter your email and password.'); return; }
+
+                const match = DEMO_CREDENTIALS_BY_EMAIL[email];
+                if (!match || password !== DEMO_PASSWORD) {
+                    showError('Invalid email or password.');
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Signing in...';
+
+                const institution = institutions.find(i => i.id === match.institution_id);
+                writeDemoAuth(
+                    match.institution_id,
+                    institution ? institution.name : '',
+                    email
+                );
+
+                setTimeout(function () { window.location.href = DESTINATION; }, 400);
+            });
+        })();
+    </script>
+</body>
+
+</html>

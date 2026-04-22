@@ -2085,13 +2085,23 @@
 
       /* ─── Form Submit ─── */
       const errorBox = document.getElementById("signupError");
-      function showSignupError(msg) {
-        errorBox.textContent = msg;
+      function showSignupError(msg, html) {
+        if (html) {
+          errorBox.innerHTML = msg;
+        } else {
+          errorBox.textContent = msg;
+        }
         errorBox.style.display = "block";
       }
       function clearSignupError() {
         errorBox.textContent = "";
         errorBox.style.display = "none";
+      }
+
+      function signinHrefForRole(role) {
+        return role === "vendor"
+          ? "evillage-signin-vendor.html"
+          : "evillage-signin-citizen.html";
       }
 
       function val(id) {
@@ -2182,9 +2192,22 @@
 
             showSignupError("Please select a role to continue.");
           } catch (err) {
-            showSignupError(
-              (err && err.message) || "Could not create your account. Please try again."
-            );
+            if (err && err.status === 409) {
+              const href = signinHrefForRole(role);
+              showSignupError(
+                'This email or phone is already registered. ' +
+                '<a href="' + href + '" style="color:#991b1b;font-weight:600;text-decoration:underline;">Sign in instead</a>.',
+                true
+              );
+            } else if (err && err.status === 500) {
+              showSignupError(
+                "The server couldn't process your sign-up right now. Please try again in a few moments."
+              );
+            } else {
+              showSignupError(
+                (err && err.message) || "Could not create your account. Please try again."
+              );
+            }
           } finally {
             btn.innerHTML = originalLabel;
             btn.disabled = false;

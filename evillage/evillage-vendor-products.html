@@ -14,6 +14,7 @@
     <script src="evillage-api.js?v=1.0"></script>
     <script>window.EVILLAGE_REQUIRED_ROLES = ['vendor'];</script>
     <script src="evillage-guard.js?v=1.0"></script>
+    <script src="evillage-loans.js?v=1.0"></script>
     <style>
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
@@ -384,67 +385,8 @@
                         <th style="text-align: right;">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="product-info">
-                                <img src="https://picsum.photos/200/200?random=1" alt="Inverter" class="product-img">
-                                <div>
-                                    <div class="product-name-row">Luminous 5kVA Hybrid Inverter</div>
-                                    <div class="product-specs">Pure Sine Wave, 48V</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>Inverters</td>
-                        <td class="price-text">₦450,000</td>
-                        <td style="font-weight: 600; font-size: 15px;">12 units</td>
-                        <td><span class="badge badge-success">In Stock</span></td>
-                        <td style="text-align: right;">
-                            <button class="btn-outline edit-btn" onclick="openEditPanel('Luminous 5kVA Hybrid Inverter', 12, 'https://picsum.photos/200/200?random=1')">
-                                <i class="fas fa-edit"></i> Edit Stock
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="product-info">
-                                <img src="https://picsum.photos/200/200?random=2" alt="Battery" class="product-img">
-                                <div>
-                                    <div class="product-name-row">Felicity Solar Battery 200Ah</div>
-                                    <div class="product-specs">Lithium LiFePO4</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>Batteries</td>
-                        <td class="price-text">₦185,000</td>
-                        <td style="font-weight: 600; font-size: 15px; color: #ef4444;">0 units</td>
-                        <td><span class="badge badge-danger">Out of Stock</span></td>
-                        <td style="text-align: right;">
-                            <button class="btn-outline edit-btn" onclick="openEditPanel('Felicity Solar Battery 200Ah', 0, 'https://picsum.photos/200/200?random=2')">
-                                <i class="fas fa-edit"></i> Edit Stock
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="product-info">
-                                <img src="https://picsum.photos/200/200?random=3" alt="Panel" class="product-img">
-                                <div>
-                                    <div class="product-name-row">Jinko 550W Mono Solar Panel</div>
-                                    <div class="product-specs">Monocrystalline, 21% Efficiency</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>Solar Panels</td>
-                        <td class="price-text">₦95,000</td>
-                        <td style="font-weight: 600; font-size: 15px;">45 units</td>
-                        <td><span class="badge badge-success">In Stock</span></td>
-                        <td style="text-align: right;">
-                            <button class="btn-outline edit-btn" onclick="openEditPanel('Jinko 550W Mono Solar Panel', 45, 'https://picsum.photos/200/200?random=3')">
-                                <i class="fas fa-edit"></i> Edit Stock
-                            </button>
-                        </td>
-                    </tr>
+                <tbody id="vendorProductsTbody">
+                    <tr><td colspan="6" style="text-align:center; color:#6b7280; padding:40px 0;">Loading products…</td></tr>
                 </tbody>
             </table>
         </div>
@@ -636,6 +578,54 @@
             }, 1200);
         }
 
+        /* ─── Populate products table from EvillageLoans seed data ─── */
+        (function () {
+            const tbody = document.getElementById('vendorProductsTbody');
+            if (!tbody || !window.EvillageLoans) return;
+
+            function esc(s) {
+                if (s == null) return '';
+                return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            }
+            function fmtNaira(n) { return '₦' + (Number(n) || 0).toLocaleString(); }
+            function prettyCategory(c) {
+                return String(c || '').replace(/_/g, ' ')
+                    .replace(/\b\w/g, (x) => x.toUpperCase());
+            }
+
+            // In demo mode, show every seed product so the vendor has a populated view.
+            const products = window.EvillageLoans.listSeedProducts();
+            if (!products.length) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#6b7280; padding:40px 0;">No products yet.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = products.map((p, idx) => {
+                const stockUnits = 10 + ((idx * 7) % 45); // stable pseudo-stock
+                const outOfStock = stockUnits === 0;
+                return `
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="https://picsum.photos/seed/${encodeURIComponent(p.id)}/200/200" alt="${esc(p.name)}" class="product-img">
+                                <div>
+                                    <div class="product-name-row">${esc(p.name)}</div>
+                                    <div class="product-specs">${esc(p.vendor_name || '')} · ${esc(p.description || '')}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${esc(prettyCategory(p.category))}</td>
+                        <td class="price-text">${fmtNaira(p.price_ngn)}</td>
+                        <td style="font-weight: 600; font-size: 15px;${outOfStock ? 'color:#ef4444;' : ''}">${stockUnits} units</td>
+                        <td><span class="badge ${outOfStock ? 'badge-danger' : 'badge-success'}">${outOfStock ? 'Out of Stock' : 'In Stock'}</span></td>
+                        <td style="text-align: right;">
+                            <button class="btn-outline edit-btn" onclick="openEditPanel('${esc(p.name).replace(/'/g, '&#39;')}', ${stockUnits}, 'https://picsum.photos/seed/${encodeURIComponent(p.id)}/200/200')">
+                                <i class="fas fa-edit"></i> Edit Stock
+                            </button>
+                        </td>
+                    </tr>`;
+            }).join('');
+        })();
     </script>
 
     <script>

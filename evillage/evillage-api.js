@@ -268,8 +268,9 @@
 
     function signinPageForRole(role) {
         switch ((role || '').toLowerCase()) {
-            case 'citizen': return 'evillage-signin-citizen.html';
-            case 'vendor':  return 'evillage-signin-vendor.html';
+            case 'citizen':     return 'evillage-signin-citizen.html';
+            case 'vendor':      return 'evillage-signin-vendor.html';
+            case 'institution': return 'evillage-signin-institution.html';
             case 'super_admin':
             case 'admin':
             case 'administrator':

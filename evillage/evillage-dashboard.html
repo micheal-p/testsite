@@ -14,6 +14,7 @@
     <script src="evillage-api.js?v=1.0"></script>
     <script>window.EVILLAGE_REQUIRED_ROLES = ['citizen'];</script>
     <script src="evillage-guard.js?v=1.0"></script>
+    <script src="evillage-loans.js?v=1.0"></script>
     <style>
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
@@ -715,7 +716,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="evillage-admin.html" class="nav-link">
+                <a href="evillage-control.html" class="nav-link">
                     <i class="fas fa-shield-alt"></i>
                     <span>NEMiC Controls</span>
                 </a>
@@ -801,12 +802,12 @@
         </div>
 
         <div class="actions-grid">
-            <div class="action-card" onclick="window.location.href='evillage-civil.html'">
+            <div class="action-card" onclick="window.location.href='evillage-loan-apply.html'">
                 <div class="action-icon">
                     <i class="fas fa-solar-panel"></i>
                 </div>
                 <h3>Apply for Solar Loan</h3>
-                <p>SHS financing options</p>
+                <p>Pick a vendor, product &amp; bank</p>
             </div>
             <div class="action-card" onclick="window.location.href='evillage-property.html'">
                 <div class="action-icon">
@@ -838,36 +839,11 @@
         </div>
 
         <div class="activity-section">
-            <ul class="activity-list">
-                <li class="activity-item" onclick="openPanel('activityPanel')">
-                    <div class="activity-icon bg-teal">
-                        <i class="fas fa-solar-panel"></i>
-                    </div>
+            <ul class="activity-list" id="citizenActivityList">
+                <li class="activity-item">
                     <div class="activity-info">
-                        <div class="activity-title">Solar Loan Application</div>
-                        <div class="activity-date">Today, 10:23 AM</div>
+                        <div class="activity-title">Loading activity…</div>
                     </div>
-                    <span class="activity-status status-pending">Under Review</span>
-                </li>
-                <li class="activity-item" onclick="openPanel('activityPanel')">
-                    <div class="activity-icon bg-green">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="activity-info">
-                        <div class="activity-title">Mini-grid Credit Payment</div>
-                        <div class="activity-date">Yesterday, 4:15 PM</div>
-                    </div>
-                    <span class="activity-status status-completed">Successful</span>
-                </li>
-                <li class="activity-item" onclick="openPanel('activityPanel')">
-                    <div class="activity-icon bg-orange">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <div class="activity-info">
-                        <div class="activity-title">Transformer Fault Report</div>
-                        <div class="activity-date">Feb 5, 2026</div>
-                    </div>
-                    <span class="activity-status status-pending">Dispatched</span>
                 </li>
             </ul>
         </div>
@@ -1369,6 +1345,103 @@
             sessionStorage.removeItem('neiia_authenticated');
             window.location.href = 'evillage-signin.html';
         }
+
+        /* ─── Recent Activity — rendered from EvillageLoans ─── */
+        (function () {
+            const list = document.getElementById('citizenActivityList');
+            if (!list || !window.EvillageLoans) return;
+
+            function esc(s) {
+                if (s == null) return '';
+                return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            }
+            function relativeDate(iso) {
+                if (!iso) return '—';
+                const d = new Date(iso);
+                if (isNaN(d.getTime())) return '—';
+                const diff = Date.now() - d.getTime();
+                const mins = Math.round(diff / 60000);
+                if (mins < 1) return 'Just now';
+                if (mins < 60) return mins + ' minute' + (mins === 1 ? '' : 's') + ' ago';
+                const hrs = Math.round(mins / 60);
+                if (hrs < 24) return hrs + ' hour' + (hrs === 1 ? '' : 's') + ' ago';
+                const days = Math.round(hrs / 24);
+                if (days === 1) return 'Yesterday';
+                if (days < 7) return days + ' days ago';
+                return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+            }
+            function iconAndTone(status) {
+                switch (status) {
+                    case 'submitted':    return { icon: 'fa-solar-panel',   tone: 'bg-teal',   label: 'Under Review',   cls: 'status-pending' };
+                    case 'under_review': return { icon: 'fa-hourglass-half', tone: 'bg-orange', label: 'Under Review',   cls: 'status-pending' };
+                    case 'approved':     return { icon: 'fa-check-circle',   tone: 'bg-green',  label: 'Approved',       cls: 'status-completed' };
+                    case 'rejected':     return { icon: 'fa-times-circle',   tone: 'bg-orange', label: 'Rejected',       cls: 'status-pending' };
+                    case 'disbursed':    return { icon: 'fa-hand-holding-usd', tone: 'bg-green', label: 'Funds Released', cls: 'status-completed' };
+                    case 'installing':   return { icon: 'fa-hard-hat',       tone: 'bg-teal',   label: 'Installing',     cls: 'status-pending' };
+                    case 'completed':    return { icon: 'fa-check-circle',   tone: 'bg-green',  label: 'Completed',      cls: 'status-completed' };
+                    default:             return { icon: 'fa-circle',         tone: 'bg-teal',   label: status || '—',    cls: 'status-pending' };
+                }
+            }
+
+            function allApplications() {
+                try {
+                    const raw = localStorage.getItem('evillage_loans_state_v1');
+                    if (!raw) return [];
+                    const parsed = JSON.parse(raw);
+                    return (parsed && parsed.applications) || [];
+                } catch (e) { return []; }
+            }
+
+            function renderActivity(highlightId) {
+                // Prefer applications scoped to the current citizen; fall back to the full list
+                // for demo purposes when there are no matches yet.
+                const me = window.EVILLAGE_USER;
+                const myId = me && me.id;
+                const all = allApplications();
+                let scoped = myId ? all.filter(a => a.citizen && a.citizen.user_id === myId) : [];
+                const apps = (scoped.length ? scoped : all).slice(0, 5);
+
+                if (!apps.length) {
+                    list.innerHTML = `
+                        <li class="activity-item">
+                            <div class="activity-icon bg-teal"><i class="fas fa-inbox"></i></div>
+                            <div class="activity-info">
+                                <div class="activity-title">No recent activity yet</div>
+                                <div class="activity-date">Submit a loan application to get started.</div>
+                            </div>
+                        </li>`;
+                    return;
+                }
+
+                list.innerHTML = apps.map(function (a) {
+                    const info = iconAndTone(a.status);
+                    const product = (a.product && a.product.name) || 'Solar Loan';
+                    const highlight = highlightId && a.id === highlightId
+                        ? ' style="outline: 2px solid #10b981; outline-offset: 2px; border-radius: 12px;"'
+                        : '';
+                    return `
+                        <li class="activity-item"${highlight} data-loan-id="${esc(a.id)}">
+                            <div class="activity-icon ${info.tone}">
+                                <i class="fas ${info.icon}"></i>
+                            </div>
+                            <div class="activity-info">
+                                <div class="activity-title">${esc(product)}</div>
+                                <div class="activity-date">${esc(relativeDate(a.submitted_at || a.created_at))}</div>
+                            </div>
+                            <span class="activity-status ${info.cls}">${esc(info.label)}</span>
+                        </li>`;
+                }).join('');
+            }
+
+            let highlightId = null;
+            try {
+                const params = new URLSearchParams(window.location.search);
+                highlightId = params.get('loan');
+            } catch (e) { /* no-op */ }
+
+            renderActivity(highlightId);
+        })();
     </script>
 </body>
 

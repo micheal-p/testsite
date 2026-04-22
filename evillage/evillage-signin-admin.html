@@ -230,12 +230,6 @@
             function showError(msg) { errorBox.textContent = msg; errorBox.classList.add('visible'); }
             function clearError() { errorBox.textContent = ''; errorBox.classList.remove('visible'); }
 
-            function portalHintFor(role) {
-                const r = (role || '').toLowerCase();
-                if (r === 'vendor') return ' Use the Vendor sign in.';
-                if (r === 'citizen') return ' Use the Citizen sign in.';
-                return '';
-            }
 
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
@@ -259,9 +253,9 @@
                     const role = (result && result.role || '').toLowerCase();
 
                     if (ALLOWED_ROLES.indexOf(role) === -1) {
-                        const foundRole = (result && result.role) || 'unknown';
+                        // Don't leak whether the account exists under a different role; surface a generic error.
                         window.EvillageAPI.clearAuth();
-                        showError('This account is a ' + foundRole + ', not a ' + PORTAL_LABEL.toLowerCase() + '.' + portalHintFor(foundRole));
+                        showError('Invalid email or password.');
                         return;
                     }
 

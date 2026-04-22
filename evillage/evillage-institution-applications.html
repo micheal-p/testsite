@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css?v=2.0">
+    <script src="config.js?v=1.0"></script>
+    <script src="evillage-api.js?v=1.0"></script>
+    <script src="evillage-loans.js?v=1.0"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background: #f3f4f6; margin: 0; display: flex; min-height: 100vh; }
         .sidebar { width: 260px; background: #0f172a; color: white; padding: 24px; position: fixed; height: 100vh; left: 0; top: 0; display: flex; flex-direction: column; }
@@ -43,6 +46,17 @@
         .btn-primary { background: #0f172a; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; }
         .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .badge-success { background: #d1fae5; color: #065f46; } .badge-warning { background: #fef3c7; color: #92400e; } .badge-info { background: #e0f2fe; color: #0369a1; }
+        .credit-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 5px 12px; border: 1px solid transparent;
+            border-radius: 999px; font-size: 13px; line-height: 1;
+            white-space: nowrap; font-variant-numeric: tabular-nums;
+        }
+        .credit-pill strong { font-size: 14px; font-weight: 700; }
+        .credit-pill .credit-tier {
+            font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+            opacity: 0.9;
+        }
         .filter-bar { display: flex; gap: 16px; margin-bottom: 24px; }
         .search-input { flex: 1; padding: 10px 16px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; font-family: inherit; }
         .select-input { padding: 10px 16px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; font-family: inherit; background: white; }
@@ -262,67 +276,13 @@
                     <th>Application ID</th>
                     <th>Applicant</th>
                     <th>Loan Amount</th>
+                    <th>Credit Score</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td style="font-weight: 500;">APP-2026-901</td>
-                    <td>
-                        <div style="font-weight: 600; color: #111827;">Zuma Energy Solutions</div>
-                        <div style="font-size: 12px; color: #6b7280;">Lagos, Nigeria</div>
-                    </td>
-                    <td style="font-weight: 600;">₦2,500,000</td>
-                    <td><span class="badge badge-warning">Pending Review</span></td>
-                    <td>
-                        <button class="btn-outline" onclick="viewFullDetails('APP-2026-901', 'Zuma Energy Solutions', 'Solatube Nigeria', '720', 'Verified', '₦2,500,000', 'Oct 12, 2027', 'Mini-grid Expansion Phase 2', '12% p.a.', 'Pending Review')">
-                            <i class="fas fa-eye"></i> View Details
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-weight: 500;">APP-2026-884</td>
-                    <td>
-                        <div style="font-weight: 600; color: #111827;">GreenTech Cooperative</div>
-                        <div style="font-size: 12px; color: #6b7280;">Kano, Nigeria</div>
-                    </td>
-                    <td style="font-weight: 600;">₦850,000</td>
-                    <td><span class="badge badge-info">Under Assessment</span></td>
-                    <td>
-                        <button class="btn-outline" onclick="viewFullDetails('APP-2026-884', 'GreenTech Cooperative', 'PowerServe Ltd', '640', 'Verified', '₦850,000', 'Apr 05, 2027', 'Solar Home Systems Inventory', '14% p.a.', 'Under Assessment')">
-                            <i class="fas fa-eye"></i> View Details
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-weight: 500;">APP-2026-850</td>
-                    <td>
-                        <div style="font-weight: 600; color: #111827;">Okonkwo Farms</div>
-                        <div style="font-size: 12px; color: #6b7280;">Enugu, Nigeria</div>
-                    </td>
-                    <td style="font-weight: 600;">₦1,200,000</td>
-                    <td><span class="badge badge-success">Approved</span></td>
-                    <td>
-                        <button class="btn-outline" onclick="viewFullDetails('APP-2026-850', 'Okonkwo Farms', 'AgroSolar West Africa', '780', 'Verified', '₦1,200,000', 'Sep 20, 2027', 'Solar Water Pump Installation', '10.5% p.a.', 'Approved')">
-                            <i class="fas fa-eye"></i> View Details
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-weight: 500;">APP-2026-712</td>
-                    <td>
-                        <div style="font-weight: 600; color: #111827;">Kaduna Smallholders</div>
-                        <div style="font-size: 12px; color: #6b7280;">Kaduna, Nigeria</div>
-                    </td>
-                    <td style="font-weight: 600;">₦450,000</td>
-                    <td><span class="badge" style="background: #fee2e2; color: #991b1b;">Rejected</span></td>
-                    <td>
-                        <button class="btn-outline" onclick="viewFullDetails('APP-2026-712', 'Kaduna Smallholders', 'SunPower Co', '520', 'Failed', '₦450,000', 'Jan 15, 2027', 'Community Solar Grid', '16% p.a.', 'Rejected')">
-                            <i class="fas fa-eye"></i> View Details
-                        </button>
-                    </td>
-                </tr>
+            <tbody id="applicationsTbody">
+                <tr><td colspan="6" style="text-align:center; color:#6b7280; padding:40px 0;">Loading applications…</td></tr>
             </tbody>
         </table>
         </div>
@@ -349,8 +309,8 @@
                     <div>
                         <h4 style="font-size: 13px; text-transform: uppercase; color: #6b7280; margin-bottom: 12px; letter-spacing: 0.05em;">Credit Assessment</h4>
                         <div style="display: flex; flex-direction: column; gap: 12px;">
-                            <div><label style="font-size: 12px; color: #9ca3af;">Credit Bureau Score</label><div id="detScore" style="font-size: 18px; font-weight: 700; color: #2563eb;"></div></div>
-                            <div><label style="font-size: 12px; color: #9ca3af;">Risk Category</label><div><span class="badge badge-success">Low Risk</span></div></div>
+                            <div><label style="font-size: 12px; color: #9ca3af;">Credit Bureau Score</label><div id="detScore" style="font-size: 22px; font-weight: 700;"></div></div>
+                            <div><label style="font-size: 12px; color: #9ca3af;">Risk Category</label><div id="detRisk"></div></div>
                         </div>
                     </div>
                 </div>
@@ -474,8 +434,23 @@
         function viewFullDetails(id, name, vendor, score, verification, amount, duration, purpose, rate, status) {
             document.getElementById('detName').innerText = name;
             document.getElementById('detVendor').innerText = vendor;
-            document.getElementById('detScore').innerText = score;
-            
+
+            const scoreEl = document.getElementById('detScore');
+            const riskEl = document.getElementById('detRisk');
+            const numericScore = Number(score) || 0;
+            if (numericScore > 0) {
+                const rank = window.EvillageLoans.rankCreditScore(numericScore);
+                scoreEl.innerText = numericScore;
+                scoreEl.style.color = rank.color;
+                riskEl.innerHTML = '<span class="badge" style="background:' + rank.bg +
+                                   ';color:' + rank.color + ';border:1px solid ' + rank.border + ';">' +
+                                   rank.label + '</span>';
+            } else {
+                scoreEl.innerText = '—';
+                scoreEl.style.color = '#9ca3af';
+                riskEl.innerHTML = '<span class="badge" style="background:#f3f4f6;color:#6b7280;">Not assessed</span>';
+            }
+
             let verificationClass = verification === 'Verified' ? 'badge-success' : 'badge-warning';
             let verificationIcon = verification === 'Verified' ? 'fa-check-circle' : 'fa-clock';
             document.getElementById('detVerification').innerHTML = `<span class="badge ${verificationClass}"><i class="fas ${verificationIcon}"></i> ${verification}</span>`;
@@ -507,10 +482,116 @@
         }
 
         function updateStatus(id, newStatus) {
-            alert(`Application ${id} status updated to: ${newStatus}`);
+            try {
+                if (newStatus === 'Under Assessment') {
+                    window.EvillageLoans.moveToUnderReview(id, null);
+                } else if (newStatus === 'Approved') {
+                    window.EvillageLoans.approveApplication(id, { notes: null, credit_score: null }, null);
+                } else if (newStatus === 'Rejected') {
+                    window.EvillageLoans.rejectApplication(id, 'Application did not meet our lending criteria.', null);
+                }
+            } catch (e) {
+                alert(e && e.message ? e.message : 'Could not update application.');
+                return;
+            }
             closeModal('fullDetailsModal');
-            // In a real app, you would refresh the table or update the DOM here
+            renderApplications();
         }
+
+        /* ─── Populate from EvillageLoans seed data ─── */
+        function fmtNaira(n) { return '₦' + (Number(n) || 0).toLocaleString(); }
+        function escText(s) {
+            if (s == null) return '';
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+        function prettyStatus(s) {
+            switch (s) {
+                case 'submitted':       return 'Pending Review';
+                case 'under_review':    return 'Under Assessment';
+                case 'approved':        return 'Approved';
+                case 'rejected':        return 'Rejected';
+                case 'disbursed':       return 'Disbursed';
+                case 'installing':      return 'Installing';
+                case 'completed':       return 'Completed';
+                default:                return s || '—';
+            }
+        }
+        function statusBadgeHtml(status) {
+            if (status === 'submitted')    return '<span class="badge badge-warning">Pending Review</span>';
+            if (status === 'under_review') return '<span class="badge badge-info">Under Assessment</span>';
+            if (status === 'approved')     return '<span class="badge badge-success">Approved</span>';
+            if (status === 'disbursed')    return '<span class="badge badge-success">Disbursed</span>';
+            if (status === 'installing')   return '<span class="badge badge-info">Installing</span>';
+            if (status === 'completed')    return '<span class="badge badge-success">Completed</span>';
+            if (status === 'rejected')     return '<span class="badge" style="background:#fee2e2;color:#991b1b;">Rejected</span>';
+            return '<span class="badge">' + escText(prettyStatus(status)) + '</span>';
+        }
+
+        function allApplications() {
+            try {
+                const raw = localStorage.getItem('evillage_loans_state_v1');
+                if (!raw) return [];
+                const parsed = JSON.parse(raw);
+                return (parsed && parsed.applications) || [];
+            } catch (e) { return []; }
+        }
+
+        function renderApplications() {
+            const tbody = document.getElementById('applicationsTbody');
+            if (!tbody) return;
+            const apps = allApplications();
+            if (!apps.length) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#6b7280; padding:40px 0;">No loan applications yet.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = apps.map((a, idx) => {
+                const fullName = ((a.citizen.first_name || '') + ' ' + (a.citizen.last_name || '')).trim() || a.citizen.email;
+                const appId = 'APP-' + new Date(a.submitted_at || a.created_at || Date.now()).getFullYear() + '-' +
+                              String(idx + 1).padStart(3, '0');
+                const location = [a.citizen.lga, a.citizen.state].filter(Boolean).join(', ');
+                const statusText = prettyStatus(a.status);
+                const tenureLabel = (a.financing && a.financing.tenure_months) ? (a.financing.tenure_months + ' months') : '—';
+                const score = (a.eligibility && a.eligibility.credit_score) ||
+                              (a.credit_review && a.credit_review.credit_score) || 0;
+                const rank = window.EvillageLoans.rankCreditScore(score);
+                const scoreCell = score
+                    ? `<span class="credit-pill" style="background:${rank.bg};color:${rank.color};border-color:${rank.border};">
+                           <strong>${score}</strong>
+                           <span class="credit-tier">${escText(rank.label)}</span>
+                       </span>`
+                    : '<span style="color:#9ca3af;">—</span>';
+                return `
+                    <tr>
+                        <td style="font-weight:500;">${escText(appId)}</td>
+                        <td>
+                            <div style="font-weight:600; color:#111827;">${escText(fullName)}</div>
+                            <div style="font-size:12px; color:#6b7280;">${escText(location)}</div>
+                        </td>
+                        <td style="font-weight:600;">${fmtNaira(a.financing && a.financing.amount_ngn)}</td>
+                        <td>${scoreCell}</td>
+                        <td>${statusBadgeHtml(a.status)}</td>
+                        <td>
+                            <button class="btn-outline" onclick='viewFullDetails(
+                                ${JSON.stringify(a.id)},
+                                ${JSON.stringify(fullName)},
+                                ${JSON.stringify((a.vendor && a.vendor.business_name) || "—")},
+                                ${JSON.stringify(score || "—")},
+                                "Verified",
+                                ${JSON.stringify(fmtNaira(a.financing && a.financing.amount_ngn))},
+                                ${JSON.stringify(tenureLabel)},
+                                ${JSON.stringify(a.purpose || (a.product && a.product.name) || "—")},
+                                ${JSON.stringify((a.institution && a.institution.interest_rate_pct) ? (a.institution.interest_rate_pct + "% p.a.") : "—")},
+                                ${JSON.stringify(statusText)}
+                            )'>
+                                <i class="fas fa-eye"></i> View Details
+                            </button>
+                        </td>
+                    </tr>`;
+            }).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', renderApplications);
 
         function openEvaluateModal(id, name, amount, score) {
             document.getElementById('evalModalName').innerText = name;

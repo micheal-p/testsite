@@ -210,7 +210,7 @@
 
         <div class="signin-header">
             <h1>Welcome back</h1>
-            <p>Don't have an account? <a href="evillage-signup.html">Sign up</a></p>
+            <p>Don't have an account? <a href="evillage-signup.html">Create one</a></p>
         </div>
 
         <div id="signinNotice" role="status" aria-live="polite" style="display:none;background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;padding:12px 16px;border-radius:6px;font-size:14px;margin-bottom:16px;"></div>
@@ -280,12 +280,6 @@
                 errorBox.classList.remove('visible');
             }
 
-            function portalHintFor(role) {
-                const r = (role || '').toLowerCase();
-                if (r === 'vendor') return ' Use the Vendor sign in.';
-                if (r === 'super_admin' || r === 'admin' || r === 'chairperson' || r === 'administrator') return ' Use the Admin sign in.';
-                return '';
-            }
 
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
@@ -308,10 +302,10 @@
                     const result = await window.EvillageAPI.login(email, password, persistent);
 
                     // Role-specific check — keeps credentials scoped to this portal.
+                    // Don't leak whether the account exists under a different role; surface a generic error.
                     if (!result || (result.role || '').toLowerCase() !== EXPECTED_ROLE) {
-                        const foundRole = (result && result.role) || 'unknown';
                         window.EvillageAPI.clearAuth();
-                        showError('This account is a ' + foundRole + ', not a ' + PORTAL_LABEL.toLowerCase() + '.' + portalHintFor(foundRole));
+                        showError('Invalid email or password.');
                         return;
                     }
 

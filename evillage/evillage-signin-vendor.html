@@ -233,12 +233,6 @@
                 }
             } catch (e) { /* no-op */ }
 
-            function portalHintFor(role) {
-                const r = (role || '').toLowerCase();
-                if (r === 'citizen') return ' Use the Citizen sign in.';
-                if (r === 'super_admin' || r === 'admin' || r === 'chairperson' || r === 'administrator') return ' Use the Admin sign in.';
-                return '';
-            }
 
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
@@ -260,10 +254,10 @@
                 try {
                     const result = await window.EvillageAPI.login(email, password, persistent);
 
+                    // Don't leak whether the account exists under a different role; surface a generic error.
                     if (!result || (result.role || '').toLowerCase() !== EXPECTED_ROLE) {
-                        const foundRole = (result && result.role) || 'unknown';
                         window.EvillageAPI.clearAuth();
-                        showError('This account is a ' + foundRole + ', not a ' + PORTAL_LABEL.toLowerCase() + '.' + portalHintFor(foundRole));
+                        showError('Invalid email or password.');
                         return;
                     }
 

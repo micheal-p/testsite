@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for a Loan | eVillage Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=2.0">
+    <script src="config.js?v=1.0"></script>
+    <script src="evillage-api.js?v=1.0"></script>
+    <script>window.EVILLAGE_REQUIRED_ROLES = ['citizen'];</script>
+    <script src="evillage-guard.js?v=1.0"></script>
+    <script src="evillage-loans.js?v=1.0"></script>
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    <style>
+        :root {
+            --portal-primary: #0d3d44;
+            --portal-primary-dark: #0a2e33;
+            --portal-accent: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            margin: 0;
+            padding: 0;
+            background: #f3f4f6;
+            min-height: 100vh;
+            color: #111827;
+        }
+
+        .apply-hero {
+            background: linear-gradient(135deg, var(--portal-primary) 0%, var(--portal-primary-dark) 100%);
+            color: #fff;
+            padding: 48px 24px;
+        }
+        .apply-hero-inner { max-width: 900px; margin: 0 auto; }
+        .apply-back {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: rgba(255,255,255,.75); text-decoration: none;
+            font-size: 14px; font-weight: 500; margin-bottom: 20px;
+        }
+        .apply-back:hover { color: #fff; }
+        .apply-hero h1 { margin: 0 0 8px 0; font-size: 28px; font-weight: 600; }
+        .apply-hero p { margin: 0; color: rgba(255,255,255,.75); font-size: 15px; }
+
+        .apply-shell {
+            max-width: 900px;
+            margin: -36px auto 60px;
+            padding: 0 24px;
+        }
+        .apply-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,.08);
+            overflow: hidden;
+        }
+
+        /* Stepper */
+        .stepper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 24px 32px;
+            border-bottom: 1px solid #e5e7eb;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .stepper::-webkit-scrollbar { display: none; }
+        .step {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: #9ca3af; font-size: 13px; font-weight: 500;
+            white-space: nowrap;
+        }
+        .step .num {
+            width: 22px; height: 22px; border-radius: 999px;
+            background: #f3f4f6; color: #6b7280;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700;
+        }
+        .step.active { color: var(--portal-primary); }
+        .step.active .num { background: var(--portal-primary); color: #fff; }
+        .step.done { color: #065f46; }
+        .step.done .num { background: #d1fae5; color: #065f46; }
+        .step-sep { flex: 0 0 24px; height: 2px; background: #e5e7eb; border-radius: 2px; }
+        .step-sep.done { background: #10b981; }
+
+        /* Step body */
+        .step-body { padding: 32px; }
+        .step-body.hidden { display: none; }
+        .step-title { font-size: 20px; font-weight: 600; margin: 0 0 6px 0; }
+        .step-subtitle { margin: 0 0 20px 0; color: #6b7280; font-size: 14px; }
+
+        /* Cards (vendor / product / institution) */
+        .choice-list { display: grid; gap: 12px; }
+        .choice-card {
+            display: flex; align-items: center; gap: 16px;
+            padding: 16px 18px;
+            border: 1.5px solid #e5e7eb; border-radius: 12px;
+            cursor: pointer;
+            background: #fff;
+            transition: border-color .15s ease, box-shadow .15s ease, transform .1s ease, background .15s ease;
+            user-select: none;
+        }
+        .choice-card input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+        .choice-card .ci-icon {
+            width: 44px; height: 44px; border-radius: 10px;
+            background: rgba(13,61,68,.08); color: var(--portal-primary);
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 18px; flex-shrink: 0;
+        }
+        .choice-card .ci-body { flex: 1; min-width: 0; }
+        .choice-card .ci-title { font-size: 15px; font-weight: 600; color: #111827; margin: 0 0 2px 0; }
+        .choice-card .ci-sub { font-size: 13px; color: #6b7280; line-height: 1.4; }
+        .choice-card .ci-meta { font-size: 13px; color: #374151; font-weight: 600; text-align: right; white-space: nowrap; flex-shrink: 0; }
+        .choice-card .ci-check {
+            width: 22px; height: 22px; border-radius: 999px;
+            border: 1.5px solid #d1d5db; background: #fff;
+            display: inline-flex; align-items: center; justify-content: center;
+            color: transparent; font-size: 11px; flex-shrink: 0;
+            transition: all .15s ease;
+        }
+        .choice-card:hover { border-color: var(--portal-primary); box-shadow: 0 4px 12px rgba(13,61,68,.08); transform: translateY(-1px); }
+        .choice-card.selected {
+            border-color: var(--portal-primary);
+            background: rgba(13,61,68,.03);
+            box-shadow: 0 0 0 3px rgba(13,61,68,.1);
+        }
+        .choice-card.selected .ci-icon {
+            background: linear-gradient(135deg, var(--portal-primary), var(--portal-primary-dark));
+            color: #fff;
+        }
+        .choice-card.selected .ci-check {
+            border-color: var(--portal-primary); background: var(--portal-primary); color: #fff;
+        }
+
+        .loading-row, .empty-row { text-align: center; padding: 40px 0; color: #6b7280; font-size: 14px; }
+        .empty-row i { font-size: 22px; display: block; margin-bottom: 8px; color: #9ca3af; }
+
+        /* Summary pill (shows selected vendor/product in subsequent steps) */
+        .summary-pill {
+            background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px;
+            padding: 12px 14px; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+            font-size: 13.5px; color: #374151;
+        }
+        .summary-pill strong { color: #111827; font-weight: 600; }
+        .summary-pill .pill-sep { width: 1px; height: 20px; background: #e5e7eb; }
+
+        /* Form fields */
+        .field { margin-bottom: 18px; }
+        .field label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+        .field input, .field select, .field textarea {
+            width: 100%; padding: 12px 14px; font-size: 14px;
+            border: 1.5px solid #e5e7eb; border-radius: 8px; font-family: inherit;
+            color: #111827; background: #fff; box-sizing: border-box;
+            transition: border-color .15s ease, box-shadow .15s ease;
+        }
+        .field input:focus, .field select:focus, .field textarea:focus {
+            outline: none; border-color: var(--portal-primary);
+            box-shadow: 0 0 0 3px rgba(13,61,68,.1);
+        }
+        .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .field-hint { font-size: 12.5px; color: #6b7280; margin-top: 4px; line-height: 1.5; }
+
+        /* Quote breakdown */
+        .quote {
+            margin-top: 20px; padding: 16px; border-radius: 12px;
+            background: linear-gradient(180deg, rgba(13,61,68,.05), rgba(13,61,68,.02));
+            border: 1px solid rgba(13,61,68,.12);
+        }
+        .quote-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; color: #374151; }
+        .quote-row.total { border-top: 1px dashed rgba(13,61,68,.2); margin-top: 6px; padding-top: 12px; font-weight: 600; color: #111827; font-size: 16px; }
+        .quote-row .value { font-variant-numeric: tabular-nums; }
+
+        /* Review */
+        .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 28px; }
+        .review-grid .full { grid-column: 1 / -1; }
+        .review-label { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6b7280; margin-bottom: 4px; }
+        .review-value { font-size: 14.5px; color: #111827; word-break: break-word; }
+
+        /* Footer actions */
+        .step-footer {
+            display: flex; gap: 12px; justify-content: space-between; align-items: center;
+            padding: 20px 32px; background: #fafafa; border-top: 1px solid #e5e7eb;
+        }
+        .step-footer .err {
+            color: #991b1b; background: #fee2e2; border: 1px solid #fecaca;
+            padding: 8px 12px; border-radius: 6px; font-size: 13px; flex: 1;
+        }
+        .step-footer .err:empty { display: none; }
+        .step-actions { display: inline-flex; gap: 10px; margin-left: auto; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 11px 20px; border-radius: 8px; font-weight: 600; font-size: 14px;
+            cursor: pointer; border: 1px solid transparent;
+            transition: background .15s ease, border-color .15s ease, opacity .15s ease;
+            font-family: inherit;
+        }
+        .btn-ghost { background: #fff; color: #374151; border-color: #e5e7eb; }
+        .btn-ghost:hover { background: #f3f4f6; border-color: #d1d5db; }
+        .btn-primary {
+            background: var(--portal-primary); color: #fff;
+        }
+        .btn-primary:hover:not(:disabled) { background: var(--portal-primary-dark); }
+        .btn-primary:disabled, .btn-ghost:disabled { opacity: .55; cursor: not-allowed; }
+
+        @media (max-width: 640px) {
+            .apply-hero { padding: 36px 20px; }
+            .step-body { padding: 24px 20px; }
+            .stepper { padding: 18px 20px; }
+            .step-footer { padding: 16px 20px; flex-wrap: wrap; }
+            .field-row, .review-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ─── Completion overlay ─── */
+        .completion-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, var(--portal-primary) 0%, var(--portal-primary-dark) 100%);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2147483647;
+            overflow: hidden;
+            animation: overlayFadeIn .35s ease both;
+        }
+        .completion-overlay.is-open { display: flex; }
+        @keyframes overlayFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .completion-card {
+            text-align: center;
+            color: #fff;
+            padding: 40px 48px;
+            max-width: 440px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .success-check {
+            width: 112px;
+            height: 112px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.18);
+            border: 2px solid rgba(16, 185, 129, 0.35);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            position: relative;
+            animation: ringScale .55s cubic-bezier(.2, .7, .2, 1.3) both;
+        }
+        .success-check::before {
+            content: '';
+            position: absolute;
+            inset: -18px;
+            border-radius: 50%;
+            border: 2px solid rgba(16, 185, 129, 0.18);
+            animation: ringPulse 1.4s ease-out .2s both, ringFadeOut 1.4s ease-out 1.4s forwards;
+        }
+        .success-check svg {
+            width: 52px; height: 52px;
+            stroke: #10b981;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+        .success-check svg path {
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: checkDraw .45s cubic-bezier(.65,.05,.36,1) .35s forwards;
+        }
+        @keyframes ringScale {
+            0% { transform: scale(.4); opacity: 0; }
+            60% { transform: scale(1.06); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes ringPulse {
+            0% { transform: scale(.9); opacity: .7; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+        @keyframes ringFadeOut {
+            to { opacity: 0; }
+        }
+        @keyframes checkDraw {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .completion-title {
+            font-size: 26px;
+            font-weight: 600;
+            margin: 0 0 10px 0;
+            opacity: 0;
+            animation: bubbleIn .45s ease .55s forwards;
+        }
+        .completion-body {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0 0 22px 0;
+            line-height: 1.55;
+            opacity: 0;
+            animation: bubbleIn .45s ease .7s forwards;
+        }
+        .completion-ref {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+            opacity: 0;
+            animation: bubbleIn .45s ease .85s forwards;
+        }
+        @keyframes bubbleIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Confetti burst */
+        .confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+        .confetti span {
+            position: absolute;
+            top: 48%;
+            left: 50%;
+            width: 10px;
+            height: 16px;
+            border-radius: 2px;
+            opacity: 0;
+            animation: confettiBurst 1.3s ease-out .4s forwards;
+        }
+        @keyframes confettiBurst {
+            0%   { opacity: 1; transform: translate(-50%, -50%) rotate(0deg); }
+            100% { opacity: 0;
+                   transform: translate(var(--dx, 0), var(--dy, -200px)) rotate(var(--r, 540deg)); }
+        }
+    </style>
+</head>
+
+<body>
+    <section class="apply-hero">
+        <div class="apply-hero-inner">
+            <a href="evillage-dashboard.html" class="apply-back">
+                <i class="fas fa-arrow-left"></i> Back to dashboard
+            </a>
+            <h1>Apply for a Clean-Energy Loan</h1>
+            <p>Choose a vendor, a product, and your financing partner. Funds go directly to the vendor so you can install with confidence.</p>
+        </div>
+    </section>
+
+    <div class="apply-shell">
+        <div class="apply-card">
+            <!-- Stepper -->
+            <div class="stepper" id="stepper">
+                <div class="step active" data-step="1"><span class="num">1</span> Vendor</div>
+                <div class="step-sep"></div>
+                <div class="step" data-step="2"><span class="num">2</span> Product</div>
+                <div class="step-sep"></div>
+                <div class="step" data-step="3"><span class="num">3</span> Financing</div>
+                <div class="step-sep"></div>
+                <div class="step" data-step="4"><span class="num">4</span> Eligibility</div>
+                <div class="step-sep"></div>
+                <div class="step" data-step="5"><span class="num">5</span> Review</div>
+            </div>
+
+            <!-- Step 1: Vendor -->
+            <div class="step-body" id="step1">
+                <h2 class="step-title">Choose a vendor</h2>
+                <p class="step-subtitle">Approved, verified clean-energy suppliers available on eVillage.</p>
+                <div class="choice-list" id="vendorList">
+                    <div class="loading-row"><i class="fas fa-spinner fa-spin"></i> Loading vendors…</div>
+                </div>
+            </div>
+
+            <!-- Step 2: Product -->
+            <div class="step-body hidden" id="step2">
+                <h2 class="step-title">Choose a product</h2>
+                <p class="step-subtitle">Select the installation you want to finance.</p>
+                <div class="summary-pill" id="summary2"></div>
+                <div class="choice-list" id="productList">
+                    <div class="loading-row"><i class="fas fa-spinner fa-spin"></i> Loading products…</div>
+                </div>
+            </div>
+
+            <!-- Step 3: Financing -->
+            <div class="step-body hidden" id="step3">
+                <h2 class="step-title">Set up your financing</h2>
+                <p class="step-subtitle">Pick a bank, a down payment, and a repayment tenure.</p>
+                <div class="summary-pill" id="summary3"></div>
+
+                <div class="field">
+                    <label for="institutionSelect">Financing partner</label>
+                    <select id="institutionSelect"></select>
+                    <div class="field-hint" id="institutionHint"></div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label for="downPayment">Down payment (₦)</label>
+                        <input type="number" id="downPayment" min="0" step="1000" value="0">
+                        <div class="field-hint">Optional. A larger down payment reduces your monthly repayment.</div>
+                    </div>
+                    <div class="field">
+                        <label for="tenure">Tenure</label>
+                        <select id="tenure"></select>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="purpose">Purpose (optional)</label>
+                    <textarea id="purpose" rows="3" placeholder="e.g. Replace generator with solar for a 3-bedroom home"></textarea>
+                </div>
+
+                <div class="quote" id="quote"></div>
+            </div>
+
+            <!-- Step 4: Eligibility -->
+            <div class="step-body hidden" id="step4">
+                <h2 class="step-title">Eligibility</h2>
+                <p class="step-subtitle">The bank uses this to assess your loan. Your NIN and BVN are pulled from your profile — update them there if needed.</p>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label for="monthlyIncome">Monthly net income (₦)</label>
+                        <input type="number" id="monthlyIncome" min="0" step="5000" placeholder="e.g. 350000">
+                        <div class="field-hint">After taxes and deductions. Used for affordability checks.</div>
+                    </div>
+                    <div class="field">
+                        <label for="employmentStatus">Employment status</label>
+                        <select id="employmentStatus">
+                            <option value="">— Select —</option>
+                            <option value="employed">Employed</option>
+                            <option value="self_employed">Self-employed</option>
+                            <option value="business_owner">Business owner</option>
+                            <option value="contract">Contract / freelance</option>
+                            <option value="student">Student</option>
+                            <option value="retired">Retired</option>
+                            <option value="unemployed">Unemployed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="employerName">Employer or business name (optional)</label>
+                    <input type="text" id="employerName" placeholder="e.g. Zenith Bank Plc, or your business name">
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label for="kinName">Next of kin — full name (optional)</label>
+                        <input type="text" id="kinName" placeholder="e.g. Ngozi Okonkwo">
+                    </div>
+                    <div class="field">
+                        <label for="kinPhone">Next of kin — phone (optional)</label>
+                        <input type="tel" id="kinPhone" inputmode="tel" placeholder="e.g. 08012345678">
+                    </div>
+                </div>
+
+                <div class="field-hint" style="background:#f9fafb; border:1px solid #e5e7eb; padding:12px 14px; border-radius:8px;">
+                    <i class="fas fa-shield-alt" style="color: var(--portal-primary); margin-right:6px;"></i>
+                    Your personal data is shared only with the financing partner you selected. We do not store your BVN on our servers.
+                </div>
+            </div>
+
+            <!-- Step 5: Review -->
+            <div class="step-body hidden" id="step5">
+                <h2 class="step-title">Review and submit</h2>
+                <p class="step-subtitle">Confirm the details below. The bank will contact you if further information is needed.</p>
+                <div id="reviewBody"></div>
+            </div>
+
+            <!-- Footer -->
+            <div class="step-footer">
+                <div class="err" id="errBanner"></div>
+                <div class="step-actions">
+                    <button type="button" class="btn btn-ghost" id="btnBack" style="display:none;">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnNext" disabled>
+                        Continue <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnSubmit" style="display:none;">
+                        <i class="fas fa-paper-plane"></i> Submit application
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completion overlay (shown after a successful submit) -->
+    <div class="completion-overlay" id="completionOverlay" role="alert" aria-live="assertive" aria-hidden="true">
+        <div class="confetti" id="confetti"></div>
+        <div class="completion-card">
+            <div class="success-check">
+                <svg viewBox="0 0 52 52" aria-hidden="true">
+                    <path d="M14 27 L23 36 L39 18"></path>
+                </svg>
+            </div>
+            <h2 class="completion-title">Application submitted</h2>
+            <p class="completion-body">Your loan request is on its way to the bank. You'll be notified the moment a decision is made.</p>
+            <div class="completion-ref" id="completionRef"></div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const state = {
+                step: 1,
+                vendors: [],
+                selectedVendor: null,
+                products: [],
+                selectedProduct: null,
+                institutions: [],
+                selectedInstitution: null,
+                downPayment: 0,
+                tenure: null,
+                purpose: '',
+                eligibility: {
+                    monthly_income_ngn: 0,
+                    employment_status: '',
+                    employer_name: '',
+                    next_of_kin_name: '',
+                    next_of_kin_phone: ''
+                },
+            };
+
+            const els = {
+                stepper: document.getElementById('stepper'),
+                step1: document.getElementById('step1'),
+                step2: document.getElementById('step2'),
+                step3: document.getElementById('step3'),
+                step4: document.getElementById('step4'),
+                step5: document.getElementById('step5'),
+                vendorList: document.getElementById('vendorList'),
+                productList: document.getElementById('productList'),
+                summary2: document.getElementById('summary2'),
+                summary3: document.getElementById('summary3'),
+                institutionSelect: document.getElementById('institutionSelect'),
+                institutionHint: document.getElementById('institutionHint'),
+                downPayment: document.getElementById('downPayment'),
+                tenure: document.getElementById('tenure'),
+                purpose: document.getElementById('purpose'),
+                quote: document.getElementById('quote'),
+                reviewBody: document.getElementById('reviewBody'),
+                btnBack: document.getElementById('btnBack'),
+                btnNext: document.getElementById('btnNext'),
+                btnSubmit: document.getElementById('btnSubmit'),
+                errBanner: document.getElementById('errBanner'),
+                monthlyIncome: document.getElementById('monthlyIncome'),
+                employmentStatus: document.getElementById('employmentStatus'),
+                employerName: document.getElementById('employerName'),
+                kinName: document.getElementById('kinName'),
+                kinPhone: document.getElementById('kinPhone'),
+            };
+
+            const fmtNaira = (n) => '₦' + (Number(n) || 0).toLocaleString();
+            const esc = (s) => (s == null ? '' : String(s)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;'));
+            const prettyCategory = (c) => String(c || '').replace(/_/g, ' ').replace(/\b\w/g, (x) => x.toUpperCase());
+
+            function showError(msg) {
+                els.errBanner.textContent = msg || '';
+            }
+            function clearError() { els.errBanner.textContent = ''; }
+
+            // ─── Step rendering ──────────────────────────────────────────
+            function setStep(n) {
+                state.step = n;
+                clearError();
+                [els.step1, els.step2, els.step3, els.step4, els.step5].forEach((el, idx) => {
+                    el.classList.toggle('hidden', (idx + 1) !== n);
+                });
+                // Update stepper pills
+                const pills = els.stepper.querySelectorAll('.step');
+                const seps = els.stepper.querySelectorAll('.step-sep');
+                pills.forEach((p) => {
+                    const step = Number(p.getAttribute('data-step'));
+                    p.classList.toggle('active', step === n);
+                    p.classList.toggle('done', step < n);
+                });
+                seps.forEach((s, idx) => { s.classList.toggle('done', idx < n - 1); });
+
+                // Footer buttons
+                els.btnBack.style.display = n === 1 ? 'none' : '';
+                els.btnNext.style.display = n === 5 ? 'none' : '';
+                els.btnSubmit.style.display = n === 5 ? '' : 'none';
+                updateNextEnabled();
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            function eligibilityValid() {
+                const income = Number(els.monthlyIncome.value) || 0;
+                const status = (els.employmentStatus.value || '').trim();
+                return income > 0 && !!status;
+            }
+
+            function updateNextEnabled() {
+                let ok = false;
+                if (state.step === 1) ok = !!state.selectedVendor;
+                else if (state.step === 2) ok = !!state.selectedProduct;
+                else if (state.step === 3) ok = !!state.selectedInstitution && !!state.tenure && quoteValid();
+                else if (state.step === 4) ok = eligibilityValid();
+                els.btnNext.disabled = !ok;
+            }
+
+            // ─── Step 1: Vendors ────────────────────────────────────────
+            function renderVendors() {
+                if (state.vendors.length === 0) {
+                    els.vendorList.innerHTML = `
+                        <div class="empty-row">
+                            <i class="fas fa-store-slash"></i>
+                            No active vendors available right now. Please check back later.
+                        </div>`;
+                    return;
+                }
+                els.vendorList.innerHTML = state.vendors.map((v) => {
+                    const selected = state.selectedVendor && state.selectedVendor.user_id === v.user_id;
+                    const cats = (v.categories || []).slice(0, 3).map(prettyCategory).join(', ');
+                    return `
+                        <label class="choice-card ${selected ? 'selected' : ''}" data-vendor-id="${esc(v.user_id)}">
+                            <span class="ci-icon"><i class="fas fa-store"></i></span>
+                            <span class="ci-body">
+                                <div class="ci-title">${esc(v.business_name || '—')}</div>
+                                <div class="ci-sub">${esc([v.state, v.lga].filter(Boolean).join(' / '))}${cats ? ' · ' + esc(cats) : ''}</div>
+                            </span>
+                            <span class="ci-check"><i class="fas fa-check"></i></span>
+                        </label>`;
+                }).join('');
+            }
+            els.vendorList.addEventListener('click', (e) => {
+                const card = e.target.closest('[data-vendor-id]');
+                if (!card) return;
+                const id = card.getAttribute('data-vendor-id');
+                state.selectedVendor = state.vendors.find((v) => v.user_id === id) || null;
+                // Reset downstream choices when vendor changes
+                state.selectedProduct = null;
+                state.products = [];
+                renderVendors();
+                updateNextEnabled();
+            });
+
+            // ─── Step 2: Products ───────────────────────────────────────
+            async function loadProducts() {
+                els.productList.innerHTML = `<div class="loading-row"><i class="fas fa-spinner fa-spin"></i> Loading products…</div>`;
+                try {
+                    state.products = await window.EvillageLoans.listVendorProducts(state.selectedVendor);
+                } catch (e) {
+                    state.products = [];
+                }
+                renderProducts();
+                renderSummary2();
+            }
+            function renderProducts() {
+                if (state.products.length === 0) {
+                    els.productList.innerHTML = `
+                        <div class="empty-row">
+                            <i class="fas fa-box-open"></i>
+                            This vendor doesn't have any products listed yet.
+                        </div>`;
+                    return;
+                }
+                els.productList.innerHTML = state.products.map((p) => {
+                    const selected = state.selectedProduct && state.selectedProduct.id === p.id;
+                    return `
+                        <label class="choice-card ${selected ? 'selected' : ''}" data-product-id="${esc(p.id)}">
+                            <span class="ci-icon"><i class="fas fa-solar-panel"></i></span>
+                            <span class="ci-body">
+                                <div class="ci-title">${esc(p.name)}</div>
+                                <div class="ci-sub">${esc(p.description || '')}</div>
+                            </span>
+                            <span class="ci-meta">${fmtNaira(p.price_ngn)}</span>
+                            <span class="ci-check"><i class="fas fa-check"></i></span>
+                        </label>`;
+                }).join('');
+            }
+            function renderSummary2() {
+                const v = state.selectedVendor;
+                els.summary2.innerHTML = v
+                    ? `<span><strong>Vendor:</strong> ${esc(v.business_name)}</span>
+                       <span class="pill-sep"></span>
+                       <span>${esc([v.state, v.lga].filter(Boolean).join(' / '))}</span>`
+                    : '';
+            }
+            els.productList.addEventListener('click', (e) => {
+                const card = e.target.closest('[data-product-id]');
+                if (!card) return;
+                const id = card.getAttribute('data-product-id');
+                state.selectedProduct = state.products.find((p) => p.id === id) || null;
+                renderProducts();
+                updateNextEnabled();
+            });
+
+            // ─── Step 3: Financing ──────────────────────────────────────
+            function loadInstitutions() {
+                state.institutions = window.EvillageLoans.listInstitutions();
+                els.institutionSelect.innerHTML = '<option value="">— Select a financing partner —</option>' +
+                    state.institutions.map((i) =>
+                        `<option value="${esc(i.id)}">${esc(i.name)} · ${i.interest_rate_pct}% APR</option>`
+                    ).join('');
+            }
+            function onInstitutionChange() {
+                const id = els.institutionSelect.value;
+                state.selectedInstitution = state.institutions.find((i) => i.id === id) || null;
+                if (state.selectedInstitution) {
+                    const i = state.selectedInstitution;
+                    els.institutionHint.textContent =
+                        i.tagline + ' · Loan range ' + fmtNaira(i.min_loan_ngn) + ' – ' + fmtNaira(i.max_loan_ngn) + '.';
+                    els.tenure.innerHTML = i.tenure_options_months.map((m) =>
+                        `<option value="${m}">${m} months</option>`).join('');
+                    state.tenure = i.tenure_options_months[0];
+                    els.tenure.value = String(state.tenure);
+                } else {
+                    els.institutionHint.textContent = '';
+                    els.tenure.innerHTML = '';
+                    state.tenure = null;
+                }
+                renderQuote();
+                updateNextEnabled();
+            }
+            function onTenureChange() {
+                state.tenure = Number(els.tenure.value) || null;
+                renderQuote();
+                updateNextEnabled();
+            }
+            function onDownPaymentChange() {
+                state.downPayment = Math.max(0, Number(els.downPayment.value) || 0);
+                renderQuote();
+                updateNextEnabled();
+            }
+
+            function quoteValid() {
+                if (!state.selectedProduct || !state.selectedInstitution || !state.tenure) return false;
+                const price = Number(state.selectedProduct.price_ngn) || 0;
+                const loanAmount = price - (state.downPayment || 0);
+                const i = state.selectedInstitution;
+                return loanAmount >= i.min_loan_ngn &&
+                       loanAmount <= i.max_loan_ngn &&
+                       loanAmount > 0 &&
+                       (state.downPayment || 0) <= price;
+            }
+
+            function renderQuote() {
+                if (!state.selectedProduct || !state.selectedInstitution || !state.tenure) {
+                    els.quote.innerHTML = '<div class="quote-row"><span>Choose a partner and tenure to see your repayment quote.</span></div>';
+                    return;
+                }
+                const price = Number(state.selectedProduct.price_ngn) || 0;
+                const down = Number(state.downPayment) || 0;
+                const loan = Math.max(0, price - down);
+                const i = state.selectedInstitution;
+                const monthly = window.EvillageLoans.computeMonthly(loan, state.tenure, i.interest_rate_pct);
+                const totalRepayment = monthly * state.tenure;
+
+                let warning = '';
+                if (loan <= 0) warning = 'Loan amount must be greater than ₦0. Reduce the down payment.';
+                else if (loan < i.min_loan_ngn) warning = 'Below ' + i.name + '\'s minimum loan of ' + fmtNaira(i.min_loan_ngn) + '.';
+                else if (loan > i.max_loan_ngn) warning = 'Above ' + i.name + '\'s maximum loan of ' + fmtNaira(i.max_loan_ngn) + '.';
+                else if (down > price) warning = 'Down payment cannot exceed the product price.';
+
+                els.quote.innerHTML = `
+                    <div class="quote-row"><span>Product price</span><span class="value">${fmtNaira(price)}</span></div>
+                    <div class="quote-row"><span>Down payment</span><span class="value">${fmtNaira(down)}</span></div>
+                    <div class="quote-row"><span>Loan amount</span><span class="value">${fmtNaira(loan)}</span></div>
+                    <div class="quote-row"><span>Tenure</span><span class="value">${state.tenure} months · ${i.interest_rate_pct}% APR</span></div>
+                    <div class="quote-row total"><span>Monthly repayment</span><span class="value">${fmtNaira(monthly)}</span></div>
+                    <div class="quote-row"><span>Total repayment</span><span class="value">${fmtNaira(totalRepayment)}</span></div>
+                    ${warning ? `<div class="quote-row" style="color:#991b1b; font-size:13px; padding-top:8px;"><span>${esc(warning)}</span></div>` : ''}
+                `;
+            }
+            function renderSummary3() {
+                const v = state.selectedVendor; const p = state.selectedProduct;
+                els.summary3.innerHTML = `
+                    <span><strong>Vendor:</strong> ${esc(v ? v.business_name : '—')}</span>
+                    <span class="pill-sep"></span>
+                    <span><strong>Product:</strong> ${esc(p ? p.name : '—')}</span>
+                    <span class="pill-sep"></span>
+                    <span>${fmtNaira(p ? p.price_ngn : 0)}</span>`;
+            }
+
+            function prettyEmployment(val) {
+                if (!val) return '—';
+                return val.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+            }
+
+            // ─── Step 5: Review ─────────────────────────────────────────
+            function renderReview() {
+                const v = state.selectedVendor;
+                const p = state.selectedProduct;
+                const i = state.selectedInstitution;
+                const price = Number(p.price_ngn) || 0;
+                const down = Number(state.downPayment) || 0;
+                const loan = Math.max(0, price - down);
+                const monthly = window.EvillageLoans.computeMonthly(loan, state.tenure, i.interest_rate_pct);
+
+                els.reviewBody.innerHTML = `
+                    <div class="review-grid">
+                        <div>
+                            <div class="review-label">Vendor</div>
+                            <div class="review-value">${esc(v.business_name)} · ${esc([v.state, v.lga].filter(Boolean).join(' / '))}</div>
+                        </div>
+                        <div>
+                            <div class="review-label">Contact person</div>
+                            <div class="review-value">${esc(v.contact_person || '—')}</div>
+                        </div>
+                        <div class="full">
+                            <div class="review-label">Product</div>
+                            <div class="review-value">${esc(p.name)} — ${fmtNaira(price)}</div>
+                            <div class="field-hint" style="margin-top:4px;">${esc(p.description || '')}</div>
+                        </div>
+                        <div>
+                            <div class="review-label">Financing partner</div>
+                            <div class="review-value">${esc(i.name)} · ${i.interest_rate_pct}% APR</div>
+                        </div>
+                        <div>
+                            <div class="review-label">Tenure</div>
+                            <div class="review-value">${state.tenure} months</div>
+                        </div>
+                        <div>
+                            <div class="review-label">Down payment</div>
+                            <div class="review-value">${fmtNaira(down)}</div>
+                        </div>
+                        <div>
+                            <div class="review-label">Loan amount</div>
+                            <div class="review-value">${fmtNaira(loan)}</div>
+                        </div>
+                        <div class="full">
+                            <div class="review-label">Monthly repayment</div>
+                            <div class="review-value" style="font-size:18px; font-weight:600;">${fmtNaira(monthly)}</div>
+                        </div>
+
+                        <div>
+                            <div class="review-label">Monthly income</div>
+                            <div class="review-value">${fmtNaira(state.eligibility.monthly_income_ngn)}</div>
+                        </div>
+                        <div>
+                            <div class="review-label">Employment</div>
+                            <div class="review-value">${esc(prettyEmployment(state.eligibility.employment_status))}${state.eligibility.employer_name ? ' · ' + esc(state.eligibility.employer_name) : ''}</div>
+                        </div>
+                        ${(state.eligibility.next_of_kin_name || state.eligibility.next_of_kin_phone) ? `
+                        <div class="full">
+                            <div class="review-label">Next of kin</div>
+                            <div class="review-value">${esc(state.eligibility.next_of_kin_name || '—')}${state.eligibility.next_of_kin_phone ? ' · ' + esc(state.eligibility.next_of_kin_phone) : ''}</div>
+                        </div>` : ''}
+
+                        ${state.purpose ? `
+                        <div class="full">
+                            <div class="review-label">Purpose</div>
+                            <div class="review-value">${esc(state.purpose)}</div>
+                        </div>` : ''}
+                    </div>`;
+            }
+
+            // ─── Navigation ─────────────────────────────────────────────
+            els.btnNext.addEventListener('click', () => {
+                if (state.step === 1 && state.selectedVendor) {
+                    setStep(2);
+                    loadProducts();
+                } else if (state.step === 2 && state.selectedProduct) {
+                    loadInstitutions();
+                    onInstitutionChange();
+                    renderSummary3();
+                    setStep(3);
+                    renderQuote();
+                } else if (state.step === 3 && quoteValid()) {
+                    state.purpose = els.purpose.value || '';
+                    setStep(4);
+                } else if (state.step === 4 && eligibilityValid()) {
+                    state.eligibility.monthly_income_ngn = Number(els.monthlyIncome.value) || 0;
+                    state.eligibility.employment_status = els.employmentStatus.value || '';
+                    state.eligibility.employer_name = (els.employerName.value || '').trim();
+                    state.eligibility.next_of_kin_name = (els.kinName.value || '').trim();
+                    state.eligibility.next_of_kin_phone = (els.kinPhone.value || '').trim();
+                    renderReview();
+                    setStep(5);
+                }
+            });
+            els.btnBack.addEventListener('click', () => {
+                if (state.step > 1) setStep(state.step - 1);
+            });
+
+            els.institutionSelect.addEventListener('change', onInstitutionChange);
+            els.tenure.addEventListener('change', onTenureChange);
+            els.downPayment.addEventListener('input', onDownPaymentChange);
+
+            ['input', 'change'].forEach(evt => {
+                els.monthlyIncome.addEventListener(evt, updateNextEnabled);
+                els.employmentStatus.addEventListener(evt, updateNextEnabled);
+            });
+
+            // ─── Submit ─────────────────────────────────────────────────
+            els.btnSubmit.addEventListener('click', async () => {
+                clearError();
+                els.btnSubmit.disabled = true;
+                const original = els.btnSubmit.innerHTML;
+                els.btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting…';
+                try {
+                    const citizenUser = window.EVILLAGE_USER;
+                    if (!citizenUser) throw new Error('Your session could not be verified. Please refresh and try again.');
+                    const app = window.EvillageLoans.createApplication({
+                        citizenUser: citizenUser,
+                        vendor: state.selectedVendor,
+                        product: state.selectedProduct,
+                        institutionId: state.selectedInstitution.id,
+                        financing: {
+                            amount_ngn: Math.max(0, (state.selectedProduct.price_ngn || 0) - (state.downPayment || 0)),
+                            down_payment_ngn: state.downPayment || 0,
+                            tenure_months: state.tenure
+                        },
+                        eligibility: state.eligibility,
+                        purpose: state.purpose
+                    });
+
+                    playCompletion(app.id);
+                    setTimeout(function () {
+                        window.location.href = 'evillage-dashboard.html?loan=' + encodeURIComponent(app.id);
+                    }, 2200);
+                    return;
+                } catch (err) {
+                    showError(err && err.message ? err.message : 'Could not submit your application. Please try again.');
+                    els.btnSubmit.disabled = false;
+                    els.btnSubmit.innerHTML = original;
+                }
+            });
+
+            // ─── Completion overlay ─────────────────────────────────────
+            function playCompletion(appId) {
+                const overlay = document.getElementById('completionOverlay');
+                const ref = document.getElementById('completionRef');
+                const confetti = document.getElementById('confetti');
+                if (!overlay) return;
+
+                if (ref) ref.textContent = 'Ref: ' + (appId ? appId.slice(-10).toUpperCase() : '—');
+
+                // Confetti sparks — 28 coloured rectangles radiating out from center.
+                if (confetti) {
+                    const colors = ['#10b981', '#34d399', '#f59e0b', '#ef4444', '#3b82f6', '#a78bfa'];
+                    let html = '';
+                    for (let i = 0; i < 28; i++) {
+                        const angle = (Math.PI * 2 * i) / 28 + (Math.random() * 0.3);
+                        const dist = 180 + Math.random() * 120;
+                        const dx = Math.cos(angle) * dist;
+                        const dy = Math.sin(angle) * dist - 30;
+                        const rotate = 360 + Math.random() * 360;
+                        const color = colors[i % colors.length];
+                        const delay = Math.random() * 0.15;
+                        html += '<span style="background:' + color +
+                                ';--dx:' + dx.toFixed(1) + 'px;--dy:' + dy.toFixed(1) + 'px;' +
+                                '--r:' + rotate.toFixed(0) + 'deg;' +
+                                'animation-delay:' + (0.4 + delay).toFixed(2) + 's;"></span>';
+                    }
+                    confetti.innerHTML = html;
+                }
+
+                overlay.classList.add('is-open');
+                overlay.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // ─── Boot ───────────────────────────────────────────────────
+            async function boot() {
+                try {
+                    state.vendors = await window.EvillageLoans.listActiveVendors();
+                } catch (e) {
+                    state.vendors = [];
+                }
+                renderVendors();
+                updateNextEnabled();
+            }
+
+            boot();
+        })();
+    </script>
+</body>
+
+</html>

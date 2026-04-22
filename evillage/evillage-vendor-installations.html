@@ -14,6 +14,7 @@
     <script src="evillage-api.js?v=1.0"></script>
     <script>window.EVILLAGE_REQUIRED_ROLES = ['vendor'];</script>
     <script src="evillage-guard.js?v=1.0"></script>
+    <script src="evillage-loans.js?v=1.0"></script>
     <style>
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
@@ -366,32 +367,36 @@
             </div>
         </div>
 
-        <div class="metrics-row">
+        <div class="metrics-row" id="installMetrics">
             <div class="metric-pill">
                 <div class="metric-icon m-blue"><i class="fas fa-hard-hat"></i></div>
                 <div class="metric-data">
                     <h4>Total Ongoing</h4>
-                    <div class="m-val">5 Projects</div>
+                    <div class="m-val" id="metricOngoing">—</div>
                 </div>
             </div>
             <div class="metric-pill">
                 <div class="metric-icon m-orange"><i class="fas fa-exclamation-circle"></i></div>
                 <div class="metric-data">
-                    <h4>High Priority</h4>
-                    <div class="m-val">2 Projects</div>
+                    <h4>Awaiting Start</h4>
+                    <div class="m-val" id="metricAwaiting">—</div>
                 </div>
             </div>
             <div class="metric-pill">
                 <div class="metric-icon m-green"><i class="fas fa-calendar-check"></i></div>
                 <div class="metric-data">
                     <h4>Completion Avg</h4>
-                    <div class="m-val">47% Overview</div>
+                    <div class="m-val" id="metricAvg">—</div>
                 </div>
             </div>
         </div>
 
-        <div class="installations-list">
-            
+        <div class="installations-list" id="installationsList">
+            <div style="text-align:center; padding:40px; color:#6b7280;">Loading customer projects…</div>
+        </div>
+
+        <div class="installations-list" style="display:none;" id="legacyProjectsList">
+
             <!-- Project 1 -->
             <div class="project-card">
                 <div class="proj-meta">
@@ -656,6 +661,152 @@
             }, 1200);
         }
 
+        /* ─── Populate from loan applications ─── */
+        (function () {
+            const list = document.getElementById('installationsList');
+            if (!list || !window.EvillageLoans) return;
+
+            function esc(s) {
+                if (s == null) return '';
+                return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            }
+            function fmtDate(iso) {
+                if (!iso) return '—';
+                try {
+                    const d = new Date(iso);
+                    if (isNaN(d.getTime())) return iso;
+                    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+                } catch (e) { return iso; }
+            }
+            function progressFor(app) {
+                const stages = (app.installation && app.installation.stages) || [];
+                if (!stages.length) return 0;
+                const done = stages.filter(s => s.status === 'completed').length;
+                return Math.round((done / stages.length) * 100);
+            }
+            function nextStageLabel(app) {
+                const stages = (app.installation && app.installation.stages) || [];
+                const next = stages.filter(s => s.status !== 'completed')
+                                   .sort((a, b) => a.order - b.order)[0];
+                return next ? next.label : '—';
+            }
+            function statusLabel(status) {
+                switch (status) {
+                    case 'disbursed':  return 'Awaiting Installation Start';
+                    case 'installing': return 'Installation In Progress';
+                    case 'completed':  return 'Completed';
+                    default:           return status || '—';
+                }
+            }
+            function priorityFor(app) {
+                if (app.status === 'completed') return { label: 'Priority: Low', cls: 'b-low' };
+                if (app.status === 'disbursed') return { label: 'Priority: High', cls: 'b-high' };
+                const p = progressFor(app);
+                if (p >= 75) return { label: 'Priority: Medium', cls: 'b-medium' };
+                if (p >= 50) return { label: 'Priority: High', cls: 'b-high' };
+                return { label: 'Priority: Urgent', cls: 'b-urgent' };
+            }
+
+            const RELEVANT_STATUSES = ['disbursed', 'installing', 'completed'];
+            const allApps = window.EvillageLoans.listForVendor('*'); // empty match → but we want all seeds
+            // Show every seeded application whose lifecycle is in the vendor's court,
+            // regardless of which vendor user is logged in (demo mode).
+            const apps = (allApps.length
+                ? allApps
+                : window.EvillageLoans.listForCitizen('*'))  // unused
+                ;
+            // Read directly — listFor helpers filter by id; for demo we want everything,
+            // so pull from storage via a broad filter instead.
+            const everyApp = (function () {
+                try {
+                    const raw = localStorage.getItem('evillage_loans_state_v1');
+                    if (!raw) return [];
+                    const parsed = JSON.parse(raw);
+                    return (parsed && parsed.applications) || [];
+                } catch (e) { return []; }
+            })();
+            const projects = everyApp.filter(a => RELEVANT_STATUSES.indexOf(a.status) !== -1);
+
+            // Metrics
+            const ongoing = projects.filter(a => a.status === 'installing').length;
+            const awaiting = projects.filter(a => a.status === 'disbursed').length;
+            const avg = projects.length ? Math.round(
+                projects.reduce((sum, a) => sum + progressFor(a), 0) / projects.length
+            ) : 0;
+            const elOng = document.getElementById('metricOngoing');
+            const elAw = document.getElementById('metricAwaiting');
+            const elAvg = document.getElementById('metricAvg');
+            if (elOng) elOng.textContent = ongoing + ' Project' + (ongoing === 1 ? '' : 's');
+            if (elAw)  elAw.textContent  = awaiting + ' Project' + (awaiting === 1 ? '' : 's');
+            if (elAvg) elAvg.textContent = avg + '% Overall';
+
+            if (!projects.length) {
+                list.innerHTML = `<div style="text-align:center; padding:40px; color:#6b7280;">
+                    <i class="fas fa-hard-hat" style="font-size:22px; display:block; margin-bottom:8px; color:#9ca3af;"></i>
+                    No active customer projects yet. Disbursed loans will appear here.
+                </div>`;
+                return;
+            }
+
+            list.innerHTML = projects.map((app, idx) => {
+                const progress = progressFor(app);
+                const pri = priorityFor(app);
+                const fillClass = app.status === 'completed' ? '' :
+                                  app.status === 'installing' ? '' : 'orange';
+                const progressColor = app.status === 'completed' ? '#a855f7' : '';
+                const cid = 'INST-' + new Date(app.created_at || Date.now()).getFullYear() +
+                            '-' + String(idx + 1).padStart(3, '0');
+                const customerName = ((app.citizen.first_name || '') + ' ' + (app.citizen.last_name || '')).trim() || app.citizen.email;
+                return `
+                <div class="project-card">
+                    <div class="proj-meta">
+                        <div class="proj-header">
+                            <span class="proj-id">${esc(cid)}</span>
+                            <h3 class="proj-type">${esc(app.product.name)}</h3>
+                        </div>
+                        <div class="proj-client"><i class="far fa-user-circle"></i> ${esc(customerName)}</div>
+                        <div class="proj-loc"><i class="fas fa-map-marker-alt" style="color:#ef4444;"></i> ${esc([app.citizen.lga, app.citizen.state].filter(Boolean).join(', '))}</div>
+                    </div>
+
+                    <div class="proj-status-col">
+                        <div class="badges-row">
+                            <span class="badge b-status">${esc(statusLabel(app.status))}</span>
+                            <span class="badge ${pri.cls}">${esc(pri.label)}</span>
+                        </div>
+                        <div class="prog-container">
+                            <div class="prog-header"><span>Overall Progress</span> <span${progressColor ? ` style="color:${progressColor};"` : ''}>${progress}%</span></div>
+                            <div class="prog-bg"><div class="prog-fill ${fillClass}" style="width: ${progress}%;${progressColor ? 'background:' + progressColor + ';' : ''}"></div></div>
+                            <div class="prog-sub"><i class="fas fa-level-up-alt fa-rotate-90"></i> Next: ${esc(nextStageLabel(app))}</div>
+                        </div>
+                    </div>
+
+                    <div class="proj-timeline-action">
+                        <div class="timeline">
+                            <div>Disbursed: <span class="timeline-date">${esc(fmtDate(app.disbursed_at))}</span></div>
+                            <div>Financing: <span class="timeline-date">${esc(app.institution && app.institution.name || '—')}</span></div>
+                        </div>
+                        <button class="btn-outline" data-loan-id="${esc(app.id)}">
+                            Manage Project <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+
+            // Hook Manage buttons to the existing details modal, showing the loan's product/components.
+            list.addEventListener('click', function (e) {
+                const btn = e.target.closest('[data-loan-id]');
+                if (!btn) return;
+                const id = btn.getAttribute('data-loan-id');
+                const app = projects.find(a => a.id === id);
+                if (!app) return;
+                const stages = (app.installation && app.installation.stages) || [];
+                const bullets = stages.map(s => s.label + ' — ' + s.status.replace('_', ' '));
+                if (typeof openDetails === 'function') {
+                    openDetails(app.id, app.product.name, bullets);
+                }
+            });
+        })();
     </script>
 
     <script>
