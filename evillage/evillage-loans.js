@@ -762,12 +762,20 @@
             throw new Error('Unsupported tenure for ' + institution.name + '.');
         }
 
-        // Identity — NIN/BVN are required for a loan application.
+        // Identity — NIN/BVN are required on the application. When the caller
+        // doesn't pass them explicitly, fall back to whatever /me returned so the
+        // form doesn't need to re-collect them.
         var identity = input.identity || {};
-        var nin = String(identity.nin || '').trim();
-        var bvn = String(identity.bvn || '').trim();
-        if (!/^\d{11}$/.test(nin)) throw new Error('A valid 11-digit NIN is required.');
-        if (!/^\d{11}$/.test(bvn)) throw new Error('A valid 11-digit BVN is required.');
+        var profile = (input.citizenUser && input.citizenUser.profile) || {};
+        var nin = String(identity.nin || profile.nin || '').trim();
+        var bvn = String(identity.bvn || profile.bvn || '').trim();
+        if (!/^\d{11}$/.test(nin)) {
+            throw new Error('Your account is missing a valid 11-digit NIN. Please update your profile.');
+        }
+        if (!/^\d{11}$/.test(bvn)) {
+            throw new Error('Your account is missing a valid 11-digit BVN. Please update your profile.');
+        }
+        identity = { nin: nin, bvn: bvn };
 
         // Eligibility — minimum needed for a credit decision.
         var eligibility = snapshotEligibility(input.eligibility);

@@ -423,21 +423,8 @@
 
             <!-- Step 4: Eligibility -->
             <div class="step-body hidden" id="step4">
-                <h2 class="step-title">Identity & eligibility</h2>
-                <p class="step-subtitle">The bank uses these to verify you and assess your loan. Your NIN and BVN are already on file — confirm or update them.</p>
-
-                <div class="field-row">
-                    <div class="field">
-                        <label for="ninField">National Identification Number (NIN)</label>
-                        <input type="text" id="ninField" inputmode="numeric" maxlength="11" pattern="\d{11}" autocomplete="off" placeholder="11-digit NIN">
-                        <div class="field-hint">Must be exactly 11 digits.</div>
-                    </div>
-                    <div class="field">
-                        <label for="bvnField">Bank Verification Number (BVN)</label>
-                        <input type="text" id="bvnField" inputmode="numeric" maxlength="11" pattern="\d{11}" autocomplete="off" placeholder="11-digit BVN">
-                        <div class="field-hint">Dial *565*0# on the phone linked to your bank account.</div>
-                    </div>
-                </div>
+                <h2 class="step-title">Eligibility</h2>
+                <p class="step-subtitle">The bank uses this to assess your loan. Your NIN and BVN are pulled from your profile — update them there if needed.</p>
 
                 <div class="field-row">
                     <div class="field">
@@ -535,7 +522,6 @@
                 downPayment: 0,
                 tenure: null,
                 purpose: '',
-                identity: { nin: '', bvn: '' },
                 eligibility: {
                     monthly_income_ngn: 0,
                     employment_status: '',
@@ -567,8 +553,6 @@
                 btnNext: document.getElementById('btnNext'),
                 btnSubmit: document.getElementById('btnSubmit'),
                 errBanner: document.getElementById('errBanner'),
-                nin: document.getElementById('ninField'),
-                bvn: document.getElementById('bvnField'),
                 monthlyIncome: document.getElementById('monthlyIncome'),
                 employmentStatus: document.getElementById('employmentStatus'),
                 employerName: document.getElementById('employerName'),
@@ -614,11 +598,9 @@
             }
 
             function eligibilityValid() {
-                const ninOk = /^\d{11}$/.test((els.nin.value || '').trim());
-                const bvnOk = /^\d{11}$/.test((els.bvn.value || '').trim());
                 const income = Number(els.monthlyIncome.value) || 0;
                 const status = (els.employmentStatus.value || '').trim();
-                return ninOk && bvnOk && income > 0 && !!status;
+                return income > 0 && !!status;
             }
 
             function updateNextEnabled() {
@@ -804,14 +786,6 @@
                     <span>${fmtNaira(p ? p.price_ngn : 0)}</span>`;
             }
 
-            // ─── Step 4 prefill ─────────────────────────────────────────
-            function prefillEligibility() {
-                const user = window.EVILLAGE_USER;
-                const p = user && user.profile || {};
-                if (!els.nin.value && p.nin) els.nin.value = p.nin;
-                if (!els.bvn.value && p.bvn) els.bvn.value = p.bvn;
-            }
-
             function prettyEmployment(val) {
                 if (!val) return '—';
                 return val.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
@@ -826,7 +800,6 @@
                 const down = Number(state.downPayment) || 0;
                 const loan = Math.max(0, price - down);
                 const monthly = window.EvillageLoans.computeMonthly(loan, state.tenure, i.interest_rate_pct);
-                const maskId = (v) => v ? (v.slice(0, 3) + ' **** ' + v.slice(-2)) : '—';
 
                 els.reviewBody.innerHTML = `
                     <div class="review-grid">
@@ -865,14 +838,6 @@
                         </div>
 
                         <div>
-                            <div class="review-label">NIN</div>
-                            <div class="review-value">${esc(maskId(state.identity.nin))}</div>
-                        </div>
-                        <div>
-                            <div class="review-label">BVN</div>
-                            <div class="review-value">${esc(maskId(state.identity.bvn))}</div>
-                        </div>
-                        <div>
                             <div class="review-label">Monthly income</div>
                             <div class="review-value">${fmtNaira(state.eligibility.monthly_income_ngn)}</div>
                         </div>
@@ -907,11 +872,8 @@
                     renderQuote();
                 } else if (state.step === 3 && quoteValid()) {
                     state.purpose = els.purpose.value || '';
-                    prefillEligibility();
                     setStep(4);
                 } else if (state.step === 4 && eligibilityValid()) {
-                    state.identity.nin = (els.nin.value || '').trim();
-                    state.identity.bvn = (els.bvn.value || '').trim();
                     state.eligibility.monthly_income_ngn = Number(els.monthlyIncome.value) || 0;
                     state.eligibility.employment_status = els.employmentStatus.value || '';
                     state.eligibility.employer_name = (els.employerName.value || '').trim();
@@ -930,8 +892,6 @@
             els.downPayment.addEventListener('input', onDownPaymentChange);
 
             ['input', 'change'].forEach(evt => {
-                els.nin.addEventListener(evt, updateNextEnabled);
-                els.bvn.addEventListener(evt, updateNextEnabled);
                 els.monthlyIncome.addEventListener(evt, updateNextEnabled);
                 els.employmentStatus.addEventListener(evt, updateNextEnabled);
             });
@@ -954,10 +914,6 @@
                             amount_ngn: Math.max(0, (state.selectedProduct.price_ngn || 0) - (state.downPayment || 0)),
                             down_payment_ngn: state.downPayment || 0,
                             tenure_months: state.tenure
-                        },
-                        identity: {
-                            nin: state.identity.nin,
-                            bvn: state.identity.bvn
                         },
                         eligibility: state.eligibility,
                         purpose: state.purpose
