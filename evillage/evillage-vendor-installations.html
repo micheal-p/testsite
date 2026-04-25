@@ -391,6 +391,21 @@
             </div>
         </div>
 
+        <!-- Direct Orders (marketplace purchases) -->
+        <div style="margin: 8px 0 18px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                <div>
+                    <h2 style="margin:0; font-size:18px; font-weight:600; color:#111827;">Direct Orders</h2>
+                    <p style="margin:2px 0 0; font-size:13px; color:#6b7280;">Marketplace purchases paid directly by citizens — fulfill them through the standard installation stages.</p>
+                </div>
+            </div>
+            <div id="directOrdersList" style="display:flex; flex-direction:column; gap:14px;"></div>
+        </div>
+
+        <div class="section-header" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <h2 style="margin:0; font-size:18px; font-weight:600; color:#111827;">Loan Installations</h2>
+        </div>
+
         <div class="installations-list" id="installationsList">
             <div style="text-align:center; padding:40px; color:#6b7280;">Loading customer projects…</div>
         </div>
@@ -806,6 +821,136 @@
                     openDetails(app.id, app.product.name, bullets);
                 }
             });
+        })();
+
+        /* ─── Direct marketplace orders ─── */
+        (function () {
+            const list = document.getElementById('directOrdersList');
+            if (!list || !window.EvillageLoans) return;
+
+            function esc(s) {
+                if (s == null) return '';
+                return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            }
+            function fmtDate(iso) {
+                if (!iso) return '—';
+                const d = new Date(iso);
+                if (isNaN(d.getTime())) return iso;
+                return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+            }
+            function fmtNgn(n) { return '₦' + (Number(n) || 0).toLocaleString(); }
+            function methodLabel(m) {
+                return m === 'card' ? 'Card' : m === 'bank_transfer' ? 'Bank transfer' : m === 'ussd' ? 'USSD' : (m || '—');
+            }
+
+            function getAllPurchases() {
+                try {
+                    const raw = localStorage.getItem('evillage_loans_state_v1');
+                    if (!raw) return [];
+                    const parsed = JSON.parse(raw);
+                    return (parsed && parsed.purchases) || [];
+                } catch (e) { return []; }
+            }
+
+            function progressFor(pur) {
+                const stages = (pur.fulfillment && pur.fulfillment.stages) || [];
+                if (!stages.length) return 0;
+                const done = stages.filter(s => s.status === 'completed').length;
+                return Math.round((done / stages.length) * 100);
+            }
+            function nextStage(pur) {
+                const stages = (pur.fulfillment && pur.fulfillment.stages) || [];
+                return stages.filter(s => s.status !== 'completed').sort((a, b) => a.order - b.order)[0] || null;
+            }
+
+            function statusBadge(status) {
+                switch (status) {
+                    case 'paid':       return { label: 'Paid — Awaiting fulfillment', cls: 'b-high' };
+                    case 'fulfilling': return { label: 'Fulfilling',                  cls: 'b-medium' };
+                    case 'completed':  return { label: 'Completed',                   cls: 'b-low' };
+                    case 'cancelled':  return { label: 'Cancelled',                   cls: 'b-low' };
+                    default:           return { label: status || '—',                 cls: 'b-status' };
+                }
+            }
+
+            function render() {
+                const orders = getAllPurchases().filter(p => p.status !== 'cancelled');
+                if (!orders.length) {
+                    list.innerHTML = `<div style="text-align:center; padding:32px; color:#6b7280; background:#fff; border-radius:14px; box-shadow:0 4px 12px rgba(0,0,0,.05);">
+                        <i class="fas fa-shopping-bag" style="font-size:22px; display:block; margin-bottom:8px; color:#9ca3af;"></i>
+                        No direct orders yet. Customer purchases from the marketplace appear here.
+                    </div>`;
+                    return;
+                }
+
+                list.innerHTML = orders.map(function (pur, idx) {
+                    const progress = progressFor(pur);
+                    const sb = statusBadge(pur.status);
+                    const next = nextStage(pur);
+                    const customer = ((pur.citizen.first_name || '') + ' ' + (pur.citizen.last_name || '')).trim() || pur.citizen.email;
+                    const cid = 'ORD-' + new Date(pur.created_at || Date.now()).getFullYear() +
+                                '-' + String(idx + 1).padStart(3, '0');
+                    const canStart = pur.status === 'paid';
+                    const canAdvance = pur.status === 'fulfilling' && next;
+                    return `
+                    <div class="project-card" data-purchase-id="${esc(pur.id)}">
+                        <div class="proj-meta">
+                            <div class="proj-header">
+                                <span class="proj-id">${esc(cid)}</span>
+                                <h3 class="proj-type">${esc(pur.product.name)}</h3>
+                            </div>
+                            <div class="proj-client"><i class="far fa-user-circle"></i> ${esc(customer)}</div>
+                            <div class="proj-loc"><i class="fas fa-map-marker-alt" style="color:#ef4444;"></i> ${esc([pur.delivery.address, pur.delivery.lga, pur.delivery.state].filter(Boolean).join(', '))}</div>
+                        </div>
+
+                        <div class="proj-status-col">
+                            <div class="badges-row">
+                                <span class="badge b-status">${esc(sb.label)}</span>
+                                <span class="badge ${sb.cls}">${esc(fmtNgn(pur.payment.amount_ngn))} ${esc(methodLabel(pur.payment.method))}</span>
+                            </div>
+                            <div class="prog-container">
+                                <div class="prog-header"><span>Fulfillment</span> <span>${progress}%</span></div>
+                                <div class="prog-bg"><div class="prog-fill" style="width:${progress}%;"></div></div>
+                                <div class="prog-sub"><i class="fas fa-level-up-alt fa-rotate-90"></i> Next: ${esc(next ? next.label : 'All stages complete')}</div>
+                            </div>
+                        </div>
+
+                        <div class="proj-timeline-action">
+                            <div class="timeline">
+                                <div>Paid: <span class="timeline-date">${esc(fmtDate(pur.paid_at))}</span></div>
+                                <div>Ref: <span class="timeline-date">${esc(pur.payment.reference)}</span></div>
+                            </div>
+                            ${canStart
+                                ? `<button class="btn-outline" data-action="start" data-id="${esc(pur.id)}">Start fulfillment <i class="fas fa-play"></i></button>`
+                                : canAdvance
+                                ? `<button class="btn-outline" data-action="advance" data-id="${esc(pur.id)}" data-stage="${esc(next.key)}">Mark "${esc(next.label)}" done <i class="fas fa-check"></i></button>`
+                                : `<button class="btn-outline" disabled style="opacity:.6;">Completed <i class="fas fa-check-circle"></i></button>`}
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+
+            list.addEventListener('click', function (e) {
+                const btn = e.target.closest('[data-action]');
+                if (!btn) return;
+                const id = btn.getAttribute('data-id');
+                const action = btn.getAttribute('data-action');
+                try {
+                    if (action === 'start') {
+                        window.EvillageLoans.startPurchaseFulfillment(id, (window.EVILLAGE_USER && window.EVILLAGE_USER.id) || null);
+                    } else if (action === 'advance') {
+                        const stageKey = btn.getAttribute('data-stage');
+                        window.EvillageLoans.updatePurchaseStage(id, stageKey, { status: 'completed' },
+                            (window.EVILLAGE_USER && window.EVILLAGE_USER.id) || null);
+                    }
+                    render();
+                } catch (err) {
+                    alert(err && err.message ? err.message : 'Could not update order.');
+                }
+            });
+
+            render();
         })();
     </script>
 

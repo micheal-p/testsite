@@ -14,6 +14,7 @@
     <script src="evillage-api.js?v=1.0"></script>
     <script>window.EVILLAGE_REQUIRED_ROLES = ['citizen'];</script>
     <script src="evillage-guard.js?v=1.0"></script>
+    <script src="evillage-loans.js?v=1.0"></script>
     <style>
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
@@ -350,6 +351,7 @@
         .property-list-section {
             background: white;
             border-radius: 16px;
+            margin-top: 20px;
             padding: 24px;
             border: 1px solid var(--border-color, #e5e7eb);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
@@ -845,6 +847,337 @@
             }
         }
 
+        /* ─── Active Loans ─────────────────────────────────────── */
+        .new-loan-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            background: #0d3d44;
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1;
+            transition: background .15s ease, transform .15s ease, box-shadow .15s ease;
+            box-shadow: 0 2px 6px rgba(13,61,68,.18);
+        }
+        .new-loan-btn:hover {
+            background: #0a2e33;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(13,61,68,.22);
+        }
+        .new-loan-btn i { font-size: 12px; }
+
+        .loans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .loan-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border: 2px solid transparent;
+            transition: box-shadow .15s ease, border-color .2s ease;
+        }
+        .loan-card.is-highlighted {
+            border-color: #10b981;
+            box-shadow: 0 0 0 4px rgba(16,185,129,.12);
+        }
+        .loan-card-head {
+            display: flex; gap: 10px; justify-content: space-between; align-items: flex-start;
+        }
+        .loan-card-title {
+            font-size: 15px; font-weight: 600; color: #111827;
+            line-height: 1.3;
+        }
+        .loan-card-vendor {
+            font-size: 12px; color: #6b7280; margin-top: 2px;
+        }
+        .loan-status-pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 10px; border-radius: 999px;
+            font-size: 11px; font-weight: 600; white-space: nowrap;
+        }
+        .loan-status-pill.is-submitted    { background: #e0f2fe; color: #075985; }
+        .loan-status-pill.is-under_review { background: #fef3c7; color: #92400e; }
+        .loan-status-pill.is-approved     { background: #d1fae5; color: #065f46; }
+        .loan-status-pill.is-rejected     { background: #fee2e2; color: #991b1b; }
+        .loan-status-pill.is-disbursed    { background: #ddd6fe; color: #5b21b6; }
+        .loan-status-pill.is-installing   { background: #fde68a; color: #78350f; }
+        .loan-status-pill.is-completed    { background: #d1fae5; color: #065f46; }
+        .loan-status-pill.is-cancelled    { background: #f3f4f6; color: #374151; }
+
+        .loan-stats {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            background: #f8fafc; border-radius: 10px; padding: 12px;
+        }
+        .loan-stat .k { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+        .loan-stat .v { font-size: 14px; color: #111827; font-weight: 600; margin-top: 2px; }
+
+        .loan-progress-row {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 12px; color: #374151; margin-bottom: 6px;
+        }
+        .loan-progress-row .pct { color: #6b7280; }
+        .loan-progress-bar {
+            height: 8px; background: #e5e7eb; border-radius: 999px; overflow: hidden;
+        }
+        .loan-progress-fill {
+            height: 100%; background: linear-gradient(90deg, #10b981, #059669);
+            border-radius: 999px; transition: width .4s ease;
+        }
+        .loan-due-line {
+            font-size: 12px; color: #6b7280; margin-top: 4px;
+        }
+        .loan-due-line strong { color: #111827; font-weight: 600; }
+
+        .loan-actions {
+            display: flex; gap: 8px; margin-top: 4px;
+        }
+        .loan-btn {
+            flex: 1; padding: 9px 12px; border-radius: 8px;
+            font-size: 13px; font-weight: 600; cursor: pointer;
+            border: none; display: inline-flex; align-items: center;
+            justify-content: center; gap: 6px;
+        }
+        .loan-btn.primary { background: #0d3d44; color: #fff; }
+        .loan-btn.primary:hover:not(:disabled) { background: #0a2e33; }
+        .loan-btn.primary:disabled { background: #9ca3af; cursor: not-allowed; }
+        .loan-btn.ghost {
+            background: #fff; color: #0d3d44; border: 1px solid #e5e7eb;
+        }
+        .loan-btn.ghost:hover { background: #f3f4f6; }
+
+        .loan-empty {
+            background: #fff; border-radius: 14px; padding: 36px 24px;
+            text-align: center; color: #6b7280; box-shadow: 0 4px 12px rgba(0,0,0,.05);
+        }
+        .loan-empty i { font-size: 32px; color: #9ca3af; }
+        .loan-empty .cta {
+            display: inline-flex; align-items: center; gap: 8px;
+            margin-top: 12px; padding: 10px 16px; border-radius: 8px;
+            background: #0d3d44; color: #fff; text-decoration: none;
+            font-size: 13px; font-weight: 600;
+        }
+
+        /* ─── Loan-detail / repayment slide-over enhancements ───── */
+        .lp-step-banner {
+            background: linear-gradient(135deg, #0d3d44 0%, #0a2e33 100%);
+            color: #fff; border-radius: 12px; padding: 16px 18px;
+            margin-bottom: 18px;
+        }
+        .lp-step-banner .label { font-size: 12px; opacity: .75; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+        .lp-step-banner .amount { font-size: 26px; font-weight: 700; margin-top: 2px; }
+        .lp-step-banner .meta { font-size: 12px; opacity: .8; margin-top: 4px; }
+
+        .lp-stepper { display: flex; gap: 4px; margin-bottom: 14px; }
+        .lp-stepper-dot {
+            flex: 1; height: 4px; border-radius: 2px; background: #e5e7eb;
+        }
+        .lp-stepper-dot.is-active { background: #0d3d44; }
+        .lp-stepper-dot.is-done { background: #10b981; }
+
+        .lp-pay-method {
+            border: 1px solid #e5e7eb; border-radius: 10px;
+            padding: 12px; cursor: pointer; transition: all .15s ease;
+            display: flex; gap: 12px; align-items: flex-start; margin-bottom: 8px;
+        }
+        .lp-pay-method:hover { border-color: #0d3d44; }
+        .lp-pay-method input { margin-top: 4px; accent-color: #0d3d44; }
+        .lp-pay-method .icon {
+            width: 36px; height: 36px; border-radius: 8px;
+            background: #f1f5f9; color: #0d3d44;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; flex-shrink: 0;
+        }
+        .lp-pay-method .label { font-size: 14px; font-weight: 600; color: #111827; }
+        .lp-pay-method .desc { font-size: 12px; color: #6b7280; margin-top: 2px; }
+        .lp-pay-method:has(input:checked) {
+            border-color: #0d3d44; background: rgba(13,61,68,.04);
+        }
+
+        .lp-field-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+        .lp-field-row label { font-size: 12px; font-weight: 600; color: #374151; }
+        .lp-field-row input {
+            padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 8px;
+            font-size: 14px; font-family: inherit; color: #111827;
+        }
+        .lp-field-row input:focus {
+            outline: none; border-color: #0d3d44;
+            box-shadow: 0 0 0 3px rgba(13,61,68,.12);
+        }
+        .lp-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .lp-review-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+        .lp-review-item {
+            display: flex; justify-content: space-between; gap: 12px;
+            padding: 10px 12px; background: #f8fafc; border-radius: 8px;
+            font-size: 13px;
+        }
+        .lp-review-item .k { color: #6b7280; }
+        .lp-review-item .v { color: #111827; font-weight: 500; text-align: right; }
+        .lp-review-total {
+            display: flex; justify-content: space-between;
+            padding: 14px 16px; background: #0d3d44; color: #fff;
+            border-radius: 10px; margin-top: 10px;
+            font-size: 16px; font-weight: 600;
+        }
+
+        .lp-error {
+            background: #fee2e2; color: #991b1b;
+            padding: 10px 12px; border-radius: 8px;
+            font-size: 13px; margin-bottom: 12px; display: none;
+        }
+        .lp-error.is-shown { display: block; }
+
+        .lp-footer {
+            position: sticky; bottom: 0; background: #fff;
+            padding: 14px 0 0; margin-top: 18px;
+            border-top: 1px solid #e5e7eb;
+            display: flex; gap: 10px; justify-content: flex-end;
+        }
+        .lp-btn {
+            border: none; padding: 10px 18px; border-radius: 8px;
+            font-size: 14px; font-weight: 600; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .lp-btn.primary { background: #0d3d44; color: #fff; }
+        .lp-btn.primary:hover:not(:disabled) { background: #0a2e33; }
+        .lp-btn.primary:disabled { opacity: .55; cursor: not-allowed; }
+        .lp-btn.ghost { background: #f3f4f6; color: #374151; }
+        .lp-btn.ghost:hover { background: #e5e7eb; }
+
+        .lp-processing {
+            display: none; flex-direction: column; align-items: center;
+            gap: 12px; padding: 28px 12px; text-align: center;
+        }
+        .lp-processing.is-shown { display: flex; }
+        .lp-processing .ring {
+            width: 52px; height: 52px; border-radius: 50%;
+            border: 4px solid #e5e7eb; border-top-color: #0d3d44;
+            animation: lpSpin .9s linear infinite;
+        }
+        @keyframes lpSpin { to { transform: rotate(360deg); } }
+        .lp-processing .msg { font-size: 14px; color: #374151; font-weight: 500; }
+        .lp-processing .sub { font-size: 12px; color: #6b7280; }
+
+        .lp-detail-section { margin-bottom: 22px; }
+        .lp-detail-section h4 {
+            margin: 0 0 10px; font-size: 13px; font-weight: 600;
+            color: #6b7280; text-transform: uppercase; letter-spacing: .04em;
+        }
+        .lp-detail-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            background: #f8fafc; border-radius: 10px; padding: 12px;
+        }
+        .lp-stage-row {
+            display: flex; gap: 10px; align-items: center;
+            padding: 8px 0; border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+        }
+        .lp-stage-row:last-child { border-bottom: none; }
+        .lp-stage-dot {
+            width: 24px; height: 24px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-size: 11px;
+        }
+        .lp-stage-dot.completed   { background: #d1fae5; color: #065f46; }
+        .lp-stage-dot.in_progress { background: #fef3c7; color: #92400e; }
+        .lp-stage-dot.not_started { background: #f3f4f6; color: #9ca3af; }
+
+        .lp-schedule-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 12px; border-radius: 8px; background: #f8fafc;
+            margin-bottom: 6px; font-size: 13px;
+        }
+        .lp-schedule-row.is-paid { background: #ecfdf5; }
+        .lp-schedule-row .left {
+            display: flex; gap: 10px; align-items: center;
+        }
+        .lp-schedule-row .num {
+            width: 24px; height: 24px; border-radius: 50%;
+            background: #e5e7eb; color: #6b7280;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 600; flex-shrink: 0;
+        }
+        .lp-schedule-row.is-paid .num { background: #10b981; color: #fff; }
+        .lp-schedule-row .right { color: #111827; font-weight: 600; }
+
+        /* ─── Completion overlay (reused from marketplace) ──────── */
+        .completion-overlay {
+            position: fixed; inset: 0;
+            background: linear-gradient(135deg, #0d3d44 0%, #0a2e33 100%);
+            display: none; align-items: center; justify-content: center;
+            z-index: 2147483647; overflow: hidden;
+            animation: lpFadeIn .35s ease both;
+        }
+        .completion-overlay.is-open { display: flex; }
+        @keyframes lpFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .completion-card { text-align: center; color: #fff; padding: 40px 48px; max-width: 440px; position: relative; z-index: 1; }
+        .success-check {
+            width: 112px; height: 112px; border-radius: 50%;
+            background: rgba(16, 185, 129, 0.18);
+            border: 2px solid rgba(16, 185, 129, 0.35);
+            display: inline-flex; align-items: center; justify-content: center;
+            margin: 0 auto 24px; position: relative;
+            animation: lpRingScale .55s cubic-bezier(.2, .7, .2, 1.3) both;
+        }
+        .success-check::before {
+            content: ''; position: absolute; inset: -18px; border-radius: 50%;
+            border: 2px solid rgba(16, 185, 129, 0.18);
+            animation: lpRingPulse 1.4s ease-out .2s both, lpRingFade 1.4s ease-out 1.4s forwards;
+        }
+        .success-check svg {
+            width: 52px; height: 52px;
+            stroke: #10b981; stroke-width: 4;
+            stroke-linecap: round; stroke-linejoin: round; fill: none;
+        }
+        .success-check svg path {
+            stroke-dasharray: 48; stroke-dashoffset: 48;
+            animation: lpCheck .45s cubic-bezier(.65,.05,.36,1) .35s forwards;
+        }
+        @keyframes lpRingScale {
+            0% { transform: scale(.4); opacity: 0; }
+            60% { transform: scale(1.06); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes lpRingPulse {
+            0% { transform: scale(.9); opacity: .7; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+        @keyframes lpRingFade { to { opacity: 0; } }
+        @keyframes lpCheck { to { stroke-dashoffset: 0; } }
+
+        .completion-title { font-size: 26px; font-weight: 600; margin: 0 0 10px; opacity: 0; animation: lpBubble .45s ease .55s forwards; }
+        .completion-body { font-size: 15px; color: rgba(255,255,255,.8); margin: 0 0 22px; line-height: 1.55; opacity: 0; animation: lpBubble .45s ease .7s forwards; }
+        .completion-ref {
+            display: inline-block; padding: 6px 14px; border-radius: 999px;
+            background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+            font-size: 13px; font-weight: 500; color: rgba(255,255,255,.85);
+            opacity: 0; animation: lpBubble .45s ease .85s forwards;
+        }
+        @keyframes lpBubble { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+        .confetti span {
+            position: absolute; top: 48%; left: 50%;
+            width: 10px; height: 16px; border-radius: 2px; opacity: 0;
+            animation: lpConfetti 1.3s ease-out .4s forwards;
+        }
+        @keyframes lpConfetti {
+            0%   { opacity: 1; transform: translate(-50%, -50%) rotate(0deg); }
+            100% { opacity: 0; transform: translate(var(--dx, 0), var(--dy, -200px)) rotate(var(--r, 540deg)); }
+        }
+
 </style>
     <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
 </head>
@@ -895,12 +1228,6 @@
                     <span>Energy Projects</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="evillage-control.html" class="nav-link">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>NEMiC Controls</span>
-                </a>
-            </li>
             <li class="nav-item"
                 style="margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px;">
                 <a href="evillage-contact.html" class="nav-link">
@@ -933,28 +1260,14 @@
             <p>Manage your energy bills, loan repayments, and mini-grid credit balance.</p>
         </div>
 
-        <!-- Featured Action: Loan Status -->
-        <div class="action-highlight">
-            <h2>Solar Loan Repayment</h2>
-            <p>Track your monthly payments and remaining balance on your Solar Home System financing.</p>
-
-            <div class="verification-search">
-                <div class="search-input-wrapper">
-                    <i class="fas fa-search"></i>
-                    <input type="text" class="search-input" id="surveyInput"
-                        placeholder="Enter loan reference number...">
-                </div>
-                <button class="verify-btn" onclick="runVerification()">Check Status</button>
-            </div>
-
-            <div class="verification-result" id="verifyResult">
-                <div class="result-header">
-                    <i class="fas fa-check-circle"></i> Loan Status: In Good Standing
-                </div>
-                <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 13px;">Loan SL-2025-0892 • Balance:
-                    ₦285,000 • Next Payment: ₦18,500 due Feb 28</p>
-            </div>
+        <!-- Active Loans -->
+        <div class="section-header">
+            <div class="section-title">Active Loans</div>
+            <a href="evillage-loan-apply.html" class="new-loan-btn">
+                <i class="fas fa-plus"></i> Apply for new loan
+            </a>
         </div>
+        <div id="loansContainer" class="loans-grid"></div>
 
         <!-- Secondary Actions -->
         <div class="secondary-actions">
@@ -973,76 +1286,13 @@
                 </div>
             </div>
         </div>
-        </div>
 
-        <!-- Payment History -->
+        <!-- Loan Payment History -->
         <div class="property-list-section">
             <div class="section-header">
-                <div class="section-title">Payment History</div>
-                <button class="icon-btn" title="Filter"><i class="fas fa-filter"></i></button>
+                <div class="section-title">Loan Payment History</div>
             </div>
-
-            <div class="property-list">
-                <!-- Item 1 -->
-                <div class="property-item" onclick="openReceiptPanel('receipt1')">
-                    <div class="prop-image"
-                        style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-bolt" style="font-size: 24px; color: white;"></i>
-                    </div>
-                    <div class="prop-details">
-                        <div class="prop-address">Mini-Grid Credit Top-up</div>
-                        <div class="prop-id">Feb 8, 2026 • Ref: MG-2026-0208</div>
-                    </div>
-                    <div class="prop-status">₦8,500</div>
-                    <button class="prop-action-btn"
-                        onclick="event.stopPropagation(); openReceiptPanel('receipt1')">Receipt</button>
-                </div>
-
-                <!-- Item 2 -->
-                <div class="property-item" onclick="openReceiptPanel('receipt2')">
-                    <div class="prop-image"
-                        style="background: linear-gradient(135deg, #0d3d44 0%, #0a2e33 100%); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-solar-panel" style="font-size: 24px; color: white;"></i>
-                    </div>
-                    <div class="prop-details">
-                        <div class="prop-address">Solar Loan Installment</div>
-                        <div class="prop-id">Jan 28, 2026 • Ref: SL-2026-0128</div>
-                    </div>
-                    <div class="prop-status">₦18,500</div>
-                    <button class="prop-action-btn"
-                        onclick="event.stopPropagation(); openReceiptPanel('receipt2')">Receipt</button>
-                </div>
-
-                <!-- Item 3 -->
-                <div class="property-item" onclick="openPanel('payBillPanel')">
-                    <div class="prop-image"
-                        style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-tools" style="font-size: 24px; color: white;"></i>
-                    </div>
-                    <div class="prop-details">
-                        <div class="prop-address">Maintenance Fee</div>
-                        <div class="prop-id">Jan 15, 2026 • Ref: MF-2026-0115</div>
-                    </div>
-                    <div class="prop-status" style="background: #fef3c7; color: #92400e;">Pending</div>
-                    <button class="prop-action-btn" onclick="event.stopPropagation(); openPanel('payBillPanel')"
-                        style="color: #d97706; border-color: #fcd34d;">Pay Now</button>
-                </div>
-
-                <!-- Item 4 -->
-                <div class="property-item" onclick="openReceiptPanel('receipt3')">
-                    <div class="prop-image"
-                        style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-hand-holding-usd" style="font-size: 24px; color: white;"></i>
-                    </div>
-                    <div class="prop-details">
-                        <div class="prop-address">Subsidy Disbursement</div>
-                        <div class="prop-id">Jan 5, 2026 • Ref: SUB-2026-0105</div>
-                    </div>
-                    <div class="prop-status" style="background: #dbeafe; color: #1e40af;">Credit</div>
-                    <button class="prop-action-btn"
-                        onclick="event.stopPropagation(); openReceiptPanel('receipt3')">Receipt</button>
-                </div>
-            </div>
+            <div id="loanPaymentHistory" class="property-list"></div>
         </div>
     </main>
 
@@ -1357,6 +1607,142 @@
         </div>
     </div>
 
+    <!-- PANEL: Loan Detail -->
+    <div class="slide-over-panel" id="loanDetailPanel">
+        <div class="panel-header">
+            <h3 class="panel-title" id="ldTitle">Loan details</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content" id="loanDetailBody"></div>
+    </div>
+
+    <!-- PANEL: Make Loan Payment -->
+    <div class="slide-over-panel" id="loanPaymentPanel">
+        <div class="panel-header">
+            <h3 class="panel-title" id="lpTitle">Make a payment</h3>
+            <button class="close-panel-btn" onclick="closeAllPanels()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-content">
+            <div class="lp-stepper" aria-hidden="true">
+                <div class="lp-stepper-dot" data-step="1"></div>
+                <div class="lp-stepper-dot" data-step="2"></div>
+                <div class="lp-stepper-dot" data-step="3"></div>
+            </div>
+
+            <div class="lp-error" id="lpError"></div>
+
+            <!-- Step 1: Confirm installment -->
+            <div class="lp-pane" data-pane="1">
+                <div class="lp-step-banner">
+                    <div class="label">Next installment</div>
+                    <div class="amount" id="lpAmount">—</div>
+                    <div class="meta" id="lpMeta">—</div>
+                </div>
+                <div class="lp-detail-grid">
+                    <div>
+                        <div style="font-size:11px; color:#6b7280; text-transform:uppercase; letter-spacing:.04em; font-weight:600;">Loan</div>
+                        <div id="lpLoan" style="font-size:13px; color:#111827; font-weight:600; margin-top:2px;">—</div>
+                    </div>
+                    <div>
+                        <div style="font-size:11px; color:#6b7280; text-transform:uppercase; letter-spacing:.04em; font-weight:600;">Bank</div>
+                        <div id="lpBank" style="font-size:13px; color:#111827; font-weight:600; margin-top:2px;">—</div>
+                    </div>
+                    <div>
+                        <div style="font-size:11px; color:#6b7280; text-transform:uppercase; letter-spacing:.04em; font-weight:600;">Paid so far</div>
+                        <div id="lpPaidSoFar" style="font-size:13px; color:#111827; font-weight:600; margin-top:2px;">—</div>
+                    </div>
+                    <div>
+                        <div style="font-size:11px; color:#6b7280; text-transform:uppercase; letter-spacing:.04em; font-weight:600;">Balance after</div>
+                        <div id="lpBalanceAfter" style="font-size:13px; color:#111827; font-weight:600; margin-top:2px;">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Payment method -->
+            <div class="lp-pane" data-pane="2" style="display:none;">
+                <h4 style="margin:0 0 12px; font-size:14px; font-weight:600;">Choose how to pay</h4>
+                <label class="lp-pay-method">
+                    <input type="radio" name="lpPayMethod" value="card">
+                    <div class="icon"><i class="fas fa-credit-card"></i></div>
+                    <div>
+                        <div class="label">Debit / credit card</div>
+                        <div class="desc">Pay instantly with Verve, Mastercard or Visa.</div>
+                    </div>
+                </label>
+                <label class="lp-pay-method">
+                    <input type="radio" name="lpPayMethod" value="bank_transfer">
+                    <div class="icon"><i class="fas fa-university"></i></div>
+                    <div>
+                        <div class="label">Bank transfer</div>
+                        <div class="desc">Get a temporary account number and complete a transfer.</div>
+                    </div>
+                </label>
+                <label class="lp-pay-method">
+                    <input type="radio" name="lpPayMethod" value="ussd">
+                    <div class="icon"><i class="fas fa-mobile-alt"></i></div>
+                    <div>
+                        <div class="label">USSD</div>
+                        <div class="desc">Dial a short code from any mobile to authorise payment.</div>
+                    </div>
+                </label>
+
+                <div id="lpCardFields" style="display:none; margin-top:8px;">
+                    <div class="lp-field-row">
+                        <label for="lpCardNumber">Card number</label>
+                        <input type="text" id="lpCardNumber" inputmode="numeric"
+                               placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+                    <div class="lp-two-col">
+                        <div class="lp-field-row">
+                            <label for="lpCardExpiry">Expiry</label>
+                            <input type="text" id="lpCardExpiry" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="lp-field-row">
+                            <label for="lpCardCvv">CVV</label>
+                            <input type="text" id="lpCardCvv" inputmode="numeric"
+                                   placeholder="123" maxlength="4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Review -->
+            <div class="lp-pane" data-pane="3" style="display:none;">
+                <h4 style="margin:0 0 12px; font-size:14px; font-weight:600;">Review and confirm</h4>
+                <div class="lp-review-list" id="lpReviewList"></div>
+                <div class="lp-review-total">
+                    <span>Total</span>
+                    <span id="lpReviewTotal">—</span>
+                </div>
+                <div class="lp-processing" id="lpProcessing">
+                    <div class="ring"></div>
+                    <div class="msg">Processing your payment…</div>
+                    <div class="sub">Do not close this window.</div>
+                </div>
+            </div>
+
+            <div class="lp-footer" id="lpFooter">
+                <button class="lp-btn ghost" id="lpBack" style="display:none;">Back</button>
+                <button class="lp-btn primary" id="lpNext">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completion overlay -->
+    <div class="completion-overlay" id="lpCompletionOverlay" role="alert" aria-live="assertive" aria-hidden="true">
+        <div class="confetti" id="lpConfetti"></div>
+        <div class="completion-card">
+            <div class="success-check">
+                <svg viewBox="0 0 52 52" aria-hidden="true">
+                    <path d="M14 27 L23 36 L39 18"></path>
+                </svg>
+            </div>
+            <h2 class="completion-title">Payment successful</h2>
+            <p class="completion-body">Your loan progress has been updated. A receipt is available in Loan Payment History.</p>
+            <div class="completion-ref" id="lpCompletionRef"></div>
+        </div>
+    </div>
+
     <script>
         function toggleSidebar() {
             var overlay = document.getElementById("mobileOverlay");
@@ -1376,23 +1762,6 @@
                 sidebar.classList.remove('active');
             }
         });
-
-        // Verification Widget Logic
-        function runVerification() {
-            const input = document.getElementById('surveyInput');
-            const result = document.getElementById('verifyResult');
-            const btn = document.querySelector('.verify-btn');
-
-            if (!input.value) return;
-
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            result.style.display = 'none';
-
-            setTimeout(() => {
-                btn.innerHTML = 'Check Status';
-                result.style.display = 'block';
-            }, 1000);
-        }
 
         // Panel Logic
         function openPanel(panelId) {
@@ -1514,6 +1883,500 @@
                 }, 2000);
             }, 1000);
         }
+
+        /* ─────────────────────────────────────────────────────────
+         * Active Loans + Repayments
+         * ──────────────────────────────────────────────────────── */
+        (function () {
+            if (!window.EvillageLoans) return;
+            var Loans = window.EvillageLoans;
+
+            var els = {
+                container: document.getElementById('loansContainer'),
+                history: document.getElementById('loanPaymentHistory'),
+
+                detailBody: document.getElementById('loanDetailBody'),
+                detailTitle: document.getElementById('ldTitle'),
+
+                lpTitle: document.getElementById('lpTitle'),
+                lpAmount: document.getElementById('lpAmount'),
+                lpMeta: document.getElementById('lpMeta'),
+                lpLoan: document.getElementById('lpLoan'),
+                lpBank: document.getElementById('lpBank'),
+                lpPaidSoFar: document.getElementById('lpPaidSoFar'),
+                lpBalanceAfter: document.getElementById('lpBalanceAfter'),
+                lpError: document.getElementById('lpError'),
+                lpFooter: document.getElementById('lpFooter'),
+                lpBack: document.getElementById('lpBack'),
+                lpNext: document.getElementById('lpNext'),
+                lpProcessing: document.getElementById('lpProcessing'),
+                lpReviewList: document.getElementById('lpReviewList'),
+                lpReviewTotal: document.getElementById('lpReviewTotal'),
+                lpCardFields: document.getElementById('lpCardFields'),
+                lpCardNumber: document.getElementById('lpCardNumber'),
+                lpCardExpiry: document.getElementById('lpCardExpiry'),
+                lpCardCvv: document.getElementById('lpCardCvv'),
+
+                overlay: document.getElementById('lpCompletionOverlay'),
+                confetti: document.getElementById('lpConfetti'),
+                completionRef: document.getElementById('lpCompletionRef')
+            };
+
+            var pay = { loanId: null, step: 1, lastRef: null };
+
+            function esc(s) {
+                if (s == null) return '';
+                return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            }
+            function fmtNgn(n) { return '₦' + (Number(n) || 0).toLocaleString(); }
+            function fmtDate(iso) {
+                if (!iso) return '—';
+                var d = new Date(iso);
+                if (isNaN(d.getTime())) return '—';
+                return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+            }
+            function methodLabel(m) {
+                return m === 'card' ? 'Debit / credit card'
+                     : m === 'bank_transfer' ? 'Bank transfer'
+                     : m === 'ussd' ? 'USSD' : (m || '—');
+            }
+            function statusLabel(s) {
+                switch (s) {
+                    case 'submitted':    return 'Submitted';
+                    case 'under_review': return 'Under review';
+                    case 'approved':     return 'Approved';
+                    case 'rejected':     return 'Rejected';
+                    case 'disbursed':    return 'Disbursed';
+                    case 'installing':   return 'Installing';
+                    case 'completed':    return 'Installed';
+                    case 'cancelled':    return 'Cancelled';
+                    default:             return s || '—';
+                }
+            }
+
+            function getMyLoans() {
+                var u = window.EVILLAGE_USER;
+                var myId = u && u.id;
+                var all = (function () {
+                    try {
+                        var raw = localStorage.getItem('evillage_loans_state_v1');
+                        if (!raw) return [];
+                        var parsed = JSON.parse(raw);
+                        return (parsed && parsed.applications) || [];
+                    } catch (e) { return []; }
+                })();
+                var mine = myId ? all.filter(function (a) {
+                    return a.citizen && a.citizen.user_id === myId;
+                }) : [];
+                // Demo fallback: when the signed-in citizen has no loans yet,
+                // surface a couple of seed apps so the page isn't empty.
+                if (!mine.length) {
+                    mine = all.slice(0, 3);
+                }
+                return mine.filter(function (a) { return a.status !== 'cancelled'; });
+            }
+
+            function renderLoans(highlightId) {
+                var loans = getMyLoans();
+                if (!loans.length) {
+                    els.container.innerHTML =
+                        '<div class="loan-empty">' +
+                            '<i class="fas fa-file-invoice-dollar"></i>' +
+                            '<div style="margin-top:10px; font-size:14px;">You don\'t have any active loans yet.</div>' +
+                            '<a class="cta" href="evillage-loan-apply.html">' +
+                                '<i class="fas fa-plus"></i> Apply for a loan</a>' +
+                        '</div>';
+                    return;
+                }
+                els.container.innerHTML = loans.map(function (a) {
+                    var rs = Loans.getRepaymentStatus(a);
+                    var pct = rs.tenure_months ? Math.round((rs.paid_count / rs.tenure_months) * 100) : 0;
+                    var product = (a.product && a.product.name) || 'Solar Loan';
+                    var vendor = (a.vendor && a.vendor.business_name) || '';
+                    var bank = (a.institution && a.institution.name) || '';
+                    var statusKey = a.status || 'submitted';
+                    var payable = rs.is_payable && !rs.is_complete;
+                    var payTooltip = !rs.is_payable
+                        ? 'Repayments start after disbursement'
+                        : (rs.is_complete ? 'Loan fully repaid' : '');
+                    var dueLine = rs.is_complete
+                        ? '<div class="loan-due-line"><i class="fas fa-check-circle" style="color:#059669;"></i> <strong>Repaid in full</strong></div>'
+                        : '<div class="loan-due-line">Next: <strong>' + fmtNgn(rs.next_due_amount) + '</strong> due ' + esc(fmtDate(rs.next_due_date)) + '</div>';
+                    var highlight = highlightId && a.id === highlightId ? ' is-highlighted' : '';
+
+                    return '<div class="loan-card' + highlight + '" data-loan-id="' + esc(a.id) + '">' +
+                        '<div class="loan-card-head">' +
+                            '<div>' +
+                                '<div class="loan-card-title">' + esc(product) + '</div>' +
+                                '<div class="loan-card-vendor">' + esc(vendor) + (bank ? ' • ' + esc(bank) : '') + '</div>' +
+                            '</div>' +
+                            '<span class="loan-status-pill is-' + esc(statusKey) + '">' + esc(statusLabel(statusKey)) + '</span>' +
+                        '</div>' +
+                        '<div class="loan-stats">' +
+                            '<div class="loan-stat"><div class="k">Total amount</div><div class="v">' + fmtNgn(a.financing && a.financing.amount_ngn) + '</div></div>' +
+                            '<div class="loan-stat"><div class="k">Monthly</div><div class="v">' + fmtNgn(rs.monthly_amount) + '</div></div>' +
+                            '<div class="loan-stat"><div class="k">Paid</div><div class="v">' + rs.paid_count + ' / ' + rs.tenure_months + '</div></div>' +
+                            '<div class="loan-stat"><div class="k">Balance</div><div class="v">' + fmtNgn(rs.balance_remaining) + '</div></div>' +
+                        '</div>' +
+                        '<div>' +
+                            '<div class="loan-progress-row">' +
+                                '<span>Repayment progress</span>' +
+                                '<span class="pct">' + pct + '%</span>' +
+                            '</div>' +
+                            '<div class="loan-progress-bar"><div class="loan-progress-fill" style="width:' + pct + '%;"></div></div>' +
+                            dueLine +
+                        '</div>' +
+                        '<div class="loan-actions">' +
+                            '<button class="loan-btn ghost" data-action="detail" data-id="' + esc(a.id) + '">' +
+                                '<i class="fas fa-eye"></i> Details</button>' +
+                            '<button class="loan-btn primary" data-action="pay" data-id="' + esc(a.id) + '"' +
+                                (payable ? '' : ' disabled') +
+                                (payTooltip ? ' title="' + esc(payTooltip) + '"' : '') + '>' +
+                                '<i class="fas fa-wallet"></i> ' + (rs.is_complete ? 'Fully repaid' : 'Make payment') +
+                            '</button>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+            }
+
+            function renderHistory() {
+                var loans = getMyLoans();
+                var rows = [];
+                loans.forEach(function (a) {
+                    (a.repayments || []).forEach(function (r) {
+                        rows.push({ loan: a, rep: r });
+                    });
+                });
+                rows.sort(function (a, b) {
+                    return new Date(b.rep.paid_at) - new Date(a.rep.paid_at);
+                });
+                if (!rows.length) {
+                    els.history.innerHTML =
+                        '<div style="padding:24px; text-align:center; color:#6b7280; font-size:14px;">' +
+                            'No loan payments yet. Make your first installment to see receipts here.' +
+                        '</div>';
+                    return;
+                }
+                els.history.innerHTML = rows.slice(0, 12).map(function (row) {
+                    var product = (row.loan.product && row.loan.product.name) || 'Solar Loan';
+                    return '<div class="property-item">' +
+                        '<div class="prop-image" style="background: linear-gradient(135deg, #0d3d44 0%, #0a2e33 100%); display:flex; align-items:center; justify-content:center;">' +
+                            '<i class="fas fa-solar-panel" style="font-size:24px; color:white;"></i>' +
+                        '</div>' +
+                        '<div class="prop-details">' +
+                            '<div class="prop-address">' + esc(product) + ' — Installment ' + row.rep.installment_number + '</div>' +
+                            '<div class="prop-id">' + esc(fmtDate(row.rep.paid_at)) + ' • ' + esc(methodLabel(row.rep.method)) + ' • Ref: ' + esc(row.rep.reference) + '</div>' +
+                        '</div>' +
+                        '<div class="prop-status">' + fmtNgn(row.rep.amount_ngn) + '</div>' +
+                    '</div>';
+                }).join('');
+            }
+
+            // ─── Loan detail panel ─────────────────────────────────
+            function openDetail(loanId) {
+                var app = Loans.getApplication(loanId);
+                if (!app) return;
+                var rs = Loans.getRepaymentStatus(app);
+                var product = (app.product && app.product.name) || 'Solar Loan';
+                els.detailTitle.textContent = product;
+
+                var stagesHtml = (app.installation && app.installation.stages || []).map(function (s) {
+                    var icon = s.status === 'completed' ? '<i class="fas fa-check"></i>'
+                             : s.status === 'in_progress' ? '<i class="fas fa-circle-notch fa-spin"></i>'
+                             : (s.order || '');
+                    return '<div class="lp-stage-row">' +
+                        '<div class="lp-stage-dot ' + s.status + '">' + icon + '</div>' +
+                        '<div style="flex:1;">' +
+                            '<div style="font-weight:600; color:#111827; font-size:13px;">' + esc(s.label) + '</div>' +
+                            '<div style="font-size:12px; color:#6b7280;">' +
+                                (s.completed_at ? 'Completed ' + esc(fmtDate(s.completed_at))
+                                                 : (s.status === 'in_progress' ? 'In progress' : 'Not started')) +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+
+                var paidByNumber = {};
+                (app.repayments || []).forEach(function (r) { paidByNumber[r.installment_number] = r; });
+                var scheduleHtml = '';
+                for (var n = 1; n <= rs.tenure_months; n++) {
+                    var paid = paidByNumber[n];
+                    var anchor = app.disbursed_at || app.created_at;
+                    var dueDate = (function (a, k) {
+                        var d = a ? new Date(a) : new Date();
+                        d.setMonth(d.getMonth() + k);
+                        return d.toISOString();
+                    })(anchor, n);
+                    scheduleHtml += '<div class="lp-schedule-row' + (paid ? ' is-paid' : '') + '">' +
+                        '<div class="left">' +
+                            '<div class="num">' + n + '</div>' +
+                            '<div>' +
+                                '<div style="font-size:13px; color:#111827; font-weight:500;">Installment ' + n + '</div>' +
+                                '<div style="font-size:11px; color:#6b7280;">' +
+                                    (paid ? 'Paid ' + esc(fmtDate(paid.paid_at)) + ' • ' + esc(paid.reference)
+                                          : 'Due ' + esc(fmtDate(dueDate))) +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="right">' + fmtNgn(paid ? paid.amount_ngn : rs.monthly_amount) + '</div>' +
+                    '</div>';
+                }
+
+                var timelineHtml = (app.timeline || []).slice().reverse().slice(0, 5).map(function (t) {
+                    return '<div style="display:flex; gap:10px; padding:8px 0; border-bottom:1px solid #f1f5f9; font-size:12px;">' +
+                        '<div style="color:#6b7280; min-width:90px;">' + esc(fmtDate(t.at)) + '</div>' +
+                        '<div style="color:#111827;">' + esc(t.event.replace(/_/g, ' ')) +
+                            (t.note ? ' — <span style="color:#6b7280;">' + esc(t.note) + '</span>' : '') +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+
+                els.detailBody.innerHTML =
+                    '<div class="lp-detail-section">' +
+                        '<h4>Financing</h4>' +
+                        '<div class="lp-detail-grid">' +
+                            '<div><div style="font-size:11px; color:#6b7280;">Amount</div><div style="font-size:14px; font-weight:600;">' + fmtNgn(app.financing && app.financing.amount_ngn) + '</div></div>' +
+                            '<div><div style="font-size:11px; color:#6b7280;">Tenure</div><div style="font-size:14px; font-weight:600;">' + rs.tenure_months + ' months</div></div>' +
+                            '<div><div style="font-size:11px; color:#6b7280;">Monthly</div><div style="font-size:14px; font-weight:600;">' + fmtNgn(rs.monthly_amount) + '</div></div>' +
+                            '<div><div style="font-size:11px; color:#6b7280;">APR</div><div style="font-size:14px; font-weight:600;">' + ((app.institution && app.institution.interest_rate_pct) || 0) + '%</div></div>' +
+                            '<div><div style="font-size:11px; color:#6b7280;">Paid</div><div style="font-size:14px; font-weight:600;">' + fmtNgn(rs.paid_amount) + '</div></div>' +
+                            '<div><div style="font-size:11px; color:#6b7280;">Balance</div><div style="font-size:14px; font-weight:600;">' + fmtNgn(rs.balance_remaining) + '</div></div>' +
+                        '</div>' +
+                    '</div>' +
+                    (stagesHtml ? '<div class="lp-detail-section"><h4>Installation progress</h4>' + stagesHtml + '</div>' : '') +
+                    '<div class="lp-detail-section"><h4>Repayment schedule</h4>' + scheduleHtml + '</div>' +
+                    (timelineHtml ? '<div class="lp-detail-section"><h4>Recent activity</h4>' + timelineHtml + '</div>' : '');
+
+                openPanel('loanDetailPanel');
+            }
+
+            // ─── Make payment flow ─────────────────────────────────
+            function openPay(loanId) {
+                var app = Loans.getApplication(loanId);
+                if (!app) return;
+                var rs = Loans.getRepaymentStatus(app);
+                if (!rs.is_payable || rs.is_complete) return;
+
+                pay.loanId = loanId;
+                pay.step = 1;
+                pay.lastRef = null;
+
+                els.lpAmount.textContent = fmtNgn(rs.next_due_amount);
+                els.lpMeta.textContent = 'Installment ' + rs.next_installment_number +
+                    ' of ' + rs.tenure_months + ' • due ' + fmtDate(rs.next_due_date);
+                els.lpLoan.textContent = (app.product && app.product.name) || 'Solar Loan';
+                els.lpBank.textContent = (app.institution && app.institution.name) || '—';
+                els.lpPaidSoFar.textContent = fmtNgn(rs.paid_amount);
+                els.lpBalanceAfter.textContent = fmtNgn(Math.max(0, rs.balance_remaining - rs.next_due_amount));
+
+                // reset radio + card fields
+                document.querySelectorAll('input[name="lpPayMethod"]').forEach(function (r) { r.checked = false; });
+                els.lpCardFields.style.display = 'none';
+                els.lpCardNumber.value = '';
+                els.lpCardExpiry.value = '';
+                els.lpCardCvv.value = '';
+
+                renderStep();
+                openPanel('loanPaymentPanel');
+            }
+
+            function renderStep() {
+                clearError();
+                document.querySelectorAll('#loanPaymentPanel .lp-pane').forEach(function (p) {
+                    p.style.display = (Number(p.dataset.pane) === pay.step) ? 'block' : 'none';
+                });
+                document.querySelectorAll('#loanPaymentPanel .lp-stepper-dot').forEach(function (d) {
+                    var n = Number(d.dataset.step);
+                    d.classList.remove('is-active', 'is-done');
+                    if (n < pay.step) d.classList.add('is-done');
+                    else if (n === pay.step) d.classList.add('is-active');
+                });
+                els.lpBack.style.display = pay.step > 1 ? 'inline-flex' : 'none';
+                if (pay.step === 1) {
+                    els.lpTitle.textContent = 'Confirm installment';
+                    els.lpNext.innerHTML = 'Continue <i class="fas fa-arrow-right"></i>';
+                } else if (pay.step === 2) {
+                    els.lpTitle.textContent = 'Payment method';
+                    els.lpNext.innerHTML = 'Continue <i class="fas fa-arrow-right"></i>';
+                } else {
+                    var app = Loans.getApplication(pay.loanId);
+                    var rs = Loans.getRepaymentStatus(app);
+                    els.lpTitle.textContent = 'Review & pay';
+                    els.lpNext.innerHTML = '<i class="fas fa-lock"></i> Pay ' + fmtNgn(rs.next_due_amount);
+                    renderReview(app, rs);
+                }
+                els.lpProcessing.classList.remove('is-shown');
+                els.lpReviewList.style.display = '';
+                var total = document.querySelector('#loanPaymentPanel .lp-review-total');
+                if (total) total.style.display = '';
+                els.lpBack.disabled = false;
+                els.lpNext.disabled = false;
+            }
+
+            function renderReview(app, rs) {
+                var method = selectedMethod();
+                var rows = [
+                    ['Loan',          (app.product && app.product.name) || 'Solar Loan'],
+                    ['Bank',          (app.institution && app.institution.name) || '—'],
+                    ['Installment',   rs.next_installment_number + ' of ' + rs.tenure_months],
+                    ['Due date',      fmtDate(rs.next_due_date)],
+                    ['Payment method', methodLabel(method)]
+                ];
+                els.lpReviewList.innerHTML = rows.map(function (r) {
+                    return '<div class="lp-review-item"><span class="k">' + esc(r[0]) +
+                           '</span><span class="v">' + esc(r[1]) + '</span></div>';
+                }).join('');
+                els.lpReviewTotal.textContent = fmtNgn(rs.next_due_amount);
+            }
+
+            function selectedMethod() {
+                var inp = document.querySelector('input[name="lpPayMethod"]:checked');
+                return inp ? inp.value : null;
+            }
+
+            function showError(msg) {
+                els.lpError.textContent = msg;
+                els.lpError.classList.add('is-shown');
+            }
+            function clearError() {
+                els.lpError.classList.remove('is-shown');
+                els.lpError.textContent = '';
+            }
+
+            function validateMethod() {
+                var m = selectedMethod();
+                if (!m) { showError('Please choose a payment method.'); return false; }
+                if (m === 'card') {
+                    var num = (els.lpCardNumber.value || '').replace(/\s+/g, '');
+                    if (!/^\d{13,19}$/.test(num)) { showError('Enter a valid card number.'); return false; }
+                    if (!/^\d{2}\/\d{2}$/.test(els.lpCardExpiry.value || '')) {
+                        showError('Enter expiry as MM/YY.'); return false;
+                    }
+                    if (!/^\d{3,4}$/.test(els.lpCardCvv.value || '')) {
+                        showError('Enter the 3 or 4 digit CVV.'); return false;
+                    }
+                }
+                return true;
+            }
+
+            function next() {
+                if (pay.step === 1) { pay.step = 2; renderStep(); return; }
+                if (pay.step === 2) {
+                    if (!validateMethod()) return;
+                    pay.step = 3; renderStep(); return;
+                }
+                submit();
+            }
+            function back() {
+                if (pay.step > 1) { pay.step--; renderStep(); }
+            }
+
+            function submit() {
+                if (!validateMethod()) return;
+                var method = selectedMethod();
+                var u = window.EVILLAGE_USER || {};
+
+                els.lpBack.disabled = true;
+                els.lpNext.disabled = true;
+                els.lpProcessing.classList.add('is-shown');
+                els.lpReviewList.style.display = 'none';
+                var total = document.querySelector('#loanPaymentPanel .lp-review-total');
+                if (total) total.style.display = 'none';
+
+                setTimeout(function () {
+                    try {
+                        var updated = Loans.recordLoanPayment(pay.loanId, { method: method }, u.id);
+                        var newest = (updated.repayments || []).slice(-1)[0];
+                        pay.lastRef = newest && newest.reference;
+                        playCompletion();
+                        setTimeout(function () {
+                            window.location.href = 'evillage-property.html?loan=' +
+                                encodeURIComponent(pay.loanId) + '&paid=1';
+                        }, 2200);
+                    } catch (err) {
+                        els.lpProcessing.classList.remove('is-shown');
+                        els.lpReviewList.style.display = '';
+                        if (total) total.style.display = '';
+                        els.lpBack.disabled = false;
+                        els.lpNext.disabled = false;
+                        showError(err && err.message ? err.message : 'Payment could not be completed.');
+                    }
+                }, 1800);
+            }
+
+            function playCompletion() {
+                if (!els.overlay) return;
+                els.completionRef.textContent = 'Ref: ' + (pay.lastRef || '—');
+
+                var colors = ['#10b981', '#34d399', '#f59e0b', '#ef4444', '#3b82f6', '#a78bfa'];
+                var html = '';
+                for (var i = 0; i < 28; i++) {
+                    var angle = (Math.PI * 2 * i) / 28 + (Math.random() * 0.3);
+                    var dist = 180 + Math.random() * 120;
+                    var dx = Math.cos(angle) * dist;
+                    var dy = Math.sin(angle) * dist - 30;
+                    var rotate = 360 + Math.random() * 360;
+                    var color = colors[i % colors.length];
+                    var delay = Math.random() * 0.15;
+                    html += '<span style="background:' + color +
+                            ';--dx:' + dx.toFixed(1) + 'px;--dy:' + dy.toFixed(1) + 'px;' +
+                            '--r:' + rotate.toFixed(0) + 'deg;' +
+                            'animation-delay:' + (0.4 + delay).toFixed(2) + 's;"></span>';
+                }
+                els.confetti.innerHTML = html;
+                els.overlay.classList.add('is-open');
+                els.overlay.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // ─── Listeners ─────────────────────────────────────────
+            els.container.addEventListener('click', function (e) {
+                var btn = e.target.closest('[data-action]');
+                if (!btn) return;
+                var id = btn.getAttribute('data-id');
+                if (btn.getAttribute('data-action') === 'detail') openDetail(id);
+                if (btn.getAttribute('data-action') === 'pay' && !btn.disabled) openPay(id);
+            });
+            els.lpNext.addEventListener('click', next);
+            els.lpBack.addEventListener('click', back);
+            document.querySelectorAll('input[name="lpPayMethod"]').forEach(function (r) {
+                r.addEventListener('change', function () {
+                    els.lpCardFields.style.display = (this.value === 'card') ? 'block' : 'none';
+                });
+            });
+            els.lpCardNumber.addEventListener('input', function () {
+                var v = this.value.replace(/\s+/g, '').replace(/\D/g, '').slice(0, 19);
+                this.value = v.replace(/(\d{4})(?=\d)/g, '$1 ');
+            });
+            els.lpCardExpiry.addEventListener('input', function () {
+                var v = this.value.replace(/\D/g, '').slice(0, 4);
+                if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
+                this.value = v;
+            });
+            els.lpCardCvv.addEventListener('input', function () {
+                this.value = this.value.replace(/\D/g, '').slice(0, 4);
+            });
+
+            // ─── Boot ──────────────────────────────────────────────
+            var highlightId = null;
+            try {
+                var params = new URLSearchParams(window.location.search);
+                highlightId = params.get('loan');
+            } catch (e) { /* no-op */ }
+
+            renderLoans(highlightId);
+            renderHistory();
+
+            if (highlightId) {
+                setTimeout(function () {
+                    var card = document.querySelector('.loan-card[data-loan-id="' + highlightId + '"]');
+                    if (card && card.scrollIntoView) {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 80);
+            }
+        })();
     </script>
 </body>
 

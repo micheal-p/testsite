@@ -74,7 +74,7 @@
     'use strict';
 
     var STORAGE_KEY = 'evillage_loans_state_v1';
-    var SEED_DONE_KEY = 'evillage_loans_seeded_v4';
+    var SEED_DONE_KEY = 'evillage_loans_seeded_v6';
 
     // ─── Seed data ───────────────────────────────────────────────────────
     var SEED_INSTITUTIONS = [
@@ -407,6 +407,16 @@
             credit_review: { decided_by_user_id: null, decided_at: iso(6),
                              credit_score: 698, notes: 'Approved with standard tenure.' },
             installation: { current_stage_key: 'site_survey', stages: stagesWith(1) },
+            repayments: [
+                { id: 'rep_004_1', installment_number: 1,
+                  amount_ngn: computeMonthly(780000, 18, 11.75),
+                  method: 'card', reference: 'PAY-SEED-LN4-01',
+                  paid_at: iso(35) },
+                { id: 'rep_004_2', installment_number: 2,
+                  amount_ngn: computeMonthly(780000, 18, 11.75),
+                  method: 'bank_transfer', reference: 'PAY-SEED-LN4-02',
+                  paid_at: iso(5) }
+            ],
             timeline: [
                 { at: iso(8), event: 'submitted', by_role: 'citizen', by_user_id: null, note: null },
                 { at: iso(7), event: 'under_review', by_role: 'institution', by_user_id: null, note: null },
@@ -414,7 +424,7 @@
                 { at: iso(5), event: 'disbursed', by_role: 'institution', by_user_id: null, note: 'Funds released to vendor.' }
             ],
             created_at: iso(8), submitted_at: iso(8),
-            reviewed_at: iso(6), disbursed_at: iso(5),
+            reviewed_at: iso(6), disbursed_at: iso(35),
             installation_started_at: null, installed_at: null, completed_at: null
         });
 
@@ -437,6 +447,16 @@
             credit_review: { decided_by_user_id: null, decided_at: iso(10),
                              credit_score: 734, notes: null },
             installation: { current_stage_key: 'installation', stages: stagesWith(3) },
+            repayments: [
+                { id: 'rep_005_1', installment_number: 1,
+                  amount_ngn: computeMonthly(3200000, 24, 14.5),
+                  method: 'card', reference: 'PAY-SEED-LN5-01',
+                  paid_at: iso(35) },
+                { id: 'rep_005_2', installment_number: 2,
+                  amount_ngn: computeMonthly(3200000, 24, 14.5),
+                  method: 'card', reference: 'PAY-SEED-LN5-02',
+                  paid_at: iso(5) }
+            ],
             timeline: [
                 { at: iso(14), event: 'submitted', by_role: 'citizen', by_user_id: null, note: null },
                 { at: iso(12), event: 'under_review', by_role: 'institution', by_user_id: null, note: null },
@@ -477,6 +497,21 @@
             credit_review: { decided_by_user_id: null, decided_at: iso(30),
                              credit_score: 702, notes: 'Straightforward approval.' },
             installation: { current_stage_key: null, stages: fullyDoneStages },
+            repayments: (function () {
+                var monthly = computeMonthly(900000, 12, 12.5);
+                var arr = [];
+                for (var n = 1; n <= 12; n++) {
+                    arr.push({
+                        id: 'rep_006_' + n,
+                        installment_number: n,
+                        amount_ngn: monthly,
+                        method: n % 2 ? 'card' : 'bank_transfer',
+                        reference: 'PAY-SEED-LN6-' + (n < 10 ? '0' + n : n),
+                        paid_at: iso(28 - n)
+                    });
+                }
+                return arr;
+            })(),
             timeline: [
                 { at: iso(40), event: 'submitted', by_role: 'citizen', by_user_id: null, note: null },
                 { at: iso(35), event: 'approved', by_role: 'institution', by_user_id: null, note: null },
@@ -568,12 +603,14 @@
     function readState() {
         try {
             var raw = localStorage.getItem(STORAGE_KEY);
-            if (!raw) return { applications: [] };
+            if (!raw) return { applications: [], purchases: [] };
             var parsed = JSON.parse(raw);
-            if (!parsed || !Array.isArray(parsed.applications)) return { applications: [] };
+            if (!parsed || typeof parsed !== 'object') return { applications: [], purchases: [] };
+            if (!Array.isArray(parsed.applications)) parsed.applications = [];
+            if (!Array.isArray(parsed.purchases)) parsed.purchases = [];
             return parsed;
         } catch (e) {
-            return { applications: [] };
+            return { applications: [], purchases: [] };
         }
     }
 
@@ -643,9 +680,9 @@
     function ensureSeeded() {
         if (localStorage.getItem(SEED_DONE_KEY)) return;
         try {
-            writeState({ applications: buildSeedApplications() });
+            writeState({ applications: buildSeedApplications(), purchases: buildSeedPurchases() });
         } catch (e) {
-            writeState({ applications: [] });
+            writeState({ applications: [], purchases: [] });
         }
         localStorage.setItem(SEED_DONE_KEY, '1');
     }
@@ -818,6 +855,7 @@
                 current_stage_key: null,
                 stages: seedInstallationStages(input.product.installation_stages)
             },
+            repayments: [],
             timeline: [
                 { at: now, event: 'submitted', by_role: 'citizen',
                   by_user_id: input.citizenUser.id, note: null }
@@ -981,6 +1019,80 @@
         });
     }
 
+    // ─── Loan repayments ─────────────────────────────────────────────────
+    function addMonths(iso, months) {
+        var d = iso ? new Date(iso) : new Date();
+        var target = new Date(d.getTime());
+        target.setMonth(target.getMonth() + months);
+        return target.toISOString();
+    }
+
+    function getRepaymentStatus(app) {
+        if (!app) return null;
+        var financing = app.financing || {};
+        var tenure = Number(financing.tenure_months) || 0;
+        var monthly = Number(financing.monthly_repayment_ngn) || 0;
+        var reps = (app.repayments || []).slice().sort(function (a, b) {
+            return (a.installment_number || 0) - (b.installment_number || 0);
+        });
+        var paidCount = reps.length;
+        var paidAmount = reps.reduce(function (sum, r) { return sum + (Number(r.amount_ngn) || 0); }, 0);
+        var balance = Math.max(0, (monthly * tenure) - paidAmount);
+        var isComplete = paidCount >= tenure;
+        var nextNumber = isComplete ? null : (paidCount + 1);
+        var anchor = app.disbursed_at || nowIso();
+        var nextDueDate = isComplete ? null : addMonths(anchor, paidCount + 1);
+        var nextDueAmount = isComplete ? 0 : monthly;
+        return {
+            tenure_months: tenure,
+            monthly_amount: monthly,
+            paid_count: paidCount,
+            paid_amount: paidAmount,
+            balance_remaining: balance,
+            next_installment_number: nextNumber,
+            next_due_date: nextDueDate,
+            next_due_amount: nextDueAmount,
+            is_complete: isComplete,
+            is_payable: !isComplete &&
+                ['disbursed', 'installing', 'completed'].indexOf(app.status) !== -1,
+            repayments: reps
+        };
+    }
+
+    /**
+     * Records a loan installment payment.
+     * @param {string} loanId
+     * @param {Object} input  { method: 'card'|'bank_transfer'|'ussd', amount_ngn?, reference? }
+     * @param {string=} actorUserId
+     */
+    function recordLoanPayment(loanId, input, actorUserId) {
+        return patchApplication(loanId, function (app) {
+            if (['disbursed', 'installing', 'completed'].indexOf(app.status) === -1) {
+                throw new Error('This loan is not yet ready for repayments.');
+            }
+            var status = getRepaymentStatus(app);
+            if (status.is_complete) {
+                throw new Error('This loan has been fully repaid.');
+            }
+            var pay = snapshotPaymentInput({
+                method: input && input.method,
+                reference: input && input.reference,
+                amount_ngn: (input && Number(input.amount_ngn)) || status.next_due_amount
+            });
+            var entry = {
+                id: uid('rep_'),
+                installment_number: status.next_installment_number,
+                amount_ngn: pay.amount_ngn,
+                method: pay.method,
+                reference: pay.reference,
+                paid_at: pay.paid_at
+            };
+            app.repayments = (app.repayments || []).concat(entry);
+            return appendTimeline(app, 'loan_payment', 'citizen', actorUserId,
+                'Installment ' + entry.installment_number + ' • ' + pay.reference);
+        });
+    }
+
     function cancelApplication(id, actorRole, actorUserId) {
         return patchApplication(id, function (app) {
             if (['completed', 'cancelled', 'disbursed', 'installing'].indexOf(app.status) !== -1) {
@@ -988,6 +1100,285 @@
             }
             app.status = 'cancelled';
             return appendTimeline(app, 'cancelled', actorRole || 'citizen', actorUserId, null);
+        });
+    }
+
+    // ─── Direct marketplace purchases ──────────────────────────────────────
+    // Purchase shape:
+    //   {
+    //     id, status: 'pending_payment'|'paid'|'fulfilling'|'completed'|'cancelled',
+    //     citizen: { ...same as loan.citizen },
+    //     vendor:  { ...same as loan.vendor },
+    //     product: { ...snapshot of Product },
+    //     delivery: { recipient_name, phone, state, lga, address, notes },
+    //     payment: { method, reference, amount_ngn, paid_at },
+    //     fulfillment: { current_stage_key, stages: [...] },
+    //     timeline: [...],
+    //     created_at, paid_at, fulfilled_at, completed_at
+    //   }
+
+    function buildSeedPurchases() {
+        var now = Date.now();
+        function iso(offsetDays) {
+            return new Date(now - (offsetDays * 86400000)).toISOString();
+        }
+        function vendorSnap(id) {
+            var v = SEED_VENDORS.filter(function (x) { return x.user_id === id; })[0] || SEED_VENDORS[0];
+            return {
+                user_id: v.user_id, business_name: v.business_name,
+                contact_person: v.contact_person, phone: v.phone,
+                state: v.state, lga: v.lga, business_address: v.business_address
+            };
+        }
+        function prod(id) {
+            return Object.assign({}, SEED_PRODUCTS.filter(function (p) { return p.id === id; })[0]);
+        }
+        function stagesWith(completedUpToOrder) {
+            return DEFAULT_STAGES.map(function (s) {
+                var status = s.order < completedUpToOrder ? 'completed'
+                           : s.order === completedUpToOrder ? 'in_progress'
+                           : 'not_started';
+                return {
+                    key: s.key, label: s.label, order: s.order,
+                    status: status,
+                    completed_at: status === 'completed' ? iso(2) : null,
+                    notes: null
+                };
+            });
+        }
+
+        return [
+            {
+                id: 'pur_seed_demo_1',
+                status: 'fulfilling',
+                citizen: {
+                    user_id: 'seed_citizen_demo',
+                    first_name: 'Demo', last_name: 'Citizen',
+                    email: 'demo.citizen@evillage.ng',
+                    phone: '+2348011110000',
+                    state: 'Lagos', lga: 'Ikeja',
+                    address: '12 Demo Close',
+                    nin: '12345678901', bvn: '12345678901'
+                },
+                vendor: vendorSnap('seed_vendor_sunpower'),
+                product: prod('prod_sp_inv'),
+                delivery: {
+                    recipient_name: 'Demo Citizen',
+                    phone: '+2348011110000',
+                    state: 'Lagos', lga: 'Ikeja',
+                    address: '12 Demo Close',
+                    notes: ''
+                },
+                payment: {
+                    method: 'card',
+                    reference: 'PAY-DEMO-0001',
+                    amount_ngn: 420000,
+                    paid_at: iso(3)
+                },
+                fulfillment: {
+                    current_stage_key: 'installation',
+                    stages: stagesWith(3)
+                },
+                timeline: [
+                    { at: iso(3), event: 'created',  by_role: 'citizen', by_user_id: 'seed_citizen_demo', note: null },
+                    { at: iso(3), event: 'paid',     by_role: 'citizen', by_user_id: 'seed_citizen_demo', note: 'PAY-DEMO-0001' },
+                    { at: iso(2), event: 'fulfilling', by_role: 'vendor', by_user_id: 'seed_vendor_sunpower', note: null }
+                ],
+                created_at: iso(3), paid_at: iso(3),
+                fulfilled_at: null, completed_at: null
+            }
+        ];
+    }
+
+    function snapshotDelivery(d) {
+        d = d || {};
+        return {
+            recipient_name: String(d.recipient_name || '').trim(),
+            phone: String(d.phone || '').trim(),
+            state: String(d.state || '').trim(),
+            lga: String(d.lga || '').trim(),
+            address: String(d.address || '').trim(),
+            notes: String(d.notes || '').trim()
+        };
+    }
+
+    function generatePaymentRef() {
+        return 'PAY-' + Date.now().toString(36).toUpperCase() +
+               '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+    }
+
+    function snapshotPaymentInput(p) {
+        p = p || {};
+        var method = String(p.method || '').toLowerCase();
+        var allowed = ['card', 'bank_transfer', 'ussd'];
+        if (allowed.indexOf(method) === -1) {
+            throw new Error('Please choose a payment method.');
+        }
+        return {
+            method: method,
+            reference: p.reference || generatePaymentRef(),
+            amount_ngn: Number(p.amount_ngn) || 0,
+            paid_at: nowIso()
+        };
+    }
+
+    function appendPurchaseTimeline(pur, event, byRole, byUserId, note) {
+        pur.timeline = (pur.timeline || []).concat({
+            at: nowIso(), event: event, by_role: byRole,
+            by_user_id: byUserId || null, note: note || null
+        });
+        return pur;
+    }
+
+    /**
+     * Creates a paid marketplace purchase in 'paid' state.
+     * @param {Object} input
+     *   citizenUser: full /me response for the buyer
+     *   vendor:      vendor record
+     *   product:     product record (with price_ngn)
+     *   delivery:    { recipient_name, phone, state, lga, address, notes }
+     *   payment:     { method: 'card'|'bank_transfer'|'ussd', reference?, amount_ngn? }
+     */
+    function createPurchase(input) {
+        if (!input || !input.product) throw new Error('Product is required.');
+        if (!input.vendor) throw new Error('Vendor is required.');
+        if (!input.citizenUser) throw new Error('Citizen details are required.');
+
+        var delivery = snapshotDelivery(input.delivery);
+        if (!delivery.recipient_name) throw new Error('Recipient name is required.');
+        if (!delivery.phone) throw new Error('Delivery phone number is required.');
+        if (!delivery.state) throw new Error('Delivery state is required.');
+        if (!delivery.address) throw new Error('Delivery address is required.');
+
+        var price = Number(input.product.price_ngn) || 0;
+        if (price <= 0) throw new Error('This product is not available for purchase.');
+
+        var payment = snapshotPaymentInput({
+            method: input.payment && input.payment.method,
+            reference: input.payment && input.payment.reference,
+            amount_ngn: price
+        });
+
+        var citizenSnap = snapshotCitizen(input.citizenUser);
+        var vendorSnap_ = snapshotVendor(input.vendor);
+        var now = nowIso();
+
+        var pur = {
+            id: uid('pur_'),
+            status: 'paid',
+            citizen: citizenSnap,
+            vendor: vendorSnap_,
+            product: Object.assign({}, input.product),
+            delivery: delivery,
+            payment: payment,
+            fulfillment: {
+                current_stage_key: null,
+                stages: seedInstallationStages(input.product.installation_stages)
+            },
+            timeline: [],
+            created_at: now,
+            paid_at: now,
+            fulfilled_at: null,
+            completed_at: null
+        };
+        appendPurchaseTimeline(pur, 'created', 'citizen', citizenSnap.user_id, null);
+        appendPurchaseTimeline(pur, 'paid', 'citizen', citizenSnap.user_id, payment.reference);
+
+        var state = readState();
+        state.purchases = (state.purchases || []).concat(pur);
+        writeState(state);
+        return pur;
+    }
+
+    function getPurchase(id) {
+        var state = readState();
+        return (state.purchases || []).filter(function (p) { return p.id === id; })[0] || null;
+    }
+
+    function allPurchases() { return (readState().purchases || []).slice(); }
+
+    function listPurchasesForCitizen(citizenUserId) {
+        return allPurchases().filter(function (p) {
+            return p.citizen && p.citizen.user_id === citizenUserId;
+        });
+    }
+
+    function listPurchasesForVendor(vendorUserId) {
+        return allPurchases().filter(function (p) {
+            return p.vendor && p.vendor.user_id === vendorUserId;
+        });
+    }
+
+    function patchPurchase(id, patcher) {
+        var state = readState();
+        if (!Array.isArray(state.purchases)) state.purchases = [];
+        var idx = -1;
+        for (var i = 0; i < state.purchases.length; i++) {
+            if (state.purchases[i].id === id) { idx = i; break; }
+        }
+        if (idx === -1) throw new Error('Purchase not found.');
+        var next = patcher(state.purchases[idx]);
+        state.purchases[idx] = next;
+        writeState(state);
+        return next;
+    }
+
+    function startFulfillment(id, actorUserId) {
+        return patchPurchase(id, function (pur) {
+            if (pur.status !== 'paid') return pur;
+            pur.status = 'fulfilling';
+            var firstStage = (pur.fulfillment.stages || [])[0];
+            if (firstStage) {
+                firstStage.status = 'in_progress';
+                pur.fulfillment.current_stage_key = firstStage.key;
+            }
+            return appendPurchaseTimeline(pur, 'fulfilling', 'vendor', actorUserId, null);
+        });
+    }
+
+    function updatePurchaseStage(id, stageKey, patch, actorUserId) {
+        return patchPurchase(id, function (pur) {
+            if (['paid', 'fulfilling'].indexOf(pur.status) === -1) {
+                throw new Error('Cannot update fulfillment stages from current status.');
+            }
+            if (pur.status === 'paid') {
+                pur.status = 'fulfilling';
+            }
+            var stage = (pur.fulfillment.stages || []).filter(function (s) { return s.key === stageKey; })[0];
+            if (!stage) throw new Error('Unknown stage: ' + stageKey);
+            if (patch && patch.status) stage.status = patch.status;
+            if (patch && typeof patch.notes === 'string') stage.notes = patch.notes;
+            if (stage.status === 'completed') {
+                stage.completed_at = nowIso();
+            }
+            // Recompute current/overall.
+            var stages = pur.fulfillment.stages.slice().sort(function (a, b) { return a.order - b.order; });
+            var allDone = stages.every(function (s) { return s.status === 'completed'; });
+            var inProg = stages.filter(function (s) { return s.status === 'in_progress'; })[0];
+            var nextNotStarted = stages.filter(function (s) { return s.status === 'not_started'; })[0];
+            pur.fulfillment.current_stage_key = inProg ? inProg.key
+                                              : nextNotStarted ? nextNotStarted.key
+                                              : null;
+            if (allDone) {
+                pur.status = 'completed';
+                pur.fulfilled_at = pur.fulfilled_at || nowIso();
+                pur.completed_at = nowIso();
+                appendPurchaseTimeline(pur, 'completed', 'vendor', actorUserId, null);
+            } else {
+                appendPurchaseTimeline(pur, 'stage_update', 'vendor', actorUserId,
+                    stage.label + ' → ' + stage.status);
+            }
+            return pur;
+        });
+    }
+
+    function cancelPurchase(id, actorRole, actorUserId) {
+        return patchPurchase(id, function (pur) {
+            if (['completed', 'cancelled'].indexOf(pur.status) !== -1) {
+                throw new Error('This purchase cannot be cancelled from its current state.');
+            }
+            pur.status = 'cancelled';
+            return appendPurchaseTimeline(pur, 'cancelled', actorRole || 'citizen', actorUserId, null);
         });
     }
 
@@ -1025,6 +1416,19 @@
         disburseApplication: disburseApplication,
         updateStage: updateStage,
         cancelApplication: cancelApplication,
+
+        // loan repayments
+        getRepaymentStatus: getRepaymentStatus,
+        recordLoanPayment: recordLoanPayment,
+
+        // direct marketplace purchases
+        createPurchase: createPurchase,
+        getPurchase: getPurchase,
+        listPurchasesForCitizen: listPurchasesForCitizen,
+        listPurchasesForVendor: listPurchasesForVendor,
+        startPurchaseFulfillment: startFulfillment,
+        updatePurchaseStage: updatePurchaseStage,
+        cancelPurchase: cancelPurchase,
 
         // helpers
         computeMonthly: computeMonthly,

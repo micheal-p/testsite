@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Marketplace | eVillage Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=2.0">
+    <script src="config.js?v=1.0"></script>
+    <script src="evillage-api.js?v=1.0"></script>
+    <script>window.EVILLAGE_REQUIRED_ROLES = ['citizen'];</script>
+    <script src="evillage-guard.js?v=1.0"></script>
+    <script src="evillage-loans.js?v=1.0"></script>
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    <style>
+        :root {
+            --portal-primary: #0d3d44;
+            --portal-primary-dark: #0a2e33;
+            --portal-accent: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            margin: 0;
+            padding: 0;
+            background: #f3f4f6;
+            min-height: 100vh;
+            color: #111827;
+        }
+
+        .market-hero {
+            background: linear-gradient(135deg, var(--portal-primary) 0%, var(--portal-primary-dark) 100%);
+            color: #fff;
+            padding: 40px 24px 64px;
+        }
+        .market-hero-inner { max-width: 1100px; margin: 0 auto; }
+        .market-back {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: rgba(255,255,255,.75); text-decoration: none;
+            font-size: 14px; font-weight: 500; margin-bottom: 20px;
+        }
+        .market-back:hover { color: #fff; }
+        .market-hero h1 { margin: 0 0 6px 0; font-size: 26px; font-weight: 600; }
+        .market-hero p { margin: 0; color: rgba(255,255,255,.75); font-size: 15px; }
+
+        .market-shell {
+            max-width: 1100px;
+            margin: -36px auto 60px;
+            padding: 0 24px;
+        }
+
+        .filter-bar {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0,0,0,.06);
+            padding: 16px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center;
+        }
+        .filter-bar label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            margin-right: 6px;
+        }
+        .filter-bar select, .filter-bar input[type="search"] {
+            padding: 10px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #fff;
+            color: #111827;
+            min-width: 180px;
+        }
+        .filter-bar input[type="search"] { min-width: 240px; flex: 1; }
+        .filter-bar select:focus, .filter-bar input[type="search"]:focus {
+            outline: none; border-color: var(--portal-primary);
+            box-shadow: 0 0 0 3px rgba(13,61,68,.12);
+        }
+        .filter-result-count { margin-left: auto; font-size: 13px; color: #6b7280; }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+        .product-card {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(0,0,0,.08);
+        }
+        .product-thumb {
+            height: 130px;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--portal-primary);
+            font-size: 44px;
+        }
+        .product-thumb.cat-batteries  { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: #92400e; }
+        .product-thumb.cat-inverters  { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: #1d4ed8; }
+        .product-thumb.cat-mini_grid  { background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); color: #5b21b6; }
+        .product-thumb.cat-smart_meters { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); color: #9d174d; }
+
+        .product-body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+        .product-vendor {
+            font-size: 12px; color: #6b7280; font-weight: 500;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .product-name { font-size: 15px; font-weight: 600; color: #111827; line-height: 1.35; }
+        .product-desc { font-size: 13px; color: #6b7280; line-height: 1.5; flex: 1; }
+        .product-price-row {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: 8px;
+        }
+        .product-price { font-size: 18px; font-weight: 700; color: var(--portal-primary); }
+        .btn-buy {
+            background: var(--portal-primary); color: #fff;
+            border: none; padding: 9px 14px; border-radius: 8px;
+            font-size: 13px; font-weight: 600; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .btn-buy:hover { background: var(--portal-primary-dark); }
+
+        .empty-state {
+            text-align: center; padding: 48px 24px;
+            color: #6b7280; font-size: 14px;
+            background: #fff; border-radius: 12px; margin-top: 22px;
+        }
+
+        /* Checkout overlay */
+        .checkout-backdrop {
+            position: fixed; inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            display: none; z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+        .checkout-backdrop.is-open { display: block; }
+
+        .checkout-drawer {
+            position: fixed; top: 0; right: 0; bottom: 0;
+            width: min(560px, 100%);
+            background: #fff;
+            box-shadow: -10px 0 30px rgba(0,0,0,.15);
+            transform: translateX(100%);
+            transition: transform .3s ease;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .checkout-drawer.is-open { transform: translateX(0); }
+
+        .checkout-header {
+            padding: 18px 22px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .checkout-header h3 { margin: 0; font-size: 16px; font-weight: 600; color: #111827; }
+        .checkout-close {
+            background: transparent; border: none; cursor: pointer;
+            color: #6b7280; font-size: 18px; padding: 6px;
+        }
+        .checkout-close:hover { color: #111827; }
+
+        .checkout-stepper {
+            display: flex; gap: 4px; padding: 14px 22px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .checkout-step {
+            flex: 1; height: 4px; border-radius: 2px;
+            background: #e5e7eb;
+        }
+        .checkout-step.is-active { background: var(--portal-primary); }
+        .checkout-step.is-done { background: var(--portal-accent); }
+
+        .checkout-body { flex: 1; overflow-y: auto; padding: 22px; }
+        .checkout-footer {
+            padding: 16px 22px;
+            border-top: 1px solid #e5e7eb;
+            display: flex; gap: 10px; justify-content: flex-end;
+        }
+
+        .checkout-summary {
+            background: #f8fafc; border: 1px solid #e2e8f0;
+            border-radius: 10px; padding: 14px;
+            display: flex; gap: 12px; align-items: center;
+            margin-bottom: 18px;
+        }
+        .checkout-summary .icon {
+            width: 44px; height: 44px; border-radius: 10px;
+            background: #d1fae5; color: var(--portal-primary);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; flex-shrink: 0;
+        }
+        .checkout-summary .info { flex: 1; min-width: 0; }
+        .checkout-summary .vendor { font-size: 12px; color: #6b7280; }
+        .checkout-summary .name {
+            font-size: 14px; font-weight: 600; color: #111827;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .checkout-summary .price { font-size: 15px; font-weight: 700; color: var(--portal-primary); }
+
+        .field-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+        .field-row label { font-size: 12px; font-weight: 600; color: #374151; }
+        .field-row input, .field-row select, .field-row textarea {
+            padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 8px;
+            font-size: 14px; font-family: inherit; color: #111827;
+            background: #fff;
+        }
+        .field-row textarea { resize: vertical; min-height: 70px; }
+        .field-row input:focus, .field-row select:focus, .field-row textarea:focus {
+            outline: none; border-color: var(--portal-primary);
+            box-shadow: 0 0 0 3px rgba(13,61,68,.12);
+        }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        @media (max-width: 480px) { .two-col { grid-template-columns: 1fr; } }
+
+        .pay-method {
+            border: 1px solid #e5e7eb; border-radius: 10px;
+            padding: 14px; cursor: pointer; transition: all .15s ease;
+            display: flex; gap: 12px; align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .pay-method:hover { border-color: var(--portal-primary); }
+        .pay-method input { margin-top: 4px; accent-color: var(--portal-primary); }
+        .pay-method .icon {
+            width: 36px; height: 36px; border-radius: 8px;
+            background: #f1f5f9; color: var(--portal-primary);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; flex-shrink: 0;
+        }
+        .pay-method .label { font-size: 14px; font-weight: 600; color: #111827; }
+        .pay-method .desc { font-size: 12px; color: #6b7280; margin-top: 2px; }
+        .pay-method:has(input:checked) {
+            border-color: var(--portal-primary);
+            background: rgba(13,61,68,.04);
+        }
+
+        .review-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+        .review-item {
+            display: flex; justify-content: space-between; gap: 12px;
+            padding: 10px 12px; background: #f8fafc; border-radius: 8px;
+            font-size: 13px;
+        }
+        .review-item .k { color: #6b7280; }
+        .review-item .v { color: #111827; font-weight: 500; text-align: right; }
+        .review-total {
+            display: flex; justify-content: space-between;
+            padding: 14px 16px; background: var(--portal-primary); color: #fff;
+            border-radius: 10px; margin-top: 14px;
+            font-size: 16px; font-weight: 600;
+        }
+
+        .btn {
+            border: none; padding: 10px 18px; border-radius: 8px;
+            font-size: 14px; font-weight: 600; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .btn-primary { background: var(--portal-primary); color: #fff; }
+        .btn-primary:hover:not(:disabled) { background: var(--portal-primary-dark); }
+        .btn-primary:disabled { opacity: .55; cursor: not-allowed; }
+        .btn-secondary { background: #f3f4f6; color: #374151; }
+        .btn-secondary:hover { background: #e5e7eb; }
+
+        .checkout-error {
+            background: #fee2e2; color: #991b1b;
+            padding: 10px 12px; border-radius: 8px;
+            font-size: 13px; margin-bottom: 14px; display: none;
+        }
+        .checkout-error.is-shown { display: block; }
+
+        /* Completion overlay (reused from loan-apply) */
+        .completion-overlay {
+            position: fixed; inset: 0;
+            background: linear-gradient(135deg, var(--portal-primary) 0%, var(--portal-primary-dark) 100%);
+            display: none; align-items: center; justify-content: center;
+            z-index: 2147483647;
+            overflow: hidden;
+            animation: overlayFadeIn .35s ease both;
+        }
+        .completion-overlay.is-open { display: flex; }
+        @keyframes overlayFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .completion-card { text-align: center; color: #fff; padding: 40px 48px; max-width: 440px; position: relative; z-index: 1; }
+        .success-check {
+            width: 112px; height: 112px; border-radius: 50%;
+            background: rgba(16, 185, 129, 0.18);
+            border: 2px solid rgba(16, 185, 129, 0.35);
+            display: inline-flex; align-items: center; justify-content: center;
+            margin: 0 auto 24px; position: relative;
+            animation: ringScale .55s cubic-bezier(.2, .7, .2, 1.3) both;
+        }
+        .success-check::before {
+            content: ''; position: absolute; inset: -18px; border-radius: 50%;
+            border: 2px solid rgba(16, 185, 129, 0.18);
+            animation: ringPulse 1.4s ease-out .2s both, ringFadeOut 1.4s ease-out 1.4s forwards;
+        }
+        .success-check svg {
+            width: 52px; height: 52px;
+            stroke: #10b981; stroke-width: 4;
+            stroke-linecap: round; stroke-linejoin: round;
+            fill: none;
+        }
+        .success-check svg path {
+            stroke-dasharray: 48; stroke-dashoffset: 48;
+            animation: checkDraw .45s cubic-bezier(.65,.05,.36,1) .35s forwards;
+        }
+        @keyframes ringScale {
+            0% { transform: scale(.4); opacity: 0; }
+            60% { transform: scale(1.06); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes ringPulse {
+            0% { transform: scale(.9); opacity: .7; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+        @keyframes ringFadeOut { to { opacity: 0; } }
+        @keyframes checkDraw { to { stroke-dashoffset: 0; } }
+
+        .completion-title { font-size: 26px; font-weight: 600; margin: 0 0 10px; opacity: 0; animation: bubbleIn .45s ease .55s forwards; }
+        .completion-body { font-size: 15px; color: rgba(255,255,255,.8); margin: 0 0 22px; line-height: 1.55; opacity: 0; animation: bubbleIn .45s ease .7s forwards; }
+        .completion-ref {
+            display: inline-block; padding: 6px 14px; border-radius: 999px;
+            background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+            font-size: 13px; font-weight: 500; color: rgba(255,255,255,.85);
+            opacity: 0; animation: bubbleIn .45s ease .85s forwards;
+        }
+        @keyframes bubbleIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+        .confetti span {
+            position: absolute; top: 48%; left: 50%;
+            width: 10px; height: 16px; border-radius: 2px; opacity: 0;
+            animation: confettiBurst 1.3s ease-out .4s forwards;
+        }
+        @keyframes confettiBurst {
+            0%   { opacity: 1; transform: translate(-50%, -50%) rotate(0deg); }
+            100% { opacity: 0; transform: translate(var(--dx, 0), var(--dy, -200px)) rotate(var(--r, 540deg)); }
+        }
+
+        /* Processing spinner */
+        .pay-processing {
+            display: none; flex-direction: column; align-items: center;
+            gap: 14px; padding: 32px 16px; text-align: center;
+        }
+        .pay-processing.is-shown { display: flex; }
+        .pay-processing .ring {
+            width: 56px; height: 56px; border-radius: 50%;
+            border: 4px solid #e5e7eb; border-top-color: var(--portal-primary);
+            animation: spin .9s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .pay-processing .msg { font-size: 14px; color: #374151; font-weight: 500; }
+        .pay-processing .sub { font-size: 12px; color: #6b7280; }
+    </style>
+</head>
+
+<body>
+    <section class="market-hero">
+        <div class="market-hero-inner">
+            <a href="evillage-dashboard.html" class="market-back">
+                <i class="fas fa-arrow-left"></i> Back to dashboard
+            </a>
+            <h1>Energy Marketplace</h1>
+            <p>Browse verified vendor products and purchase directly with card, bank transfer or USSD.</p>
+        </div>
+    </section>
+
+    <div class="market-shell">
+        <div class="filter-bar">
+            <div style="display:flex; align-items:center; gap:6px;">
+                <label for="filterCategory">Category</label>
+                <select id="filterCategory">
+                    <option value="">All categories</option>
+                    <option value="solar_panels">Solar Panels &amp; Kits</option>
+                    <option value="inverters">Inverters</option>
+                    <option value="batteries">Batteries</option>
+                    <option value="mini_grid">Mini-Grid</option>
+                    <option value="smart_meters">Smart Meters</option>
+                </select>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px;">
+                <label for="filterVendor">Vendor</label>
+                <select id="filterVendor">
+                    <option value="">All vendors</option>
+                </select>
+            </div>
+            <input type="search" id="filterSearch" placeholder="Search products…" aria-label="Search products">
+            <div class="filter-result-count" id="resultCount">0 products</div>
+        </div>
+
+        <div class="product-grid" id="productGrid"></div>
+        <div class="empty-state" id="emptyState" style="display:none;">
+            <i class="fas fa-box-open" style="font-size:32px; color:#9ca3af;"></i>
+            <div style="margin-top:10px;">No products match your filters.</div>
+        </div>
+    </div>
+
+    <!-- Checkout drawer -->
+    <div class="checkout-backdrop" id="checkoutBackdrop"></div>
+    <aside class="checkout-drawer" id="checkoutDrawer" aria-hidden="true">
+        <div class="checkout-header">
+            <h3 id="checkoutTitle">Checkout</h3>
+            <button class="checkout-close" id="checkoutClose" aria-label="Close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="checkout-stepper" aria-hidden="true">
+            <div class="checkout-step" data-step="1"></div>
+            <div class="checkout-step" data-step="2"></div>
+            <div class="checkout-step" data-step="3"></div>
+        </div>
+        <div class="checkout-body">
+            <div class="checkout-summary" id="checkoutSummary">
+                <div class="icon"><i class="fas fa-solar-panel"></i></div>
+                <div class="info">
+                    <div class="vendor" id="csVendor">—</div>
+                    <div class="name" id="csName">—</div>
+                </div>
+                <div class="price" id="csPrice">—</div>
+            </div>
+
+            <div class="checkout-error" id="checkoutError"></div>
+
+            <!-- Step 1: Delivery -->
+            <div class="checkout-pane" data-pane="1">
+                <h4 style="margin:0 0 12px; font-size:14px; font-weight:600;">Delivery details</h4>
+                <div class="field-row">
+                    <label for="dRecipient">Recipient name</label>
+                    <input type="text" id="dRecipient" autocomplete="name">
+                </div>
+                <div class="field-row">
+                    <label for="dPhone">Phone number</label>
+                    <input type="tel" id="dPhone" autocomplete="tel" placeholder="+234 ...">
+                </div>
+                <div class="two-col">
+                    <div class="field-row">
+                        <label for="dState">State</label>
+                        <input type="text" id="dState" autocomplete="address-level1">
+                    </div>
+                    <div class="field-row">
+                        <label for="dLga">LGA</label>
+                        <input type="text" id="dLga" autocomplete="address-level2">
+                    </div>
+                </div>
+                <div class="field-row">
+                    <label for="dAddress">Delivery address</label>
+                    <textarea id="dAddress" autocomplete="street-address"></textarea>
+                </div>
+                <div class="field-row">
+                    <label for="dNotes">Notes for vendor (optional)</label>
+                    <textarea id="dNotes" placeholder="Landmark, gate code, preferred install date…"></textarea>
+                </div>
+            </div>
+
+            <!-- Step 2: Payment -->
+            <div class="checkout-pane" data-pane="2" style="display:none;">
+                <h4 style="margin:0 0 12px; font-size:14px; font-weight:600;">Choose payment method</h4>
+
+                <label class="pay-method">
+                    <input type="radio" name="payMethod" value="card">
+                    <div class="icon"><i class="fas fa-credit-card"></i></div>
+                    <div>
+                        <div class="label">Debit / credit card</div>
+                        <div class="desc">Pay instantly with Verve, Mastercard or Visa.</div>
+                    </div>
+                </label>
+                <label class="pay-method">
+                    <input type="radio" name="payMethod" value="bank_transfer">
+                    <div class="icon"><i class="fas fa-university"></i></div>
+                    <div>
+                        <div class="label">Bank transfer</div>
+                        <div class="desc">Get a temporary account number and complete a transfer.</div>
+                    </div>
+                </label>
+                <label class="pay-method">
+                    <input type="radio" name="payMethod" value="ussd">
+                    <div class="icon"><i class="fas fa-mobile-alt"></i></div>
+                    <div>
+                        <div class="label">USSD</div>
+                        <div class="desc">Dial a short code from any mobile to authorise payment.</div>
+                    </div>
+                </label>
+
+                <!-- Card fields appear when card chosen -->
+                <div id="cardFields" style="display:none; margin-top:8px;">
+                    <div class="field-row">
+                        <label for="cardNumber">Card number</label>
+                        <input type="text" id="cardNumber" inputmode="numeric" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+                    <div class="two-col">
+                        <div class="field-row">
+                            <label for="cardExpiry">Expiry</label>
+                            <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="field-row">
+                            <label for="cardCvv">CVV</label>
+                            <input type="text" id="cardCvv" inputmode="numeric" placeholder="123" maxlength="4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Review + processing -->
+            <div class="checkout-pane" data-pane="3" style="display:none;">
+                <h4 style="margin:0 0 12px; font-size:14px; font-weight:600;">Review and confirm</h4>
+                <div class="review-list" id="reviewList"></div>
+                <div class="review-total">
+                    <span>Total</span>
+                    <span id="reviewTotal">—</span>
+                </div>
+
+                <div class="pay-processing" id="payProcessing">
+                    <div class="ring"></div>
+                    <div class="msg">Processing your payment…</div>
+                    <div class="sub">Do not close this window.</div>
+                </div>
+            </div>
+        </div>
+        <div class="checkout-footer" id="checkoutFooter">
+            <button class="btn btn-secondary" id="btnBack" style="display:none;">Back</button>
+            <button class="btn btn-primary" id="btnNext">Continue</button>
+        </div>
+    </aside>
+
+    <!-- Completion overlay -->
+    <div class="completion-overlay" id="completionOverlay" role="alert" aria-live="assertive" aria-hidden="true">
+        <div class="confetti" id="confetti"></div>
+        <div class="completion-card">
+            <div class="success-check">
+                <svg viewBox="0 0 52 52" aria-hidden="true">
+                    <path d="M14 27 L23 36 L39 18"></path>
+                </svg>
+            </div>
+            <h2 class="completion-title">Payment successful</h2>
+            <p class="completion-body">Your order has been sent to the vendor for fulfillment. Track its progress from your dashboard.</p>
+            <div class="completion-ref" id="completionRef"></div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            'use strict';
+
+            var Loans = window.EvillageLoans;
+            var products = [];
+            var vendors = [];
+            var selected = null; // current product
+            var step = 1;
+            var lastPaymentRef = null;
+
+            var els = {
+                grid: document.getElementById('productGrid'),
+                empty: document.getElementById('emptyState'),
+                count: document.getElementById('resultCount'),
+                fCat: document.getElementById('filterCategory'),
+                fVendor: document.getElementById('filterVendor'),
+                fSearch: document.getElementById('filterSearch'),
+
+                backdrop: document.getElementById('checkoutBackdrop'),
+                drawer: document.getElementById('checkoutDrawer'),
+                close: document.getElementById('checkoutClose'),
+                title: document.getElementById('checkoutTitle'),
+                csVendor: document.getElementById('csVendor'),
+                csName: document.getElementById('csName'),
+                csPrice: document.getElementById('csPrice'),
+                error: document.getElementById('checkoutError'),
+                btnBack: document.getElementById('btnBack'),
+                btnNext: document.getElementById('btnNext'),
+
+                dRecipient: document.getElementById('dRecipient'),
+                dPhone: document.getElementById('dPhone'),
+                dState: document.getElementById('dState'),
+                dLga: document.getElementById('dLga'),
+                dAddress: document.getElementById('dAddress'),
+                dNotes: document.getElementById('dNotes'),
+
+                cardFields: document.getElementById('cardFields'),
+                cardNumber: document.getElementById('cardNumber'),
+                cardExpiry: document.getElementById('cardExpiry'),
+                cardCvv: document.getElementById('cardCvv'),
+
+                reviewList: document.getElementById('reviewList'),
+                reviewTotal: document.getElementById('reviewTotal'),
+                processing: document.getElementById('payProcessing'),
+
+                overlay: document.getElementById('completionOverlay'),
+                confetti: document.getElementById('confetti'),
+                completionRef: document.getElementById('completionRef')
+            };
+
+            function fmtNgn(n) {
+                return '₦' + (Number(n) || 0).toLocaleString();
+            }
+            function categoryIcon(cat) {
+                switch (cat) {
+                    case 'inverters': return 'fa-bolt';
+                    case 'batteries': return 'fa-car-battery';
+                    case 'mini_grid': return 'fa-network-wired';
+                    case 'smart_meters': return 'fa-microchip';
+                    default: return 'fa-solar-panel';
+                }
+            }
+            function categoryLabel(cat) {
+                switch (cat) {
+                    case 'inverters': return 'Inverters';
+                    case 'batteries': return 'Batteries';
+                    case 'mini_grid': return 'Mini-Grid';
+                    case 'smart_meters': return 'Smart Meters';
+                    default: return 'Solar Panels';
+                }
+            }
+
+            function renderVendorOptions() {
+                var html = '<option value="">All vendors</option>';
+                vendors.forEach(function (v) {
+                    html += '<option value="' + v.user_id + '">' +
+                            escapeHtml(v.business_name) + '</option>';
+                });
+                els.fVendor.innerHTML = html;
+            }
+
+            function escapeHtml(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+                    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+                });
+            }
+
+            function applyFilters() {
+                var cat = els.fCat.value;
+                var vendor = els.fVendor.value;
+                var q = (els.fSearch.value || '').trim().toLowerCase();
+
+                return products.filter(function (p) {
+                    if (cat && p.category !== cat) return false;
+                    if (vendor && p.vendor_id !== vendor) return false;
+                    if (q) {
+                        var hay = (p.name + ' ' + p.description + ' ' + p.vendor_name).toLowerCase();
+                        if (hay.indexOf(q) === -1) return false;
+                    }
+                    return true;
+                });
+            }
+
+            function renderGrid() {
+                var list = applyFilters();
+                els.count.textContent = list.length + (list.length === 1 ? ' product' : ' products');
+
+                if (!list.length) {
+                    els.grid.innerHTML = '';
+                    els.empty.style.display = 'block';
+                    return;
+                }
+                els.empty.style.display = 'none';
+
+                var html = list.map(function (p) {
+                    return '<div class="product-card" data-product-id="' + p.id + '">' +
+                            '<div class="product-thumb cat-' + p.category + '">' +
+                                '<i class="fas ' + categoryIcon(p.category) + '"></i>' +
+                            '</div>' +
+                            '<div class="product-body">' +
+                                '<div class="product-vendor"><i class="fas fa-store"></i> ' +
+                                    escapeHtml(p.vendor_name) + '</div>' +
+                                '<div class="product-name">' + escapeHtml(p.name) + '</div>' +
+                                '<div class="product-desc">' + escapeHtml(p.description) + '</div>' +
+                                '<div class="product-price-row">' +
+                                    '<div class="product-price">' + fmtNgn(p.price_ngn) + '</div>' +
+                                    '<button class="btn-buy" data-buy="' + p.id + '">' +
+                                        '<i class="fas fa-shopping-cart"></i> Buy now' +
+                                    '</button>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>';
+                }).join('');
+                els.grid.innerHTML = html;
+            }
+
+            // ─── Checkout flow ─────────────────────────────────────────
+            function openCheckout(productId) {
+                var product = products.filter(function (p) { return p.id === productId; })[0];
+                if (!product) return;
+                selected = product;
+
+                els.csVendor.textContent = product.vendor_name;
+                els.csName.textContent = product.name;
+                els.csPrice.textContent = fmtNgn(product.price_ngn);
+
+                prefillDelivery();
+                step = 1;
+                renderStep();
+
+                els.backdrop.classList.add('is-open');
+                els.drawer.classList.add('is-open');
+                els.drawer.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeCheckout() {
+                els.backdrop.classList.remove('is-open');
+                els.drawer.classList.remove('is-open');
+                els.drawer.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+                clearError();
+            }
+
+            function prefillDelivery() {
+                var u = window.EVILLAGE_USER || {};
+                var p = u.profile || {};
+                var name = ((p.first_name || '') + ' ' + (p.last_name || '')).trim();
+                if (name && !els.dRecipient.value) els.dRecipient.value = name;
+                if (u.phone && !els.dPhone.value) els.dPhone.value = u.phone;
+                if (p.state && !els.dState.value) els.dState.value = p.state;
+                if (p.lga && !els.dLga.value) els.dLga.value = p.lga;
+                if (p.address && !els.dAddress.value) els.dAddress.value = p.address;
+            }
+
+            function showError(msg) {
+                els.error.textContent = msg;
+                els.error.classList.add('is-shown');
+            }
+            function clearError() {
+                els.error.classList.remove('is-shown');
+                els.error.textContent = '';
+            }
+
+            function renderStep() {
+                clearError();
+                document.querySelectorAll('.checkout-pane').forEach(function (pane) {
+                    pane.style.display = (Number(pane.dataset.pane) === step) ? 'block' : 'none';
+                });
+                document.querySelectorAll('.checkout-step').forEach(function (dot) {
+                    var n = Number(dot.dataset.step);
+                    dot.classList.remove('is-active', 'is-done');
+                    if (n < step) dot.classList.add('is-done');
+                    else if (n === step) dot.classList.add('is-active');
+                });
+                els.btnBack.style.display = step > 1 ? 'inline-flex' : 'none';
+                if (step === 1) {
+                    els.title.textContent = 'Delivery details';
+                    els.btnNext.innerHTML = 'Continue <i class="fas fa-arrow-right"></i>';
+                } else if (step === 2) {
+                    els.title.textContent = 'Payment method';
+                    els.btnNext.innerHTML = 'Continue <i class="fas fa-arrow-right"></i>';
+                } else {
+                    els.title.textContent = 'Review &amp; pay';
+                    els.btnNext.innerHTML = '<i class="fas fa-lock"></i> Pay ' + fmtNgn(selected.price_ngn);
+                    renderReview();
+                }
+            }
+
+            function validateDelivery() {
+                var fields = [
+                    [els.dRecipient.value, 'Recipient name is required.'],
+                    [els.dPhone.value, 'Phone number is required.'],
+                    [els.dState.value, 'State is required.'],
+                    [els.dLga.value, 'LGA is required.'],
+                    [els.dAddress.value, 'Delivery address is required.']
+                ];
+                for (var i = 0; i < fields.length; i++) {
+                    if (!String(fields[i][0]).trim()) {
+                        showError(fields[i][1]);
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            function selectedPayMethod() {
+                var inp = document.querySelector('input[name="payMethod"]:checked');
+                return inp ? inp.value : null;
+            }
+
+            function validatePayment() {
+                var method = selectedPayMethod();
+                if (!method) { showError('Please choose a payment method.'); return false; }
+                if (method === 'card') {
+                    var num = (els.cardNumber.value || '').replace(/\s+/g, '');
+                    if (!/^\d{13,19}$/.test(num)) { showError('Enter a valid card number.'); return false; }
+                    if (!/^\d{2}\/\d{2}$/.test(els.cardExpiry.value || '')) {
+                        showError('Enter expiry as MM/YY.'); return false;
+                    }
+                    if (!/^\d{3,4}$/.test(els.cardCvv.value || '')) {
+                        showError('Enter the 3 or 4 digit CVV.'); return false;
+                    }
+                }
+                return true;
+            }
+
+            function renderReview() {
+                var u = window.EVILLAGE_USER || {};
+                var method = selectedPayMethod();
+                var methodLabel = method === 'card' ? 'Debit / credit card'
+                                : method === 'bank_transfer' ? 'Bank transfer'
+                                : method === 'ussd' ? 'USSD'
+                                : '—';
+
+                var rows = [
+                    ['Vendor', selected.vendor_name],
+                    ['Product', selected.name],
+                    ['Category', categoryLabel(selected.category)],
+                    ['Recipient', els.dRecipient.value],
+                    ['Phone', els.dPhone.value],
+                    ['Delivery to', els.dAddress.value + ', ' + els.dLga.value + ', ' + els.dState.value],
+                    ['Payment method', methodLabel]
+                ];
+                els.reviewList.innerHTML = rows.map(function (r) {
+                    return '<div class="review-item"><span class="k">' + escapeHtml(r[0]) +
+                           '</span><span class="v">' + escapeHtml(r[1]) + '</span></div>';
+                }).join('');
+                els.reviewTotal.textContent = fmtNgn(selected.price_ngn);
+            }
+
+            function submitPayment() {
+                if (!validatePayment()) return;
+                var method = selectedPayMethod();
+
+                els.btnBack.disabled = true;
+                els.btnNext.disabled = true;
+                els.processing.classList.add('is-shown');
+
+                // Hide review block while processing.
+                els.reviewList.style.display = 'none';
+                document.querySelector('.review-total').style.display = 'none';
+
+                // Simulate gateway latency.
+                setTimeout(function () {
+                    try {
+                        var pur = Loans.createPurchase({
+                            citizenUser: window.EVILLAGE_USER,
+                            vendor: { user_id: selected.vendor_id, business_name: selected.vendor_name,
+                                      contact_person: '', phone: '', state: '', lga: '', business_address: '' },
+                            product: selected,
+                            delivery: {
+                                recipient_name: els.dRecipient.value.trim(),
+                                phone: els.dPhone.value.trim(),
+                                state: els.dState.value.trim(),
+                                lga: els.dLga.value.trim(),
+                                address: els.dAddress.value.trim(),
+                                notes: els.dNotes.value.trim()
+                            },
+                            payment: { method: method }
+                        });
+                        lastPaymentRef = pur.payment.reference;
+                        playCompletion(pur.id);
+                        setTimeout(function () {
+                            window.location.href = 'evillage-dashboard.html?purchase=' + encodeURIComponent(pur.id);
+                        }, 2200);
+                    } catch (err) {
+                        els.processing.classList.remove('is-shown');
+                        els.reviewList.style.display = '';
+                        document.querySelector('.review-total').style.display = '';
+                        els.btnBack.disabled = false;
+                        els.btnNext.disabled = false;
+                        showError(err && err.message ? err.message : 'Payment could not be completed. Please try again.');
+                    }
+                }, 1800);
+            }
+
+            function next() {
+                if (step === 1) {
+                    if (!validateDelivery()) return;
+                    step = 2; renderStep();
+                } else if (step === 2) {
+                    if (!validatePayment()) return;
+                    step = 3; renderStep();
+                } else {
+                    submitPayment();
+                }
+            }
+
+            function back() {
+                if (step > 1) { step--; renderStep(); }
+            }
+
+            function playCompletion(purId) {
+                if (!els.overlay) return;
+                var ref = lastPaymentRef || (purId ? purId.slice(-10).toUpperCase() : '—');
+                els.completionRef.textContent = 'Ref: ' + ref;
+
+                var colors = ['#10b981', '#34d399', '#f59e0b', '#ef4444', '#3b82f6', '#a78bfa'];
+                var html = '';
+                for (var i = 0; i < 28; i++) {
+                    var angle = (Math.PI * 2 * i) / 28 + (Math.random() * 0.3);
+                    var dist = 180 + Math.random() * 120;
+                    var dx = Math.cos(angle) * dist;
+                    var dy = Math.sin(angle) * dist - 30;
+                    var rotate = 360 + Math.random() * 360;
+                    var color = colors[i % colors.length];
+                    var delay = Math.random() * 0.15;
+                    html += '<span style="background:' + color +
+                            ';--dx:' + dx.toFixed(1) + 'px;--dy:' + dy.toFixed(1) + 'px;' +
+                            '--r:' + rotate.toFixed(0) + 'deg;' +
+                            'animation-delay:' + (0.4 + delay).toFixed(2) + 's;"></span>';
+                }
+                els.confetti.innerHTML = html;
+
+                els.overlay.classList.add('is-open');
+                els.overlay.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // ─── Listeners ─────────────────────────────────────────────
+            els.fCat.addEventListener('change', renderGrid);
+            els.fVendor.addEventListener('change', renderGrid);
+            els.fSearch.addEventListener('input', renderGrid);
+            els.grid.addEventListener('click', function (e) {
+                var btn = e.target.closest('[data-buy]');
+                if (btn) { openCheckout(btn.getAttribute('data-buy')); return; }
+                var card = e.target.closest('.product-card');
+                if (card && card.dataset.productId) openCheckout(card.dataset.productId);
+            });
+            els.close.addEventListener('click', closeCheckout);
+            els.backdrop.addEventListener('click', closeCheckout);
+            els.btnNext.addEventListener('click', next);
+            els.btnBack.addEventListener('click', back);
+
+            document.querySelectorAll('input[name="payMethod"]').forEach(function (r) {
+                r.addEventListener('change', function () {
+                    els.cardFields.style.display = (this.value === 'card') ? 'block' : 'none';
+                });
+            });
+
+            // Format card number with spaces.
+            els.cardNumber.addEventListener('input', function () {
+                var v = this.value.replace(/\s+/g, '').replace(/\D/g, '').slice(0, 19);
+                this.value = v.replace(/(\d{4})(?=\d)/g, '$1 ');
+            });
+            els.cardExpiry.addEventListener('input', function () {
+                var v = this.value.replace(/\D/g, '').slice(0, 4);
+                if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
+                this.value = v;
+            });
+            els.cardCvv.addEventListener('input', function () {
+                this.value = this.value.replace(/\D/g, '').slice(0, 4);
+            });
+
+            // ─── Boot ──────────────────────────────────────────────────
+            try { products = Loans.listSeedProducts(); } catch (e) { products = []; }
+            try { vendors = Loans.listSeedVendors(); } catch (e) { vendors = []; }
+            renderVendorOptions();
+            renderGrid();
+        })();
+    </script>
+</body>
+</html>

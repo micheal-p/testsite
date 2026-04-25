@@ -715,12 +715,6 @@
                     <span>Energy Projects</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="evillage-control.html" class="nav-link">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>NEMiC Controls</span>
-                </a>
-            </li>
             <li class="nav-item"
                 style="margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px;">
                 <a href="evillage-contact.html" class="nav-link">
@@ -809,12 +803,19 @@
                 <h3>Apply for Solar Loan</h3>
                 <p>Pick a vendor, product &amp; bank</p>
             </div>
+            <div class="action-card" onclick="window.location.href='evillage-marketplace.html'">
+                <div class="action-icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <h3>Shop Marketplace</h3>
+                <p>Buy direct from vendors</p>
+            </div>
             <div class="action-card" onclick="window.location.href='evillage-property.html'">
                 <div class="action-icon">
-                    <i class="fas fa-receipt"></i>
+                    <i class="fas fa-wallet"></i>
                 </div>
-                <h3>Pay Utility Bill</h3>
-                <p>Grid & mini-grid credits</p>
+                <h3>Track Loan Repayments</h3>
+                <p>Monthly installments &amp; progress</p>
             </div>
             <div class="action-card" onclick="openPanel('reportPanel')">
                 <div class="action-icon">
@@ -835,7 +836,7 @@
         <!-- Recent Activity -->
         <div class="section-header">
             <div class="section-title">Recent Activity</div>
-            <a href="#" style="color: #0d3d44; text-decoration: none; font-size: 14px; font-weight: 600;">View All</a>
+            <a href="evillage-property.html" style="color: #0d3d44; text-decoration: none; font-size: 14px; font-weight: 600;">View All</a>
         </div>
 
         <div class="activity-section">
@@ -1346,101 +1347,29 @@
             window.location.href = 'evillage-signin.html';
         }
 
-        /* ─── Recent Activity — rendered from EvillageLoans ─── */
+        /* ─── Recent Activity — points users to Utility & Loans for loan progress ─── */
         (function () {
             const list = document.getElementById('citizenActivityList');
-            if (!list || !window.EvillageLoans) return;
-
-            function esc(s) {
-                if (s == null) return '';
-                return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-            }
-            function relativeDate(iso) {
-                if (!iso) return '—';
-                const d = new Date(iso);
-                if (isNaN(d.getTime())) return '—';
-                const diff = Date.now() - d.getTime();
-                const mins = Math.round(diff / 60000);
-                if (mins < 1) return 'Just now';
-                if (mins < 60) return mins + ' minute' + (mins === 1 ? '' : 's') + ' ago';
-                const hrs = Math.round(mins / 60);
-                if (hrs < 24) return hrs + ' hour' + (hrs === 1 ? '' : 's') + ' ago';
-                const days = Math.round(hrs / 24);
-                if (days === 1) return 'Yesterday';
-                if (days < 7) return days + ' days ago';
-                return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-            }
-            function iconAndTone(status) {
-                switch (status) {
-                    case 'submitted':    return { icon: 'fa-solar-panel',   tone: 'bg-teal',   label: 'Under Review',   cls: 'status-pending' };
-                    case 'under_review': return { icon: 'fa-hourglass-half', tone: 'bg-orange', label: 'Under Review',   cls: 'status-pending' };
-                    case 'approved':     return { icon: 'fa-check-circle',   tone: 'bg-green',  label: 'Approved',       cls: 'status-completed' };
-                    case 'rejected':     return { icon: 'fa-times-circle',   tone: 'bg-orange', label: 'Rejected',       cls: 'status-pending' };
-                    case 'disbursed':    return { icon: 'fa-hand-holding-usd', tone: 'bg-green', label: 'Funds Released', cls: 'status-completed' };
-                    case 'installing':   return { icon: 'fa-hard-hat',       tone: 'bg-teal',   label: 'Installing',     cls: 'status-pending' };
-                    case 'completed':    return { icon: 'fa-check-circle',   tone: 'bg-green',  label: 'Completed',      cls: 'status-completed' };
-                    default:             return { icon: 'fa-circle',         tone: 'bg-teal',   label: status || '—',    cls: 'status-pending' };
-                }
-            }
-
-            function allApplications() {
-                try {
-                    const raw = localStorage.getItem('evillage_loans_state_v1');
-                    if (!raw) return [];
-                    const parsed = JSON.parse(raw);
-                    return (parsed && parsed.applications) || [];
-                } catch (e) { return []; }
-            }
-
-            function renderActivity(highlightId) {
-                // Prefer applications scoped to the current citizen; fall back to the full list
-                // for demo purposes when there are no matches yet.
-                const me = window.EVILLAGE_USER;
-                const myId = me && me.id;
-                const all = allApplications();
-                let scoped = myId ? all.filter(a => a.citizen && a.citizen.user_id === myId) : [];
-                const apps = (scoped.length ? scoped : all).slice(0, 5);
-
-                if (!apps.length) {
-                    list.innerHTML = `
-                        <li class="activity-item">
-                            <div class="activity-icon bg-teal"><i class="fas fa-inbox"></i></div>
-                            <div class="activity-info">
-                                <div class="activity-title">No recent activity yet</div>
-                                <div class="activity-date">Submit a loan application to get started.</div>
-                            </div>
-                        </li>`;
-                    return;
-                }
-
-                list.innerHTML = apps.map(function (a) {
-                    const info = iconAndTone(a.status);
-                    const product = (a.product && a.product.name) || 'Solar Loan';
-                    const highlight = highlightId && a.id === highlightId
-                        ? ' style="outline: 2px solid #10b981; outline-offset: 2px; border-radius: 12px;"'
-                        : '';
-                    return `
-                        <li class="activity-item"${highlight} data-loan-id="${esc(a.id)}">
-                            <div class="activity-icon ${info.tone}">
-                                <i class="fas ${info.icon}"></i>
-                            </div>
-                            <div class="activity-info">
-                                <div class="activity-title">${esc(product)}</div>
-                                <div class="activity-date">${esc(relativeDate(a.submitted_at || a.created_at))}</div>
-                            </div>
-                            <span class="activity-status ${info.cls}">${esc(info.label)}</span>
-                        </li>`;
-                }).join('');
-            }
-
-            let highlightId = null;
-            try {
-                const params = new URLSearchParams(window.location.search);
-                highlightId = params.get('loan');
-            } catch (e) { /* no-op */ }
-
-            renderActivity(highlightId);
+            if (!list) return;
+            list.innerHTML = `
+                <li class="activity-item" style="cursor:pointer;"
+                    onclick="window.location.href='evillage-property.html'">
+                    <div class="activity-icon bg-teal"><i class="fas fa-wallet"></i></div>
+                    <div class="activity-info">
+                        <div class="activity-title">Track your loans &amp; repayments</div>
+                        <div class="activity-date">View progress, monthly installments and payment history.</div>
+                    </div>
+                    <span class="activity-status status-pending">Open</span>
+                </li>
+                <li class="activity-item" style="cursor:pointer;"
+                    onclick="window.location.href='evillage-marketplace.html'">
+                    <div class="activity-icon bg-green"><i class="fas fa-store"></i></div>
+                    <div class="activity-info">
+                        <div class="activity-title">Energy Marketplace</div>
+                        <div class="activity-date">Buy solar kits, batteries and inverters direct from vendors.</div>
+                    </div>
+                    <span class="activity-status status-completed">Shop</span>
+                </li>`;
         })();
     </script>
 </body>
