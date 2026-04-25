@@ -4,71 +4,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEIIA</title>
+    <title>NEIIA — The energy operating system of Nigeria</title>
+    <meta name="description" content="NEIIA is Nigeria's centralized platform for energy investment intelligence, asset visibility, and strategic coordination — operated under the Federal Republic of Nigeria.">
+    <meta property="og:title" content="NEIIA — The energy operating system of Nigeria">
+    <meta property="og:description" content="Energy investment intelligence, data, and strategic coordination for Nigeria.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="./assets/images/hero.jpg">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
+
+    <style>
+        /* === Page-scoped overrides for index.html only === */
+
+        .hero h1 {
+            font-size: clamp(2.75rem, 6.2vw, 5.75rem);
+            letter-spacing: -0.035em;
+            line-height: 1.02;
+            max-width: 960px;
+            font-weight: 700;
+        }
+        .hero p {
+            font-size: 1.15rem;
+            max-width: 620px;
+        }
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: #0B1F24;
+            margin-bottom: 28px;
+        }
+        .hero-eyebrow::before {
+            content: '';
+            width: 22px;
+            height: 1px;
+            background: currentColor;
+        }
+        body.dark-mode .hero-eyebrow { color: #ffffff; }
+
+        /* Normalize feature-block image sizes — different source aspects were causing uneven card heights */
+        .feature-image {
+            aspect-ratio: 3 / 2;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        .feature-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        /* Footer upgrade */
+        .footer-grid {
+            grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr !important;
+            gap: 48px;
+        }
+        .footer-brand h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+        .footer-brand p {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #5e6d8a;
+            max-width: 280px;
+        }
+        .footer-bottom {
+            margin-top: 56px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .footer-bottom p {
+            font-size: 12px;
+            color: #9ca3af;
+            margin: 0;
+        }
+        .footer-legal {
+            display: flex;
+            gap: 24px;
+            font-size: 12px;
+        }
+        .footer-legal a {
+            color: #9ca3af;
+            text-decoration: none;
+        }
+        .footer-legal a:hover { color: #0B1F24; }
+        body.dark-mode .footer-bottom { border-color: rgba(255,255,255,0.08); }
+        body.dark-mode .footer-legal a:hover { color: #ffffff; }
+        @media (max-width: 968px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 32px;
+            }
+            .footer-brand { grid-column: 1 / -1; }
+        }
+
+        /* Login overlay polish */
+        .login-box {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 48px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 30px 90px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 1;
+        }
+        .login-flag-strip {
+            display: flex;
+            height: 3px;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+        .login-flag-strip span { flex: 1; }
+        .login-flag-strip span:nth-child(1),
+        .login-flag-strip span:nth-child(3) { background: #008751; }
+        .login-flag-strip span:nth-child(2) { background: #ffffff; border-top: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; }
+        .login-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #ffffff;
+            color: #111827;
+        }
+        .login-field:focus {
+            outline: none;
+            border-color: #0B1F24;
+            box-shadow: 0 0 0 3px rgba(11, 31, 36, 0.08);
+        }
+        .login-submit {
+            width: 100%;
+            background: #0B1F24;
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+        .login-submit:hover { background: #000000; }
+        .login-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+        .login-error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            text-align: center;
+        }
+        .login-lockout {
+            background: #0B1F24;
+            border: 1px solid #0B1F24;
+            color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .login-lockout i {
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: block;
+            color: #A3E635;
+        }
+        .login-lockout-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 6px;
+        }
+        .login-lockout-timer {
+            font-size: 28px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.02em;
+        }
+    </style>
 </head>
 
 <body>
 
     <!-- Login Overlay -->
-    <!-- Login Overlay -->
     <div id="loginOverlay"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 99999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
-        <!-- Nigerian Coat of Arms Background -->
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: 99999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px);">
         <img src="assets/images/nigerian_coat_of_arms.png" alt=""
-            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; opacity: 0.08; pointer-events: none;">
+            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 420px; opacity: 0.06; pointer-events: none;">
 
-        <!-- Login Box -->
-        <div
-            style="background: white; border-radius: 16px; padding: 48px; width: 90%; max-width: 420px; box-shadow: 0 25px 80px rgba(0,0,0,0.4); position: relative; z-index: 1;">
+        <div class="login-box">
+            <div class="login-flag-strip" aria-hidden="true"><span></span><span></span><span></span></div>
+
             <div style="text-align: center; margin-bottom: 32px;">
-                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="height: 48px; margin-bottom: 16px;">
-                <h2 style="font-size: 24px; font-weight: 700; color: #111827; margin-bottom: 8px;">Secure Access
-                    Required</h2>
-                <p style="font-size: 14px; color: #6b7280;">Enter your credentials to access the portal</p>
+                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="height: 44px; margin-bottom: 18px;">
+                <h2 style="font-size: 22px; font-weight: 700; color: #0B1F24; margin-bottom: 8px; letter-spacing: -0.015em;">Authorized access only</h2>
+                <p style="font-size: 13px; color: #6b7280;">Sign in with your NEIIA credentials.</p>
             </div>
 
             <form id="loginForm" onsubmit="return handleLogin(event)">
-                <div style="margin-bottom: 20px;">
-                    <label
-                        style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">Username</label>
-                    <input type="text" id="loginUsername" placeholder="Enter username"
-                        style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; transition: border-color 0.2s;"
-                        onfocus="this.style.borderColor='#0B1F24'" onblur="this.style.borderColor='#d1d5db'">
+                <div style="margin-bottom: 18px;">
+                    <label for="loginUsername" style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em;">Username</label>
+                    <input type="text" id="loginUsername" placeholder="Username" class="login-field" autocomplete="username">
                 </div>
 
-                <div style="margin-bottom: 24px;">
-                    <label
-                        style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">Password</label>
-                    <input type="password" id="loginPassword" placeholder="Enter password"
-                        style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; transition: border-color 0.2s;"
-                        onfocus="this.style.borderColor='#0B1F24'" onblur="this.style.borderColor='#d1d5db'">
+                <div style="margin-bottom: 22px;">
+                    <label for="loginPassword" style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em;">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Password" class="login-field" autocomplete="current-password">
                 </div>
 
-                <div id="loginError"
-                    style="display: none; background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; text-align: center;">
+                <div id="loginError" class="login-error" style="display: none;"></div>
+
+                <div id="lockoutMessage" class="login-lockout" style="display: none;">
+                    <i class="fas fa-lock"></i>
+                    <div class="login-lockout-title">Temporarily locked</div>
+                    <div id="lockoutTimer" class="login-lockout-timer"></div>
                 </div>
 
-                <div id="lockoutMessage"
-                    style="display: none; background: #fef3c7; border: 1px solid #fcd34d; color: #92400e; padding: 16px; border-radius: 8px; margin-bottom: 16px; text-align: center;">
-                    <i class="fas fa-lock" style="font-size: 20px; margin-bottom: 8px; display: block;"></i>
-                    <div style="font-weight: 600; margin-bottom: 4px;">Account Temporarily Locked</div>
-                    <div id="lockoutTimer" style="font-size: 24px; font-weight: 700; color: #d97706;"></div>
-                </div>
-
-                <button type="submit" id="loginBtn"
-                    style="width: 100%; background: #0B1F24; color: white; border: none; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;"
-                    onmouseover="this.style.background='#0a1a1e'" onmouseout="this.style.background='#0B1F24'">
-                    Sign In
-                </button>
+                <button type="submit" id="loginBtn" class="login-submit">Sign in</button>
             </form>
 
-            <div style="text-align: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
-                <p style="font-size: 12px; color: #9ca3af;">Federal Republic of Nigeria</p>
-                <p style="font-size: 11px; color: #9ca3af; margin-top: 4px;">National Energy Investment & Intelligence
-                    Administration</p>
+            <div style="text-align: center; margin-top: 28px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+                <p style="font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600;">Federal Republic of Nigeria</p>
+                <p style="font-size: 11px; color: #9ca3af; margin-top: 6px;">National Energy Investment &amp; Intelligence Administration</p>
             </div>
         </div>
     </div>
@@ -185,7 +366,7 @@
                     }));
 
                     document.getElementById('loginError').style.display = 'block';
-                    document.getElementById('loginError').innerHTML = '<i class="fas fa-exclamation-circle"></i> Invalid credentials. Account locked for ' + (lockoutDuration / 60000) + ' minutes.';
+                    document.getElementById('loginError').innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right:6px;"></i>Invalid credentials. Locked for ' + (lockoutDuration / 60000) + ' minute(s).';
 
                     setTimeout(() => {
                         showLockout(until);
@@ -255,7 +436,7 @@
                         </div>
                         <div class="mm-footer"
                             style="border-top: none; padding-top: 10px; margin-top: auto; color: #6b7280; font-size: 15px;">
-                            Looking for tools for startups? Explore <a href="construction.html"
+                            Looking for tools for startups? Explore <a href="roll-up-vehicles/rollup.html"
                                 style="color: #6b7280 !important; text-decoration: underline; margin-left: 2px;">Rollups.</a>
                             <svg width="10" height="10" viewBox="0 0 12 12" fill="none"
                                 style="margin-left: 4px; display: inline-block;">
@@ -289,7 +470,7 @@
             </div>
             <a href="finance.html">Energy Finance & Capital</a>
             <a href="dashboard.html">Energy Ecosystem</a>
-            <a href="citibim.html">NEIIA</a>
+            <a href="citibim.html">Energy Atlas</a>
         </div>
     </nav>
 
@@ -323,7 +504,7 @@
             <ul class="mobile-nav-list">
                 <li><a href="finance.html">Energy Finance & Capital <i class="fas fa-arrow-right"></i></a></li>
                 <li><a href="dashboard.html">Energy Ecosystem <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="citibim.html">NEIIA <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="citibim.html">Energy Atlas <i class="fas fa-arrow-right"></i></a></li>
                 <li><a href="nefund.html" id="mobile-resources-link">NEFUND <i class="fas fa-chevron-right"></i></a>
                 </li>
             </ul>
@@ -401,13 +582,13 @@
                 </div>
 
                 <!-- Footer Links/Buttons -->
-                <a href="construction.html" class="submenu-footer-link">
+                <a href="roll-up-vehicles/rollup.html" class="submenu-footer-link">
                     Looking for tools for startups? Explore Rollups. <i class="fas fa-arrow-right"
                         style="font-size: 12px;"></i>
                 </a>
 
                 <div class="submenu-btn-group">
-                    <a href="contact.html" class="btn-lavender">Contact sales</a>
+                    <a href="contact.html" class="btn-lavender">Contact us</a>
                     <a href="signin.html" class="btn-gray-light">Sign in</a>
                 </div>
             </div>
@@ -416,29 +597,29 @@
 
     <!-- Hero Section -->
     <header class="hero container">
-        <h1>Powering Nigeria’s Energy Investments with Intelligence</h1>
-        <p>A centralized platform delivering energy investment intelligence, data, and strategic insight for Nigeria’s
-            energy sector.</p>
+        <span class="hero-eyebrow">The Energy Operating System of Nigeria</span>
+        <h1>Powering Nigeria's Energy Investments with Intelligence.</h1>
+        <p>A centralized platform delivering energy investment intelligence, data, and strategic insight for Nigeria's energy sector.</p>
         <div class="hero-actions">
-            <a href="construction.html" class="btn btn-primary">Explore Energy Opportunities</a>
-            <a href="construction.html" class="btn btn-secondary">View Investment Programs</a>
+            <a href="dashboard.html" class="btn btn-primary">Explore the ecosystem</a>
+            <a href="#platform" class="btn btn-secondary">View all products</a>
         </div>
         <div class="hero-image-wrapper">
-            <img src="assets/images/hero.jpg" alt="NEAP Dashboard Interface">
+            <img src="assets/images/hero.jpg" alt="NEIIA platform dashboard">
         </div>
     </header>
 
     <!-- 8-Grid Section -->
-    <section class="grid-section">
+    <section class="grid-section" id="platform">
         <div class="grid-container">
             <a href="nefund.html" class="grid-item grid-12">
-                <span class="grid-id">1</span>
+                <span class="grid-id">01</span>
                 <h3>NEFUND</h3>
                 <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
             </a>
             <a href="evillage/evillage.html" class="grid-item grid-11">
                 <span class="grid-id">02</span>
-                <h3>⁠⁠Evillage</h3>
+                <h3>eVillage</h3>
                 <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
             </a>
             <a href="energy-databank/index.html" class="grid-item grid-9">
@@ -501,15 +682,9 @@
         <div class="stats-container">
             <div class="stats-left">
                 <span class="stats-label">Platform Overview</span>
-                <h2 class="stats-heading">Powering Nigeria’s <br> Energy Investments</h2>
+                <h2 class="stats-heading">The scale of Nigeria's<br>energy opportunity.</h2>
 
-                <p class="stats-desc">NEIIA serves as Nigeria’s centralized platform for energy investment intelligence,
-                    asset visibility, and strategic coordination.
-                    <br>
-                    By aggregating data across funds, projects, SPVs, and energy assets, the platform enables
-                    government, investors, and stakeholders to make informed decisions, identify investment gaps, manage
-                    risk, and accelerate the implementation of national energy priorities.
-                </p>
+                <p class="stats-desc">One platform aggregating funds, projects, SPVs, and assets — so government, investors, and stakeholders can identify gaps, manage risk, and move capital where it matters.</p>
             </div>
             <div class="stats-right">
                 <div class="stats-grid">
@@ -564,39 +739,85 @@
                 <img src="assets/images/feature-2.png" alt="SPV Interface">
             </div>
         </div>
+
+        <div class="feature-block">
+            <div class="feature-text">
+                <h2>National Energy Data Bank</h2>
+                <p>Time-series data across crude oil, electricity, coal, and natural gas — with company profiles, deals, and document archives — all in one queryable hub.</p>
+                <a href="energy-databank/index.html" class="btn btn-secondary">Explore the Data Bank</a>
+            </div>
+            <div class="feature-image">
+                <img src="assets/images/feature-databank.jpg" alt="Oil and gas infrastructure">
+            </div>
+        </div>
+
+        <div class="feature-block reverse">
+            <div class="feature-text">
+                <h2>eVillage</h2>
+                <p>Solar financing, mini-grid connections, utility payments, and SHINE subsidy administration — a verified portal governed by NEMiC oversight.</p>
+                <a href="evillage/evillage.html" class="btn btn-secondary">Visit eVillage</a>
+            </div>
+            <div class="feature-image">
+                <img src="assets/images/feature-solar.jpg" alt="Solar panels">
+            </div>
+        </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer container">
         <div class="footer-grid">
+            <div class="footer-col footer-brand">
+                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="height: 32px; margin-bottom: 16px;">
+                <p>Nigeria's centralized platform for energy investment intelligence, asset visibility, and strategic coordination.</p>
+            </div>
             <div class="footer-col">
                 <h4>Products</h4>
                 <ul>
-                    <li><a href="venture-funds/venturefunds.html">Sub Funds</a></li>
+                    <li><a href="sub-funds/subfunds.html">Sub Funds</a></li>
                     <li><a href="venture-funds/venturefunds.html">Venture Funds</a></li>
                     <li><a href="rolling-funds/rollingfunds.html">Rolling Funds</a></li>
                     <li><a href="SPVs/SPVs.html">SPVs</a></li>
                     <li><a href="scout-funds/scout.html">Scout Funds</a></li>
+                    <li><a href="roll-up-vehicles/rollup.html">Roll Up Vehicles</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="dashboard.html">Energy Ecosystem</a></li>
+                    <li><a href="finance.html">Energy Finance &amp; Capital</a></li>
+                    <li><a href="energy-databank/index.html">National Data Bank</a></li>
+                    <li><a href="evillage/evillage.html">eVillage</a></li>
+                    <li><a href="risk-esg/index.html">Risk &amp; ESG</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Administration</h4>
                 <ul>
                     <li><a href="about.html">About NEIIA</a></li>
-                    <li><a href="governance.html">Mandate & Governance</a></li>
-                    <li><a href="construction.html">Careers</a></li>
-                    <li><a href="newsletter.html">News & Updates</a></li>
+                    <li><a href="governance.html">Mandate &amp; Governance</a></li>
+                    <li><a href="citibim.html">Energy Atlas</a></li>
+                    <li><a href="newsletter.html">News &amp; Updates</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Engagement</h4>
+                <h4>Support</h4>
                 <ul>
-                    <li><a href="help-center.html">Support & Enquiries</a></li>
+                    <li><a href="help-center.html">Help Center</a></li>
                     <li><a href="contact.html">Contact NEIIA</a></li>
+                    <li><a href="signin.html">Sign in</a></li>
+                    <li><a href="newsletter.html">Join</a></li>
                 </ul>
             </div>
         </div>
-        <p style="margin-top: 40px; color: var(--text-secondary); font-size: 0.9rem;">&copy; 2026 NEIIA</p>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Federal Republic of Nigeria · National Energy Investment &amp; Intelligence Administration.</p>
+            <div class="footer-legal">
+                <a href="terms-service.html">Terms</a>
+                <a href="terms-service.html">Privacy</a>
+                <a href="about.html">About</a>
+            </div>
+        </div>
     </footer>
 
     <script src="script.js"></script>
