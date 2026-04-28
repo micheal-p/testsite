@@ -46,6 +46,175 @@
         .auth-fixed .nav-link {
             color: #000 !important;
         }
+
+        /* Apex AI Footer — scoped, persona-matched */
+        .apex-footer {
+            position: relative;
+            background: linear-gradient(180deg, #050d10 0%, #0a1e23 100%);
+            border-top: 1px solid #1a3f48;
+            padding: 64px 32px 32px;
+            color: #e8f0f2;
+            margin-top: 0;
+        }
+
+        .apex-footer * {
+            box-sizing: border-box;
+        }
+
+        .apex-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 5%, rgba(163, 230, 53, 0.3) 50%, transparent 95%);
+        }
+
+        .apex-footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .apex-footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 40px;
+        }
+
+        .apex-footer-brand .apex-footer-logo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-decoration: none;
+            color: #e8f0f2;
+            margin-bottom: 16px;
+        }
+
+        .apex-footer-brand .apex-footer-logo img {
+            width: 120px;
+            height: auto;
+        }
+
+        .apex-footer-brand .apex-footer-tagline {
+            font-size: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #7a9da6;
+            line-height: 1.2;
+            max-width: 200px;
+        }
+
+        .apex-footer-brand p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #7a9da6;
+            max-width: 300px;
+        }
+
+        .apex-footer-col h4 {
+            font-size: 0.72rem !important;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #e8f0f2;
+            margin: 0 0 18px 0;
+        }
+
+        .apex-footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .apex-footer-col li {
+            margin: 0;
+        }
+
+        .apex-footer-col a {
+            font-size: 0.88rem;
+            color: #7a9da6;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .apex-footer-col a:hover {
+            color: #A3E635;
+        }
+
+        .apex-footer-bottom {
+            padding-top: 24px;
+            border-top: 1px solid rgba(26, 63, 72, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .apex-footer-bottom p {
+            font-size: 0.8rem;
+            color: #4a7580;
+            margin: 0;
+        }
+
+        .apex-footer-social {
+            display: flex;
+            gap: 8px;
+        }
+
+        .apex-footer-social a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1px solid #1a3f48;
+            color: #7a9da6;
+            text-decoration: none;
+            transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s;
+        }
+
+        .apex-footer-social a:hover {
+            color: #A3E635;
+            border-color: rgba(163, 230, 53, 0.4);
+            background: rgba(163, 230, 53, 0.05);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 860px) {
+            .apex-footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 32px;
+            }
+
+            .apex-footer-brand {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .apex-footer {
+                padding: 48px 20px 28px;
+            }
+
+            .apex-footer-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+                margin-bottom: 28px;
+            }
+
+            .apex-footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+            }
+        }
     </style>
     <script src="../auth-check.js"></script>
     <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
@@ -139,12 +308,6 @@
         </div>
     </nav>
 
-    <!-- Auth Links (Separate from Pill) -->
-    <div class="auth-fixed">
-        <a href="../signin.html" class="nav-link">Sign In</a>
-        <a href="../newsletter.html" class="btn btn-black">Join</a>
-    </div>
-
     <!-- Mobile Menu Button -->
     <button class="mobile-menu-btn" aria-label="Menu">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -175,7 +338,6 @@
             </ul>
             <div class="mobile-nav-footer">
                 <a href="../contact.html" class="btn btn-primary full-width">Contact Support</a>
-                <a href="../signin.html" class="btn btn-secondary full-width">Sign in</a>
             </div>
         </div>
 
@@ -250,7 +412,6 @@
 
                 <div class="submenu-btn-group">
                     <a href="../contact.html" class="btn-lavender">Contact sales</a>
-                    <a href="../signin.html" class="btn-gray-light">Sign in</a>
                 </div>
             </div>
         </div>
@@ -1398,49 +1559,73 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer container"
-        style="margin-top: 0; padding: 60px 20px; background-color: var(--bg-primary); color: var(--text-primary); border-top: 1px solid var(--border-color);">
-        <div class="footer-grid"
-            style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto; text-align: left;">
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600; color: var(--text-primary);">Products</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../venture-funds/venturefunds.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Venture Funds</a></li>
-                    <li style="margin-bottom: 12px;"><a href="../rolling-funds/rollingfunds.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Rolling Funds</a></li>
-                    <li style="margin-bottom: 12px;"><a href="../SPVs/SPVs.html"
-                            style="color: var(--text-secondary); text-decoration: none;">SPVs</a></li>
-                    <li style="margin-bottom: 12px;"><a href="../scout-funds/scout.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Scout Funds</a></li>
-                </ul>
+    <footer class="apex-footer">
+        <div class="apex-footer-inner">
+            <div class="apex-footer-grid">
+                <div class="apex-footer-brand">
+                    <a href="../index.html" class="apex-footer-logo">
+                        <img src="../assets/images/neiih_logo_white.png" alt="NEIIA">
+                        <span class="apex-footer-tagline">NATIONAL ENERGY INVESTMENT &amp; INTELLIGENCE
+                            ADMINISTRATION</span>
+                    </a>
+                    <p>AI-powered private market intelligence built for investors in Nigeria's energy economy.</p>
+                </div>
+
+                <div class="apex-footer-col">
+                    <h4>Products</h4>
+                    <ul>
+                        <li><a href="../venture-funds/venturefunds.html">Venture Funds</a></li>
+                        <li><a href="../rolling-funds/rollingfunds.html">Rolling Funds</a></li>
+                        <li><a href="../SPVs/SPVs.html">SPVs</a></li>
+                        <li><a href="../scout-funds/scout.html">Scout Funds</a></li>
+                    </ul>
+                </div>
+
+                <div class="apex-footer-col">
+                    <h4>Administration</h4>
+                    <ul>
+                        <li><a href="../about.html">About NEIIA</a></li>
+                        <li><a href="../construction.html">Mandate &amp; Governance</a></li>
+                        <li><a href="../construction.html">Careers</a></li>
+                        <li><a href="../newsletter.html">News &amp; Updates</a></li>
+                    </ul>
+                </div>
+
+                <div class="apex-footer-col">
+                    <h4>Engagement</h4>
+                    <ul>
+                        <li><a href="../help-center.html">Support &amp; Enquiries</a></li>
+                        <li><a href="../contact.html">Contact NEIIA</a></li>
+                        <li><a href="waitlist.html">Apex AI Waitlist</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600; color: var(--text-primary);">Administration</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../about.html"
-                            style="color: var(--text-secondary); text-decoration: none;">About NEIIA</a></li>
-                    <li style="margin-bottom: 12px;"><a href="../construction.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Mandate & Governance</a></li>
-                    <li style="margin-bottom: 12px;"><a href="../construction.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Careers</a></li>
-                    <li style="margin-bottom: 12px;"><a href="../newsletter.html"
-                            style="color: var(--text-secondary); text-decoration: none;">News & Updates</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600; color: var(--text-primary);">Engagement</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../help-center.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Support & Enquiries</a></li>
-                    <li style="margin-bottom: 12px;"><a href="../contact.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Contact NEIIA</a></li>
-                </ul>
+
+            <div class="apex-footer-bottom">
+                <p>&copy; 2026 NEIIA. All rights reserved.</p>
+                <div class="apex-footer-social" aria-label="Social links">
+                    <a href="#" aria-label="LinkedIn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.61 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="X">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Email">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
+                        </svg>
+                    </a>
+                </div>
             </div>
         </div>
-        <p
-            style="margin-top: 40px; color: var(--text-secondary); font-size: 0.9rem; max-width: 1200px; margin-left: auto; margin-right: auto;">
-            &copy; 2026 NEIIA</p>
     </footer>
 
     <script src="../script.js"></script>

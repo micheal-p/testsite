@@ -19,14 +19,21 @@
         :root {
             --bg-primary: #050d10;
             --bg-card: #0a1e23;
+            --bg-card-elevated: #0d2329;
             --bg-input: #0f2a30;
             --border-color: #1a3f48;
+            --border-soft: rgba(26, 63, 72, 0.5);
             --accent: #A3E635;
+            --accent-soft: rgba(163, 230, 53, 0.12);
             --accent-hover: #b8f048;
             --text-primary: #e8f0f2;
             --text-muted: #7a9da6;
             --text-dim: #4a7580;
             --purple: #BDBBFF;
+        }
+
+        html, body {
+            height: 100%;
         }
 
         body {
@@ -37,7 +44,11 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+
+        a { color: inherit; }
 
         /* Animated Background */
         .bg-gradient {
@@ -45,6 +56,7 @@
             inset: 0;
             z-index: 0;
             overflow: hidden;
+            pointer-events: none;
         }
 
         .bg-gradient::before {
@@ -54,40 +66,29 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(ellipse at 30% 20%, rgba(163, 230, 53, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(189, 187, 255, 0.04) 0%, transparent 50%),
+            background:
+                radial-gradient(ellipse at 25% 15%, rgba(163, 230, 53, 0.08) 0%, transparent 45%),
+                radial-gradient(ellipse at 75% 85%, rgba(189, 187, 255, 0.06) 0%, transparent 50%),
                 radial-gradient(ellipse at 50% 50%, rgba(10, 30, 35, 1) 0%, var(--bg-primary) 100%);
-            -webkit-animation: bgShift 20s ease-in-out infinite alternate;
-
-            animation: bgShift 20s ease-in-out infinite alternate;
+            animation: bgShift 22s ease-in-out infinite alternate;
         }
 
-        @-webkit-keyframes bgShift {
-            0% {
-                -webkit-transform: translate(0, 0) rotate(0deg);
-
-                transform: translate(0, 0) rotate(0deg);
-            }
-
-            100% {
-                -webkit-transform: translate(-2%, -2%) rotate(1deg);
-
-                transform: translate(-2%, -2%) rotate(1deg);
-            }
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(163, 230, 53, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(163, 230, 53, 0.03) 1px, transparent 1px);
+            background-size: 64px 64px;
+            mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 0%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 0%, transparent 70%);
         }
 
-@keyframes bgShift {
-            0% {
-                -webkit-transform: translate(0, 0) rotate(0deg);
-
-                transform: translate(0, 0) rotate(0deg);
-            }
-
-            100% {
-                -webkit-transform: translate(-2%, -2%) rotate(1deg);
-
-                transform: translate(-2%, -2%) rotate(1deg);
-            }
+        @keyframes bgShift {
+            0%   { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-2%, -2%) rotate(1deg); }
         }
 
         /* Navigation */
@@ -97,7 +98,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 32px;
+            padding: 20px 32px;
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
@@ -127,19 +128,33 @@
         }
 
         .nav-back {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
             color: var(--text-muted);
             text-decoration: none;
             font-size: 0.875rem;
-            -webkit-transition: color 0.2s;
-
-            transition: color 0.2s;
+            padding: 8px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 100px;
+            background: rgba(15, 42, 48, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
         }
 
         .nav-back:hover {
             color: var(--accent);
+            border-color: rgba(163, 230, 53, 0.4);
+            background: rgba(163, 230, 53, 0.05);
+        }
+
+        .nav-back svg {
+            transition: transform 0.2s;
+        }
+
+        .nav-back:hover svg {
+            transform: translateX(-3px);
         }
 
         /* Main Layout */
@@ -150,280 +165,152 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px 24px 20px;
+            padding: 32px 24px 60px;
         }
 
-        .waitlist-card {
+        .layout-grid {
             width: 100%;
-            max-width: 520px;
-            position: relative;
+            max-width: 1080px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            align-items: center;
         }
 
-        /* Sparkle Icon */
-        .sparkle-wrapper {
-            text-align: center;
-            margin-bottom: 24px;
+        @media (min-width: 960px) {
+            .layout-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 64px;
+            }
         }
 
-        .sparkle-icon {
+        /* Left Column — Pitch */
+        .pitch-column {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .brand-mark {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .brand-mark .mark-dot {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, rgba(163, 230, 53, 0.15), rgba(163, 230, 53, 0.05));
-            border: 1px solid rgba(163, 230, 53, 0.2);
-            -webkit-animation: sparkleGlow 3s ease-in-out infinite;
-
-            animation: sparkleGlow 3s ease-in-out infinite;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent-soft), rgba(163, 230, 53, 0.04));
+            border: 1px solid rgba(163, 230, 53, 0.25);
         }
 
-        @-webkit-keyframes sparkleGlow {
-
-            0%,
-            100% {
-                box-shadow: 0 0 20px rgba(163, 230, 53, 0.1);
-            }
-
-            50% {
-                box-shadow: 0 0 40px rgba(163, 230, 53, 0.2);
-            }
-        }
-
-@keyframes sparkleGlow {
-
-            0%,
-            100% {
-                box-shadow: 0 0 20px rgba(163, 230, 53, 0.1);
-            }
-
-            50% {
-                box-shadow: 0 0 40px rgba(163, 230, 53, 0.2);
-            }
-        }
-
-        /* Header */
-        .waitlist-header {
-            text-align: center;
-            margin-bottom: 12px;
-        }
-
-        .waitlist-badge {
+        .pitch-eyebrow {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
+            gap: 8px;
+            padding: 6px 14px;
             border-radius: 100px;
             border: 1px solid var(--border-color);
+            background: rgba(15, 42, 48, 0.4);
             color: var(--text-muted);
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             font-weight: 500;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            width: fit-content;
         }
 
-        .waitlist-badge .dot {
+        .pitch-eyebrow .dot {
             width: 6px;
             height: 6px;
             border-radius: 50%;
             background: var(--accent);
-            -webkit-animation: pulse 2s ease-in-out infinite;
-
+            box-shadow: 0 0 8px var(--accent);
             animation: pulse 2s ease-in-out infinite;
         }
 
-        @-webkit-keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.4;
-            }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%      { opacity: 0.5; transform: scale(0.85); }
         }
 
-@keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.4;
-            }
-        }
-
-        .waitlist-header h1 {
-            font-size: 1.6rem;
+        .pitch-title {
+            font-size: clamp(2rem, 4vw, 2.75rem);
             font-weight: 600;
-            line-height: 1.2;
-            margin-bottom: 6px;
-            letter-spacing: -0.02em;
-        }
-
-        .waitlist-header p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        /* Form */
-        .waitlist-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .form-group label {
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .form-group input,
-        .form-group select {
-            padding: 8px 12px;
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 0.85rem;
-            font-family: inherit;
-            outline: none;
-            -webkit-transition: border-color 0.2s, box-shadow 0.2s;
-
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .form-group input::placeholder {
-            color: var(--text-dim);
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(163, 230, 53, 0.1);
-        }
-
-        .form-group select {
-            -webkit-appearance: none;
-
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%237a9da6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            padding-right: 36px;
-            cursor: pointer;
-        }
-
-        .form-group select option {
-            background: var(--bg-card);
+            line-height: 1.05;
+            letter-spacing: -0.025em;
             color: var(--text-primary);
         }
 
-        .submit-btn {
-            width: 100%;
-            padding: 10px 24px;
-            background: var(--accent);
-            color: #050d10;
+        .pitch-title .accent-text {
+            background: linear-gradient(135deg, var(--accent) 0%, #d4f57a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pitch-subtitle {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            max-width: 460px;
+        }
+
+        .benefits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            list-style: none;
+        }
+
+        .benefits-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
             font-size: 0.9rem;
-            font-weight: 600;
-            font-family: inherit;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            -webkit-transition: all 0.2s;
-
-            transition: all 0.2s;
-            margin-top: 2px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .submit-btn:hover {
-            background: var(--accent-hover);
-            -webkit-transform: translateY(-1px);
-
-            transform: translateY(-1px);
-            box-shadow: 0 8px 24px rgba(163, 230, 53, 0.25);
-        }
-
-        .submit-btn:active {
-            -webkit-transform: translateY(0);
-
-            transform: translateY(0);
-        }
-
-        .submit-btn .btn-shimmer {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            -webkit-transform: translateX(-100%);
-
-            transform: translateX(-100%);
-            -webkit-animation: shimmer 3s ease-in-out infinite;
-
-            animation: shimmer 3s ease-in-out infinite;
-        }
-
-        @-webkit-keyframes shimmer {
-            100% {
-                -webkit-transform: translateX(100%);
-
-                transform: translateX(100%);
-            }
-        }
-
-@keyframes shimmer {
-            100% {
-                -webkit-transform: translateX(100%);
-
-                transform: translateX(100%);
-            }
-        }
-
-        /* Disclaimer */
-        .form-disclaimer {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-dim);
             line-height: 1.5;
-            margin-top: 4px;
+            color: var(--text-primary);
         }
 
-        .form-disclaimer a {
-            color: var(--text-muted);
-            text-decoration: underline;
-            text-underline-offset: 2px;
-        }
-
-        /* Social Proof */
-        .social-proof {
-            display: flex;
+        .benefits-list .check-icon {
+            flex-shrink: 0;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(26, 63, 72, 0.5);
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            background: var(--accent-soft);
+            border: 1px solid rgba(163, 230, 53, 0.3);
+            margin-top: 1px;
+        }
+
+        .benefits-list .benefit-label {
+            font-weight: 500;
+        }
+
+        .benefits-list .benefit-desc {
+            display: block;
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+
+        .trust-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding-top: 8px;
         }
 
         .avatar-stack {
@@ -443,54 +330,267 @@
             font-weight: 600;
         }
 
-        .avatar-stack .avatar:first-child {
-            margin-left: 0;
-        }
+        .avatar-stack .avatar:first-child { margin-left: 0; }
+        .avatar-1 { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white; }
+        .avatar-2 { background: linear-gradient(135deg, #0ea5e9, #06b6d4); color: white; }
+        .avatar-3 { background: linear-gradient(135deg, #10b981, #34d399); color: white; }
+        .avatar-4 { background: linear-gradient(135deg, var(--accent), #d4f57a); color: var(--bg-primary); }
 
-        .avatar-1 {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: white;
-        }
-
-        .avatar-2 {
-            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-            color: white;
-        }
-
-        .avatar-3 {
-            background: linear-gradient(135deg, #10b981, #34d399);
-            color: white;
-        }
-
-        .avatar-4 {
-            background: linear-gradient(135deg, #f59e0b, #fbbf24);
-            color: white;
-        }
-
-        .social-proof-text {
+        .trust-text {
             font-size: 0.8rem;
             color: var(--text-muted);
+            line-height: 1.4;
         }
 
-        .social-proof-text strong {
+        .trust-text strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Right Column — Form Card */
+        .form-card {
+            position: relative;
+            background: linear-gradient(180deg, var(--bg-card-elevated) 0%, var(--bg-card) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 36px 32px;
+            box-shadow:
+                0 24px 60px -20px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(163, 230, 53, 0.04);
+            overflow: hidden;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 10%, rgba(163, 230, 53, 0.4) 50%, transparent 90%);
+        }
+
+        .form-card::after {
+            content: '';
+            position: absolute;
+            top: -120px;
+            right: -120px;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(189, 187, 255, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .form-card-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Sparkle Icon */
+        .sparkle-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+
+        .sparkle-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(163, 230, 53, 0.18), rgba(163, 230, 53, 0.04));
+            border: 1px solid rgba(163, 230, 53, 0.25);
+            color: var(--accent);
+            animation: sparkleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes sparkleGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(163, 230, 53, 0.15); }
+            50%      { box-shadow: 0 0 40px rgba(163, 230, 53, 0.28); }
+        }
+
+        .form-heading {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .form-heading h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.015em;
+            margin-bottom: 6px;
+        }
+
+        .form-heading p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Form */
+        .waitlist-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .form-group label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.01em;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            min-width: 0;
+            padding: 11px 14px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: rgba(163, 230, 53, 0.25);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(163, 230, 53, 0.12);
+            background: rgba(15, 42, 48, 0.8);
+        }
+
+        .form-group select {
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%237a9da6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+            cursor: pointer;
+        }
+
+        .form-group select option {
+            background: var(--bg-card);
             color: var(--text-primary);
         }
 
-        /* Features Strip */
+        .submit-btn {
+            width: 100%;
+            padding: 13px 24px;
+            background: var(--accent);
+            color: var(--bg-primary);
+            font-size: 0.92rem;
+            font-weight: 600;
+            font-family: inherit;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+            margin-top: 6px;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 28px rgba(163, 230, 53, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn .btn-shimmer {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        .submit-btn .btn-arrow {
+            transition: transform 0.2s;
+        }
+
+        .submit-btn:hover .btn-arrow {
+            transform: translateX(3px);
+        }
+
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+
+        /* Disclaimer */
+        .form-disclaimer {
+            text-align: center;
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+            margin-top: 8px;
+        }
+
+        .form-disclaimer a {
+            color: var(--text-muted);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            transition: color 0.2s;
+        }
+
+        .form-disclaimer a:hover {
+            color: var(--accent);
+        }
+
+        /* Features Strip — inside card */
         .features-strip {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 16px;
-            margin-top: 12px;
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border-soft);
             flex-wrap: wrap;
         }
 
         .feature-item {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 6px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--text-muted);
         }
 
@@ -503,71 +603,44 @@
         .success-state {
             display: none;
             text-align: center;
-            padding: 40px 0;
+            padding: 32px 8px 16px;
         }
 
         .success-state.active {
             display: block;
-            -webkit-animation: fadeIn 0.5s ease-out;
-
             animation: fadeIn 0.5s ease-out;
         }
 
-        @-webkit-keyframes fadeIn {
-            from {
-                opacity: 0;
-                -webkit-transform: translateY(10px);
-
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                -webkit-transform: translateY(0);
-
-                transform: translateY(0);
-            }
-        }
-
-@keyframes fadeIn {
-            from {
-                opacity: 0;
-                -webkit-transform: translateY(10px);
-
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                -webkit-transform: translateY(0);
-
-                transform: translateY(0);
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         .success-icon {
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            background: linear-gradient(135deg, rgba(163, 230, 53, 0.2), rgba(163, 230, 53, 0.05));
-            border: 2px solid rgba(163, 230, 53, 0.3);
+            background: linear-gradient(135deg, rgba(163, 230, 53, 0.22), rgba(163, 230, 53, 0.05));
+            border: 2px solid rgba(163, 230, 53, 0.35);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
+            animation: sparkleGlow 3s ease-in-out infinite;
         }
 
         .success-state h2 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 600;
             margin-bottom: 10px;
+            letter-spacing: -0.015em;
         }
 
         .success-state p {
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             line-height: 1.6;
-            max-width: 380px;
+            max-width: 360px;
             margin: 0 auto 24px;
         }
 
@@ -575,38 +648,188 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 12px 24px;
+            padding: 11px 20px;
             background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-primary);
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-family: inherit;
             border-radius: 10px;
             text-decoration: none;
-            -webkit-transition: all 0.2s;
-
-            transition: all 0.2s;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
         }
 
         .back-to-fin:hover {
-            border-color: var(--accent);
+            border-color: rgba(163, 230, 53, 0.5);
             color: var(--accent);
+            background: rgba(163, 230, 53, 0.04);
+        }
+
+        .back-to-fin svg {
+            transition: transform 0.2s;
+        }
+
+        .back-to-fin:hover svg {
+            transform: translateX(3px);
+        }
+
+        /* Footer */
+        .site-footer {
+            position: relative;
+            z-index: 1;
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            background: linear-gradient(180deg, transparent 0%, rgba(10, 30, 35, 0.6) 100%);
+            padding: 56px 32px 32px;
+        }
+
+        .site-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 5%, rgba(163, 230, 53, 0.25) 50%, transparent 95%);
+        }
+
+        .footer-inner {
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand .footer-logo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-decoration: none;
+            color: var(--text-primary);
+            margin-bottom: 14px;
+        }
+
+        .footer-brand .footer-logo img {
+            width: 110px;
+            height: auto;
+        }
+
+        .footer-brand .footer-tagline {
+            font-size: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            line-height: 1.2;
+            max-width: 200px;
+        }
+
+        .footer-brand p {
+            font-size: 0.82rem;
+            line-height: 1.55;
+            color: var(--text-muted);
+            max-width: 280px;
+        }
+
+        .footer-col h4 {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            margin-bottom: 18px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-col a {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            padding-top: 24px;
+            border-top: 1px solid var(--border-soft);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer-bottom p {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 8px;
+        }
+
+        .footer-social a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s;
+        }
+
+        .footer-social a:hover {
+            color: var(--accent);
+            border-color: rgba(163, 230, 53, 0.4);
+            background: rgba(163, 230, 53, 0.05);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 860px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 32px;
+            }
+
+            .footer-brand {
+                grid-column: 1 / -1;
+            }
         }
 
         /* Responsive */
         @media (max-width: 640px) {
             .nav-bar {
-                padding: 12px 16px;
+                padding: 16px 18px;
             }
 
             .main-container {
-                padding: 16px 16px 40px;
-                align-items: flex-start;
-                padding-top: 10px;
+                padding: 16px 18px 40px;
             }
 
-            .waitlist-header h1 {
-                font-size: 1.5rem;
+            .form-card {
+                padding: 28px 22px;
+                border-radius: 16px;
+            }
+
+            .form-heading h2 {
+                font-size: 1.25rem;
             }
 
             .form-row {
@@ -614,11 +837,31 @@
             }
 
             .features-strip {
-                gap: 12px;
+                gap: 14px;
             }
 
             .nav-logo span {
                 display: none;
+            }
+
+            .pitch-column {
+                gap: 22px;
+            }
+
+            .site-footer {
+                padding: 40px 18px 24px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+                margin-bottom: 28px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
             }
         }
     </style>
@@ -628,6 +871,7 @@
 <body>
     <!-- Background -->
     <div class="bg-gradient"></div>
+    <div class="bg-grid"></div>
 
     <!-- Navigation -->
     <nav class="nav-bar">
@@ -636,7 +880,8 @@
             <span>NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</span>
         </a>
         <a href="apex.html" class="nav-back">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
                 <line x1="19" y1="12" x2="5" y2="12" />
                 <polyline points="12 19 5 12 12 5" />
             </svg>
@@ -646,137 +891,292 @@
 
     <!-- Main Content -->
     <main class="main-container">
-        <div class="waitlist-card">
+        <div class="layout-grid">
 
-            <!-- Header -->
-            <div class="waitlist-header">
-                <div class="waitlist-badge">
+            <!-- Left: Pitch -->
+            <section class="pitch-column">
+                <div class="brand-mark">
+                    <span class="mark-dot">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"
+                                fill="#A3E635" stroke="none" />
+                        </svg>
+                    </span>
+                    Apex AI
+                </div>
+
+                <span class="pitch-eyebrow">
                     <span class="dot"></span>
                     Private Beta — Limited Access
-                </div>
-                <h1>Get early access to Apex AI</h1>
-                <p>Join the waitlist to be among the first to use AI-powered private market intelligence.</p>
-            </div>
+                </span>
 
-            <!-- Form -->
-            <form class="waitlist-form" id="waitlistForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="firstName">First name</label>
-                        <input type="text" id="firstName" name="firstName" placeholder="Jane" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName">Last name</label>
-                        <input type="text" id="lastName" name="lastName" placeholder="Smith" required>
-                    </div>
-                </div>
+                <h1 class="pitch-title">
+                    Get early access to <span class="accent-text">Apex AI</span>
+                </h1>
 
-                <div class="form-group">
-                    <label for="email">Work email</label>
-                    <input type="email" id="email" name="email" placeholder="jane@venture.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="company">Company / Firm</label>
-                    <input type="text" id="company" name="company" placeholder="Acme Ventures">
-                </div>
-
-                <div class="form-group">
-                    <label for="role">Your role</label>
-                    <select id="role" name="role">
-                        <option value="" disabled selected>Select your role</option>
-                        <option value="gp">General Partner</option>
-                        <option value="lp">Limited Partner</option>
-                        <option value="analyst">Analyst / Associate</option>
-                        <option value="portfolio">Portfolio Manager</option>
-                        <option value="cfo">CFO / Fund Controller</option>
-                        <option value="ir">Investor Relations</option>
-                        <option value="founder">Founder / CEO</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="submit-btn">
-                    <span class="btn-shimmer"></span>
-                    Join the waitlist
-                </button>
-
-                <p class="form-disclaimer">
-                    By joining, you agree to NEIIA's <a href="../contact.html">Terms</a> and <a
-                        href="../contact.html">Privacy Policy</a>.
+                <p class="pitch-subtitle">
+                    Join the waitlist to be among the first to use AI-powered private market intelligence — built
+                    for investors, by investors.
                 </p>
-            </form>
 
-            <!-- Success State -->
-            <div class="success-state" id="successState">
-                <div class="success-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A3E635" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12" />
-                    </svg>
+                <ul class="benefits-list">
+                    <li>
+                        <span class="check-icon">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#A3E635"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                        </span>
+                        <span>
+                            <span class="benefit-label">Real-time deal flow</span>
+                            <span class="benefit-desc">Surface fund openings and co-investment opportunities the moment they're listed.</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="check-icon">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#A3E635"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                        </span>
+                        <span>
+                            <span class="benefit-label">Natural-language analysis</span>
+                            <span class="benefit-desc">Ask questions across NEIIA's proprietary data network — get answers, not spreadsheets.</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="check-icon">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#A3E635"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                        </span>
+                        <span>
+                            <span class="benefit-label">Built on the NEIIA platform</span>
+                            <span class="benefit-desc">Connect Apex AI directly to your Data Bank, portfolio, and reporting workflows.</span>
+                        </span>
+                    </li>
+                </ul>
+
+                <div class="trust-row">
+                    <div class="avatar-stack">
+                        <div class="avatar avatar-1">JD</div>
+                        <div class="avatar avatar-2">MK</div>
+                        <div class="avatar avatar-3">AS</div>
+                        <div class="avatar avatar-4">+</div>
+                    </div>
+                    <div class="trust-text">
+                        <strong>250+</strong> investors already on the waitlist
+                    </div>
                 </div>
-                <h2>You're on the list!</h2>
-                <p>Thanks for your interest in Apex AI. We'll reach out when your access is ready. In the meantime, explore
-                    what Apex AI can do.</p>
-                <a href="apex.html" class="back-to-fin">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="19" y1="12" x2="5" y2="12" />
-                        <polyline points="12 19 5 12 12 5" />
-                    </svg>
-                    Explore Apex AI Beta
-                </a>
+            </section>
+
+            <!-- Right: Form Card -->
+            <section class="form-card">
+                <div class="form-card-inner">
+
+                    <div class="sparkle-wrapper">
+                        <span class="sparkle-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17l-1.9-5.1L4.5 10l5.6-1.4z" />
+                                <path d="M19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z" />
+                            </svg>
+                        </span>
+                    </div>
+
+                    <div class="form-heading">
+                        <h2>Request your invitation</h2>
+                        <p>We'll review and reach out when your seat opens.</p>
+                    </div>
+
+                    <!-- Form -->
+                    <form class="waitlist-form" id="waitlistForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First name</label>
+                                <input type="text" id="firstName" name="firstName" placeholder="Jane" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last name</label>
+                                <input type="text" id="lastName" name="lastName" placeholder="Smith" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Work email</label>
+                            <input type="email" id="email" name="email" placeholder="jane@venture.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="company">Company / Firm</label>
+                            <input type="text" id="company" name="company" placeholder="Acme Ventures">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="role">Your role</label>
+                            <select id="role" name="role">
+                                <option value="" disabled selected>Select your role</option>
+                                <option value="gp">General Partner</option>
+                                <option value="lp">Limited Partner</option>
+                                <option value="analyst">Analyst / Associate</option>
+                                <option value="portfolio">Portfolio Manager</option>
+                                <option value="cfo">CFO / Fund Controller</option>
+                                <option value="ir">Investor Relations</option>
+                                <option value="founder">Founder / CEO</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            <span class="btn-shimmer"></span>
+                            <span>Join the waitlist</span>
+                            <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                        </button>
+
+                        <p class="form-disclaimer">
+                            By joining, you agree to NEIIA's <a href="../contact.html">Terms</a> and
+                            <a href="../contact.html">Privacy Policy</a>.
+                        </p>
+                    </form>
+
+                    <!-- Success State -->
+                    <div class="success-state" id="successState">
+                        <div class="success-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A3E635"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                        </div>
+                        <h2>You're on the list!</h2>
+                        <p>Thanks for your interest in Apex AI. We'll reach out when your access is ready. In the
+                            meantime, explore what Apex AI can do.</p>
+                        <a href="apex.html" class="back-to-fin">
+                            Explore Apex AI Beta
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                        </a>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="features-strip" id="featuresStrip">
+                        <div class="feature-item">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            Free during beta
+                        </div>
+                        <div class="feature-item">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            No credit card
+                        </div>
+                        <div class="feature-item">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            Priority access
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="../index.html" class="footer-logo">
+                        <img src="../assets/images/neiih_logo_white.png" alt="NEIIA">
+                        <span class="footer-tagline">NATIONAL ENERGY INVESTMENT &amp; INTELLIGENCE ADMINISTRATION</span>
+                    </a>
+                    <p>AI-powered private market intelligence built for investors in Nigeria's energy economy.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Products</h4>
+                    <ul>
+                        <li><a href="../venture-funds/venturefunds.html">Venture Funds</a></li>
+                        <li><a href="../rolling-funds/rollingfunds.html">Rolling Funds</a></li>
+                        <li><a href="../SPVs/SPVs.html">SPVs</a></li>
+                        <li><a href="../scout-funds/scout.html">Scout Funds</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Administration</h4>
+                    <ul>
+                        <li><a href="../about.html">About NEIIA</a></li>
+                        <li><a href="../construction.html">Mandate &amp; Governance</a></li>
+                        <li><a href="../construction.html">Careers</a></li>
+                        <li><a href="../newsletter.html">News &amp; Updates</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Engagement</h4>
+                    <ul>
+                        <li><a href="../help-center.html">Support &amp; Enquiries</a></li>
+                        <li><a href="../contact.html">Contact NEIIA</a></li>
+                        <li><a href="apex.html">Apex AI Beta</a></li>
+                    </ul>
+                </div>
             </div>
 
-            <!-- Social Proof -->
-            <div class="social-proof">
-                <div class="avatar-stack">
-                    <div class="avatar avatar-1">JD</div>
-                    <div class="avatar avatar-2">MK</div>
-                    <div class="avatar avatar-3">AS</div>
-                    <div class="avatar avatar-4">+</div>
-                </div>
-                <div class="social-proof-text">
-                    <strong>250+</strong> investors already on the waitlist
-                </div>
-            </div>
-
-            <!-- Features -->
-            <div class="features-strip">
-                <div class="feature-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                    Free during beta
-                </div>
-                <div class="feature-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                    No credit card
-                </div>
-                <div class="feature-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                    Priority access
+            <div class="footer-bottom">
+                <p>&copy; 2026 NEIIA. All rights reserved.</p>
+                <div class="footer-social" aria-label="Social links">
+                    <a href="#" aria-label="LinkedIn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.61 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="X">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Email">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
-    </main>
+    </footer>
 
     <script>
         document.getElementById('waitlistForm').addEventListener('submit', function (e) {
             e.preventDefault();
 
-            // Animate button
             const btn = this.querySelector('.submit-btn');
-            btn.textContent = 'Joining...';
+            const btnLabel = btn.querySelector('span:nth-of-type(2)');
+            if (btnLabel) btnLabel.textContent = 'Joining…';
             btn.style.pointerEvents = 'none';
-            btn.style.opacity = '0.7';
+            btn.style.opacity = '0.75';
 
-            // Simulate submission
             setTimeout(function () {
                 document.getElementById('waitlistForm').style.display = 'none';
+                document.getElementById('featuresStrip').style.display = 'none';
                 document.getElementById('successState').classList.add('active');
             }, 1200);
         });
