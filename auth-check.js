@@ -28,6 +28,13 @@
     }
 
     function checkAuth() {
+        // Preview mode: ?preview=1 in the URL grants a session pass.
+        // Lets external partner sites (e.g. nor-website) deep-link into modules.
+        if (/[?&]preview=1\b/.test(window.location.search)) {
+            sessionStorage.setItem(AUTH_KEY, 'true');
+            return;
+        }
+
         const isAuthenticated = sessionStorage.getItem(AUTH_KEY) === 'true';
 
         if (!isAuthenticated) {
