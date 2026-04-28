@@ -178,7 +178,7 @@
             </button>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 w-full bg-white dark:bg-dark-bg border-b border-slate-200 dark:border-dark-border shadow-lg">
+        <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 w-full bg-white dark:bg-dark-bg border-b border-slate-200 dark:border-dark-border shadow-lg" style="max-height: calc(100vh - 64px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;">
             <div class="flex flex-col px-6 py-5 gap-4">
                 <a href="../index.html" class="mobile-link text-base font-medium text-slate-700 dark:text-slate-200 hover:text-ev-green">
                     NEIIA Home
@@ -534,21 +534,29 @@
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileLinks = document.querySelectorAll('.mobile-link');
 
+        function setBodyScrollLock(locked) {
+            document.body.style.overflow = locked ? 'hidden' : '';
+            document.documentElement.style.overflow = locked ? 'hidden' : '';
+        }
+
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
+            const isOpen = !mobileMenu.classList.contains('hidden');
+            setBodyScrollLock(isOpen);
             const icon = mobileMenuBtn.querySelector('i');
-            if (mobileMenu.classList.contains('hidden')) {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            } else {
+            if (isOpen) {
                 icon.classList.remove('fa-bars');
                 icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
             }
         });
 
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
+                setBodyScrollLock(false);
                 const icon = mobileMenuBtn.querySelector('i');
                 icon.classList.remove('fa-times');
                 icon.classList.add('fa-bars');
