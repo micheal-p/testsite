@@ -132,6 +132,22 @@
 
         /* Offset anchor jumps so section headers don't hide behind the fixed 64px navbar */
         section[id] { scroll-margin-top: 80px; }
+        /* Mobile chart readability + carousel dots */
+        @media (max-width: 640px) {
+            #mandate-progress svg text { font-size: 11px !important; }
+            #mandate-progress .text-3xl { font-size: 1.6rem !important; }
+            #mandate-progress .text-4xl { font-size: 1.8rem !important; }
+        }
+        /* Carousel with dots */
+        .carousel-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 1rem; padding-bottom: 0.5rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .carousel-track::-webkit-scrollbar { display: none; }
+        .carousel-track > * { scroll-snap-align: start; flex-shrink: 0; }
+        .carousel-dots { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.25rem; }
+        .carousel-dots button { width: 8px; height: 8px; border-radius: 9999px; background: #cbd5e1; border: none; cursor: pointer; transition: all 0.2s; padding: 0; }
+        .carousel-dots button.active { width: 24px; background: #008751; }
+        .dark .carousel-dots button { background: rgba(255,255,255,0.2); }
+        .dark .carousel-dots button.active { background: #34D399; }
+
     </style>
 </head>
 
@@ -288,11 +304,11 @@
                 </p>
             </div>
 
-            <!-- 5 pillar cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <!-- 5 pillar cards: carousel on mobile, grid on tablet+ -->
+            <div id="pillars-carousel" class="md:grid md:grid-cols-2 lg:grid-cols-5 md:gap-4 carousel-track md:!overflow-visible md:!gap-4">
 
                 <!-- Pillar 1: Smart Governance -->
-                <a href="evillage-pillar-governance.html" class="group flex flex-col p-7 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-2xl hover:border-ev-green dark:hover:border-ev-sage hover:shadow-lg dark:hover:shadow-ev-green/10 transition-all">
+                <a href="evillage-pillar-governance.html" class="group flex flex-col p-7 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-2xl hover:border-ev-green dark:hover:border-ev-sage hover:shadow-lg dark:hover:shadow-ev-green/10 transition-all w-[82%] md:w-auto">
                     <div class="text-[10px] font-bold text-ev-green dark:text-ev-sage tracking-widest mb-4">PILLAR 01</div>
                     <div class="w-11 h-11 bg-ev-green/10 dark:bg-ev-green/20 text-ev-green dark:text-ev-sage rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-balance-scale"></i>
@@ -308,7 +324,7 @@
                 </a>
 
                 <!-- Pillar 2: Smart Economy -->
-                <a href="evillage-pillar-economy.html" class="group flex flex-col p-7 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-2xl hover:border-ev-green dark:hover:border-ev-sage hover:shadow-lg dark:hover:shadow-ev-green/10 transition-all">
+                <a href="evillage-pillar-economy.html" class="group flex flex-col p-7 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-2xl hover:border-ev-green dark:hover:border-ev-sage hover:shadow-lg dark:hover:shadow-ev-green/10 transition-all w-[82%] md:w-auto">
                     <div class="text-[10px] font-bold text-ev-green dark:text-ev-sage tracking-widest mb-4">PILLAR 02</div>
                     <div class="w-11 h-11 bg-ev-green/10 dark:bg-ev-green/20 text-ev-green dark:text-ev-sage rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-chart-line"></i>
@@ -324,7 +340,7 @@
                 </a>
 
                 <!-- Pillar 3: Smart People -->
-                <a href="evillage-pillar-people.html" class="group flex flex-col p-7 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-2xl hover:border-ev-green dark:hover:border-ev-sage hover:shadow-lg dark:hover:shadow-ev-green/10 transition-all">
+                <a href="evillage-pillar-people.html" class="group flex flex-col p-7 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-2xl hover:border-ev-green dark:hover:border-ev-sage hover:shadow-lg dark:hover:shadow-ev-green/10 transition-all w-[82%] md:w-auto">
                     <div class="text-[10px] font-bold text-ev-green dark:text-ev-sage tracking-widest mb-4">PILLAR 03</div>
                     <div class="w-11 h-11 bg-ev-green/10 dark:bg-ev-green/20 text-ev-green dark:text-ev-sage rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-users"></i>
@@ -340,7 +356,7 @@
                 </a>
 
                 <!-- Pillar 4: Smart Infrastructure -->
-                <a href="evillage-pillar-infrastructure.html" class="group flex flex-col p-7 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-2xl hover:border-ev-green dark:hover:border-ev-sage hover:shadow-lg dark:hover:shadow-ev-green/10 transition-all">
+                <a href="evillage-pillar-infrastructure.html" class="group flex flex-col p-7 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-2xl hover:border-ev-green dark:hover:border-ev-sage hover:shadow-lg dark:hover:shadow-ev-green/10 transition-all w-[82%] md:w-auto">
                     <div class="text-[10px] font-bold text-ev-green dark:text-ev-sage tracking-widest mb-4">PILLAR 04</div>
                     <div class="w-11 h-11 bg-ev-green/10 dark:bg-ev-green/20 text-ev-green dark:text-ev-sage rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-solar-panel"></i>
@@ -356,7 +372,7 @@
                 </a>
 
                 <!-- Pillar 5: Smart Living -->
-                <a href="evillage-pillar-living.html" class="group flex flex-col p-7 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-2xl hover:border-ev-green dark:hover:border-ev-sage hover:shadow-lg dark:hover:shadow-ev-green/10 transition-all">
+                <a href="evillage-pillar-living.html" class="group flex flex-col p-7 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-2xl hover:border-ev-green dark:hover:border-ev-sage hover:shadow-lg dark:hover:shadow-ev-green/10 transition-all w-[82%] md:w-auto">
                     <div class="text-[10px] font-bold text-ev-green dark:text-ev-sage tracking-widest mb-4">PILLAR 05</div>
                     <div class="w-11 h-11 bg-ev-green/10 dark:bg-ev-green/20 text-ev-green dark:text-ev-sage rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-leaf"></i>
@@ -371,6 +387,7 @@
                     </span>
                 </a>
             </div>
+            <div id="pillars-dots" class="carousel-dots md:hidden"></div>
         </div>
     </section>
 
@@ -522,8 +539,8 @@
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div class="bg-white dark:bg-dark-card border-2 border-slate-200 dark:border-dark-border rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
                     <div class="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-widest mb-3 uppercase">Households Reached</div>
-                    <div class="flex items-baseline justify-between gap-2">
-                        <div class="text-4xl font-bold text-slate-900 dark:text-white tracking-tightest">412,830</div>
+                    <div class="flex flex-col items-start gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
+                        <div class="text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="412830">0</div>
                         <div class="text-sm font-bold text-ev-green dark:text-ev-sage flex items-center gap-1 bg-ev-green/10 px-2 py-1 rounded"><i class="fas fa-arrow-up text-[10px]"></i>18.4%</div>
                     </div>
                     <svg viewBox="0 0 120 36" class="mt-4 w-full h-10 overflow-visible">
@@ -536,8 +553,8 @@
 
                 <div class="bg-white dark:bg-dark-card border-2 border-slate-200 dark:border-dark-border rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
                     <div class="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-widest mb-3 uppercase">MWh Delivered (YTD)</div>
-                    <div class="flex items-baseline justify-between gap-2">
-                        <div class="text-4xl font-bold text-slate-900 dark:text-white tracking-tightest">94,217</div>
+                    <div class="flex flex-col items-start gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
+                        <div class="text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="94217">0</div>
                         <div class="text-sm font-bold text-ev-green dark:text-ev-sage flex items-center gap-1 bg-ev-green/10 px-2 py-1 rounded"><i class="fas fa-arrow-up text-[10px]"></i>22.1%</div>
                     </div>
                     <svg viewBox="0 0 120 36" class="mt-4 w-full h-10 overflow-visible">
@@ -550,8 +567,8 @@
 
                 <div class="bg-white dark:bg-dark-card border-2 border-slate-200 dark:border-dark-border rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
                     <div class="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-widest mb-3 uppercase">tCO₂e Displaced</div>
-                    <div class="flex items-baseline justify-between gap-2">
-                        <div class="text-4xl font-bold text-slate-900 dark:text-white tracking-tightest">2.81M</div>
+                    <div class="flex flex-col items-start gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
+                        <div class="text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="2810000" data-format="abbrev">0</div>
                         <div class="text-sm font-bold text-ev-green dark:text-ev-sage flex items-center gap-1 bg-ev-green/10 px-2 py-1 rounded"><i class="fas fa-arrow-up text-[10px]"></i>14.7%</div>
                     </div>
                     <svg viewBox="0 0 120 36" class="mt-4 w-full h-10 overflow-visible">
@@ -564,8 +581,8 @@
 
                 <div class="bg-white dark:bg-dark-card border-2 border-slate-200 dark:border-dark-border rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
                     <div class="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-widest mb-3 uppercase">NEFUND Disbursed (₦B)</div>
-                    <div class="flex items-baseline justify-between gap-2">
-                        <div class="text-4xl font-bold text-slate-900 dark:text-white tracking-tightest">₦47.2</div>
+                    <div class="flex flex-col items-start gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
+                        <div class="text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="47.2" data-prefix="₦" data-decimals="1">0</div>
                         <div class="text-sm font-bold text-ev-green dark:text-ev-sage flex items-center gap-1 bg-ev-green/10 px-2 py-1 rounded"><i class="fas fa-arrow-up text-[10px]"></i>9.3%</div>
                     </div>
                     <svg viewBox="0 0 120 36" class="mt-4 w-full h-10 overflow-visible">
@@ -1052,44 +1069,78 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const counters = document.querySelectorAll('.stat-number');
-            const speed = 150;
+            const DURATION = 1400;
+
+            function formatValue(n, format, decimals) {
+                if (format === 'abbrev') {
+                    if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
+                    if (n >= 1e3) return Math.round(n / 1e3) + 'k';
+                    return Math.round(n).toString();
+                }
+                if (decimals > 0) return n.toFixed(decimals);
+                return Math.round(n).toLocaleString('en-US');
+            }
 
             const animateCounters = (entries, observer) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const counter = entry.target;
-                        const target = +counter.getAttribute('data-target');
-                        const suffix = counter.getAttribute('data-suffix') || '';
-
-                        const updateCount = () => {
-                            const currentText = counter.innerText;
-                            const count = +currentText.replace(/[^0-9.]/g, '');
-                            const increment = target / speed;
-
-                            if (count < target) {
-                                counter.innerText = Math.ceil(count + increment) + suffix;
-                                setTimeout(updateCount, 20);
-                            } else {
-                                counter.innerText = target + suffix;
-                            }
-                        };
-
-                        updateCount();
-                        observer.unobserve(counter);
-                    }
+                    if (!entry.isIntersecting) return;
+                    const counter = entry.target;
+                    const target = parseFloat(counter.getAttribute('data-target'));
+                    const prefix = counter.getAttribute('data-prefix') || '';
+                    const suffix = counter.getAttribute('data-suffix') || '';
+                    const format = counter.getAttribute('data-format') || '';
+                    const decimals = parseInt(counter.getAttribute('data-decimals') || '0', 10);
+                    const startTime = performance.now();
+                    const tick = (now) => {
+                        const elapsed = now - startTime;
+                        const progress = Math.min(elapsed / DURATION, 1);
+                        const eased = 1 - Math.pow(1 - progress, 3);
+                        const current = target * eased;
+                        counter.innerText = prefix + formatValue(current, format, decimals) + suffix;
+                        if (progress < 1) requestAnimationFrame(tick);
+                        else counter.innerText = prefix + formatValue(target, format, decimals) + suffix;
+                    };
+                    requestAnimationFrame(tick);
+                    observer.unobserve(counter);
                 });
             };
 
             const counterObserver = new IntersectionObserver(animateCounters, {
                 root: null,
-                threshold: 0.5
+                threshold: 0.3
             });
-
             counters.forEach(counter => counterObserver.observe(counter));
         });
-    
-        const implToggle = document.getElementById('impl-toggle'); const implSubmenu = document.getElementById('impl-submenu'); const implChevron = document.getElementById('impl-chevron');
-        if (implToggle) { implToggle.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); implSubmenu.classList.toggle('hidden'); implSubmenu.classList.toggle('flex'); implChevron.classList.toggle('rotate-180'); }); }
+
+        // Carousel with dot controls
+        function initCarousel(trackId, dotsId) {
+            const track = document.getElementById(trackId);
+            const dotsContainer = document.getElementById(dotsId);
+            if (!track || !dotsContainer) return;
+            const cards = Array.from(track.children);
+            cards.forEach((_, i) => {
+                const btn = document.createElement('button');
+                btn.setAttribute('aria-label', 'Go to card ' + (i + 1));
+                if (i === 0) btn.classList.add('active');
+                btn.addEventListener('click', () => {
+                    cards[i].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+                });
+                dotsContainer.appendChild(btn);
+            });
+            track.addEventListener('scroll', () => {
+                if (window.innerWidth >= 768) return;
+                const dots = dotsContainer.querySelectorAll('button');
+                const cardWidth = cards[0].offsetWidth + 16;
+                const idx = Math.round(track.scrollLeft / cardWidth);
+                dots.forEach((d, i) => d.classList.toggle('active', i === Math.min(idx, dots.length - 1)));
+            });
+        }
+        if (window.innerWidth < 768) {
+            initCarousel('pillars-carousel', 'pillars-dots');
+        } else {
+            const dots = document.getElementById('pillars-dots');
+            if (dots) dots.style.display = 'none';
+        }
     </script>
 </body>
 
