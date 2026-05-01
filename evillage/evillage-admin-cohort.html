@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cohort Management | eVillage Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=2.0">
+    <script src="config.js?v=1.0"></script>
+    <script src="evillage-api.js?v=1.0"></script>
+    <script>window.EVILLAGE_REQUIRED_ROLES = ['super_admin'];</script>
+    <script src="evillage-guard.js?v=1.0"></script>
+    <script src="evillage-cohort.js?v=1.0"></script>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
+    <style>
+        :root { --brand: #7f1d1d; --brand-accent: #ef4444; --bg: #f3f4f6; --ink: #111827; --muted: #6b7280; --border: #e5e7eb; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); margin: 0; display: flex; min-height: 100vh; overflow-x: hidden; color: var(--ink); -webkit-font-smoothing: antialiased; }
+        .sidebar { width: 260px; background: var(--brand); color: white; padding: 24px; display: flex; flex-direction: column; position: fixed; height: 100vh; left: 0; top: 0; z-index: 100; transition: transform 0.3s ease; }
+        .sidebar-brand { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 600; margin-bottom: 40px; text-decoration: none; color: white; padding: 0 12px; }
+        .sidebar-brand i { font-size: 24px; color: var(--brand-accent); }
+        .nav-menu { list-style: none; padding: 0; margin: 0; flex: 1; }
+        .nav-item { margin-bottom: 8px; }
+        .nav-link { display: flex; align-items: center; gap: 12px; padding: 12px; color: rgba(255,255,255,0.7); text-decoration: none; border-radius: 8px; transition: all 0.2s; font-size: 14px; font-weight: 500; }
+        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.12); color: white; }
+        .nav-link i { width: 20px; text-align: center; }
+        .user-profile { padding: 16px; background: rgba(255,255,255,0.06); border-radius: 12px; display: flex; align-items: center; gap: 12px; margin-top: auto; }
+        .user-avatar { width: 40px; height: 40px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+        .user-info { flex: 1; overflow: hidden; }
+        .user-name { font-size: 14px; font-weight: 600; }
+        .user-role { font-size: 12px; color: rgba(255,255,255,0.6); }
+
+        .main-content { flex: 1; margin-left: 260px; padding: 32px 40px; max-width: 1400px; }
+        .header { display: flex; justify-content: space-between; align-items: end; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+        .header h1 { font-size: 26px; font-weight: 600; margin: 0 0 4px; }
+        .header p { color: var(--muted); font-size: 14px; margin: 0; }
+        .btn { padding: 10px 16px; border-radius: 8px; font-weight: 500; font-size: 13px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; }
+        .btn-primary { background: var(--brand); color: white; }
+        .btn-primary:hover { background: #5a1414; }
+        .btn-secondary { background: white; color: var(--ink); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--brand); color: var(--brand); }
+        .btn-success { background: #16a34a; color: white; }
+        .btn-success:hover { background: #15803d; }
+        .btn-danger { background: white; color: #b91c1c; border: 1px solid #fecaca; }
+        .btn-danger:hover { background: #fee2e2; }
+
+        /* Stats */
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+        .stat { background: white; border-radius: 14px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .stat h4 { margin: 0 0 4px; font-size: 12px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat .v { font-size: 24px; font-weight: 600; }
+        .si-red { background: rgba(239,68,68,0.1); color: #ef4444; }
+        .si-amber { background: #fef3c7; color: #92400e; }
+        .si-green { background: #d1fae5; color: #065f46; }
+        .si-blue { background: #dbeafe; color: #1e40af; }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 4px; background: white; padding: 6px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); width: fit-content; margin-bottom: 24px; }
+        .tab { padding: 10px 18px; border: none; background: transparent; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--muted); border-radius: 8px; font-family: inherit; }
+        .tab.active { background: var(--brand); color: white; }
+
+        /* Tables */
+        .panel { background: white; border-radius: 14px; padding: 0; margin-bottom: 22px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .panel-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
+        .panel-head h3 { margin: 0; font-size: 16px; }
+        .table { width: 100%; border-collapse: collapse; }
+        .table th { text-align: left; padding: 12px 18px; font-size: 11.5px; color: var(--muted); font-weight: 500; border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.5px; background: #f9fafb; }
+        .table td { padding: 14px 18px; font-size: 13.5px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        .table tr:last-child td { border-bottom: none; }
+        .table tr:hover { background: #fafafa; }
+        .pill { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .pill-pending { background: #fef3c7; color: #92400e; }
+        .pill-approved { background: #d1fae5; color: #065f46; }
+        .pill-rejected { background: #fee2e2; color: #b91c1c; }
+        .pill-open { background: #dbeafe; color: #1e40af; }
+        .row-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .row-actions .btn { padding: 6px 11px; font-size: 12px; }
+        .empty-row td { padding: 36px; text-align: center; color: var(--muted); }
+        .table-wrap { overflow-x: auto; }
+
+        .toolbar { display: flex; gap: 10px; padding: 14px 22px; background: #f9fafb; border-bottom: 1px solid var(--border); flex-wrap: wrap; align-items: center; }
+        .toolbar select, .toolbar input { padding: 8px 12px; border: 1px solid var(--border); border-radius: 7px; font-size: 13px; outline: none; background: white; min-width: 160px; }
+        .toolbar select:focus { border-color: var(--brand); }
+
+        /* Modal */
+        .modal-bd { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(2px); }
+        .modal-bd.open { display: flex; }
+        .modal { background: white; border-radius: 14px; max-width: 620px; width: 100%; max-height: 92vh; overflow: auto; }
+        .modal-h { padding: 20px 22px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-h h3 { margin: 0; font-size: 17px; }
+        .modal-b { padding: 22px; }
+        .modal-f { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+        .x-btn { background: none; border: none; font-size: 22px; color: var(--muted); cursor: pointer; padding: 4px 8px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+        .form-field { display: flex; flex-direction: column; gap: 6px; }
+        .form-field.full { grid-column: 1 / -1; }
+        .form-field label { font-size: 12px; color: var(--muted); font-weight: 500; }
+        .form-field input, .form-field select, .form-field textarea { padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13.5px; outline: none; font-family: inherit; }
+        .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--brand); }
+
+        /* Mobile */
+        .mobile-header { display: none; padding: 16px 20px; background: var(--brand); color: white; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 99; }
+        .mobile-menu-toggle { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; }
+        .mobile-overlay.active { display: block; }
+        @media (max-width: 1024px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 80px 16px 30px; }
+            .mobile-header { display: flex; }
+            .form-row { grid-template-columns: 1fr; }
+            .table { min-width: 700px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-header">
+        <div style="display:flex;align-items:center;gap:8px;"><i class="fas fa-leaf" style="color:#ef4444;"></i><span style="font-weight:600;">Admin</span></div>
+        <button class="mobile-menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    </div>
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <a href="evillage.html" class="sidebar-brand"><i class="fas fa-leaf"></i><span>eVillage Admin</span></a>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="evillage-admin-dashboard.html" class="nav-link"><i class="fas fa-chart-pie"></i><span>Overview</span></a></li>
+            <li class="nav-item"><a href="evillage-admin-compliance.html" class="nav-link"><i class="fas fa-shield-alt"></i><span>Compliance Center</span></a></li>
+            <li class="nav-item"><a href="evillage-admin-directory.html" class="nav-link"><i class="fas fa-users-cog"></i><span>Global Directory</span></a></li>
+            <li class="nav-item"><a href="evillage-admin-cohort.html" class="nav-link active"><i class="fas fa-graduation-cap"></i><span>Cohort</span></a></li>
+            <li class="nav-item" style="margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px;"><a href="#" class="nav-link" onclick="signOut(); return false;"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a></li>
+        </ul>
+        <div class="user-profile">
+            <div class="user-avatar">SA</div>
+            <div class="user-info">
+                <div class="user-name">Super Admin</div>
+                <div class="user-role">Cohort Manager</div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <div>
+                <h1>Cohort Management</h1>
+                <p>Create training sessions, manage capacity, and approve trainee applications.</p>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap: wrap;">
+                <button class="btn btn-secondary" onclick="resetSeed()" title="Reset demo data"><i class="fas fa-rotate-left"></i> Reset demo</button>
+                <button class="btn btn-primary" onclick="openSession()"><i class="fas fa-plus"></i> New Session</button>
+            </div>
+        </div>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="tabs">
+            <button class="tab active" data-t="sessions"><i class="fas fa-layer-group"></i> &nbsp;Sessions</button>
+            <button class="tab" data-t="applicants"><i class="fas fa-user-check"></i> &nbsp;Applicants</button>
+        </div>
+
+        <!-- SESSIONS -->
+        <div id="t-sessions" class="panel">
+            <div class="panel-head"><h3>Training Sessions</h3><span style="font-size:12px;color:var(--muted);" id="sessCount"></span></div>
+            <div class="toolbar">
+                <select id="sessState"><option value="">All states</option></select>
+                <select id="sessYear"><option value="">All years</option></select>
+                <select id="sessStatus"><option value="">All statuses</option><option value="open">Open</option><option value="closed">Closed</option></select>
+            </div>
+            <div class="table-wrap">
+                <table class="table" id="sessTable">
+                    <thead><tr>
+                        <th>Session ID</th><th>Course</th><th>State</th><th>Year</th><th>Dates</th><th>Capacity</th><th>Applicants</th><th>Status</th><th></th>
+                    </tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- APPLICANTS -->
+        <div id="t-applicants" class="panel" style="display:none;">
+            <div class="panel-head"><h3>Applicants</h3><span style="font-size:12px;color:var(--muted);" id="appCount"></span></div>
+            <div class="toolbar">
+                <select id="appSession"><option value="">All sessions</option></select>
+                <select id="appStatus"><option value="">All statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select>
+                <input id="appSearch" placeholder="Search name or email...">
+            </div>
+            <div class="table-wrap">
+                <table class="table" id="appTable">
+                    <thead><tr>
+                        <th>Application</th><th>Trainee</th><th>Email</th><th>Course</th><th>Session</th><th>Applied</th><th>Status</th><th></th>
+                    </tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- SESSION MODAL -->
+    <div class="modal-bd" id="sessModal">
+        <div class="modal">
+            <div class="modal-h"><h3 id="sessTitle">New Training Session</h3><button class="x-btn" onclick="closeM('sessModal')">&times;</button></div>
+            <div class="modal-b">
+                <form id="sessForm">
+                    <input type="hidden" name="id">
+                    <div class="form-row">
+                        <div class="form-field"><label>Course *</label><select name="courseId" required></select></div>
+                        <div class="form-field"><label>Year *</label><input name="year" type="number" required min="2024" max="2040"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field"><label>State *</label><select name="state" required></select></div>
+                        <div class="form-field"><label>Capacity *</label><input name="capacity" type="number" required min="1" placeholder="e.g. 30"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field"><label>Start date *</label><input name="startDate" type="date" required></div>
+                        <div class="form-field"><label>End date *</label><input name="endDate" type="date" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field full"><label>Class location *</label><input name="location" required placeholder="e.g. Lagos State Energy Hub, Yaba"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field full"><label>Lead instructor</label><input name="instructor" placeholder="Engr. Aderoju Bello"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field full"><label>Status</label><select name="status"><option value="open">Open for applications</option><option value="closed">Closed</option></select></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-f">
+                <button class="btn btn-secondary" onclick="closeM('sessModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveSession()"><i class="fas fa-save"></i> Save Session</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPLICANT MODAL -->
+    <div class="modal-bd" id="appModal">
+        <div class="modal">
+            <div class="modal-h"><h3>Applicant Details</h3><button class="x-btn" onclick="closeM('appModal')">&times;</button></div>
+            <div class="modal-b" id="appBody"></div>
+            <div class="modal-f">
+                <button class="btn btn-secondary" onclick="closeM('appModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const C = window.eVillageCohort;
+
+        function init() {
+            const sState = document.getElementById('sessState');
+            C.STATES.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sState.appendChild(o); });
+            const fState = document.querySelector('#sessForm [name=state]');
+            C.STATES.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; fState.appendChild(o); });
+            const fCourse = document.querySelector('#sessForm [name=courseId]');
+            C.COURSES.forEach(c => { const o = document.createElement('option'); o.value = c.id; o.textContent = c.title; fCourse.appendChild(o); });
+
+            document.getElementById('sessState').addEventListener('change', renderSessions);
+            document.getElementById('sessYear').addEventListener('change', renderSessions);
+            document.getElementById('sessStatus').addEventListener('change', renderSessions);
+            document.getElementById('appSession').addEventListener('change', renderApplicants);
+            document.getElementById('appStatus').addEventListener('change', renderApplicants);
+            document.getElementById('appSearch').addEventListener('input', renderApplicants);
+
+            document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === b));
+                const t = b.dataset.t;
+                document.getElementById('t-sessions').style.display = t === 'sessions' ? '' : 'none';
+                document.getElementById('t-applicants').style.display = t === 'applicants' ? '' : 'none';
+            }));
+
+            renderAll();
+        }
+
+        function renderAll() {
+            renderStats();
+            renderYears();
+            renderSessionFilter();
+            renderSessions();
+            renderApplicants();
+        }
+
+        function renderStats() {
+            const sess = C.listSessions();
+            const apps = C.listApplications({});
+            const items = [
+                { i: 'fa-layer-group', label: 'Total sessions', v: sess.length, cls: 'si-red' },
+                { i: 'fa-door-open', label: 'Open sessions', v: sess.filter(s => s.status === 'open').length, cls: 'si-blue' },
+                { i: 'fa-hourglass-half', label: 'Pending applications', v: apps.filter(a => a.status === 'pending').length, cls: 'si-amber' },
+                { i: 'fa-circle-check', label: 'Approved trainees', v: apps.filter(a => a.status === 'approved').length, cls: 'si-green' }
+            ];
+            document.getElementById('stats').innerHTML = items.map(x =>
+                `<div class="stat"><div><h4>${x.label}</h4><div class="v">${x.v}</div></div><div class="stat-icon ${x.cls}"><i class="fas ${x.i}"></i></div></div>`
+            ).join('');
+        }
+
+        function renderYears() {
+            const years = [...new Set(C.listSessions().map(s => s.year))].sort();
+            const sel = document.getElementById('sessYear');
+            const cur = sel.value;
+            sel.innerHTML = '<option value="">All years</option>' + years.map(y => `<option value="${y}">${y}</option>`).join('');
+            sel.value = cur;
+        }
+
+        function renderSessionFilter() {
+            const sess = C.listSessions();
+            const sel = document.getElementById('appSession');
+            const cur = sel.value;
+            sel.innerHTML = '<option value="">All sessions</option>' + sess.map(s => {
+                const c = C.getCourse(s.courseId);
+                return `<option value="${s.id}">${s.id} — ${c.title} (${s.state})</option>`;
+            }).join('');
+            sel.value = cur;
+        }
+
+        function renderSessions() {
+            const f = {};
+            const v1 = document.getElementById('sessState').value; if (v1) f.state = v1;
+            const v2 = document.getElementById('sessYear').value; if (v2) f.year = v2;
+            let rows = C.listSessions(f);
+            const v3 = document.getElementById('sessStatus').value; if (v3) rows = rows.filter(r => r.status === v3);
+            const tbody = document.querySelector('#sessTable tbody');
+            document.getElementById('sessCount').textContent = `${rows.length} session${rows.length === 1 ? '' : 's'}`;
+            if (rows.length === 0) {
+                tbody.innerHTML = `<tr class="empty-row"><td colspan="9"><i class="fas fa-inbox" style="font-size: 28px; color: var(--border); display:block; margin-bottom: 8px;"></i>No sessions match these filters.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = rows.map(s => {
+                const c = C.getCourse(s.courseId);
+                const seatsTaken = C.listApplications({ sessionId: s.id }).length;
+                const pillCls = s.status === 'open' ? 'pill-open' : 'pill-rejected';
+                return `<tr>
+                    <td style="font-family: monospace; color: var(--muted);">${s.id}</td>
+                    <td><strong>${c.title}</strong></td>
+                    <td>${s.state}</td>
+                    <td>${s.year}</td>
+                    <td>${C.fmtDate(s.startDate)} → ${C.fmtDate(s.endDate)}</td>
+                    <td>${s.capacity}</td>
+                    <td>${seatsTaken}/${s.capacity}</td>
+                    <td><span class="pill ${pillCls}">${s.status}</span></td>
+                    <td><div class="row-actions">
+                        <button class="btn btn-secondary" onclick="openSession('${s.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger" onclick="delSession('${s.id}')"><i class="fas fa-trash"></i></button>
+                    </div></td>
+                </tr>`;
+            }).join('');
+        }
+
+        function renderApplicants() {
+            const f = {};
+            const v1 = document.getElementById('appSession').value; if (v1) f.sessionId = v1;
+            const v2 = document.getElementById('appStatus').value; if (v2) f.status = v2;
+            let rows = C.listApplications(f);
+            const q = document.getElementById('appSearch').value.toLowerCase().trim();
+            if (q) rows = rows.filter(r => (r.userName||'').toLowerCase().includes(q) || (r.userEmail||'').toLowerCase().includes(q));
+            const tbody = document.querySelector('#appTable tbody');
+            document.getElementById('appCount').textContent = `${rows.length} applicant${rows.length === 1 ? '' : 's'}`;
+            if (rows.length === 0) {
+                tbody.innerHTML = `<tr class="empty-row"><td colspan="8"><i class="fas fa-user-slash" style="font-size: 28px; color: var(--border); display:block; margin-bottom: 8px;"></i>No applicants yet.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = rows.map(a => {
+                const c = C.getCourse(a.courseId);
+                const s = C.listSessions().find(x => x.id === a.sessionId) || {};
+                const pillCls = a.status === 'approved' ? 'pill-approved' : (a.status === 'rejected' ? 'pill-rejected' : 'pill-pending');
+                let actions = '';
+                if (a.status === 'pending') {
+                    actions = `
+                        <button class="btn btn-success" onclick="approve('${a.id}')"><i class="fas fa-check"></i> Approve</button>
+                        <button class="btn btn-danger" onclick="reject('${a.id}')"><i class="fas fa-xmark"></i> Reject</button>`;
+                }
+                actions += `<button class="btn btn-secondary" onclick="viewApp('${a.id}')"><i class="fas fa-eye"></i></button>`;
+                return `<tr>
+                    <td style="font-family: monospace;">${a.id}</td>
+                    <td><strong>${a.userName || '—'}</strong></td>
+                    <td>${a.userEmail || '—'}</td>
+                    <td>${c.title}</td>
+                    <td>${a.sessionId} <span style="color:var(--muted);">(${s.state || '—'})</span></td>
+                    <td>${C.fmtDate(a.appliedAt)}</td>
+                    <td><span class="pill ${pillCls}">${a.status}</span></td>
+                    <td><div class="row-actions">${actions}</div></td>
+                </tr>`;
+            }).join('');
+        }
+
+        function openSession(id) {
+            const f = document.getElementById('sessForm');
+            f.reset();
+            f.id.value = '';
+            document.getElementById('sessTitle').textContent = id ? 'Edit Training Session' : 'New Training Session';
+            if (id) {
+                const s = C.listSessions().find(x => x.id === id);
+                if (!s) return;
+                f.id.value = s.id;
+                f.courseId.value = s.courseId;
+                f.year.value = s.year;
+                f.state.value = s.state;
+                f.capacity.value = s.capacity;
+                f.startDate.value = s.startDate;
+                f.endDate.value = s.endDate;
+                f.location.value = s.location || '';
+                f.instructor.value = s.instructor || '';
+                f.status.value = s.status || 'open';
+            } else {
+                f.year.value = new Date().getFullYear();
+                f.status.value = 'open';
+            }
+            document.getElementById('sessModal').classList.add('open');
+        }
+
+        function saveSession() {
+            const f = document.getElementById('sessForm');
+            if (!f.checkValidity()) { f.reportValidity(); return; }
+            const data = {};
+            new FormData(f).forEach((v, k) => data[k] = v);
+            data.year = parseInt(data.year, 10);
+            data.capacity = parseInt(data.capacity, 10);
+            if (data.id) {
+                // update via createSession-style merge: read, replace
+                const raw = JSON.parse(localStorage.getItem('evillage_cohort_v1'));
+                const i = raw.sessions.findIndex(x => x.id === data.id);
+                if (i >= 0) {
+                    raw.sessions[i] = Object.assign({}, raw.sessions[i], data);
+                    localStorage.setItem('evillage_cohort_v1', JSON.stringify(raw));
+                }
+            } else {
+                delete data.id;
+                C.createSession(data);
+            }
+            closeM('sessModal');
+            renderAll();
+        }
+
+        function delSession(id) {
+            if (!confirm('Delete this session and remove its applicants?')) return;
+            C.deleteSession(id);
+            renderAll();
+        }
+
+        function approve(appId) { C.setApplicationStatus(appId, 'approved'); renderAll(); }
+        function reject(appId) { if (confirm('Reject this application?')) { C.setApplicationStatus(appId, 'rejected'); renderAll(); } }
+
+        function viewApp(appId) {
+            const a = C.listApplications({}).find(x => x.id === appId);
+            if (!a) return;
+            const c = C.getCourse(a.courseId);
+            const s = C.listSessions().find(x => x.id === a.sessionId) || {};
+            const info = a.fullInfo;
+            const body = document.getElementById('appBody');
+            const badge = C.statusBadge(a.status);
+            body.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 18px;">
+                    <div>
+                        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">${a.id}</div>
+                        <div style="font-size:18px; font-weight:600;">${a.userName || '—'}</div>
+                    </div>
+                    <span class="pill ${a.status === 'approved' ? 'pill-approved' : (a.status === 'rejected' ? 'pill-rejected' : 'pill-pending')}">${badge.label}</span>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 16px; background: #f9fafb; border-radius: 10px; margin-bottom: 16px; font-size: 13.5px;">
+                    <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase;">Course</div><strong>${c.title}</strong></div>
+                    <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase;">Session</div><strong>${a.sessionId}</strong></div>
+                    <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase;">State</div><strong>${s.state || '—'}</strong></div>
+                    <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase;">Dates</div><strong>${C.fmtDate(s.startDate)} → ${C.fmtDate(s.endDate)}</strong></div>
+                    <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase;">Email</div><strong>${a.userEmail || '—'}</strong></div>
+                    <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase;">Applied</div><strong>${C.fmtDate(a.appliedAt)}</strong></div>
+                </div>
+                ${a.note ? `<div style="margin-bottom: 14px;"><div style="font-size:11px;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Applicant note</div><div style="background:#fffbeb;padding:10px 12px;border-radius:8px;font-size:13.5px;">${a.note}</div></div>` : ''}
+                ${info ? `<div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Trainee profile</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap: 10px; font-size: 13px;">
+                        <div><strong>Full Name:</strong> ${info.fullName || '—'}</div>
+                        <div><strong>DOB:</strong> ${info.dob || '—'}</div>
+                        <div><strong>Phone:</strong> ${info.phone || '—'}</div>
+                        <div><strong>Gender:</strong> ${info.gender || '—'}</div>
+                        <div><strong>NIN:</strong> ${info.nin || '—'}</div>
+                        <div><strong>Education:</strong> ${info.education || '—'}</div>
+                        <div style="grid-column:1/-1;"><strong>Address:</strong> ${info.address || '—'}</div>
+                        <div><strong>Emergency:</strong> ${info.emergencyName || '—'} (${info.emergencyPhone || '—'})</div>
+                    </div></div>` : '<div style="color: var(--muted); font-size: 13px; font-style: italic;">Trainee has not completed full profile yet.</div>'}`;
+            document.getElementById('appModal').classList.add('open');
+        }
+
+        function closeM(id) { document.getElementById(id).classList.remove('open'); }
+
+        function resetSeed() {
+            if (!confirm('Reset cohort demo data? This deletes all sessions and applications.')) return;
+            C.resetSeedData();
+            renderAll();
+        }
+
+        function signOut() {
+            sessionStorage.removeItem('neiia_authenticated');
+            window.location.href = 'evillage-signin.html';
+        }
+
+        function toggleSidebar() {
+            document.getElementById('mobileOverlay').classList.toggle('active');
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

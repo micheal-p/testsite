@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Entry Pass | eVillage Cohort</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="config.js?v=1.0"></script>
+    <script src="evillage-cohort.js?v=1.0"></script>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
+    <style>
+        :root { --brand: #0d3d44; --brand-light: #10b981; --ink: #111827; --muted: #6b7280; --border: #e5e7eb; }
+        @page { size: A4; margin: 12mm; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: #f3f4f6; margin: 0; padding: 24px; color: var(--ink); }
+        .toolbar { max-width: 800px; margin: 0 auto 16px; display: flex; gap: 12px; justify-content: flex-end; }
+        .btn { padding: 10px 18px; border-radius: 8px; font-weight: 500; font-size: 14px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+        .btn-primary { background: var(--brand); color: white; }
+        .btn-secondary { background: white; color: var(--ink); border: 1px solid var(--border); }
+
+        .pass { max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.08); border: 1px solid var(--border); }
+        .pass-banner { background: linear-gradient(135deg, var(--brand) 0%, #0a2e33 100%); color: white; padding: 28px 36px; position: relative; overflow: hidden; }
+        .pass-banner::after { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; background: rgba(16,185,129,0.18); border-radius: 50%; }
+        .pass-banner::before { content: ''; position: absolute; right: 40px; bottom: -60px; width: 120px; height: 120px; background: rgba(16,185,129,0.10); border-radius: 50%; }
+        .pass-brand { display: flex; align-items: center; gap: 12px; font-size: 14px; opacity: 0.85; margin-bottom: 12px; position: relative; z-index: 2; }
+        .pass-brand i { color: var(--brand-light); font-size: 18px; }
+        .pass-title { font-size: 24px; font-weight: 700; margin: 0 0 6px; position: relative; z-index: 2; }
+        .pass-sub { font-size: 14px; opacity: 0.85; margin: 0; position: relative; z-index: 2; }
+
+        .pass-body { padding: 32px 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+        .field { display: flex; flex-direction: column; gap: 4px; }
+        .field label { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; font-weight: 500; }
+        .field span { font-size: 15px; font-weight: 600; color: var(--ink); }
+        .field.full { grid-column: 1/-1; }
+        .field.big span { font-size: 22px; }
+
+        .pass-divider { grid-column: 1/-1; border-top: 2px dashed var(--border); margin: 4px 0; position: relative; }
+        .pass-divider::before, .pass-divider::after { content: ''; position: absolute; top: -16px; width: 28px; height: 28px; background: #f3f4f6; border-radius: 50%; }
+        .pass-divider::before { left: -50px; }
+        .pass-divider::after { right: -50px; }
+
+        .qr-block { display: flex; align-items: center; gap: 22px; grid-column: 1/-1; padding-top: 4px; }
+        .qr-box { width: 110px; height: 110px; background: white; border: 2px solid var(--ink); padding: 6px; flex-shrink: 0; }
+        .qr-box svg { width: 100%; height: 100%; }
+        .qr-text h4 { margin: 0 0 4px; font-size: 14px; }
+        .qr-text p { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+        .pass-foot { background: #f9fafb; padding: 18px 36px; font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
+        .pass-foot strong { color: var(--ink); font-weight: 500; }
+        .badge-yellow { display: inline-block; padding: 4px 12px; background: #fef3c7; color: #92400e; border-radius: 20px; font-size: 11px; font-weight: 600; }
+
+        .stamp { position: absolute; right: 36px; top: 70%; transform: rotate(-8deg); border: 3px solid var(--brand-light); color: var(--brand-light); padding: 6px 14px; font-weight: 700; font-size: 14px; letter-spacing: 1.5px; opacity: 0.85; border-radius: 4px; pointer-events: none; }
+
+        .error-box { max-width: 540px; margin: 60px auto; background: white; border-radius: 16px; padding: 36px; text-align: center; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .toolbar { display: none; }
+            .pass { box-shadow: none; border: none; max-width: none; border-radius: 0; }
+        }
+        @media (max-width: 600px) {
+            .pass-body { grid-template-columns: 1fr; padding: 24px; }
+            .pass-banner { padding: 22px 24px; }
+            .qr-block { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <a class="btn btn-secondary" href="javascript:history.back()"><i class="fas fa-arrow-left"></i> Back</a>
+        <button class="btn btn-primary" onclick="window.print()"><i class="fas fa-print"></i> Print Pass</button>
+    </div>
+
+    <div id="root"></div>
+
+    <script>
+        const C = window.eVillageCohort;
+        const root = document.getElementById('root');
+        const appId = sessionStorage.getItem('printPassAppId');
+        const all = C.listApplications({});
+        const app = all.find(a => a.id === appId);
+
+        if (!app) {
+            root.innerHTML = `
+                <div class="error-box">
+                    <i class="fas fa-circle-exclamation" style="font-size: 36px; color: #f59e0b; margin-bottom: 16px;"></i>
+                    <h2 style="margin: 0 0 8px;">Pass not available</h2>
+                    <p style="color: #6b7280; margin: 0 0 22px;">No approved application was found in this session.</p>
+                    <a class="btn btn-primary" href="evillage-cohort.html">Back to Cohort</a>
+                </div>`;
+        } else if (app.status !== 'approved') {
+            root.innerHTML = `
+                <div class="error-box">
+                    <i class="fas fa-hourglass-half" style="font-size: 36px; color: #f59e0b; margin-bottom: 16px;"></i>
+                    <h2 style="margin: 0 0 8px;">Application not yet approved</h2>
+                    <p style="color: #6b7280; margin: 0 0 22px;">Your class entry pass will be available once an admin approves your application.</p>
+                    <a class="btn btn-primary" href="evillage-cohort.html">Back to My Application</a>
+                </div>`;
+        } else if (!app.fullInfo) {
+            root.innerHTML = `
+                <div class="error-box">
+                    <i class="fas fa-id-card" style="font-size: 36px; color: #0d3d44; margin-bottom: 16px;"></i>
+                    <h2 style="margin: 0 0 8px;">Add your full info first</h2>
+                    <p style="color: #6b7280; margin: 0 0 22px;">Complete your trainee profile so we can print your details on the pass.</p>
+                    <a class="btn btn-primary" href="evillage-cohort.html">Add Full Info</a>
+                </div>`;
+        } else {
+            const s = C.listSessions().find(x => x.id === app.sessionId) || {};
+            const c = C.getCourse(app.courseId);
+            const info = app.fullInfo;
+            root.innerHTML = `
+                <div class="pass">
+                    <div class="pass-banner">
+                        <div class="pass-brand"><i class="fas fa-leaf"></i> eVillage Energy Training Programme</div>
+                        <h1 class="pass-title">CLASS ENTRY PASS</h1>
+                        <p class="pass-sub">Present this pass on the first day of class. Valid only for the trainee named below.</p>
+                    </div>
+                    <div class="pass-body" style="position: relative;">
+                        <div class="stamp">APPROVED</div>
+                        <div class="field full big">
+                            <label>Trainee Name</label>
+                            <span>${info.fullName}</span>
+                        </div>
+                        <div class="field"><label>Course</label><span>${c.title}</span></div>
+                        <div class="field"><label>Cohort Session</label><span style="font-family: monospace;">${s.id}</span></div>
+                        <div class="field"><label>Application ID</label><span style="font-family: monospace;">${app.id}</span></div>
+                        <div class="field"><label>Year</label><span>${s.year}</span></div>
+                        <div class="field"><label>Start Date</label><span>${C.fmtDate(s.startDate)}</span></div>
+                        <div class="field"><label>End Date</label><span>${C.fmtDate(s.endDate)}</span></div>
+                        <div class="field full"><label>Venue</label><span>${s.location} &mdash; ${s.state}</span></div>
+                        <div class="field"><label>Instructor</label><span>${s.instructor || '—'}</span></div>
+                        <div class="field"><label>Phone</label><span>${info.phone || '—'}</span></div>
+                        <div class="field"><label>Email</label><span>${app.userEmail || '—'}</span></div>
+                        <div class="field"><label>Status</label><span><span class="badge-yellow" style="background: #d1fae5; color: #065f46;">APPROVED</span></span></div>
+
+                        <div class="pass-divider"></div>
+
+                        <div class="qr-block">
+                            <div class="qr-box" id="qrBox"></div>
+                            <div class="qr-text">
+                                <h4>Verification Code</h4>
+                                <p>Show this QR / code at registration. Code: <strong>${app.id}-${s.id}</strong></p>
+                                <p style="margin-top: 4px;">Bring a valid ID along with this pass.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pass-foot">
+                        <div><strong>eVillage Portal</strong> &middot; Issued ${C.fmtDate(app.fullInfoSavedAt || app.approvedAt)}</div>
+                        <div>Powered by Norgroups Ltd</div>
+                    </div>
+                </div>`;
+            renderQR(`${app.id}-${s.id}`);
+        }
+
+        function renderQR(text) {
+            // Lightweight pseudo-QR: hashed grid pattern (visual only — for actual scanning, swap in qrcode lib).
+            const size = 21;
+            let h = 0;
+            for (let i = 0; i < text.length; i++) h = (h * 31 + text.charCodeAt(i)) >>> 0;
+            const cells = [];
+            for (let y = 0; y < size; y++) {
+                for (let x = 0; x < size; x++) {
+                    h = (h * 1103515245 + 12345) >>> 0;
+                    const on = (h % 7) < 3;
+                    if (on) cells.push(`<rect x="${x}" y="${y}" width="1" height="1" fill="#0d3d44"/>`);
+                }
+            }
+            // finder squares (corners)
+            const finder = (x, y) => `
+                <rect x="${x}" y="${y}" width="7" height="7" fill="#0d3d44"/>
+                <rect x="${x+1}" y="${y+1}" width="5" height="5" fill="white"/>
+                <rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#0d3d44"/>`;
+            document.getElementById('qrBox').innerHTML = `
+                <svg viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                    <rect width="${size}" height="${size}" fill="white"/>
+                    ${cells.join('')}
+                    ${finder(0,0)}${finder(size-7,0)}${finder(0,size-7)}
+                </svg>`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cohort Training | eVillage Vendor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=2.0">
+    <script src="config.js?v=1.0"></script>
+    <script src="evillage-api.js?v=1.0"></script>
+    <script>window.EVILLAGE_REQUIRED_ROLES = ['vendor'];</script>
+    <script src="evillage-guard.js?v=1.0"></script>
+    <script src="evillage-cohort.js?v=1.0"></script>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
+    <style>
+        :root { --brand: #4c1d95; --brand-accent: #a855f7; --bg: #f3f4f6; --ink: #111827; --muted: #6b7280; --border: #e5e7eb; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); margin: 0; display: flex; min-height: 100vh; overflow-x: hidden; color: var(--ink); -webkit-font-smoothing: antialiased; }
+        .sidebar { width: 260px; background: var(--brand); color: white; padding: 24px; display: flex; flex-direction: column; position: fixed; height: 100vh; left: 0; top: 0; z-index: 100; transition: transform 0.3s ease; }
+        .sidebar-brand { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 600; margin-bottom: 40px; text-decoration: none; color: white; padding: 0 12px; }
+        .sidebar-brand i { font-size: 24px; color: var(--brand-accent); }
+        .nav-menu { list-style: none; padding: 0; margin: 0; flex: 1; }
+        .nav-item { margin-bottom: 8px; }
+        .nav-link { display: flex; align-items: center; gap: 12px; padding: 12px; color: rgba(255,255,255,0.7); text-decoration: none; border-radius: 8px; transition: all 0.2s; font-size: 14px; font-weight: 500; }
+        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.1); color: white; }
+        .nav-link i { width: 20px; text-align: center; }
+        .user-profile { padding: 16px; background: rgba(255,255,255,0.05); border-radius: 12px; display: flex; align-items: center; gap: 12px; margin-top: auto; }
+        .user-avatar { width: 40px; height: 40px; background: var(--brand-accent); color: var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+        .user-info { flex: 1; overflow: hidden; }
+        .user-name { font-size: 14px; font-weight: 600; }
+        .user-role { font-size: 12px; color: rgba(255,255,255,0.6); }
+
+        .main-content { flex: 1; margin-left: 260px; padding: 32px 40px; max-width: 1400px; }
+        .header { display: flex; justify-content: space-between; align-items: end; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+        .header h1 { font-size: 26px; font-weight: 600; margin: 0 0 4px; }
+        .header p { color: var(--muted); font-size: 14px; margin: 0; }
+
+        .tabs { display: flex; gap: 4px; background: white; padding: 6px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); width: fit-content; margin-bottom: 24px; }
+        .tab { padding: 10px 18px; border: none; background: transparent; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--muted); border-radius: 8px; font-family: inherit; }
+        .tab.active { background: var(--brand); color: white; }
+        .tab-count { display: inline-block; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 6px; }
+        .tab:not(.active) .tab-count { background: var(--bg); color: var(--brand); }
+
+        .filter-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; align-items: end; background: white; padding: 16px; border-radius: 12px; }
+        .filter-group { display: flex; flex-direction: column; gap: 6px; }
+        .filter-group label { font-size: 12px; color: var(--muted); font-weight: 500; }
+        .filter-group select { padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; background: white; min-width: 180px; }
+        .filter-action { padding: 10px 18px; background: var(--brand); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+
+        .session-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+        .session-card { background: white; border-radius: 16px; padding: 22px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 14px; transition: transform 0.2s; border: 1px solid transparent; }
+        .session-card:hover { transform: translateY(-3px); border-color: rgba(76,29,149,0.1); }
+        .session-icon-row { display: flex; justify-content: space-between; align-items: flex-start; }
+        .session-icon { width: 48px; height: 48px; background: rgba(76,29,149,0.08); color: var(--brand); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .session-pill { font-size: 11px; padding: 4px 10px; background: var(--bg); border-radius: 20px; color: var(--muted); font-weight: 500; }
+        .session-title { font-size: 17px; font-weight: 600; line-height: 1.3; margin: 0; }
+        .session-meta { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
+        .session-meta-row { display: flex; align-items: center; gap: 8px; }
+        .session-meta-row i { width: 14px; color: var(--brand); }
+        .session-foot { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border); }
+        .session-id { font-size: 11px; color: var(--muted); font-family: monospace; }
+        .btn-apply { background: var(--brand); color: white; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 500; font-size: 13px; cursor: pointer; }
+        .btn-apply:hover { background: #3c1683; }
+        .btn-apply.applied { background: #d1fae5; color: #065f46; cursor: default; }
+        .btn-apply.full { background: #fee2e2; color: #b91c1c; cursor: not-allowed; }
+
+        .empty { background: white; border-radius: 16px; padding: 48px 24px; text-align: center; color: var(--muted); }
+        .empty i { font-size: 40px; color: var(--border); margin-bottom: 12px; display: block; }
+
+        .fallback-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; display: flex; gap: 14px; align-items: start; }
+        .fallback-box i { font-size: 18px; color: #ea580c; margin-top: 2px; }
+        .fallback-box h4 { margin: 0 0 4px; font-size: 14px; }
+        .fallback-box p { margin: 0; font-size: 13px; color: var(--muted); }
+        .fallback-states { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .fallback-states span { padding: 3px 10px; background: white; border: 1px solid var(--border); border-radius: 14px; font-size: 12px; }
+
+        .app-card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 16px; }
+        .app-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+        .app-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+        .app-sub { color: var(--muted); font-size: 13px; }
+        .app-status { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; padding: 16px; background: var(--bg); border-radius: 10px; }
+        .app-grid div { display: flex; flex-direction: column; gap: 4px; }
+        .app-grid label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .app-grid span { font-size: 14px; font-weight: 500; }
+        .app-actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-secondary { padding: 10px 16px; border: 1px solid var(--border); background: white; border-radius: 8px; font-size: 13px; cursor: pointer; color: var(--ink); }
+        .btn-primary { padding: 10px 16px; background: var(--brand); color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; }
+
+        .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(2px); }
+        .modal-backdrop.open { display: flex; }
+        .modal { background: white; border-radius: 16px; max-width: 600px; width: 100%; max-height: 92vh; overflow: auto; }
+        .modal-head { padding: 22px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-head h3 { margin: 0; font-size: 18px; }
+        .modal-body { padding: 24px; }
+        .modal-foot { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+        .close-btn { background: none; border: none; font-size: 22px; color: var(--muted); cursor: pointer; padding: 4px 8px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+        .form-field { display: flex; flex-direction: column; gap: 6px; }
+        .form-field.full { grid-column: 1 / -1; }
+        .form-field label { font-size: 12px; color: var(--muted); font-weight: 500; }
+        .form-field input, .form-field select { padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
+
+        .mobile-header { display: none; padding: 16px 20px; background: var(--brand); color: white; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 99; }
+        .mobile-menu-toggle { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; }
+        .mobile-overlay.active { display: block; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 80px 16px 30px; }
+            .mobile-header { display: flex; }
+            .session-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-header">
+        <div style="display:flex;align-items:center;gap:8px;"><i class="fas fa-leaf" style="color:#a855f7;"></i><span style="font-weight:600;">Vendor</span></div>
+        <button class="mobile-menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    </div>
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <a href="evillage.html" class="sidebar-brand"><i class="fas fa-leaf"></i><span>eVillage Portal</span></a>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="evillage-vendor-dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i><span>Vendor Dashboard</span></a></li>
+            <li class="nav-item"><a href="evillage-vendor-products.html" class="nav-link"><i class="fas fa-box"></i><span>Products</span></a></li>
+            <li class="nav-item"><a href="evillage-vendor-installations.html" class="nav-link"><i class="fas fa-tools"></i><span>Installations</span></a></li>
+            <li class="nav-item"><a href="evillage-vendor-bids.html" class="nav-link"><i class="fas fa-file-signature"></i><span>Bids &amp; Contracts</span></a></li>
+            <li class="nav-item"><a href="evillage-vendor-cohort.html" class="nav-link active"><i class="fas fa-graduation-cap"></i><span>Cohort</span></a></li>
+            <li class="nav-item"><a href="evillage-vendor-settings.html" class="nav-link"><i class="fas fa-cog"></i><span>Settings / KYC</span></a></li>
+            <li class="nav-item" style="margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px;"><a href="#" class="nav-link" onclick="signOut(); return false;"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a></li>
+        </ul>
+        <div class="user-profile">
+            <div class="user-avatar" id="navAvatar">ZE</div>
+            <div class="user-info">
+                <div class="user-name" id="navName">Zuma Energy</div>
+                <div class="user-role">Certified Vendor</div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <div>
+                <h1>Cohort Training</h1>
+                <p>Upskill your installation crew. Browse open sessions and track applications for your team.</p>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="browse"><i class="fas fa-search"></i> &nbsp;Browse Sessions <span class="tab-count" id="cnt-browse">0</span></button>
+            <button class="tab" data-tab="my"><i class="fas fa-user-check"></i> &nbsp;My Application <span class="tab-count" id="cnt-my">0</span></button>
+        </div>
+
+        <section id="tab-browse">
+            <div class="filter-bar">
+                <div class="filter-group"><label for="fState">State</label><select id="fState"><option value="">All states</option></select></div>
+                <div class="filter-group"><label for="fCourse">Course</label><select id="fCourse"><option value="">All courses</option></select></div>
+                <div class="filter-group"><label for="fYear">Year</label><select id="fYear"><option value="">All years</option></select></div>
+                <div style="flex:1;"></div>
+                <button class="filter-action" onclick="resetFilters()"><i class="fas fa-rotate-right"></i> Reset</button>
+            </div>
+            <div id="fallbackBox"></div>
+            <div id="sessionGrid" class="session-grid"></div>
+        </section>
+
+        <section id="tab-my" style="display:none;">
+            <div id="myList"></div>
+        </section>
+    </main>
+
+    <div class="modal-backdrop" id="applyModal">
+        <div class="modal">
+            <div class="modal-head"><h3>Apply for Cohort</h3><button class="close-btn" onclick="closeModal('applyModal')">&times;</button></div>
+            <div class="modal-body" id="applyBody"></div>
+            <div class="modal-foot">
+                <button class="btn-secondary" onclick="closeModal('applyModal')">Cancel</button>
+                <button class="btn-primary" onclick="confirmApply()"><i class="fas fa-paper-plane"></i> Submit Application</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="infoModal">
+        <div class="modal">
+            <div class="modal-head"><h3>Complete Trainee Profile</h3><button class="close-btn" onclick="closeModal('infoModal')">&times;</button></div>
+            <div class="modal-body">
+                <p style="margin: 0 0 16px; color: var(--muted); font-size: 14px;">Provide trainee details so we can prepare the class entry pass.</p>
+                <form id="infoForm">
+                    <div class="form-row">
+                        <div class="form-field"><label>Full Name *</label><input name="fullName" required></div>
+                        <div class="form-field"><label>Date of Birth *</label><input name="dob" type="date" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field"><label>Phone *</label><input name="phone" required></div>
+                        <div class="form-field"><label>Gender</label><select name="gender"><option>—</option><option>Female</option><option>Male</option><option>Prefer not to say</option></select></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field"><label>NIN</label><input name="nin"></div>
+                        <div class="form-field"><label>Highest Education</label><select name="education"><option>SSCE</option><option>OND/NCE</option><option>HND/Bachelor's</option><option>Master's</option><option>PhD</option></select></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field full"><label>Residential Address *</label><input name="address" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field"><label>Emergency Contact Name</label><input name="emergencyName"></div>
+                        <div class="form-field"><label>Emergency Phone</label><input name="emergencyPhone"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-secondary" onclick="closeModal('infoModal')">Cancel</button>
+                <button class="btn-primary" onclick="saveFullInfo()"><i class="fas fa-save"></i> Save &amp; Generate Pass</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const C = window.eVillageCohort;
+        const me = C.getCurrentUser();
+        document.getElementById('navName').textContent = me.name || 'Vendor';
+        document.getElementById('navAvatar').textContent = (me.name || 'VR').split(' ').map(s => s[0]).slice(0,2).join('').toUpperCase();
+
+        let pendingSessionId = null;
+
+        function init() {
+            const sState = document.getElementById('fState');
+            C.STATES.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sState.appendChild(o); });
+            const sCourse = document.getElementById('fCourse');
+            C.COURSES.forEach(c => { const o = document.createElement('option'); o.value = c.id; o.textContent = c.title; sCourse.appendChild(o); });
+            const years = [...new Set(C.listSessions().map(s => s.year))].sort();
+            const sYear = document.getElementById('fYear');
+            years.forEach(y => { const o = document.createElement('option'); o.value = y; o.textContent = y; sYear.appendChild(o); });
+            sState.addEventListener('change', renderBrowse);
+            sCourse.addEventListener('change', renderBrowse);
+            sYear.addEventListener('change', renderBrowse);
+
+            document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+
+            renderBrowse();
+            renderMy();
+        }
+
+        function switchTab(name) {
+            document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+            document.getElementById('tab-browse').style.display = name === 'browse' ? '' : 'none';
+            document.getElementById('tab-my').style.display = name === 'my' ? '' : 'none';
+        }
+
+        function resetFilters() { ['fState','fCourse','fYear'].forEach(k => document.getElementById(k).value = ''); renderBrowse(); }
+
+        function renderBrowse() {
+            const f = {};
+            const v1 = document.getElementById('fState').value; if (v1) f.state = v1;
+            const v2 = document.getElementById('fCourse').value; if (v2) f.courseId = v2;
+            const v3 = document.getElementById('fYear').value; if (v3) f.year = v3;
+            let rows = C.listSessions(f).filter(s => s.status === 'open');
+            const fb = document.getElementById('fallbackBox');
+            fb.innerHTML = '';
+
+            if (v1 && rows.length === 0) {
+                const others = C.statesWithOpenCohorts().filter(s => s !== v1);
+                fb.innerHTML = `
+                    <div class="fallback-box">
+                        <i class="fas fa-circle-info"></i>
+                        <div style="flex:1;">
+                            <h4>No active cohort in ${v1} yet</h4>
+                            <p>You can still apply to a session in another state. The states below already have open cohorts you can join:</p>
+                            <div class="fallback-states">${others.map(s => `<span>${s}</span>`).join('')}</div>
+                        </div>
+                    </div>`;
+                rows = C.listSessions({}).filter(s => s.status === 'open');
+            }
+
+            const myApps = C.listApplications({ userId: me.id });
+            const appliedSet = new Set(myApps.map(a => a.sessionId));
+            const grid = document.getElementById('sessionGrid');
+
+            grid.innerHTML = '';
+            if (rows.length === 0) {
+                grid.innerHTML = `<div class="empty" style="grid-column:1/-1;"><i class="fas fa-inbox"></i><div>No open sessions match your filters.</div></div>`;
+            } else {
+                rows.forEach(s => grid.appendChild(sessionCard(s, appliedSet.has(s.id))));
+            }
+            document.getElementById('cnt-browse').textContent = rows.length;
+            document.getElementById('cnt-my').textContent = myApps.length;
+        }
+
+        function sessionCard(s, applied) {
+            const c = C.getCourse(s.courseId);
+            const days = C.durationDays(s.startDate, s.endDate);
+            const taken = C.listApplications({ sessionId: s.id }).length;
+            const left = Math.max(0, (s.capacity || 0) - taken);
+            const full = left === 0;
+            const el = document.createElement('div');
+            el.className = 'session-card';
+            el.innerHTML = `
+                <div class="session-icon-row">
+                    <div class="session-icon"><i class="fas ${c.icon}"></i></div>
+                    <span class="session-pill">${s.year}</span>
+                </div>
+                <h3 class="session-title">${c.title}</h3>
+                <div class="session-meta">
+                    <div class="session-meta-row"><i class="fas fa-map-marker-alt"></i> ${s.state} · ${s.location}</div>
+                    <div class="session-meta-row"><i class="fas fa-calendar-days"></i> ${C.fmtDate(s.startDate)} → ${C.fmtDate(s.endDate)} <span style="color:var(--muted);">(${days}d)</span></div>
+                    <div class="session-meta-row"><i class="fas fa-user-tie"></i> ${s.instructor}</div>
+                    <div class="session-meta-row"><i class="fas fa-chair"></i> ${left} of ${s.capacity} seats available</div>
+                </div>
+                <div class="session-foot">
+                    <span class="session-id">${s.id}</span>
+                    <button class="btn-apply ${applied ? 'applied' : (full ? 'full' : '')}" ${applied || full ? 'disabled' : ''}>
+                        ${applied ? '<i class="fas fa-check"></i> Applied' : (full ? 'Cohort Full' : 'Apply Now <i class="fas fa-arrow-right"></i>')}
+                    </button>
+                </div>`;
+            const btn = el.querySelector('.btn-apply');
+            if (!applied && !full) btn.addEventListener('click', () => openApply(s.id));
+            return el;
+        }
+
+        function openApply(sid) {
+            pendingSessionId = sid;
+            const s = C.listSessions().find(x => x.id === sid);
+            const c = C.getCourse(s.courseId);
+            document.getElementById('applyBody').innerHTML = `
+                <div style="background: var(--bg); border-radius: 10px; padding: 16px; margin-bottom: 16px;">
+                    <div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom: 4px;">You're applying for</div>
+                    <div style="font-size: 17px; font-weight: 600;">${c.title}</div>
+                    <div style="margin-top: 10px; font-size: 13px; color:var(--muted); display:flex; flex-direction:column; gap: 4px;">
+                        <div><i class="fas fa-id-badge" style="width:14px;"></i> Session: <strong style="color:var(--ink);">${s.id}</strong></div>
+                        <div><i class="fas fa-map-marker-alt" style="width:14px;"></i> ${s.state} · ${s.location}</div>
+                        <div><i class="fas fa-calendar-days" style="width:14px;"></i> ${C.fmtDate(s.startDate)} → ${C.fmtDate(s.endDate)}</div>
+                    </div>
+                </div>
+                <div style="display:flex; flex-direction:column; gap: 6px;">
+                    <label style="font-size:12px; color:var(--muted); font-weight: 500;">Which crew member is attending? (optional)</label>
+                    <textarea id="applyNote" rows="3" style="padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; font-family:inherit; outline:none; resize:vertical;" placeholder="e.g. Crew lead — David Okeke, technician at Lagos site"></textarea>
+                </div>`;
+            document.getElementById('applyModal').classList.add('open');
+        }
+
+        function confirmApply() {
+            if (!pendingSessionId) return;
+            const note = document.getElementById('applyNote') ? document.getElementById('applyNote').value : '';
+            const app = C.applyToSession(pendingSessionId, { note: note });
+            sessionStorage.setItem('justApplied', JSON.stringify({ appId: app.id, sessionId: pendingSessionId }));
+            window.location.href = 'evillage-cohort-success.html';
+        }
+
+        function renderMy() {
+            const apps = C.listApplications({ userId: me.id });
+            const list = document.getElementById('myList');
+            if (apps.length === 0) {
+                list.innerHTML = `<div class="empty"><i class="fas fa-graduation-cap"></i><div style="margin-bottom: 14px;">No applications yet.</div><button class="btn-primary" onclick="switchTab('browse')">Browse Open Sessions</button></div>`;
+                return;
+            }
+            list.innerHTML = '';
+            apps.forEach(a => list.appendChild(applicationCard(a)));
+        }
+
+        function applicationCard(app) {
+            const s = C.listSessions().find(x => x.id === app.sessionId) || {};
+            const c = C.getCourse(app.courseId);
+            const badge = C.statusBadge(app.status);
+            const el = document.createElement('div');
+            el.className = 'app-card';
+            el.innerHTML = `
+                <div class="app-head">
+                    <div>
+                        <h3 class="app-title">${c.title}</h3>
+                        <div class="app-sub">${s.state || '—'} · ${s.location || '—'} &middot; <strong>${app.id}</strong></div>
+                    </div>
+                    <span class="app-status" style="background:${badge.bg};color:${badge.fg};">${badge.label}</span>
+                </div>
+                <div class="app-grid">
+                    <div><label>Session</label><span style="font-family:monospace;">${app.sessionId}</span></div>
+                    <div><label>Start</label><span>${C.fmtDate(s.startDate)}</span></div>
+                    <div><label>End</label><span>${C.fmtDate(s.endDate)}</span></div>
+                    <div><label>Instructor</label><span>${s.instructor || '—'}</span></div>
+                    <div><label>Applied</label><span>${C.fmtDate(app.appliedAt)}</span></div>
+                </div>
+                <div class="app-actions" id="actions-${app.id}"></div>
+                ${app.status === 'pending' ? `<div style="margin-top: 14px; padding: 12px 14px; background: #fef3c7; border-radius: 8px; font-size: 13px; color: #92400e;"><i class="fas fa-hourglass-half"></i> Awaiting admin review. Email confirmation sent to <strong>${app.userEmail || me.email || 'your registered email'}</strong>.</div>` : ''}`;
+            const actions = el.querySelector(`#actions-${app.id}`);
+            if (app.status === 'approved') {
+                if (!app.fullInfo) {
+                    const b = document.createElement('button');
+                    b.className = 'btn-primary'; b.innerHTML = '<i class="fas fa-id-card"></i> Add Full Info';
+                    b.onclick = () => openInfo(app.id); actions.appendChild(b);
+                } else {
+                    const b1 = document.createElement('button');
+                    b1.className = 'btn-primary'; b1.innerHTML = '<i class="fas fa-print"></i> Print Class Entry Pass';
+                    b1.onclick = () => printPass(app.id); actions.appendChild(b1);
+                    const b2 = document.createElement('button');
+                    b2.className = 'btn-secondary'; b2.innerHTML = '<i class="fas fa-edit"></i> Edit Info';
+                    b2.onclick = () => openInfo(app.id); actions.appendChild(b2);
+                }
+            }
+            return el;
+        }
+
+        function openInfo(appId) {
+            const app = C.listApplications({ userId: me.id }).find(a => a.id === appId);
+            const f = document.getElementById('infoForm');
+            f.dataset.appId = appId;
+            const info = app.fullInfo || {};
+            ['fullName','dob','phone','gender','nin','education','address','emergencyName','emergencyPhone'].forEach(k => {
+                if (f[k]) f[k].value = info[k] || (k === 'fullName' ? me.name : '') || '';
+            });
+            document.getElementById('infoModal').classList.add('open');
+        }
+
+        function saveFullInfo() {
+            const f = document.getElementById('infoForm');
+            if (!f.fullName.value || !f.phone.value || !f.address.value || !f.dob.value) { alert('Please fill required fields.'); return; }
+            const data = {}; new FormData(f).forEach((v,k) => data[k] = v);
+            C.saveFullInfo(f.dataset.appId, data);
+            closeModal('infoModal'); renderMy();
+        }
+
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+        function printPass(appId) { sessionStorage.setItem('printPassAppId', appId); window.open('evillage-cohort-pass.html', '_blank'); }
+        function signOut() { sessionStorage.removeItem('neiia_authenticated'); window.location.href = 'evillage-signin.html'; }
+        function toggleSidebar() { document.getElementById('mobileOverlay').classList.toggle('active'); document.getElementById('sidebar').classList.toggle('active'); }
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

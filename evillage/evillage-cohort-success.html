@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Submitted | eVillage Cohort</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=2.0">
+    <script src="config.js?v=1.0"></script>
+    <script src="evillage-api.js?v=1.0"></script>
+    <script src="evillage-cohort.js?v=1.0"></script>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
+    <style>
+        :root { --brand: #0d3d44; --brand-light: #10b981; --bg: #f3f4f6; --ink: #111827; --muted: #6b7280; --border: #e5e7eb; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; color: var(--ink); }
+        .card { background: white; border-radius: 24px; max-width: 640px; width: 100%; padding: 48px 40px; box-shadow: 0 20px 60px -10px rgba(0,0,0,0.15); text-align: center; position: relative; overflow: hidden; }
+        .confetti-bar { position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, var(--brand), var(--brand-light), #fbbf24, #ef4444, var(--brand)); }
+        .icon-wrap { width: 96px; height: 96px; background: linear-gradient(135deg, var(--brand-light), var(--brand)); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 42px; margin: 0 auto 22px; box-shadow: 0 12px 28px rgba(16, 185, 129, 0.35); animation: pop 0.6s ease; }
+        @keyframes pop { 0% { transform: scale(0); } 70% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        h1 { font-size: 28px; font-weight: 600; margin: 0 0 10px; }
+        .lead { color: var(--muted); font-size: 16px; line-height: 1.55; max-width: 480px; margin: 0 auto 28px; }
+        .summary { background: #f9fafb; border-radius: 14px; padding: 20px; margin-bottom: 28px; text-align: left; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .summary div { display: flex; flex-direction: column; gap: 3px; }
+        .summary label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .summary span { font-size: 14px; font-weight: 500; }
+        .next-steps { text-align: left; background: #ecfdf5; border-left: 4px solid var(--brand-light); border-radius: 12px; padding: 20px 22px; margin-bottom: 28px; }
+        .next-steps h3 { font-size: 15px; margin: 0 0 12px; color: var(--brand); }
+        .next-steps ul { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 1.7; }
+        .next-steps strong { color: var(--ink); }
+        .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 13px 24px; border-radius: 10px; font-weight: 500; font-size: 14px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border: none; }
+        .btn-primary { background: var(--brand); color: white; }
+        .btn-primary:hover { background: #0a2e33; }
+        .btn-secondary { background: white; color: var(--ink); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--brand); color: var(--brand); }
+        @media (max-width: 600px) { .summary { grid-template-columns: 1fr; } .card { padding: 36px 24px; } }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="confetti-bar"></div>
+        <div class="icon-wrap"><i class="fas fa-check"></i></div>
+        <h1>Application Submitted &mdash; Congratulations!</h1>
+        <p class="lead">Your cohort application has been received. We've kicked off the review and you'll hear back from us shortly.</p>
+
+        <div class="summary" id="summary"></div>
+
+        <div class="next-steps">
+            <h3><i class="fas fa-list-check"></i> What happens next</h3>
+            <ul>
+                <li><strong>Check your registered email</strong> &mdash; we've sent a confirmation. Watch that inbox for any follow-up from the admissions team.</li>
+                <li><strong>Track your status</strong> in the <strong>Cohort</strong> tab on your dashboard. It will show <em>Pending Review</em> until an admin reviews it.</li>
+                <li>Once your application is <strong>Approved</strong>, return to the Cohort tab to add your full information and generate your printable Class Entry Pass.</li>
+                <li>Bring the printed pass to the venue on the first day of class.</li>
+            </ul>
+        </div>
+
+        <div class="actions">
+            <a href="evillage-cohort.html" class="btn btn-primary"><i class="fas fa-eye"></i> View My Application</a>
+            <a href="evillage-dashboard.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        const C = window.eVillageCohort;
+        const me = C.getCurrentUser();
+        const just = JSON.parse(sessionStorage.getItem('justApplied') || '{}');
+        const sum = document.getElementById('summary');
+
+        if (just.appId) {
+            const app = C.listApplications({}).find(a => a.id === just.appId);
+            const s = C.listSessions().find(x => x.id === just.sessionId);
+            const c = app ? C.getCourse(app.courseId) : null;
+            if (app && s && c) {
+                sum.innerHTML = `
+                    <div><label>Course</label><span>${c.title}</span></div>
+                    <div><label>Application ID</label><span style="font-family: monospace;">${app.id}</span></div>
+                    <div><label>Session</label><span style="font-family: monospace;">${s.id}</span></div>
+                    <div><label>Location</label><span>${s.state}</span></div>
+                    <div><label>Start date</label><span>${C.fmtDate(s.startDate)}</span></div>
+                    <div><label>End date</label><span>${C.fmtDate(s.endDate)}</span></div>
+                    <div style="grid-column: 1/-1;"><label>Confirmation sent to</label><span>${app.userEmail || me.email || 'your registered email'}</span></div>`;
+            }
+        } else {
+            sum.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
