@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Loan / Grant | eVillage Vendor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=2.0">
+    <script src="config.js?v=1.0"></script>
+    <script src="evillage-api.js?v=1.0"></script>
+    <script>window.EVILLAGE_REQUIRED_ROLES = ['vendor'];</script>
+    <script src="evillage-guard.js?v=1.0"></script>
+    <script src="evillage-vendor-finance.js?v=1.0"></script>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
+    <style>
+        :root { --brand: #4c1d95; --brand-accent: #a855f7; --bg: #f3f4f6; --ink: #111827; --muted: #6b7280; --border: #e5e7eb; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); margin: 0; min-height: 100vh; color: var(--ink); -webkit-font-smoothing: antialiased; padding: 32px 20px; }
+        .wrap { max-width: 920px; margin: 0 auto; }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+        .back-link { color: var(--brand); text-decoration: none; font-size: 13.5px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+        .back-link:hover { color: #3c1683; }
+        .top-stamp { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+        .top-stamp .dot { width: 8px; height: 8px; background: #16a34a; border-radius: 50%; }
+
+        .card { background: white; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); overflow: hidden; }
+        .card-banner { padding: 24px 32px; background: linear-gradient(135deg, var(--brand) 0%, #5b21b6 100%); color: white; position: relative; }
+        .card-banner::after { content: ''; position: absolute; right: -40px; top: -40px; width: 180px; height: 180px; background: rgba(168,85,247,0.18); border-radius: 50%; }
+        .card-banner h1 { margin: 0 0 4px; font-size: 22px; font-weight: 600; position: relative; z-index: 2; }
+        .card-banner p { margin: 0; opacity: 0.85; font-size: 14px; position: relative; z-index: 2; }
+        .product-chip { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.18); padding: 6px 14px; border-radius: 20px; margin-top: 12px; font-size: 13px; backdrop-filter: blur(6px); position: relative; z-index: 2; }
+
+        .stepper { display: flex; padding: 22px 32px; border-bottom: 1px solid var(--border); gap: 0; overflow-x: auto; }
+        .step { flex: 1; min-width: 130px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 6px 12px; position: relative; }
+        .step + .step::before { content: ''; position: absolute; top: 16px; left: -50%; right: 50%; height: 2px; background: var(--border); z-index: 0; }
+        .step.done + .step::before, .step.active + .step::before, .step.done::before { background: var(--brand); }
+        .step .num { width: 32px; height: 32px; border-radius: 50%; background: var(--bg); color: var(--muted); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; position: relative; z-index: 1; border: 2px solid var(--border); }
+        .step.active .num { background: var(--brand); color: white; border-color: var(--brand); }
+        .step.done .num { background: #16a34a; color: white; border-color: #16a34a; }
+        .step .lbl { font-size: 12px; font-weight: 500; color: var(--muted); }
+        .step.active .lbl, .step.done .lbl { color: var(--ink); }
+
+        .body { padding: 28px 32px; }
+        .step-pane { display: none; }
+        .step-pane.active { display: block; }
+        .step-pane h3 { margin: 0 0 6px; font-size: 18px; font-weight: 600; }
+        .step-pane > p.sub { margin: 0 0 22px; font-size: 13.5px; color: var(--muted); }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .field { display: flex; flex-direction: column; gap: 6px; }
+        .field.full { grid-column: 1/-1; }
+        .field label { font-size: 12.5px; color: var(--ink); font-weight: 500; }
+        .field label .req { color: #ef4444; }
+        .field input, .field select, .field textarea { padding: 11px 13px; border: 1px solid var(--border); border-radius: 8px; font-size: 13.5px; outline: none; font-family: inherit; background: white; color: var(--ink); }
+        .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--brand); }
+        .field .hint { font-size: 11.5px; color: var(--muted); }
+        .field-error { color: #ef4444; font-size: 11.5px; display: none; }
+        .field.error input, .field.error select, .field.error textarea { border-color: #ef4444; }
+        .field.error .field-error { display: block; }
+
+        .upload { border: 2px dashed var(--border); padding: 16px 18px; border-radius: 10px; cursor: pointer; transition: all 0.2s; background: #fafafa; display: flex; gap: 14px; align-items: center; }
+        .upload:hover { border-color: var(--brand); background: #f9f5ff; }
+        .upload.uploaded { border-color: #16a34a; background: #f0fdf4; border-style: solid; }
+        .upload .ic { width: 44px; height: 44px; background: rgba(76,29,149,0.08); color: var(--brand); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+        .upload.uploaded .ic { background: #d1fae5; color: #065f46; }
+        .upload .lbl { font-size: 13.5px; font-weight: 500; }
+        .upload .desc { font-size: 12px; color: var(--muted); }
+        .upload input[type=file] { display: none; }
+
+        .review-section { margin-bottom: 18px; background: var(--bg); border-radius: 12px; padding: 18px 20px; }
+        .review-section h4 { margin: 0 0 12px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        .review-section h4 i { color: var(--brand); font-size: 12px; }
+        .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .review-item { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+        .review-item label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .review-item span { font-weight: 500; }
+        .review-item.full { grid-column: 1/-1; }
+
+        .partner-flow { background: linear-gradient(135deg, #f5f3ff 0%, #ecfdf5 100%); border-radius: 12px; padding: 18px 22px; margin-bottom: 22px; }
+        .partner-flow h4 { margin: 0 0 12px; font-size: 13.5px; display: flex; align-items: center; gap: 8px; }
+        .partner-flow .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .partner-flow .pf-step { display: inline-flex; align-items: center; gap: 6px; background: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .partner-flow .pf-step strong { font-weight: 600; }
+
+        .actions { padding: 18px 32px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .btn { padding: 11px 20px; border-radius: 8px; font-weight: 500; font-size: 13.5px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; }
+        .btn-primary { background: var(--brand); color: white; }
+        .btn-primary:hover { background: #3c1683; }
+        .btn-secondary { background: white; color: var(--ink); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--brand); color: var(--brand); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .checklist { background: #f8fafc; padding: 16px 18px; border-radius: 10px; margin-top: 8px; }
+        .checklist li { font-size: 13px; color: var(--muted); margin-bottom: 5px; display: flex; align-items: center; gap: 8px; list-style: none; }
+        .checklist li i { color: #16a34a; font-size: 12px; }
+        .checklist ul { margin: 0; padding: 0; }
+
+        @media (max-width: 720px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .review-grid { grid-template-columns: 1fr; }
+            .body, .actions { padding: 22px; }
+            .card-banner { padding: 22px; }
+            .stepper { padding: 18px 22px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="top-bar">
+            <a class="back-link" href="evillage-vendor-loans.html"><i class="fas fa-arrow-left"></i> Back to Loans &amp; Grants</a>
+            <div class="top-stamp"><span class="dot"></span> Secured by eVillage / OPay / BOI partnership</div>
+        </div>
+
+        <div class="card">
+            <div class="card-banner">
+                <h1 id="appTitle">Apply for Productivity Loan</h1>
+                <p id="appSub">Provide your business and KYC information to start your application.</p>
+                <div class="product-chip" id="productChip" style="display:none;"></div>
+            </div>
+
+            <div class="stepper" id="stepper">
+                <div class="step active" data-step="0"><div class="num">1</div><div class="lbl">Product</div></div>
+                <div class="step" data-step="1"><div class="num">2</div><div class="lbl">Request</div></div>
+                <div class="step" data-step="2"><div class="num">3</div><div class="lbl">Business</div></div>
+                <div class="step" data-step="3"><div class="num">4</div><div class="lbl">KYC &amp; Docs</div></div>
+                <div class="step" data-step="4"><div class="num">5</div><div class="lbl">Review</div></div>
+            </div>
+
+            <div class="body">
+                <!-- STEP 0: PRODUCT SELECTION -->
+                <div class="step-pane active" data-pane="0">
+                    <h3>Pick a product</h3>
+                    <p class="sub">Choose a productivity loan or grant to apply for.</p>
+                    <div class="form-grid">
+                        <div class="field full">
+                            <label>Type <span class="req">*</span></label>
+                            <select id="typeSelect">
+                                <option value="loan">Loan (productivity / working capital / asset finance)</option>
+                                <option value="grant">Grant (non-repayable)</option>
+                            </select>
+                        </div>
+                        <div class="field full">
+                            <label>Product <span class="req">*</span></label>
+                            <select id="productSelect"></select>
+                            <div class="hint" id="productHint"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 1: REQUEST -->
+                <div class="step-pane" data-pane="1">
+                    <h3>How much do you need?</h3>
+                    <p class="sub">Tell us the amount and what it will be used for.</p>
+                    <div class="form-grid">
+                        <div class="field">
+                            <label>Amount requested (₦) <span class="req">*</span></label>
+                            <input id="amount" type="number" min="0" placeholder="e.g. 5,000,000">
+                            <div class="hint" id="amountHint"></div>
+                            <div class="field-error">Enter an amount within the product range.</div>
+                        </div>
+                        <div class="field" id="tenorWrap">
+                            <label>Preferred tenor (months) <span class="req">*</span></label>
+                            <input id="tenor" type="number" min="1" placeholder="e.g. 24">
+                            <div class="hint" id="tenorHint"></div>
+                            <div class="field-error">Required for loans.</div>
+                        </div>
+                        <div class="field full">
+                            <label>Purpose <span class="req">*</span></label>
+                            <select id="purpose">
+                                <option value="">Select…</option>
+                                <option>Inventory / Stock financing</option>
+                                <option>Equipment purchase (inverters, panels, batteries)</option>
+                                <option>Production capacity expansion</option>
+                                <option>Working capital</option>
+                                <option>Hiring &amp; payroll</option>
+                                <option>Logistics &amp; warehousing</option>
+                                <option>Marketing &amp; sales scale-up</option>
+                                <option>Other</option>
+                            </select>
+                            <div class="field-error">Required.</div>
+                        </div>
+                        <div class="field full">
+                            <label>Use of funds — short description <span class="req">*</span></label>
+                            <textarea id="useOfFunds" rows="3" placeholder="Briefly describe how the funds will be deployed and the expected impact on sales / production…"></textarea>
+                            <div class="field-error">Required (min 30 characters).</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 2: BUSINESS -->
+                <div class="step-pane" data-pane="2">
+                    <h3>Business information</h3>
+                    <p class="sub">Verified by eVillage from your settings — confirm or update.</p>
+                    <div class="form-grid">
+                        <div class="field">
+                            <label>Registered business name <span class="req">*</span></label>
+                            <input id="businessName" placeholder="As on CAC certificate">
+                            <div class="field-error">Required.</div>
+                        </div>
+                        <div class="field">
+                            <label>CAC registration number <span class="req">*</span></label>
+                            <input id="cacNumber" placeholder="e.g. RC1234567">
+                            <div class="hint">Corporate Affairs Commission registration.</div>
+                            <div class="field-error">Required.</div>
+                        </div>
+                        <div class="field">
+                            <label>Tax Identification Number (TIN) <span class="req">*</span></label>
+                            <input id="tin" placeholder="10–12 digits">
+                            <div class="field-error">Required.</div>
+                        </div>
+                        <div class="field">
+                            <label>Years in business <span class="req">*</span></label>
+                            <input id="yearsInBusiness" type="number" min="0" placeholder="e.g. 4">
+                            <div class="field-error">Required.</div>
+                        </div>
+                        <div class="field">
+                            <label>Avg. monthly sales (₦) <span class="req">*</span></label>
+                            <input id="monthlySales" type="number" min="0" placeholder="e.g. 1,500,000">
+                            <div class="field-error">Required.</div>
+                        </div>
+                        <div class="field">
+                            <label>Avg. monthly tax remittance (₦)</label>
+                            <input id="monthlyTax" type="number" min="0" placeholder="e.g. 75,000">
+                            <div class="hint">FIRS / state tax average over last 6 months.</div>
+                        </div>
+                        <div class="field">
+                            <label>Number of employees</label>
+                            <input id="employeeCount" type="number" min="0" placeholder="e.g. 12">
+                        </div>
+                        <div class="field">
+                            <label>Bank of operations</label>
+                            <input id="bankName" placeholder="e.g. GTBank">
+                        </div>
+                        <div class="field full">
+                            <label>Business address <span class="req">*</span></label>
+                            <input id="businessAddress" placeholder="Street, City, State">
+                            <div class="field-error">Required.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: KYC -->
+                <div class="step-pane" data-pane="3">
+                    <h3>KYC &amp; documents</h3>
+                    <p class="sub">Provide your director's identity numbers and upload supporting documents.</p>
+
+                    <div class="form-grid" style="margin-bottom: 18px;">
+                        <div class="field">
+                            <label>Primary director / signatory name <span class="req">*</span></label>
+                            <input id="directorName" placeholder="Full legal name">
+                            <div class="field-error">Required.</div>
+                        </div>
+                        <div class="field">
+                            <label>Director phone <span class="req">*</span></label>
+                            <input id="directorPhone" placeholder="+234…">
+                            <div class="field-error">Required.</div>
+                        </div>
+                        <div class="field">
+                            <label>BVN <span class="req">*</span></label>
+                            <input id="bvn" maxlength="11" pattern="[0-9]{11}" placeholder="11-digit Bank Verification Number">
+                            <div class="hint">Used by OPay to verify your banking history.</div>
+                            <div class="field-error">Required: 11-digit BVN.</div>
+                        </div>
+                        <div class="field">
+                            <label>NIN <span class="req">*</span></label>
+                            <input id="nin" maxlength="11" pattern="[0-9]{11}" placeholder="11-digit National Identification Number">
+                            <div class="field-error">Required: 11-digit NIN.</div>
+                        </div>
+                    </div>
+
+                    <p style="margin: 0 0 12px; font-size: 13px; font-weight: 500;">Supporting documents</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;" id="docsArea"></div>
+                    <p style="margin: 14px 0 0; font-size: 12px; color: var(--muted);"><i class="fas fa-shield-halved"></i> Files are uploaded over a secure channel and shared only with OPay and BOI.</p>
+                </div>
+
+                <!-- STEP 4: REVIEW -->
+                <div class="step-pane" data-pane="4">
+                    <h3>Review &amp; submit</h3>
+                    <p class="sub">Confirm everything is correct. Submission cannot be edited &mdash; only re-applied.</p>
+
+                    <div class="partner-flow">
+                        <h4><i class="fas fa-route"></i> Where your application goes</h4>
+                        <div class="flow">
+                            <div class="pf-step" style="background:#f3e8ff;color:#5b21b6;"><i class="fas fa-store"></i> <strong>You</strong></div>
+                            <i class="fas fa-arrow-right" style="color:var(--muted);font-size:11px;"></i>
+                            <div class="pf-step"><i class="fas fa-leaf" style="color:#10b981;"></i> <strong>eVillage</strong> validates</div>
+                            <i class="fas fa-arrow-right" style="color:var(--muted);font-size:11px;"></i>
+                            <div class="pf-step"><i class="fas fa-circle-nodes" style="color:#0f766e;"></i> <strong>OPay</strong> packages</div>
+                            <i class="fas fa-arrow-right" style="color:var(--muted);font-size:11px;"></i>
+                            <div class="pf-step"><i class="fas fa-landmark" style="color:#15803d;"></i> <strong>BOI</strong> decides</div>
+                        </div>
+                    </div>
+
+                    <div id="reviewBlocks"></div>
+
+                    <div class="checklist">
+                        <ul id="confirmList">
+                            <li><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:13px;color:var(--ink);"><input type="checkbox" id="confirmAccurate" style="margin-top: 2px;"> I confirm all information provided is accurate and complete.</label></li>
+                            <li><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:13px;color:var(--ink);"><input type="checkbox" id="confirmConsent" style="margin-top: 2px;"> I consent to eVillage sharing this application with OPay and the Bank of Industry for review.</label></li>
+                            <li><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:13px;color:var(--ink);"><input type="checkbox" id="confirmTerms" style="margin-top: 2px;"> I agree to the loan / grant terms and the partnership privacy policy.</label></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-secondary" id="prevBtn" onclick="prev()" disabled><i class="fas fa-arrow-left"></i> Back</button>
+                <div style="font-size: 12px; color: var(--muted);" id="stepIndicator">Step 1 of 5</div>
+                <button class="btn btn-primary" id="nextBtn" onclick="next()">Continue <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const F = window.eVillageFinance;
+        const me = F.getCurrentVendor();
+        const url = new URL(window.location.href);
+        const initialType = url.searchParams.get('type') || 'loan';
+        const initialProduct = url.searchParams.get('product');
+
+        const state = {
+            step: 0,
+            data: {
+                businessName: me.name
+            },
+            uploads: {}
+        };
+
+        const DOC_DEFS = {
+            cac: { label: 'CAC Certificate', desc: 'PDF / image of your registration certificate', icon: 'fa-file-contract' },
+            tin: { label: 'TIN Certificate', desc: 'Tax identification certificate', icon: 'fa-receipt' },
+            taxClearance: { label: 'Tax Clearance', desc: 'Latest tax clearance certificate', icon: 'fa-file-circle-check' },
+            bankStatement: { label: 'Bank Statement (6 months)', desc: 'Most recent 6-month statement', icon: 'fa-file-invoice' },
+            idCard: { label: 'Director ID Card', desc: 'NIN slip, voter card or driver\'s licence', icon: 'fa-id-card' },
+            utilityBill: { label: 'Utility Bill', desc: 'Recent bill for proof of address', icon: 'fa-bolt' },
+            businessPlan: { label: 'Business Plan', desc: 'Use-of-funds plan and projections', icon: 'fa-chart-line' },
+            esgPlan: { label: 'ESG Plan', desc: 'Environmental & social impact summary', icon: 'fa-leaf' }
+        };
+
+        function init() {
+            populateProducts();
+            document.getElementById('typeSelect').value = initialType;
+            document.getElementById('typeSelect').addEventListener('change', () => {
+                populateProducts();
+            });
+            document.getElementById('productSelect').addEventListener('change', updateProductHint);
+            if (initialProduct) {
+                setTimeout(() => {
+                    document.getElementById('productSelect').value = initialProduct;
+                    updateProductHint();
+                }, 0);
+            }
+            document.getElementById('amount').addEventListener('input', updateAmountHint);
+            updateProductHint();
+            updateUI();
+        }
+
+        function populateProducts() {
+            const t = document.getElementById('typeSelect').value;
+            const list = t === 'loan' ? F.LOAN_PRODUCTS : F.GRANT_PROGRAMS;
+            const sel = document.getElementById('productSelect');
+            sel.innerHTML = list.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            updateProductHint();
+        }
+
+        function getSelectedProduct() {
+            return F.getProduct(document.getElementById('productSelect').value);
+        }
+
+        function updateProductHint() {
+            const p = getSelectedProduct();
+            const t = document.getElementById('typeSelect').value;
+            const hint = document.getElementById('productHint');
+            const chip = document.getElementById('productChip');
+            const title = document.getElementById('appTitle');
+            const sub = document.getElementById('appSub');
+            if (!p) { hint.textContent = ''; return; }
+            const range = t === 'grant' ? `Up to ${F.fmtNairaShort(p.amountMax)}` : `${F.fmtNairaShort(p.amountMin)} – ${F.fmtNairaShort(p.amountMax)}`;
+            const interest = t === 'loan' ? ` · ${p.interestRate}% p.a. · ${p.tenorMonths}m max tenor` : ' · No repayment';
+            hint.textContent = `${p.provider} · ${range}${interest}`;
+            chip.style.display = 'inline-flex';
+            chip.innerHTML = `<i class="fas ${p.icon}"></i> ${p.name}`;
+            title.textContent = t === 'grant' ? `Apply for ${p.name}` : `Apply for ${p.name}`;
+            sub.textContent = p.tagline;
+            // tenor field
+            document.getElementById('tenorWrap').style.display = t === 'grant' ? 'none' : '';
+            const th = document.getElementById('tenorHint');
+            if (t === 'loan') th.textContent = `Up to ${p.tenorMonths} months · ${p.interestRate}% interest`;
+            updateAmountHint();
+            buildDocsArea();
+        }
+
+        function updateAmountHint() {
+            const p = getSelectedProduct();
+            const t = document.getElementById('typeSelect').value;
+            const ah = document.getElementById('amountHint');
+            if (!p) return;
+            if (t === 'grant') ah.textContent = `Maximum: ${F.fmtNaira(p.amountMax)}`;
+            else ah.textContent = `Range: ${F.fmtNaira(p.amountMin)} – ${F.fmtNaira(p.amountMax)}`;
+        }
+
+        function buildDocsArea() {
+            const p = getSelectedProduct();
+            if (!p) return;
+            const docKeys = (p.kycRequired || []).filter(k => DOC_DEFS[k]);
+            const area = document.getElementById('docsArea');
+            area.innerHTML = docKeys.map(k => {
+                const d = DOC_DEFS[k];
+                const uploaded = state.uploads[k];
+                return `
+                    <label class="upload ${uploaded ? 'uploaded' : ''}" data-key="${k}">
+                        <div class="ic"><i class="fas ${uploaded ? 'fa-check' : d.icon}"></i></div>
+                        <div style="flex:1;">
+                            <div class="lbl">${d.label}${uploaded ? ' &mdash; uploaded' : ''}</div>
+                            <div class="desc">${uploaded ? uploaded.name : d.desc}</div>
+                        </div>
+                        <input type="file" accept=".pdf,.jpg,.jpeg,.png" />
+                    </label>`;
+            }).join('');
+            area.querySelectorAll('.upload').forEach(label => {
+                const inp = label.querySelector('input');
+                inp.addEventListener('change', () => {
+                    if (inp.files && inp.files[0]) {
+                        state.uploads[label.dataset.key] = { name: inp.files[0].name, size: inp.files[0].size };
+                        buildDocsArea();
+                    }
+                });
+            });
+        }
+
+        function next() {
+            if (!validateStep()) return;
+            if (state.step < 4) { state.step++; updateUI(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+            else submit();
+        }
+
+        function prev() {
+            if (state.step > 0) { state.step--; updateUI(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        }
+
+        function updateUI() {
+            document.querySelectorAll('.step-pane').forEach(p => p.classList.toggle('active', Number(p.dataset.pane) === state.step));
+            document.querySelectorAll('.step').forEach(s => {
+                const n = Number(s.dataset.step);
+                s.classList.toggle('active', n === state.step);
+                s.classList.toggle('done', n < state.step);
+            });
+            document.getElementById('prevBtn').disabled = state.step === 0;
+            document.getElementById('nextBtn').innerHTML = state.step === 4
+                ? '<i class="fas fa-paper-plane"></i> Submit Application'
+                : 'Continue <i class="fas fa-arrow-right"></i>';
+            document.getElementById('stepIndicator').textContent = `Step ${state.step + 1} of 5`;
+            if (state.step === 4) renderReview();
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.field.error').forEach(f => f.classList.remove('error'));
+        }
+
+        function flagError(id) {
+            const inp = document.getElementById(id);
+            if (inp) inp.closest('.field').classList.add('error');
+        }
+
+        function validateStep() {
+            clearErrors();
+            const t = document.getElementById('typeSelect').value;
+            const p = getSelectedProduct();
+            if (state.step === 0) {
+                if (!p) { alert('Please select a product.'); return false; }
+                state.data.type = t; state.data.productId = p.id;
+                return true;
+            }
+            if (state.step === 1) {
+                let ok = true;
+                const amt = parseFloat(document.getElementById('amount').value);
+                if (!amt || amt <= 0 || amt > p.amountMax || (p.amountMin && amt < p.amountMin)) { flagError('amount'); ok = false; }
+                if (t === 'loan') {
+                    const ten = parseInt(document.getElementById('tenor').value, 10);
+                    if (!ten || ten < 1 || ten > p.tenorMonths) { flagError('tenor'); ok = false; }
+                    state.data.tenorMonths = ten;
+                }
+                const purpose = document.getElementById('purpose').value;
+                if (!purpose) { flagError('purpose'); ok = false; }
+                const use = document.getElementById('useOfFunds').value.trim();
+                if (use.length < 30) { flagError('useOfFunds'); ok = false; }
+                if (ok) {
+                    state.data.amount = amt;
+                    state.data.purpose = purpose;
+                    state.data.useOfFunds = use;
+                }
+                return ok;
+            }
+            if (state.step === 2) {
+                let ok = true;
+                ['businessName','cacNumber','tin','yearsInBusiness','monthlySales','businessAddress'].forEach(k => {
+                    if (!document.getElementById(k).value.trim()) { flagError(k); ok = false; }
+                });
+                if (ok) {
+                    ['businessName','cacNumber','tin','yearsInBusiness','monthlySales','monthlyTax','employeeCount','bankName','businessAddress'].forEach(k => {
+                        state.data[k] = document.getElementById(k).value.trim();
+                    });
+                }
+                return ok;
+            }
+            if (state.step === 3) {
+                let ok = true;
+                ['directorName','directorPhone'].forEach(k => {
+                    if (!document.getElementById(k).value.trim()) { flagError(k); ok = false; }
+                });
+                const bvn = document.getElementById('bvn').value.trim();
+                const nin = document.getElementById('nin').value.trim();
+                if (!/^[0-9]{11}$/.test(bvn)) { flagError('bvn'); ok = false; }
+                if (!/^[0-9]{11}$/.test(nin)) { flagError('nin'); ok = false; }
+                // required docs
+                const required = (p.kycRequired || []);
+                const missing = required.filter(k => !state.uploads[k]);
+                if (missing.length) {
+                    alert('Please upload: ' + missing.map(k => (DOC_DEFS[k] && DOC_DEFS[k].label) || k).join(', '));
+                    ok = false;
+                }
+                if (ok) {
+                    state.data.directorName = document.getElementById('directorName').value.trim();
+                    state.data.directorPhone = document.getElementById('directorPhone').value.trim();
+                    state.data.bvn = bvn;
+                    state.data.nin = nin;
+                }
+                return ok;
+            }
+            if (state.step === 4) {
+                if (!document.getElementById('confirmAccurate').checked || !document.getElementById('confirmConsent').checked || !document.getElementById('confirmTerms').checked) {
+                    alert('Please tick all the confirmation boxes before submitting.');
+                    return false;
+                }
+                return true;
+            }
+            return true;
+        }
+
+        function renderReview() {
+            const d = state.data;
+            const p = getSelectedProduct();
+            const docs = Object.keys(state.uploads).map(k => `${(DOC_DEFS[k]||{}).label || k}`).join(', ') || 'None';
+            const blocks = [
+                {
+                    title: 'Product', icon: 'fa-bullseye',
+                    rows: [
+                        ['Type', d.type === 'loan' ? 'Productivity / Working Capital Loan' : 'Grant'],
+                        ['Product', p.name],
+                        ['Provider', p.provider],
+                    ]
+                },
+                {
+                    title: 'Funding request', icon: 'fa-coins',
+                    rows: [
+                        ['Amount requested', F.fmtNaira(d.amount)],
+                        ['Tenor', d.type === 'loan' ? `${d.tenorMonths} months` : 'N/A'],
+                        ['Purpose', d.purpose],
+                        ['Use of funds', d.useOfFunds, true]
+                    ]
+                },
+                {
+                    title: 'Business', icon: 'fa-building',
+                    rows: [
+                        ['Business name', d.businessName],
+                        ['CAC number', d.cacNumber],
+                        ['TIN', d.tin],
+                        ['Years in business', d.yearsInBusiness],
+                        ['Monthly sales', F.fmtNaira(d.monthlySales)],
+                        ['Monthly tax', d.monthlyTax ? F.fmtNaira(d.monthlyTax) : '—'],
+                        ['Employees', d.employeeCount || '—'],
+                        ['Bank', d.bankName || '—'],
+                        ['Address', d.businessAddress, true]
+                    ]
+                },
+                {
+                    title: 'KYC & documents', icon: 'fa-id-card',
+                    rows: [
+                        ['Director', d.directorName],
+                        ['Director phone', d.directorPhone],
+                        ['BVN', d.bvn ? '***' + d.bvn.slice(-4) : '—'],
+                        ['NIN', d.nin ? '***' + d.nin.slice(-4) : '—'],
+                        ['Documents uploaded', docs, true]
+                    ]
+                }
+            ];
+            document.getElementById('reviewBlocks').innerHTML = blocks.map(b => `
+                <div class="review-section">
+                    <h4><i class="fas ${b.icon}"></i> ${b.title}</h4>
+                    <div class="review-grid">
+                        ${b.rows.map(r => `<div class="review-item ${r[2] ? 'full' : ''}"><label>${r[0]}</label><span>${r[1] || '—'}</span></div>`).join('')}
+                    </div>
+                </div>`).join('');
+        }
+
+        function submit() {
+            const d = state.data;
+            const app = F.createApplication({
+                productId: d.productId,
+                requested: {
+                    amount: d.amount,
+                    tenorMonths: d.tenorMonths,
+                    purpose: d.purpose,
+                    useOfFunds: d.useOfFunds
+                },
+                business: {
+                    businessName: d.businessName,
+                    cacNumber: d.cacNumber,
+                    tin: d.tin,
+                    yearsInBusiness: d.yearsInBusiness,
+                    monthlySales: d.monthlySales,
+                    monthlyTax: d.monthlyTax,
+                    employeeCount: d.employeeCount,
+                    bankName: d.bankName,
+                    businessAddress: d.businessAddress
+                },
+                kyc: {
+                    directorName: d.directorName,
+                    directorPhone: d.directorPhone,
+                    bvn: d.bvn,
+                    nin: d.nin,
+                    documents: Object.keys(state.uploads)
+                }
+            });
+            sessionStorage.setItem('justSubmittedFinanceApp', app.id);
+            window.location.href = 'evillage-vendor-finance-success.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

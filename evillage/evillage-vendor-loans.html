@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loans &amp; Grants | eVillage Vendor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=2.0">
+    <script src="config.js?v=1.0"></script>
+    <script src="evillage-api.js?v=1.0"></script>
+    <script>window.EVILLAGE_REQUIRED_ROLES = ['vendor'];</script>
+    <script src="evillage-guard.js?v=1.0"></script>
+    <script src="evillage-vendor-finance.js?v=1.0"></script>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
+    <style>
+        :root { --brand: #4c1d95; --brand-accent: #a855f7; --bg: #f3f4f6; --ink: #111827; --muted: #6b7280; --border: #e5e7eb; --opay: #0f766e; --boi: #15803d; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); margin: 0; display: flex; min-height: 100vh; overflow-x: hidden; color: var(--ink); -webkit-font-smoothing: antialiased; }
+        .sidebar { width: 260px; background: var(--brand); color: white; padding: 24px; display: flex; flex-direction: column; position: fixed; height: 100vh; left: 0; top: 0; z-index: 100; transition: transform 0.3s ease; }
+        .sidebar-brand { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 600; margin-bottom: 40px; text-decoration: none; color: white; padding: 0 12px; }
+        .sidebar-brand i { font-size: 24px; color: var(--brand-accent); }
+        .nav-menu { list-style: none; padding: 0; margin: 0; flex: 1; }
+        .nav-item { margin-bottom: 8px; }
+        .nav-link { display: flex; align-items: center; gap: 12px; padding: 12px; color: rgba(255,255,255,0.7); text-decoration: none; border-radius: 8px; transition: all 0.2s; font-size: 14px; font-weight: 500; }
+        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.1); color: white; }
+        .nav-link i { width: 20px; text-align: center; }
+        .user-profile { padding: 16px; background: rgba(255,255,255,0.05); border-radius: 12px; display: flex; align-items: center; gap: 12px; margin-top: auto; }
+        .user-avatar { width: 40px; height: 40px; background: var(--brand-accent); color: var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+        .user-info { flex: 1; overflow: hidden; }
+        .user-name { font-size: 14px; font-weight: 600; }
+        .user-role { font-size: 12px; color: rgba(255,255,255,0.6); }
+
+        .main-content { flex: 1; margin-left: 260px; padding: 32px 40px; max-width: 1400px; }
+        .header { display: flex; justify-content: space-between; align-items: end; margin-bottom: 24px; gap: 16px; flex-wrap: wrap; }
+        .header h1 { font-size: 26px; font-weight: 600; margin: 0 0 4px; }
+        .header p { color: var(--muted); font-size: 14px; margin: 0; }
+
+        /* Partnership banner */
+        .partner-banner { background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 50%, #0f766e 100%); color: white; border-radius: 16px; padding: 22px 28px; margin-bottom: 26px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; box-shadow: 0 12px 28px -8px rgba(76,29,149,0.35); position: relative; overflow: hidden; }
+        .partner-banner::after { content: ''; position: absolute; right: -30px; top: -30px; width: 180px; height: 180px; background: rgba(168,85,247,0.18); border-radius: 50%; pointer-events: none; }
+        .partner-banner h3 { margin: 0 0 4px; font-size: 17px; font-weight: 600; }
+        .partner-banner p { margin: 0; font-size: 13px; opacity: 0.85; max-width: 480px; }
+        .partner-flow { display: flex; align-items: center; gap: 10px; font-size: 13px; flex-wrap: wrap; position: relative; z-index: 2; }
+        .partner-flow .step { display: flex; align-items: center; gap: 7px; background: rgba(255,255,255,0.13); padding: 7px 13px; border-radius: 30px; backdrop-filter: blur(6px); }
+        .partner-flow .step strong { font-weight: 600; }
+        .partner-flow .step i { font-size: 12px; }
+        .partner-flow .arrow { opacity: 0.6; }
+
+        /* Stats */
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 26px; }
+        .stat { background: white; border-radius: 14px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .stat h4 { margin: 0 0 4px; font-size: 12px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat .v { font-size: 22px; font-weight: 600; }
+        .si-purple { background: rgba(76,29,149,0.10); color: var(--brand); }
+        .si-amber { background: #fef3c7; color: #92400e; }
+        .si-green { background: #d1fae5; color: #065f46; }
+        .si-blue { background: #dbeafe; color: #1e40af; }
+
+        .tabs { display: flex; gap: 4px; background: white; padding: 6px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); width: fit-content; margin-bottom: 22px; }
+        .tab { padding: 10px 18px; border: none; background: transparent; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--muted); border-radius: 8px; font-family: inherit; }
+        .tab.active { background: var(--brand); color: white; }
+        .tab-count { display: inline-block; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 6px; }
+        .tab:not(.active) .tab-count { background: var(--bg); color: var(--brand); }
+
+        /* Browse */
+        .seg-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+        .seg-tab { padding: 8px 16px; border: 1px solid var(--border); background: white; border-radius: 24px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--muted); display: inline-flex; align-items: center; gap: 7px; }
+        .seg-tab.active { background: var(--brand); color: white; border-color: var(--brand); }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 18px; }
+        .product { background: white; border-radius: 16px; padding: 22px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 12px; transition: transform 0.2s; border: 1px solid transparent; position: relative; overflow: hidden; }
+        .product:hover { transform: translateY(-3px); border-color: rgba(76,29,149,0.10); }
+        .product-strip { height: 4px; border-radius: 4px; }
+        .product-head { display: flex; align-items: center; gap: 14px; }
+        .product-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+        .product-name { font-size: 16px; font-weight: 600; margin: 0 0 2px; line-height: 1.2; }
+        .product-provider { font-size: 11.5px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+        .product-provider i { font-size: 9px; color: #16a34a; }
+        .product-tagline { font-size: 13.5px; color: var(--ink); margin: 0; line-height: 1.4; font-weight: 500; }
+        .product-desc { font-size: 12.5px; color: var(--muted); margin: 0; line-height: 1.5; }
+        .product-highlights { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0; }
+        .product-highlights span { font-size: 11px; padding: 4px 10px; background: var(--bg); border-radius: 16px; color: var(--ink); font-weight: 500; }
+        .product-foot { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border); margin-top: 6px; }
+        .product-amt { font-size: 15px; font-weight: 600; color: var(--brand); }
+        .btn-apply { background: var(--brand); color: white; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 500; font-size: 13px; cursor: pointer; }
+        .btn-apply:hover { background: #3c1683; }
+
+        /* Applications list */
+        .app-card { background: white; border-radius: 14px; padding: 22px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 16px; }
+        .app-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+        .app-title { font-size: 17px; font-weight: 600; margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
+        .app-type-pill { padding: 3px 10px; border-radius: 14px; font-size: 11px; font-weight: 600; }
+        .app-sub { color: var(--muted); font-size: 13px; }
+        .app-status { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+        .app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; padding: 14px 16px; background: var(--bg); border-radius: 10px; margin-bottom: 16px; }
+        .app-grid div { display: flex; flex-direction: column; gap: 3px; }
+        .app-grid label { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+        .app-grid span { font-size: 13.5px; font-weight: 500; }
+
+        /* Routing pipeline */
+        .pipeline { display: flex; gap: 0; overflow-x: auto; padding: 4px 0; }
+        .pipe-step { flex: 1; min-width: 140px; position: relative; padding: 12px 14px; }
+        .pipe-step + .pipe-step { border-left: 1px dashed var(--border); }
+        .pipe-step .pipe-i { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; margin-bottom: 8px; background: #e5e7eb; color: var(--muted); }
+        .pipe-step.done .pipe-i { background: #d1fae5; color: #065f46; }
+        .pipe-step.active .pipe-i { background: var(--brand); color: white; box-shadow: 0 0 0 4px rgba(76,29,149,0.15); }
+        .pipe-step h5 { margin: 0 0 2px; font-size: 12.5px; font-weight: 600; }
+        .pipe-step p { margin: 0; font-size: 11px; color: var(--muted); line-height: 1.45; }
+
+        .empty { background: white; border-radius: 14px; padding: 56px 24px; text-align: center; color: var(--muted); }
+        .empty i { font-size: 40px; color: var(--border); margin-bottom: 12px; display: block; }
+        .empty .btn-apply { padding: 10px 18px; font-size: 14px; margin-top: 12px; }
+
+        /* Mobile */
+        .mobile-header { display: none; padding: 16px 20px; background: var(--brand); color: white; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 99; }
+        .mobile-menu-toggle { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; }
+        .mobile-overlay.active { display: block; }
+        @media (max-width: 1024px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 80px 16px 30px; }
+            .mobile-header { display: flex; }
+            .partner-banner { padding: 18px 22px; }
+            .product-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-header">
+        <div style="display:flex;align-items:center;gap:8px;"><i class="fas fa-leaf" style="color:#a855f7;"></i><span style="font-weight:600;">Vendor</span></div>
+        <button class="mobile-menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    </div>
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <a href="evillage.html" class="sidebar-brand"><i class="fas fa-leaf"></i><span>eVillage Portal</span></a>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="evillage-vendor-dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i><span>Vendor Dashboard</span></a></li>
+            <li class="nav-item"><a href="evillage-vendor-products.html" class="nav-link"><i class="fas fa-box"></i><span>Products</span></a></li>
+            <li class="nav-item"><a href="evillage-vendor-installations.html" class="nav-link"><i class="fas fa-tools"></i><span>Installations</span></a></li>
+            <li class="nav-item"><a href="evillage-vendor-bids.html" class="nav-link"><i class="fas fa-file-signature"></i><span>Bids &amp; Contracts</span></a></li>
+            <li class="nav-item"><a href="evillage-vendor-loans.html" class="nav-link active"><i class="fas fa-hand-holding-dollar"></i><span>Loans &amp; Grants</span></a></li>
+            <li class="nav-item"><a href="evillage-vendor-cohort.html" class="nav-link"><i class="fas fa-graduation-cap"></i><span>Cohort</span></a></li>
+            <li class="nav-item"><a href="evillage-vendor-settings.html" class="nav-link"><i class="fas fa-cog"></i><span>Settings / KYC</span></a></li>
+            <li class="nav-item" style="margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px;"><a href="#" class="nav-link" onclick="signOut(); return false;"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a></li>
+        </ul>
+        <div class="user-profile">
+            <div class="user-avatar" id="navAvatar">ZE</div>
+            <div class="user-info">
+                <div class="user-name" id="navName">Zuma Energy</div>
+                <div class="user-role">Certified Vendor</div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <div>
+                <h1>Loans &amp; Grants</h1>
+                <p>Apply for productivity finance &mdash; routed via eVillage and OPay to the Bank of Industry.</p>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button class="btn-apply" onclick="window.location.href='evillage-vendor-finance-apply.html?type=grant'" style="background:white;color:var(--brand);border:1px solid var(--brand);"><i class="fas fa-flag"></i> Apply for Grant</button>
+                <button class="btn-apply" onclick="window.location.href='evillage-vendor-finance-apply.html?type=loan'"><i class="fas fa-hand-holding-dollar"></i> Apply for Loan</button>
+            </div>
+        </div>
+
+        <div class="partner-banner">
+            <div style="position:relative;z-index:2;">
+                <h3><i class="fas fa-link"></i> &nbsp;Vendor Finance Partnership</h3>
+                <p>Your application is validated by eVillage, packaged by OPay (asset manager) and decided by the Bank of Industry.</p>
+            </div>
+            <div style="flex:1;"></div>
+            <div class="partner-flow">
+                <div class="step"><i class="fas fa-store"></i> <strong>Vendor</strong></div>
+                <i class="fas fa-arrow-right arrow"></i>
+                <div class="step"><i class="fas fa-leaf"></i> <strong>eVillage</strong></div>
+                <i class="fas fa-arrow-right arrow"></i>
+                <div class="step"><i class="fas fa-circle-nodes"></i> <strong>OPay</strong></div>
+                <i class="fas fa-arrow-right arrow"></i>
+                <div class="step"><i class="fas fa-landmark"></i> <strong>BOI</strong></div>
+            </div>
+        </div>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="my"><i class="fas fa-folder-open"></i> &nbsp;My Applications <span class="tab-count" id="cnt-my">0</span></button>
+            <button class="tab" data-tab="browse"><i class="fas fa-magnifying-glass"></i> &nbsp;Browse Products <span class="tab-count" id="cnt-browse">0</span></button>
+        </div>
+
+        <!-- MY APPLICATIONS -->
+        <section id="tab-my">
+            <div id="myList"></div>
+        </section>
+
+        <!-- BROWSE -->
+        <section id="tab-browse" style="display:none;">
+            <div class="seg-tabs">
+                <button class="seg-tab active" data-seg="all"><i class="fas fa-layer-group"></i> All</button>
+                <button class="seg-tab" data-seg="loan"><i class="fas fa-hand-holding-dollar"></i> Loans</button>
+                <button class="seg-tab" data-seg="grant"><i class="fas fa-flag"></i> Grants</button>
+            </div>
+            <div id="productGrid" class="product-grid"></div>
+        </section>
+    </main>
+
+    <script>
+        const F = window.eVillageFinance;
+        const me = F.getCurrentVendor();
+        document.getElementById('navName').textContent = me.name;
+        document.getElementById('navAvatar').textContent = (me.name || 'VR').split(' ').map(s => s[0]).slice(0,2).join('').toUpperCase();
+
+        function init() {
+            document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+            document.querySelectorAll('.seg-tab').forEach(b => b.addEventListener('click', () => {
+                document.querySelectorAll('.seg-tab').forEach(x => x.classList.toggle('active', x === b));
+                renderBrowse(b.dataset.seg);
+            }));
+            renderStats();
+            renderMy();
+            renderBrowse('all');
+        }
+
+        function switchTab(name) {
+            document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+            document.getElementById('tab-my').style.display = name === 'my' ? '' : 'none';
+            document.getElementById('tab-browse').style.display = name === 'browse' ? '' : 'none';
+        }
+
+        function renderStats() {
+            const apps = F.listApplications({ vendorId: me.id });
+            const inFlight = apps.filter(a => ['submitted','evillage_validation','opay_review','boi_review'].includes(a.status));
+            const approved = apps.filter(a => a.status === 'approved' || a.status === 'disbursed');
+            const totalApproved = approved.reduce((s, a) => s + (Number(a.requested.amount) || 0), 0);
+            const items = [
+                { i: 'fa-file-circle-plus', label: 'Total applications', v: apps.length, cls: 'si-purple' },
+                { i: 'fa-spinner', label: 'In review', v: inFlight.length, cls: 'si-amber' },
+                { i: 'fa-circle-check', label: 'Approved', v: approved.length, cls: 'si-green' },
+                { i: 'fa-coins', label: 'Approved value', v: F.fmtNairaShort(totalApproved), cls: 'si-blue' }
+            ];
+            document.getElementById('stats').innerHTML = items.map(x =>
+                `<div class="stat"><div><h4>${x.label}</h4><div class="v">${x.v}</div></div><div class="stat-icon ${x.cls}"><i class="fas ${x.i}"></i></div></div>`
+            ).join('');
+            document.getElementById('cnt-my').textContent = apps.length;
+            document.getElementById('cnt-browse').textContent = F.LOAN_PRODUCTS.length + F.GRANT_PROGRAMS.length;
+        }
+
+        function renderMy() {
+            const apps = F.listApplications({ vendorId: me.id });
+            const list = document.getElementById('myList');
+            if (apps.length === 0) {
+                list.innerHTML = `
+                    <div class="empty">
+                        <i class="fas fa-folder-open"></i>
+                        <h3 style="margin:0 0 6px; color: var(--ink); font-size: 17px;">No applications yet</h3>
+                        <p style="margin:0 0 14px;">Browse loan products and grant programs to apply for productivity finance.</p>
+                        <button class="btn-apply" onclick="switchTab('browse')"><i class="fas fa-magnifying-glass"></i> Browse Products</button>
+                    </div>`;
+                return;
+            }
+            list.innerHTML = '';
+            apps.forEach(a => list.appendChild(applicationCard(a)));
+        }
+
+        function applicationCard(app) {
+            const product = F.getProduct(app.productId) || { name: app.productName };
+            const status = F.statusInfo(app.status);
+            const stages = ['submitted','evillage_validation','opay_review','boi_review'];
+            const decisionStages = ['approved','rejected','disbursed'];
+            const currentIdx = stages.indexOf(app.status);
+            const isDecided = decisionStages.includes(app.status);
+            const el = document.createElement('div');
+            el.className = 'app-card';
+            const typePill = app.type === 'loan'
+                ? `<span class="app-type-pill" style="background:#ede9fe;color:#5b21b6;">LOAN</span>`
+                : `<span class="app-type-pill" style="background:#dcfce7;color:#15803d;">GRANT</span>`;
+            el.innerHTML = `
+                <div class="app-head">
+                    <div>
+                        <div class="app-title">${typePill} ${product.name}</div>
+                        <div class="app-sub">Application <strong style="font-family:monospace;">${app.id}</strong> &middot; submitted ${F.fmtDate(app.submittedAt)}</div>
+                    </div>
+                    <span class="app-status" style="background:${status.bg};color:${status.fg};"><i class="fas ${status.icon}"></i> ${status.label}</span>
+                </div>
+                <div class="app-grid">
+                    <div><label>Requested</label><span>${F.fmtNaira(app.requested.amount)}</span></div>
+                    <div><label>Provider</label><span>${app.provider}</span></div>
+                    <div><label>Type</label><span>${app.type === 'loan' ? 'Productivity Loan' : 'Grant'}</span></div>
+                    <div><label>Tenor</label><span>${app.requested.tenorMonths ? app.requested.tenorMonths + ' months' : (app.type === 'grant' ? 'N/A' : '—')}</span></div>
+                    <div><label>Purpose</label><span>${app.requested.purpose || '—'}</span></div>
+                </div>
+                ${ isDecided ? '' : `
+                <div class="pipeline">
+                    ${stages.map((st, i) => {
+                        const cls = i < currentIdx ? 'done' : (i === currentIdx ? 'active' : '');
+                        const meta = stageMeta(st);
+                        return `
+                        <div class="pipe-step ${cls}">
+                            <div class="pipe-i"><i class="fas ${meta.icon}"></i></div>
+                            <h5>${meta.title}</h5>
+                            <p>${meta.note}</p>
+                        </div>`;
+                    }).join('')}
+                </div>`}
+                ${app.status === 'rejected' ? `
+                    <div style="margin-top: 14px; padding: 12px 14px; background: #fee2e2; border-radius: 8px; font-size: 13px; color: #b91c1c;">
+                        <i class="fas fa-circle-info"></i> This application was not approved. You can re-apply or pick another product.
+                    </div>` : ''}
+                ${app.status === 'approved' ? `
+                    <div style="margin-top: 14px; padding: 12px 14px; background: #d1fae5; border-radius: 8px; font-size: 13px; color: #065f46;">
+                        <i class="fas fa-circle-check"></i> Approved &mdash; OPay will disburse to your vendor wallet within 3 business days.
+                    </div>` : ''}
+                ${app.status === 'disbursed' ? `
+                    <div style="margin-top: 14px; padding: 12px 14px; background: #d1fae5; border-radius: 8px; font-size: 13px; color: #065f46;">
+                        <i class="fas fa-money-bill-wave"></i> Disbursed via OPay &middot; ${F.fmtNaira(app.requested.amount)} credited to your wallet.
+                    </div>` : ''}`;
+            return el;
+        }
+
+        function stageMeta(st) {
+            const m = {
+                submitted: { title: 'Submitted', icon: 'fa-paper-plane', note: 'Vendor submitted via eVillage.' },
+                evillage_validation: { title: 'eVillage Check', icon: 'fa-shield-halved', note: 'CAC, BVN & sales validated.' },
+                opay_review: { title: 'OPay Review', icon: 'fa-circle-nodes', note: 'OPay packages applicant for BOI.' },
+                boi_review: { title: 'BOI Decision', icon: 'fa-landmark', note: 'BOI credit committee review.' }
+            };
+            return m[st] || m.submitted;
+        }
+
+        function renderBrowse(seg) {
+            const grid = document.getElementById('productGrid');
+            let items = [];
+            if (seg === 'all' || seg === 'loan') items = items.concat(F.LOAN_PRODUCTS.map(p => ({ ...p, _kind: 'loan' })));
+            if (seg === 'all' || seg === 'grant') items = items.concat(F.GRANT_PROGRAMS.map(p => ({ ...p, _kind: 'grant' })));
+            grid.innerHTML = items.map(p => productCard(p)).join('');
+            grid.querySelectorAll('button[data-pid]').forEach(b => b.addEventListener('click', () => apply(b.dataset.pid)));
+        }
+
+        function productCard(p) {
+            const isGrant = p._kind === 'grant';
+            const amtText = isGrant
+                ? `Up to ${F.fmtNairaShort(p.amountMax)}`
+                : `${F.fmtNairaShort(p.amountMin)} – ${F.fmtNairaShort(p.amountMax)}`;
+            const badge = isGrant
+                ? `<span style="position:absolute;top:14px;right:14px;font-size:10px;font-weight:600;background:#dcfce7;color:#15803d;padding:3px 10px;border-radius:14px;">GRANT</span>`
+                : `<span style="position:absolute;top:14px;right:14px;font-size:10px;font-weight:600;background:#ede9fe;color:#5b21b6;padding:3px 10px;border-radius:14px;">LOAN</span>`;
+            return `
+                <div class="product">
+                    <div class="product-strip" style="background:${p.color};"></div>
+                    ${badge}
+                    <div class="product-head">
+                        <div class="product-icon" style="background:${p.color}15;color:${p.color};"><i class="fas ${p.icon}"></i></div>
+                        <div>
+                            <h3 class="product-name">${p.name}</h3>
+                            <div class="product-provider"><i class="fas fa-circle-check"></i> ${p.provider}</div>
+                        </div>
+                    </div>
+                    <p class="product-tagline">${p.tagline}</p>
+                    <p class="product-desc">${p.description}</p>
+                    <div class="product-highlights">${p.highlights.map(h => `<span>${h}</span>`).join('')}</div>
+                    <div class="product-foot">
+                        <div class="product-amt">${amtText}</div>
+                        <button class="btn-apply" data-pid="${p.id}">Apply <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>`;
+        }
+
+        function apply(pid) {
+            const p = F.getProduct(pid);
+            if (!p) return;
+            const type = F.isLoan(pid) ? 'loan' : 'grant';
+            window.location.href = `evillage-vendor-finance-apply.html?type=${type}&product=${pid}`;
+        }
+
+        function signOut() { sessionStorage.removeItem('neiia_authenticated'); window.location.href = 'evillage-signin.html'; }
+        function toggleSidebar() { document.getElementById('mobileOverlay').classList.toggle('active'); document.getElementById('sidebar').classList.toggle('active'); }
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
