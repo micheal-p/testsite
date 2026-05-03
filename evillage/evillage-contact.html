@@ -121,21 +121,44 @@
     </div>
 
     <nav class="fixed top-0 w-full z-40 bg-white/90 dark:bg-dark-bg/90 backdrop-blur-md border-b border-slate-200 dark:border-dark-border transition-colors duration-300">
-        <div class="max-w-7xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between">
-            <a href="evillage.html" class="flex items-center gap-2.5">
-                <div class="w-7 h-7 rounded-md bg-ev-green flex items-center justify-center">
-                    <i class="fas fa-leaf text-white text-xs"></i>
-                </div>
-                <div class="font-bold text-sm tracking-tight text-slate-900 dark:text-white">
-                    eVillage <span class="font-normal text-slate-500 dark:text-slate-400">/ NEIIA</span>
-                </div>
-            </a>
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <a href="evillage.html" class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-md bg-ev-green flex items-center justify-center">
+                        <i class="fas fa-leaf text-white text-xs"></i>
+                    </div>
+                    <div class="font-bold text-sm tracking-tight text-slate-900 dark:text-white">
+                        eVillage
+                    </div>
+                </a>
+                <span class="text-slate-400 dark:text-slate-500 text-sm">/</span>
+                <a href="../index.html" class="font-normal text-sm text-slate-500 dark:text-slate-400 hover:text-ev-green dark:hover:text-white transition-colors" title="Back to NEIIA">
+                    NEIIA
+                </a>
+            </div>
 
             <div class="hidden md:flex items-center gap-8 font-medium text-sm text-slate-600 dark:text-slate-300">
-                <a href="evillage.html#marketplace" class="hover:text-ev-green dark:hover:text-white transition-colors">Marketplace</a>
-                <a href="evillage.html#utility" class="hover:text-ev-green dark:hover:text-white transition-colors">Utility</a>
-                <a href="evillage.html#why-evillage" class="hover:text-ev-green dark:hover:text-white transition-colors">Impact</a>
-                <a href="evillage.html#governance" class="hover:text-ev-green dark:hover:text-white transition-colors">Governance</a>
+                <a href="../index.html" class="hover:text-ev-green dark:hover:text-white transition-colors" title="Back to NEIIA Home">
+                    Home
+                </a>
+                <a href="evillage.html#strategic-pillars" class="hover:text-ev-green dark:hover:text-white transition-colors">Strategic Pillars</a>
+                <a href="evillage.html#mandate-progress" class="hover:text-ev-green dark:hover:text-white transition-colors">Mandate Progress</a>
+                <div class="relative group">
+                    <button class="hover:text-ev-green dark:hover:text-white transition-colors flex items-center gap-1.5">
+                        Implementation
+                        <svg class="w-3 h-3 transition-transform group-hover:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                        <div class="bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-xl shadow-xl py-2 overflow-hidden">
+                            <a href="evillage-implementation-ongoing.html" class="block px-5 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:text-ev-green dark:hover:text-ev-sage hover:bg-ev-green/5">Ongoing Projects</a>
+                            <a href="evillage-implementation-state-level.html" class="block px-5 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:text-ev-green dark:hover:text-ev-sage hover:bg-ev-green/5">State-Level Activities</a>
+                            <a href="evillage-implementation-pilot.html" class="block px-5 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:text-ev-green dark:hover:text-ev-sage hover:bg-ev-green/5">Pilot Programs</a>
+                            <a href="evillage-implementation-partnership.html" class="block px-5 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:text-ev-green dark:hover:text-ev-sage hover:bg-ev-green/5">Partnership Framework</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="evillage-about.html" class="hover:text-ev-green dark:hover:text-white transition-colors">About eVillage</a>
+                <a href="evillage-contact.html" class="text-ev-green dark:text-ev-sage font-semibold">Contact</a>
             </div>
 
             <div class="hidden md:flex items-center gap-1">
@@ -150,12 +173,26 @@
             </button>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 w-full bg-white dark:bg-dark-bg border-b border-slate-200 dark:border-dark-border shadow-lg">
+        <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 w-full bg-white dark:bg-dark-bg border-b border-slate-200 dark:border-dark-border shadow-lg" style="max-height: calc(100vh - 64px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;">
             <div class="flex flex-col px-6 py-5 gap-4">
-                <a href="evillage.html#marketplace" class="mobile-link text-base font-medium text-slate-700 dark:text-slate-200 hover:text-ev-green">Marketplace</a>
-                <a href="evillage.html#utility" class="mobile-link text-base font-medium text-slate-700 dark:text-slate-200 hover:text-ev-green">Utility</a>
-                <a href="evillage.html#why-evillage" class="mobile-link text-base font-medium text-slate-700 dark:text-slate-200 hover:text-ev-green">Impact</a>
-                <a href="evillage.html#governance" class="mobile-link text-base font-medium text-slate-700 dark:text-slate-200 hover:text-ev-green">Governance</a>
+                <a href="../index.html" class="mobile-link text-base font-medium text-slate-700 dark:text-slate-200 hover:text-ev-green">NEIIA Home</a>
+                <hr class="border-slate-200 dark:border-dark-border my-1">
+                <a href="evillage.html#strategic-pillars" class="mobile-link text-base font-medium text-slate-700 dark:text-slate-200 hover:text-ev-green">Strategic Pillars</a>
+                <a href="evillage.html#mandate-progress" class="mobile-link text-base font-medium text-slate-700 dark:text-slate-200 hover:text-ev-green">Mandate Progress</a>
+                <div>
+                    <button id="impl-toggle" class="mobile-link w-full flex items-center justify-between text-base font-medium text-slate-700 dark:text-slate-200 hover:text-ev-green">
+                        <span>Implementation &amp; Programs</span>
+                        <svg class="w-4 h-4 transition-transform" id="impl-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div id="impl-submenu" class="hidden mt-3 ml-4 flex-col gap-3 border-l-2 border-ev-green/20 pl-4">
+                        <a href="evillage-implementation-ongoing.html" class="mobile-link text-sm text-slate-700 dark:text-slate-200 hover:text-ev-green">Ongoing Projects</a>
+                        <a href="evillage-implementation-state-level.html" class="mobile-link text-sm text-slate-700 dark:text-slate-200 hover:text-ev-green">State-Level Activities</a>
+                        <a href="evillage-implementation-pilot.html" class="mobile-link text-sm text-slate-700 dark:text-slate-200 hover:text-ev-green">Pilot Programs</a>
+                        <a href="evillage-implementation-partnership.html" class="mobile-link text-sm text-slate-700 dark:text-slate-200 hover:text-ev-green">Partnership Framework</a>
+                    </div>
+                </div>
+                <a href="evillage-about.html" class="mobile-link text-base font-medium text-slate-700 dark:text-slate-200 hover:text-ev-green">About eVillage</a>
+                <a href="evillage-contact.html" class="mobile-link text-base font-medium text-ev-green">Contact</a>
                 <hr class="border-slate-200 dark:border-dark-border my-1">
                 <a href="evillage-signin.html" class="mobile-link text-base font-medium text-slate-700 dark:text-slate-200 hover:text-ev-green">Sign in</a>
                 <a href="evillage-signup.html" class="bg-ev-ink dark:bg-white text-white dark:text-ev-ink px-4 py-3 rounded-md font-medium text-center text-sm">Join now</a>
