@@ -193,7 +193,17 @@ input, select, textarea { font-family: var(--font-family); }
     font-family: inherit; transition: all 0.15s ease;
 }
 .ea-cur-toggle button:hover { color: rgba(255,255,255,0.9); }
-.ea-cur-toggle button.active { background: var(--green-accent, #a3e635); color: #0b0e11; }
+.ea-cur-toggle button.active {
+    background: var(--green-accent, #a3e635);
+    color: #0b0e11;
+    box-shadow: 0 0 0 0 rgba(163,230,53,0.6);
+    animation: ea-cur-flash 0.45s ease-out;
+}
+@keyframes ea-cur-flash {
+    0%   { box-shadow: 0 0 0 0 rgba(163,230,53,0.55); }
+    70%  { box-shadow: 0 0 0 10px rgba(163,230,53,0); }
+    100% { box-shadow: 0 0 0 0 rgba(163,230,53,0); }
+}
 
 .ea-nav-signin {
     padding: 8px 14px;
@@ -293,13 +303,18 @@ input, select, textarea { font-family: var(--font-family); }
 @media (max-width: 1024px) {
     .ea-nav-main { display: none; }
     .ea-nav-actions .ea-nav-signin,
-    .ea-nav-actions .ea-nav-cta,
-    .ea-nav-actions .ea-cur-toggle { display: none; }
+    .ea-nav-actions .ea-nav-cta { display: none; }
+    /* Currency toggle stays visible — it's a primary on-page control */
     .ea-mobile-toggle { display: inline-flex; }
-    .ea-nav-inner { justify-content: space-between; }
+    .ea-nav-inner { justify-content: space-between; gap: 12px; }
+}
+@media (max-width: 600px) {
+    .ea-cur-toggle button { padding: 4px 9px; font-size: 11.5px; }
 }
 @media (max-width: 480px) {
     .ea-brand-text { display: none; }
+    .ea-cur-toggle { padding: 2px; }
+    .ea-cur-toggle button { padding: 4px 7px; font-size: 11px; }
 }
 
 /* ==========================================================

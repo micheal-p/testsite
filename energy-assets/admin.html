@@ -340,7 +340,7 @@
                     <td><span class="type-badge ${l.type === 'electricity' ? 'elec' : l.type}">${escapeHtml(l.type)}</span></td>
                     <td>${escapeHtml(l.ownerName)}</td>
                     <td>${EA.formatNumber(l.qty)} ${escapeHtml(l.unit)}</td>
-                    <td><strong style="color:var(--green-accent);">$${l.priceUSD.toFixed(4)}</strong></td>
+                    <td><strong style="color:var(--green-accent);">${EA.formatPrice(l.priceUSD)}</strong></td>
                     <td>${l.bids || 0}</td>
                 </tr>`).join('');
         }
@@ -370,6 +370,9 @@
                 document.getElementById('panel-' + t.dataset.panel).classList.add('active');
             });
         });
+
+        // Re-render listings table when global currency changes
+        document.addEventListener('ea:currency-change', renderListings);
 
         reloadData();
     </script>

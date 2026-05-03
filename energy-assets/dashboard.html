@@ -392,7 +392,7 @@
             let portfolioVal = 0;
             listings.forEach(l => { totalBids += (l.bids || 0); portfolioVal += l.priceUSD * l.qty; });
             document.getElementById('ds-bids').innerHTML = '<span>' + totalBids + '</span>';
-            document.getElementById('ds-portfolio').innerHTML = EA.formatUSD(portfolioVal);
+            document.getElementById('ds-portfolio').innerHTML = EA.formatNotional(portfolioVal);
 
             if (listings.length === 0) {
                 container.innerHTML = `<div class="empty-state"><p>You haven't created any listings yet.</p><button class="btn-sm primary" onclick="switchTab('create')">Create your first listing</button></div>`;
@@ -404,7 +404,7 @@
                         <h3>${l.title}</h3>
                         <p>${l.type} &middot; ${EA.formatNumber(l.qty)} ${l.unit} &middot; ${l.bids || 0} bids</p>
                     </div>
-                    <div class="ml-price">$${l.priceUSD.toFixed(4)}</div>
+                    <div class="ml-price">${EA.formatPrice(l.priceUSD)}</div>
                 </div>
             `).join('');
         }
@@ -419,9 +419,15 @@
             }
             container.innerHTML = `<table class="bids-table"><thead><tr><th>Listing</th><th>Bid Price</th><th>Quantity</th><th>Status</th><th>Date</th></tr></thead><tbody>${bids.map(b => {
                 const listing = EA.getListing(b.listingId);
-                return `<tr><td>${listing ? listing.title : b.listingId}</td><td>$${b.amount.toFixed(4)}</td><td>${EA.formatNumber(b.qty)}</td><td><span class="status-badge ${b.status}">${b.status}</span></td><td>${new Date(b.createdAt).toLocaleDateString()}</td></tr>`;
+                return `<tr><td>${listing ? listing.title : b.listingId}</td><td>${EA.formatPrice(b.amount)}</td><td>${EA.formatNumber(b.qty)}</td><td><span class="status-badge ${b.status}">${b.status}</span></td><td>${new Date(b.createdAt).toLocaleDateString()}</td></tr>`;
             }).join('')}</tbody></table>`;
         }
+
+        // Re-render dashboard panels when currency changes globally
+        document.addEventListener('ea:currency-change', () => {
+            renderMyListings();
+            renderMyBids();
+        });
 
         // Create listing / Upload Asset
         document.getElementById('create-form').addEventListener('submit', (e) => {

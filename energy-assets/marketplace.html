@@ -329,10 +329,6 @@
                 <option value="qty-desc">Quantity: Largest first</option>
                 <option value="bids-desc">Most bids</option>
             </select>
-            <div class="currency-toggle" role="tablist" aria-label="Currency">
-                <button type="button" data-cur="USD" class="active">USD</button>
-                <button type="button" data-cur="NGN">NGN</button>
-            </div>
         </div>
 
         <!-- Main two-column: listings (primary) + order book (sidebar) -->
@@ -704,21 +700,11 @@
             renderListings();
         });
 
-        // Currency toggle
-        function syncCurrencyButtons() {
-            const cur = EA.getCurrency();
-            document.querySelectorAll('.currency-toggle button').forEach(b => {
-                b.classList.toggle('active', b.dataset.cur === cur);
-            });
-        }
-        document.querySelectorAll('.currency-toggle button').forEach(btn => {
-            btn.addEventListener('click', () => {
-                EA.setCurrency(btn.dataset.cur);
-                syncCurrencyButtons();
-                renderOverview();
-                renderListings();
-                renderOrderBook();
-            });
+        // Currency — re-render whenever the global navbar toggle changes it
+        document.addEventListener('ea:currency-change', () => {
+            renderOverview();
+            renderListings();
+            renderOrderBook();
         });
 
         // Mobile order-book collapse
@@ -749,7 +735,6 @@
         });
 
         // ===== Init =====
-        syncCurrencyButtons();
         renderOverview();
         renderListings();
         renderOrderBook();

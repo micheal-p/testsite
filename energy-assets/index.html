@@ -181,78 +181,78 @@
             <!-- Live ticker simulation -->
             <div class="hero-visual">
                 <div class="mini-ticker">
-                    <div class="ticker-row">
+                    <div class="ticker-row" data-ticker data-symbol="ELEC" data-price-usd="0.0847">
                         <div class="ticker-pair">
                             <div class="pair-icon elec">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
                             </div>
                             <div>
-                                <div class="pair-name">ELEC/USD</div>
+                                <div class="pair-name" data-pair-name>ELEC/USD</div>
                                 <div class="pair-label">Electricity</div>
                             </div>
                         </div>
                         <div class="ticker-price">
-                            <div class="price">$0.0847</div>
+                            <div class="price" data-price-out>$0.0847</div>
                             <div class="change up">+2.14%</div>
                         </div>
                     </div>
-                    <div class="ticker-row">
+                    <div class="ticker-row" data-ticker data-symbol="GAS" data-price-usd="2.847">
                         <div class="ticker-pair">
                             <div class="pair-icon gas">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c0 0-8 7.5-8 13a8 8 0 0016 0c0-5.5-8-13-8-13z"/></svg>
                             </div>
                             <div>
-                                <div class="pair-name">GAS/USD</div>
+                                <div class="pair-name" data-pair-name>GAS/USD</div>
                                 <div class="pair-label">Natural Gas</div>
                             </div>
                         </div>
                         <div class="ticker-price">
-                            <div class="price">$2.847</div>
+                            <div class="price" data-price-out>$2.847</div>
                             <div class="change down">-0.73%</div>
                         </div>
                     </div>
-                    <div class="ticker-row">
+                    <div class="ticker-row" data-ticker data-symbol="CRBN" data-price-usd="48.32">
                         <div class="ticker-pair">
                             <div class="pair-icon carbon">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12a4 4 0 008 0 4 4 0 00-8 0z"/></svg>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/></svg>
                             </div>
                             <div>
-                                <div class="pair-name">CRBN/USD</div>
+                                <div class="pair-name" data-pair-name>CRBN/USD</div>
                                 <div class="pair-label">Carbon Credit</div>
                             </div>
                         </div>
                         <div class="ticker-price">
-                            <div class="price">$48.32</div>
+                            <div class="price" data-price-out>$48.32</div>
                             <div class="change up">+5.61%</div>
                         </div>
                     </div>
-                    <div class="ticker-row">
-                        <div class="ticker-pair">
-                            <div class="pair-icon elec">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                            </div>
-                            <div>
-                                <div class="pair-name">ELEC/NGN</div>
-                                <div class="pair-label">Electricity</div>
-                            </div>
-                        </div>
-                        <div class="ticker-price">
-                            <div class="price">&#8358;127.05</div>
-                            <div class="change up">+1.89%</div>
-                        </div>
-                    </div>
-                    <div class="ticker-row">
+                    <div class="ticker-row" data-ticker data-symbol="LPG" data-price-usd="0.612">
                         <div class="ticker-pair">
                             <div class="pair-icon gas">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c0 0-8 7.5-8 13a8 8 0 0016 0c0-5.5-8-13-8-13z"/></svg>
                             </div>
                             <div>
-                                <div class="pair-name">GAS/NGN</div>
-                                <div class="pair-label">Natural Gas</div>
+                                <div class="pair-name" data-pair-name>LPG/USD</div>
+                                <div class="pair-label">Cooking Gas</div>
                             </div>
                         </div>
                         <div class="ticker-price">
-                            <div class="price">&#8358;4,270</div>
+                            <div class="price" data-price-out>$0.612</div>
+                            <div class="change up">+1.89%</div>
+                        </div>
+                    </div>
+                    <div class="ticker-row" data-ticker data-symbol="DIESEL" data-price-usd="0.985">
+                        <div class="ticker-pair">
+                            <div class="pair-icon gas">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c0 0-8 7.5-8 13a8 8 0 0016 0c0-5.5-8-13-8-13z"/></svg>
+                            </div>
+                            <div>
+                                <div class="pair-name" data-pair-name>DIESEL/USD</div>
+                                <div class="pair-label">Automotive Gas Oil</div>
+                            </div>
+                        </div>
+                        <div class="ticker-price">
+                            <div class="price" data-price-out>$0.985</div>
                             <div class="change up">+0.45%</div>
                         </div>
                     </div>
@@ -490,6 +490,7 @@
     </section>
 
     <!-- JS -->
+    <script src="app.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Pill nav hover
@@ -517,22 +518,35 @@
             if (backBtn && submenu) backBtn.addEventListener('click', () => submenu.classList.remove('active'));
             if (closeSubBtn && overlay && submenu) closeSubBtn.addEventListener('click', () => { overlay.classList.remove('open'); submenu.classList.remove('active'); });
 
-            // Simulate ticker price animation
-            const prices = document.querySelectorAll('.ticker-price .price');
-            setInterval(() => {
-                prices.forEach(el => {
-                    const currentText = el.textContent;
-                    const isNaira = currentText.includes('\u20A6');
-                    const prefix = isNaira ? '\u20A6' : '$';
-                    const numStr = currentText.replace(/[^0-9.]/g, '');
-                    const num = parseFloat(numStr);
-                    if (!isNaN(num)) {
-                        const delta = num * (Math.random() * 0.004 - 0.002);
-                        const newNum = num + delta;
-                        el.textContent = prefix + (newNum < 1 ? newNum.toFixed(4) : newNum < 100 ? newNum.toFixed(3) : newNum.toLocaleString('en-US', { maximumFractionDigits: 0 }));
-                    }
+            // Currency-aware ticker
+            // Each row has data-price-usd (base USD) and data-symbol (e.g. ELEC).
+            // We jitter the USD value and reformat to whatever currency is active.
+            function renderTicker() {
+                if (!window.EA) return;
+                const cur = EA.getCurrency();
+                document.querySelectorAll('[data-ticker]').forEach(row => {
+                    const usd = parseFloat(row.dataset.priceUsd);
+                    if (isNaN(usd)) return;
+                    const symbol = row.dataset.symbol || '?';
+                    const pairEl = row.querySelector('[data-pair-name]');
+                    const priceEl = row.querySelector('[data-price-out]');
+                    if (pairEl) pairEl.textContent = symbol + '/' + cur;
+                    if (priceEl) priceEl.textContent = EA.formatPrice(usd, cur === 'USD' ? (usd < 1 ? 4 : usd < 100 ? 3 : 2) : (usd < 1 ? 2 : 0));
                 });
+            }
+            // Jitter the underlying USD prices every few seconds to feel "live"
+            setInterval(() => {
+                document.querySelectorAll('[data-ticker]').forEach(row => {
+                    const usd = parseFloat(row.dataset.priceUsd);
+                    if (isNaN(usd)) return;
+                    const delta = usd * (Math.random() * 0.004 - 0.002);
+                    row.dataset.priceUsd = (usd + delta).toFixed(6);
+                });
+                renderTicker();
             }, 3000);
+            renderTicker();
+            // Re-render whenever the currency toggle fires
+            document.addEventListener('ea:currency-change', renderTicker);
         });
     </script>
 
