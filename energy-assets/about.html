@@ -356,12 +356,14 @@
         // Replace logged-in user's auth area
         if (window.EA && EA.isLoggedIn && EA.isLoggedIn()) {
             var user = EA.getCurrentUser();
-            var initial = (user && user.name ? user.name[0] : 'U').toUpperCase();
+            var displayName = user['First Name'] || user['Organisation Name'] || user['Representative Name'] || (user.type === 'admin' ? 'Admin' : 'Account');
+            var initial = (displayName[0] || 'U').toUpperCase();
+            var homeUrl = user.type === 'admin' ? 'admin.html' : 'dashboard.html';
             var actions = document.querySelector('.ea-nav-actions');
             if (actions) {
                 var signin = actions.querySelector('.ea-nav-signin');
                 var cta = actions.querySelector('.ea-nav-cta');
-                if (signin) signin.outerHTML = '<a href="dashboard.html" class="ea-user-btn"><span class="ea-user-avatar">' + initial + '</span><span>' + (user.name || 'Account') + '</span></a>';
+                if (signin) signin.outerHTML = '<a href="' + homeUrl + '" class="ea-user-btn"><span class="ea-user-avatar">' + initial + '</span><span>' + displayName + '</span></a>';
                 if (cta) cta.outerHTML = '<button class="ea-nav-signin" onclick="EA.logout()">Log out</button>';
             }
         }
