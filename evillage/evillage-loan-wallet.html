@@ -83,6 +83,32 @@
         .va-copy:hover { border-color: var(--portal-primary); color: var(--portal-primary); }
         .va-name { margin-top: 8px; font-size: 13px; color: #4b5563; }
         .va-hint { margin-top: 14px; font-size: 12px; color: #6b7280; line-height: 1.55; }
+        .va-bank {
+            display: inline-block; padding: 4px 10px; border-radius: 8px;
+            background: #eef2ff; color: #3730a3;
+            font-size: 12px; font-weight: 700; letter-spacing: .02em;
+            margin-bottom: 12px;
+        }
+        .va-row {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+            margin-top: 14px; padding-top: 14px; border-top: 1px dashed #e5e7eb;
+        }
+        .va-label { font-size: 11px; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+        .va-amount {
+            font-family: ui-monospace, monospace;
+            font-size: 17px; font-weight: 700; margin-top: 2px;
+        }
+
+        .va-empty { text-align: left; }
+        .va-empty-title { margin: 0 0 6px; font-weight: 700; font-size: 14px; color: #0f172a; }
+        .va-empty-body  { margin: 0 0 14px; font-size: 13px; color: #4b5563; line-height: 1.55; }
+        .va-cta {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--portal-primary); color: #fff;
+            border: none; border-radius: 999px;
+            padding: 11px 18px; font-weight: 700; font-size: 13.5px; cursor: pointer;
+        }
+        .va-cta:hover { background: var(--portal-primary-dark); }
 
         .wallet-shell { max-width: 900px; margin: -24px auto 56px; padding: 0 20px 40px; }
         .panel {
@@ -157,7 +183,7 @@
         <div class="wallet-hero-inner">
             <a href="evillage-dashboard.html" class="wallet-back"><i class="fas fa-arrow-left"></i> Dashboard</a>
             <h1>Loan Wallet</h1>
-            <p>Your dedicated collection account. Every transfer in is matched to the next instalment.</p>
+            <p>Your dedicated OPay collection account. Every transfer in is auto-matched to the next instalment.</p>
 
             <div class="va-card" id="vaCard">
                 <div class="va-meta">
@@ -168,6 +194,9 @@
                     </div>
                     <span class="va-tag" id="vaStatus">Active</span>
                 </div>
+
+                <div class="va-bank" id="vaBank">OPay</div>
+
                 <div class="va-number">
                     <div>
                         <div class="digits" id="vaDigits">— — — — — — — — — —</div>
@@ -177,9 +206,10 @@
                         <i class="fas fa-copy"></i> Copy
                     </button>
                 </div>
+
                 <p class="va-hint">
-                    Use this account number from any Nigerian bank, OPay or USSD transfer. Funds
-                    auto-match to the next outstanding instalment within seconds.
+                    Pay your monthly instalment from any Nigerian bank or USSD transfer to this account.
+                    Funds auto-match to the next outstanding instalment and the month gets checked off below.
                 </p>
             </div>
         </div>
@@ -190,34 +220,59 @@
     </main>
 
     <script>
+        /**
+         * eVillage loan wallet — UI prototype.
+         *
+         * This UI assumes a *permanent* OPay collection account per citizen
+         * ("OPay Recollection / Static Virtual Account"). That product is
+         * enterprise-only and not in OPay's public Checkout docs, so the
+         * account number below is generated client-side for now. When the
+         * enterprise API is provisioned, replace `permanentCollectionAccount`
+         * with a real fetch — the response shape we expect is:
+         *
+         *   { accountNumber, accountName, bankName, status, customerReference }
+         *
+         * Webhook on successful credit (matches OPay's callback format):
+         *   { type: "transaction-status", sha512,
+         *     payload: { reference, status: "SUCCESS", amount, currency,
+         *                transactionId, timestamp, ... } }
+         * Match `payload.reference` to "EV-<loanId>-M<monthNum>" and flip the
+         * matching schedule row to paid.
+         */
         (function () {
             const $ = (s, r = document) => r.querySelector(s);
             const fmtNaira = (n) => '₦' + (Number(n) || 0).toLocaleString();
 
-            // ── User & loan resolution ──────────────────────────────────
             const user = window.EVILLAGE_USER || null;
             if (!user) return; // guard.js will already have redirected.
 
-            // Stable virtual account number derived from the user's id so it
-            // doesn't change between visits during this UI prototype phase.
-            function virtualAccountFor(u) {
-                const prefix = '8088';
+            /**
+             * Deterministic 10-digit OPay-style NUBAN per user so the account
+             * looks stable across visits while we wait for the real enterprise
+             * Recollection endpoint to wire in.
+             */
+            function permanentCollectionAccount(u) {
+                const seedSrc = String(u.id || u.email || u.full_name || 'evillage');
                 let seed = 0;
-                const id = String(u.id || u.email || u.full_name || 'evillage');
-                for (let i = 0; i < id.length; i++) seed = (seed * 31 + id.charCodeAt(i)) >>> 0;
+                for (let i = 0; i < seedSrc.length; i++) seed = (seed * 31 + seedSrc.charCodeAt(i)) >>> 0;
                 const tail = String(seed % 1000000).padStart(6, '0');
-                return prefix + tail;          // 10 digits, looks like an NUBAN
+                return {
+                    accountNumber: '8088' + tail,
+                    accountName:   'OPay × eVillage / ' + (u.full_name || 'EVILLAGE CITIZEN').toUpperCase(),
+                    bankName:      'OPay',
+                    status:        'ACTIVE'
+                };
             }
 
-            const acct = virtualAccountFor(user);
-            const fullName = (user.full_name || '').toUpperCase() || 'EVILLAGE CITIZEN';
-
-            $('#vaDigits').textContent = acct.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3');
-            $('#vaName').textContent   = 'OPay × eVillage / ' + fullName;
+            const acct = permanentCollectionAccount(user);
+            $('#vaBank').textContent   = acct.bankName;
+            $('#vaDigits').textContent = acct.accountNumber.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3');
+            $('#vaName').textContent   = acct.accountName;
+            $('#vaStatus').textContent = acct.status === 'ACTIVE' ? 'Active' : acct.status;
 
             $('#vaCopyBtn').addEventListener('click', async () => {
                 try {
-                    await navigator.clipboard.writeText(acct);
+                    await navigator.clipboard.writeText(acct.accountNumber);
                     const btn = $('#vaCopyBtn');
                     const original = btn.innerHTML;
                     btn.innerHTML = '<i class="fas fa-check"></i> Copied';
