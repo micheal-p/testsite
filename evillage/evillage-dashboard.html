@@ -238,7 +238,7 @@
             box-shadow: 0 18px 38px -22px rgba(15, 23, 42, .35);
         }
         .recoll-brand { display: flex; align-items: center; gap: 14px; }
-        .recoll-logo  { width: 52px; height: 52px; flex-shrink: 0; }
+        .recoll-logo  { width: 78px; height: auto; flex-shrink: 0; display: block; }
         .recoll-brand-meta { display: flex; flex-direction: column; gap: 4px; }
         .recoll-tag {
             font-size: 11px; font-weight: 700; color: #6b7280;
@@ -842,12 +842,7 @@
         <!-- Recollection Account (OPay × eVillage) -->
         <a href="evillage-loan-wallet.html" class="recoll-card" id="recollCard">
             <div class="recoll-brand">
-                <!-- OPay-style mark: green "O" with central cutout -->
-                <svg class="recoll-logo" viewBox="0 0 56 56" aria-label="OPay" role="img">
-                    <circle cx="28" cy="28" r="26" fill="#0FBA5F"/>
-                    <circle cx="28" cy="28" r="11" fill="#ffffff"/>
-                    <rect x="33" y="26" width="14" height="6" rx="3" fill="#0FBA5F"/>
-                </svg>
+                <img class="recoll-logo" src="../assets/images/logos/opay.svg" alt="OPay">
                 <div class="recoll-brand-meta">
                     <span class="recoll-tag">OPay × eVillage</span>
                     <span class="recoll-pill"><span class="dot"></span> Active collection account</span>
@@ -1315,7 +1310,8 @@
                 var acct = '8088' + tail;
 
                 digitsEl.textContent = acct.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3');
-                holderEl.textContent = 'OPay × eVillage / ' + (u.full_name || 'EVILLAGE CITIZEN').toUpperCase();
+                // Account name = the user's signup name, just like a real virtual account.
+                holderEl.textContent = (u.full_name || 'EVILLAGE CITIZEN').toUpperCase();
 
                 if (copyBtn && !copyBtn.dataset.bound) {
                     copyBtn.dataset.bound = '1';
