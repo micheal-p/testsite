@@ -915,46 +915,93 @@
         .loan-status-pill.is-completed    { background: #d1fae5; color: #065f46; }
         .loan-status-pill.is-cancelled    { background: #f3f4f6; color: #374151; }
 
-        .loan-stats {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-            background: #f8fafc; border-radius: 10px; padding: 12px;
-        }
-        .loan-stat .k { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
-        .loan-stat .v { font-size: 14px; color: #111827; font-weight: 600; margin-top: 2px; }
+        /* legacy stats grid — kept for back-compat, no longer rendered */
+        .loan-stats { display: none; }
 
-        .loan-progress-row {
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 12px; color: #374151; margin-bottom: 6px;
+        /* ── New: plan pill + monthly-amount hero + clean progress + footnote ── */
+        .loan-card-headtext { min-width: 0; flex: 1; }
+        .loan-plan-pill {
+            display: inline-block;
+            padding: 2px 8px; border-radius: 999px;
+            font-size: 10.5px; font-weight: 700;
+            letter-spacing: .02em;
         }
-        .loan-progress-row .pct { color: #6b7280; }
+        .loan-plan-pill.is-smallsmall { background: #ecfdf5; color: #047857; }
+        .loan-plan-pill.is-upfront    { background: #fef3c7; color: #92400e; }
+
+        .loan-hero {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .loan-hero-monthly {
+            display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap;
+        }
+        .loan-hero-amount {
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+            font-size: 24px; font-weight: 700; color: #0f172a;
+            letter-spacing: -0.01em; line-height: 1.1;
+        }
+        .loan-hero-per { font-size: 12px; color: #6b7280; font-weight: 500; }
+        .loan-hero-total {
+            font-size: 12px; color: #6b7280; font-weight: 500;
+        }
+
+        .loan-progress-block { display: flex; flex-direction: column; gap: 6px; }
+        .loan-progress-meta {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 11.5px; color: #6b7280; font-weight: 500;
+        }
+        .loan-progress-meta .pct { color: #0f172a; font-weight: 700; font-variant-numeric: tabular-nums; }
         .loan-progress-bar {
-            height: 8px; background: #e5e7eb; border-radius: 999px; overflow: hidden;
+            height: 6px; background: #e5e7eb; border-radius: 999px; overflow: hidden;
         }
         .loan-progress-fill {
             height: 100%; background: linear-gradient(90deg, #10b981, #059669);
             border-radius: 999px; transition: width .4s ease;
         }
-        .loan-due-line {
-            font-size: 12px; color: #6b7280; margin-top: 4px;
-        }
-        .loan-due-line strong { color: #111827; font-weight: 600; }
 
-        .loan-actions {
-            display: flex; gap: 8px; margin-top: 4px;
+        .loan-footnote {
+            display: flex; flex-direction: column; gap: 6px;
+            padding-top: 4px;
+            border-top: 1px dashed #f1f5f9;
         }
+        .loan-milestone {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 12px; color: #92400e; font-weight: 600;
+        }
+        .loan-milestone i { font-size: 10px; }
+        .loan-next {
+            font-size: 12px; color: #6b7280;
+        }
+        .loan-next .loan-next-amount {
+            font-weight: 700; color: #0f172a;
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+        }
+        .loan-next .loan-next-when { color: #6b7280; }
+
+        .loan-actions { display: flex; gap: 8px; }
         .loan-btn {
-            flex: 1; padding: 9px 12px; border-radius: 8px;
+            padding: 10px 14px; border-radius: 10px;
             font-size: 13px; font-weight: 600; cursor: pointer;
             border: none; display: inline-flex; align-items: center;
             justify-content: center; gap: 6px;
         }
-        .loan-btn.primary { background: #0d3d44; color: #fff; }
+        .loan-btn.primary {
+            background: #0d3d44; color: #fff;
+            flex: 2;
+        }
         .loan-btn.primary:hover:not(:disabled) { background: #0a2e33; }
         .loan-btn.primary:disabled { background: #9ca3af; cursor: not-allowed; }
         .loan-btn.ghost {
-            background: #fff; color: #0d3d44; border: 1px solid #e5e7eb;
+            background: #fff; color: #0f172a; border: 1px solid #e2e8f0;
+            flex: 1;
         }
-        .loan-btn.ghost:hover { background: #f3f4f6; }
+        .loan-btn.ghost:hover { background: #f8fafc; }
 
         .loan-empty {
             background: #fff; border-radius: 14px; padding: 36px 24px;
@@ -2179,22 +2226,24 @@
                     var product = (a.product && a.product.name) || 'Solar Loan';
                     var vendor = (a.vendor && a.vendor.business_name) || '';
 
-                    // ── Plan-based meta (Pay Small Small / 25% Upfront / NCGC) ──
+                    // ── Plan-based meta (Pay Small Small / 25% Upfront) ──
                     var plan = a.plan || (a.financing && a.financing.plan) || 'small_small';
-                    var planLabel = plan === 'upfront_25' ? '25% Upfront · 9.8%/mo' : 'Pay Small Small · 0%';
+                    var planShort = plan === 'upfront_25' ? '25% Upfront' : 'Pay Small Small';
+                    var planClass = plan === 'upfront_25' ? 'is-upfront' : 'is-smallsmall';
                     var price = (a.product && a.product.price_ngn) || (a.financing && a.financing.amount_ngn) || 0;
                     var quote = plan === 'upfront_25'
                         ? Loans.compute25Upfront(price, rs.tenure_months || 12)
                         : Loans.computeSmallSmall(price, rs.tenure_months || 12);
-                    var ncgc = (a.financing && a.financing.ncgc_ngn) || quote.ncgc;
-                    // For Pay Small Small, the citizen collects the product
-                    // when 50% has been paid. Surface that milestone.
+
+                    // Milestone — for Pay Small Small show when the product unlocks.
                     var milestone = '';
                     if (plan === 'small_small' && !rs.is_complete) {
                         var disbursed = ['disbursed', 'in_installation', 'repaying', 'completed'].indexOf(a.status) >= 0;
                         milestone = disbursed
-                            ? '<i class="fas fa-check-circle" style="color:#059669;"></i> Product collected at 50% paid'
-                            : '<i class="fas fa-flag" style="color:#92400e;"></i> Collect product after month ' + quote.collectionMonth;
+                            ? '<i class="fas fa-check-circle"></i> Product collected'
+                            : '<i class="fas fa-flag"></i> Product unlocks at month ' + quote.collectionMonth;
+                    } else if (plan === 'upfront_25') {
+                        milestone = '<i class="fas fa-bolt"></i> 25% upfront paid · product released';
                     }
 
                     var statusKey = a.status || 'submitted';
@@ -2202,41 +2251,54 @@
                     var payTooltip = !rs.is_payable
                         ? 'Repayments start after disbursement'
                         : (rs.is_complete ? 'Loan fully repaid' : '');
-                    var dueLine = rs.is_complete
-                        ? '<div class="loan-due-line"><i class="fas fa-check-circle" style="color:#059669;"></i> <strong>Repaid in full</strong></div>'
-                        : '<div class="loan-due-line">Next: <strong>' + fmtNgn(rs.next_due_amount) + '</strong> due ' + esc(fmtDate(rs.next_due_date)) + '</div>';
+                    var nextLine = rs.is_complete
+                        ? '<i class="fas fa-check-circle" style="color:#059669;"></i> <strong>Repaid in full</strong>'
+                        : '<span class="loan-next-amount">' + fmtNgn(rs.next_due_amount) + '</span> <span class="loan-next-when">due ' + esc(fmtDate(rs.next_due_date)) + '</span>';
                     var highlight = highlightId && a.id === highlightId ? ' is-highlighted' : '';
 
                     return '<div class="loan-card' + highlight + '" data-loan-id="' + esc(a.id) + '">' +
                         '<div class="loan-card-head">' +
-                            '<div>' +
+                            '<div class="loan-card-headtext">' +
                                 '<div class="loan-card-title">' + esc(product) + '</div>' +
-                                '<div class="loan-card-vendor">' + esc(vendor) + ' • ' + esc(planLabel) + '</div>' +
+                                '<div class="loan-card-vendor">' +
+                                    esc(vendor) +
+                                    ' · <span class="loan-plan-pill ' + planClass + '">' + esc(planShort) + '</span>' +
+                                '</div>' +
                             '</div>' +
                             '<span class="loan-status-pill is-' + esc(statusKey) + '">' + esc(statusLabel(statusKey)) + '</span>' +
                         '</div>' +
-                        '<div class="loan-stats">' +
-                            '<div class="loan-stat"><div class="k">Total amount</div><div class="v">' + fmtNgn(a.financing && a.financing.amount_ngn) + '</div></div>' +
-                            '<div class="loan-stat"><div class="k">Monthly</div><div class="v">' + fmtNgn(rs.monthly_amount) + '</div></div>' +
-                            '<div class="loan-stat"><div class="k">Paid</div><div class="v">' + rs.paid_count + ' / ' + rs.tenure_months + '</div></div>' +
-                            '<div class="loan-stat"><div class="k">NCGC (2.5%)</div><div class="v">' + fmtNgn(ncgc) + '</div></div>' +
+
+                        '<div class="loan-hero">' +
+                            '<div class="loan-hero-monthly">' +
+                                '<span class="loan-hero-amount">' + fmtNgn(rs.monthly_amount) + '</span>' +
+                                '<span class="loan-hero-per">/ month</span>' +
+                            '</div>' +
+                            '<div class="loan-hero-total">' +
+                                fmtNgn(a.financing && a.financing.amount_ngn) + ' total · ' +
+                                rs.tenure_months + ' months' +
+                            '</div>' +
                         '</div>' +
-                        (milestone ? '<div class="loan-due-line" style="margin-top:8px;">' + milestone + '</div>' : '') +
-                        '<div>' +
-                            '<div class="loan-progress-row">' +
-                                '<span>Repayment progress</span>' +
+                        '<div class="loan-progress-block">' +
+                            '<div class="loan-progress-meta">' +
+                                '<span>' + rs.paid_count + ' of ' + rs.tenure_months + ' months paid</span>' +
                                 '<span class="pct">' + pct + '%</span>' +
                             '</div>' +
                             '<div class="loan-progress-bar"><div class="loan-progress-fill" style="width:' + pct + '%;"></div></div>' +
-                            dueLine +
                         '</div>' +
+
+                        '<div class="loan-footnote">' +
+                            (milestone ? '<div class="loan-milestone">' + milestone + '</div>' : '') +
+                            '<div class="loan-next">Next ' + nextLine + '</div>' +
+                        '</div>' +
+
                         '<div class="loan-actions">' +
                             '<button class="loan-btn ghost" data-action="detail" data-id="' + esc(a.id) + '">' +
-                                '<i class="fas fa-eye"></i> Details</button>' +
+                                'Details</button>' +
                             '<button class="loan-btn primary" data-action="pay" data-id="' + esc(a.id) + '"' +
                                 (payable ? '' : ' disabled') +
                                 (payTooltip ? ' title="' + esc(payTooltip) + '"' : '') + '>' +
-                                '<i class="fas fa-wallet"></i> ' + (rs.is_complete ? 'Fully repaid' : 'Make payment') +
+                                (rs.is_complete ? 'Fully repaid' : 'Pay ' + fmtNgn(rs.next_due_amount)) +
+                                ' <i class="fas fa-arrow-right"></i>' +
                             '</button>' +
                         '</div>' +
                     '</div>';
