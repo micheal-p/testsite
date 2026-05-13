@@ -218,14 +218,13 @@
 
         /* ── OPay × eVillage recollection card ── */
         .recoll-card {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 24px;
-            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
             background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
             border: 1px solid #e5e7eb;
             border-radius: 18px;
-            padding: 22px 26px;
+            padding: 22px 24px;
             margin-bottom: 24px;
             text-decoration: none;
             color: inherit;
@@ -237,79 +236,103 @@
             border-color: #c7d2da;
             box-shadow: 0 18px 38px -22px rgba(15, 23, 42, .35);
         }
-        .recoll-brand { display: flex; align-items: center; gap: 14px; }
-        .recoll-logo  { width: 78px; height: auto; flex-shrink: 0; display: block; }
-        .recoll-brand-meta { display: flex; flex-direction: column; gap: 4px; }
-        .recoll-tag {
-            font-size: 11px; font-weight: 700; color: #6b7280;
-            text-transform: uppercase; letter-spacing: .15em;
+
+        .recoll-head {
+            display: flex; flex-direction: row;
+            align-items: center; justify-content: space-between;
+            gap: 12px; flex-wrap: wrap;
+            padding: 0; min-height: 0;
+        }
+        .recoll-foot {
+            padding: 0; min-height: 0;
+        }
+        .recoll-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+        .recoll-logo  { height: 26px; width: auto; flex-shrink: 0; display: block; }
+        .recoll-x {
+            font-size: 12px; font-weight: 700; color: #6b7280;
+            letter-spacing: .02em;
         }
         .recoll-pill {
             display: inline-flex; align-items: center; gap: 6px;
-            font-size: 11.5px; font-weight: 600; color: #047857;
+            font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+            color: #047857; background: #ecfdf5;
+            padding: 5px 10px; border-radius: 999px;
+            flex-shrink: 0;
         }
         .recoll-pill .dot {
-            width: 7px; height: 7px; border-radius: 999px; background: #10b981;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, .15);
+            width: 6px; height: 6px; border-radius: 999px; background: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, .2);
         }
 
-        .recoll-main {
-            display: flex; flex-direction: column; gap: 4px;
-            min-width: 0;
-        }
-        .recoll-digits {
-            font-family: 'JetBrains Mono', ui-monospace, monospace;
-            font-size: 24px; font-weight: 700; letter-spacing: .04em;
-            color: #0f172a; line-height: 1.1;
-        }
-        .recoll-meta {
-            display: flex; align-items: flex-end; justify-content: space-between;
-            gap: 18px; margin-top: 10px;
-        }
+        .recoll-number { min-width: 0; }
         .recoll-label {
             font-size: 10px; font-weight: 700; color: #6b7280;
             letter-spacing: .14em; text-transform: uppercase;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
+        .recoll-digits {
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+            font-size: clamp(20px, 4.4vw, 28px);
+            font-weight: 700; letter-spacing: .04em;
+            color: #0f172a; line-height: 1.1;
+            overflow: hidden; text-overflow: ellipsis;
+        }
+
+        .recoll-foot {
+            display: flex; align-items: flex-end; justify-content: space-between;
+            gap: 16px; flex-wrap: wrap;
+        }
+        .recoll-field { min-width: 0; }
         .recoll-holder {
             font-size: 14px; color: #0f172a; font-weight: 700;
             letter-spacing: .02em;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            max-width: 22ch;
         }
-        .recoll-expiry-block { text-align: right; }
         .recoll-expiry {
             font-family: 'JetBrains Mono', ui-monospace, monospace;
             font-size: 14px; font-weight: 700; color: #0f172a;
             letter-spacing: .04em;
         }
 
-        .recoll-action {
-            display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
+        .recoll-actions {
+            display: flex; align-items: center; gap: 10px;
+            margin-left: auto;
         }
         .recoll-copy {
             display: inline-flex; align-items: center; gap: 6px;
             border: 1px solid #cbd5e1; background: #fff;
             color: #374151; font-weight: 600; font-size: 12px;
-            padding: 7px 13px; border-radius: 999px; cursor: pointer;
+            padding: 8px 13px; border-radius: 999px; cursor: pointer;
+            line-height: 1;
+            transition: border-color .15s ease, color .15s ease;
         }
         .recoll-copy:hover { border-color: #0d3d44; color: #0d3d44; }
         .recoll-link {
-            font-size: 11.5px; color: #0d3d44; font-weight: 700;
-            letter-spacing: .04em; text-transform: uppercase;
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; border-radius: 999px;
+            background: #0d3d44; color: #fff;
+            font-size: 11px;
         }
 
         body.dark-mode .recoll-card {
             background: linear-gradient(135deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.02) 100%);
             border-color: rgba(255,255,255,.1);
         }
-        body.dark-mode .recoll-digits { color: #f8fafc; }
-        body.dark-mode .recoll-holder, body.dark-mode .recoll-tag { color: #94a3b8; }
+        body.dark-mode .recoll-digits, body.dark-mode .recoll-holder, body.dark-mode .recoll-expiry { color: #f8fafc; }
+        body.dark-mode .recoll-label, body.dark-mode .recoll-x { color: #94a3b8; }
         body.dark-mode .recoll-copy { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.15); color: #e2e8f0; }
-        body.dark-mode .recoll-link { color: #5fd1da; }
+        body.dark-mode .recoll-pill { background: rgba(16,185,129,.12); color: #6ee7b7; }
 
-        @media (max-width: 720px) {
-            .recoll-card { grid-template-columns: 1fr; gap: 14px; padding: 18px 20px; }
-            .recoll-action { flex-direction: row; align-items: center; justify-content: space-between; }
-            .recoll-digits { font-size: 20px; }
+        @media (max-width: 560px) {
+            .recoll-card { padding: 18px 18px; gap: 18px; }
+            .recoll-logo { height: 22px; }
+            .recoll-foot { gap: 14px 18px; }
+            .recoll-actions { width: 100%; justify-content: flex-end; }
+            .recoll-copy { flex: 1; justify-content: center; padding: 10px 12px; }
+        }
+        @media (max-width: 380px) {
+            .recoll-copy-label { display: none; }
         }
 
         .stat-card:hover {
@@ -859,34 +882,35 @@
 
         <!-- Recollection Account (OPay × eVillage) -->
         <a href="evillage-loan-wallet.html" class="recoll-card" id="recollCard">
-            <div class="recoll-brand">
-                <img class="recoll-logo" src="../assets/images/logos/opay.svg" alt="OPay">
-                <div class="recoll-brand-meta">
-                    <span class="recoll-tag">OPay × eVillage</span>
-                    <span class="recoll-pill"><span class="dot"></span> Active collection account</span>
+            <header class="recoll-head">
+                <div class="recoll-brand">
+                    <img class="recoll-logo" src="../assets/images/logos/opay.svg" alt="OPay">
+                    <span class="recoll-x">× eVillage</span>
                 </div>
-            </div>
+                <span class="recoll-pill"><span class="dot"></span> Active</span>
+            </header>
 
-            <div class="recoll-main">
+            <div class="recoll-number">
+                <div class="recoll-label">Collection account</div>
                 <div class="recoll-digits" id="recollDigits">— — — — — — — — — —</div>
-                <div class="recoll-meta">
-                    <div>
-                        <div class="recoll-label">Account name</div>
-                        <div class="recoll-holder" id="recollHolder">—</div>
-                    </div>
-                    <div class="recoll-expiry-block">
-                        <div class="recoll-label">Valid thru</div>
-                        <div class="recoll-expiry" id="recollExpiry">—</div>
-                    </div>
-                </div>
             </div>
 
-            <div class="recoll-action">
-                <button type="button" class="recoll-copy" id="recollCopy" onclick="event.preventDefault(); event.stopPropagation();">
-                    <i class="fas fa-copy"></i> Copy
-                </button>
-                <span class="recoll-link">Open wallet <i class="fas fa-arrow-right"></i></span>
-            </div>
+            <footer class="recoll-foot">
+                <div class="recoll-field">
+                    <div class="recoll-label">Account name</div>
+                    <div class="recoll-holder" id="recollHolder">—</div>
+                </div>
+                <div class="recoll-field recoll-expiry-block">
+                    <div class="recoll-label">Valid thru</div>
+                    <div class="recoll-expiry" id="recollExpiry">—</div>
+                </div>
+                <div class="recoll-actions">
+                    <button type="button" class="recoll-copy" id="recollCopy" onclick="event.preventDefault(); event.stopPropagation();">
+                        <i class="fas fa-copy"></i><span class="recoll-copy-label"> Copy</span>
+                    </button>
+                    <span class="recoll-link" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
+                </div>
+            </footer>
         </a>
 
         <!-- Quick Actions -->

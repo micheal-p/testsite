@@ -83,8 +83,10 @@
         }
         .va-number .digits {
             font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
-            font-size: 28px; font-weight: 700; letter-spacing: .04em;
+            font-size: clamp(22px, 6.5vw, 30px);
+            font-weight: 700; letter-spacing: .04em;
             color: #0f172a; line-height: 1.1;
+            overflow-wrap: anywhere;
         }
         .va-copy {
             display: inline-flex; align-items: center; gap: 6px;
@@ -124,6 +126,21 @@
             padding: 11px 18px; font-weight: 700; font-size: 13.5px; cursor: pointer;
         }
         .va-cta:hover { background: var(--portal-primary-dark); }
+
+        /* Wallet card mobile polish */
+        @media (max-width: 560px) {
+            .wallet-hero { padding: 28px 18px 36px; }
+            .wallet-hero h1 { font-size: 19px; }
+            .wallet-hero p  { font-size: 12.5px; }
+            .va-card { padding: 18px 18px 18px; border-radius: 16px; }
+            .va-number { gap: 12px; }
+            .va-copy { width: 100%; justify-content: center; padding: 11px 14px; font-size: 13px; }
+            .va-meta-row { gap: 14px 20px; }
+            .va-name { font-size: 15px; max-width: 18ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        }
+        @media (max-width: 380px) {
+            .va-meta-row > div { flex: 1 1 100%; }
+        }
 
         .wallet-shell { max-width: 900px; margin: -24px auto 56px; padding: 0 20px 40px; }
         .panel {
