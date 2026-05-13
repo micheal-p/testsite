@@ -71,7 +71,11 @@
             display: flex; align-items: flex-end; justify-content: space-between;
             gap: 14px; flex-wrap: wrap; margin-top: 4px;
         }
-        .va-number-inner { min-width: 0; }
+        .va-number-inner { min-width: 0; flex: 1; }
+        .va-meta-row {
+            display: flex; gap: 24px; align-items: flex-end;
+            margin-top: 12px; flex-wrap: wrap;
+        }
         .va-label {
             font-size: 10.5px; font-weight: 700; color: #6b7280;
             text-transform: uppercase; letter-spacing: .12em;
@@ -209,8 +213,16 @@
                     <div class="va-number-inner">
                         <div class="va-label">Account number</div>
                         <div class="digits" id="vaDigits">— — — — — — — — — —</div>
-                        <div class="va-label" style="margin-top: 10px;">Account name</div>
-                        <div class="va-name" id="vaName">—</div>
+                        <div class="va-meta-row">
+                            <div>
+                                <div class="va-label">Account name</div>
+                                <div class="va-name" id="vaName">—</div>
+                            </div>
+                            <div>
+                                <div class="va-label">Valid thru</div>
+                                <div class="va-name" id="vaExpiry" style="font-family: ui-monospace, monospace;">—</div>
+                            </div>
+                        </div>
                     </div>
                     <button type="button" class="va-copy" id="vaCopyBtn">
                         <i class="fas fa-copy"></i> Copy
@@ -256,21 +268,50 @@
             const user = window.EVILLAGE_USER || null;
             if (!user) return; // guard.js will already have redirected.
 
+            // Resolve a displayable full name from the canonical user shape
+            // produced by /api/v1/me (matches guard.js's deriveFullName).
+            function fullNameOf(u) {
+                if (!u) return '';
+                if (u.full_name) return u.full_name;
+                const p = u.profile || {};
+                if (p.first_name || p.last_name) return ((p.first_name || '') + ' ' + (p.last_name || '')).trim();
+                if (p.business_name) return p.business_name;
+                return u.email || '';
+            }
+
+            // Stable "issued at" timestamp so the expiry doesn't drift visit-to-visit.
+            function issuedAt(u) {
+                if (u.created_at) {
+                    const t = Date.parse(u.created_at);
+                    if (!isNaN(t)) return new Date(t);
+                }
+                const key = 'evillage_recoll_issued_at:' + (u.id || u.email || 'me');
+                const stored = localStorage.getItem(key);
+                if (stored) return new Date(parseInt(stored, 10));
+                const now = Date.now();
+                localStorage.setItem(key, String(now));
+                return new Date(now);
+            }
+
             /**
-             * Deterministic 10-digit OPay-style NUBAN per user so the account
-             * looks stable across visits while we wait for the real enterprise
-             * Recollection endpoint to wire in.
+             * Deterministic 10-digit OPay-style NUBAN + 3-year expiry per user.
+             * Returns the shape we expect from the real OPay enterprise
+             * Recollection endpoint, so backend wiring is field-for-field.
              */
             function permanentCollectionAccount(u) {
-                const seedSrc = String(u.id || u.email || u.full_name || 'evillage');
+                const seedSrc = String(u.id || u.email || 'evillage');
                 let seed = 0;
                 for (let i = 0; i < seedSrc.length; i++) seed = (seed * 31 + seedSrc.charCodeAt(i)) >>> 0;
                 const tail = String(seed % 1000000).padStart(6, '0');
+                const issued = issuedAt(u);
+                const expires = new Date(issued); expires.setFullYear(expires.getFullYear() + 3);
                 return {
                     accountNumber: '8088' + tail,
-                    accountName:   (u.full_name || 'EVILLAGE CITIZEN').toUpperCase(),
+                    accountName:   (fullNameOf(u) || 'eVillage citizen').toUpperCase(),
                     bankName:      'OPay',
-                    status:        'ACTIVE'
+                    status:        'ACTIVE',
+                    issuedAt:      issued.toISOString(),
+                    expiresAt:     expires.toISOString()
                 };
             }
 
@@ -278,6 +319,8 @@
             $('#vaDigits').textContent = acct.accountNumber.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3');
             $('#vaName').textContent   = acct.accountName;
             $('#vaStatus').textContent = acct.status === 'ACTIVE' ? 'Active' : acct.status;
+            const exp = new Date(acct.expiresAt);
+            $('#vaExpiry').textContent = String(exp.getMonth() + 1).padStart(2, '0') + '/' + String(exp.getFullYear()).slice(-2);
 
             $('#vaCopyBtn').addEventListener('click', async () => {
                 try {

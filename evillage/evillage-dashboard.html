@@ -262,7 +262,25 @@
             font-size: 24px; font-weight: 700; letter-spacing: .04em;
             color: #0f172a; line-height: 1.1;
         }
-        .recoll-holder { font-size: 13px; color: #4b5563; font-weight: 500; }
+        .recoll-meta {
+            display: flex; align-items: flex-end; justify-content: space-between;
+            gap: 18px; margin-top: 10px;
+        }
+        .recoll-label {
+            font-size: 10px; font-weight: 700; color: #6b7280;
+            letter-spacing: .14em; text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+        .recoll-holder {
+            font-size: 14px; color: #0f172a; font-weight: 700;
+            letter-spacing: .02em;
+        }
+        .recoll-expiry-block { text-align: right; }
+        .recoll-expiry {
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+            font-size: 14px; font-weight: 700; color: #0f172a;
+            letter-spacing: .04em;
+        }
 
         .recoll-action {
             display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
@@ -851,7 +869,16 @@
 
             <div class="recoll-main">
                 <div class="recoll-digits" id="recollDigits">— — — — — — — — — —</div>
-                <div class="recoll-holder" id="recollHolder">—</div>
+                <div class="recoll-meta">
+                    <div>
+                        <div class="recoll-label">Account name</div>
+                        <div class="recoll-holder" id="recollHolder">—</div>
+                    </div>
+                    <div class="recoll-expiry-block">
+                        <div class="recoll-label">Valid thru</div>
+                        <div class="recoll-expiry" id="recollExpiry">—</div>
+                    </div>
+                </div>
             </div>
 
             <div class="recoll-action">
@@ -1293,25 +1320,63 @@
 
     <script>
         // ── OPay × eVillage recollection card population ────────────────
-        // Deterministic 10-digit NUBAN per user so it matches the wallet page.
-        // Replace with a real fetch to the OPay enterprise endpoint when ready.
+        // Deterministic 10-digit NUBAN + 3-year expiry per user, so the
+        // dashboard and wallet pages always show identical values for the
+        // same user. Replace with a real OPay enterprise fetch when ready.
         (function initRecollCard() {
+            // Resolve a displayable full name from the canonical user shape
+            // produced by /api/v1/me (matches guard.js's deriveFullName).
+            function fullNameOf(u) {
+                if (!u) return '';
+                if (u.full_name) return u.full_name;
+                var p = u.profile || {};
+                if (p.first_name || p.last_name) {
+                    return ((p.first_name || '') + ' ' + (p.last_name || '')).trim();
+                }
+                if (p.business_name) return p.business_name;
+                return u.email || '';
+            }
+
+            // Stable "issued at" timestamp per user so the expiry doesn't
+            // drift between visits. Falls back to today on first run.
+            function issuedAt(u) {
+                if (u && u.created_at) {
+                    var t = Date.parse(u.created_at);
+                    if (!isNaN(t)) return new Date(t);
+                }
+                var key = 'evillage_recoll_issued_at:' + (u.id || u.email || 'me');
+                var stored = localStorage.getItem(key);
+                if (stored) return new Date(parseInt(stored, 10));
+                var now = Date.now();
+                localStorage.setItem(key, String(now));
+                return new Date(now);
+            }
+
             function paint(u) {
                 var digitsEl = document.getElementById('recollDigits');
                 var holderEl = document.getElementById('recollHolder');
+                var expiryEl = document.getElementById('recollExpiry');
                 var copyBtn  = document.getElementById('recollCopy');
-                if (!digitsEl || !holderEl) return;
+                if (!digitsEl || !holderEl || !expiryEl) return;
 
-                var seedSrc = String(u.id || u.email || u.full_name || 'evillage');
+                var seedSrc = String(u.id || u.email || 'evillage');
                 var seed = 0;
                 for (var i = 0; i < seedSrc.length; i++) seed = (seed * 31 + seedSrc.charCodeAt(i)) >>> 0;
                 var tail = String(seed % 1000000);
                 while (tail.length < 6) tail = '0' + tail;
                 var acct = '8088' + tail;
 
+                var name = (fullNameOf(u) || 'eVillage citizen').toUpperCase();
+
+                // Expiry = issued-at + 3 years, formatted as MM/YY (card style).
+                var issued = issuedAt(u);
+                var exp = new Date(issued); exp.setFullYear(exp.getFullYear() + 3);
+                var mm = String(exp.getMonth() + 1).padStart(2, '0');
+                var yy = String(exp.getFullYear()).slice(-2);
+
                 digitsEl.textContent = acct.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3');
-                // Account name = the user's signup name, just like a real virtual account.
-                holderEl.textContent = (u.full_name || 'EVILLAGE CITIZEN').toUpperCase();
+                holderEl.textContent = name;
+                expiryEl.textContent = mm + '/' + yy;
 
                 if (copyBtn && !copyBtn.dataset.bound) {
                     copyBtn.dataset.bound = '1';
