@@ -1178,6 +1178,84 @@
             100% { opacity: 0; transform: translate(var(--dx, 0), var(--dy, -200px)) rotate(var(--r, 540deg)); }
         }
 
+        /* ── OPay × eVillage collection account card ── */
+        .va-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 20px 22px;
+            color: #0f172a;
+            display: flex; flex-direction: column; gap: 18px;
+            box-shadow: 0 10px 28px -18px rgba(15,23,42,.25);
+            margin-bottom: 28px;
+        }
+        .va-head {
+            display: flex; flex-direction: row;
+            align-items: center; justify-content: space-between;
+            gap: 12px; flex-wrap: wrap;
+            padding: 0; min-height: 0;
+        }
+        .va-brand { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+        .va-brand .va-logo { height: 24px; width: auto; flex-shrink: 0; display: block; }
+        .va-brand .va-x {
+            font-size: 12px; font-weight: 700; letter-spacing: .02em; color: #6b7280;
+        }
+        .va-tag {
+            font-size: 10.5px; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+            background: #ecfdf5; color: #047857; letter-spacing: .06em; text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        .va-number-block { min-width: 0; }
+        .va-label {
+            font-size: 10px; font-weight: 700; color: #6b7280;
+            text-transform: uppercase; letter-spacing: .14em;
+            margin-bottom: 6px;
+        }
+        .va-number-row {
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        }
+        .va-digits {
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+            font-size: clamp(22px, 4.6vw, 30px);
+            font-weight: 700; letter-spacing: .04em;
+            color: #0f172a; line-height: 1.1;
+            min-width: 0; overflow-wrap: anywhere;
+        }
+        .va-copy {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 38px; height: 38px;
+            border: 1px solid #e5e7eb; background: #f8fafc;
+            border-radius: 999px;
+            color: #374151; cursor: pointer; flex-shrink: 0;
+            transition: background .15s ease, border-color .15s ease, color .15s ease;
+        }
+        .va-copy:hover { background: var(--portal-primary, #0d3d44); border-color: var(--portal-primary, #0d3d44); color: #fff; }
+        .va-foot {
+            display: flex; flex-direction: row;
+            align-items: flex-end; justify-content: space-between;
+            gap: 16px; flex-wrap: wrap;
+            padding: 16px 0 0;
+            border-top: 1px solid #f1f5f9;
+            min-height: 0;
+        }
+        .va-foot-right { text-align: right; }
+        .va-name {
+            font-size: 15px; font-weight: 700; color: #0f172a;
+            letter-spacing: .02em; line-height: 1.2;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            max-width: 22ch;
+        }
+        .va-expiry {
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+            font-size: 15px; font-weight: 700; color: #0f172a; letter-spacing: .04em;
+        }
+        @media (max-width: 560px) {
+            .va-card { padding: 16px 16px; border-radius: 14px; gap: 14px; }
+            .va-foot { padding-top: 14px; gap: 14px; }
+            .va-name { max-width: 16ch; }
+            .va-copy { width: 36px; height: 36px; }
+        }
+
 </style>
     <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
 </head>
@@ -1264,6 +1342,38 @@
         <div class="header">
             <h1>Utility & Loan Tracker</h1>
             <p>Manage your energy bills, loan repayments, and mini-grid credit balance.</p>
+        </div>
+
+        <!-- OPay × eVillage Collection Account -->
+        <div class="va-card" id="vaCard">
+            <header class="va-head">
+                <div class="va-brand">
+                    <img src="../assets/images/logos/opay.svg" alt="OPay" class="va-logo">
+                    <span class="va-x">× eVillage</span>
+                </div>
+                <span class="va-tag" id="vaStatus">Active</span>
+            </header>
+
+            <div class="va-number-block">
+                <div class="va-label">Collection account number</div>
+                <div class="va-number-row">
+                    <div class="va-digits" id="vaDigits">— — — — — — — — — —</div>
+                    <button type="button" class="va-copy" id="vaCopyBtn" aria-label="Copy account number">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <footer class="va-foot">
+                <div>
+                    <div class="va-label">Account name</div>
+                    <div class="va-name" id="vaName">—</div>
+                </div>
+                <div class="va-foot-right">
+                    <div class="va-label">Valid thru</div>
+                    <div class="va-expiry" id="vaExpiry">—</div>
+                </div>
+            </footer>
         </div>
 
         <!-- Active Loans -->
@@ -1750,6 +1860,74 @@
     </div>
 
     <script>
+        // ── OPay × eVillage collection account card ─────────────────────
+        // Deterministic 10-digit NUBAN + 3-year expiry per user. Mirrors the
+        // dashboard recollection card so both pages always show the same
+        // account. Replace with a real OPay enterprise fetch when ready.
+        (function initOpayCard() {
+            function fullNameOf(u) {
+                if (!u) return '';
+                if (u.full_name) return u.full_name;
+                var p = u.profile || {};
+                if (p.first_name || p.last_name) return ((p.first_name || '') + ' ' + (p.last_name || '')).trim();
+                if (p.business_name) return p.business_name;
+                return u.email || '';
+            }
+            function issuedAt(u) {
+                if (u && u.created_at) {
+                    var t = Date.parse(u.created_at);
+                    if (!isNaN(t)) return new Date(t);
+                }
+                var key = 'evillage_recoll_issued_at:' + (u.id || u.email || 'me');
+                var stored = localStorage.getItem(key);
+                if (stored) return new Date(parseInt(stored, 10));
+                var now = Date.now();
+                localStorage.setItem(key, String(now));
+                return new Date(now);
+            }
+            function paint(u) {
+                var digitsEl = document.getElementById('vaDigits');
+                var nameEl   = document.getElementById('vaName');
+                var expEl    = document.getElementById('vaExpiry');
+                var copyBtn  = document.getElementById('vaCopyBtn');
+                if (!digitsEl || !nameEl || !expEl) return;
+
+                var seedSrc = String(u.id || u.email || 'evillage');
+                var seed = 0;
+                for (var i = 0; i < seedSrc.length; i++) seed = (seed * 31 + seedSrc.charCodeAt(i)) >>> 0;
+                var tail = String(seed % 1000000);
+                while (tail.length < 6) tail = '0' + tail;
+                var acct = '8088' + tail;
+
+                var issued = issuedAt(u);
+                var exp = new Date(issued); exp.setFullYear(exp.getFullYear() + 3);
+                var mm = String(exp.getMonth() + 1).padStart(2, '0');
+                var yy = String(exp.getFullYear()).slice(-2);
+
+                digitsEl.textContent = acct.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3');
+                nameEl.textContent   = (fullNameOf(u) || 'eVillage citizen').toUpperCase();
+                expEl.textContent    = mm + '/' + yy;
+
+                if (copyBtn && !copyBtn.dataset.bound) {
+                    copyBtn.dataset.bound = '1';
+                    copyBtn.addEventListener('click', async function () {
+                        try {
+                            await navigator.clipboard.writeText(acct);
+                            var original = copyBtn.innerHTML;
+                            copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                            setTimeout(function () { copyBtn.innerHTML = original; }, 1200);
+                        } catch (_) {}
+                    });
+                }
+            }
+            var tries = 0;
+            (function wait() {
+                if (window.EVILLAGE_USER) { paint(window.EVILLAGE_USER); return; }
+                if (++tries > 100) return;
+                setTimeout(wait, 100);
+            })();
+        })();
+
         function toggleSidebar() {
             var overlay = document.getElementById("mobileOverlay");
             if(overlay) overlay.classList.toggle("active");
@@ -2000,7 +2178,25 @@
                     var pct = rs.tenure_months ? Math.round((rs.paid_count / rs.tenure_months) * 100) : 0;
                     var product = (a.product && a.product.name) || 'Solar Loan';
                     var vendor = (a.vendor && a.vendor.business_name) || '';
-                    var bank = (a.institution && a.institution.name) || '';
+
+                    // ── Plan-based meta (Pay Small Small / 25% Upfront / NCGC) ──
+                    var plan = a.plan || (a.financing && a.financing.plan) || 'small_small';
+                    var planLabel = plan === 'upfront_25' ? '25% Upfront · 9.8%/mo' : 'Pay Small Small · 0%';
+                    var price = (a.product && a.product.price_ngn) || (a.financing && a.financing.amount_ngn) || 0;
+                    var quote = plan === 'upfront_25'
+                        ? Loans.compute25Upfront(price, rs.tenure_months || 12)
+                        : Loans.computeSmallSmall(price, rs.tenure_months || 12);
+                    var ncgc = (a.financing && a.financing.ncgc_ngn) || quote.ncgc;
+                    // For Pay Small Small, the citizen collects the product
+                    // when 50% has been paid. Surface that milestone.
+                    var milestone = '';
+                    if (plan === 'small_small' && !rs.is_complete) {
+                        var disbursed = ['disbursed', 'in_installation', 'repaying', 'completed'].indexOf(a.status) >= 0;
+                        milestone = disbursed
+                            ? '<i class="fas fa-check-circle" style="color:#059669;"></i> Product collected at 50% paid'
+                            : '<i class="fas fa-flag" style="color:#92400e;"></i> Collect product after month ' + quote.collectionMonth;
+                    }
+
                     var statusKey = a.status || 'submitted';
                     var payable = rs.is_payable && !rs.is_complete;
                     var payTooltip = !rs.is_payable
@@ -2015,7 +2211,7 @@
                         '<div class="loan-card-head">' +
                             '<div>' +
                                 '<div class="loan-card-title">' + esc(product) + '</div>' +
-                                '<div class="loan-card-vendor">' + esc(vendor) + (bank ? ' • ' + esc(bank) : '') + '</div>' +
+                                '<div class="loan-card-vendor">' + esc(vendor) + ' • ' + esc(planLabel) + '</div>' +
                             '</div>' +
                             '<span class="loan-status-pill is-' + esc(statusKey) + '">' + esc(statusLabel(statusKey)) + '</span>' +
                         '</div>' +
@@ -2023,8 +2219,9 @@
                             '<div class="loan-stat"><div class="k">Total amount</div><div class="v">' + fmtNgn(a.financing && a.financing.amount_ngn) + '</div></div>' +
                             '<div class="loan-stat"><div class="k">Monthly</div><div class="v">' + fmtNgn(rs.monthly_amount) + '</div></div>' +
                             '<div class="loan-stat"><div class="k">Paid</div><div class="v">' + rs.paid_count + ' / ' + rs.tenure_months + '</div></div>' +
-                            '<div class="loan-stat"><div class="k">Balance</div><div class="v">' + fmtNgn(rs.balance_remaining) + '</div></div>' +
+                            '<div class="loan-stat"><div class="k">NCGC (2.5%)</div><div class="v">' + fmtNgn(ncgc) + '</div></div>' +
                         '</div>' +
+                        (milestone ? '<div class="loan-due-line" style="margin-top:8px;">' + milestone + '</div>' : '') +
                         '<div>' +
                             '<div class="loan-progress-row">' +
                                 '<span>Repayment progress</span>' +
@@ -2138,14 +2335,30 @@
                     '</div>';
                 }).join('');
 
+                // Plan-based labels (Pay Small Small / 25% Upfront / NCGC)
+                var dPlan = app.plan || (app.financing && app.financing.plan) || 'small_small';
+                var dPlanLabel = dPlan === 'upfront_25' ? '25% Upfront' : 'Pay Small Small';
+                var dInterest = dPlan === 'upfront_25' ? '9.8% / month' : '0% (no interest)';
+                var dPrice = (app.product && app.product.price_ngn) || (app.financing && app.financing.amount_ngn) || 0;
+                var dQuote = dPlan === 'upfront_25'
+                    ? Loans.compute25Upfront(dPrice, rs.tenure_months || 12)
+                    : Loans.computeSmallSmall(dPrice, rs.tenure_months || 12);
+                var dNcgc = (app.financing && app.financing.ncgc_ngn) || dQuote.ncgc;
+
                 els.detailBody.innerHTML =
                     '<div class="lp-detail-section">' +
                         '<h4>Financing</h4>' +
                         '<div class="lp-detail-grid">' +
+                            '<div><div style="font-size:11px; color:#6b7280;">Plan</div><div style="font-size:14px; font-weight:600;">' + esc(dPlanLabel) + '</div></div>' +
+                            '<div><div style="font-size:11px; color:#6b7280;">Interest</div><div style="font-size:14px; font-weight:600;">' + esc(dInterest) + '</div></div>' +
                             '<div><div style="font-size:11px; color:#6b7280;">Amount</div><div style="font-size:14px; font-weight:600;">' + fmtNgn(app.financing && app.financing.amount_ngn) + '</div></div>' +
-                            '<div><div style="font-size:11px; color:#6b7280;">Tenure</div><div style="font-size:14px; font-weight:600;">' + rs.tenure_months + ' months</div></div>' +
+                            '<div><div style="font-size:11px; color:#6b7280;">Tenor</div><div style="font-size:14px; font-weight:600;">' + rs.tenure_months + ' months</div></div>' +
                             '<div><div style="font-size:11px; color:#6b7280;">Monthly</div><div style="font-size:14px; font-weight:600;">' + fmtNgn(rs.monthly_amount) + '</div></div>' +
-                            '<div><div style="font-size:11px; color:#6b7280;">APR</div><div style="font-size:14px; font-weight:600;">' + ((app.institution && app.institution.interest_rate_pct) || 0) + '%</div></div>' +
+                            '<div><div style="font-size:11px; color:#6b7280;">NCGC fee (2.5%)</div><div style="font-size:14px; font-weight:600;">' + fmtNgn(dNcgc) + '</div></div>' +
+                            (dPlan === 'upfront_25' ?
+                                '<div><div style="font-size:11px; color:#6b7280;">Upfront paid</div><div style="font-size:14px; font-weight:600;">' + fmtNgn(dQuote.upfront) + '</div></div>'
+                              : '<div><div style="font-size:11px; color:#6b7280;">Collect at</div><div style="font-size:14px; font-weight:600;">Month ' + dQuote.collectionMonth + ' (50%)</div></div>'
+                            ) +
                             '<div><div style="font-size:11px; color:#6b7280;">Paid</div><div style="font-size:14px; font-weight:600;">' + fmtNgn(rs.paid_amount) + '</div></div>' +
                             '<div><div style="font-size:11px; color:#6b7280;">Balance</div><div style="font-size:14px; font-weight:600;">' + fmtNgn(rs.balance_remaining) + '</div></div>' +
                         '</div>' +
@@ -2222,9 +2435,11 @@
 
             function renderReview(app, rs) {
                 var method = selectedMethod();
+                var plan = app.plan || (app.financing && app.financing.plan) || 'small_small';
+                var planLabel = plan === 'upfront_25' ? '25% Upfront · 9.8%/mo' : 'Pay Small Small · 0%';
                 var rows = [
                     ['Loan',          (app.product && app.product.name) || 'Solar Loan'],
-                    ['Bank',          (app.institution && app.institution.name) || '—'],
+                    ['Plan',          planLabel],
                     ['Installment',   rs.next_installment_number + ' of ' + rs.tenure_months],
                     ['Due date',      fmtDate(rs.next_due_date)],
                     ['Payment method', methodLabel(method)]
