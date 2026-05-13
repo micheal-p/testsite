@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Wallet | eVillage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=2.0">
+    <script src="config.js?v=1.0"></script>
+    <script src="evillage-api.js?v=1.0"></script>
+    <script>window.EVILLAGE_REQUIRED_ROLES = ['citizen'];</script>
+    <script src="evillage-guard.js?v=1.0"></script>
+    <script src="evillage-loans.js?v=1.0"></script>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
+    <style>
+        :root {
+            --portal-primary: #0d3d44;
+            --portal-primary-dark: #0a2e33;
+            --portal-accent: #10b981;
+            --opay-blue: #1B5DDB;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased; margin: 0;
+            background: #f3f4f6; color: #111827;
+        }
+
+        .wallet-hero {
+            background: linear-gradient(135deg, var(--portal-primary) 0%, var(--portal-primary-dark) 100%);
+            color: #fff;
+            padding: 36px 24px 48px;
+        }
+        .wallet-back {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: rgba(255,255,255,.75); text-decoration: none;
+            font-size: 13px; margin-bottom: 18px;
+        }
+        .wallet-back:hover { color: #fff; }
+        .wallet-hero-inner { max-width: 900px; margin: 0 auto; }
+        .wallet-hero h1 { margin: 0 0 4px; font-size: 22px; font-weight: 700; }
+        .wallet-hero p  { margin: 0; color: rgba(255,255,255,.7); font-size: 13.5px; }
+
+        .va-card {
+            margin-top: 22px;
+            background: #fff;
+            border-radius: 18px;
+            padding: 22px 22px 20px;
+            color: #0f172a;
+            box-shadow: 0 24px 60px -28px rgba(15,23,42,.55);
+        }
+        .va-meta {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 10px; margin-bottom: 14px;
+        }
+        .va-brand {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 12px; font-weight: 700; letter-spacing: .04em;
+            color: #6b7280; text-transform: uppercase;
+        }
+        .va-brand strong { color: var(--opay-blue); letter-spacing: 0; text-transform: none; font-size: 13px; }
+        .va-tag {
+            font-size: 10.5px; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+            background: #ecfdf5; color: #047857; letter-spacing: .04em; text-transform: uppercase;
+        }
+        .va-number {
+            display: flex; align-items: baseline; justify-content: space-between;
+            gap: 14px; flex-wrap: wrap;
+        }
+        .va-number .digits {
+            font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+            font-size: 30px; font-weight: 700; letter-spacing: .04em;
+            color: #0f172a;
+        }
+        .va-copy {
+            display: inline-flex; align-items: center; gap: 6px;
+            border: 1px solid #cbd5e1; background: #fff;
+            border-radius: 999px; padding: 6px 12px;
+            font-size: 12px; font-weight: 600; cursor: pointer; color: #374151;
+        }
+        .va-copy:hover { border-color: var(--portal-primary); color: var(--portal-primary); }
+        .va-name { margin-top: 8px; font-size: 13px; color: #4b5563; }
+        .va-hint { margin-top: 14px; font-size: 12px; color: #6b7280; line-height: 1.55; }
+
+        .wallet-shell { max-width: 900px; margin: -24px auto 56px; padding: 0 20px 40px; }
+        .panel {
+            background: #fff; border-radius: 16px; padding: 22px 22px 20px;
+            box-shadow: 0 12px 32px -22px rgba(15,23,42,.35);
+            margin-top: 18px;
+        }
+        .panel h2 {
+            margin: 0 0 4px; font-size: 16px; font-weight: 700; color: #0f172a;
+        }
+        .panel .sub { margin: 0 0 14px; font-size: 12.5px; color: #6b7280; }
+
+        .summary-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+        }
+        @media (min-width: 720px) { .summary-grid { grid-template-columns: repeat(4, 1fr); } }
+        .summary-item {
+            background: #f8fafc; border-radius: 12px; padding: 13px 14px;
+            border: 1px solid #e2e8f0;
+        }
+        .summary-label {
+            font-size: 11px; color: #6b7280; font-weight: 600;
+            text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px;
+        }
+        .summary-value { font-size: 16px; font-weight: 700; color: #0f172a; }
+        .summary-value.green { color: #047857; }
+        .summary-value.amber { color: #b45309; }
+
+        .schedule {
+            display: grid; grid-template-columns: 1fr; gap: 8px;
+        }
+        @media (min-width: 720px) { .schedule { grid-template-columns: 1fr 1fr; } }
+        .row {
+            display: grid; grid-template-columns: 36px 1fr auto;
+            align-items: center; gap: 12px;
+            border: 1px solid #e5e7eb; border-radius: 12px;
+            padding: 11px 13px; background: #fff;
+        }
+        .row.paid     { border-color: #bbf7d0; background: #f0fdf4; }
+        .row.due      { border-color: #fde68a; background: #fffbeb; }
+        .row.upcoming { background: #fff; }
+        .row .marker {
+            width: 30px; height: 30px; border-radius: 999px;
+            display: grid; place-items: center; font-size: 12px; font-weight: 700;
+            background: #f1f5f9; color: #475569;
+        }
+        .row.paid     .marker { background: #10b981; color: #fff; }
+        .row.due      .marker { background: #f59e0b; color: #fff; }
+        .row .label   { font-size: 13.5px; font-weight: 600; color: #0f172a; }
+        .row .meta    { font-size: 11.5px; color: #6b7280; margin-top: 2px; }
+        .row .amount  {
+            font-family: ui-monospace, monospace;
+            font-size: 13.5px; font-weight: 700; color: #111827;
+            text-align: right;
+        }
+
+        .empty {
+            background: #fff; border: 1px dashed #cbd5e1; border-radius: 14px;
+            padding: 32px; text-align: center; color: #475569; font-size: 14px;
+        }
+        .empty a {
+            display: inline-block; margin-top: 12px;
+            padding: 10px 18px; border-radius: 999px;
+            background: var(--portal-primary); color: #fff;
+            text-decoration: none; font-weight: 600; font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="wallet-hero">
+        <div class="wallet-hero-inner">
+            <a href="evillage-dashboard.html" class="wallet-back"><i class="fas fa-arrow-left"></i> Dashboard</a>
+            <h1>Loan Wallet</h1>
+            <p>Your dedicated collection account. Every transfer in is matched to the next instalment.</p>
+
+            <div class="va-card" id="vaCard">
+                <div class="va-meta">
+                    <div class="va-brand">
+                        <i class="fas fa-bolt" style="color: var(--opay-blue);"></i>
+                        <strong>OPay</strong>
+                        <span>× eVillage</span>
+                    </div>
+                    <span class="va-tag" id="vaStatus">Active</span>
+                </div>
+                <div class="va-number">
+                    <div>
+                        <div class="digits" id="vaDigits">— — — — — — — — — —</div>
+                        <div class="va-name" id="vaName">—</div>
+                    </div>
+                    <button type="button" class="va-copy" id="vaCopyBtn">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+                <p class="va-hint">
+                    Use this account number from any Nigerian bank, OPay or USSD transfer. Funds
+                    auto-match to the next outstanding instalment within seconds.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <main class="wallet-shell" id="walletShell">
+        <!-- Filled by JS once a loan is loaded. -->
+    </main>
+
+    <script>
+        (function () {
+            const $ = (s, r = document) => r.querySelector(s);
+            const fmtNaira = (n) => '₦' + (Number(n) || 0).toLocaleString();
+
+            // ── User & loan resolution ──────────────────────────────────
+            const user = window.EVILLAGE_USER || null;
+            if (!user) return; // guard.js will already have redirected.
+
+            // Stable virtual account number derived from the user's id so it
+            // doesn't change between visits during this UI prototype phase.
+            function virtualAccountFor(u) {
+                const prefix = '8088';
+                let seed = 0;
+                const id = String(u.id || u.email || u.full_name || 'evillage');
+                for (let i = 0; i < id.length; i++) seed = (seed * 31 + id.charCodeAt(i)) >>> 0;
+                const tail = String(seed % 1000000).padStart(6, '0');
+                return prefix + tail;          // 10 digits, looks like an NUBAN
+            }
+
+            const acct = virtualAccountFor(user);
+            const fullName = (user.full_name || '').toUpperCase() || 'EVILLAGE CITIZEN';
+
+            $('#vaDigits').textContent = acct.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3');
+            $('#vaName').textContent   = 'OPay × eVillage / ' + fullName;
+
+            $('#vaCopyBtn').addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(acct);
+                    const btn = $('#vaCopyBtn');
+                    const original = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Copied';
+                    setTimeout(() => (btn.innerHTML = original), 1200);
+                } catch (_) {}
+            });
+
+            // ── Active loan ─────────────────────────────────────────────
+            const apps = (window.EvillageLoans.listApplicationsForCitizen
+                ? window.EvillageLoans.listApplicationsForCitizen(user)
+                : []) || [];
+            const active = apps.find((a) =>
+                ['approved', 'disbursed', 'repaying', 'pending_disbursement', 'in_review'].includes(a.status)
+            ) || apps[0] || null;
+
+            const shell = $('#walletShell');
+
+            if (!active) {
+                shell.innerHTML = `
+                    <div class="empty">
+                        <i class="fas fa-circle-notch" style="font-size: 22px; color: #94a3b8;"></i>
+                        <p style="margin: 10px 0 0;">You don't have an active loan yet.</p>
+                        <a href="evillage-loan-apply.html">Apply for a loan</a>
+                    </div>`;
+                return;
+            }
+
+            // Plan + breakdown — recompute from the saved financing so the UI
+            // is consistent even if the seed data shape predates the new plans.
+            const plan   = active.plan || (active.financing && active.financing.plan) || 'small_small';
+            const price  = (active.product && active.product.price_ngn) || (active.financing && active.financing.amount_ngn) || 0;
+            const tenor  = (active.financing && active.financing.tenure_months) || 12;
+            const q = plan === 'upfront_25'
+                ? window.EvillageLoans.compute25Upfront(price, tenor)
+                : window.EvillageLoans.computeSmallSmall(price, tenor);
+
+            // Build a payment schedule. Treat existing receipts in
+            // active.repayments (if present) as paid; the rest are upcoming.
+            const receipts = Array.isArray(active.repayments) ? active.repayments : [];
+            const schedule = [];
+            const startDate = new Date(active.created_at || Date.now());
+            for (let i = 1; i <= tenor; i++) {
+                const due = new Date(startDate);
+                due.setMonth(due.getMonth() + i);
+                const receipt = receipts[i - 1] || null;
+                const paid = !!(receipt && receipt.status === 'paid');
+                schedule.push({
+                    monthNum: i,
+                    dueDate: due,
+                    amount: q.monthly,
+                    status: paid ? 'paid' : (i === (receipts.length + 1) ? 'due' : 'upcoming'),
+                    paidOn: receipt && receipt.paid_at ? new Date(receipt.paid_at) : null,
+                });
+            }
+
+            const paidCount    = schedule.filter((r) => r.status === 'paid').length;
+            const paidTotal    = paidCount * q.monthly + (plan === 'upfront_25' ? (q.upfront + q.ncgc) : 0);
+            const outstanding  = Math.max(0, q.total - paidTotal);
+            const nextRow      = schedule.find((r) => r.status === 'due') || schedule.find((r) => r.status === 'upcoming');
+
+            const planLabel = plan === 'small_small' ? 'Pay Small Small' : '25% Upfront';
+            const collectionLine = plan === 'small_small'
+                ? `Product released after month ${q.collectionMonth} once 50% paid`
+                : `Product released on payment of upfront + NCGC`;
+
+            shell.innerHTML = `
+                <div class="panel">
+                    <h2>${planLabel} · ${tenor} months</h2>
+                    <p class="sub">${collectionLine}</p>
+
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <div class="summary-label">Monthly</div>
+                            <div class="summary-value">${fmtNaira(q.monthly)}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Paid so far</div>
+                            <div class="summary-value green">${fmtNaira(paidTotal)}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Outstanding</div>
+                            <div class="summary-value amber">${fmtNaira(outstanding)}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Next payment</div>
+                            <div class="summary-value">${nextRow ? formatDue(nextRow.dueDate) : '—'}</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 14px; font-size: 12px; color: #6b7280;">
+                        NCGC fee in this loan: <strong>${fmtNaira(q.ncgc)}</strong>
+                        ${plan === 'upfront_25' ? `· Upfront paid: <strong>${fmtNaira(q.upfront)}</strong>` : ''}
+                        · Total to pay: <strong>${fmtNaira(q.total)}</strong>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h2>Payment schedule</h2>
+                    <p class="sub">A checkmark drops on a month the moment your transfer lands in the collection account.</p>
+                    <div class="schedule">
+                        ${schedule.map(renderRow).join('')}
+                    </div>
+                </div>`;
+
+            function renderRow(r) {
+                const dateText = r.status === 'paid' && r.paidOn ? 'Paid · ' + r.paidOn.toLocaleDateString() : 'Due ' + r.dueDate.toLocaleDateString();
+                const marker   = r.status === 'paid' ? '<i class="fas fa-check"></i>' :
+                                 r.status === 'due'  ? '<i class="fas fa-clock"></i>' :
+                                                       r.monthNum;
+                return `
+                    <div class="row ${r.status}">
+                        <div class="marker">${marker}</div>
+                        <div>
+                            <div class="label">Month ${r.monthNum}</div>
+                            <div class="meta">${dateText}</div>
+                        </div>
+                        <div class="amount">${fmtNaira(r.amount)}</div>
+                    </div>`;
+            }
+            function formatDue(d) {
+                return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
+            }
+        })();
+    </script>
+</body>
+</html>

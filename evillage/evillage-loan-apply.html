@@ -341,6 +341,57 @@
             100% { opacity: 0;
                    transform: translate(var(--dx, 0), var(--dy, -200px)) rotate(var(--r, 540deg)); }
         }
+
+        /* ── Plan picker (step 3) ── */
+        .plan-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 4px;
+        }
+        @media (min-width: 760px) { .plan-list { grid-template-columns: 1fr 1fr; } }
+        .plan-card {
+            display: block;
+            cursor: pointer;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 16px 18px;
+            background: #fff;
+            transition: all .15s ease;
+            position: relative;
+        }
+        .plan-card:hover { border-color: #cbd5e1; }
+        .plan-card input { position: absolute; opacity: 0; pointer-events: none; }
+        .plan-card:has(input:checked) {
+            border-color: var(--portal-primary);
+            box-shadow: 0 0 0 3px rgba(13,61,68,.08);
+            background: #f8fbfb;
+        }
+        .plan-head { display: flex; align-items: center; gap: 12px; }
+        .plan-icon {
+            width: 42px; height: 42px; border-radius: 12px;
+            background: rgba(13,61,68,.08);
+            color: var(--portal-primary);
+            display: grid; place-items: center; font-size: 18px;
+            flex-shrink: 0;
+        }
+        .plan-title { margin: 0; font-weight: 700; font-size: 15px; color: #0f172a; }
+        .plan-sub   { margin: 2px 0 0; font-size: 12.5px; color: #6b7280; }
+        .plan-tag {
+            margin-left: auto;
+            font-size: 10.5px; font-weight: 700; letter-spacing: .04em;
+            text-transform: uppercase;
+            padding: 5px 9px; border-radius: 999px;
+            white-space: nowrap;
+        }
+        .plan-tag-green { background: #ecfdf5; color: #047857; }
+        .plan-tag-amber { background: #fef3c7; color: #92400e; }
+        .plan-points {
+            margin: 14px 0 0; padding: 0; list-style: none;
+            font-size: 13px; color: #4b5563; line-height: 1.6;
+        }
+        .plan-points li { display: flex; gap: 8px; align-items: flex-start; }
+        .plan-points li i { color: #10b981; margin-top: 3px; font-size: 11px; }
     </style>
 </head>
 
@@ -351,7 +402,7 @@
                 <i class="fas fa-arrow-left"></i> Back to dashboard
             </a>
             <h1>Apply for a Clean-Energy Loan</h1>
-            <p>Choose a vendor, a product, and your financing partner. Funds go directly to the vendor so you can install with confidence.</p>
+            <p>Pick a vendor, a product and a repayment plan — Pay Small Small (0% interest, collect at 50%) or 25% Upfront (instant product, 9.8% monthly).</p>
         </div>
     </section>
 
@@ -389,28 +440,60 @@
                 </div>
             </div>
 
-            <!-- Step 3: Financing -->
+            <!-- Step 3: Plan -->
             <div class="step-body hidden" id="step3">
-                <h2 class="step-title">Set up your financing</h2>
-                <p class="step-subtitle">Pick a bank, a down payment, and a repayment tenure.</p>
+                <h2 class="step-title">Choose a repayment plan</h2>
+                <p class="step-subtitle">Two options. Both include a 2.5% NCGC (National Credit Guarantee Company) fee.</p>
                 <div class="summary-pill" id="summary3"></div>
 
-                <div class="field">
-                    <label for="institutionSelect">Financing partner</label>
-                    <select id="institutionSelect"></select>
-                    <div class="field-hint" id="institutionHint"></div>
+                <div class="plan-list" id="planList">
+                    <label class="plan-card" data-plan="small_small">
+                        <input type="radio" name="plan" value="small_small">
+                        <div class="plan-body">
+                            <div class="plan-head">
+                                <div class="plan-icon"><i class="fas fa-piggy-bank"></i></div>
+                                <div>
+                                    <p class="plan-title">Pay Small Small</p>
+                                    <p class="plan-sub">No interest · Collect product after paying 50%</p>
+                                </div>
+                                <span class="plan-tag plan-tag-green">0% interest</span>
+                            </div>
+                            <ul class="plan-points">
+                                <li><i class="fas fa-check"></i> Spread the cost over a tenor you pick</li>
+                                <li><i class="fas fa-check"></i> Collect the product once you've paid 50% of the total bill</li>
+                                <li><i class="fas fa-check"></i> Continue paying the remaining 50% after collection</li>
+                            </ul>
+                        </div>
+                    </label>
+
+                    <label class="plan-card" data-plan="upfront_25">
+                        <input type="radio" name="plan" value="upfront_25">
+                        <div class="plan-body">
+                            <div class="plan-head">
+                                <div class="plan-icon"><i class="fas fa-bolt"></i></div>
+                                <div>
+                                    <p class="plan-title">25% Equity Upfront</p>
+                                    <p class="plan-sub">Get the product instantly · 9.8% monthly interest</p>
+                                </div>
+                                <span class="plan-tag plan-tag-amber">9.8% / month</span>
+                            </div>
+                            <ul class="plan-points">
+                                <li><i class="fas fa-check"></i> Pay 25% upfront and receive the product immediately</li>
+                                <li><i class="fas fa-check"></i> Repay the remaining balance over your chosen tenor</li>
+                                <li><i class="fas fa-check"></i> 9.8% monthly interest applied to the outstanding amount</li>
+                            </ul>
+                        </div>
+                    </label>
                 </div>
 
-                <div class="field-row">
-                    <div class="field">
-                        <label for="downPayment">Down payment (₦)</label>
-                        <input type="number" id="downPayment" min="0" step="1000" value="0">
-                        <div class="field-hint">Optional. A larger down payment reduces your monthly repayment.</div>
-                    </div>
-                    <div class="field">
-                        <label for="tenure">Tenure</label>
-                        <select id="tenure"></select>
-                    </div>
+                <div class="field" style="margin-top: 18px;">
+                    <label for="tenure">Repayment tenor</label>
+                    <select id="tenure">
+                        <option value="6">6 months</option>
+                        <option value="12" selected>12 months</option>
+                        <option value="18">18 months</option>
+                        <option value="24">24 months</option>
+                    </select>
                 </div>
 
                 <div class="field">
@@ -517,10 +600,8 @@
                 selectedVendor: null,
                 products: [],
                 selectedProduct: null,
-                institutions: [],
-                selectedInstitution: null,
-                downPayment: 0,
-                tenure: null,
+                plan: null,           // 'small_small' | 'upfront_25'
+                tenure: 12,
                 purpose: '',
                 eligibility: {
                     monthly_income_ngn: 0,
@@ -542,9 +623,7 @@
                 productList: document.getElementById('productList'),
                 summary2: document.getElementById('summary2'),
                 summary3: document.getElementById('summary3'),
-                institutionSelect: document.getElementById('institutionSelect'),
-                institutionHint: document.getElementById('institutionHint'),
-                downPayment: document.getElementById('downPayment'),
+                planList: document.getElementById('planList'),
                 tenure: document.getElementById('tenure'),
                 purpose: document.getElementById('purpose'),
                 quote: document.getElementById('quote'),
@@ -607,7 +686,7 @@
                 let ok = false;
                 if (state.step === 1) ok = !!state.selectedVendor;
                 else if (state.step === 2) ok = !!state.selectedProduct;
-                else if (state.step === 3) ok = !!state.selectedInstitution && !!state.tenure && quoteValid();
+                else if (state.step === 3) ok = !!state.plan && !!state.tenure && quoteValid();
                 else if (state.step === 4) ok = eligibilityValid();
                 els.btnNext.disabled = !ok;
             }
@@ -699,30 +778,11 @@
                 updateNextEnabled();
             });
 
-            // ─── Step 3: Financing ──────────────────────────────────────
-            function loadInstitutions() {
-                state.institutions = window.EvillageLoans.listInstitutions();
-                els.institutionSelect.innerHTML = '<option value="">— Select a financing partner —</option>' +
-                    state.institutions.map((i) =>
-                        `<option value="${esc(i.id)}">${esc(i.name)} · ${i.interest_rate_pct}% APR</option>`
-                    ).join('');
-            }
-            function onInstitutionChange() {
-                const id = els.institutionSelect.value;
-                state.selectedInstitution = state.institutions.find((i) => i.id === id) || null;
-                if (state.selectedInstitution) {
-                    const i = state.selectedInstitution;
-                    els.institutionHint.textContent =
-                        i.tagline + ' · Loan range ' + fmtNaira(i.min_loan_ngn) + ' – ' + fmtNaira(i.max_loan_ngn) + '.';
-                    els.tenure.innerHTML = i.tenure_options_months.map((m) =>
-                        `<option value="${m}">${m} months</option>`).join('');
-                    state.tenure = i.tenure_options_months[0];
-                    els.tenure.value = String(state.tenure);
-                } else {
-                    els.institutionHint.textContent = '';
-                    els.tenure.innerHTML = '';
-                    state.tenure = null;
-                }
+            // ─── Step 3: Repayment plan ─────────────────────────────────
+            function onPlanChange(e) {
+                const card = e.target.closest('[data-plan]');
+                if (!card) return;
+                state.plan = card.getAttribute('data-plan');
                 renderQuote();
                 updateNextEnabled();
             }
@@ -731,50 +791,49 @@
                 renderQuote();
                 updateNextEnabled();
             }
-            function onDownPaymentChange() {
-                state.downPayment = Math.max(0, Number(els.downPayment.value) || 0);
-                renderQuote();
-                updateNextEnabled();
-            }
 
             function quoteValid() {
-                if (!state.selectedProduct || !state.selectedInstitution || !state.tenure) return false;
-                const price = Number(state.selectedProduct.price_ngn) || 0;
-                const loanAmount = price - (state.downPayment || 0);
-                const i = state.selectedInstitution;
-                return loanAmount >= i.min_loan_ngn &&
-                       loanAmount <= i.max_loan_ngn &&
-                       loanAmount > 0 &&
-                       (state.downPayment || 0) <= price;
+                return !!(state.selectedProduct && state.plan && state.tenure);
             }
 
             function renderQuote() {
-                if (!state.selectedProduct || !state.selectedInstitution || !state.tenure) {
-                    els.quote.innerHTML = '<div class="quote-row"><span>Choose a partner and tenure to see your repayment quote.</span></div>';
+                if (!state.selectedProduct) {
+                    els.quote.innerHTML = '<div class="quote-row"><span>Pick a product first.</span></div>';
+                    return;
+                }
+                if (!state.plan) {
+                    els.quote.innerHTML = '<div class="quote-row"><span>Pick a plan above to see the breakdown.</span></div>';
                     return;
                 }
                 const price = Number(state.selectedProduct.price_ngn) || 0;
-                const down = Number(state.downPayment) || 0;
-                const loan = Math.max(0, price - down);
-                const i = state.selectedInstitution;
-                const monthly = window.EvillageLoans.computeMonthly(loan, state.tenure, i.interest_rate_pct);
-                const totalRepayment = monthly * state.tenure;
+                const tenor = state.tenure || 12;
 
-                let warning = '';
-                if (loan <= 0) warning = 'Loan amount must be greater than ₦0. Reduce the down payment.';
-                else if (loan < i.min_loan_ngn) warning = 'Below ' + i.name + '\'s minimum loan of ' + fmtNaira(i.min_loan_ngn) + '.';
-                else if (loan > i.max_loan_ngn) warning = 'Above ' + i.name + '\'s maximum loan of ' + fmtNaira(i.max_loan_ngn) + '.';
-                else if (down > price) warning = 'Down payment cannot exceed the product price.';
-
-                els.quote.innerHTML = `
-                    <div class="quote-row"><span>Product price</span><span class="value">${fmtNaira(price)}</span></div>
-                    <div class="quote-row"><span>Down payment</span><span class="value">${fmtNaira(down)}</span></div>
-                    <div class="quote-row"><span>Loan amount</span><span class="value">${fmtNaira(loan)}</span></div>
-                    <div class="quote-row"><span>Tenure</span><span class="value">${state.tenure} months · ${i.interest_rate_pct}% APR</span></div>
-                    <div class="quote-row total"><span>Monthly repayment</span><span class="value">${fmtNaira(monthly)}</span></div>
-                    <div class="quote-row"><span>Total repayment</span><span class="value">${fmtNaira(totalRepayment)}</span></div>
-                    ${warning ? `<div class="quote-row" style="color:#991b1b; font-size:13px; padding-top:8px;"><span>${esc(warning)}</span></div>` : ''}
-                `;
+                if (state.plan === 'small_small') {
+                    const q = window.EvillageLoans.computeSmallSmall(price, tenor);
+                    els.quote.innerHTML = `
+                        <div class="quote-row"><span>Product price</span><span class="value">${fmtNaira(price)}</span></div>
+                        <div class="quote-row"><span>NCGC fee (2.5%)</span><span class="value">${fmtNaira(q.ncgc)}</span></div>
+                        <div class="quote-row"><span>Interest</span><span class="value">₦0 · 0%</span></div>
+                        <div class="quote-row"><span>Tenor</span><span class="value">${tenor} months</span></div>
+                        <div class="quote-row total"><span>Monthly payment</span><span class="value">${fmtNaira(q.monthly)}</span></div>
+                        <div class="quote-row"><span>Total to pay</span><span class="value">${fmtNaira(q.total)}</span></div>
+                        <div class="quote-row" style="color:#047857; font-size:13px; padding-top:8px;">
+                            <span><i class="fas fa-check-circle"></i> Collect the product after month ${q.collectionMonth} (50% paid: ${fmtNaira(q.collectionTotal)})</span>
+                        </div>`;
+                } else if (state.plan === 'upfront_25') {
+                    const q = window.EvillageLoans.compute25Upfront(price, tenor);
+                    els.quote.innerHTML = `
+                        <div class="quote-row"><span>Product price</span><span class="value">${fmtNaira(price)}</span></div>
+                        <div class="quote-row"><span>25% upfront (today)</span><span class="value">${fmtNaira(q.upfront)}</span></div>
+                        <div class="quote-row"><span>NCGC fee (2.5%)</span><span class="value">${fmtNaira(q.ncgc)}</span></div>
+                        <div class="quote-row"><span>Financed balance</span><span class="value">${fmtNaira(q.principal)}</span></div>
+                        <div class="quote-row"><span>Interest (${tenor}m × 9.8%)</span><span class="value">${fmtNaira(q.totalInterest)}</span></div>
+                        <div class="quote-row total"><span>Monthly payment</span><span class="value">${fmtNaira(q.monthly)}</span></div>
+                        <div class="quote-row"><span>Total to pay (upfront + ${tenor} × monthly)</span><span class="value">${fmtNaira(q.total)}</span></div>
+                        <div class="quote-row" style="color:#92400e; font-size:13px; padding-top:8px;">
+                            <span><i class="fas fa-bolt"></i> Product released immediately on payment of upfront + NCGC</span>
+                        </div>`;
+                }
             }
             function renderSummary3() {
                 const v = state.selectedVendor; const p = state.selectedProduct;
@@ -795,11 +854,30 @@
             function renderReview() {
                 const v = state.selectedVendor;
                 const p = state.selectedProduct;
-                const i = state.selectedInstitution;
                 const price = Number(p.price_ngn) || 0;
-                const down = Number(state.downPayment) || 0;
-                const loan = Math.max(0, price - down);
-                const monthly = window.EvillageLoans.computeMonthly(loan, state.tenure, i.interest_rate_pct);
+                const tenor = state.tenure;
+                const planLabel = state.plan === 'small_small' ? 'Pay Small Small (0% interest)' : '25% Upfront (9.8% / month)';
+                const q = state.plan === 'small_small'
+                    ? window.EvillageLoans.computeSmallSmall(price, tenor)
+                    : window.EvillageLoans.compute25Upfront(price, tenor);
+
+                const planExtra = state.plan === 'small_small'
+                    ? `<div>
+                          <div class="review-label">Product collection</div>
+                          <div class="review-value">After month ${q.collectionMonth} (50% paid)</div>
+                       </div>
+                       <div>
+                          <div class="review-label">Interest</div>
+                          <div class="review-value">₦0 · 0%</div>
+                       </div>`
+                    : `<div>
+                          <div class="review-label">Upfront (today)</div>
+                          <div class="review-value">${fmtNaira(q.upfront)}</div>
+                       </div>
+                       <div>
+                          <div class="review-label">Interest (${tenor} × 9.8%)</div>
+                          <div class="review-value">${fmtNaira(q.totalInterest)}</div>
+                       </div>`;
 
                 els.reviewBody.innerHTML = `
                     <div class="review-grid">
@@ -817,24 +895,25 @@
                             <div class="field-hint" style="margin-top:4px;">${esc(p.description || '')}</div>
                         </div>
                         <div>
-                            <div class="review-label">Financing partner</div>
-                            <div class="review-value">${esc(i.name)} · ${i.interest_rate_pct}% APR</div>
+                            <div class="review-label">Repayment plan</div>
+                            <div class="review-value">${esc(planLabel)}</div>
                         </div>
                         <div>
-                            <div class="review-label">Tenure</div>
-                            <div class="review-value">${state.tenure} months</div>
+                            <div class="review-label">Tenor</div>
+                            <div class="review-value">${tenor} months</div>
+                        </div>
+                        ${planExtra}
+                        <div>
+                            <div class="review-label">NCGC fee (2.5%)</div>
+                            <div class="review-value">${fmtNaira(q.ncgc)}</div>
                         </div>
                         <div>
-                            <div class="review-label">Down payment</div>
-                            <div class="review-value">${fmtNaira(down)}</div>
-                        </div>
-                        <div>
-                            <div class="review-label">Loan amount</div>
-                            <div class="review-value">${fmtNaira(loan)}</div>
+                            <div class="review-label">Total to pay</div>
+                            <div class="review-value">${fmtNaira(q.total)}</div>
                         </div>
                         <div class="full">
-                            <div class="review-label">Monthly repayment</div>
-                            <div class="review-value" style="font-size:18px; font-weight:600;">${fmtNaira(monthly)}</div>
+                            <div class="review-label">Monthly payment</div>
+                            <div class="review-value" style="font-size:18px; font-weight:600;">${fmtNaira(q.monthly)}</div>
                         </div>
 
                         <div>
@@ -865,8 +944,6 @@
                     setStep(2);
                     loadProducts();
                 } else if (state.step === 2 && state.selectedProduct) {
-                    loadInstitutions();
-                    onInstitutionChange();
                     renderSummary3();
                     setStep(3);
                     renderQuote();
@@ -887,9 +964,8 @@
                 if (state.step > 1) setStep(state.step - 1);
             });
 
-            els.institutionSelect.addEventListener('change', onInstitutionChange);
+            els.planList.addEventListener('change', onPlanChange);
             els.tenure.addEventListener('change', onTenureChange);
-            els.downPayment.addEventListener('input', onDownPaymentChange);
 
             ['input', 'change'].forEach(evt => {
                 els.monthlyIncome.addEventListener(evt, updateNextEnabled);
@@ -905,15 +981,23 @@
                 try {
                     const citizenUser = window.EVILLAGE_USER;
                     if (!citizenUser) throw new Error('Your session could not be verified. Please refresh and try again.');
+                    const price = Number(state.selectedProduct.price_ngn) || 0;
+                    const q = state.plan === 'small_small'
+                        ? window.EvillageLoans.computeSmallSmall(price, state.tenure)
+                        : window.EvillageLoans.compute25Upfront(price, state.tenure);
                     const app = window.EvillageLoans.createApplication({
                         citizenUser: citizenUser,
                         vendor: state.selectedVendor,
                         product: state.selectedProduct,
-                        institutionId: state.selectedInstitution.id,
+                        plan: state.plan,
                         financing: {
-                            amount_ngn: Math.max(0, (state.selectedProduct.price_ngn || 0) - (state.downPayment || 0)),
-                            down_payment_ngn: state.downPayment || 0,
-                            tenure_months: state.tenure
+                            amount_ngn: price,
+                            tenure_months: state.tenure,
+                            ncgc_ngn: q.ncgc,
+                            upfront_ngn: q.upfront || 0,
+                            monthly_ngn: q.monthly,
+                            total_ngn: q.total,
+                            collection_month: q.collectionMonth || 1
                         },
                         eligibility: state.eligibility,
                         purpose: state.purpose

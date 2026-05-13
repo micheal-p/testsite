@@ -665,6 +665,84 @@
         return Math.round(m);
     }
 
+    // eVillage business-logic constants. National Credit Guarantee Company fee
+    // is charged on every plan; "Pay Small Small" releases the product when
+    // the citizen has paid 50% of the total bill; "25% Upfront" releases the
+    // product immediately and charges 9.8% interest per month on the balance.
+    var NCGC_RATE              = 0.025;
+    var SMALL_SMALL_COLLECT    = 0.50;
+    var UPFRONT_RATIO          = 0.25;
+    var UPFRONT_MONTHLY_RATE   = 0.098;
+
+    /**
+     * "Pay Small Small" plan: zero interest, total = price + NCGC, split
+     * evenly across the tenor. Product is released after the citizen has
+     * paid SMALL_SMALL_COLLECT of total.
+     */
+    function computeSmallSmall(price, tenureMonths) {
+        var p = Math.max(0, Number(price) || 0);
+        var n = Math.max(1, Number(tenureMonths) || 1);
+        var ncgc    = Math.round(p * NCGC_RATE);
+        var total   = p + ncgc;
+        var monthly = Math.round(total / n);
+        var collectionTotal  = Math.round(total * SMALL_SMALL_COLLECT);
+        var collectionMonth  = monthly > 0 ? Math.min(n, Math.ceil(collectionTotal / monthly)) : n;
+        return {
+            plan: 'small_small',
+            price: p,
+            ncgc: ncgc,
+            interest: 0,
+            totalInterest: 0,
+            total: total,
+            monthly: monthly,
+            tenure: n,
+            upfront: 0,
+            principal: total,
+            collectionTotal: collectionTotal,
+            collectionMonth: collectionMonth
+        };
+    }
+
+    /**
+     * "25% Upfront" plan: citizen pays 25% of price + NCGC immediately and
+     * receives the product. The remaining 75% is amortised at UPFRONT_MONTHLY_RATE
+     * per month over `tenureMonths`.
+     */
+    function compute25Upfront(price, tenureMonths) {
+        var p = Math.max(0, Number(price) || 0);
+        var n = Math.max(1, Number(tenureMonths) || 1);
+        var upfront   = Math.round(p * UPFRONT_RATIO);
+        var ncgc      = Math.round(p * NCGC_RATE);
+        var principal = p - upfront;                       // remaining 75% financed
+        var monthly   = computeAmortised(principal, n, UPFRONT_MONTHLY_RATE);
+        var totalRepaid = monthly * n;
+        var totalInterest = Math.max(0, totalRepaid - principal);
+        var total = upfront + ncgc + totalRepaid;          // grand total
+        return {
+            plan: 'upfront_25',
+            price: p,
+            ncgc: ncgc,
+            upfront: upfront,
+            principal: principal,
+            interest: UPFRONT_MONTHLY_RATE,
+            totalInterest: totalInterest,
+            total: total,
+            monthly: monthly,
+            tenure: n,
+            collectionTotal: upfront + ncgc,
+            collectionMonth: 1                              // product released immediately
+        };
+    }
+
+    function computeAmortised(amount, months, monthlyRate) {
+        if (!amount || !months) return 0;
+        var r = Number(monthlyRate) || 0;
+        if (r === 0) return Math.round(amount / months);
+        var pow = Math.pow(1 + r, months);
+        var m   = amount * (r * pow) / (pow - 1);
+        return Math.round(m);
+    }
+
     function seedInstallationStages(stagesTemplate) {
         return (stagesTemplate || DEFAULT_STAGES).map(function (s) {
             return {
@@ -1432,6 +1510,8 @@
 
         // helpers
         computeMonthly: computeMonthly,
+        computeSmallSmall: computeSmallSmall,
+        compute25Upfront: compute25Upfront,
         rankCreditScore: rankCreditScore,
         generateCreditScore: generateCreditScore,
 
