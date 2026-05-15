@@ -328,28 +328,39 @@
         <div class="absolute inset-0 hero-fade"></div>
 
         <div class="relative z-10 max-w-7xl mx-auto px-5 sm:px-6">
-            <div class="max-w-4xl">
-                <div class="eyebrow text-ev-cream mb-6 sm:mb-8">
-                    Federal Republic of Nigeria · Official
+            <!-- Hero row: text left · Seal of the President right (lg+ only; on mobile it stacks underneath then hides) -->
+            <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto] gap-8 lg:gap-14 items-start">
+                <div class="max-w-4xl">
+                    <div class="eyebrow text-ev-cream mb-6 sm:mb-8">
+                        Federal Republic of Nigeria · Official
+                    </div>
+
+                    <h1 class="text-[2.25rem] leading-[1.1] sm:text-5xl sm:leading-[1.08] md:text-6xl md:leading-[1.05] lg:text-7xl font-bold tracking-tightest mb-6 sm:mb-8">
+                        The national platform for<br class="hidden sm:inline">
+                        <span class="text-ev-cream">clean energy access</span><br class="hidden sm:inline">
+                        and subsidy transparency.
+                    </h1>
+
+                    <p class="text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl mb-10 sm:mb-12 leading-relaxed font-light">
+                        eVillage consolidates solar financing, mini-grid connections, utility payments, and SHINE subsidy administration into a single verified portal—governed by NEMiC oversight.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-16 sm:mb-20">
+                        <a href="evillage-signup.html" class="inline-flex items-center justify-center gap-2 bg-ev-green hover:bg-ev-deep text-white px-6 py-3.5 rounded-md font-semibold text-sm transition-colors">
+                            Create an account <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+                        <a href="#strategic-pillars" class="inline-flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/15 text-white px-6 py-3.5 rounded-md font-semibold text-sm transition-colors">
+                            Explore the ecosystem
+                        </a>
+                    </div>
                 </div>
 
-                <h1 class="text-[2.25rem] leading-[1.1] sm:text-5xl sm:leading-[1.08] md:text-6xl md:leading-[1.05] lg:text-7xl font-bold tracking-tightest mb-6 sm:mb-8">
-                    The national platform for<br class="hidden sm:inline">
-                    <span class="text-ev-cream">clean energy access</span><br class="hidden sm:inline">
-                    and subsidy transparency.
-                </h1>
-
-                <p class="text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl mb-10 sm:mb-12 leading-relaxed font-light">
-                    eVillage consolidates solar financing, mini-grid connections, utility payments, and SHINE subsidy administration into a single verified portal—governed by NEMiC oversight.
-                </p>
-
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-16 sm:mb-20">
-                    <a href="evillage-signup.html" class="inline-flex items-center justify-center gap-2 bg-ev-green hover:bg-ev-deep text-white px-6 py-3.5 rounded-md font-semibold text-sm transition-colors">
-                        Create an account <i class="fas fa-arrow-right text-xs"></i>
-                    </a>
-                    <a href="#strategic-pillars" class="inline-flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/15 text-white px-6 py-3.5 rounded-md font-semibold text-sm transition-colors">
-                        Explore the ecosystem
-                    </a>
+                <!-- Seal of the President of the Federal Republic of Nigeria -->
+                <div class="hidden lg:flex shrink-0 justify-center -mt-6 xl:-mt-10">
+                    <img src="../assets/images/leaders/seal-of-president-nigeria.png"
+                         alt="Seal of the President of the Federal Republic of Nigeria"
+                         class="w-72 xl:w-80 2xl:w-96 h-auto select-none pointer-events-none drop-shadow-[0_10px_36px_rgba(0,0,0,0.5)]"
+                         loading="lazy">
                 </div>
             </div>
 
