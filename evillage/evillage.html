@@ -9,7 +9,8 @@
     <link rel="shortcut icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" as="font" type="font/woff2" href="../assets/font/NEIIA_VF-s.p.3bb41c0a.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="../assets/font/NEIIADisplay_Regular-s.p.9a576876.woff2" crossorigin>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
@@ -18,7 +19,8 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans:    ['NEIIA', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        display: ['NEIIA Display', 'NEIIA', '-apple-system', 'sans-serif'],
                     },
                     letterSpacing: {
                         tightest: '-0.04em',
@@ -45,6 +47,31 @@
     </script>
 
     <style>
+        /* Local NEIIA brand font (variable, 100-900 weight axis + italic axis). */
+        @font-face {
+            font-family: 'NEIIA';
+            src: url('../assets/font/NEIIA_VF-s.p.3bb41c0a.woff2') format('woff2-variations'),
+                 url('../assets/font/NEIIA_VF-s.p.3bb41c0a.woff2') format('woff2');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'NEIIA';
+            src: url('../assets/font/NEIIA_Italic_VF-s.p.31e87b9d.woff2') format('woff2-variations'),
+                 url('../assets/font/NEIIA_Italic_VF-s.p.31e87b9d.woff2') format('woff2');
+            font-weight: 100 900;
+            font-style: italic;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'NEIIA Display';
+            src: url('../assets/font/NEIIADisplay_Regular-s.p.9a576876.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
         .bulb-container {
             position: fixed;
             top: 0;
@@ -148,6 +175,62 @@
         .dark .carousel-dots button { background: rgba(255,255,255,0.2); }
         .dark .carousel-dots button.active { background: #34D399; }
 
+        /* Chart hover interactivity */
+        [data-tip] {
+            cursor: pointer;
+            transition: opacity 0.15s ease, stroke-width 0.15s ease, transform 0.15s ease;
+        }
+        [data-tip]:hover { opacity: 0.78; }
+        /* Donut segments (stroke-based rings) get a thicker stroke on hover instead of a scale —
+           scaling the parent <circle> blows the ring outward and breaks the layout. */
+        .ev-donut [data-tip] { transition: stroke-width 0.15s ease, opacity 0.15s ease; }
+        .ev-donut [data-tip]:hover { stroke-width: 18; opacity: 1; }
+        /* Only line-chart and sparkline point dots scale on hover. */
+        circle.ev-point[data-tip] {
+            transform-origin: center;
+            transform-box: fill-box;
+        }
+        circle.ev-point[data-tip]:hover { transform: scale(1.6); }
+        .ev-tip {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            background: #0f172a;
+            color: #fff;
+            font-family: 'NEIIA', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 11px;
+            line-height: 1.5;
+            padding: 8px 11px;
+            border-radius: 6px;
+            white-space: pre-line;
+            box-shadow: 0 6px 20px rgba(15,23,42,0.18);
+            opacity: 0;
+            transform: translate(-50%, -100%) translateY(-10px);
+            transition: opacity 0.12s ease;
+            max-width: 220px;
+            font-variant-numeric: tabular-nums;
+        }
+        .ev-tip.is-on { opacity: 1; }
+        .ev-tip strong { color: #9FE2BF; font-weight: 700; display: block; margin-bottom: 2px; font-size: 11.5px; }
+        .ev-tip::after {
+            content: '';
+            position: absolute;
+            left: 50%; top: 100%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #0f172a;
+        }
+
+        /* Subtle right-edge fade so users can see the chart continues off-screen on mobile */
+        @media (max-width: 639px) {
+            .ev-scroll-hint {
+                -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 24px), transparent 100%);
+                        mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 24px), transparent 100%);
+            }
+            .ev-scroll-hint::-webkit-scrollbar { height: 4px; }
+            .ev-scroll-hint::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+            .dark .ev-scroll-hint::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); }
+        }
     </style>
 </head>
 
@@ -313,7 +396,7 @@
                 <a href="evillage-pillar-governance.html" class="group flex flex-col p-7 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-2xl hover:border-ev-green dark:hover:border-ev-sage hover:shadow-lg dark:hover:shadow-ev-green/10 transition-all w-[82%] md:w-auto">
                     <div class="text-[10px] font-bold text-ev-green dark:text-ev-sage tracking-widest mb-4">PILLAR 01</div>
                     <div class="w-11 h-11 bg-ev-green/10 dark:bg-ev-green/20 text-ev-green dark:text-ev-sage rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-balance-scale"></i>
+                        <i class="fas fa-clipboard-check"></i>
                     </div>
                     <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 tracking-tight">Smart Governance</h3>
                     <p class="text-[13px] text-slate-600 dark:text-slate-300 leading-relaxed font-light flex-1">
@@ -361,7 +444,7 @@
                 <a href="evillage-pillar-infrastructure.html" class="group flex flex-col p-7 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-2xl hover:border-ev-green dark:hover:border-ev-sage hover:shadow-lg dark:hover:shadow-ev-green/10 transition-all w-[82%] md:w-auto">
                     <div class="text-[10px] font-bold text-ev-green dark:text-ev-sage tracking-widest mb-4">PILLAR 04</div>
                     <div class="w-11 h-11 bg-ev-green/10 dark:bg-ev-green/20 text-ev-green dark:text-ev-sage rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-solar-panel"></i>
+                        <i class="fas fa-tower-broadcast"></i>
                     </div>
                     <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 tracking-tight">Smart Infrastructure</h3>
                     <p class="text-[13px] text-slate-600 dark:text-slate-300 leading-relaxed font-light flex-1">
@@ -377,7 +460,7 @@
                 <a href="evillage-pillar-living.html" class="group flex flex-col p-7 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-2xl hover:border-ev-green dark:hover:border-ev-sage hover:shadow-lg dark:hover:shadow-ev-green/10 transition-all w-[82%] md:w-auto">
                     <div class="text-[10px] font-bold text-ev-green dark:text-ev-sage tracking-widest mb-4">PILLAR 05</div>
                     <div class="w-11 h-11 bg-ev-green/10 dark:bg-ev-green/20 text-ev-green dark:text-ev-sage rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-leaf"></i>
+                        <i class="fas fa-house-signal"></i>
                     </div>
                     <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 tracking-tight">Smart Living</h3>
                     <p class="text-[13px] text-slate-600 dark:text-slate-300 leading-relaxed font-light flex-1">
@@ -399,8 +482,8 @@
 
         <div class="max-w-7xl mx-auto relative z-10">
 
-            <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-10 md:gap-16 items-center">
-                <div>
+            <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-10 md:gap-16 items-stretch">
+                <div class="flex flex-col justify-center">
                     <div class="eyebrow text-ev-green dark:text-ev-sage mb-4">National Alignment · Renewed Hope Agenda</div>
                     <h2 class="text-3xl md:text-5xl font-bold tracking-tightest leading-[1.1] text-slate-900 dark:text-white">
                         Built in lockstep with the Presidency, the Federal Ministry of Power, and the Energy Commission of Nigeria.
@@ -410,6 +493,20 @@
                         the policy mandate at the heart of President Bola Ahmed Tinubu's election commitment to the Federal Republic of Nigeria.
                         Every disbursement, every kilowatt-hour delivered, and every subsidy claimed is accountable to a federal mandate
                         and the PBAT Smart Nation framework.
+                    </p>
+                    <p class="text-slate-600 dark:text-slate-300 mt-4 leading-relaxed font-light">
+                        Operationally, eVillage sits inside the federal energy-delivery architecture: planning is governed by the
+                        <span class="font-medium text-slate-900 dark:text-white">National Energy Masterplan Implementation Committee (NEMiC)</span>, capital flows
+                        through the <span class="font-medium text-slate-900 dark:text-white">National Energy Fund (NEFUND)</span>, and on-the-ground delivery is
+                        coordinated with the Federal Ministry of Power, the Rural Electrification Agency, and the Nigeria Governors' Forum so federal
+                        ambition translates directly into state and Local Government outcomes.
+                    </p>
+                    <p class="text-slate-600 dark:text-slate-300 mt-4 leading-relaxed font-light">
+                        Every village node is registered against a federal household ID, every kilowatt-hour reconciled nightly with the Energy Commission
+                        of Nigeria reporting feeds, and every subsidy disbursement audit-trailed to the originating NEFUND tranche. The result is an
+                        execution system that the Presidency, the National Assembly, sub-national governments, multilateral lenders, and Nigerian citizens
+                        can each verify independently — the same source of truth, surfaced to each stakeholder through the role of dashboard they're
+                        accountable to.
                     </p>
                 </div>
 
@@ -453,300 +550,415 @@
     </section>
 
     <!-- ========== MANDATE PROGRESS — Power BI-style dashboard ========== -->
-    <section id="mandate-progress" class="py-24 md:py-32 px-6 bg-gradient-to-b from-ev-mist via-white to-ev-mist dark:from-dark-surface dark:via-dark-bg dark:to-dark-surface relative overflow-hidden border-y-4 border-ev-green/30">
+    <section id="mandate-progress" class="py-14 md:py-20 px-4 sm:px-6 bg-gradient-to-b from-ev-mist via-white to-ev-mist dark:from-dark-surface dark:via-dark-bg dark:to-dark-surface relative overflow-hidden border-y-4 border-ev-green/30">
         <div class="absolute -top-32 -right-32 w-[420px] h-[420px] bg-ev-green/[0.08] dark:bg-ev-green/15 blur-[140px] rounded-full pointer-events-none"></div>
         <div class="absolute -bottom-32 -left-32 w-[420px] h-[420px] bg-ev-cream/10 blur-[140px] rounded-full pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto relative z-10">
 
-            <!-- Header -->
-            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
-                <div class="max-w-3xl">
-                    <div class="eyebrow text-ev-green dark:text-ev-sage mb-5 text-sm">Mandate Progress · Live Dashboard</div>
-                    <h2 class="text-4xl md:text-6xl font-bold tracking-tightest leading-[1.05] text-slate-900 dark:text-white">
-                        Renewed Hope, <span class="text-ev-green dark:text-ev-sage">in numbers</span>.
-                    </h2>
-                    <p class="text-base md:text-lg text-slate-600 dark:text-slate-300 mt-6 leading-relaxed">
-                        A federated executive view of how eVillage is delivering against the Smart Nation pillars — refreshed
-                        from the NEMiC ledger and DERMS telemetry. The same data your Federal and State stakeholders see in
-                        their oversight dashboards.
-                    </p>
-                </div>
-                <div class="inline-flex items-center gap-3 px-5 py-3 bg-ev-green/10 dark:bg-ev-green/20 border-2 border-ev-green/40 rounded-lg shrink-0">
-                    <span class="w-2.5 h-2.5 rounded-full bg-ev-green animate-pulse"></span>
-                    <span class="text-sm font-bold text-ev-green dark:text-ev-sage tracking-wide">LIVE · synced 2 min ago</span>
-                </div>
+            <!-- Header (centered) -->
+            <div class="mb-6 text-center">
+                <div class="eyebrow text-ev-green dark:text-ev-sage mb-3 text-sm">Mandate Progress · Live Dashboard</div>
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tightest leading-[1.05] text-slate-900 dark:text-white max-w-3xl mx-auto">
+                    Renewed Hope, <span class="text-ev-green dark:text-ev-sage">in numbers</span>.
+                </h2>
+                <p class="text-sm md:text-base text-slate-600 dark:text-slate-300 mt-3 leading-relaxed max-w-3xl mx-auto">
+                    A federated executive view of how eVillage is delivering against the Smart Nation pillars — refreshed
+                    from the NEMiC ledger and DERMS telemetry. The same data your Federal and State stakeholders see in
+                    their oversight dashboards.
+                </p>
             </div>
 
             <!-- Dashboard chrome label -->
-            <div class="flex items-center gap-3 mb-4 pb-4 border-b-2 border-slate-200 dark:border-dark-border">
-                <div class="w-9 h-9 bg-ev-green/15 dark:bg-ev-green/25 text-ev-green dark:text-ev-sage rounded-lg flex items-center justify-center"><i class="fas fa-chart-bar text-base"></i></div>
+            <div class="flex items-center gap-3 mb-3 pb-3 border-b border-slate-200 dark:border-dark-border">
+                <div class="w-8 h-8 bg-ev-green/15 dark:bg-ev-green/25 text-ev-green dark:text-ev-sage rounded-md flex items-center justify-center"><i class="fas fa-chart-bar text-sm"></i></div>
                 <div>
-                    <div class="text-base font-bold text-slate-900 dark:text-white tracking-tight">eVillage Executive Report</div>
-                    <div class="text-xs text-slate-500 dark:text-slate-400">FY2026 Q2 · Renewed Hope Mandate Tracking</div>
-                </div>
-                <div class="ml-auto flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-                    <i class="fas fa-filter"></i><span>All states</span>
-                    <span class="text-slate-300 dark:text-slate-600">|</span>
-                    <i class="fas fa-calendar"></i><span>YTD 2026</span>
+                    <div class="text-sm font-bold text-slate-900 dark:text-white tracking-tight">eVillage Executive Report</div>
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400">FY2026 Q2 · Renewed Hope Mandate Tracking</div>
                 </div>
             </div>
 
             <!-- KPI tiles row (Power BI top strip) -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                <div class="bg-white dark:bg-dark-card border-2 border-slate-200 dark:border-dark-border rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
-                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-widest mb-3 uppercase">Households Reached</div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+                <div class="bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-lg p-4 sm:p-5">
+                    <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 tracking-[0.15em] mb-2 uppercase">Households Reached</div>
                     <div class="flex flex-col items-start gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
-                        <div class="text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="412830">0</div>
+                        <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="412830">0</div>
                         <div class="text-sm font-bold text-ev-green dark:text-ev-sage flex items-center gap-1 bg-ev-green/10 px-2 py-1 rounded"><i class="fas fa-arrow-up text-[10px]"></i>18.4%</div>
                     </div>
-                    <svg viewBox="0 0 120 36" class="mt-4 w-full h-10 overflow-visible">
-                        <polyline fill="none" stroke="#008751" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
-                            points="2,28 14,26 26,23 38,22 50,19 62,17 74,14 86,11 98,8 110,5 118,3"/>
-                        <polyline fill="rgba(0,135,81,0.15)" stroke="none"
-                            points="2,28 14,26 26,23 38,22 50,19 62,17 74,14 86,11 98,8 110,5 118,3 118,36 2,36"/>
+                    <!-- Sparkline: cumulative installs, monthly. Two visible plateaus where state-level approvals stalled. -->
+                    <svg viewBox="0 0 120 36" class="mt-3 w-full h-8 sm:h-10 overflow-visible">
+                        <polyline fill="none" stroke="#008751" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
+                            points="2,30 14,29 26,26 38,27 50,23 62,21 74,22 86,17 98,15 110,11 118,8"/>
+                        <circle class="ev-point" cx="118" cy="8" r="2.2" fill="#008751" data-tip="<strong>Households reached</strong>412,830 · last 11 months<br>+18.4% YoY"/>
                     </svg>
                 </div>
 
-                <div class="bg-white dark:bg-dark-card border-2 border-slate-200 dark:border-dark-border rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
-                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-widest mb-3 uppercase">MWh Delivered (YTD)</div>
+                <div class="bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-lg p-4 sm:p-5">
+                    <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 tracking-[0.15em] mb-2 uppercase">MWh Delivered (YTD)</div>
                     <div class="flex flex-col items-start gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
-                        <div class="text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="94217">0</div>
+                        <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="94217">0</div>
                         <div class="text-sm font-bold text-ev-green dark:text-ev-sage flex items-center gap-1 bg-ev-green/10 px-2 py-1 rounded"><i class="fas fa-arrow-up text-[10px]"></i>22.1%</div>
                     </div>
-                    <svg viewBox="0 0 120 36" class="mt-4 w-full h-10 overflow-visible">
-                        <polyline fill="none" stroke="#008751" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
-                            points="2,30 14,26 26,28 38,22 50,19 62,21 74,15 86,12 98,9 110,7 118,5"/>
-                        <polyline fill="rgba(0,135,81,0.15)" stroke="none"
-                            points="2,30 14,26 26,28 38,22 50,19 62,21 74,15 86,12 98,9 110,7 118,5 118,36 2,36"/>
+                    <!-- Sparkline: monthly MWh — harmattan dip in months 3-4, recovery into wet season. -->
+                    <svg viewBox="0 0 120 36" class="mt-3 w-full h-8 sm:h-10 overflow-visible">
+                        <polyline fill="none" stroke="#008751" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
+                            points="2,28 14,25 26,28 38,30 50,26 62,21 74,19 86,17 98,13 110,9 118,5"/>
+                        <circle class="ev-point" cx="118" cy="5" r="2.2" fill="#008751" data-tip="<strong>MWh delivered (YTD)</strong>94,217 MWh<br>+22.1% vs prior year<br>Harmattan dip in Jan–Feb"/>
                     </svg>
                 </div>
 
-                <div class="bg-white dark:bg-dark-card border-2 border-slate-200 dark:border-dark-border rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
-                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-widest mb-3 uppercase">tCO₂e Displaced</div>
+                <div class="bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-lg p-4 sm:p-5">
+                    <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 tracking-[0.15em] mb-2 uppercase">tCO₂e Displaced</div>
                     <div class="flex flex-col items-start gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
-                        <div class="text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="2810000" data-format="abbrev">0</div>
+                        <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="2810000" data-format="abbrev">0</div>
                         <div class="text-sm font-bold text-ev-green dark:text-ev-sage flex items-center gap-1 bg-ev-green/10 px-2 py-1 rounded"><i class="fas fa-arrow-up text-[10px]"></i>14.7%</div>
                     </div>
-                    <svg viewBox="0 0 120 36" class="mt-4 w-full h-10 overflow-visible">
-                        <polyline fill="none" stroke="#008751" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
-                            points="2,29 14,26 26,23 38,25 50,19 62,17 74,15 86,13 98,10 110,7 118,5"/>
-                        <polyline fill="rgba(0,135,81,0.15)" stroke="none"
-                            points="2,29 14,26 26,23 38,25 50,19 62,17 74,15 86,13 98,10 110,7 118,5 118,36 2,36"/>
+                    <!-- Sparkline: tCO₂e follows MWh closely (derivative of generation) so the harmattan dip is present. -->
+                    <svg viewBox="0 0 120 36" class="mt-3 w-full h-8 sm:h-10 overflow-visible">
+                        <polyline fill="none" stroke="#008751" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
+                            points="2,29 14,27 26,29 38,30 50,27 62,23 74,21 86,18 98,14 110,10 118,6"/>
+                        <circle class="ev-point" cx="118" cy="6" r="2.2" fill="#008751" data-tip="<strong>tCO₂e displaced</strong>2.81M tonnes<br>+14.7% vs prior year<br>vs equivalent diesel baseline"/>
                     </svg>
                 </div>
 
-                <div class="bg-white dark:bg-dark-card border-2 border-slate-200 dark:border-dark-border rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
-                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-widest mb-3 uppercase">NEFUND Disbursed (₦B)</div>
+                <div class="bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-lg p-4 sm:p-5">
+                    <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 tracking-[0.15em] mb-2 uppercase">NEFUND Disbursed (₦B)</div>
                     <div class="flex flex-col items-start gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
-                        <div class="text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="47.2" data-prefix="₦" data-decimals="1">0</div>
+                        <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="47.2" data-prefix="₦" data-decimals="1">0</div>
                         <div class="text-sm font-bold text-ev-green dark:text-ev-sage flex items-center gap-1 bg-ev-green/10 px-2 py-1 rounded"><i class="fas fa-arrow-up text-[10px]"></i>9.3%</div>
                     </div>
-                    <svg viewBox="0 0 120 36" class="mt-4 w-full h-10 overflow-visible">
-                        <polyline fill="none" stroke="#008751" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
-                            points="2,26 14,23 26,25 38,20 50,22 62,16 74,15 86,13 98,11 110,9 118,7"/>
-                        <polyline fill="rgba(0,135,81,0.15)" stroke="none"
-                            points="2,26 14,23 26,25 38,20 50,22 62,16 74,15 86,13 98,11 110,9 118,7 118,36 2,36"/>
+                    <!-- Sparkline: tranche disbursement pattern — flat between tranches, jumps when each tranche releases. -->
+                    <svg viewBox="0 0 120 36" class="mt-3 w-full h-8 sm:h-10 overflow-visible">
+                        <polyline fill="none" stroke="#008751" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
+                            points="2,32 14,32 26,28 38,27 50,27 62,21 74,21 86,21 98,15 110,15 118,7"/>
+                        <circle class="ev-point" cx="118" cy="7" r="2.2" fill="#008751" data-tip="<strong>NEFUND disbursed</strong>₦47.21B of ₦62.4B<br>+9.3% MoM<br>3 tranches released"/>
                     </svg>
                 </div>
             </div>
 
             <!-- Charts row -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
 
-                <!-- Bar chart: Households by zone -->
-                <div class="lg:col-span-2 bg-white dark:bg-dark-card border-2 border-slate-200 dark:border-dark-border rounded-xl p-6 md:p-8 shadow-md">
-                    <div class="flex items-start justify-between mb-3">
+                <!-- Bar chart: Households by zone (FT/Bloomberg minimal) -->
+                <div class="lg:col-span-2 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-lg p-4 sm:p-5 md:p-6">
+                    <div class="flex items-start justify-between mb-3 pb-3 border-b border-slate-100 dark:border-white/5">
                         <div>
-                            <h4 class="text-lg font-bold text-slate-900 dark:text-white tracking-tight">Households reached, by geopolitical zone</h4>
-                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Cumulative · YTD 2026 · NEMiC ledger</p>
+                            <h4 class="text-[14px] sm:text-[15px] font-semibold text-slate-900 dark:text-white tracking-tight">Households reached, by geopolitical zone</h4>
+                            <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 tracking-wide">Cumulative · YTD 2026 · NEMiC ledger</p>
                         </div>
-                        <span class="text-xs font-bold px-3 py-1.5 bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300 rounded">CUMULATIVE</span>
+                        <span class="text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-slate-400 dark:text-slate-500 shrink-0 ml-2">Cumulative</span>
                     </div>
 
-                    <svg viewBox="0 0 480 240" class="w-full h-72 mt-6">
-                        <!-- Gridlines -->
-                        <g stroke="#cbd5e1" stroke-width="1" class="dark:stroke-white/15">
-                            <line x1="60" y1="20" x2="470" y2="20" stroke-dasharray="3,4"/>
-                            <line x1="60" y1="60" x2="470" y2="60" stroke-dasharray="3,4"/>
-                            <line x1="60" y1="100" x2="470" y2="100" stroke-dasharray="3,4"/>
-                            <line x1="60" y1="140" x2="470" y2="140" stroke-dasharray="3,4"/>
-                            <line x1="60" y1="180" x2="470" y2="180" stroke-width="1.5"/>
+                    <!-- Chart: bars distributed across full width · hairline gridlines · single accent · avg dotted line.
+                         viewBox 0 0 420 230 — extra bottom row for stacked labels (zone + value).
+                         Plot area: x=56..400, y=22..186 (so 1k = 1.64 px). -->
+                    <svg viewBox="0 0 420 230" preserveAspectRatio="xMidYMid meet" class="w-full h-52 sm:h-60 md:h-72">
+                        <!-- Hairline gridlines -->
+                        <g stroke="#e2e8f0" stroke-width="0.5" class="dark:stroke-white/8">
+                            <line x1="56" y1="22"  x2="400" y2="22"/>
+                            <line x1="56" y1="63"  x2="400" y2="63"/>
+                            <line x1="56" y1="104" x2="400" y2="104"/>
+                            <line x1="56" y1="145" x2="400" y2="145"/>
                         </g>
+                        <!-- Baseline (slightly stronger) -->
+                        <line x1="56" y1="186" x2="400" y2="186" stroke="#94a3b8" stroke-width="0.75" class="dark:stroke-slate-600"/>
                         <!-- Y-axis labels -->
-                        <g font-family="Inter, sans-serif" font-size="13" fill="#475569" text-anchor="end" font-weight="600" class="dark:fill-slate-400">
-                            <text x="54" y="24">100k</text>
-                            <text x="54" y="64">75k</text>
-                            <text x="54" y="104">50k</text>
-                            <text x="54" y="144">25k</text>
-                            <text x="54" y="184">0</text>
+                        <g font-family="NEIIA, sans-serif" font-size="10" fill="#94a3b8" text-anchor="end" font-weight="500" class="dark:fill-slate-500" style="font-variant-numeric:tabular-nums">
+                            <text x="50" y="25">100k</text>
+                            <text x="50" y="66">75k</text>
+                            <text x="50" y="107">50k</text>
+                            <text x="50" y="148">25k</text>
+                            <text x="50" y="189">0</text>
                         </g>
-                        <!-- Bars -->
+                        <!-- Bars: 26 wide, stride 52, centered at 91/143/195/247/299/351.
+                             Heights: 1k ≈ 1.64 px from y=186 baseline. -->
                         <g>
-                            <!-- North-Central -->
-                            <rect x="80" y="68" width="46" height="112" rx="3" fill="#008751"/>
-                            <text x="103" y="60" font-family="Inter" font-size="14" fill="#0F172A" font-weight="700" text-anchor="middle" class="dark:fill-white">72k</text>
-                            <text x="103" y="208" font-family="Inter" font-size="13" fill="#475569" text-anchor="middle" font-weight="600" class="dark:fill-slate-400">N-Central</text>
-
-                            <!-- North-East -->
-                            <rect x="135" y="92" width="46" height="88" rx="3" fill="#34D399"/>
-                            <text x="158" y="84" font-family="Inter" font-size="14" fill="#0F172A" font-weight="700" text-anchor="middle" class="dark:fill-white">57k</text>
-                            <text x="158" y="208" font-family="Inter" font-size="13" fill="#475569" text-anchor="middle" font-weight="600" class="dark:fill-slate-400">N-East</text>
-
-                            <!-- North-West -->
-                            <rect x="190" y="48" width="46" height="132" rx="3" fill="#008751"/>
-                            <text x="213" y="40" font-family="Inter" font-size="14" fill="#0F172A" font-weight="700" text-anchor="middle" class="dark:fill-white">88k</text>
-                            <text x="213" y="208" font-family="Inter" font-size="13" fill="#475569" text-anchor="middle" font-weight="600" class="dark:fill-slate-400">N-West</text>
-
-                            <!-- South-East -->
-                            <rect x="245" y="116" width="46" height="64" rx="3" fill="#34D399"/>
-                            <text x="268" y="108" font-family="Inter" font-size="14" fill="#0F172A" font-weight="700" text-anchor="middle" class="dark:fill-white">41k</text>
-                            <text x="268" y="208" font-family="Inter" font-size="13" fill="#475569" text-anchor="middle" font-weight="600" class="dark:fill-slate-400">S-East</text>
-
-                            <!-- South-South -->
-                            <rect x="300" y="100" width="46" height="80" rx="3" fill="#008751"/>
-                            <text x="323" y="92" font-family="Inter" font-size="14" fill="#0F172A" font-weight="700" text-anchor="middle" class="dark:fill-white">53k</text>
-                            <text x="323" y="208" font-family="Inter" font-size="13" fill="#475569" text-anchor="middle" font-weight="600" class="dark:fill-slate-400">S-South</text>
-
-                            <!-- South-West -->
-                            <rect x="355" y="36" width="46" height="144" rx="3" fill="#008751"/>
-                            <text x="378" y="28" font-family="Inter" font-size="14" fill="#0F172A" font-weight="700" text-anchor="middle" class="dark:fill-white">96k</text>
-                            <text x="378" y="208" font-family="Inter" font-size="13" fill="#475569" text-anchor="middle" font-weight="600" class="dark:fill-slate-400">S-West</text>
+                            <!-- NC · 71,842 · above avg -->
+                            <rect x="78"  y="68"  width="26" height="118" fill="#008751"
+                                data-tip="<strong>North-Central</strong>71,842 households<br>+3,037 vs national avg"/>
+                            <!-- NE · 49,617 · below avg -->
+                            <rect x="130" y="105" width="26" height="81"  fill="#cbd5e1" class="dark:fill-slate-600"
+                                data-tip="<strong>North-East</strong>49,617 households<br>−19,188 vs national avg"/>
+                            <!-- NW · 91,204 · above avg -->
+                            <rect x="182" y="36"  width="26" height="150" fill="#008751"
+                                data-tip="<strong>North-West</strong>91,204 households<br>+22,399 vs national avg"/>
+                            <!-- SE · 38,891 · below avg -->
+                            <rect x="234" y="122" width="26" height="64"  fill="#cbd5e1" class="dark:fill-slate-600"
+                                data-tip="<strong>South-East</strong>38,891 households<br>−29,914 vs national avg"/>
+                            <!-- SS · 61,442 · below avg -->
+                            <rect x="286" y="85"  width="26" height="101" fill="#cbd5e1" class="dark:fill-slate-600"
+                                data-tip="<strong>South-South</strong>61,442 households<br>−7,363 vs national avg"/>
+                            <!-- SW · 99,834 · above avg -->
+                            <rect x="338" y="22"  width="26" height="164" fill="#008751"
+                                data-tip="<strong>South-West</strong>99,834 households<br>+31,029 vs national avg"/>
                         </g>
-                        <!-- Avg line -->
-                        <line x1="60" y1="92" x2="470" y2="92" stroke="#E8D5A3" stroke-width="2" stroke-dasharray="6,5"/>
-                        <text x="465" y="89" font-family="Inter" font-size="12" fill="#a47d3a" text-anchor="end" font-weight="700">avg 67.8k</text>
+                        <!-- Value labels INSIDE the top of green bars (white) or just above gray bars (slate) -->
+                        <g font-family="NEIIA, sans-serif" font-size="9.5" font-weight="700" text-anchor="middle" style="font-variant-numeric:tabular-nums">
+                            <!-- NC: green, label inside top -->
+                            <text x="91"  y="80"  fill="#ffffff">71.8</text>
+                            <!-- NE: gray, label above -->
+                            <text x="143" y="100" fill="#475569" class="dark:fill-slate-300">49.6</text>
+                            <!-- NW: green, label inside top -->
+                            <text x="195" y="48"  fill="#ffffff">91.2</text>
+                            <!-- SE: gray, label above -->
+                            <text x="247" y="117" fill="#475569" class="dark:fill-slate-300">38.9</text>
+                            <!-- SS: gray, label above -->
+                            <text x="299" y="80"  fill="#475569" class="dark:fill-slate-300">61.4</text>
+                            <!-- SW: green, label inside top -->
+                            <text x="351" y="34"  fill="#ffffff">99.8</text>
+                        </g>
+                        <!-- National avg line — stops short of bars to avoid overlap, label on left -->
+                        <text x="56" y="59" font-family="NEIIA" font-size="9" fill="#64748b" font-weight="600" letter-spacing="0.5" class="dark:fill-slate-400" style="font-variant-numeric:tabular-nums">AVG 68.8k</text>
+                        <line x1="92" y1="69" x2="400" y2="69" stroke="#64748b" stroke-width="0.75" stroke-dasharray="2,3" class="dark:stroke-slate-500"/>
+                        <!-- Zone codes directly below baseline -->
+                        <g font-family="NEIIA, sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#0F172A" class="dark:fill-white">
+                            <text x="91"  y="204">NC</text>
+                            <text x="143" y="204">NE</text>
+                            <text x="195" y="204">NW</text>
+                            <text x="247" y="204">SE</text>
+                            <text x="299" y="204">SS</text>
+                            <text x="351" y="204">SW</text>
+                        </g>
+                        <!-- Full zone names below codes (smaller, slate-500) -->
+                        <g font-family="NEIIA, sans-serif" font-size="8.5" font-weight="500" text-anchor="middle" fill="#94a3b8" class="dark:fill-slate-500" letter-spacing="0.3">
+                            <text x="91"  y="219">N-Central</text>
+                            <text x="143" y="219">N-East</text>
+                            <text x="195" y="219">N-West</text>
+                            <text x="247" y="219">S-East</text>
+                            <text x="299" y="219">S-South</text>
+                            <text x="351" y="219">S-West</text>
+                        </g>
                     </svg>
 
-                    <div class="mt-5 pt-4 border-t-2 border-slate-100 dark:border-white/10 flex items-center justify-between text-sm flex-wrap gap-3">
-                        <div class="flex items-center gap-5">
-                            <span class="flex items-center gap-2 text-slate-700 dark:text-slate-300 font-medium"><span class="w-3 h-3 bg-ev-green rounded-sm"></span>Above national avg</span>
-                            <span class="flex items-center gap-2 text-slate-700 dark:text-slate-300 font-medium"><span class="w-3 h-3 bg-ev-sage rounded-sm"></span>Below national avg</span>
-                        </div>
-                        <span class="text-slate-500 dark:text-slate-400 font-semibold">n = 412,830</span>
+                    <!-- Value table beneath chart (FT print supplement style) -->
+                    <div class="mt-4 pt-3 border-t border-slate-100 dark:border-white/5 overflow-x-auto -mx-1 px-1">
+                        <table class="w-full min-w-[420px] text-[11px] sm:text-[12px]" style="font-variant-numeric:tabular-nums">
+                            <thead>
+                                <tr class="text-[10px] uppercase tracking-[0.12em] text-slate-400 dark:text-slate-500 font-medium">
+                                    <th class="text-left  py-2 font-medium">Zone</th>
+                                    <th class="text-right py-2 font-medium">Households</th>
+                                    <th class="text-right py-2 font-medium">Share</th>
+                                    <th class="text-right py-2 font-medium">Δ vs avg</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-700 dark:text-slate-300">
+                                <tr class="border-t border-slate-100 dark:border-white/5">
+                                    <td class="py-1.5 font-medium text-slate-900 dark:text-white">South-West</td>
+                                    <td class="py-1.5 text-right">99,834</td>
+                                    <td class="py-1.5 text-right text-slate-500 dark:text-slate-400">24.2%</td>
+                                    <td class="py-1.5 text-right text-ev-green">+31,029</td>
+                                </tr>
+                                <tr class="border-t border-slate-100 dark:border-white/5">
+                                    <td class="py-1.5 font-medium text-slate-900 dark:text-white">North-West</td>
+                                    <td class="py-1.5 text-right">91,204</td>
+                                    <td class="py-1.5 text-right text-slate-500 dark:text-slate-400">22.1%</td>
+                                    <td class="py-1.5 text-right text-ev-green">+22,399</td>
+                                </tr>
+                                <tr class="border-t border-slate-100 dark:border-white/5">
+                                    <td class="py-1.5 font-medium text-slate-900 dark:text-white">North-Central</td>
+                                    <td class="py-1.5 text-right">71,842</td>
+                                    <td class="py-1.5 text-right text-slate-500 dark:text-slate-400">17.4%</td>
+                                    <td class="py-1.5 text-right text-ev-green">+3,037</td>
+                                </tr>
+                                <tr class="border-t border-slate-100 dark:border-white/5">
+                                    <td class="py-1.5 font-medium text-slate-900 dark:text-white">South-South</td>
+                                    <td class="py-1.5 text-right">61,442</td>
+                                    <td class="py-1.5 text-right text-slate-500 dark:text-slate-400">14.9%</td>
+                                    <td class="py-1.5 text-right text-slate-500">−7,363</td>
+                                </tr>
+                                <tr class="border-t border-slate-100 dark:border-white/5">
+                                    <td class="py-1.5 font-medium text-slate-900 dark:text-white">North-East</td>
+                                    <td class="py-1.5 text-right">49,617</td>
+                                    <td class="py-1.5 text-right text-slate-500 dark:text-slate-400">12.0%</td>
+                                    <td class="py-1.5 text-right text-slate-500">−19,188</td>
+                                </tr>
+                                <tr class="border-t border-slate-100 dark:border-white/5">
+                                    <td class="py-1.5 font-medium text-slate-900 dark:text-white">South-East</td>
+                                    <td class="py-1.5 text-right">38,891</td>
+                                    <td class="py-1.5 text-right text-slate-500 dark:text-slate-400">9.4%</td>
+                                    <td class="py-1.5 text-right text-slate-500">−29,914</td>
+                                </tr>
+                                <tr class="border-t-2 border-slate-200 dark:border-white/10">
+                                    <td class="pt-2 pb-1 font-semibold text-slate-900 dark:text-white">Total</td>
+                                    <td class="pt-2 pb-1 text-right font-semibold text-slate-900 dark:text-white">412,830</td>
+                                    <td class="pt-2 pb-1 text-right font-semibold text-slate-900 dark:text-white">100.0%</td>
+                                    <td class="pt-2 pb-1 text-right text-slate-400">—</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="mt-3 text-[10px] text-slate-400 dark:text-slate-500 leading-relaxed">
+                            <span class="inline-block w-2 h-2 bg-ev-green align-middle mr-1.5"></span>Above national avg (68.8k) &nbsp;·&nbsp;
+                            <span class="inline-block w-2 h-2 bg-slate-300 dark:bg-slate-600 align-middle mr-1.5"></span>Below national avg
+                            &nbsp;·&nbsp; Reconciled to NEMiC ledger
+                        </p>
                     </div>
                 </div>
 
-                <!-- Donut: subsidy allocation by pillar -->
-                <div class="bg-white dark:bg-dark-card border-2 border-slate-200 dark:border-dark-border rounded-xl p-6 md:p-8 shadow-md">
-                    <div>
-                        <h4 class="text-lg font-bold text-slate-900 dark:text-white tracking-tight">Subsidy allocation, by pillar</h4>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">₦47.2B disbursed · YTD</p>
+                <!-- Donut: subsidy allocation by pillar (FT/Bloomberg minimal) -->
+                <div class="bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-lg p-4 sm:p-5 md:p-6">
+                    <div class="pb-3 border-b border-slate-100 dark:border-white/5">
+                        <h4 class="text-[14px] sm:text-[15px] font-semibold text-slate-900 dark:text-white tracking-tight">Subsidy allocation, by pillar</h4>
+                        <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 tracking-wide">₦47.21B disbursed · YTD 2026</p>
                     </div>
 
-                    <div class="relative flex items-center justify-center mt-6">
-                        <svg viewBox="0 0 200 200" class="w-56 h-56 -rotate-90">
-                            <!-- Donut segments -->
-                            <circle cx="100" cy="100" r="70" fill="none" stroke="#E2E8F0" stroke-width="22" class="dark:stroke-white/5"/>
-                            <!-- Smart Infrastructure 38% -->
-                            <circle cx="100" cy="100" r="70" fill="none" stroke="#008751" stroke-width="22" stroke-dasharray="167.16 439.82" stroke-dashoffset="0"/>
-                            <!-- Smart Economy 25% -->
-                            <circle cx="100" cy="100" r="70" fill="none" stroke="#34D399" stroke-width="22" stroke-dasharray="109.96 439.82" stroke-dashoffset="-167.16"/>
-                            <!-- Smart People 18% -->
-                            <circle cx="100" cy="100" r="70" fill="none" stroke="#006b3f" stroke-width="22" stroke-dasharray="79.17 439.82" stroke-dashoffset="-277.12"/>
-                            <!-- Smart Living 12% -->
-                            <circle cx="100" cy="100" r="70" fill="none" stroke="#E8D5A3" stroke-width="22" stroke-dasharray="52.78 439.82" stroke-dashoffset="-356.29"/>
-                            <!-- Smart Governance 7% -->
-                            <circle cx="100" cy="100" r="70" fill="none" stroke="#0B1F24" stroke-width="22" stroke-dasharray="30.79 439.82" stroke-dashoffset="-409.07" class="dark:stroke-slate-300"/>
+                    <div class="relative flex items-center justify-center mt-4 mb-1">
+                        <svg viewBox="0 0 200 200" class="ev-donut w-40 sm:w-44 md:w-48 h-40 sm:h-44 md:h-48 -rotate-90">
+                            <!-- Single accent for largest segment; the rest is a slate ramp from dark→light by share size. -->
+                            <circle cx="100" cy="100" r="72" fill="none" stroke="#f1f5f9" stroke-width="14" class="dark:stroke-white/5"/>
+                            <!-- Infrastructure 37.8% -->
+                            <circle cx="100" cy="100" r="72" fill="none" stroke="#008751" stroke-width="14" stroke-dasharray="166.25 452.39" stroke-dashoffset="0"
+                                data-tip="<strong>Infrastructure</strong>₦17.85B disbursed<br>37.8% of total"/>
+                            <!-- Economy 24.1% -->
+                            <circle cx="100" cy="100" r="72" fill="none" stroke="#475569" stroke-width="14" stroke-dasharray="109.03 452.39" stroke-dashoffset="-166.25" class="dark:stroke-slate-300"
+                                data-tip="<strong>Economy</strong>₦11.38B disbursed<br>24.1% of total"/>
+                            <!-- People 17.6% -->
+                            <circle cx="100" cy="100" r="72" fill="none" stroke="#64748b" stroke-width="14" stroke-dasharray="79.62 452.39" stroke-dashoffset="-275.28" class="dark:stroke-slate-400"
+                                data-tip="<strong>People</strong>₦8.31B disbursed<br>17.6% of total"/>
+                            <!-- Living 12.4% -->
+                            <circle cx="100" cy="100" r="72" fill="none" stroke="#94a3b8" stroke-width="14" stroke-dasharray="56.10 452.39" stroke-dashoffset="-354.90" class="dark:stroke-slate-500"
+                                data-tip="<strong>Living</strong>₦5.85B disbursed<br>12.4% of total"/>
+                            <!-- Governance 8.1% -->
+                            <circle cx="100" cy="100" r="72" fill="none" stroke="#cbd5e1" stroke-width="14" stroke-dasharray="36.64 452.39" stroke-dashoffset="-411.00" class="dark:stroke-slate-600"
+                                data-tip="<strong>Governance</strong>₦3.82B disbursed<br>8.1% of total"/>
                         </svg>
-                        <div class="absolute text-center pointer-events-none -translate-y-1">
-                            <div class="text-3xl font-bold text-slate-900 dark:text-white tracking-tightest">₦47.2B</div>
-                            <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mt-1">Disbursed</div>
+                        <div class="absolute text-center pointer-events-none">
+                            <div class="text-[9px] sm:text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-[0.18em] font-medium">Disbursed</div>
+                            <div class="text-xl sm:text-2xl font-semibold text-slate-900 dark:text-white tracking-tight mt-0.5" style="font-variant-numeric:tabular-nums">₦47.21B</div>
+                            <div class="text-[9px] sm:text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">of ₦62.4B authorised</div>
                         </div>
                     </div>
 
-                    <div class="mt-6 space-y-2.5 text-sm">
-                        <div class="flex items-center justify-between"><span class="flex items-center gap-2.5 text-slate-700 dark:text-slate-300 font-medium"><span class="w-3.5 h-3.5 rounded-sm bg-ev-green"></span>Infrastructure</span><span class="font-bold text-slate-900 dark:text-white">38%</span></div>
-                        <div class="flex items-center justify-between"><span class="flex items-center gap-2.5 text-slate-700 dark:text-slate-300 font-medium"><span class="w-3.5 h-3.5 rounded-sm bg-ev-sage"></span>Economy</span><span class="font-bold text-slate-900 dark:text-white">25%</span></div>
-                        <div class="flex items-center justify-between"><span class="flex items-center gap-2.5 text-slate-700 dark:text-slate-300 font-medium"><span class="w-3.5 h-3.5 rounded-sm bg-ev-deep"></span>People</span><span class="font-bold text-slate-900 dark:text-white">18%</span></div>
-                        <div class="flex items-center justify-between"><span class="flex items-center gap-2.5 text-slate-700 dark:text-slate-300 font-medium"><span class="w-3.5 h-3.5 rounded-sm" style="background:#E8D5A3"></span>Living</span><span class="font-bold text-slate-900 dark:text-white">12%</span></div>
-                        <div class="flex items-center justify-between"><span class="flex items-center gap-2.5 text-slate-700 dark:text-slate-300 font-medium"><span class="w-3.5 h-3.5 rounded-sm bg-ev-ink dark:bg-slate-300"></span>Governance</span><span class="font-bold text-slate-900 dark:text-white">7%</span></div>
+                    <!-- Compact legend table -->
+                    <div class="mt-4 space-y-0.5 text-[11px] sm:text-[12px]" style="font-variant-numeric:tabular-nums">
+                        <div class="flex items-center justify-between py-1.5 border-b border-slate-50 dark:border-white/5">
+                            <span class="flex items-center gap-2 text-slate-700 dark:text-slate-300"><span class="w-2.5 h-2.5" style="background:#008751"></span>Infrastructure</span>
+                            <span class="flex items-baseline gap-2"><span class="text-slate-400 text-[10px]">₦17.85B</span><span class="font-semibold text-slate-900 dark:text-white w-12 text-right">37.8%</span></span>
+                        </div>
+                        <div class="flex items-center justify-between py-1.5 border-b border-slate-50 dark:border-white/5">
+                            <span class="flex items-center gap-2 text-slate-700 dark:text-slate-300"><span class="w-2.5 h-2.5" style="background:#475569"></span>Economy</span>
+                            <span class="flex items-baseline gap-2"><span class="text-slate-400 text-[10px]">₦11.38B</span><span class="font-semibold text-slate-900 dark:text-white w-12 text-right">24.1%</span></span>
+                        </div>
+                        <div class="flex items-center justify-between py-1.5 border-b border-slate-50 dark:border-white/5">
+                            <span class="flex items-center gap-2 text-slate-700 dark:text-slate-300"><span class="w-2.5 h-2.5" style="background:#64748b"></span>People</span>
+                            <span class="flex items-baseline gap-2"><span class="text-slate-400 text-[10px]">₦8.31B</span><span class="font-semibold text-slate-900 dark:text-white w-12 text-right">17.6%</span></span>
+                        </div>
+                        <div class="flex items-center justify-between py-1.5 border-b border-slate-50 dark:border-white/5">
+                            <span class="flex items-center gap-2 text-slate-700 dark:text-slate-300"><span class="w-2.5 h-2.5" style="background:#94a3b8"></span>Living</span>
+                            <span class="flex items-baseline gap-2"><span class="text-slate-400 text-[10px]">₦5.85B</span><span class="font-semibold text-slate-900 dark:text-white w-12 text-right">12.4%</span></span>
+                        </div>
+                        <div class="flex items-center justify-between py-1.5">
+                            <span class="flex items-center gap-2 text-slate-700 dark:text-slate-300"><span class="w-2.5 h-2.5" style="background:#cbd5e1"></span>Governance</span>
+                            <span class="flex items-baseline gap-2"><span class="text-slate-400 text-[10px]">₦3.82B</span><span class="font-semibold text-slate-900 dark:text-white w-12 text-right">8.1%</span></span>
+                        </div>
                     </div>
+                    <p class="mt-4 pt-3 border-t border-slate-100 dark:border-white/5 text-[10px] text-slate-400 dark:text-slate-500 leading-relaxed">
+                        Percentages rounded to 1 d.p. ₦11.4M cross-pillar variance reconciled monthly against the NEFUND drawdown register.
+                    </p>
                 </div>
 
-                <!-- Line chart: cumulative households 2023→2027 -->
-                <div class="lg:col-span-3 bg-white dark:bg-dark-card border-2 border-slate-200 dark:border-dark-border rounded-xl p-6 md:p-8 shadow-md">
-                    <div class="flex items-start justify-between mb-3 flex-wrap gap-3">
-                        <div>
-                            <h4 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white tracking-tight">Cumulative households electrified vs. 2027 mandate target</h4>
-                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">2023 baseline → 2027 mandate horizon · Renewed Hope Agenda</p>
+                <!-- Line chart: cumulative households 2023→2027 (FT/Bloomberg minimal) -->
+                <div class="lg:col-span-3 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-lg p-4 sm:p-5 md:p-6">
+                    <div class="flex items-start justify-between mb-3 pb-3 border-b border-slate-100 dark:border-white/5 flex-wrap gap-3">
+                        <div class="min-w-0">
+                            <h4 class="text-[14px] sm:text-[15px] font-semibold text-slate-900 dark:text-white tracking-tight">Cumulative households electrified vs. 2027 mandate target</h4>
+                            <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 tracking-wide">2023 baseline → 2027 mandate horizon · Renewed Hope Agenda</p>
                         </div>
-                        <div class="flex items-center gap-4 text-sm">
-                            <span class="flex items-center gap-2 text-slate-700 dark:text-slate-300 font-medium"><span class="w-4 h-1 bg-ev-green rounded"></span>Actual delivery</span>
-                            <span class="flex items-center gap-2 text-slate-500 dark:text-slate-400 font-medium"><span class="w-4 h-1" style="background:repeating-linear-gradient(90deg,#94a3b8 0 5px,transparent 5px 8px)"></span>Mandate target</span>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] sm:text-[11px]">
+                            <span class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300"><svg width="14" height="2"><line x1="0" y1="1" x2="14" y2="1" stroke="#008751" stroke-width="1.6"/></svg>Actual</span>
+                            <span class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300"><svg width="14" height="2"><line x1="0" y1="1" x2="14" y2="1" stroke="#008751" stroke-width="1.4" stroke-dasharray="3,2" opacity="0.6"/></svg>Forecast</span>
+                            <span class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400"><svg width="14" height="2"><line x1="0" y1="1" x2="14" y2="1" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="3,3"/></svg>Mandate</span>
                         </div>
                     </div>
 
-                    <svg viewBox="0 0 800 260" class="w-full h-80 mt-6">
-                        <!-- Gridlines -->
-                        <g stroke="#cbd5e1" stroke-width="1" class="dark:stroke-white/15">
-                            <line x1="60" y1="30" x2="780" y2="30" stroke-dasharray="3,4"/>
-                            <line x1="60" y1="80" x2="780" y2="80" stroke-dasharray="3,4"/>
-                            <line x1="60" y1="130" x2="780" y2="130" stroke-dasharray="3,4"/>
-                            <line x1="60" y1="180" x2="780" y2="180" stroke-dasharray="3,4"/>
-                            <line x1="60" y1="200" x2="780" y2="200" stroke-width="1.5"/>
+                    <!-- Linear Y-scale: y=200 is 0, y=30 is 1.5M → 1k ≈ 0.1133 px.
+                         X: Q1'23..Q4'27 = 19 quarters across x=80..770 → 36.3 px/quarter.
+                         Aspect ratio is 3.2:1 — too wide to read on phones if it fits the screen.
+                         On mobile we scroll horizontally inside the card (min-w-[640px] keeps the chart legible);
+                         on sm+ it fits its container and the scroll wrapper does nothing. -->
+                    <div class="overflow-x-auto overflow-y-hidden -mx-1 px-1 sm:mx-0 sm:px-0 sm:overflow-visible mt-1 ev-scroll-hint">
+                    <svg viewBox="0 0 800 250" preserveAspectRatio="xMidYMid meet" class="block min-w-[640px] sm:min-w-0 w-full h-64 sm:h-72 md:h-80 lg:h-96">
+                        <!-- Hairline gridlines (slate-100) -->
+                        <g stroke="#e2e8f0" stroke-width="0.5" class="dark:stroke-white/8">
+                            <line x1="56" y1="30"  x2="780" y2="30"/>
+                            <line x1="56" y1="80"  x2="780" y2="80"/>
+                            <line x1="56" y1="130" x2="780" y2="130"/>
+                            <line x1="56" y1="180" x2="780" y2="180"/>
                         </g>
-                        <!-- Y axis labels -->
-                        <g font-family="Inter, sans-serif" font-size="13" fill="#475569" text-anchor="end" font-weight="600" class="dark:fill-slate-400">
-                            <text x="54" y="34">1.5M</text>
-                            <text x="54" y="84">1.0M</text>
-                            <text x="54" y="134">500k</text>
-                            <text x="54" y="184">100k</text>
-                            <text x="54" y="204">0</text>
+                        <!-- Baseline (slightly heavier) -->
+                        <line x1="56" y1="200" x2="780" y2="200" stroke="#94a3b8" stroke-width="0.75" class="dark:stroke-slate-600"/>
+                        <!-- Y axis labels (tabular, small, slate-400) -->
+                        <g font-family="NEIIA, sans-serif" font-size="10" fill="#94a3b8" text-anchor="end" font-weight="500" class="dark:fill-slate-500" style="font-variant-numeric:tabular-nums">
+                            <text x="50" y="33">1.5M</text>
+                            <text x="50" y="83">1.0M</text>
+                            <text x="50" y="133">500k</text>
+                            <text x="50" y="183">100k</text>
+                            <text x="50" y="203">0</text>
                         </g>
-                        <!-- Target line (dashed) -->
-                        <polyline fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="6,5" stroke-linejoin="round"
-                            points="80,195 200,170 320,128 440,82 560,48 680,30 770,18"/>
-                        <!-- Actual area -->
-                        <polyline fill="rgba(0,135,81,0.18)" stroke="none"
-                            points="80,196 200,180 320,150 440,118 560,90 680,68 770,52 770,200 80,200"/>
-                        <!-- Actual line -->
-                        <polyline fill="none" stroke="#008751" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"
-                            points="80,196 200,180 320,150 440,118 560,90 680,68 770,52"/>
-                        <!-- Data points -->
+                        <!-- Mandate target (very subtle dashed slate) -->
+                        <polyline fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="3,3" stroke-linejoin="round"
+                            points="80,199 225,197 371,190 516,173 552,164 770,30"/>
+                        <!-- Actual delivery — thin solid accent -->
+                        <polyline fill="none" stroke="#008751" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+                            points="80,199 225,197 371,192 443,184 516,164 552,153"/>
+                        <!-- Forecast continuation (lighter dashed accent) -->
+                        <polyline fill="none" stroke="#008751" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3,2" opacity="0.55"
+                            points="552,153 770,30"/>
+                        <!-- Data points — tiny, only TODAY is larger. Each has its own hover tooltip. -->
                         <g fill="#008751">
-                            <circle cx="80" cy="196" r="5" stroke="#fff" stroke-width="2.5" class="dark:stroke-dark-card"/>
-                            <circle cx="200" cy="180" r="5" stroke="#fff" stroke-width="2.5" class="dark:stroke-dark-card"/>
-                            <circle cx="320" cy="150" r="5" stroke="#fff" stroke-width="2.5" class="dark:stroke-dark-card"/>
-                            <circle cx="440" cy="118" r="5" stroke="#fff" stroke-width="2.5" class="dark:stroke-dark-card"/>
-                            <circle cx="560" cy="90" r="5" stroke="#fff" stroke-width="2.5" class="dark:stroke-dark-card"/>
-                            <circle cx="680" cy="68" r="7" stroke="#fff" stroke-width="3" class="dark:stroke-dark-card"/>
-                            <circle cx="770" cy="52" r="5" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="2,2"/>
+                            <circle class="ev-point" cx="80"  cy="199" r="2.5" data-tip="<strong>Q1 2023 · Baseline</strong>12,400 households<br>Pre-NEMiC federal records"/>
+                            <circle class="ev-point" cx="225" cy="197" r="2.5" data-tip="<strong>Q1 2024</strong>23,100 households<br>Procurement &amp; planning phase"/>
+                            <circle class="ev-point" cx="371" cy="192" r="2.5" data-tip="<strong>Q1 2025</strong>71,800 households<br>Lagos &amp; Kano pilots scale up"/>
+                            <circle class="ev-point" cx="443" cy="184" r="2.5" data-tip="<strong>Q3 2025</strong>142,600 households<br>Rainy-season pause in NE/SS"/>
+                            <circle class="ev-point" cx="516" cy="164" r="2.5" data-tip="<strong>Q1 2026</strong>320,023 households<br>NEFUND tranche 2 disbursed"/>
+                            <!-- TODAY marker — small ring -->
+                            <circle class="ev-point dark:fill-dark-card" cx="552" cy="153" r="4" fill="#ffffff" stroke="#008751" stroke-width="1.6"
+                                data-tip="<strong>Q2 2026 · TODAY</strong>412,830 households<br>+29.0% vs Q1 2026<br>+92,830 vs back-loaded plan"/>
+                            <!-- 2027 mandate endpoint — hollow -->
+                            <circle class="ev-point dark:fill-dark-card" cx="770" cy="30" r="3" fill="#ffffff" stroke="#94a3b8" stroke-width="1"
+                                data-tip="<strong>2027 Mandate</strong>1,500,000 households<br>Renewed Hope Agenda horizon"/>
                         </g>
-                        <!-- "Today" indicator at 2026 -->
-                        <g>
-                            <line x1="680" y1="20" x2="680" y2="200" stroke="#a47d3a" stroke-width="1.5" stroke-dasharray="4,4"/>
-                            <rect x="634" y="4" width="92" height="20" rx="4" fill="#E8D5A3"/>
-                            <text x="680" y="18" font-family="Inter" font-size="12" font-weight="700" fill="#0B1F24" text-anchor="middle">TODAY · 2026</text>
+                        <!-- Q3 2025 annotation (footnote-style, slate, no colored callout box) -->
+                        <g font-family="NEIIA, sans-serif">
+                            <line x1="443" y1="184" x2="443" y2="170" stroke="#cbd5e1" stroke-width="0.6" class="dark:stroke-slate-600"/>
+                            <text x="443" y="166" font-size="9.5" fill="#94a3b8" font-weight="500" text-anchor="middle" class="dark:fill-slate-500">Rainy-season pause</text>
                         </g>
-                        <!-- X axis labels -->
-                        <g font-family="Inter, sans-serif" font-size="13" fill="#475569" text-anchor="middle" font-weight="600" class="dark:fill-slate-400">
-                            <text x="80" y="225">Q1 2023</text>
-                            <text x="200" y="225">Q1 2024</text>
-                            <text x="320" y="225">Q1 2025</text>
-                            <text x="440" y="225">Q3 2025</text>
-                            <text x="560" y="225">Q1 2026</text>
-                            <text x="680" y="225" font-weight="700" fill="#a47d3a">Q2 2026</text>
-                            <text x="770" y="225">2027 Mandate</text>
+                        <!-- TODAY marker line — thin vertical, slate -->
+                        <line x1="552" y1="40" x2="552" y2="200" stroke="#475569" stroke-width="0.6" stroke-dasharray="2,3" class="dark:stroke-slate-400"/>
+                        <text x="552" y="34" font-family="NEIIA" font-size="9.5" font-weight="600" fill="#475569" text-anchor="middle" letter-spacing="1" class="dark:fill-slate-300">TODAY</text>
+                        <!-- X axis labels — tight, only year boundaries + today + mandate -->
+                        <g font-family="NEIIA, sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle" font-weight="500" class="dark:fill-slate-500" style="font-variant-numeric:tabular-nums">
+                            <text x="80"  y="218">Q1 2023</text>
+                            <text x="225" y="218">Q1 2024</text>
+                            <text x="371" y="218">Q1 2025</text>
+                            <text x="443" y="218" font-size="9" opacity="0.7">Q3 2025</text>
+                            <text x="552" y="218" font-weight="600" fill="#475569" class="dark:fill-slate-300">Q2 2026</text>
+                            <text x="770" y="218">2027 mandate</text>
                         </g>
                     </svg>
+                    </div>
+                    <!-- Mobile-only swipe hint -->
+                    <p class="sm:hidden text-[10px] text-slate-400 dark:text-slate-500 italic mt-1.5 text-center">Swipe across to view full timeline →</p>
 
-                    <div class="mt-6 pt-5 border-t-2 border-slate-100 dark:border-white/10 grid grid-cols-2 md:grid-cols-4 gap-5 text-sm">
+                    <!-- Footer KPI strip — newspaper-style horizontal, stacks 2-col on mobile -->
+                    <div class="mt-3 pt-3 border-t border-slate-100 dark:border-white/5 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 md:gap-6 text-[11px] sm:text-[12px]">
                         <div>
-                            <div class="text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mb-2 text-xs">Baseline 2023</div>
-                            <div class="text-slate-900 dark:text-white font-bold text-2xl tracking-tightest">12,400</div>
+                            <div class="text-[9px] sm:text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-[0.12em] font-medium mb-1">Baseline 2023</div>
+                            <div class="text-slate-900 dark:text-white font-semibold text-lg sm:text-xl tracking-tight" style="font-variant-numeric:tabular-nums">12,400</div>
                         </div>
-                        <div>
-                            <div class="text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mb-2 text-xs">Today (Q2 2026)</div>
-                            <div class="text-ev-green dark:text-ev-sage font-bold text-2xl tracking-tightest">412,830</div>
+                        <div class="md:border-l border-slate-100 dark:border-white/5 md:pl-6">
+                            <div class="text-[9px] sm:text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-[0.12em] font-medium mb-1">Today (Q2 2026)</div>
+                            <div class="text-slate-900 dark:text-white font-semibold text-lg sm:text-xl tracking-tight" style="font-variant-numeric:tabular-nums">412,830</div>
+                            <div class="text-[9px] sm:text-[10px] text-ev-green mt-0.5 font-medium">+29.0% vs Q1 2026</div>
                         </div>
-                        <div>
-                            <div class="text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mb-2 text-xs">2027 Target</div>
-                            <div class="text-slate-900 dark:text-white font-bold text-2xl tracking-tightest">1,500,000</div>
+                        <div class="md:border-l border-slate-100 dark:border-white/5 md:pl-6">
+                            <div class="text-[9px] sm:text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-[0.12em] font-medium mb-1">2027 target</div>
+                            <div class="text-slate-900 dark:text-white font-semibold text-lg sm:text-xl tracking-tight" style="font-variant-numeric:tabular-nums">1,500,000</div>
                         </div>
-                        <div>
-                            <div class="text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mb-2 text-xs">On track</div>
-                            <div class="text-ev-green dark:text-ev-sage font-bold text-2xl inline-flex items-center gap-2">Yes <i class="fas fa-check-circle text-lg"></i></div>
+                        <div class="md:border-l border-slate-100 dark:border-white/5 md:pl-6">
+                            <div class="text-[9px] sm:text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-[0.12em] font-medium mb-1">vs plan</div>
+                            <div class="text-slate-900 dark:text-white font-semibold text-lg sm:text-xl tracking-tight" style="font-variant-numeric:tabular-nums">+92,830</div>
+                            <div class="text-[9px] sm:text-[10px] text-ev-green mt-0.5 font-medium">Ahead of plan</div>
                         </div>
                     </div>
                 </div>
@@ -754,7 +966,7 @@
             </div>
 
             <!-- Caption -->
-            <p class="text-sm text-slate-500 dark:text-slate-400 mt-8 leading-relaxed max-w-3xl">
+            <p class="text-[11px] sm:text-xs text-slate-400 dark:text-slate-500 mt-4 leading-relaxed max-w-3xl">
                 Indicative metrics shown for design preview. Production figures are computed from the live NEMiC ledger
                 and DERMS telemetry, refreshed every 60 seconds and reconciled nightly with the Federal Ministry of Power
                 and the Energy Commission of Nigeria reporting feeds.
@@ -764,10 +976,18 @@
 
     <section id="about" class="py-24 md:py-32 px-6 bg-white dark:bg-dark-bg">
         <div class="max-w-7xl mx-auto">
-            <div class="max-w-3xl mb-16">
-                <div class="eyebrow text-ev-green dark:text-ev-sage mb-4">About eVillage</div>
-                <h2 class="text-3xl md:text-5xl font-bold tracking-tightest text-slate-900 dark:text-white leading-[1.1]">A federal energy access platform — engineered for citizens, built for the Renewed Hope mandate.</h2>
-                <p class="text-base md:text-lg text-slate-600 dark:text-slate-300 mt-6 leading-relaxed">
+            <div class="max-w-4xl mx-auto mb-16 md:mb-20 text-center">
+                <!-- Section badge — small pill, modern dashboard style -->
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ev-green/10 dark:bg-ev-green/20 border border-ev-green/20 dark:border-ev-green/30 mb-6">
+                    <span class="w-1.5 h-1.5 rounded-full bg-ev-green dark:bg-ev-sage"></span>
+                    <span class="text-[11px] font-semibold tracking-[0.18em] uppercase text-ev-green dark:text-ev-sage">About eVillage</span>
+                </div>
+
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tightest text-slate-900 dark:text-white leading-[1.15]">
+                    A federal energy access platform — <span class="text-slate-500 dark:text-slate-400 font-normal">engineered for citizens, built for the Renewed Hope mandate.</span>
+                </h2>
+
+                <p class="text-base md:text-lg text-slate-600 dark:text-slate-300 mt-6 md:mt-8 leading-relaxed max-w-3xl mx-auto">
                     eVillage is the citizen-facing execution platform of the National Energy Investment &amp; Intelligence Administration (NEIIA). It connects rural and peri-urban households to certified vendors, structured finance from <a href="../nefund.html?preview=1" target="_blank" rel="noopener" class="text-ev-green dark:text-ev-sage font-medium underline underline-offset-2">NEFUND (the National Energy Fund)</a>, federal subsidies, and verifiable energy assets — under the policy oversight of the Federal Ministry of Power and the Energy Commission of Nigeria.
                 </p>
             </div>
@@ -792,7 +1012,7 @@
                 <div class="p-8 bg-white dark:bg-dark-card">
                     <div class="text-xs font-semibold text-slate-400 mb-8">03</div>
                     <div class="w-11 h-11 bg-ev-green/10 text-ev-green dark:bg-ev-green/20 dark:text-ev-sage rounded-lg flex items-center justify-center mb-5">
-                        <i class="fas fa-hand-holding-usd"></i>
+                        <i class="fas fa-file-invoice"></i>
                     </div>
                     <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white">Subsidy Tracking</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Real-time tracking of SHINE subsidies from application through disbursement.</p>
@@ -800,7 +1020,7 @@
                 <div class="p-8 bg-white dark:bg-dark-card">
                     <div class="text-xs font-semibold text-slate-400 mb-8">04</div>
                     <div class="w-11 h-11 bg-ev-green/10 text-ev-green dark:bg-ev-green/20 dark:text-ev-sage rounded-lg flex items-center justify-center mb-5">
-                        <i class="fas fa-shield-halved"></i>
+                        <i class="fas fa-eye"></i>
                     </div>
                     <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white">NEMiC Transparency</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Complete visibility into energy transactions and vendor payments.</p>
@@ -1098,6 +1318,42 @@
             const dots = document.getElementById('pillars-dots');
             if (dots) dots.style.display = 'none';
         }
+    </script>
+
+    <!-- Chart tooltip — single floating tip element wired to any SVG node with [data-tip] -->
+    <div id="ev-tip" class="ev-tip" role="tooltip" aria-hidden="true"></div>
+    <script>
+        (function () {
+            const tip = document.getElementById('ev-tip');
+            if (!tip) return;
+            const show = (e) => {
+                const t = e.currentTarget.getAttribute('data-tip');
+                if (!t) return;
+                tip.innerHTML = t;
+                tip.classList.add('is-on');
+                tip.setAttribute('aria-hidden', 'false');
+                move(e);
+            };
+            const hide = () => {
+                tip.classList.remove('is-on');
+                tip.setAttribute('aria-hidden', 'true');
+            };
+            const move = (e) => {
+                const ev = (e.touches && e.touches[0]) || e;
+                tip.style.left = ev.clientX + 'px';
+                tip.style.top  = ev.clientY + 'px';
+            };
+            document.querySelectorAll('[data-tip]').forEach((el) => {
+                el.addEventListener('mouseenter', show);
+                el.addEventListener('mousemove',  move);
+                el.addEventListener('mouseleave', hide);
+                el.addEventListener('touchstart', show, { passive: true });
+                el.addEventListener('touchmove',  move, { passive: true });
+                el.addEventListener('touchend',   hide);
+            });
+            // Hide on scroll so the tip doesn't lag the cursor
+            window.addEventListener('scroll', hide, { passive: true });
+        })();
     </script>
 </body>
 
