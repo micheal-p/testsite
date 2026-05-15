@@ -587,58 +587,42 @@
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
                 <div class="bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-lg p-4 sm:p-5">
                     <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 tracking-[0.15em] mb-2 uppercase">Households Reached</div>
-                    <div class="flex flex-col items-start gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
-                        <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="412830">0</div>
-                        <div class="text-sm font-bold text-ev-green dark:text-ev-sage flex items-center gap-1 bg-ev-green/10 px-2 py-1 rounded"><i class="fas fa-arrow-up text-[10px]"></i>18.4%</div>
+                    <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="412830">0</div>
+                    <div class="mt-3 inline-flex items-center gap-1.5 text-ev-green dark:text-ev-sage font-bold text-base">
+                        <i class="fas fa-arrow-up text-sm"></i>
+                        <span>18.4%</span>
+                        <span class="text-slate-400 dark:text-slate-500 font-medium text-[11px] ml-1">vs prior period</span>
                     </div>
-                    <!-- Sparkline: cumulative installs, monthly. Two visible plateaus where state-level approvals stalled. -->
-                    <svg viewBox="0 0 120 36" class="mt-3 w-full h-8 sm:h-10 overflow-visible">
-                        <polyline fill="none" stroke="#008751" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
-                            points="2,30 14,29 26,26 38,27 50,23 62,21 74,22 86,17 98,15 110,11 118,8"/>
-                        <circle class="ev-point" cx="118" cy="8" r="2.2" fill="#008751" data-tip="<strong>Households reached</strong>412,830 · last 11 months<br>+18.4% YoY"/>
-                    </svg>
                 </div>
 
                 <div class="bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-lg p-4 sm:p-5">
                     <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 tracking-[0.15em] mb-2 uppercase">MWh Delivered (YTD)</div>
-                    <div class="flex flex-col items-start gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
-                        <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="94217">0</div>
-                        <div class="text-sm font-bold text-ev-green dark:text-ev-sage flex items-center gap-1 bg-ev-green/10 px-2 py-1 rounded"><i class="fas fa-arrow-up text-[10px]"></i>22.1%</div>
+                    <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="94217">0</div>
+                    <div class="mt-3 inline-flex items-center gap-1.5 text-ev-green dark:text-ev-sage font-bold text-base">
+                        <i class="fas fa-arrow-up text-sm"></i>
+                        <span>22.1%</span>
+                        <span class="text-slate-400 dark:text-slate-500 font-medium text-[11px] ml-1">vs prior period</span>
                     </div>
-                    <!-- Sparkline: monthly MWh — harmattan dip in months 3-4, recovery into wet season. -->
-                    <svg viewBox="0 0 120 36" class="mt-3 w-full h-8 sm:h-10 overflow-visible">
-                        <polyline fill="none" stroke="#008751" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
-                            points="2,28 14,25 26,28 38,30 50,26 62,21 74,19 86,17 98,13 110,9 118,5"/>
-                        <circle class="ev-point" cx="118" cy="5" r="2.2" fill="#008751" data-tip="<strong>MWh delivered (YTD)</strong>94,217 MWh<br>+22.1% vs prior year<br>Harmattan dip in Jan–Feb"/>
-                    </svg>
                 </div>
 
                 <div class="bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-lg p-4 sm:p-5">
                     <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 tracking-[0.15em] mb-2 uppercase">tCO₂e Displaced</div>
-                    <div class="flex flex-col items-start gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
-                        <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="2810000" data-format="abbrev">0</div>
-                        <div class="text-sm font-bold text-ev-green dark:text-ev-sage flex items-center gap-1 bg-ev-green/10 px-2 py-1 rounded"><i class="fas fa-arrow-up text-[10px]"></i>14.7%</div>
+                    <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="2810000" data-format="abbrev">0</div>
+                    <div class="mt-3 inline-flex items-center gap-1.5 text-ev-green dark:text-ev-sage font-bold text-base">
+                        <i class="fas fa-arrow-up text-sm"></i>
+                        <span>14.7%</span>
+                        <span class="text-slate-400 dark:text-slate-500 font-medium text-[11px] ml-1">vs prior period</span>
                     </div>
-                    <!-- Sparkline: tCO₂e follows MWh closely (derivative of generation) so the harmattan dip is present. -->
-                    <svg viewBox="0 0 120 36" class="mt-3 w-full h-8 sm:h-10 overflow-visible">
-                        <polyline fill="none" stroke="#008751" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
-                            points="2,29 14,27 26,29 38,30 50,27 62,23 74,21 86,18 98,14 110,10 118,6"/>
-                        <circle class="ev-point" cx="118" cy="6" r="2.2" fill="#008751" data-tip="<strong>tCO₂e displaced</strong>2.81M tonnes<br>+14.7% vs prior year<br>vs equivalent diesel baseline"/>
-                    </svg>
                 </div>
 
                 <div class="bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border rounded-lg p-4 sm:p-5">
                     <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 tracking-[0.15em] mb-2 uppercase">NEFUND Disbursed (₦B)</div>
-                    <div class="flex flex-col items-start gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
-                        <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="47.2" data-prefix="₦" data-decimals="1">0</div>
-                        <div class="text-sm font-bold text-ev-green dark:text-ev-sage flex items-center gap-1 bg-ev-green/10 px-2 py-1 rounded"><i class="fas fa-arrow-up text-[10px]"></i>9.3%</div>
+                    <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tightest stat-number" data-target="47.2" data-prefix="₦" data-decimals="1">0</div>
+                    <div class="mt-3 inline-flex items-center gap-1.5 text-ev-green dark:text-ev-sage font-bold text-base">
+                        <i class="fas fa-arrow-up text-sm"></i>
+                        <span>9.3%</span>
+                        <span class="text-slate-400 dark:text-slate-500 font-medium text-[11px] ml-1">vs prior period</span>
                     </div>
-                    <!-- Sparkline: tranche disbursement pattern — flat between tranches, jumps when each tranche releases. -->
-                    <svg viewBox="0 0 120 36" class="mt-3 w-full h-8 sm:h-10 overflow-visible">
-                        <polyline fill="none" stroke="#008751" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
-                            points="2,32 14,32 26,28 38,27 50,27 62,21 74,21 86,21 98,15 110,15 118,7"/>
-                        <circle class="ev-point" cx="118" cy="7" r="2.2" fill="#008751" data-tip="<strong>NEFUND disbursed</strong>₦47.21B of ₦62.4B<br>+9.3% MoM<br>3 tranches released"/>
-                    </svg>
                 </div>
             </div>
 
