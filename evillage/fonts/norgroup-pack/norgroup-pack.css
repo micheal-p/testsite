@@ -1,0 +1,27 @@
+/*
+ * Norgroup Font Pack — eVillage portal typography.
+ *
+ * Variable-font woff2 covering weights 400..700, self-hosted from
+ * /evillage/fonts/norgroup-pack/. Currently shipping Mulish (SIL OFL)
+ * as a free Avenir-style geometric sans. To swap in licensed Avenir,
+ * replace mulish-variable.woff2 with the purchased file and keep the
+ * font-family name unchanged so consumers don't break.
+ */
+
+@font-face {
+    font-family: 'Norgroup';
+    font-style: normal;
+    font-weight: 400 700;            /* variable range */
+    font-display: swap;
+    src: url('mulish-variable.woff2') format('woff2-variations'),
+         url('mulish-variable.woff2') format('woff2');
+}
+
+/* Convenience helper: drop class onto <html> or <body> to apply pack-wide. */
+.norgroup-font,
+:root.norgroup-font,
+body.norgroup-font {
+    font-family: 'Norgroup',
+                 -apple-system, BlinkMacSystemFont,
+                 'Segoe UI', Helvetica, Arial, sans-serif;
+}
