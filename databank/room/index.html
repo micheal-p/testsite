@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Workspace - NEIIA Deal Room</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { ink: "#0A0A0A", inkSoft: "#525252", paper: "#FFFFFF", muted: "#FBFAF6", border: "#E7E5E0", accent: "#E04F39" },
+      fontFamily: { sans: ["Inter","system-ui","sans-serif"], mono: ["JetBrains Mono","ui-monospace","monospace"], serif: ['"Instrument Serif"',"Georgia","serif"] }
+    } } };
+  </script>
+  <link rel="stylesheet" href="../assets/css/custom.css" />
+  <link rel="stylesheet" href="../assets/css/terminal.css" />
+  <style>html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}</style>
+</head>
+<body>
+  <div class="app-shell">
+    <div data-workspace-shell data-active="home"></div>
+
+    <main class="workspace-content">
+
+      <!-- Greeting -->
+      <header>
+        <div class="wh-eyebrow"><span class="dot"></span><span id="wh-date">Today</span></div>
+        <h1 class="wh-greeting" id="wh-greeting">Good morning, <em data-bind-first-name>there</em>.</h1>
+        <p class="wh-dek">Subscribe to the companies you care about. Unlock financials, milestones, risks and weekly briefings — refreshed every market day.</p>
+
+        <!-- Quick actions -->
+        <div class="wh-actions">
+          <button class="t-btn t-btn-primary" type="button" id="whNewDealBtn">+ New deal</button>
+          <button class="t-btn" type="button" data-action="open-alerts">Set alert</button>
+          <button class="t-btn" type="button" data-action="open-reports">Reports</button>
+        </div>
+
+        <!-- Snapshot strip -->
+        <div class="wh-snapshot" id="whSnapshot"></div>
+
+        <!-- Plan banner -->
+        <div class="wh-sub" role="status">
+          <div class="wh-sub-left">
+            <span class="wh-sub-badge">Standard</span>
+            <div class="wh-sub-text">
+              <strong>4 of 10 banks used</strong> — your plan includes 50 GB per bank, unlimited viewers, and weekly briefings on subscribed companies.
+            </div>
+            <div class="wh-sub-meter" aria-hidden="true"><span style="width:40%"></span></div>
+          </div>
+          <a class="wh-sub-link" href="settings.html#billing">Manage plan &rarr;</a>
+        </div>
+      </header>
+
+      <!-- Your subscriptions -->
+      <section class="wh-section" id="whSubsSection">
+        <div class="wh-section-head">
+          <div>
+            <span class="wh-section-eyebrow">Subscribed data</span>
+            <h2 class="wh-section-title" id="whSubsTitle">Data you've subscribed to</h2>
+          </div>
+          <a class="wh-section-link" href="#whDiscover">Browse more &rarr;</a>
+        </div>
+        <div class="wh-cards" id="whSubsGrid"></div>
+      </section>
+
+      <!-- Discover companies (subscription targets) -->
+      <section class="wh-section" id="whDiscover">
+        <div class="wh-section-head">
+          <div>
+            <span class="wh-section-eyebrow">Discover</span>
+            <h2 class="wh-section-title">Companies moving in your sectors</h2>
+          </div>
+          <a class="wh-section-link" href="deals.html">Browse all companies &rarr;</a>
+        </div>
+        <div class="wh-cards" id="whCards"></div>
+      </section>
+
+      <!-- Sector briefings -->
+      <section class="wh-section">
+        <div class="wh-section-head">
+          <div>
+            <span class="wh-section-eyebrow">This week</span>
+            <h2 class="wh-section-title">Briefings in your sectors</h2>
+          </div>
+          <a class="wh-section-link" href="#">All briefings &rarr;</a>
+        </div>
+        <div class="wh-briefings" id="whBriefs"></div>
+      </section>
+
+      <!-- Watchlist mini -->
+      <section class="wh-section">
+        <div class="wh-section-head">
+          <div>
+            <span class="wh-section-eyebrow">Your watchlist</span>
+            <h2 class="wh-section-title">Companies you're tracking</h2>
+          </div>
+          <a class="wh-section-link" href="watchlist.html">Open watchlist &rarr;</a>
+        </div>
+        <div class="wh-watch" id="whWatch"></div>
+      </section>
+
+      <!-- Setup + activity side-by-side -->
+      <div class="wh-side-grid">
+        <section class="wh-mini">
+          <div class="wh-mini-title">Recent activity</div>
+          <ul class="wh-activity" id="whActivity"></ul>
+        </section>
+        <section class="wh-mini" aria-labelledby="setupTitle">
+          <div class="wh-mini-title" id="setupTitle">Get your bank to 100%</div>
+          <div class="wh-mini-progress">
+            <span class="wh-mini-progress-pct">3 / 5</span>
+            <div class="wh-mini-progress-bar"><span style="width:60%"></span></div>
+            <span class="wh-mini-progress-pct">60%</span>
+          </div>
+          <ul>
+            <li class="done"><span class="check">&#10003;</span> Create workspace</li>
+            <li class="done"><span class="check">&#10003;</span> Choose interests</li>
+            <li class="done"><span class="check">&#10003;</span> Brand your deal room</li>
+            <li class="current"><span class="check">&#9679;</span> Subscribe to your first company</li>
+            <li><span class="check">&#9675;</span> Invite a teammate</li>
+            <li><span class="check">&#9675;</span> Share with first investor</li>
+          </ul>
+        </section>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../assets/js/databank.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/terminal.js"></script>
+  <script src="../assets/js/workspace.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const D = window.DataBankData;
+      const T = window.Terminal;
+      const subsApi = window.DataBank.subscriptionsApi();
+
+      // ---- Snapshot stats ----
+      function renderSnapshot() {
+        const activeDeals = D.deals.length;
+        const tracked = D.deals.reduce(function (a, d) { return a + (d.sizeNum || 0); }, 0);
+        const trackedStr = tracked >= 1000 ? "$" + (tracked / 1000).toFixed(2) + "B" : "$" + tracked + "M";
+        const wlInit = window.DataBank.watchlistApi().list();
+        const subbedCount = subsApi.list().length;
+        document.getElementById("whSnapshot").innerHTML = [
+          { label: "Subscribed data",  value: subbedCount.toString() },
+          { label: "Capital tracked",  value: trackedStr },
+          { label: "Watchlist",        value: (wlInit.length || 0).toString() },
+          { label: "Active deals",     value: activeDeals.toString() }
+        ].map(function (s) {
+          return (
+            '<div class="wh-snap">' +
+              '<div class="wh-snap-value">' + s.value + '</div>' +
+              '<div class="wh-snap-label">' + s.label + '</div>' +
+            '</div>'
+          );
+        }).join("");
+      }
+      renderSnapshot();
+
+      // ---- New deal button ----
+      document.getElementById("whNewDealBtn").addEventListener("click", function () {
+        if (!T) return;
+        T.modal("New deal", (
+          '<p style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin-bottom:14px;">Add a deal to your pipeline. You can refine the details from the deal page later.</p>' +
+          '<div style="display:grid;gap:12px">' +
+            '<div><label>Company</label><input class="t-input" name="newCompany" placeholder="e.g. Sunray Power" style="width:100%" /></div>' +
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+              '<div><label>Sector</label><input class="t-input" name="newSector" placeholder="Renewable Energy" style="width:100%" /></div>' +
+              '<div><label>Stage</label><input class="t-input" name="newStage" placeholder="Series A" style="width:100%" /></div>' +
+            '</div>' +
+            '<div><label>Cheque size</label><input class="t-input" name="newSize" placeholder="$12M" style="width:100%" /></div>' +
+          '</div>'
+        ), {
+          footer:
+            '<button class="t-btn" data-modal-close type="button">Cancel</button>' +
+            '<button class="t-btn t-btn-primary" id="saveDealBtn" type="button">Add to pipeline</button>'
+        });
+        document.getElementById("saveDealBtn").addEventListener("click", function () {
+          T.toast("Deal added to your pipeline");
+          T.closeModal();
+        });
+      });
+
+      // ---- Date + greeting ----
+      const now = new Date();
+      const opts = { weekday: "long", month: "long", day: "numeric" };
+      document.getElementById("wh-date").textContent = now.toLocaleDateString(undefined, opts);
+      const hour = now.getHours();
+      const greet = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+      const g = document.getElementById("wh-greeting");
+      const name = (window.DataBank && window.DataBank.getProfile().firstName) || "there";
+      g.innerHTML = greet + ", <em>" + name + "</em>.";
+
+      // ---- Helpers ----
+      function logoColor(id) { return T && T.companyColor ? T.companyColor(id) : "#0A0A0A"; }
+      function initial(name) { return (name || "?").charAt(0).toUpperCase(); }
+      function priceFor(c) { return T && T.priceForCompany ? T.priceForCompany(c) : 49; }
+
+      function subTagHtml(c) {
+        const isSubbed = subsApi.has(c.id);
+        if (isSubbed) {
+          return (
+            '<span class="sub-tag subscribed" aria-label="Subscribed">' +
+              '<span class="sub-tag-dot"></span>' +
+              '<span>Subscribed</span>' +
+            '</span>'
+          );
+        }
+        return (
+          '<button type="button" class="sub-tag locked" data-subscribe="' + c.id + '" aria-label="Subscribe to ' + c.name + '">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' +
+            '<span>Premium · $' + priceFor(c) + '/mo</span>' +
+          '</button>'
+        );
+      }
+
+      // ---- Build cards (used for Subscribed + Discover sections) ----
+      function cardHtml(c, opts) {
+        opts = opts || {};
+        const dir = c.changePct >= 0 ? "up" : "down";
+        const pct = (c.changePct >= 0 ? "+" : "") + c.changePct.toFixed(2) + "%";
+        const why = opts.subscribed
+          ? "Your weekly briefing dropped this morning. New filings, fresh analyst notes."
+          : (c.changePct >= 1.5
+              ? "Strong move on volume today — worth checking what's driving it."
+              : c.changePct >= 0
+                ? "Quiet uptrend over the last week — stable footing."
+                : "Pullback after recent strength. Possible entry signal.");
+        return (
+          '<div class="wh-card" data-company="' + c.id + '">' +
+            '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;">' +
+              subTagHtml(c) +
+              (opts.subscribed ? '' : '<span style="font-size:11px;color:var(--text-muted);font-feature-settings:\'tnum\'">' + pct + '</span>') +
+            '</div>' +
+            '<a class="wh-card-top" href="company.html?company=' + c.id + '" style="text-decoration:none;color:inherit;">' +
+              '<span class="wh-card-logo" style="background:' + logoColor(c.id) + '">' + initial(c.name) + '</span>' +
+              '<div style="min-width:0;">' +
+                '<div class="wh-card-name">' + c.name + '</div>' +
+                '<div class="wh-card-sector">' + c.sector + '</div>' +
+              '</div>' +
+            '</a>' +
+            '<p class="wh-card-why">' + why + '</p>' +
+            '<div class="wh-card-bottom">' +
+              '<div>' +
+                '<span class="wh-card-price">' + c.last.toFixed(2) + '</span>' +
+                '<span class="wh-card-change ' + dir + '">' + pct + '</span>' +
+              '</div>' +
+              '<a href="company.html?company=' + c.id + '" style="font-size:12px;color:var(--text-muted);text-decoration:none">' +
+                (opts.subscribed ? 'Open profile &rarr;' : 'Preview &rarr;') +
+              '</a>' +
+            '</div>' +
+          '</div>'
+        );
+      }
+
+      // ---- Subscribed section ----
+      function renderSubscribed() {
+        const subIds = subsApi.list();
+        const subbed = subIds
+          .map(function (id) { return D.companies.find(function (c) { return c.id === id; }); })
+          .filter(Boolean);
+        const section = document.getElementById("whSubsSection");
+        const grid = document.getElementById("whSubsGrid");
+        const title = document.getElementById("whSubsTitle");
+
+        if (subbed.length === 0) {
+          title.textContent = "You haven't subscribed to any data yet";
+          grid.innerHTML = (
+            '<div class="wh-card" style="grid-column:1 / -1;background:var(--bg-panel);border-style:dashed;">' +
+              '<div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:16px;gap:10px;">' +
+                '<span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--text-primary);color:#fff;">' +
+                  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' +
+                '</span>' +
+                '<div style="font-family:var(--serif);font-size:22px;letter-spacing:-0.02em;">Subscribe to your first company</div>' +
+                '<p style="font-size:14px;color:var(--text-secondary);max-width:46ch;margin:0">Pick a company below and tap <strong>Premium</strong>. We\'ll save your card so subscribing the second one takes a single click.</p>' +
+                '<a href="#whDiscover" class="t-btn t-btn-primary" style="margin-top:6px;">Browse companies &rarr;</a>' +
+              '</div>' +
+            '</div>'
+          );
+        } else {
+          title.textContent = subbed.length === 1 ? "1 company in your library" : subbed.length + " companies in your library";
+          grid.innerHTML = subbed.map(function (c) { return cardHtml(c, { subscribed: true }); }).join("");
+        }
+      }
+      renderSubscribed();
+
+      // ---- Discover cards: top movers user hasn't subscribed to yet ----
+      function renderDiscover() {
+        const owned = new Set(subsApi.list());
+        const pool = D.companies.filter(function (c) { return !owned.has(c.id); });
+        const sorted = pool.slice().sort(function (a, b) { return Math.abs(b.changePct) - Math.abs(a.changePct); });
+        const pick = sorted.slice(0, 6);
+        document.getElementById("whCards").innerHTML = pick.map(function (c) { return cardHtml(c, { subscribed: false }); }).join("");
+      }
+      renderDiscover();
+
+      // ---- Briefings ----
+      const sectors = Array.from(new Set(D.companies.map(function (c) { return c.sector; })));
+      const briefings = [
+        {
+          sector: sectors[0] || "Renewable Energy",
+          title: "Where the next 18 months of African energy capital is going.",
+          body: "Three signals from the data: capex is shifting toward distributed generation, allocators want shorter tenors, and IPP licensing is unblocking again. Here's what to do this week."
+        },
+        {
+          sector: sectors[1] || "Infrastructure",
+          title: "The quiet rerating of African infrastructure SPVs.",
+          body: "Yield-compression in the public markets is pulling allocator attention to mid-market infra SPVs. We break down five deals that closed in the last 30 days and what the pricing tells us."
+        }
+      ];
+      document.getElementById("whBriefs").innerHTML = briefings.map(function (b) {
+        return (
+          '<a class="wh-brief" href="#">' +
+            '<div class="wh-brief-eyebrow"><span class="dot"></span><span>' + b.sector + '</span><span style="opacity:.5">&middot;</span><span>5 min read</span></div>' +
+            '<h3 class="wh-brief-title">' + b.title + '</h3>' +
+            '<p class="wh-brief-text">' + b.body + '</p>' +
+            '<span class="wh-brief-read">Read briefing &rarr;</span>' +
+          '</a>'
+        );
+      }).join("");
+
+      // ---- Watchlist preview ----
+      const wl = window.DataBank.watchlistApi();
+      const wlIds = wl.list();
+      const wlItems = (wlIds.length
+        ? D.companies.filter(function (c) { return wlIds.indexOf(c.id) >= 0; })
+        : D.companies.slice(0, 4)
+      ).slice(0, 5);
+
+      document.getElementById("whWatch").innerHTML = wlItems.map(function (c) {
+        const dir = c.changePct >= 0 ? "up" : "down";
+        const pct = (c.changePct >= 0 ? "+" : "") + c.changePct.toFixed(2) + "%";
+        return (
+          '<a class="wh-watch-row" href="company.html?company=' + c.id + '">' +
+            '<span class="wh-watch-logo" style="background:' + logoColor(c.id) + '">' + initial(c.name) + '</span>' +
+            '<div style="min-width:0;">' +
+              '<div class="wh-watch-name">' + c.name + '</div>' +
+              '<div class="wh-watch-sector">' + c.sector + '</div>' +
+            '</div>' +
+            '<span class="wh-watch-price">' + c.last.toFixed(2) + '</span>' +
+            '<span class="wh-watch-change ' + dir + '">' + pct + '</span>' +
+          '</a>'
+        );
+      }).join("");
+
+      // ---- Activity feed ----
+      const acts = [
+        { who: "AA", color: "#0A0A0A", txt: "<strong>Aisha Adeniyi</strong> opened the Geregu Power term sheet.",  when: "12m" },
+        { who: "MK", color: "#3730A3", txt: "<strong>Mike Kavanagh</strong> downloaded the Arnergy DD pack.",      when: "52m" },
+        { who: "FN", color: "#065F46", txt: "<strong>Funmi Nwosu</strong> signed the NDA for Seplat Energy.",      when: "2h"  },
+        { who: "TO", color: "#7C2D12", txt: "<strong>Tope Ojo</strong> requested access to Daystar Power.",         when: "5h"  },
+        { who: "JD", color: "#1F2937", txt: "<strong>James Diallo</strong> annotated page 18 of the Geregu teaser.", when: "1d"  }
+      ];
+      document.getElementById("whActivity").innerHTML = acts.map(function (a) {
+        return (
+          '<li>' +
+            '<span class="who" style="background:' + a.color + '">' + a.who + '</span>' +
+            '<span class="txt">' + a.txt + '</span>' +
+            '<span class="when">' + a.when + ' ago</span>' +
+          '</li>'
+        );
+      }).join("");
+
+      // ---- Subscribe handlers (event delegation across both grids) ----
+      document.body.addEventListener("click", function (ev) {
+        const btn = ev.target.closest("[data-subscribe]");
+        if (!btn) return;
+        ev.preventDefault();
+        const id = btn.getAttribute("data-subscribe");
+        const c = D.companies.find(function (x) { return x.id === id; });
+        if (!c) return;
+        T.subscribeModal(c, function () {
+          renderSubscribed();
+          renderDiscover();
+          renderSnapshot();
+          if (window.WorkspaceShell && window.WorkspaceShell.refreshSubscriptions) {
+            window.WorkspaceShell.refreshSubscriptions();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

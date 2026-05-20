@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>You're all set - NEIIA Deal Room</title>
+  <link rel="icon" type="image/svg+xml" href="assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: {
+        ink: "#0A0A0A", inkSoft: "#1F1F1F", paper: "#FFFFFF",
+        cream: "#FBFAF6", muted: "#F4F2EC", line: "#E7E5E0",
+        faint: "#8E867B", accent: "#E04F39", accentSoft: "#FBE9E3"
+      },
+      fontFamily: {
+        sans: ["Inter","system-ui","sans-serif"],
+        serif: ['"Instrument Serif"',"Georgia","serif"]
+      },
+      maxWidth: { content: "1100px" }
+    } } };
+  </script>
+  <link rel="stylesheet" href="assets/css/custom.css" />
+  <style>html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}</style>
+</head>
+<body class="bg-paper text-ink">
+
+  <header class="border-b border-line">
+    <div class="max-w-content mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <img src="assets/images/neiis-logo-green.png" alt="" class="h-7" />
+        <span class="font-semibold tracking-tight">Deal Room</span>
+      </a>
+      <span class="text-xs text-faint flex items-center gap-2">
+        <span class="font-mono">03</span><span>/</span><span class="font-mono">04</span>
+      </span>
+    </div>
+  </header>
+
+  <main class="max-w-content mx-auto px-6 lg:px-10 py-16 lg:py-24">
+
+    <div class="max-w-3xl">
+      <div class="eyebrow"><span class="dot"></span><span>All set</span></div>
+      <h1 class="font-serif text-[44px] sm:text-[60px] lg:text-[76px] leading-[1.02] tracking-tightest mt-5">
+        You're in<span class="text-ink/55">,</span> <em class="italic" data-bind-first-name>friend</em>.
+      </h1>
+      <p class="mt-6 text-lg text-ink/65 max-w-xl">
+        <span data-bind-databank>Your deal room</span> is ready. Take 60 seconds to tailor your dashboard — we'll surface the right deals first.
+      </p>
+    </div>
+
+    <!-- Workspace summary card -->
+    <a href="#interests" class="workspace-card mt-12">
+      <div class="flex items-center gap-5">
+        <span class="workspace-card-avatar" data-bind-initials>DB</span>
+        <div class="min-w-0">
+          <div class="text-xs uppercase tracking-[0.18em] text-faint">Workspace</div>
+          <div class="font-serif text-2xl lg:text-3xl tracking-tightest mt-1 truncate" data-bind-databank>Investor Deal Room</div>
+          <div class="text-sm text-ink/65 mt-0.5 truncate" data-bind-org>Your organization</div>
+        </div>
+      </div>
+      <span class="workspace-card-arrow">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </span>
+    </a>
+
+    <!-- Interests -->
+    <section id="interests" class="mt-20 lg:mt-24">
+      <header class="flex items-end justify-between gap-4 flex-wrap mb-8">
+        <div class="max-w-xl">
+          <div class="eyebrow"><span>Step 3 of 4</span></div>
+          <h2 class="font-serif text-[32px] lg:text-[44px] leading-[1.04] tracking-tightest mt-3">
+            Choose your <em class="italic">interests</em>.
+          </h2>
+          <p class="mt-3 text-ink/65 text-[15px] max-w-md">
+            Pick the sectors you're tracking. We'll personalize your workspace and surface the right companies first.
+          </p>
+        </div>
+        <button type="button" id="selectAllBtn" class="btn-ghost text-sm">Select all</button>
+      </header>
+
+      <div id="interestsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        <!-- populated by JS -->
+      </div>
+
+      <div class="mt-12 pt-6 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-faint" id="selCount">No sectors selected yet</p>
+        <div class="flex gap-3 w-full sm:w-auto">
+          <a href="setup.html" class="btn-ghost btn-lg flex-1 sm:flex-none">
+            <svg class="mr-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back
+          </a>
+          <button id="enterBtn" type="button" class="btn-primary btn-lg flex-1 sm:flex-none">
+            Enter Deal Room
+            <svg class="ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/js/databank.js"></script>
+  <script>
+    (function () {
+      const interests = [
+        { id: "oilgas",     name: "Oil & Gas",                sub: "Upstream, midstream, downstream", icon: "M12 2C8 7 6 11 6 14a6 6 0 0012 0c0-3-2-7-6-12z" },
+        { id: "utilities",  name: "Electricity & Utilities",   sub: "Generation, transmission",       icon: "M13 2L4 14h7l-1 8 9-12h-7l1-8z" },
+        { id: "renewables", name: "Renewable Energy",          sub: "Solar, wind, hydro",            icon: "M12 2v3M12 19v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M2 12h3M19 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12" },
+        { id: "infra",      name: "Infrastructure",            sub: "Roads, pipelines, structural",  icon: "M3 21h18M5 21V7l7-4 7 4v14M9 12h6M9 16h6" },
+        { id: "mining",     name: "Mining & Solid Minerals",   sub: "Extraction, processing",        icon: "M6 3l6 4 6-4M6 3v18l6-4 6 4V3" },
+        { id: "agri",       name: "Agriculture",               sub: "Farming, processing, food",     icon: "M12 2c-3 4-3 7 0 10 3-3 3-6 0-10zM4 22c4-6 8-6 16 0" },
+        { id: "tech",       name: "Technology",                sub: "Fintech, software, hardware",   icon: "M9 3h6v6H9zM3 9h6v6H3zM15 9h6v6h-6zM9 15h6v6H9z" },
+        { id: "health",     name: "Healthcare & Pharma",       sub: "Hospitals, biotech, devices",   icon: "M19 14c1.5-1.5 3-3.5 3-6a4 4 0 00-7-2.7A4 4 0 008 8c0 2.5 1.5 4.5 3 6l4 4 4-4z" },
+        { id: "transport",  name: "Transport & Logistics",     sub: "Aviation, maritime, rail",      icon: "M3 17v-7a4 4 0 014-4h10l4 4v7M3 17h18M7 21a2 2 0 100-4 2 2 0 000 4zm10 0a2 2 0 100-4 2 2 0 000 4z" },
+        { id: "realestate", name: "Real Estate",               sub: "Commercial, residential",       icon: "M3 11l9-8 9 8v10a1 1 0 01-1 1h-5v-7H10v7H4a1 1 0 01-1-1V11z" },
+        { id: "water",      name: "Water & Sanitation",        sub: "Treatment, distribution",        icon: "M12 2s7 7.58 7 12a7 7 0 11-14 0c0-4.42 7-12 7-12z" },
+        { id: "biofuels",   name: "Biomass & Biofuels",        sub: "Sustainable fuels",             icon: "M12 2C9 6 4 8 4 14a8 8 0 0016 0c0-6-5-8-8-12z" }
+      ];
+
+      const grid = document.getElementById("interestsGrid");
+      const selCount = document.getElementById("selCount");
+      const enterBtn = document.getElementById("enterBtn");
+      const selectAllBtn = document.getElementById("selectAllBtn");
+
+      const existing = new Set(DataBank.store.get(DataBank.keys.interests, []));
+
+      grid.innerHTML = interests.map((i) => `
+        <button type="button" class="interest-pill ${existing.has(i.id) ? "is-selected" : ""}" data-id="${i.id}" aria-pressed="${existing.has(i.id) ? "true" : "false"}">
+          <span class="interest-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="${i.icon}"/>
+            </svg>
+          </span>
+          <div class="interest-name">${i.name}</div>
+          <div class="interest-sub">${i.sub}</div>
+          <span class="interest-check" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+        </button>
+      `).join("");
+
+      function selected() {
+        return Array.from(grid.querySelectorAll(".interest-pill.is-selected")).map((b) => b.dataset.id);
+      }
+
+      function refresh() {
+        const items = selected();
+        selCount.textContent = items.length === 0
+          ? "No sectors selected yet"
+          : `${items.length} sector${items.length > 1 ? "s" : ""} selected`;
+        enterBtn.disabled = items.length === 0;
+        selectAllBtn.textContent = items.length === interests.length ? "Deselect all" : "Select all";
+      }
+
+      grid.addEventListener("click", function (event) {
+        const pill = event.target.closest(".interest-pill");
+        if (!pill) return;
+        pill.classList.toggle("is-selected");
+        pill.setAttribute("aria-pressed", pill.classList.contains("is-selected") ? "true" : "false");
+        refresh();
+      });
+
+      selectAllBtn.addEventListener("click", function () {
+        const items = grid.querySelectorAll(".interest-pill");
+        const allOn = Array.from(items).every((el) => el.classList.contains("is-selected"));
+        items.forEach((el) => {
+          el.classList.toggle("is-selected", !allOn);
+          el.setAttribute("aria-pressed", !allOn ? "true" : "false");
+        });
+        refresh();
+      });
+
+      enterBtn.addEventListener("click", function () {
+        const items = selected();
+        if (items.length === 0) return;
+        DataBank.store.set(DataBank.keys.interests, items);
+        enterBtn.disabled = true;
+        enterBtn.innerHTML = '<span class="dot-loader" aria-hidden="true"><span></span><span></span><span></span></span> Allocating workspace';
+        setTimeout(() => {
+          window.location.href = "room/index.html";
+        }, 900);
+      });
+
+      refresh();
+    })();
+  </script>
+</body>
+</html>

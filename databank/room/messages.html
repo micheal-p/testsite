@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Messages - NEIIA Deal Room</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { ink: "#0A0A0A", inkSoft: "#525252", paper: "#FFFFFF", muted: "#FBFAF6", border: "#E7E5E0", accent: "#E04F39" },
+      fontFamily: { sans: ["Inter","system-ui","sans-serif"], serif: ['"Instrument Serif"',"Georgia","serif"] }
+    } } };
+  </script>
+  <link rel="stylesheet" href="../assets/css/custom.css" />
+  <link rel="stylesheet" href="../assets/css/terminal.css" />
+  <style>
+    html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}
+
+    /* === Messages layout === */
+    .msg-page {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 0;
+      border: 1px solid var(--border-t);
+      border-radius: 14px;
+      background: var(--bg-base);
+      overflow: hidden;
+      min-height: calc(100vh - 180px);
+    }
+    @media (max-width: 860px) {
+      .msg-page { grid-template-columns: 1fr; min-height: 0; }
+      .msg-thread.is-empty { display: none; }
+    }
+
+    .msg-list {
+      border-right: 1px solid var(--border-t);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .msg-list-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border-t);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px;
+    }
+    .msg-list-header h2 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+    .msg-new-btn {
+      background: var(--text-primary); color: #fff;
+      border: 0; padding: 6px 12px; border-radius: 9999px;
+      font-size: 12px; font-weight: 500; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .msg-new-btn:hover { background: var(--accent); }
+
+    .msg-search { padding: 10px 14px; border-bottom: 1px solid var(--border-t); }
+    .msg-search input {
+      width: 100%; height: 34px; padding: 0 12px;
+      border: 1px solid var(--border-t); border-radius: 8px;
+      background: var(--bg-base); font-family: inherit; font-size: 13px;
+    }
+    .msg-search input:focus { outline: none; border-color: var(--text-primary); box-shadow: 0 0 0 3px rgba(10,10,10,0.06); }
+
+    /* Verified-only inbox toggle */
+    .msg-inbox-pref {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-t);
+      display: flex; align-items: center; gap: 10px;
+      font-size: 12px; color: var(--text-secondary);
+      background: var(--bg-panel);
+    }
+    .toggle-mini {
+      position: relative; display: inline-block; width: 34px; height: 20px;
+      flex-shrink: 0;
+    }
+    .toggle-mini input { opacity: 0; width: 0; height: 0; }
+    .toggle-mini .slider {
+      position: absolute; inset: 0; cursor: pointer;
+      background: var(--bg-panel-elev); border: 1px solid var(--border-t);
+      border-radius: 9999px;
+      transition: background .15s, border-color .15s;
+    }
+    .toggle-mini .slider::before {
+      content: ""; position: absolute; left: 2px; top: 2px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: #fff; border: 1px solid var(--border-t);
+      transition: transform .2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .toggle-mini input:checked + .slider {
+      background: var(--accent); border-color: var(--accent);
+    }
+    .toggle-mini input:checked + .slider::before {
+      transform: translateX(14px); border-color: transparent;
+    }
+
+    .msg-threads { flex: 1; overflow-y: auto; }
+    .msg-thread-item {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      column-gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-t-soft);
+      cursor: pointer;
+      background: transparent;
+      border-left: 0; border-right: 0; border-top: 0;
+      width: 100%; text-align: left;
+      font-family: inherit;
+    }
+    .msg-thread-item:hover { background: var(--bg-panel); }
+    .msg-thread-item.is-active { background: var(--bg-panel-elev); }
+    .msg-thread-item .avatar {
+      width: 36px; height: 36px; border-radius: 9px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 600; font-size: 13px;
+    }
+    .msg-thread-item .meta { min-width: 0; }
+    .msg-thread-item .name {
+      font-size: 14px; font-weight: 600; color: var(--text-primary);
+      letter-spacing: -0.005em;
+      display: flex; align-items: center; gap: 4px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .msg-thread-item .preview {
+      font-size: 12px; color: var(--text-muted); margin-top: 2px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      max-width: 200px;
+    }
+    .msg-thread-item .right { text-align: right; }
+    .msg-thread-item .when { font-size: 11px; color: var(--text-muted); font-feature-settings: "tnum"; }
+    .msg-thread-item .unread {
+      display: inline-block; margin-top: 4px;
+      min-width: 18px; height: 18px; padding: 0 6px;
+      border-radius: 9999px; background: var(--accent); color: #fff;
+      font-size: 10px; font-weight: 700; line-height: 18px; text-align: center;
+    }
+    .msg-thread-item.unread-row .name { color: var(--text-primary); font-weight: 700; }
+
+    /* Verified inline badge (used in threads + on company names) — gold for "verified business" */
+    .vbadge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 14px; height: 14px; border-radius: 9999px;
+      background: linear-gradient(135deg, #E5C260 0%, #B8862B 100%);
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    }
+    .vbadge svg { width: 9px; height: 9px; }
+
+    /* === Thread === */
+    .msg-thread {
+      display: flex; flex-direction: column;
+      min-height: 0;
+      background: var(--bg-base);
+    }
+    .msg-thread-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-t);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .msg-thread-header .who {
+      display: flex; align-items: center; gap: 10px;
+      min-width: 0;
+    }
+    .msg-thread-header .who .avatar {
+      width: 36px; height: 36px; border-radius: 9px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 600; font-size: 13px;
+      flex-shrink: 0;
+    }
+    .msg-thread-header .name {
+      font-size: 15px; font-weight: 600; color: var(--text-primary);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .msg-thread-header .sub {
+      font-size: 12px; color: var(--text-muted); margin-top: 1px;
+    }
+
+    .msg-thread-body {
+      flex: 1; padding: 18px 22px;
+      overflow-y: auto;
+      display: flex; flex-direction: column; gap: 14px;
+      min-height: 320px;
+    }
+    .msg-day-divider {
+      align-self: center;
+      font-size: 11px; color: var(--text-muted);
+      padding: 4px 10px; border-radius: 9999px;
+      background: var(--bg-panel);
+      letter-spacing: 0.02em;
+    }
+    .msg-bubble {
+      max-width: min(560px, 70%);
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 14px; line-height: 1.45;
+    }
+    .msg-bubble.from-them {
+      background: var(--bg-panel);
+      color: var(--text-primary);
+      border: 1px solid var(--border-t-soft);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .msg-bubble.from-me {
+      background: var(--text-primary);
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .msg-bubble + .msg-bubble.from-them,
+    .msg-bubble + .msg-bubble.from-me { margin-top: -8px; }
+    .msg-time {
+      font-size: 10px; color: var(--text-muted); margin-top: 2px;
+      letter-spacing: 0.02em;
+    }
+    .from-me + .msg-time { align-self: flex-end; }
+
+    /* Composer */
+    .msg-composer {
+      border-top: 1px solid var(--border-t);
+      padding: 12px 16px;
+      display: flex; gap: 10px; align-items: flex-end;
+      background: var(--bg-base);
+    }
+    .msg-composer textarea {
+      flex: 1;
+      min-height: 40px; max-height: 140px;
+      resize: none;
+      padding: 10px 12px;
+      border: 1px solid var(--border-t);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .msg-composer textarea:focus { outline: none; border-color: var(--text-primary); box-shadow: 0 0 0 3px rgba(10,10,10,0.06); }
+    .msg-composer .send-btn {
+      background: var(--text-primary); color: #fff; border: 0;
+      width: 40px; height: 40px; border-radius: 10px;
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+    .msg-composer .send-btn:hover { background: var(--accent); }
+    .msg-composer .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Paywall when unverified user tries to message a verified business */
+    .msg-paywall {
+      border-top: 1px solid var(--border-t);
+      padding: 16px 18px;
+      background:
+        linear-gradient(to right, rgba(224,79,57,0.06), transparent 50%),
+        var(--bg-panel);
+      display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
+    }
+    .msg-paywall .lock {
+      width: 36px; height: 36px; border-radius: 9999px;
+      background: var(--text-primary); color: #fff;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .msg-paywall .text { flex: 1; min-width: 240px; }
+    .msg-paywall .text strong { color: var(--text-primary); }
+    .msg-paywall .text p { font-size: 13px; color: var(--text-secondary); line-height: 1.45; margin-top: 2px; }
+
+    .msg-empty {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 8px;
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+    .msg-empty h3 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 26px;
+      letter-spacing: -0.025em;
+      color: var(--text-primary);
+    }
+    .msg-empty p { font-size: 14px; max-width: 42ch; line-height: 1.5; }
+
+    .msg-empty-list {
+      padding: 26px 18px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <div data-workspace-shell data-active="messages"></div>
+
+    <main class="workspace-content">
+
+      <header style="margin-bottom:18px;">
+        <div class="wh-eyebrow"><span class="dot"></span><span>Direct messages</span></div>
+        <h1 class="wh-greeting">Messages.</h1>
+        <p class="wh-dek">
+          Talk to other businesses on NEIIA. Verified enterprises can message any verified business; restrict your inbox below if you only want to hear from verified senders.
+        </p>
+      </header>
+
+      <div class="msg-page">
+
+        <!-- Conversation list -->
+        <aside class="msg-list">
+          <div class="msg-list-header">
+            <h2>Inbox</h2>
+            <button class="msg-new-btn" type="button" id="newThreadBtn">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>New</span>
+            </button>
+          </div>
+          <div class="msg-search">
+            <input id="threadSearch" type="search" placeholder="Search conversations" />
+          </div>
+          <div class="msg-inbox-pref">
+            <label class="toggle-mini" aria-label="Restrict inbox to verified senders">
+              <input type="checkbox" id="verifiedOnlyToggle" />
+              <span class="slider"></span>
+            </label>
+            <span><strong>Verified-only inbox</strong> — only verified businesses can start new threads.</span>
+          </div>
+          <div class="msg-threads" id="threadList"></div>
+        </aside>
+
+        <!-- Thread pane -->
+        <section class="msg-thread is-empty" id="threadPane">
+          <div class="msg-empty">
+            <h3>Pick a conversation</h3>
+            <p>Open a thread on the left, or start a new one with <strong>New</strong>. Messages from verified businesses show a checkmark next to the name.</p>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../assets/js/databank.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/terminal.js"></script>
+  <script src="../assets/js/workspace.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const D = window.DataBankData;
+      const T = window.Terminal;
+      const verApi  = window.DataBank.verificationApi();
+      const prefsApi = window.DataBank.inboxPrefsApi();
+      const ME = "me";
+
+      const STORE_KEY = "neiia_db_messages";
+      function loadState() {
+        const existing = window.DataBank.store.get(STORE_KEY, null);
+        if (existing && existing.threads) return existing;
+        // Seed: a handful of synthetic conversations with companies.
+        // Half of them are "verified" enterprises so the gating is visible.
+        const verifiedIds = new Set(["geregu", "seplat", "mtnnigeria", "accesshold", "dangotecement", "flutterwave"]);
+        const seed = D.companies.slice(0, 7).map(function (c, i) {
+          const verified = verifiedIds.has(c.id);
+          const baseTs = Date.now() - (i + 1) * 45 * 60 * 1000;
+          const msgs = [
+            { from: c.id, text: "Hi — saw you opened our profile last week. Anything you'd like to know about the upcoming round?", ts: baseTs - 7 * 60000 },
+            { from: ME,   text: "Yes — curious about the use of proceeds and the next 18-month runway.", ts: baseTs - 5 * 60000 },
+            { from: c.id, text: "Briefly: ~60% capex on capacity, ~25% working capital, balance for the new ops office. Runway 24 months at current burn.", ts: baseTs - 2 * 60000 },
+            { from: c.id, text: "Want me to share the full deck?", ts: baseTs }
+          ];
+          return {
+            id: c.id,
+            companyId: c.id,
+            name: c.name,
+            sector: c.sector,
+            verified: verified,
+            messages: msgs,
+            unread: i < 2 ? 1 : 0,
+            updated: baseTs
+          };
+        });
+        const state = { threads: seed, activeId: seed[0] && seed[0].id };
+        window.DataBank.store.set(STORE_KEY, state);
+        return state;
+      }
+      let state = loadState();
+
+      function saveState() { window.DataBank.store.set(STORE_KEY, state); }
+
+      function logoColor(id) { return T && T.companyColor ? T.companyColor(id) : "#0A0A0A"; }
+      function initial(name) { return (name || "?").charAt(0).toUpperCase(); }
+      function fmtTime(ts) {
+        const d = new Date(ts);
+        return d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+      }
+      function fmtRel(ts) {
+        const diff = Date.now() - ts;
+        if (diff < 60000) return "now";
+        if (diff < 3600000) return Math.round(diff / 60000) + "m";
+        if (diff < 86400000) return Math.round(diff / 3600000) + "h";
+        return Math.round(diff / 86400000) + "d";
+      }
+      function fmtDay(ts) {
+        const d = new Date(ts);
+        const today = new Date();
+        const yest  = new Date(); yest.setDate(today.getDate() - 1);
+        if (d.toDateString() === today.toDateString()) return "Today";
+        if (d.toDateString() === yest.toDateString()) return "Yesterday";
+        return d.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" });
+      }
+      function vbadge() {
+        return '<span class="vbadge" title="Verified business"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span>';
+      }
+
+      // ---- Render conversation list ----
+      function renderList() {
+        const search = (document.getElementById("threadSearch").value || "").toLowerCase();
+        const verifiedOnly = !!prefsApi.get().verifiedOnly;
+        const root = document.getElementById("threadList");
+        const visible = state.threads
+          .filter(function (t) { return !verifiedOnly || t.verified; })
+          .filter(function (t) { return !search || t.name.toLowerCase().indexOf(search) >= 0; })
+          .sort(function (a, b) { return b.updated - a.updated; });
+        if (!visible.length) {
+          root.innerHTML = '<div class="msg-empty-list">' +
+            (verifiedOnly
+              ? 'No verified businesses in your inbox yet. Toggle off the verified filter to see all conversations.'
+              : 'No conversations match your search.') +
+            '</div>';
+          return;
+        }
+        root.innerHTML = visible.map(function (t) {
+          const lastMsg = t.messages[t.messages.length - 1];
+          const preview = (lastMsg.from === ME ? "You: " : "") + lastMsg.text;
+          return (
+            '<button class="msg-thread-item ' + (t.id === state.activeId ? "is-active" : "") + (t.unread ? " unread-row" : "") + '" data-thread="' + t.id + '" type="button">' +
+              '<span class="avatar" style="background:' + logoColor(t.companyId) + '">' + initial(t.name) + '</span>' +
+              '<div class="meta">' +
+                '<div class="name">' + t.name + (t.verified ? " " + vbadge() : "") + '</div>' +
+                '<div class="preview">' + preview + '</div>' +
+              '</div>' +
+              '<div class="right">' +
+                '<div class="when">' + fmtRel(t.updated) + '</div>' +
+                (t.unread ? '<div class="unread">' + t.unread + '</div>' : '') +
+              '</div>' +
+            '</button>'
+          );
+        }).join("");
+      }
+
+      // ---- Render thread pane ----
+      function renderThread() {
+        const t = state.threads.find(function (x) { return x.id === state.activeId; });
+        const pane = document.getElementById("threadPane");
+        if (!t) {
+          pane.classList.add("is-empty");
+          pane.innerHTML = (
+            '<div class="msg-empty">' +
+              '<h3>Pick a conversation</h3>' +
+              '<p>Open a thread on the left, or start a new one with <strong>New</strong>.</p>' +
+            '</div>'
+          );
+          return;
+        }
+        pane.classList.remove("is-empty");
+
+        // Compose vs paywall: if recipient is verified and I am not verified, gate the composer.
+        const iAmVerified = verApi.isVerified();
+        const blocked = t.verified && !iAmVerified;
+
+        // Group messages by day
+        const groups = [];
+        t.messages.forEach(function (m) {
+          const dayKey = new Date(m.ts).toDateString();
+          let g = groups[groups.length - 1];
+          if (!g || g.day !== dayKey) {
+            g = { day: dayKey, ts: m.ts, msgs: [] };
+            groups.push(g);
+          }
+          g.msgs.push(m);
+        });
+
+        const body = groups.map(function (g) {
+          return (
+            '<div class="msg-day-divider">' + fmtDay(g.ts) + '</div>' +
+            g.msgs.map(function (m) {
+              const cls = m.from === ME ? "from-me" : "from-them";
+              return (
+                '<div class="msg-bubble ' + cls + '">' + escapeHtml(m.text) + '</div>' +
+                '<div class="msg-time" style="' + (m.from === ME ? "align-self:flex-end;" : "") + '">' + fmtTime(m.ts) + '</div>'
+              );
+            }).join("")
+          );
+        }).join("");
+
+        const composer = blocked
+          ? (
+              '<div class="msg-paywall">' +
+                '<span class="lock">' +
+                  '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' +
+                '</span>' +
+                '<div class="text">' +
+                  '<strong>' + t.name + ' is a verified enterprise.</strong>' +
+                  '<p>Only verified businesses can message verified enterprises. Verify yours for $' + window.DataBank.VERIFIED_PRICE_USD + '/mo — cancel anytime.</p>' +
+                '</div>' +
+                '<button class="t-btn t-btn-primary" type="button" id="goVerifyBtn">Get verified</button>' +
+              '</div>'
+            )
+          : (
+              '<div class="msg-composer">' +
+                '<textarea id="msgInput" placeholder="Message ' + t.name + '…" rows="1"></textarea>' +
+                '<button class="send-btn" type="button" id="msgSendBtn" aria-label="Send">' +
+                  '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>' +
+                '</button>' +
+              '</div>'
+            );
+
+        pane.innerHTML = (
+          '<header class="msg-thread-header">' +
+            '<div class="who">' +
+              '<span class="avatar" style="background:' + logoColor(t.companyId) + '">' + initial(t.name) + '</span>' +
+              '<div>' +
+                '<div class="name">' + t.name + (t.verified ? " " + vbadge() : "") + '</div>' +
+                '<div class="sub">' + t.sector + (t.verified ? " · Verified enterprise" : "") + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
+              '<a class="t-btn" href="company.html?company=' + t.companyId + '">View profile</a>' +
+            '</div>' +
+          '</header>' +
+          '<div class="msg-thread-body" id="threadBody">' + body + '</div>' +
+          composer
+        );
+
+        // Wire interactions
+        const bodyEl = document.getElementById("threadBody");
+        if (bodyEl) bodyEl.scrollTop = bodyEl.scrollHeight;
+
+        if (blocked) {
+          document.getElementById("goVerifyBtn").addEventListener("click", function () {
+            window.location.href = "settings.html#billing";
+          });
+        } else {
+          const input = document.getElementById("msgInput");
+          const send  = document.getElementById("msgSendBtn");
+          function autoGrow() {
+            input.style.height = "40px";
+            input.style.height = Math.min(140, input.scrollHeight) + "px";
+          }
+          input.addEventListener("input", autoGrow);
+          input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); doSend(); }
+          });
+          send.addEventListener("click", doSend);
+          input.focus();
+
+          function doSend() {
+            const v = input.value.trim();
+            if (!v) return;
+            t.messages.push({ from: ME, text: v, ts: Date.now() });
+            t.updated = Date.now();
+            saveState();
+            input.value = "";
+            autoGrow();
+            renderList();
+            renderThread();
+            // Synthetic auto-reply 1.2s later
+            setTimeout(function () {
+              const replies = [
+                "Got it — let me get back to you.",
+                "Thanks. I'll forward the deck to your work email.",
+                "Noted. Calling you Thursday at 11 if that works.",
+                "Appreciate the question — I'll pull the latest data and reply tonight."
+              ];
+              t.messages.push({ from: t.companyId, text: replies[Math.floor(Math.random() * replies.length)], ts: Date.now() });
+              t.updated = Date.now();
+              t.unread = (state.activeId === t.id) ? 0 : (t.unread || 0) + 1;
+              saveState();
+              renderList();
+              if (state.activeId === t.id) renderThread();
+            }, 1200);
+          }
+        }
+
+        // Mark this thread read
+        if (t.unread) { t.unread = 0; saveState(); renderList(); }
+      }
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+        });
+      }
+
+      // ---- Events ----
+      document.getElementById("threadList").addEventListener("click", function (e) {
+        const b = e.target.closest("[data-thread]");
+        if (!b) return;
+        state.activeId = b.getAttribute("data-thread");
+        saveState();
+        renderList();
+        renderThread();
+      });
+      document.getElementById("threadSearch").addEventListener("input", renderList);
+
+      const toggle = document.getElementById("verifiedOnlyToggle");
+      toggle.checked = !!prefsApi.get().verifiedOnly;
+      toggle.addEventListener("change", function () {
+        prefsApi.set({ verifiedOnly: toggle.checked });
+        T.toast(toggle.checked
+          ? "Inbox now restricted to verified senders"
+          : "Inbox open to all businesses");
+        renderList();
+      });
+
+      document.getElementById("newThreadBtn").addEventListener("click", function () {
+        const existing = new Set(state.threads.map(function (t) { return t.id; }));
+        const choices = D.companies.filter(function (c) { return !existing.has(c.id); });
+        if (!choices.length) { T.toast("You already have a thread with everyone in your universe"); return; }
+        const verifiedSet = new Set(["geregu", "seplat", "mtnnigeria", "accesshold", "dangotecement", "flutterwave"]);
+        const opts = choices.map(function (c) {
+          return '<option value="' + c.id + '">' + c.name + (verifiedSet.has(c.id) ? " — verified" : "") + '</option>';
+        }).join("");
+        T.modal("Start a conversation", (
+          '<p style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin-bottom:14px;">Pick a business to message. Verified businesses are marked with a ✓ — messaging them requires you to be verified yourself.</p>' +
+          '<div style="display:grid;gap:14px;">' +
+            '<div><label>Send to</label><select class="t-input" name="recipient" style="width:100%">' + opts + '</select></div>' +
+            '<div><label>First message</label><textarea class="t-input" name="firstMsg" rows="4" placeholder="Hi — saw your profile on NEIIA. We\'re investors in the energy sector and wanted to chat about your raise." style="width:100%;resize:vertical;"></textarea></div>' +
+          '</div>'
+        ), {
+          footer:
+            '<button class="t-btn" type="button" data-modal-close>Cancel</button>' +
+            '<button class="t-btn t-btn-primary" type="button" id="startThreadBtn">Send first message</button>'
+        });
+        document.getElementById("startThreadBtn").addEventListener("click", function () {
+          const root = document.querySelector("[data-modal-root]");
+          const id = root.querySelector('[name="recipient"]').value;
+          const text = root.querySelector('[name="firstMsg"]').value.trim();
+          if (!text) { T.toast("Add a first message"); return; }
+          const c = D.companies.find(function (x) { return x.id === id; });
+          const verified = verifiedSet.has(id);
+          const iAmVerified = verApi.isVerified();
+          if (verified && !iAmVerified) {
+            T.closeModal();
+            T.toast("Verify your business to message " + c.name);
+            window.location.href = "settings.html#billing";
+            return;
+          }
+          state.threads.unshift({
+            id: id, companyId: id, name: c.name, sector: c.sector,
+            verified: verified, unread: 0, updated: Date.now(),
+            messages: [{ from: ME, text: text, ts: Date.now() }]
+          });
+          state.activeId = id;
+          saveState();
+          renderList();
+          renderThread();
+          T.closeModal();
+          T.toast("Sent to " + c.name);
+        });
+      });
+
+      // ---- Initial render ----
+      renderList();
+      renderThread();
+    })();
+  </script>
+</body>
+</html>

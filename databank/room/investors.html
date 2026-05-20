@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Investors - NEIIA Deal Room</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { ink: "#0A0A0A", inkSoft: "#525252", paper: "#FFFFFF", muted: "#FAFAFA", border: "#E5E7EB", accent: "#0A0A0A" }
+    } } };
+  </script>
+  <link rel="stylesheet" href="../assets/css/custom.css" />
+  <link rel="stylesheet" href="../assets/css/terminal.css" />
+  <style>
+    .kpi-strip { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom: 18px; }
+    html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <div data-workspace-shell data-active="investors"></div>
+
+    <main class="workspace-content">
+      <header style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px;">Investor relations</div>
+          <h1 style="font-size:22px;font-weight:600;color:var(--text-primary);letter-spacing:-0.01em;">Investors</h1>
+          <p style="font-size:12px;color:var(--text-secondary);font-family:var(--mono);margin-top:4px">Commitments, drawdowns and contact log.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="t-btn" type="button" id="exportBtn">Export CSV</button>
+          <button class="t-btn" type="button" id="sendReportBtn">Send report</button>
+          <button class="t-btn t-btn-primary" type="button" id="addInvestorBtn">+ Add investor</button>
+        </div>
+      </header>
+
+      <!-- KPIs -->
+      <div class="kpi-strip">
+        <div class="kpi-card"><div class="kpi-label">Total commitments</div><div class="kpi-value num" id="kCommit">—</div></div>
+        <div class="kpi-card"><div class="kpi-label">Drawn</div><div class="kpi-value num" id="kDrawn">—</div></div>
+        <div class="kpi-card"><div class="kpi-label">Available</div><div class="kpi-value num" id="kAvail">—</div></div>
+        <div class="kpi-card"><div class="kpi-label">Active investors</div><div class="kpi-value num" id="kCount">—</div></div>
+      </div>
+
+      <!-- Filters -->
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+        <div style="position:relative;flex:1;min-width:220px;max-width:340px;">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="invSearch" type="search" placeholder="Search name, manager or email" class="t-input" style="padding-left:30px;width:100%" />
+        </div>
+        <select id="typeFilter" class="t-input">
+          <option value="">All types</option>
+        </select>
+        <select id="statusFilter" class="t-input">
+          <option value="">All statuses</option>
+        </select>
+        <button class="t-btn" id="clearFilters" type="button" style="margin-left:auto">Clear filters</button>
+      </div>
+
+      <div id="chipRow" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;"></div>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title">INVESTOR DIRECTORY</div>
+          <div class="panel-sub"><span id="visibleCount">--</span> visible</div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="db-table">
+            <thead id="invHead">
+              <tr>
+                <th data-sort="name">Investor <span class="arrow"></span></th>
+                <th data-sort="type">Type <span class="arrow"></span></th>
+                <th data-sort="commitment" class="text-right">Commitment <span class="arrow"></span></th>
+                <th data-sort="drawn" class="text-right">Drawn <span class="arrow"></span></th>
+                <th class="no-sort">Funded %</th>
+                <th data-sort="manager">Manager <span class="arrow"></span></th>
+                <th data-sort="status">Status <span class="arrow"></span></th>
+                <th data-sort="lastContact">Last contact <span class="arrow"></span></th>
+                <th class="no-sort" aria-label="row actions"></th>
+              </tr>
+            </thead>
+            <tbody id="invBody"></tbody>
+          </table>
+        </div>
+        <div id="invEmpty" class="t-empty hidden">
+          <div class="empty-title">No investors yet</div>
+          <div style="font-size:12px;margin-bottom:14px">Add your first LP, family office or strategic backer.</div>
+          <button class="t-btn t-btn-primary" id="emptyAddBtn">+ Add investor</button>
+        </div>
+        <div id="invNoMatch" class="t-empty hidden">
+          <div class="empty-title">No matches</div>
+          <div style="font-size:12px">Try clearing filters or broadening your search.</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/js/databank.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/terminal.js"></script>
+  <script src="../assets/js/workspace.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const T = window.Terminal;
+      const DB = window.DataBank;
+      if (!DB) return;
+
+      const KEY = "neiia_db_investors";
+      const TYPES = ["Limited Partner", "Family Office", "Strategic", "DFI", "Sovereign", "Pension", "Endowment", "Corporate"];
+      const STATUSES = ["Active", "Committed", "Onboarding", "Closed", "Paused"];
+
+      function seed() {
+        return [
+          { id: "inv-1", name: "Polaris Holdings",        type: "Limited Partner", commitment: 5000000, drawn: 3200000, manager: "Adaeze Okeke",    status: "Active",     email: "ir@polaris.example", lastContact: "2026-05-12" },
+          { id: "inv-2", name: "Kano Family Trust",       type: "Family Office",   commitment: 2500000, drawn: 1100000, manager: "Tunde Adeyemi",   status: "Active",     email: "trust@kano.example", lastContact: "2026-05-08" },
+          { id: "inv-3", name: "AfDB Climate Window",     type: "DFI",             commitment: 10000000, drawn: 4500000, manager: "Hadiza Sambo",   status: "Committed",  email: "climate@afdb.example", lastContact: "2026-04-30" },
+          { id: "inv-4", name: "Mainstream Pension Fund", type: "Pension",         commitment: 7500000, drawn: 0,       manager: "Ibrahim Yakubu",  status: "Onboarding", email: "investments@mpf.example", lastContact: "2026-05-15" },
+          { id: "inv-5", name: "Geregu Capital",          type: "Strategic",       commitment: 3000000, drawn: 2800000, manager: "Adaeze Okeke",    status: "Active",     email: "deals@geregu.example", lastContact: "2026-05-17" }
+        ];
+      }
+
+      function load() {
+        const cur = DB.store.get(KEY, null);
+        if (cur && Array.isArray(cur)) return cur;
+        const s = seed();
+        DB.store.set(KEY, s);
+        return s;
+      }
+      function save(list) { DB.store.set(KEY, list); }
+
+      let investors = load();
+
+      // ---------- helpers ----------
+      function fmtMoney(n) {
+        if (!n) return "$0";
+        if (n >= 1e9) return "$" + (n / 1e9).toFixed(2) + "B";
+        if (n >= 1e6) return "$" + (n / 1e6).toFixed(2) + "M";
+        if (n >= 1e3) return "$" + (n / 1e3).toFixed(0) + "K";
+        return "$" + n;
+      }
+      function statusType(s) {
+        return ({ "Active":"success", "Committed":"info", "Onboarding":"warning", "Closed":"danger", "Paused":"warning" })[s] || "info";
+      }
+      function logoColor(id) {
+        const palette = ["#0A0A0A", "#525252", "#404040", "#171717", "#262626"];
+        let n = 0;
+        for (let i = 0; i < id.length; i++) n = (n + id.charCodeAt(i)) % palette.length;
+        return palette[n];
+      }
+      function fundedBar(c, d) {
+        const pct = c > 0 ? Math.round((d / c) * 100) : 0;
+        return (
+          '<div style="display:flex;align-items:center;gap:6px;min-width:130px">' +
+            '<div style="flex:1;height:6px;border-radius:3px;background:var(--bg-panel-elev);overflow:hidden">' +
+              '<div style="width:' + Math.min(100, pct) + '%;height:100%;background:var(--accent)"></div>' +
+            '</div>' +
+            '<div style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);min-width:32px;text-align:right">' + pct + '%</div>' +
+          '</div>'
+        );
+      }
+
+      // ---------- KPIs ----------
+      function renderKpis() {
+        const cap = investors.reduce(function (a, i) { return a + (i.commitment || 0); }, 0);
+        const drn = investors.reduce(function (a, i) { return a + (i.drawn || 0); }, 0);
+        document.getElementById("kCommit").textContent = fmtMoney(cap);
+        document.getElementById("kDrawn").textContent  = fmtMoney(drn);
+        document.getElementById("kAvail").textContent  = fmtMoney(Math.max(0, cap - drn));
+        document.getElementById("kCount").textContent  = investors.filter(function (i) { return i.status === "Active" || i.status === "Committed"; }).length;
+      }
+
+      // ---------- filters ----------
+      const typeEl   = document.getElementById("typeFilter");
+      const statusEl = document.getElementById("statusFilter");
+      const chipRow  = document.getElementById("chipRow");
+      TYPES.forEach(function (t)   { const o = document.createElement("option"); o.textContent = t; typeEl.appendChild(o); });
+      STATUSES.forEach(function (s){ const o = document.createElement("option"); o.textContent = s; statusEl.appendChild(o); });
+      chipRow.innerHTML = '<button class="t-chip is-active" data-chip="">ALL</button>' +
+        STATUSES.map(function (s) { return '<button class="t-chip" data-chip="' + s + '">' + s.toUpperCase() + '</button>'; }).join("");
+
+      // ---------- rows ----------
+      function rowHtml(d) {
+        const pct = d.commitment > 0 ? Math.round((d.drawn / d.commitment) * 100) : 0;
+        const initials = DB.initials(d.name);
+        return (
+          '<tr data-row="' + d.id + '">' +
+            '<td><div style="display:flex;align-items:center;gap:10px;">' +
+              '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:3px;background:' + logoColor(d.id) + ';color:#FFFFFF;font-family:var(--mono);font-weight:700;font-size:10px">' + initials + '</span>' +
+              '<div style="min-width:0">' +
+                '<a href="#" data-open="' + d.id + '" style="font-weight:500">' + d.name + '</a>' +
+                '<div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;max-width:220px">' + (d.email || "—") + '</div>' +
+              '</div>' +
+            '</div></td>' +
+            '<td style="color:var(--text-secondary)">' + d.type + '</td>' +
+            '<td class="num">' + fmtMoney(d.commitment) + '</td>' +
+            '<td class="num">' + fmtMoney(d.drawn) + '</td>' +
+            '<td>' + fundedBar(d.commitment, d.drawn) + '</td>' +
+            '<td style="color:var(--text-secondary)">' + (d.manager || "—") + '</td>' +
+            '<td><span class="badge badge-' + statusType(d.status) + '">' + d.status + '</span></td>' +
+            '<td class="num" style="color:var(--text-secondary)">' + (d.lastContact || "—") + '</td>' +
+            '<td style="text-align:right">' +
+              '<button class="kebab-btn" data-kebab="' + d.id + '" aria-label="Row actions">' +
+                '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/></svg>' +
+              '</button>' +
+            '</td>' +
+          '</tr>'
+        );
+      }
+
+      const headers = [
+        { key: "name" }, { key: "type" }, { key: "commitment" }, { key: "drawn" },
+        { key: "manager" }, { key: "status" }, { key: "lastContact" }
+      ];
+
+      let api = null;
+      function refresh() {
+        renderKpis();
+        const empty = document.getElementById("invEmpty");
+        const body  = document.getElementById("invBody");
+        const head  = document.getElementById("invHead");
+        if (investors.length === 0) {
+          empty.classList.remove("hidden");
+          head.style.display = "none";
+          body.innerHTML = "";
+          return;
+        }
+        empty.classList.add("hidden");
+        head.style.display = "";
+        api = T.tableApi({
+          thead: head, tbody: body,
+          search: document.getElementById("invSearch"),
+          empty: document.getElementById("invNoMatch"),
+          rows: investors, headers: headers,
+          searchKeys: ["name", "manager", "email"],
+          filters: [
+            { el: typeEl,   key: "type" },
+            { el: statusEl, key: "status" }
+          ],
+          defaultSort: { key: "commitment", dir: "desc" },
+          render: rowHtml,
+          afterRender: function (list) { document.getElementById("visibleCount").textContent = list.length; }
+        });
+      }
+      refresh();
+
+      // ---------- chip clicks ----------
+      chipRow.addEventListener("click", function (e) {
+        const c = e.target.closest("[data-chip]");
+        if (!c) return;
+        statusEl.value = c.getAttribute("data-chip");
+        Array.from(chipRow.children).forEach(function (x) { x.classList.remove("is-active"); });
+        c.classList.add("is-active");
+        if (api) api.render();
+      });
+      document.getElementById("clearFilters").addEventListener("click", function () {
+        document.getElementById("invSearch").value = "";
+        typeEl.value = ""; statusEl.value = "";
+        Array.from(chipRow.children).forEach(function (x) { x.classList.remove("is-active"); });
+        chipRow.querySelector('[data-chip=""]').classList.add("is-active");
+        if (api) api.render();
+      });
+
+      // ---------- row actions ----------
+      document.getElementById("invBody").addEventListener("click", function (e) {
+        const open = e.target.closest("[data-open]");
+        if (open) {
+          e.preventDefault();
+          const id = open.getAttribute("data-open");
+          openDrawer(id);
+          return;
+        }
+        const k = e.target.closest("[data-kebab]");
+        if (k) {
+          const id = k.getAttribute("data-kebab");
+          const row = investors.find(function (x) { return x.id === id; });
+          T.popover(k, [
+            { label: "View / edit", onClick: function () { openDrawer(id); } },
+            { label: "Log contact", onClick: function () { logContact(id); } },
+            { label: "Send report", onClick: function () { T.toast("Quarterly report queued for " + (row ? row.name : id)); } },
+            { label: "Copy email", onClick: function () {
+                if (row && row.email && navigator.clipboard) navigator.clipboard.writeText(row.email);
+                T.toast("Email copied");
+              }
+            },
+            { label: "Export row (CSV)", onClick: function () { T.exportCSV(id + ".csv", [row]); } },
+            { label: "Archive", onClick: function () {
+                const i = investors.findIndex(function (x) { return x.id === id; });
+                if (i >= 0) { investors.splice(i, 1); save(investors); refresh(); T.toast("Investor archived"); }
+              }
+            }
+          ]);
+        }
+      });
+
+      function logContact(id) {
+        const i = investors.findIndex(function (x) { return x.id === id; });
+        if (i < 0) return;
+        investors[i].lastContact = new Date().toISOString().slice(0, 10);
+        save(investors);
+        refresh();
+        T.toast("Contact logged: " + investors[i].name);
+      }
+
+      // ---------- add / edit drawer (modal-based) ----------
+      function openDrawer(id) {
+        const existing = id ? investors.find(function (x) { return x.id === id; }) : null;
+        const v = existing || { name:"", type:"Limited Partner", commitment:0, drawn:0, manager:"", status:"Active", email:"", lastContact:"" };
+        const body = (
+          '<div style="display:grid;gap:10px">' +
+            '<div><label>Name</label><input class="t-input" id="fName" value="' + (v.name || "") + '" style="width:100%" /></div>' +
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
+              '<div><label>Type</label><select class="t-input" id="fType" style="width:100%">' + TYPES.map(function (t) { return '<option' + (t===v.type?" selected":"") + '>' + t + '</option>'; }).join("") + '</select></div>' +
+              '<div><label>Status</label><select class="t-input" id="fStatus" style="width:100%">' + STATUSES.map(function (s) { return '<option' + (s===v.status?" selected":"") + '>' + s + '</option>'; }).join("") + '</select></div>' +
+            '</div>' +
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
+              '<div><label>Commitment ($)</label><input class="t-input" id="fCommit" type="number" min="0" step="50000" value="' + (v.commitment || 0) + '" style="width:100%" /></div>' +
+              '<div><label>Drawn ($)</label><input class="t-input" id="fDrawn" type="number" min="0" step="10000" value="' + (v.drawn || 0) + '" style="width:100%" /></div>' +
+            '</div>' +
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
+              '<div><label>Manager</label><input class="t-input" id="fManager" value="' + (v.manager || "") + '" style="width:100%" /></div>' +
+              '<div><label>Last contact</label><input class="t-input" id="fLast" type="date" value="' + (v.lastContact || "") + '" style="width:100%" /></div>' +
+            '</div>' +
+            '<div><label>Email</label><input class="t-input" id="fEmail" type="email" value="' + (v.email || "") + '" style="width:100%" /></div>' +
+          '</div>'
+        );
+        T.modal(existing ? "Edit investor" : "Add investor", body, {
+          footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="fSave">' + (existing ? "Save" : "Add") + '</button>'
+        });
+        document.getElementById("fSave").addEventListener("click", function () {
+          const name = document.getElementById("fName").value.trim();
+          if (!name) { T.toast("Name is required"); return; }
+          const patch = {
+            name: name,
+            type: document.getElementById("fType").value,
+            status: document.getElementById("fStatus").value,
+            commitment: parseFloat(document.getElementById("fCommit").value) || 0,
+            drawn: parseFloat(document.getElementById("fDrawn").value) || 0,
+            manager: document.getElementById("fManager").value.trim(),
+            lastContact: document.getElementById("fLast").value,
+            email: document.getElementById("fEmail").value.trim()
+          };
+          if (patch.drawn > patch.commitment) { T.toast("Drawn cannot exceed commitment"); return; }
+          if (existing) {
+            Object.assign(existing, patch);
+            T.toast(name + " updated");
+          } else {
+            patch.id = "inv-" + Math.random().toString(36).slice(2, 8);
+            investors.unshift(patch);
+            T.toast(name + " added");
+          }
+          save(investors);
+          T.closeModal();
+          refresh();
+        });
+      }
+
+      document.getElementById("addInvestorBtn").addEventListener("click", function () { openDrawer(null); });
+      document.getElementById("emptyAddBtn") && document.getElementById("emptyAddBtn").addEventListener("click", function () { openDrawer(null); });
+
+      // ---------- send report ----------
+      document.getElementById("sendReportBtn").addEventListener("click", function () {
+        const active = investors.filter(function (i) { return i.status === "Active" || i.status === "Committed"; });
+        if (active.length === 0) { T.toast("No active investors to send"); return; }
+        T.modal("Send quarterly report?", '<div style="font-size:13px;color:var(--text-secondary)">This will queue the Q2 2026 report for all <strong style="color:var(--text-primary)">' + active.length + '</strong> active investors.</div>', {
+          footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="sendOk">Send to ' + active.length + '</button>'
+        });
+        document.getElementById("sendOk").addEventListener("click", function () {
+          T.closeModal();
+          T.toast("Report queued for " + active.length + " investors");
+        });
+      });
+
+      // ---------- export ----------
+      document.getElementById("exportBtn").addEventListener("click", function () {
+        const rows = (api && api.currentFiltered) ? api.currentFiltered() : investors;
+        if (!rows.length) { T.toast("Nothing to export"); return; }
+        T.exportCSV("investors.csv", rows.map(function (i) {
+          return { name: i.name, type: i.type, status: i.status, commitment: i.commitment, drawn: i.drawn, manager: i.manager, email: i.email, lastContact: i.lastContact };
+        }));
+      });
+    })();
+  </script>
+</body>
+</html>

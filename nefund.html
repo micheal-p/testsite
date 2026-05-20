@@ -6,67 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEFUND - NEIIA</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="assets/databank/css/b53286a31ae9facb.css" data-precedence="next">
-    <link rel="stylesheet" href="assets/databank/css/87922e4a53ade201.css" data-precedence="next">
-    <link rel="stylesheet" href="assets/databank/css/ec400057014c6521.css" data-precedence="next">
-    <link rel="stylesheet" href="assets/databank/css/305a7d07f358eb28.css" data-precedence="next">
-    <link rel="stylesheet" href="assets/databank/css/ec06b801a5d0753c.css" data-precedence="next">
-    <style>
-        body,
-        p,
-        li,
-        a,
-        span,
-        div {
-            font-family: var(--font-family) !important;
+    <!-- Tailwind utility classes used by nefund.html (flex/grid/spacing/etc.) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              surface: {
+                DEFAULT: 'rgb(var(--surface-bg) / <alpha-value>)',
+                muted:   'rgb(var(--surface-bg-muted) / <alpha-value>)',
+                sunken:  'rgb(var(--surface-bg-sunken) / <alpha-value>)'
+              }
+            },
+            fontFamily: {
+              sans:    ['Mulish', 'system-ui', 'sans-serif'],
+              display: ['Mulish', 'system-ui', 'sans-serif']
+            }
+          }
         }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            font-family: var(--font-display) !important;
-        }
-
-        /* Fix Safari/Legacy Browser Support for inset-0 */
-        .inset-0 {
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-        }
-
-        /* Force Light Mode Logo on NEFUND Page (Overrides Dark Mode Script) */
-        body.dark-mode .light-mode-logo {
-            display: block !important;
-        }
-
-        body.dark-mode .dark-mode-logo {
-            display: none !important;
-        }
-
-        body.dark-mode .brand-text {
-            color: #006341 !important;
-        }
-
-        body.dark-mode .auth-fixed .nav-link {
-            color: #0b161a !important;
-        }
-
-        /* Ensure Top Level Pill Nav Links (NEFUND + Others) are White */
-        .pill-nav .nav-links>a,
-        .pill-nav .nav-links>.nav-item>.nav-link {
-            color: #ffffff !important;
-        }
-
-        /* Ensure Mega Menu Links remain visible (Dark) */
-        .mega-menu a {
-            color: #050c26 !important;
-        }
-    </style>
+      };
+    </script>
+    <!-- Editorial serif for hero/section headlines (paired with Mulish for UI/body) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
+    <!-- NEFUND-specific styles (brand tokens, suite cards, mega menu polish) -->
+    <link rel="stylesheet" href="assets/css/nefund.css">
+    <script>
+      // Smooth fade-in once DOM is ready (no flash of unstyled content)
+      addEventListener('DOMContentLoaded', () => requestAnimationFrame(() =>
+        document.documentElement.classList.add('nf-ready')));
+      setTimeout(() => document.documentElement.classList.add('nf-ready'), 1500);
+    </script>
     <link rel="icon" type="image/svg+xml" href="./assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
 </head>
 
@@ -312,39 +284,51 @@
             </section>
         </div>
 
-        <!-- Gradient Bars -->
+        <!-- Manifesto bridge — replaces the old gradient-bar interlude -->
         <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="ink"
-                style="width: 100vw; margin-left: calc(-50vw + 50%); margin-top: 0; padding: 0;">
-                <div class="w-full" style="padding: 0; margin: 0;">
-                    <div class="flex flex-col gap-0" style="gap: 0;">
-                        <div class="w-full">
-                            <div class="relative w-full"
-                                style="background:linear-gradient(90deg, #364E5D 0%, #324B59 20%, #475658 42.58%, #646A60 60.27%, #8D887D 74.93%, #9D95A4 85.11%, #9C97BD 92.8%, #BDBBFF 100%);height:40px">
-                                <span class="absolute inset-0 block" style="background:rgba(1, 29, 33, 0.9)"></span>
-                            </div>
-                            <div class="relative w-full"
-                                style="background:linear-gradient(90deg, #364E5D 0%, #324B59 20%, #475658 42.58%, #646A60 60.27%, #8D887D 74.93%, #9D95A4 85.11%, #9C97BD 92.8%, #BDBBFF 100%);height:40px">
-                                <span class="absolute inset-0 block" style="background:rgba(1, 29, 33, 0.8)"></span>
-                            </div>
-                            <div class="relative w-full"
-                                style="background:linear-gradient(90deg, #364E5D 0%, #324B59 20%, #475658 42.58%, #646A60 60.27%, #8D887D 74.93%, #9D95A4 85.11%, #9C97BD 92.8%, #BDBBFF 100%);height:40px">
-                                <span class="absolute inset-0 block" style="background:rgba(1, 29, 33, 0.6)"></span>
-                            </div>
-                            <div class="relative w-full"
-                                style="background:linear-gradient(90deg, #364E5D 0%, #324B59 20%, #475658 42.58%, #646A60 60.27%, #8D887D 74.93%, #9D95A4 85.11%, #9C97BD 92.8%, #BDBBFF 100%);height:40px">
-                                <span class="absolute inset-0 block" style="background:rgba(1, 29, 33, 0.4)"></span>
-                            </div>
-                            <div class="relative w-full"
-                                style="background:linear-gradient(90deg, #364E5D 0%, #324B59 20%, #475658 42.58%, #646A60 60.27%, #8D887D 74.93%, #9D95A4 85.11%, #9C97BD 92.8%, #BDBBFF 100%);height:40px">
-                                <span class="absolute inset-0 block" style="background:rgba(1, 29, 33, 0.2)"></span>
-                            </div>
-                            <div class="relative w-full"
-                                style="background:linear-gradient(90deg, #364E5D 0%, #324B59 20%, #475658 42.58%, #646A60 60.27%, #8D887D 74.93%, #9D95A4 85.11%, #9C97BD 92.8%, #BDBBFF 100%);height:40px">
-                                <span class="absolute inset-0 block" style="background:rgba(1, 29, 33, 0.05)"></span>
-                            </div>
+            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="white">
+                <div class="nf-manifesto">
+                    <div class="nf-manifesto-left">
+                        <span class="nf-manifesto-eyebrow"><span class="dot"></span>One platform</span>
+                        <h2 class="nf-manifesto-headline">
+                            Every investment vehicle, every investor, <em>one operating system.</em>
+                        </h2>
+                        <p class="nf-manifesto-dek">
+                            Built for the firms moving African capital — sub-funds to SPVs, scout cheques to billion-dollar rolling vehicles, all run on the same rails.
+                        </p>
+                        <div class="nf-manifesto-cta">
+                            <a href="contact.html" class="nf-cta-primary">Talk to fund admin</a>
+                            <a href="construction.html" class="nf-cta-link">See product tour <span aria-hidden="true">&rarr;</span></a>
                         </div>
+                        <ul class="nf-manifesto-badges" aria-label="Compliance">
+                            <li><span class="nf-tick" aria-hidden="true">&#10003;</span> ISO 27001</li>
+                            <li><span class="nf-tick" aria-hidden="true">&#10003;</span> SOC 2 Type II</li>
+                            <li><span class="nf-tick" aria-hidden="true">&#10003;</span> GDPR-ready</li>
+                            <li><span class="nf-tick" aria-hidden="true">&#10003;</span> SEC Nigeria</li>
+                        </ul>
                     </div>
+
+                    <aside class="nf-manifesto-right">
+                        <dl class="nf-manifesto-stats">
+                            <div><dt>240+</dt><dd>Active firms on NEFUND</dd></div>
+                            <div><dt>$3.2B</dt><dd>Capital deployed in-platform</dd></div>
+                            <div><dt>9</dt><dd>Vehicle types supported</dd></div>
+                            <div><dt>7d</dt><dd>Median vehicle setup time</dd></div>
+                            <div><dt>99.9%</dt><dd>Platform uptime SLA</dd></div>
+                        </dl>
+                        <figure class="nf-manifesto-quote">
+                            <blockquote>
+                                "We launched our Series A SPV in five business days. Same week, our LPs were already onboarded inside NEFUND."
+                            </blockquote>
+                            <figcaption>
+                                <span class="nf-mq-avatar">FE</span>
+                                <span>
+                                    <span class="nf-mq-name">Funmi Eze</span>
+                                    <span class="nf-mq-role">Founder &middot; Solar Sahara</span>
+                                </span>
+                            </figcaption>
+                        </figure>
+                    </aside>
                 </div>
             </section>
         </div>

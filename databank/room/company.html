@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Company - NEIIA Deal Room Terminal</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { ink: "#0A0A0A", inkSoft: "#525252", paper: "#FFFFFF", muted: "#FAFAFA", border: "#E5E7EB", accent: "#0A0A0A" }
+    } } };
+  </script>
+  <link rel="stylesheet" href="../assets/css/custom.css" />
+  <link rel="stylesheet" href="../assets/css/terminal.css" />
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.49.1/dist/apexcharts.min.js"></script>
+  <style>
+    /* Risk register — editorial entries authored by NEIIA Research */
+    .risk-register { display: flex; flex-direction: column; gap: 0; }
+    .risk-entry {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      gap: 4px 14px;
+      padding: 16px 0;
+      border-top: 1px solid var(--border-t-soft);
+    }
+    .risk-entry:first-child { border-top: 0; padding-top: 8px; }
+    .risk-entry .risk-num {
+      font-family: var(--mono);
+      font-feature-settings: "tnum";
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      padding-top: 3px;
+    }
+    .risk-entry .risk-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.005em;
+    }
+    .risk-entry .risk-note {
+      grid-column: 2 / 3;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-top: 4px;
+    }
+    .risk-entry .risk-level {
+      grid-column: 3 / 4;
+      grid-row: 1 / 2;
+      align-self: start;
+    }
+
+    /* Authored-content attribution chip */
+    .editorial-attrib {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 10px 0 14px;
+      border-bottom: 1px solid var(--border-t-soft);
+      margin-bottom: 4px;
+    }
+    .editorial-attrib .by {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-weight: 500; color: var(--text-primary);
+    }
+    .editorial-attrib .by::before {
+      content: ""; width: 6px; height: 6px; border-radius: 999px; background: var(--accent);
+    }
+    .editorial-attrib .sep { opacity: .35; }
+
+    /* Authoring affordance — for the publisher who logs data */
+    .log-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      padding: 8px 12px;
+      border-radius: 9999px;
+      border: 1px dashed var(--border-t);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+    }
+    .log-cta:hover { border-color: var(--text-primary); color: var(--text-primary); border-style: solid; }
+
+    .timeline { position: relative; padding-left: 18px; }
+    .timeline::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 2px; background: var(--border-t); }
+    .timeline-item { position: relative; padding-bottom: 16px; }
+    .timeline-item::before { content: ""; position: absolute; left: -18px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--bg-panel); }
+    .timeline-item .when { font-family: var(--mono); font-size: 10px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px; }
+    .timeline-item .text { font-size: 12px; color: var(--text-primary); line-height: 1.4; }
+    html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <div data-workspace-shell data-active="company"></div>
+
+    <main class="workspace-content">
+      <!-- Breadcrumb -->
+      <nav style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--text-muted);text-transform:uppercase;margin-bottom:12px;" aria-label="Breadcrumb">
+        <a href="index.html" style="color:var(--text-muted);text-decoration:none">Workspace</a>
+        <span style="margin:0 6px">/</span>
+        <a href="deals.html" style="color:var(--text-muted);text-decoration:none">Companies</a>
+        <span style="margin:0 6px">/</span>
+        <span style="color:var(--accent)" id="crumbCompany">Company</span>
+      </nav>
+
+      <!-- Header -->
+      <header style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:flex-start;gap:14px;min-width:0">
+          <span id="companyLogo" style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:4px;background:var(--accent);color:#FFFFFF;font-family:var(--mono);font-weight:700;font-size:18px;flex-shrink:0">N</span>
+          <div style="min-width:0">
+            <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.12em;color:var(--text-muted);text-transform:uppercase;" id="companyHq">Lagos, Nigeria</div>
+            <h1 style="font-size:22px;font-weight:600;color:var(--text-primary);letter-spacing:-0.01em;display:flex;align-items:center;gap:10px;flex-wrap:wrap;" id="companyName">
+              <span id="companyDisplayName">Company</span>
+              <span id="companyTicker" style="font-family:var(--mono);font-size:14px;color:var(--accent);letter-spacing:0.06em;">--</span>
+            </h1>
+            <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+              <span class="badge badge-info" id="companySector">Sector</span>
+              <span class="badge" id="companyStage">Stage</span>
+              <span class="badge badge-success" id="companyGrowth">+0% YoY</span>
+            </div>
+            <div style="margin-top:8px;display:flex;align-items:baseline;gap:10px;font-family:var(--mono);">
+              <span id="lastPrice" style="font-size:22px;font-weight:600;color:var(--text-primary)">--</span>
+              <span id="changeStr" style="font-size:13px">--</span>
+              <span style="font-size:11px;color:var(--text-muted)">LAST &middot; NGN</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <button id="watchToggle" class="t-btn" type="button" aria-pressed="false">
+            <svg class="star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9 12 2"/></svg>
+            <span id="watchToggleLabel">Add to watchlist</span>
+          </button>
+          <button class="t-btn" type="button" id="alertBtn">Set alert</button>
+          <button class="t-btn" type="button" id="shareBtn">Share</button>
+          <button class="t-btn" type="button" id="exportBtn">Export</button>
+        </div>
+      </header>
+
+      <!-- Subscribe banner (toggles between locked / subscribed) -->
+      <section class="co-sub-banner" id="coSubBanner"></section>
+
+      <!-- Tabs -->
+      <div class="t-tabs" role="tablist">
+        <button class="t-tab is-active" role="tab" data-tab="overview">Overview</button>
+        <button class="t-tab" role="tab" data-tab="financials">Financials</button>
+        <button class="t-tab" role="tab" data-tab="dealroom">Deal Room</button>
+        <button class="t-tab" role="tab" data-tab="deals">Deals</button>
+        <button class="t-tab" role="tab" data-tab="news">News</button>
+      </div>
+
+      <!-- OVERVIEW TAB -->
+      <div class="t-tabpanel is-active" data-panel="overview">
+        <!-- Stats row -->
+        <section style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:14px;" id="statsRow"></section>
+
+        <div style="display:grid;grid-template-columns:1.7fr 1fr;gap:14px;" class="g2">
+          <!-- Price + volume -->
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title">PRICE &middot; 24M</div>
+              <div style="display:flex;gap:4px;">
+                <button class="t-chip is-active" data-pricerange="24">24M</button>
+                <button class="t-chip" data-pricerange="12">12M</button>
+                <button class="t-chip" data-pricerange="6">6M</button>
+                <button class="t-chip" data-pricerange="3">3M</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="priceChart" class="apex-host"></div>
+              <div id="volumeChart" class="apex-host" style="margin-top:6px"></div>
+            </div>
+          </section>
+
+          <!-- Risk register (authored content for subscribers) -->
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">Risk register</div>
+                <div class="panel-sub" id="riskUpdated">Updated &mdash;</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="editorial-attrib">
+                <span class="by">NEIIA Research</span>
+                <span class="sep">·</span>
+                <span>Editor-reviewed</span>
+                <span class="sep">·</span>
+                <span id="riskCount">— entries</span>
+              </div>
+              <div id="radarChart" class="apex-host" style="margin-top:6px"></div>
+              <div id="risksList" class="risk-register" style="margin-top:8px"></div>
+              <button type="button" class="log-cta" id="addRiskBtn" aria-label="Log a new risk note">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Log a new risk note</span>
+              </button>
+            </div>
+          </section>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.7fr 1fr;gap:14px;margin-top:14px;" class="g2">
+          <!-- Thesis -->
+          <section class="panel">
+            <div class="panel-header"><div class="panel-title">INVESTMENT THESIS</div></div>
+            <div class="panel-body">
+              <p style="font-size:13px;line-height:1.7;color:var(--text-primary);" id="companyThesis">--</p>
+              <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border-t-soft);">
+                <div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Market context</div>
+                <p style="font-size:12px;color:var(--text-secondary);line-height:1.6" id="companyMarket">--</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Milestones -->
+          <section class="panel">
+            <div class="panel-header"><div class="panel-title">MILESTONES</div></div>
+            <div class="panel-body">
+              <div class="timeline" id="milestonesList"></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- FINANCIALS TAB -->
+      <div class="t-tabpanel" data-panel="financials">
+        <section style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:14px;" id="finRow"></section>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px" class="g2">
+          <section class="panel">
+            <div class="panel-header"><div class="panel-title">REVENUE TREND</div><div class="panel-sub">Synthetic 24M</div></div>
+            <div class="panel-body"><div id="revTrend" class="apex-host"></div></div>
+          </section>
+          <section class="panel">
+            <div class="panel-header"><div class="panel-title">EBITDA TREND</div><div class="panel-sub">Synthetic 24M</div></div>
+            <div class="panel-body"><div id="ebitdaTrend" class="apex-host"></div></div>
+          </section>
+        </div>
+
+        <section class="panel" style="margin-top:14px">
+          <div class="panel-header"><div class="panel-title">CREDIT RATINGS</div></div>
+          <div class="panel-body">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px" id="ratingsRow"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- DEAL ROOM TAB -->
+      <div class="t-tabpanel" data-panel="dealroom">
+
+        <!-- Pipeline stages -->
+        <section class="panel" style="margin-bottom:14px">
+          <div class="panel-header">
+            <div class="panel-title">PIPELINE STAGE</div>
+            <div class="panel-sub" id="prStageLabel">--</div>
+          </div>
+          <div class="panel-body">
+            <div class="pipe-stages" id="pipeStages"></div>
+          </div>
+        </section>
+
+        <!-- Two-column: documents + DD -->
+        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:14px" class="g2">
+
+          <!-- Data Room / Documents -->
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title">DATA ROOM</div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span class="panel-sub" id="docsMeta">--</span>
+                <button class="t-btn" id="docsAddBtn" style="font-size:11px;padding:4px 10px">+ Upload</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="docTree"></div>
+            </div>
+          </section>
+
+          <!-- DD Checklist -->
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title">DUE DILIGENCE</div>
+              <div class="panel-sub" id="ddOverall">--</div>
+            </div>
+            <div class="panel-body">
+              <div id="ddList"></div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Q&A -->
+        <section class="panel" style="margin-top:14px">
+          <div class="panel-header">
+            <div class="panel-title">Q&amp;A</div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="panel-sub" id="qaMeta">--</span>
+              <button class="t-btn" id="qaAskBtn" style="font-size:11px;padding:4px 10px">+ Ask question</button>
+            </div>
+          </div>
+          <div class="panel-body" id="qaList"></div>
+        </section>
+
+        <!-- IC notes -->
+        <section class="panel" style="margin-top:14px">
+          <div class="panel-header">
+            <div class="panel-title">INVESTMENT COMMITTEE</div>
+            <div class="panel-sub" id="icMeta">--</div>
+          </div>
+          <div class="panel-body" id="icNotes"></div>
+        </section>
+
+        <!-- Comparable transactions -->
+        <section class="panel" style="margin-top:14px">
+          <div class="panel-header">
+            <div class="panel-title">COMPARABLE TRANSACTIONS</div>
+            <div class="panel-sub">Same sector</div>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="db-table">
+              <thead>
+                <tr>
+                  <th class="no-sort">Company</th>
+                  <th class="no-sort">Stage</th>
+                  <th class="no-sort text-right">Size</th>
+                  <th class="no-sort">Status</th>
+                  <th class="no-sort">Updated</th>
+                </tr>
+              </thead>
+              <tbody id="compRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- DEALS TAB -->
+      <div class="t-tabpanel" data-panel="deals">
+        <section class="panel">
+          <div class="panel-header">
+            <div class="panel-title">TRACKED ROUNDS</div>
+            <a href="deals.html" style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);text-decoration:none">ALL DEALS →</a>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="db-table">
+              <thead>
+                <tr>
+                  <th class="no-sort">Round</th>
+                  <th class="no-sort">Date</th>
+                  <th class="no-sort text-right">Size</th>
+                  <th class="no-sort">Lead</th>
+                  <th class="no-sort">Status</th>
+                </tr>
+              </thead>
+              <tbody id="dealsBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- NEWS TAB -->
+      <div class="t-tabpanel" data-panel="news" id="news">
+        <section class="panel">
+          <div class="panel-header">
+            <div class="panel-title">NEWS &amp; FILINGS</div>
+            <div class="panel-sub" id="newsCount">--</div>
+          </div>
+          <div class="panel-body" id="newsFeed"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <style>
+    @media (max-width: 900px) { .g2 { grid-template-columns: 1fr !important; } #statsRow, #finRow { grid-template-columns: repeat(2, 1fr) !important; } }
+  </style>
+
+  <script src="../assets/js/databank.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/terminal.js"></script>
+  <script src="../assets/js/workspace.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const D = window.DataBankData;
+      const T = window.Terminal;
+      const params = new URLSearchParams(location.search);
+      const reqId = (params.get("company") || "").toLowerCase();
+      const company = D.companies.find(function (c) { return c.id === reqId; }) || D.companies[0];
+      if (!company) return;
+
+      const wl = window.DataBank ? window.DataBank.watchlistApi() : null;
+      const subsApi = window.DataBank ? window.DataBank.subscriptionsApi() : null;
+
+      // ---- Subscribe banner (locked / subscribed states) ----
+      function renderSubBanner() {
+        const isSubbed = subsApi && subsApi.has(company.id);
+        const price = T && T.priceForCompany ? T.priceForCompany(company) : 49;
+        const el = document.getElementById("coSubBanner");
+        if (isSubbed) {
+          el.className = "co-sub-banner is-subscribed";
+          el.innerHTML = (
+            '<div class="co-sub-icon" aria-hidden="true">' +
+              '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+            '</div>' +
+            '<div class="co-sub-text">' +
+              '<div class="co-sub-title">You\'re subscribed to ' + company.name + '</div>' +
+              '<div class="co-sub-sub">Full data access · Renews monthly at $' + price + ' · ' +
+                '<a href="settings.html#billing" style="color:var(--text-secondary)">manage</a></div>' +
+            '</div>' +
+            '<button class="t-btn" type="button" id="unsubBtn">Cancel subscription</button>'
+          );
+          const unsub = document.getElementById("unsubBtn");
+          if (unsub) unsub.addEventListener("click", function () {
+            subsApi.remove(company.id);
+            T.toast("Subscription to " + company.name + " cancelled");
+            renderSubBanner();
+            applyPaywall();
+            if (window.WorkspaceShell && window.WorkspaceShell.refreshSubscriptions) {
+              window.WorkspaceShell.refreshSubscriptions();
+            }
+          });
+        } else {
+          el.className = "co-sub-banner is-locked";
+          el.innerHTML = (
+            '<div class="co-sub-icon" aria-hidden="true">' +
+              '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' +
+            '</div>' +
+            '<div class="co-sub-text">' +
+              '<div class="co-sub-title">Subscribe to exclusive ' + company.name + ' data</div>' +
+              '<div class="co-sub-sub">Financials, milestones, risk register, weekly briefings &middot; <strong>$' + price + '/mo</strong></div>' +
+            '</div>' +
+            '<button class="t-btn t-btn-primary" type="button" id="subBtn">Add card &amp; unlock</button>'
+          );
+          document.getElementById("subBtn").addEventListener("click", function () {
+            T.subscribeModal(company, function () {
+              renderSubBanner();
+              applyPaywall();
+              if (window.WorkspaceShell && window.WorkspaceShell.refreshSubscriptions) {
+                window.WorkspaceShell.refreshSubscriptions();
+              }
+            });
+          });
+        }
+      }
+
+      // ---- Paywall on data-heavy tabs ----
+      function applyPaywall() {
+        const isSubbed = subsApi && subsApi.has(company.id);
+        // Lock these tabs behind subscription: Financials, Deal Room, News
+        ["financials", "dealroom", "news"].forEach(function (key) {
+          const panel = document.querySelector('[data-panel="' + key + '"]');
+          if (!panel) return;
+          if (isSubbed) {
+            panel.classList.remove("is-paywalled");
+            const cover = panel.querySelector(".paywall-cover");
+            if (cover) cover.remove();
+          } else {
+            if (panel.classList.contains("is-paywalled")) return;
+            panel.classList.add("is-paywalled");
+            const price = T && T.priceForCompany ? T.priceForCompany(company) : 49;
+            const cover = document.createElement("div");
+            cover.className = "paywall-cover";
+            cover.innerHTML = (
+              '<div class="paywall">' +
+                '<div class="paywall-icon" aria-hidden="true">' +
+                  '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' +
+                '</div>' +
+                '<div class="paywall-title">Subscribe to view ' + (key === "financials" ? "financials" : key === "dealroom" ? "deal room data" : "the news stream") + '</div>' +
+                '<p class="paywall-text">Full ' + company.name + ' coverage is part of your data subscription — unlock for $' + price + '/month. Cancel anytime.</p>' +
+                '<button type="button" class="t-btn t-btn-primary" data-subscribe-here>Add card &amp; unlock</button>' +
+              '</div>'
+            );
+            panel.appendChild(cover);
+          }
+        });
+      }
+
+      // Delegate subscribe clicks from inside paywall covers
+      document.body.addEventListener("click", function (e) {
+        const b = e.target.closest("[data-subscribe-here]");
+        if (!b) return;
+        T.subscribeModal(company, function () {
+          renderSubBanner();
+          applyPaywall();
+          if (window.WorkspaceShell && window.WorkspaceShell.refreshSubscriptions) {
+            window.WorkspaceShell.refreshSubscriptions();
+          }
+        });
+      });
+
+      renderSubBanner();
+      // applyPaywall will run after the tabs/panels are mounted below.
+      setTimeout(applyPaywall, 0);
+
+      // Header
+      document.title = company.name + " - NEIIA Deal Room Terminal";
+      document.getElementById("crumbCompany").textContent = company.name;
+      document.getElementById("companyDisplayName").textContent = company.name;
+      document.getElementById("companyHq").textContent = company.hq;
+      document.getElementById("companyTicker").textContent = company.id.toUpperCase();
+      document.getElementById("companySector").textContent = company.sector;
+      document.getElementById("companyGrowth").textContent = company.growth || "+0%";
+      const deal = D.deals.find(function (d) { return d.id === company.id; });
+      document.getElementById("companyStage").textContent = deal ? deal.stage : "Tracked";
+      document.getElementById("companyLogo").textContent = company.name.charAt(0);
+
+      // Last price + change
+      const dir = company.changePct >= 0 ? "up" : "down";
+      const arrow = company.changePct >= 0 ? "▲" : "▼";
+      document.getElementById("lastPrice").textContent = company.last.toFixed(2);
+      document.getElementById("changeStr").className = dir;
+      document.getElementById("changeStr").textContent = arrow + " " + (company.changeAbs >= 0 ? "+" : "") + company.changeAbs.toFixed(2) + " (" + (company.changePct >= 0 ? "+" : "") + company.changePct.toFixed(2) + "%)";
+
+      // Stats row
+      function statTile(label, value) {
+        return '<div class="stat-tile"><div class="label">' + label + '</div><div class="value">' + value + '</div></div>';
+      }
+      document.getElementById("statsRow").innerHTML = [
+        statTile("Valuation", company.valuation),
+        statTile("Revenue", company.revenue),
+        statTile("Headcount", company.employees),
+        statTile("Founded", company.founded)
+      ].join("");
+
+      // Thesis / market
+      document.getElementById("companyThesis").textContent = company.thesis || "";
+      document.getElementById("companyMarket").textContent = company.market || "";
+
+      // Price chart + volume
+      function renderCharts(months) {
+        const days = Math.round(months / 12 * 252);
+        const ph = document.getElementById("priceChart");
+        const vh = document.getElementById("volumeChart");
+        ph.innerHTML = ""; vh.innerHTML = "";
+        T.charts.priceChart(ph, company.priceHistory24m.slice(-days), company.id.toUpperCase());
+        T.charts.volumeChart(vh, company.volumeHistory.slice(-days));
+      }
+      renderCharts(24);
+      document.querySelectorAll("[data-pricerange]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          document.querySelectorAll("[data-pricerange]").forEach(function (x) { x.classList.remove("is-active"); });
+          b.classList.add("is-active");
+          renderCharts(parseInt(b.getAttribute("data-pricerange"), 10));
+        });
+      });
+
+      // Risk radar + register (authored editorial content)
+      T.charts.radarChart(document.getElementById("radarChart"), company.radar.labels, company.radar.values);
+      function levelBadge(level) {
+        const l = (level || "").toLowerCase();
+        if (l === "high")   return '<span class="badge badge-danger">High</span>';
+        if (l === "medium") return '<span class="badge badge-warning">Medium</span>';
+        return '<span class="badge badge-success">Low</span>';
+      }
+      function renderRiskRegister(risks) {
+        document.getElementById("risksList").innerHTML = risks.map(function (r, i) {
+          const num = String(i + 1).padStart(2, "0");
+          return (
+            '<div class="risk-entry">' +
+              '<span class="risk-num">' + num + '</span>' +
+              '<span class="risk-name">' + r.name + '</span>' +
+              '<span class="risk-level">' + levelBadge(r.level) + '</span>' +
+              '<p class="risk-note">' + r.note + '</p>' +
+            '</div>'
+          );
+        }).join("");
+        document.getElementById("riskCount").textContent = risks.length + (risks.length === 1 ? " entry" : " entries");
+      }
+      const liveRisks = (company.risks || []).slice();
+      renderRiskRegister(liveRisks);
+      document.getElementById("riskUpdated").textContent = "Updated " + new Date().toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+
+      // Log a new risk note — what the publisher uses to author content for subscribers
+      document.getElementById("addRiskBtn").addEventListener("click", function () {
+        T.modal("Log a risk note", (
+          '<p style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin-bottom:14px;">' +
+            'Subscribers to ' + company.name + ' will see this in their risk register. Keep entries factual and link to sources where you can.' +
+          '</p>' +
+          '<div style="display:grid;gap:14px;">' +
+            '<div><label>Risk name</label><input class="t-input" name="riskName" placeholder="e.g. Regulatory tariff exposure" style="width:100%" /></div>' +
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">' +
+              '<div><label>Level</label>' +
+                '<select class="t-input" name="riskLevel" style="width:100%">' +
+                  '<option>Low</option>' +
+                  '<option selected>Medium</option>' +
+                  '<option>High</option>' +
+                '</select></div>' +
+              '<div><label>Category</label>' +
+                '<select class="t-input" name="riskCat" style="width:100%">' +
+                  '<option>Market</option><option>Regulatory</option><option>Operational</option>' +
+                  '<option>Financial</option><option>Reputational</option><option>Other</option>' +
+                '</select></div>' +
+            '</div>' +
+            '<div><label>Editor note</label><textarea class="t-input" name="riskNote" rows="3" placeholder="Why this matters, how it could play out, what to watch." style="width:100%;resize:vertical;"></textarea></div>' +
+          '</div>'
+        ), {
+          footer:
+            '<button class="t-btn" type="button" data-modal-close>Cancel</button>' +
+            '<button class="t-btn t-btn-primary" type="button" id="saveRiskBtn">Publish to subscribers</button>'
+        });
+        document.getElementById("saveRiskBtn").addEventListener("click", function () {
+          const form = document.querySelector("[data-modal-root]");
+          const name = form.querySelector('[name="riskName"]').value.trim();
+          const level = form.querySelector('[name="riskLevel"]').value;
+          const note = form.querySelector('[name="riskNote"]').value.trim();
+          if (!name || !note) { T.toast("Add a risk name and editor note"); return; }
+          liveRisks.unshift({ name: name, level: level, note: note });
+          renderRiskRegister(liveRisks);
+          document.getElementById("riskUpdated").textContent = "Updated just now";
+          T.closeModal();
+          T.toast("Risk note published to subscribers");
+        });
+      });
+
+      // Milestones
+      document.getElementById("milestonesList").innerHTML = (company.milestones || []).map(function (m) {
+        return '<div class="timeline-item"><div class="when">' + m.date + '</div><div class="text">' + m.text + '</div></div>';
+      }).join("");
+
+      // Financials tab
+      function finTile(label, value, deltaText, dir, spark) {
+        return (
+          '<div class="kpi-card">' +
+            '<div class="label">' + label + '</div>' +
+            '<div class="value">' + value + '</div>' +
+            '<div class="delta ' + (dir === "up" ? "up" : dir === "down" ? "down" : "") + '">' + deltaText + '</div>' +
+            (spark ? '<div class="kpi-spark">' + T.sparkline(spark, { width: 90, height: 28 }) + '</div>' : "") +
+          '</div>'
+        );
+      }
+      const revSpark = company.priceSpark; // reuse synthetic
+      const ebitdaSpark = company.priceSpark.slice().reverse();
+      document.getElementById("finRow").innerHTML = [
+        finTile("Revenue", company.revenue, "▲ " + (company.growth || "--"), "up", revSpark),
+        finTile("Valuation", company.valuation, "Last priced round", "", null),
+        finTile("EBITDA margin", "~22%", "▲ expanding", "up", ebitdaSpark),
+        finTile("Cash runway", "18 mo", "As of last review", "", null)
+      ].join("");
+      // simple area charts for fin trends
+      T.charts.priceChart(document.getElementById("revTrend"), company.priceHistory24m.map(function (v) { return +(v / 10).toFixed(2); }), "Revenue index");
+      T.charts.priceChart(document.getElementById("ebitdaTrend"), company.priceHistory24m.map(function (v, i) { return +(v / 12 + (i % 30) * 0.05).toFixed(2); }), "EBITDA index");
+
+      // Ratings
+      const r = company.ratings;
+      function ratingCard(label, val) {
+        return '<div style="text-align:center;padding:14px;border:1px solid var(--border-t);border-radius:4px;background:var(--bg-base);"><div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">' + label + '</div><div style="font-family:var(--mono);font-size:22px;color:var(--accent);font-weight:600;">' + val + '</div></div>';
+      }
+      document.getElementById("ratingsRow").innerHTML = [
+        ratingCard("House view", r.house),
+        ratingCard("Moody's", r.moodys),
+        ratingCard("S&P", r.sp)
+      ].join("");
+
+      // Deals tab
+      const dealRows = [
+        { round: "Latest tracked round", date: deal ? deal.updated : "Mar 12, 2026", size: deal ? deal.size : "$--", lead: "NEIIA syndicate", status: deal ? deal.status : "Watching", statusType: deal ? (deal.statusType || "info") : "info" },
+        { round: "Prior round", date: "Sep 18, 2024", size: company.valuationNum >= 1000 ? "$80M" : "$10M", lead: "Existing investors", status: "Closed", statusType: "success" },
+        { round: "Seed extension", date: "Apr 04, 2022", size: "$3M", lead: "Founders' Fund LA", status: "Closed", statusType: "success" }
+      ];
+      document.getElementById("dealsBody").innerHTML = dealRows.map(function (d) {
+        return "<tr><td>" + d.round + "</td><td class=\"num\" style=\"color:var(--text-secondary)\">" + d.date + "</td><td class=\"num\">" + d.size + "</td><td style=\"color:var(--text-secondary)\">" + d.lead + "</td><td><span class=\"badge badge-" + d.statusType + "\">" + d.status + "</span></td></tr>";
+      }).join("");
+
+      // News tab
+      const newsItems = company.news || [];
+      document.getElementById("newsCount").textContent = newsItems.length + " items";
+      document.getElementById("newsFeed").innerHTML = newsItems.map(function (n) {
+        return (
+          '<div class="t-news-item">' +
+            '<div class="news-date">' + n.date + '</div>' +
+            '<div class="news-headline"><a href="#" data-news="' + n.tag + '">' + n.headline + '</a><div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);margin-top:3px;letter-spacing:0.06em;text-transform:uppercase">' + n.tag + '</div></div>' +
+            '<span class="news-source">' + n.source + '</span>' +
+          '</div>'
+        );
+      }).join("");
+
+      // --------- DEAL ROOM TAB ---------
+      (function dealRoom() {
+        const seed = D.seedFromString ? D.seedFromString(company.id) : (company.id.charCodeAt(0) * 9301);
+        const rng  = D.lcg ? D.lcg(seed) : (function () { let s = seed; return function () { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }; })();
+        const pick = function (arr) { return arr[Math.floor(rng() * arr.length)]; };
+        const intB = function (lo, hi) { return Math.floor(lo + rng() * (hi - lo + 1)); };
+
+        // Pipeline stage — derived from deal status if a tracked deal exists, else seeded
+        const stages = ["Sourced", "Screened", "Diligence", "IC Review", "Term Sheet", "Signed", "Closed"];
+        const deal = (D.deals || []).find(function (x) { return x.id === company.id; });
+        const statusToStage = { "On hold": 1, "Due diligence": 2, "Term sheet": 4, "Allocating": 5, "Closed": 6 };
+        let currentStage = deal ? (statusToStage[deal.status] != null ? statusToStage[deal.status] : intB(2, 5)) : intB(1, 5);
+        document.getElementById("prStageLabel").textContent = "Currently: " + stages[currentStage];
+        document.getElementById("pipeStages").innerHTML = stages.map(function (s, i) {
+          const state = i < currentStage ? "done" : i === currentStage ? "current" : "todo";
+          return (
+            '<div class="pipe-step is-' + state + '">' +
+              '<span class="pipe-dot">' + (i < currentStage ? "✓" : (i + 1)) + '</span>' +
+              '<span class="pipe-label">' + s + '</span>' +
+            '</div>'
+          );
+        }).join("");
+
+        // Documents (data room)
+        const folders = [
+          { name: "Financials",  files: ["Audited_FY25.pdf", "Management_Accounts_Q1_26.xlsx", "Cap_Table_v3.xlsx", "Tax_Compliance_Cert.pdf"] },
+          { name: "Legal",       files: ["Articles_of_Association.pdf", "Shareholders_Agreement.pdf", "Material_Contracts.zip", "Litigation_Schedule.pdf"] },
+          { name: "Operations",  files: ["Operating_Model_2026.xlsx", "KPI_Pack_Q1.pdf", "Org_Chart.pdf"] },
+          { name: "Commercial",  files: ["Customer_Concentration.xlsx", "Pipeline_Q2_26.xlsx", "Top10_Contracts.pdf"] },
+          { name: "Technology",  files: ["System_Architecture.pdf", "Security_Audit_2025.pdf"] },
+          { name: "ESG",         files: ["ESG_Policy.pdf", "Carbon_Inventory_2025.xlsx"] }
+        ];
+        const docTypes = { pdf: "PDF", xlsx: "XLS", zip: "ZIP", docx: "DOC" };
+        let totalDocs = 0;
+        const docHtml = folders.map(function (f, fi) {
+          totalDocs += f.files.length;
+          const items = f.files.map(function (name) {
+            const ext = (name.split(".").pop() || "pdf").toLowerCase();
+            const sizeKb = intB(120, 9800);
+            const size = sizeKb > 1024 ? (sizeKb / 1024).toFixed(1) + " MB" : sizeKb + " KB";
+            const day = intB(1, 90);
+            const lock = rng() < 0.18;
+            return (
+              '<div class="doc-item">' +
+                '<span class="doc-type">' + (docTypes[ext] || ext.toUpperCase()) + '</span>' +
+                '<span class="doc-name">' + name + '</span>' +
+                '<span class="doc-meta">' + size + ' &middot; ' + day + 'd ago' + '</span>' +
+                (lock ? '<span class="doc-lock" title="Restricted">🔒</span>' : '<span class="doc-lock" style="opacity:0"></span>') +
+                '<button class="t-btn doc-action" data-doc="' + f.name + '/' + name + '" style="font-size:10px;padding:3px 8px">View</button>' +
+              '</div>'
+            );
+          }).join("");
+          return (
+            '<div class="doc-folder">' +
+              '<button class="doc-folder-hdr" data-folder="' + fi + '" aria-expanded="' + (fi === 0 ? "true" : "false") + '">' +
+                '<span class="caret">' + (fi === 0 ? "▾" : "▸") + '</span>' +
+                '<span class="doc-folder-name">' + f.name + '</span>' +
+                '<span class="doc-folder-count">' + f.files.length + '</span>' +
+              '</button>' +
+              '<div class="doc-folder-body" data-body="' + fi + '" style="' + (fi === 0 ? "" : "display:none") + '">' + items + '</div>' +
+            '</div>'
+          );
+        }).join("");
+        document.getElementById("docTree").innerHTML = docHtml;
+        document.getElementById("docsMeta").textContent = totalDocs + " files in " + folders.length + " folders";
+
+        document.getElementById("docTree").addEventListener("click", function (e) {
+          const f = e.target.closest("[data-folder]");
+          if (f) {
+            const idx = f.getAttribute("data-folder");
+            const body = document.querySelector('[data-body="' + idx + '"]');
+            const opened = body.style.display !== "none";
+            body.style.display = opened ? "none" : "";
+            f.querySelector(".caret").textContent = opened ? "▸" : "▾";
+            f.setAttribute("aria-expanded", opened ? "false" : "true");
+            return;
+          }
+          const d = e.target.closest("[data-doc]");
+          if (d) T.toast("Opened " + d.getAttribute("data-doc") + " (demo only)");
+        });
+
+        document.getElementById("docsAddBtn").addEventListener("click", function () {
+          T.modal("Upload document", '<div style="display:grid;gap:10px"><div><label>Folder</label><select class="t-input" id="upFolder" style="width:100%">' + folders.map(function (f) { return '<option>' + f.name + '</option>'; }).join("") + '</select></div><div><label>File</label><input type="file" id="upFile" style="width:100%" /></div></div>', { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="upOk">Upload</button>' });
+          document.getElementById("upOk").addEventListener("click", function () {
+            T.closeModal();
+            T.toast("Document uploaded (demo only)");
+          });
+        });
+
+        // Due diligence checklist
+        const ddCats = [
+          { name: "Financial",        target: 12 },
+          { name: "Legal",            target: 9  },
+          { name: "Operational",      target: 8  },
+          { name: "Commercial",       target: 10 },
+          { name: "Tech & Security",  target: 6  },
+          { name: "ESG & Compliance", target: 7  },
+          { name: "People & Culture", target: 5  }
+        ];
+        let totalDone = 0, totalNeeded = 0;
+        const ddHtml = ddCats.map(function (c) {
+          const done = intB(Math.floor(c.target * 0.45), c.target);
+          totalDone += done; totalNeeded += c.target;
+          const pct = Math.round((done / c.target) * 100);
+          const status = pct >= 95 ? "complete" : pct >= 65 ? "ontrack" : pct >= 35 ? "midway" : "early";
+          return (
+            '<div class="dd-item is-' + status + '">' +
+              '<div class="dd-row">' +
+                '<span class="dd-name">' + c.name + '</span>' +
+                '<span class="dd-fraction">' + done + '/' + c.target + '</span>' +
+              '</div>' +
+              '<div class="dd-bar"><div class="dd-bar-fill" style="width:' + pct + '%"></div></div>' +
+              '<div class="dd-meta">' + pct + '% &middot; ' + (status === "complete" ? "Ready for IC" : status === "ontrack" ? "On track" : status === "midway" ? "Items outstanding" : "Just started") + '</div>' +
+            '</div>'
+          );
+        }).join("");
+        document.getElementById("ddList").innerHTML = ddHtml;
+        const overall = Math.round((totalDone / totalNeeded) * 100);
+        document.getElementById("ddOverall").textContent = overall + "% complete overall";
+
+        // Q&A
+        const qPool = [
+          { q: "Can you share the trailing twelve months unit economics by customer cohort?",            a: "Cohort LTV/CAC tracking is in the Financials folder. TTM blended LTV/CAC sits at " + (2.2 + rng() * 1.6).toFixed(1) + "x.",          who: "CFO" },
+          { q: "What is the top-5 customer concentration as of Q1 2026?",                                 a: "Top 5 contribute " + intB(22, 38) + "% of revenue, down " + intB(2, 9) + "ppt YoY as we diversified the customer base.",                        who: "Head of Sales" },
+          { q: "How does the management team plan to navigate FX volatility on USD-priced inputs?",       a: "We hedge ~" + intB(35, 65) + "% of next-12-month USD exposure via forwards and have moved " + intB(20, 40) + "% of supplier contracts to NGN.",  who: "Treasurer" },
+          { q: "Walk us through the regulatory roadmap that affects your licence in the next 18 months.", a: "Three notable filings: a periodic compliance return in Q2, a tariff review (sector-specific) in Q3, and the new ESG disclosure rule in Q4.", who: "GC" },
+          { q: "What is the IC's expected ownership post-money?",                                          a: "Indicative term sheet contemplates " + intB(8, 22) + "% fully diluted including the option pool top-up.",                                     who: "Founder & CEO" },
+          { q: "Are there any active or threatened material litigation matters we should be aware of?",   a: "One immaterial commercial dispute under negotiation; no other open litigation. Full schedule is in Legal/Litigation_Schedule.pdf.",            who: "GC" },
+          { q: "Can we get the breakdown of capex vs opex for the next two years?",                       a: "Capex weighted to Year 1 (~" + intB(55, 75) + "% of $" + intB(8, 18) + "M plan) for capacity build-out; Year 2 normalises to maintenance.",   who: "CFO" }
+        ];
+        const qaCount = intB(4, 6);
+        const qa = [];
+        for (let i = 0; i < qaCount; i++) qa.push(qPool[i % qPool.length]);
+        document.getElementById("qaList").innerHTML = qa.map(function (item, i) {
+          const day = intB(1, 18);
+          return (
+            '<div class="qa-item">' +
+              '<div class="qa-q"><span class="qa-num">Q' + (i + 1) + '</span>' + item.q + '</div>' +
+              '<div class="qa-a"><span class="qa-from">' + item.who + ' &middot; ' + day + 'd ago</span>' + item.a + '</div>' +
+            '</div>'
+          );
+        }).join("");
+        document.getElementById("qaMeta").textContent = qaCount + " resolved &middot; " + intB(0, 2) + " open";
+
+        document.getElementById("qaAskBtn").addEventListener("click", function () {
+          T.modal("Ask a question", '<div style="display:grid;gap:10px"><div><label>Question</label><textarea class="t-input" id="newQ" rows="4" placeholder="What would you like to know?" style="width:100%"></textarea></div><div><label>Route to</label><select class="t-input" id="newQTo" style="width:100%"><option>CFO</option><option>CEO</option><option>GC</option><option>Head of Sales</option><option>Treasurer</option></select></div></div>', { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="askOk">Submit</button>' });
+          document.getElementById("askOk").addEventListener("click", function () {
+            const q = document.getElementById("newQ").value.trim();
+            if (!q) { T.toast("Add a question first"); return; }
+            T.closeModal();
+            T.toast("Question routed to " + document.getElementById("newQTo").value);
+          });
+        });
+
+        // IC notes
+        const recommendation = currentStage >= 4 ? "Recommend proceed" : currentStage >= 2 ? "Continue diligence" : "Hold for now";
+        const votes = { y: intB(3, 6), n: intB(0, 2), a: intB(0, 2) };
+        const icText = currentStage >= 4
+          ? "Sector fundamentals constructive. Management team has executed against the prior plan with material milestones cleared. We have visibility on the next two quarters of cash needs. Path to exit appears credible via either strategic acquisition or follow-on round at +" + intB(35, 95) + "% step-up."
+          : "Position remains attractive in principle. Key follow-ups are around the customer-concentration question (Q2) and the regulatory pathway (Q4). Will revisit once additional documents land in the Financials and Legal folders.";
+        document.getElementById("icMeta").textContent = recommendation;
+        document.getElementById("icNotes").innerHTML = (
+          '<div style="display:grid;grid-template-columns:1fr 220px;gap:18px;align-items:start">' +
+            '<div style="font-size:13px;line-height:1.7;color:var(--text-primary)">' + icText + '</div>' +
+            '<div style="display:flex;flex-direction:column;gap:8px">' +
+              '<div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:0.14em;text-transform:uppercase">Last vote</div>' +
+              '<div style="display:flex;gap:6px;align-items:center"><span class="ic-vote vote-yes">' + votes.y + '</span><span style="font-size:12px;color:var(--text-secondary)">Yes</span></div>' +
+              '<div style="display:flex;gap:6px;align-items:center"><span class="ic-vote vote-no">' + votes.n + '</span><span style="font-size:12px;color:var(--text-secondary)">No</span></div>' +
+              '<div style="display:flex;gap:6px;align-items:center"><span class="ic-vote vote-abs">' + votes.a + '</span><span style="font-size:12px;color:var(--text-secondary)">Abstain</span></div>' +
+            '</div>' +
+          '</div>'
+        );
+
+        // Comparable transactions
+        const comps = (D.deals || [])
+          .filter(function (x) { return x.sector === company.sector && x.id !== company.id; })
+          .slice(0, 6);
+        const compBody = document.getElementById("compRows");
+        if (comps.length === 0) {
+          compBody.innerHTML = '<tr><td colspan="5" style="padding:24px;text-align:center;color:var(--text-muted)">No comparable transactions in this sector yet.</td></tr>';
+        } else {
+          compBody.innerHTML = comps.map(function (c) {
+            return (
+              '<tr>' +
+                '<td><a href="company.html?company=' + c.id + '">' + c.company + '</a></td>' +
+                '<td style="color:var(--text-secondary)">' + c.stage + '</td>' +
+                '<td class="num">' + c.size + '</td>' +
+                '<td><span class="badge badge-' + (c.statusType || "info") + '">' + c.status + '</span></td>' +
+                '<td class="num" style="color:var(--text-secondary)">' + c.updated + '</td>' +
+              '</tr>'
+            );
+          }).join("");
+        }
+      })();
+
+      // Tabs
+      function activate(name) {
+        document.querySelectorAll(".t-tab").forEach(function (t) {
+          const on = t.getAttribute("data-tab") === name;
+          t.classList.toggle("is-active", on);
+          t.setAttribute("aria-selected", on);
+        });
+        document.querySelectorAll(".t-tabpanel").forEach(function (p) {
+          p.classList.toggle("is-active", p.getAttribute("data-panel") === name);
+        });
+        // Update URL hash without scroll
+        if (history.replaceState) history.replaceState(null, "", "#" + name);
+      }
+      document.querySelectorAll(".t-tab").forEach(function (t) {
+        t.addEventListener("click", function () { activate(t.getAttribute("data-tab")); });
+      });
+      // honor hash on load (e.g. #news)
+      if (location.hash) {
+        const h = location.hash.replace("#", "");
+        if (["overview","financials","dealroom","deals","news"].indexOf(h) >= 0) activate(h);
+      }
+
+      // Watchlist toggle
+      const watchBtn = document.getElementById("watchToggle");
+      const watchLabel = document.getElementById("watchToggleLabel");
+      function syncWatch() {
+        if (!wl) return;
+        const active = wl.has(company.id);
+        watchBtn.classList.toggle("is-active", active);
+        watchBtn.setAttribute("aria-pressed", active ? "true" : "false");
+        watchLabel.textContent = active ? "On watchlist" : "Add to watchlist";
+      }
+      syncWatch();
+      watchBtn.addEventListener("click", function () {
+        if (!wl) return;
+        const added = wl.toggle(company.id);
+        syncWatch();
+        T.toast(added ? company.name + " added to watchlist" : company.name + " removed from watchlist");
+      });
+
+      // Alert button
+      document.getElementById("alertBtn").addEventListener("click", function () { T.openAlertsModal(); });
+
+      // Share
+      document.getElementById("shareBtn").addEventListener("click", function () {
+        const link = location.origin + location.pathname + "?company=" + company.id;
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link);
+        T.toast("Link copied to clipboard");
+      });
+
+      // Export single-company tearsheet
+      document.getElementById("exportBtn").addEventListener("click", function () {
+        T.exportCSV(company.id + "-tearsheet.csv", [{
+          symbol: company.id.toUpperCase(),
+          name: company.name,
+          sector: company.sector,
+          hq: company.hq,
+          founded: company.founded,
+          valuation: company.valuation,
+          revenue: company.revenue,
+          employees: company.employees,
+          growth: company.growth,
+          last_price: company.last,
+          change_pct: company.changePct
+        }]);
+      });
+    })();
+  </script>
+</body>
+</html>

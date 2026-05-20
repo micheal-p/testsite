@@ -1,0 +1,712 @@
+/* =========================================================================
+   NEFUND — editorial, premium B2B page styling
+   Loads after styles.css; targets only the nefund.html page.
+   ========================================================================= */
+
+:root {
+  /* ---- Brand surfaces (cream / off-white / warm muted) ---- */
+  --surface-bg:        253 252 248;
+  --surface-bg-muted:  248 246 240;
+  --surface-bg-sunken: 240 237 230;
+  --surface-bg-ink:    11 22 26;
+
+  /* ---- Surface stroke ---- */
+  --surface-stroke-primary: 231 229 224;   /* warm hairline */
+  --surface-stroke-soft:    239 237 230;
+
+  /* ---- Foregrounds ---- */
+  --surface-text-primary:       11 22 26;
+  --surface-text-muted:         88 92 100;
+  --surface-text-faint:         142 134 123;
+  --surface-text-section-label: 0 99 65;   /* NEIIA green */
+  --surface-text-accent:        0 99 65;
+
+  /* ---- CTA tokens ---- */
+  --cta-primary-bg:           11 22 26;
+  --cta-primary-text:         255 255 255;
+  --cta-primary-hover-alt-bg: 0 99 65;
+  --cta-primary-hover-bg:     189 187 255;   /* lavender wash on suite cards */
+  --cta-primary-active-bg:    0 80 52;
+  --cta-primary-active-text:  255 255 255;
+
+  /* ---- Card surfaces ---- */
+  --card-primary-bg: 245 243 237;
+
+  /* ---- Type ---- */
+  --bg-primary:   #ffffff;
+  --text-primary: #0b161a;
+  --font-family:  "Mulish", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Instrument Serif", "Mulish", Georgia, serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Header reserved space for sticky-section anchoring */
+  --header-spaced-8: 96px;
+}
+
+/* ---- Body baseline ---- */
+html, body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+main { display: block; }
+
+/* =========================================================================
+   TYPE RAMP — replicates the Tailwind theme tokens the page expects
+   ========================================================================= */
+.text-body-300 {
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+.text-body-400 {
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+.text-body-500 {
+  font-family: var(--font-family);
+  font-size: 18px;
+  line-height: 1.55;
+  font-weight: 500;
+}
+.text-subtitle-100 {
+  font-family: var(--font-family);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+}
+.text-subtitle-200 {
+  font-family: var(--font-family);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.text-headline-100 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 28px;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+}
+.text-headline-200 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 36px;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+.text-headline-300 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 44px;
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+}
+.text-headline-400 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 56px;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+}
+.text-headline-500 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 76px;
+  letter-spacing: -0.035em;
+  line-height: 1.0;
+}
+@media (max-width: 900px) {
+  .text-headline-400 { font-size: 40px; }
+  .text-headline-500 { font-size: 48px; }
+  .text-headline-300 { font-size: 34px; }
+}
+@media (max-width: 640px) {
+  .text-headline-400 { font-size: 32px; }
+  .text-headline-500 { font-size: 38px; }
+  .text-headline-300 { font-size: 28px; }
+}
+
+/* Italic accent for serif headlines */
+.text-headline-300 em,
+.text-headline-400 em,
+.text-headline-500 em { font-style: italic; }
+
+/* =========================================================================
+   SURFACE + STROKE UTILITIES
+   ========================================================================= */
+.bg-surface           { background-color: rgb(var(--surface-bg)); }
+.bg-card-primary      { background-color: rgb(var(--card-primary-bg)); }
+.bg-cta-primary-hover-bg { background-color: rgb(var(--cta-primary-hover-bg)); }
+
+.text-surface-text-primary       { color: rgb(var(--surface-text-primary)); }
+.text-surface-text-muted         { color: rgb(var(--surface-text-muted)); }
+.text-surface-text-accent        { color: rgb(var(--surface-text-accent)); }
+.text-surface-text-section-label { color: rgb(var(--surface-text-section-label)); }
+
+.border-surface-stroke-primary   { border-color: rgb(var(--surface-stroke-primary)); }
+
+/* Dark theme variant (data-theme="ink" sections) */
+section[data-theme="ink"] {
+  background-color: rgb(var(--surface-bg-ink)) !important;
+  color: rgb(255 255 255 / 0.94);
+}
+section[data-theme="ink"] .text-surface-text-primary { color: rgb(255 255 255 / 0.95); }
+section[data-theme="ink"] .text-surface-text-muted   { color: rgb(255 255 255 / 0.65); }
+section[data-theme="ink"] .text-surface-text-section-label { color: #65A30D; }
+section[data-theme="ink"] .border-surface-stroke-primary    { border-color: rgb(255 255 255 / 0.12); }
+
+/* Dark theme cards */
+section[data-theme="ink"] .bg-card-primary {
+  background: rgb(255 255 255 / 0.04);
+}
+
+/* =========================================================================
+   CTA BUTTON — primary
+   ========================================================================= */
+.bg-cta-primary-bg { background-color: rgb(var(--cta-primary-bg)); }
+.text-cta-primary-text { color: rgb(var(--cta-primary-text)); }
+.hover\:bg-cta-primary-hover-alt-bg:hover { background-color: rgb(var(--cta-primary-hover-alt-bg)); }
+.hover\:text-cta-primary-text:hover { color: rgb(var(--cta-primary-text)); }
+.focus-visible\:bg-cta-primary-active-bg:focus-visible,
+.active\:bg-cta-primary-active-bg:active { background-color: rgb(var(--cta-primary-active-bg)); }
+.focus-visible\:text-cta-primary-active-text:focus-visible,
+.active\:text-cta-primary-active-text:active { color: rgb(var(--cta-primary-active-text)); }
+
+a.bg-cta-primary-bg {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 22px;
+  border-radius: 8px;
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  transition: background-color 200ms ease, color 200ms ease, transform 150ms ease;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset, 0 8px 18px -10px rgba(11,22,26,0.4);
+}
+a.bg-cta-primary-bg:hover  { transform: translateY(-1px); }
+a.bg-cta-primary-bg:active { transform: translateY(0); }
+
+/* =========================================================================
+   HERO — eyebrow chip + serif headline + dek + CTA row
+   ========================================================================= */
+
+/* Pill chip ("NEFUND" pill at top of hero) */
+section[data-theme="white"] .group.inline-flex.rounded-full {
+  border: 1px solid rgba(11, 22, 26, 0.18);
+  background: #fff;
+  height: 40px;
+  padding: 0 16px 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(var(--surface-text-section-label));
+  gap: 8px;
+}
+section[data-theme="white"] .group.inline-flex.rounded-full svg { width: 18px; height: 18px; }
+
+/* =========================================================================
+   MANIFESTO BRIDGE — editorial moment between hero and Product Suites.
+   No bands, no horizontal lines, no dividers — just typography + spacing.
+   ========================================================================= */
+.nf-manifesto {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 56px 24px 60px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  align-items: center;
+  gap: 56px;
+  text-align: left;
+}
+@media (max-width: 900px) {
+  .nf-manifesto { grid-template-columns: 1fr; gap: 28px; padding: 44px 20px 48px; text-align: left; }
+}
+@media (max-width: 640px) {
+  .nf-manifesto { padding: 36px 18px 40px; gap: 24px; }
+}
+
+.nf-manifesto-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgb(var(--surface-text-section-label));
+}
+.nf-manifesto-eyebrow .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: rgb(var(--surface-text-section-label));
+}
+
+.nf-manifesto-headline {
+  margin: 14px 0 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: rgb(var(--surface-text-primary));
+  max-width: 22ch;
+}
+.nf-manifesto-headline em { font-style: italic; }
+@media (max-width: 900px) { .nf-manifesto-headline { font-size: 38px; max-width: none; } }
+@media (max-width: 640px) { .nf-manifesto-headline { font-size: 30px; } }
+
+.nf-manifesto-dek {
+  margin: 12px 0 0;
+  font-family: var(--font-family);
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgb(var(--surface-text-muted));
+  max-width: 52ch;
+}
+
+/* Stats column — sits to the right on desktop, stacks tight below on mobile */
+.nf-manifesto-stats {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+@media (max-width: 900px) {
+  .nf-manifesto-stats {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px 40px;
+    margin-top: 4px;
+  }
+}
+.nf-manifesto-stats > div { display: flex; align-items: baseline; gap: 12px; }
+.nf-manifesto-stats dt {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: rgb(var(--surface-text-primary));
+  flex-shrink: 0;
+}
+.nf-manifesto-stats dd {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(var(--surface-text-muted));
+}
+@media (max-width: 900px) {
+  .nf-manifesto-stats dt { font-size: 28px; }
+  .nf-manifesto-stats > div { gap: 10px; }
+}
+
+/* ----- CTA row under the dek ----- */
+.nf-manifesto-cta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+}
+.nf-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  padding: 0 22px;
+  border-radius: 8px;
+  background: rgb(var(--surface-text-primary));
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  transition: background 200ms ease, transform 150ms ease, box-shadow 200ms ease;
+  box-shadow: 0 8px 18px -10px rgba(11, 22, 26, 0.4);
+}
+.nf-cta-primary:hover {
+  background: rgb(var(--surface-text-section-label));
+  transform: translateY(-1px);
+}
+.nf-cta-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(var(--surface-text-primary));
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+.nf-cta-link:hover {
+  color: rgb(var(--surface-text-section-label));
+}
+
+/* ----- Compliance badges row ----- */
+.nf-manifesto-badges {
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+.nf-manifesto-badges li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgb(var(--surface-text-muted));
+}
+.nf-tick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: rgba(0, 99, 65, 0.12);
+  color: rgb(var(--surface-text-section-label));
+  font-size: 9px;
+  font-weight: 700;
+}
+
+/* ----- Pull-quote card under the stats ----- */
+.nf-manifesto-quote {
+  margin: 28px 0 0;
+  padding: 0;
+}
+.nf-manifesto-quote blockquote {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 19px;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: rgb(var(--surface-text-primary));
+}
+.nf-manifesto-quote figcaption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+.nf-mq-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px; height: 34px;
+  border-radius: 9999px;
+  background: rgb(var(--surface-text-primary));
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+.nf-mq-name {
+  display: block;
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  color: rgb(var(--surface-text-primary));
+}
+.nf-mq-role {
+  display: block;
+  font-size: 11px;
+  color: rgb(var(--surface-text-muted));
+  margin-top: 1px;
+}
+
+@media (max-width: 900px) {
+  .nf-manifesto-quote { margin-top: 20px; }
+  .nf-manifesto-quote blockquote { font-size: 17px; }
+}
+
+/* =========================================================================
+   PRODUCT SUITES CARDS (Fund Administration / Investor Management)
+   ========================================================================= */
+a.group.relative.flex.overflow-hidden.rounded-lg.bg-card-primary {
+  background: rgb(var(--card-primary-bg));
+  border-radius: 18px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  transition: transform 220ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+a.group.relative.flex.overflow-hidden.rounded-lg.bg-card-primary:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 1px 0 rgba(11,22,26,0.04),
+    0 28px 50px -28px rgba(11,22,26,0.22);
+}
+a.group.relative.flex.overflow-hidden.rounded-lg.bg-card-primary:hover .text-surface-text-muted {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Card's headline (Fund Administration / Investor Management) */
+a.group.relative.flex.overflow-hidden.rounded-lg.bg-card-primary h3.text-headline-100 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: rgb(var(--surface-text-primary));
+}
+
+/* Card icon */
+a.group.relative.flex.overflow-hidden.rounded-lg.bg-card-primary > div > div > div > svg {
+  width: 40px;
+  height: 40px;
+  color: rgb(var(--surface-text-section-label));
+}
+
+/* Arrow chip (bottom-right of each suite card) */
+a.group.relative.flex.overflow-hidden.rounded-lg.bg-card-primary .relative.isolate.flex.size-12 {
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  background: rgba(11, 22, 26, 0.06);
+  color: rgb(var(--surface-text-primary));
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: background 200ms ease, color 200ms ease;
+}
+a.group.relative.flex.overflow-hidden.rounded-lg.bg-card-primary:hover .relative.isolate.flex.size-12 {
+  background: rgb(var(--surface-text-primary));
+  color: #fff;
+}
+a.group.relative.flex.overflow-hidden.rounded-lg.bg-card-primary .relative.isolate.flex.size-12 svg {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================================================
+   FEATURE GRID — Sub Funds, Venture Funds, Rolling Funds, etc.
+   No vertical rule between cells. Hover lift + tinted icon do the work.
+   ========================================================================= */
+section .grid.w-full.gap-y-8 > a {
+  display: block;
+  padding: 4px 0 0;
+  border: 0;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 200ms ease;
+}
+section .grid.w-full.gap-y-8 > a:hover {
+  background: transparent;
+  transform: translateY(-2px);
+}
+section .grid.w-full.gap-y-8 > a:hover .text-subtitle-200 {
+  color: rgb(var(--surface-text-accent));
+}
+section .grid.w-full.gap-y-8 > a .text-subtitle-200 {
+  font-family: var(--font-family);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: rgb(var(--surface-text-primary));
+  margin-bottom: 6px;
+}
+section .grid.w-full.gap-y-8 > a .text-body-300 {
+  color: rgb(var(--surface-text-muted));
+  max-width: 38ch;
+}
+/* Section icon (small green) */
+section .grid.w-full.gap-y-8 > a > div:first-child svg {
+  width: 24px;
+  height: 24px;
+  color: rgb(var(--surface-text-section-label));
+}
+
+/* Dark-theme variant of the feature grid (Investor Management section) */
+section[data-theme="ink"] .grid.w-full.gap-y-8 > a {
+  border: 0;
+  background: transparent;
+}
+section[data-theme="ink"] .grid.w-full.gap-y-8 > a:hover {
+  background: transparent;
+}
+section[data-theme="ink"] .grid.w-full.gap-y-8 > a:hover .text-subtitle-200 { color: #65A30D; }
+section[data-theme="ink"] .grid.w-full.gap-y-8 > a .text-subtitle-200 { color: #ffffff; }
+section[data-theme="ink"] .grid.w-full.gap-y-8 > a .text-body-300 { color: rgba(255, 255, 255, 0.7); }
+section[data-theme="ink"] .grid.w-full.gap-y-8 > a > div:first-child svg { color: #65A30D; }
+
+/* Sticky section label (Fund Administration / Investor Management) */
+.sticky.top-header-spaced-8 {
+  position: sticky;
+  top: 96px;
+}
+section h3.flex.items-center.gap-2\.5.text-body-500 {
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(var(--surface-text-section-label));
+}
+
+/* =========================================================================
+   MEGA MENU — suite-card row, footer link, action buttons
+   ========================================================================= */
+.submenu-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(var(--surface-text-muted));
+  margin-bottom: 16px;
+  display: block;
+}
+
+.suite-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: rgba(11, 22, 26, 0.03);
+  text-decoration: none;
+  color: inherit;
+  transition: background 200ms ease, border-color 200ms ease, transform 150ms ease;
+}
+.suite-card + .suite-card { margin-top: 8px; }
+.suite-card:hover {
+  background: rgba(0, 99, 65, 0.06);
+  border-color: rgba(0, 99, 65, 0.25);
+  transform: translateY(-1px);
+}
+.suite-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: rgba(163, 230, 53, 0.16);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.suite-info h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(var(--surface-text-primary));
+  letter-spacing: -0.005em;
+}
+.suite-info p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: rgb(var(--surface-text-muted));
+  line-height: 1.5;
+}
+
+.submenu-footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 12px 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgb(var(--surface-text-primary));
+  text-decoration: none;
+  /* no border-top — spacing carries the divide */
+}
+.submenu-footer-link:hover { color: rgb(var(--surface-text-accent)); }
+
+.submenu-btn-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 4px;
+  /* no border-top */
+}
+
+/* =========================================================================
+   FOOTER — kill the inline border-top hairline; use spacing instead
+   ========================================================================= */
+footer.footer.container {
+  border-top: 0 !important;
+  margin-top: 24px !important;
+  background-color: rgb(var(--surface-bg)) !important;
+}
+.btn-lavender, .btn-gray-light {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: filter 150ms ease, background 150ms ease;
+}
+.btn-lavender { background: #BDBBFF; color: #1A1735; }
+.btn-lavender:hover { filter: brightness(0.96); }
+.btn-gray-light { background: #ECECEC; color: #0b161a; }
+.btn-gray-light:hover { background: #DCDCDC; }
+
+/* =========================================================================
+   NAV — pill nav + auth-fixed
+   ========================================================================= */
+.pill-nav .nav-links > a,
+.pill-nav .nav-links > .nav-item > .nav-link { color: #ffffff !important; }
+.mega-menu a { color: #050c26 !important; }
+body.dark-mode .light-mode-logo { display: block !important; }
+body.dark-mode .dark-mode-logo  { display: none  !important; }
+body.dark-mode .brand-text      { color: #006341 !important; }
+body.dark-mode .auth-fixed .nav-link { color: #0b161a !important; }
+
+/* =========================================================================
+   SPACING / LAYOUT FAILSAFES (in case Tailwind CDN is slow)
+   ========================================================================= */
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+.scroll-m-header { scroll-margin-top: 80px; }
+.pt-header { padding-top: 96px; }
+
+.pb-16 { padding-bottom: 4rem; }
+.pb-24 { padding-bottom: 6rem; }
+.md\:pb-30 { padding-bottom: 7.5rem; }
+.pt-8  { padding-top: 2rem; }
+.pt-12 { padding-top: 3rem; }
+.md\:pt-20 { padding-top: 5rem; }
+
+.px-5  { padding-left: 1.25rem; padding-right: 1.25rem; }
+@media (min-width: 640px)  { .sm\:px-9  { padding-left: 2.25rem; padding-right: 2.25rem; } }
+@media (min-width: 768px)  { .md\:px-10 { padding-left: 2.5rem;  padding-right: 2.5rem; } }
+@media (min-width: 1280px) { .xl\:px-12 { padding-left: 3rem;    padding-right: 3rem; } }
+
+section .mx-auto.max-w-\[1536px\] { max-width: 1536px; margin-left: auto; margin-right: auto; }
+section .mx-auto.max-w-\[886px\]  { max-width: 886px;  margin-left: auto; margin-right: auto; }
+
+/* =========================================================================
+   Smooth fade-in on first paint
+   ========================================================================= */
+html:not(.nf-ready) body { opacity: 0; }
+body { transition: opacity 200ms ease-out; }
