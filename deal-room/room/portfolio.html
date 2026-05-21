@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio - NEIIA Deal Room</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../assets/css/custom.css" />
+  <link rel="stylesheet" href="../assets/css/terminal.css" />
+  <style>html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}</style>
+</head>
+<body>
+  <div class="app-shell">
+    <div data-workspace-shell data-active="portfolio"></div>
+
+    <main class="workspace-content">
+      <header style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:11px;letter-spacing:0.18em;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;font-weight:500">Investor lens</div>
+          <h1 style="font-family:var(--serif);font-size:36px;font-weight:400;color:var(--text-primary);letter-spacing:-0.025em;line-height:1.05">Your portfolio</h1>
+          <p style="font-size:14px;color:var(--text-secondary);margin-top:8px;line-height:1.5;max-width:60ch">Every position you've committed to across Deal Room. Track commitments, calls, distributions, and NAV in one place.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="t-btn" type="button" id="aiSummaryBtn">⌁ AI performance summary</button>
+          <button class="t-btn t-btn-primary" type="button" id="addPositionBtn">+ Add position</button>
+        </div>
+      </header>
+
+      <div id="kpiStrip" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px"></div>
+
+      <div id="aiPanel" style="display:none"></div>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Positions</div>
+          <div class="panel-sub"><span id="posCount">0</span> total</div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="db-table">
+            <thead>
+              <tr>
+                <th>Deal</th>
+                <th>Vehicle</th>
+                <th>Sector</th>
+                <th class="text-right">Commitment</th>
+                <th class="text-right">Called</th>
+                <th class="text-right">Distributed</th>
+                <th class="text-right">NAV</th>
+                <th class="text-right">MOIC</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="posBody"></tbody>
+          </table>
+        </div>
+        <div id="posEmpty" class="t-empty" style="display:none">
+          <div class="empty-title">No positions yet</div>
+          <div style="font-size:13px;color:var(--text-secondary);margin:8px 0 16px">Commit to a deal from the deal page, or add one manually.</div>
+          <button class="t-btn t-btn-primary" id="emptyAddBtn" type="button">Add your first position</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/js/databank.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/terminal.js"></script>
+  <script src="../assets/js/workspace.js"></script>
+  <script src="../assets/js/dealflow.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const T = window.Terminal;
+      const DF = window.DealFlow;
+      const positions = window.DataBank.positionsApi();
+      const dealsApi = window.DataBank.dealsApi();
+
+      function render() {
+        const list = positions.list();
+        const k = aggregate(list);
+        document.getElementById("kpiStrip").innerHTML = [
+          { label: "Positions",        value: list.length },
+          { label: "Total committed",  value: DF.fmtMoney(k.commitment) },
+          { label: "Called",           value: DF.fmtMoney(k.called) },
+          { label: "Distributed",      value: DF.fmtMoney(k.distributed) },
+          { label: "NAV",              value: DF.fmtMoney(k.nav) },
+          { label: "TVPI",             value: k.tvpi.toFixed(2) + "x" },
+          { label: "DPI",              value: k.dpi.toFixed(2) + "x" },
+        ].map(function (s) {
+          return '<div class="wh-snap"><div class="wh-snap-value">' + s.value + '</div><div class="wh-snap-label">' + s.label + '</div></div>';
+        }).join("");
+
+        document.getElementById("posCount").textContent = list.length;
+        const body = document.getElementById("posBody");
+        const empty = document.getElementById("posEmpty");
+        if (!list.length) {
+          body.innerHTML = "";
+          empty.style.display = "block";
+        } else {
+          empty.style.display = "none";
+          body.innerHTML = list.map(function (p) {
+            const v = DF.getVehicle(p.vehicleType);
+            const moic = p.called > 0 ? ((p.distributed + p.currentNav) / p.called) : 0;
+            const moicCls = moic >= 1.5 ? "badge-success" : moic >= 1 ? "badge-info" : "badge-warn";
+            const dealHref = p.dealId ? 'deal.html?id=' + p.dealId : '#';
+            return (
+              '<tr>' +
+                '<td>' + (p.dealId ? '<a href="' + dealHref + '">' + DF.esc(p.dealName) + '</a>' : DF.esc(p.dealName)) + '</td>' +
+                '<td style="color:var(--text-secondary)">' + v.name + '</td>' +
+                '<td style="color:var(--text-secondary)">' + DF.esc(p.sector || "—") + '</td>' +
+                '<td class="num">' + DF.fmtMoney(p.commitment) + '</td>' +
+                '<td class="num">' + DF.fmtMoney(p.called) + '</td>' +
+                '<td class="num">' + DF.fmtMoney(p.distributed) + '</td>' +
+                '<td class="num">' + DF.fmtMoney(p.currentNav) + '</td>' +
+                '<td class="num"><span class="badge ' + moicCls + '">' + moic.toFixed(2) + 'x</span></td>' +
+                '<td>' + DF.esc(p.status) + '</td>' +
+                '<td style="text-align:right"><button class="t-btn" type="button" data-remove="' + p.id + '" style="height:24px;padding:0 8px;font-size:11px">Remove</button></td>' +
+              '</tr>'
+            );
+          }).join("");
+        }
+      }
+
+      function aggregate(list) {
+        const k = { commitment: 0, called: 0, distributed: 0, nav: 0 };
+        list.forEach(function (p) {
+          k.commitment += p.commitment || 0;
+          k.called += p.called || 0;
+          k.distributed += p.distributed || 0;
+          k.nav += p.currentNav || 0;
+        });
+        k.tvpi = k.called > 0 ? (k.distributed + k.nav) / k.called : 0;
+        k.dpi  = k.called > 0 ? k.distributed / k.called : 0;
+        k.rvpi = k.called > 0 ? k.nav / k.called : 0;
+        return k;
+      }
+
+      // ---------- AI summary ----------
+      function aiSummary() {
+        const panel = document.getElementById("aiPanel");
+        panel.style.display = "block";
+        panel.innerHTML = (
+          '<div class="panel" style="margin-bottom:18px">' +
+            '<div class="panel-header">' +
+              '<div class="panel-title">⌁ AI performance summary</div>' +
+              '<button class="t-btn" type="button" id="aiCloseBtn" style="height:26px;padding:0 10px;font-size:11px">Close</button>' +
+            '</div>' +
+            '<div id="aiBody" style="padding:18px 20px;font-size:14px;line-height:1.65;color:var(--text-primary)">' +
+              '<div style="display:flex;align-items:center;gap:10px;color:var(--text-secondary);font-size:13px"><div class="ai-spinner" aria-hidden="true"></div>Analyzing your portfolio…</div>' +
+            '</div>' +
+          '</div>'
+        );
+        document.getElementById("aiCloseBtn").addEventListener("click", function () { panel.style.display = "none"; });
+        window.scrollTo({ top: panel.offsetTop - 20, behavior: "smooth" });
+        setTimeout(function () {
+          document.getElementById("aiBody").innerHTML = composeSummary();
+        }, 900);
+      }
+
+      function composeSummary() {
+        const list = positions.list();
+        if (!list.length) {
+          return '<div style="color:var(--text-secondary)">Nothing to analyze yet. Commit to a deal first.</div>';
+        }
+        const k = aggregate(list);
+        const sectors = {};
+        list.forEach(function (p) {
+          const s = p.sector || "Unclassified";
+          sectors[s] = (sectors[s] || 0) + (p.commitment || 0);
+        });
+        const sectorRanked = Object.keys(sectors).sort(function (a, b) { return sectors[b] - sectors[a]; });
+        const top = sectorRanked[0];
+        const topPct = ((sectors[top] / k.commitment) * 100).toFixed(0);
+        const concentration = sectorRanked.length === 1 ? "single-sector" : sectorRanked.length <= 2 ? "highly concentrated" : "diversified across " + sectorRanked.length + " sectors";
+
+        const ranked = list.slice().sort(function (a, b) {
+          const ma = a.called ? (a.distributed + a.currentNav) / a.called : 0;
+          const mb = b.called ? (b.distributed + b.currentNav) / b.called : 0;
+          return mb - ma;
+        });
+        const best = ranked[0];
+        const worst = ranked[ranked.length - 1];
+        const bestMoic = best.called ? ((best.distributed + best.currentNav) / best.called).toFixed(2) : "—";
+        const worstMoic = worst.called ? ((worst.distributed + worst.currentNav) / worst.called).toFixed(2) : "—";
+
+        const tvpiVerdict = k.tvpi >= 1.5 ? "ahead of typical early-cycle pacing" : k.tvpi >= 1.0 ? "tracking at-cost" : "below cost on paper marks";
+        const dpiVerdict = k.dpi >= 0.5 ? "meaningful realized return already" : k.dpi > 0 ? "modest early distributions" : "no realizations yet — typical for portfolios under 4 years old";
+        const callPct = k.commitment > 0 ? ((k.called / k.commitment) * 100).toFixed(0) : "0";
+
+        const observations = [];
+        if (k.tvpi >= 1.5) observations.push("Performance is in the top quartile relative to the market median (~1.3x TVPI for vintage-equivalent positions).");
+        else if (k.tvpi < 1) observations.push("Portfolio is marking below cost. This is common in the first 2–3 years but worth watching if it persists.");
+        if (parseFloat(callPct) < 30) observations.push("You have meaningful dry powder — " + (100 - parseFloat(callPct)) + "% of commitments remain uncalled.");
+        if (sectorRanked.length === 1) observations.push("Single-sector exposure is your largest risk. A second sector at 20–30% would meaningfully diversify the book.");
+        if (best && worst && best.id !== worst.id && parseFloat(bestMoic) - parseFloat(worstMoic) > 1) observations.push("Dispersion between your best (" + DF.esc(best.dealName) + ", " + bestMoic + "x) and weakest (" + DF.esc(worst.dealName) + ", " + worstMoic + "x) position is wide. Drill into the weakest deal's diligence pack.");
+
+        const recommendation = k.tvpi >= 1.3 && k.dpi > 0
+          ? "Hold the line. Pacing is healthy. Consider re-upping into the same GP's next vintage rather than spreading thin."
+          : k.tvpi >= 1
+          ? "Stay disciplined on new commitments. Concentrate on top-quartile managers and avoid first-time funds for the next 2 quarters."
+          : "Pause new commitments and focus on the existing book. Get on a call with the weakest GP for an honest mark explanation.";
+
+        return (
+          '<p style="margin:0 0 12px"><strong>Summary.</strong> You hold <strong>' + list.length + '</strong> position' + (list.length === 1 ? '' : 's') + ' totaling <strong>' + DF.fmtMoney(k.commitment) + '</strong> in commitments — <strong>' + callPct + '%</strong> called, <strong>' + DF.fmtMoney(k.distributed) + '</strong> distributed, and a marked NAV of <strong>' + DF.fmtMoney(k.nav) + '</strong>. Net TVPI is <strong>' + k.tvpi.toFixed(2) + 'x</strong> (' + tvpiVerdict + ') with DPI of <strong>' + k.dpi.toFixed(2) + 'x</strong> — ' + dpiVerdict + '.</p>' +
+          '<p style="margin:0 0 12px"><strong>Exposure.</strong> Largest concentration is <strong>' + DF.esc(top) + '</strong> at ' + topPct + '% of commitments. Book is ' + concentration + '.</p>' +
+          (observations.length
+            ? '<p style="margin:0 0 4px"><strong>What I noticed.</strong></p><ul style="margin:0 0 14px 18px;padding:0">' + observations.map(function (o) { return '<li style="margin-bottom:4px">' + o + '</li>'; }).join("") + '</ul>'
+            : '') +
+          '<p style="margin:0 0 4px"><strong>Recommendation.</strong> ' + recommendation + '</p>' +
+          '<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border-t);font-size:11px;color:var(--text-muted);font-family:var(--mono)">Generated from your position data · not investment advice</div>'
+        );
+      }
+
+      // ---------- add position modal ----------
+      function openAddPosition() {
+        const deals = dealsApi.list();
+        const dealOpts = deals.length
+          ? '<option value="">— None (manual entry)</option>' + deals.map(function (d) { return '<option value="' + d.id + '">' + DF.esc(d.name) + '</option>'; }).join("")
+          : '<option value="">No deals yet — fill in manually</option>';
+        const vehicleOpts = DF.vehicles.map(function (v) { return '<option value="' + v.id + '">' + v.name + '</option>'; }).join("");
+        T.modal("Add position",
+          '<div style="display:grid;gap:10px">' +
+            '<div><label>Link to existing deal (optional)</label><select class="t-input" id="ap-deal" style="width:100%">' + dealOpts + '</select></div>' +
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
+              '<div><label>Deal name</label><input class="t-input" id="ap-name" placeholder="e.g. Sunray Power Series A" style="width:100%" /></div>' +
+              '<div><label>Sector</label><input class="t-input" id="ap-sector" placeholder="e.g. Renewable Energy" style="width:100%" /></div>' +
+            '</div>' +
+            '<div><label>Vehicle</label><select class="t-input" id="ap-vehicle" style="width:100%">' + vehicleOpts + '</select></div>' +
+            '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">' +
+              '<div><label>Commitment</label><input class="t-input" id="ap-commit" type="number" min="0" value="100000" style="width:100%" /></div>' +
+              '<div><label>Called</label><input class="t-input" id="ap-called" type="number" min="0" value="40000" style="width:100%" /></div>' +
+              '<div><label>Distributed</label><input class="t-input" id="ap-dist" type="number" min="0" value="0" style="width:100%" /></div>' +
+              '<div><label>NAV</label><input class="t-input" id="ap-nav" type="number" min="0" value="44000" style="width:100%" /></div>' +
+            '</div>' +
+          '</div>',
+          { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="savePosBtn">Save position</button>' }
+        );
+        const dealSel = document.getElementById("ap-deal");
+        const nameEl = document.getElementById("ap-name");
+        const sectorEl = document.getElementById("ap-sector");
+        const vehicleEl = document.getElementById("ap-vehicle");
+        dealSel.addEventListener("change", function () {
+          if (!dealSel.value) return;
+          const d = dealsApi.get(dealSel.value);
+          if (d) {
+            nameEl.value = d.name;
+            sectorEl.value = d.sector;
+            vehicleEl.value = d.vehicleType;
+          }
+        });
+        document.getElementById("savePosBtn").addEventListener("click", function () {
+          const name = nameEl.value.trim();
+          if (!name) { T.toast("Name the deal"); return; }
+          positions.create({
+            dealId: dealSel.value || null,
+            dealName: name,
+            sector: sectorEl.value.trim(),
+            vehicleType: vehicleEl.value,
+            commitment: parseFloat(document.getElementById("ap-commit").value || "0") || 0,
+            called:     parseFloat(document.getElementById("ap-called").value || "0") || 0,
+            distributed:parseFloat(document.getElementById("ap-dist").value || "0") || 0,
+            currentNav: parseFloat(document.getElementById("ap-nav").value || "0") || 0,
+          });
+          T.closeModal();
+          T.toast("Position added");
+          render();
+        });
+      }
+
+      document.getElementById("addPositionBtn").addEventListener("click", openAddPosition);
+      document.getElementById("emptyAddBtn").addEventListener("click", openAddPosition);
+      document.getElementById("aiSummaryBtn").addEventListener("click", aiSummary);
+
+      document.getElementById("posBody").addEventListener("click", function (e) {
+        const b = e.target.closest("[data-remove]");
+        if (!b) return;
+        const id = b.getAttribute("data-remove");
+        const p = positions.get(id);
+        T.modal("Remove position?",
+          '<div style="font-size:13px;color:var(--text-secondary)">This removes <strong>' + DF.esc(p.dealName) + '</strong> from your portfolio. The underlying deal is not affected.</div>',
+          { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="confirmRemove">Remove</button>' }
+        );
+        document.getElementById("confirmRemove").addEventListener("click", function () {
+          positions.remove(id);
+          T.closeModal();
+          T.toast("Removed");
+          render();
+        });
+      });
+
+      render();
+      document.documentElement.classList.add("is-ready");
+    })();
+  </script>
+</body>
+</html>

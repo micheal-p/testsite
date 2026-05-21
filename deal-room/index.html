@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NEIIA Deal Room — The business-data marketplace for African capital</title>
+  <meta name="description" content="Subscribe to business data, publish your own, and message verified enterprises. NEIIA Deal Room is the marketplace where African companies sell their data and serious capital pays to read it." />
+  <link rel="icon" type="image/svg+xml" href="assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: "#0A0A0A",
+            inkSoft: "#1F1F1F",
+            paper: "#FFFFFF",
+            cream: "#FBFAF6",
+            muted: "#F4F2EC",
+            sunken: "#EDEAE1",
+            line: "#E7E5E0",
+            lineSoft: "#EFEDE6",
+            faint: "#8E867B",
+            accent: "#E04F39",
+            accentSoft: "#FBE9E3",
+            gold: "#C9A227",
+          },
+          fontFamily: {
+            sans: ["Inter", "system-ui", "sans-serif"],
+            serif: ['"Instrument Serif"', "Georgia", "serif"],
+          },
+          maxWidth: { content: "1240px", narrow: "1040px" },
+          letterSpacing: { tightest: "-0.035em" },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="assets/css/custom.css" />
+  <style>html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}</style>
+</head>
+<body class="bg-paper text-ink antialiased">
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-ink focus:text-white focus:px-3 focus:py-2 focus:rounded">Skip to content</a>
+
+  <!-- Top navigation -->
+  <header class="nav-shell sticky top-0 z-40">
+    <div class="max-w-content mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
+      <a href="../index.html" class="flex items-center gap-2.5">
+        <img src="assets/images/neiis-logo-green.png" alt="" class="h-7 w-auto" />
+        <span class="font-semibold tracking-tight text-ink">Deal Room</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm text-ink/70" aria-label="Primary">
+        <a href="#lifecycle" class="hover:text-ink transition-colors">Lifecycle</a>
+        <a href="#vehicles" class="hover:text-ink transition-colors">Vehicles</a>
+        <a href="#portfolio" class="hover:text-ink transition-colors">Portfolio</a>
+        <a href="#integrations" class="hover:text-ink transition-colors">Integrations</a>
+        <a href="#pricing" class="hover:text-ink transition-colors">Pricing</a>
+        <a href="#faq" class="hover:text-ink transition-colors">FAQ</a>
+      </nav>
+      <div class="flex items-center gap-1">
+        <a href="signin.html" class="hidden sm:inline-flex items-center text-sm font-medium text-ink/70 hover:text-ink px-3 py-2">Sign in</a>
+        <a href="onboarding.html" class="btn-primary">Get started</a>
+        <button class="md:hidden ml-1 h-10 w-10 inline-flex items-center justify-center rounded-md hover:bg-muted" data-drawer-open aria-label="Open menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile drawer -->
+  <div class="mobile-drawer" data-drawer aria-hidden="true">
+    <div class="panel">
+      <div class="flex items-center justify-between mb-6">
+        <a href="../index.html" class="inline-flex"><img src="assets/images/neiis-logo-green.png" alt="NEIIA" class="h-7" /></a>
+        <button class="h-9 w-9 inline-flex items-center justify-center rounded-md hover:bg-muted" data-drawer-close aria-label="Close menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <a href="#lifecycle" class="block py-3 text-base text-ink" data-drawer-close>Lifecycle</a>
+      <a href="#vehicles" class="block py-3 text-base text-ink" data-drawer-close>Vehicles</a>
+      <a href="#portfolio" class="block py-3 text-base text-ink" data-drawer-close>Portfolio</a>
+      <a href="#pricing" class="block py-3 text-base text-ink" data-drawer-close>Pricing</a>
+      <a href="#faq" class="block py-3 text-base text-ink" data-drawer-close>FAQ</a>
+      <div class="mt-auto pt-6 border-t border-line">
+        <a href="onboarding.html" class="block w-full text-center bg-ink text-white py-3 rounded-md font-medium">Get started</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main">
+
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div class="max-w-content mx-auto px-6 lg:px-10 pt-16 lg:pt-24 pb-10 lg:pb-16">
+        <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end">
+          <div class="lg:col-span-6">
+            <div class="eyebrow">
+              <span class="dot"></span>
+              <span>End-to-end deal lifecycle</span>
+            </div>
+            <h1 class="font-serif text-[44px] leading-[1.02] sm:text-[60px] lg:text-[80px] tracking-tightest mt-6">
+              Where deals happen, <em class="italic text-ink/85">end to end.</em>
+            </h1>
+            <p class="mt-7 text-lg text-ink/65 leading-relaxed max-w-xl">
+              Source the memo. Pick the vehicle. Raise the round. Close the docs. Run the fund. One workspace, six stages, six wrappers, two lenses.
+            </p>
+            <div class="mt-9 flex flex-wrap items-center gap-3">
+              <a href="onboarding.html" class="btn-primary btn-lg">
+                Get started
+                <svg class="ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+              <a href="#lifecycle" class="btn-ghost btn-lg">See the lifecycle</a>
+            </div>
+            <p class="mt-6 text-sm text-faint">No more juggling Fund Admin, Investor Mgmt, SPV-this and Sub-Fund-that. One product, one record, one place.</p>
+          </div>
+
+          <div class="lg:col-span-6 lg:-mr-12 xl:-mr-20">
+            <!-- HTML mockup: the deal page with the 6-stage strip + snapshot -->
+            <div class="lp-mock animate-rise" role="img" aria-label="Deal page mockup with six-stage lifecycle strip">
+              <div class="lp-mock-eyebrow">Workspace · Deal</div>
+              <h2 class="lp-mock-title">Sunray Power — Series A</h2>
+              <div class="lp-mock-meta">
+                <span>Atlas Energy Partners</span><span>·</span>
+                <span>Renewable Energy</span><span>·</span>
+                <span class="lp-chip">SPV</span>
+                <span class="lp-chip is-accent">In progress</span>
+              </div>
+              <div class="lp-stage-strip" aria-hidden="true">
+                <div class="lp-stage-seg is-done"><div class="lp-stage-num">STAGE 1</div><div class="lp-stage-name">Source</div></div>
+                <div class="lp-stage-seg is-done"><div class="lp-stage-num">STAGE 2</div><div class="lp-stage-name">Structure</div></div>
+                <div class="lp-stage-seg is-current"><div class="lp-stage-num">STAGE 3</div><div class="lp-stage-name">Outreach</div></div>
+                <div class="lp-stage-seg"><div class="lp-stage-num">STAGE 4</div><div class="lp-stage-name">Diligence</div></div>
+                <div class="lp-stage-seg"><div class="lp-stage-num">STAGE 5</div><div class="lp-stage-name">Close</div></div>
+                <div class="lp-stage-seg"><div class="lp-stage-num">STAGE 6</div><div class="lp-stage-name">Administer</div></div>
+              </div>
+              <div class="lp-kv">
+                <div class="lp-kv-row" style="flex-direction:column;align-items:stretch;gap:6px">
+                  <div style="display:flex;justify-content:space-between"><span class="lp-kv-key">Committed</span><span class="lp-kv-val"><strong>$3.2M</strong> of $5.0M</span></div>
+                  <div class="lp-progress"><span style="width:64%"></span></div>
+                  <div style="font-size:10.5px;color:#8E867B;text-align:right">64% of target · 8 investors</div>
+                </div>
+                <div class="lp-kv-row"><span class="lp-kv-key">Min check</span><span class="lp-kv-val">$25K</span></div>
+                <div class="lp-kv-row"><span class="lp-kv-key">Carry</span><span class="lp-kv-val">20%</span></div>
+                <div class="lp-kv-row"><span class="lp-kv-key">Target close</span><span class="lp-kv-val">31 Jul 2026</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metric strip — lifecycle-relevant -->
+    <section id="stats" class="border-y border-line">
+      <div class="max-w-content mx-auto px-6 lg:px-10">
+        <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-line metric-strip">
+          <div class="metric">
+            <div class="metric-num">6</div>
+            <div class="metric-label">lifecycle stages, one record</div>
+          </div>
+          <div class="metric">
+            <div class="metric-num">6</div>
+            <div class="metric-label">vehicle types, one wizard</div>
+          </div>
+          <div class="metric">
+            <div class="metric-num">2</div>
+            <div class="metric-label">lenses — GP raising · LP investing</div>
+          </div>
+          <div class="metric">
+            <div class="metric-num">$ / ₦</div>
+            <div class="metric-label">native USD &amp; Naira toggle</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Logo strip -->
+    <section class="bg-cream border-b border-line">
+      <div class="max-w-content mx-auto px-6 lg:px-10 py-12">
+        <p class="text-center text-[11px] uppercase tracking-[0.22em] text-faint mb-8">Trusted by publishers, allocators, and IR teams</p>
+        <div class="grid grid-cols-2 md:grid-cols-6 gap-y-6 gap-x-10 items-center">
+          <div class="logo-tile">NEFUND</div>
+          <div class="logo-tile">Apex AI</div>
+          <div class="logo-tile">CitiBIM</div>
+          <div class="logo-tile">Rollups</div>
+          <div class="logo-tile">EduCenter</div>
+          <div class="logo-tile">NEIIS</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6-stage lifecycle -->
+    <section id="lifecycle" class="py-20 lg:py-28 border-b border-line">
+      <div class="max-w-content mx-auto px-6 lg:px-10">
+        <div class="max-w-3xl">
+          <div class="eyebrow"><span>The lifecycle</span></div>
+          <h2 class="font-serif text-[36px] sm:text-[52px] lg:text-[64px] leading-[1.02] tracking-tightest mt-5">
+            Six stages. <em class="italic">One record.</em>
+          </h2>
+          <p class="mt-6 text-lg text-ink/65 max-w-2xl">
+            Every deal carries through the same six stages — from the first memo to administering the live vehicle. Click between stages, never lose context, and the artifacts you upload live on the stage they belong to.
+          </p>
+        </div>
+
+        <div class="mt-14 grid md:grid-cols-3 gap-6">
+          <div class="how-card">
+            <div class="how-num">01</div>
+            <h3 class="how-title">Source</h3>
+            <p class="how-body">Draft the deal memo. Who's the sponsor, what's the ask, why now. Attach the deal letter (PDF) to file it on the Source stage.</p>
+          </div>
+          <div class="how-card">
+            <div class="how-num">02</div>
+            <h3 class="how-title">Structure</h3>
+            <p class="how-body">Pick the vehicle wrapper — SPV, Sub-Fund, Rolling, Venture, Co-Invest, Roll-Up. Confirm fees, carry, min check, target raise.</p>
+          </div>
+          <div class="how-card">
+            <div class="how-num">03</div>
+            <h3 class="how-title">Outreach</h3>
+            <p class="how-body">Match the deal to subscribed investors. Track soft &rarr; hard &rarr; signed commitments with status badges and live progress to target.</p>
+          </div>
+          <div class="how-card">
+            <div class="how-num">04</div>
+            <h3 class="how-title">Diligence</h3>
+            <p class="how-body">Open the data room to committed investors. Doc access, Q&amp;A, watermarking. Diligence pack scoped to commit status.</p>
+          </div>
+          <div class="how-card">
+            <div class="how-num">05</div>
+            <h3 class="how-title">Close</h3>
+            <p class="how-body">Generate the subscription package. KYC/AML, e-sign, wire instructions, allocations locked. The activate button moves you to administer.</p>
+          </div>
+          <div class="how-card">
+            <div class="how-num">06</div>
+            <h3 class="how-title">Administer</h3>
+            <p class="how-body">Vehicle is funded. Cap table, capital calls, distributions, NAV, quarterly LP updates — all anchored to the same deal record.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature 1 — The wizard -->
+    <section id="wizard" class="py-20 lg:py-28">
+      <div class="max-w-content mx-auto px-6 lg:px-10">
+        <article class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+          <div class="lg:col-span-5">
+            <div class="num-tag">01 — Make a deal</div>
+            <h3 class="font-serif text-[34px] lg:text-[48px] leading-[1.04] tracking-tightest mt-4">
+              From memo to vehicle in <em class="italic">three steps.</em>
+            </h3>
+            <p class="mt-5 text-ink/65 leading-relaxed">
+              The <strong>+ New deal</strong> wizard captures the memo, picks the vehicle, sets the terms. Defaults from the chosen wrapper pre-fill fees, carry, min check, and close cadence — so you tune for this deal, not redefine the world.
+            </p>
+            <ul class="mt-7 space-y-2.5 text-[15px] text-ink/80">
+              <li class="bullet">Memo · name, sponsor, sector, ask, brief, optional deal letter (PDF)</li>
+              <li class="bullet">Vehicle · pick one of six wrappers, defaults populate next step</li>
+              <li class="bullet">Terms · fees, carry, min check, target raise, close date — overridable</li>
+              <li class="bullet"><strong>+ Make a deal</strong> available on every company row in the marketplace</li>
+            </ul>
+          </div>
+          <div class="lg:col-span-7">
+            <div class="lp-mock">
+              <div class="lp-mock-eyebrow">+ New deal · 3 steps</div>
+              <div class="lp-wizard">
+                <div class="lp-wiz-step is-current">
+                  <span class="lp-wiz-n">1</span>
+                  <div>
+                    <div class="lp-wiz-name">Memo</div>
+                    <div class="lp-wiz-blurb">Name, sponsor, sector, ask, brief, optional deal letter</div>
+                  </div>
+                </div>
+                <div class="lp-wiz-step">
+                  <span class="lp-wiz-n">2</span>
+                  <div>
+                    <div class="lp-wiz-name">Vehicle</div>
+                    <div class="lp-wiz-blurb">Pick the wrapper — SPV / Sub-Fund / Rolling / Venture / Co-Invest / Roll-Up</div>
+                  </div>
+                </div>
+                <div class="lp-wiz-step">
+                  <span class="lp-wiz-n">3</span>
+                  <div>
+                    <div class="lp-wiz-name">Terms</div>
+                    <div class="lp-wiz-blurb">Fees, carry, min check, target raise, close date — pre-filled, override as needed</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Feature 2 — Vehicles -->
+    <section id="vehicles" class="py-20 lg:py-28 bg-cream border-y border-line">
+      <div class="max-w-content mx-auto px-6 lg:px-10">
+        <article class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+          <div class="lg:col-span-7 lg:order-1 order-2">
+            <div class="lp-mock">
+              <div class="lp-mock-eyebrow">Step 2 · Pick the wrapper</div>
+              <div class="lp-veh-grid">
+                <div class="lp-veh is-selected">
+                  <div class="lp-veh-name">SPV</div>
+                  <div class="lp-veh-tag">Single asset · single close</div>
+                  <div class="lp-veh-defaults">0% mgmt · 20% carry · min $25K</div>
+                </div>
+                <div class="lp-veh">
+                  <div class="lp-veh-name">Sub-Fund</div>
+                  <div class="lp-veh-tag">Multi-asset · multiple closes</div>
+                  <div class="lp-veh-defaults">2% mgmt · 20% carry · min $50K</div>
+                </div>
+                <div class="lp-veh">
+                  <div class="lp-veh-name">Rolling Fund</div>
+                  <div class="lp-veh-tag">Quarterly closes · vintages</div>
+                  <div class="lp-veh-defaults">2% mgmt · 20% carry · min $10K</div>
+                </div>
+                <div class="lp-veh">
+                  <div class="lp-veh-name">Venture Fund</div>
+                  <div class="lp-veh-tag">10-year LP · classic mechanics</div>
+                  <div class="lp-veh-defaults">2% mgmt · 20% carry · min $250K</div>
+                </div>
+                <div class="lp-veh">
+                  <div class="lp-veh-name">Co-Invest</div>
+                  <div class="lp-veh-tag">Piggyback · no fund fees</div>
+                  <div class="lp-veh-defaults">No fund fees · min $50K</div>
+                </div>
+                <div class="lp-veh">
+                  <div class="lp-veh-name">Roll-Up</div>
+                  <div class="lp-veh-tag">Convert existing positions</div>
+                  <div class="lp-veh-defaults">1% mgmt · 10% carry · no min</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lg:col-span-5 lg:order-2 order-1">
+            <div class="num-tag">02 — Vehicles, not products</div>
+            <h3 class="font-serif text-[34px] lg:text-[48px] leading-[1.04] tracking-tightest mt-4">
+              Six wrappers, <em class="italic">one wizard.</em>
+            </h3>
+            <p class="mt-5 text-ink/65 leading-relaxed">
+              SPV, Sub-Fund, Rolling, Venture, Co-Invest, Roll-Up — these used to be six separate product pages. They're now one dropdown inside the wizard. Pick a wrapper; its template defaults populate next step. Behavior &mdash; closes, positions, calls, vintages &mdash; is type-aware.
+            </p>
+            <ul class="mt-7 space-y-2.5 text-[15px] text-ink/80">
+              <li class="bullet">Type-aware mechanics — single vs multi-close, fixed vs rolling, vintages where it matters</li>
+              <li class="bullet">Editable template defaults — fees and carry are a starting point, not a cage</li>
+              <li class="bullet">Position schema is unified — same columns, type-aware reads</li>
+              <li class="bullet">Switch vehicles mid-draft; terms re-template automatically</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Feature 3 — Outreach & commitments -->
+    <section id="outreach" class="py-20 lg:py-28">
+      <div class="max-w-content mx-auto px-6 lg:px-10">
+        <article class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+          <div class="lg:col-span-5">
+            <div class="num-tag">03 — Outreach</div>
+            <h3 class="font-serif text-[34px] lg:text-[48px] leading-[1.04] tracking-tightest mt-4">
+              Soft, hard, <em class="italic">signed.</em>
+            </h3>
+            <p class="mt-5 text-ink/65 leading-relaxed">
+              Every commitment lands on the Outreach tab of the deal as a row — name, amount, date, status. Move investors through soft &rarr; hard &rarr; signed with a single dropdown. The snapshot card shows live committed-vs-target. The sidebar Investors page aggregates everyone across every deal.
+            </p>
+            <ul class="mt-7 space-y-2.5 text-[15px] text-ink/80">
+              <li class="bullet">Investor roster per deal — name, commitment, date, status badge</li>
+              <li class="bullet">Status workflow: soft &rarr; hard &rarr; signed, with activity logged on the deal</li>
+              <li class="bullet">Live progress bar in the snapshot — "committed $X of $Y target"</li>
+              <li class="bullet">Sidebar Investors page rolls up every commitment across every deal</li>
+            </ul>
+          </div>
+          <div class="lg:col-span-7">
+            <div class="lp-mock">
+              <div class="lp-mock-eyebrow">Deal · Outreach · 8 investors · $3.2M committed</div>
+              <div style="overflow-x:auto">
+                <table class="lp-table">
+                  <thead>
+                    <tr><th>Investor</th><th style="text-align:right">Commitment</th><th>Committed</th><th>Status</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Polaris Holdings</td><td style="text-align:right">$1.2M</td><td>04 May 2026</td><td><span class="lp-badge signed">Signed</span></td></tr>
+                    <tr><td>Kano Family Trust</td><td style="text-align:right">$500K</td><td>10 May 2026</td><td><span class="lp-badge signed">Signed</span></td></tr>
+                    <tr><td>AfDB Climate Window</td><td style="text-align:right">$750K</td><td>14 May 2026</td><td><span class="lp-badge hard">Hard</span></td></tr>
+                    <tr><td>Mainstream Pension</td><td style="text-align:right">$400K</td><td>16 May 2026</td><td><span class="lp-badge hard">Hard</span></td></tr>
+                    <tr><td>Geregu Capital</td><td style="text-align:right">$200K</td><td>18 May 2026</td><td><span class="lp-badge soft">Soft</span></td></tr>
+                    <tr><td>Atlas Family Office</td><td style="text-align:right">$150K</td><td>19 May 2026</td><td><span class="lp-badge soft">Soft</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Feature 4 — Investor lens with AI -->
+    <section id="portfolio" class="py-20 lg:py-28 bg-cream border-y border-line">
+      <div class="max-w-content mx-auto px-6 lg:px-10">
+        <article class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+          <div class="lg:col-span-7 lg:order-1 order-2">
+            <div class="lp-mock">
+              <div class="lp-mock-eyebrow">Portfolio · investor lens</div>
+              <div class="lp-kpi-strip">
+                <div class="lp-kpi"><div class="lp-kpi-label">Positions</div><div class="lp-kpi-value">5</div></div>
+                <div class="lp-kpi"><div class="lp-kpi-label">Committed</div><div class="lp-kpi-value">$1.8M</div></div>
+                <div class="lp-kpi"><div class="lp-kpi-label">TVPI</div><div class="lp-kpi-value">1.42×</div></div>
+                <div class="lp-kpi"><div class="lp-kpi-label">DPI</div><div class="lp-kpi-value">0.21×</div></div>
+              </div>
+              <div class="lp-ai">
+                <div class="lp-ai-eyebrow">⌁ AI performance summary</div>
+                <p style="margin:0 0 8px"><strong>Summary.</strong> You hold <strong>5 positions</strong> totaling <strong>$1.8M</strong> in commitments — <strong>42%</strong> called, <strong>$160K</strong> distributed, NAV $590K. Net TVPI <strong>1.42×</strong> (ahead of typical early-cycle pacing) with DPI <strong>0.21×</strong> — meaningful realized return already.</p>
+                <p style="margin:0 0 4px"><strong>Exposure.</strong> Largest concentration is <strong>Renewable Energy</strong> at 48% of commitments. Book is diversified across 3 sectors.</p>
+                <p style="margin:0"><strong>Recommendation.</strong> Hold the line. Pacing is healthy. Consider re-upping into the same GP's next vintage rather than spreading thin.</p>
+              </div>
+            </div>
+          </div>
+          <div class="lg:col-span-5 lg:order-2 order-1">
+            <div class="num-tag is-gold">04 — Investor lens</div>
+            <h3 class="font-serif text-[34px] lg:text-[48px] leading-[1.04] tracking-tightest mt-4">
+              Investment Management, <em class="italic">folded in.</em>
+            </h3>
+            <p class="mt-5 text-ink/65 leading-relaxed">
+              The Portfolio page is Deal Room with the camera flipped. Every commit you make as an LP shows up as a position — with commitment, called, distributed, NAV, MOIC. Hit <strong>⌁ AI performance summary</strong> to get a written analyst note in seconds.
+            </p>
+            <ul class="mt-7 space-y-2.5 text-[15px] text-ink/80">
+              <li class="bullet">Live KPIs — TVPI, DPI, MOIC, per-position multiples</li>
+              <li class="bullet">AI summary reads exposure, pacing, dispersion, recommendation</li>
+              <li class="bullet">Naira / USD toggle in the workspace header — flips every figure</li>
+              <li class="bullet">Investor lens reuses the same deal record GPs see — one product, two cameras</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Integrations — connect Deal Room to the tools you already use -->
+    <section id="integrations" class="py-20 lg:py-28 border-y border-line">
+      <div class="max-w-content mx-auto px-6 lg:px-10">
+        <article class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+          <div class="lg:col-span-5">
+            <div class="num-tag">05 — Integrations</div>
+            <h3 class="font-serif text-[34px] lg:text-[48px] leading-[1.04] tracking-tightest mt-4">
+              Plug Deal Room into the <em class="italic">tools you already use.</em>
+            </h3>
+            <p class="mt-5 text-ink/65 leading-relaxed">
+              Stop maintaining ten copies of the same pipeline. Connect Slack, Teams, Salesforce, HubSpot, Drive, Dropbox, DocuSign, Zapier, Make &mdash; plus <strong>Apex AI</strong> for in-portfolio chat &mdash; in one click each. Webhooks for everything else.
+            </p>
+            <ul class="mt-7 space-y-2.5 text-[15px] text-ink/80">
+              <li class="bullet">11 native integrations across CRM, signing, storage and automation</li>
+              <li class="bullet"><strong>Apex AI</strong> connects directly &mdash; ask anything about your live positions in chat</li>
+              <li class="bullet">Webhooks for anything else &mdash; POST every event to a URL you control</li>
+              <li class="bullet">Two-way sync where it makes sense (CRM and pipelines)</li>
+            </ul>
+          </div>
+          <div class="lg:col-span-7">
+            <div class="int-showcase">
+              <div class="int-row int-row-apex">
+                <span class="int-mark" style="background:#E8E5FF;color:#6D5BFF;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17l-1.9-5.1L4.5 10l5.6-1.4z"/><path d="M19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg>
+                </span>
+                <span>Apex AI <span style="font-size:9px;background:#6D5BFF;color:#fff;padding:1px 6px;border-radius:999px;margin-left:4px;font-weight:700;letter-spacing:0.06em">BETA</span></span>
+              </div>
+              <div class="int-row"><img src="assets/images/integrations/slack.svg" alt="Slack" /><span>Slack</span></div>
+              <div class="int-row"><img src="assets/images/integrations/microsoft-teams.svg" alt="Microsoft Teams" /><span>Teams</span></div>
+              <div class="int-row"><img src="assets/images/integrations/gmail.svg" alt="Gmail" /><span>Gmail</span></div>
+              <div class="int-row"><img src="assets/images/integrations/salesforce.svg" alt="Salesforce" /><span>Salesforce</span></div>
+              <div class="int-row"><img src="assets/images/integrations/hubspot.svg" alt="HubSpot" /><span>HubSpot</span></div>
+              <div class="int-row"><img src="assets/images/integrations/docusign.svg" alt="DocuSign" /><span>DocuSign</span></div>
+              <div class="int-row"><img src="assets/images/integrations/googledrive.svg" alt="Google Drive" /><span>Drive</span></div>
+              <div class="int-row"><img src="assets/images/integrations/dropbox.svg" alt="Dropbox" /><span>Dropbox</span></div>
+              <div class="int-row"><img src="assets/images/integrations/microsoft-onedrive.svg" alt="OneDrive" /><span>OneDrive</span></div>
+              <div class="int-row"><img src="assets/images/integrations/zapier.svg" alt="Zapier" /><span>Zapier</span></div>
+              <div class="int-row"><img src="assets/images/integrations/make.svg" alt="Make" /><span>Make</span></div>
+              <div class="int-row int-row-mono"><span class="int-mark">{ }</span><span>Webhooks</span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Testimonials grid (4 supporting voices, ahead of the hero quote) -->
+    <section class="py-24 lg:py-32">
+      <div class="max-w-content mx-auto px-6 lg:px-10">
+        <div class="max-w-3xl mb-14 lg:mb-20">
+          <div class="eyebrow"><span>Customers</span></div>
+          <h2 class="font-serif text-[36px] sm:text-[52px] lg:text-[64px] leading-[1.02] tracking-tightest mt-5">
+            Why teams switched to <em class="italic">Deal Room</em>.
+          </h2>
+          <p class="mt-6 text-lg text-ink/65 max-w-2xl">
+            A few of the publishers, investors and operators using Deal Room every day.
+          </p>
+        </div>
+
+        <div class="testimonial-grid">
+          <figure class="testimonial-card">
+            <blockquote class="testimonial-quote">
+              "We launched a co-invest SPV in five business days. Same week, our LPs were already inside Deal Room signing subs. The six-stage view killed our spreadsheet pipeline overnight."
+            </blockquote>
+            <figcaption class="testimonial-author">
+              <span class="testimonial-avatar" style="background:#3730A3">TA</span>
+              <span>
+                <span class="t-name">Tunde Adebayo</span>
+                <span class="t-role">Managing Partner &middot; Verdant Capital</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <figure class="testimonial-card">
+            <blockquote class="testimonial-quote">
+              "Pick the vehicle and the wizard pre-fills sane terms. We stopped redefining fees and carry on every SPV. The roll-up template alone saved a week of legal redlines."
+            </blockquote>
+            <figcaption class="testimonial-author">
+              <span class="testimonial-avatar" style="background:#065F46">FE</span>
+              <span>
+                <span class="t-name">Funmi Eze</span>
+                <span class="t-role">Founder &middot; Solar Sahara</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <figure class="testimonial-card">
+            <blockquote class="testimonial-quote">
+              "The AI summary on the Portfolio page is the first LP report I've ever read where the recommendation actually changed my next move. Dispersion call on our weakest position was sharp."
+            </blockquote>
+            <figcaption class="testimonial-author">
+              <span class="testimonial-avatar" style="background:#7C2D12">CO</span>
+              <span>
+                <span class="t-name">Chinedu Okonkwo</span>
+                <span class="t-role">Director of Strategy &middot; Lagos Industrial Holdings</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <figure class="testimonial-card">
+            <blockquote class="testimonial-quote">
+              "Soft / hard / signed status on every commitment. Snapshot bar shows committed-vs-target live. I stopped sending weekly raise emails to my partners — they just open the deal page."
+            </blockquote>
+            <figcaption class="testimonial-author">
+              <span class="testimonial-avatar" style="background:#1F2937">AM</span>
+              <span>
+                <span class="t-name">Aisha Mohammed</span>
+                <span class="t-role">IR Lead &middot; Pinnacle Renewables</span>
+              </span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hero quote (5th testimonial — the marquee one) -->
+    <section class="bg-ink text-white py-24 lg:py-32">
+      <div class="max-w-content mx-auto px-6 lg:px-10">
+        <div class="grid lg:grid-cols-12 gap-12 items-start">
+          <div class="lg:col-span-7">
+            <div class="eyebrow text-white/55"><span class="dot bg-white/60"></span><span>From the field</span></div>
+            <blockquote class="mt-6">
+              <p class="font-serif text-[34px] sm:text-[44px] lg:text-[52px] leading-[1.08] tracking-tightest text-white">
+                "We replaced two SaaS subscriptions with a single Deal Room. Our IR cycle went from <em class="italic">three weeks</em> to <em class="italic">four days</em>."
+              </p>
+              <footer class="mt-8 flex items-center gap-4">
+                <span class="inline-flex items-center justify-center h-11 w-11 rounded-full bg-white/10 font-semibold text-white">AO</span>
+                <span class="text-sm">
+                  <span class="block text-white font-medium">Adaeze Okafor</span>
+                  <span class="block text-white/55">Head of IR &middot; Atlas Energy Partners</span>
+                </span>
+              </footer>
+            </blockquote>
+          </div>
+          <aside class="lg:col-span-5 lg:pl-8 lg:border-l lg:border-white/10">
+            <p class="text-white/55 text-sm uppercase tracking-[0.18em]">Average across firms on Deal Room</p>
+            <dl class="mt-8 space-y-8">
+              <div class="flex items-end gap-6">
+                <dt class="font-serif text-[60px] leading-none text-white">5d</dt>
+                <dd class="pb-2 text-white/65 text-sm">median Source &rarr; Structure (vehicle picked, terms locked)</dd>
+              </div>
+              <div class="flex items-end gap-6">
+                <dt class="font-serif text-[60px] leading-none text-white">3.4&times;</dt>
+                <dd class="pb-2 text-white/65 text-sm">faster Outreach &rarr; Close vs spreadsheet pipelines</dd>
+              </div>
+              <div class="flex items-end gap-6">
+                <dt class="font-serif text-[60px] leading-none text-white">6</dt>
+                <dd class="pb-2 text-white/65 text-sm">product suites retired (now stages and wrappers)</dd>
+              </div>
+            </dl>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing — 3 tiers -->
+    <section id="pricing" class="py-24 lg:py-32">
+      <div class="max-w-content mx-auto px-6 lg:px-10">
+        <div class="max-w-3xl mb-14">
+          <div class="eyebrow"><span>Pricing</span></div>
+          <h2 class="font-serif text-[36px] sm:text-[52px] lg:text-[64px] leading-[1.02] tracking-tightest mt-5">
+            One product. <em class="italic">Pick the depth.</em>
+          </h2>
+          <p class="mt-6 text-ink/65 text-lg max-w-2xl">
+            Investors read and commit free. GPs raising one vehicle pick Standard. Multi-vehicle firms with real LP volume go Pro. No per-seat fees, no annual lock-ins.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-4">
+
+          <!-- Investor (LP) -->
+          <div class="tier-card">
+            <div class="tier-name">Investor</div>
+            <div class="tier-price"><span class="amt">$0</span></div>
+            <p class="tier-tag">For LPs. Find deals, commit, track your portfolio, get AI summaries.</p>
+            <ul class="tier-list">
+              <li>Browse and commit on any deal you're invited to</li>
+              <li>Portfolio dashboard — KPIs, MOIC, TVPI, DPI</li>
+              <li>AI performance summary, on demand</li>
+              <li>Watchlist + alerts on companies you track</li>
+              <li>Naira / USD toggle</li>
+            </ul>
+            <a href="onboarding.html?role=lp" class="btn-ghost w-full justify-center mt-6">Sign up free</a>
+          </div>
+
+          <!-- Standard (GP, single vehicle) -->
+          <div class="tier-card is-featured">
+            <span class="tier-flag">For GPs raising one vehicle</span>
+            <div class="tier-name">Standard</div>
+            <div class="tier-price"><span class="amt">$199</span><span class="per">/mo</span></div>
+            <p class="tier-tag">Run one live deal through the full lifecycle. Six wrappers available.</p>
+            <ul class="tier-list">
+              <li>Unlimited deals in Draft / Source / Structure</li>
+              <li>1 live vehicle (Outreach &rarr; Administer)</li>
+              <li>All six wrappers — SPV, Sub-Fund, Rolling, Venture, Co-Invest, Roll-Up</li>
+              <li>Up to 50 investors per deal · unlimited viewers</li>
+              <li>Document upload (10 GB) · activity log · CSV exports</li>
+            </ul>
+            <a href="onboarding.html?plan=standard" class="btn-primary w-full justify-center mt-6">Get started</a>
+          </div>
+
+          <!-- Pro (multi-vehicle GP) -->
+          <div class="tier-card is-gold">
+            <div class="tier-name">Pro</div>
+            <div class="tier-price"><span class="amt">$799</span><span class="per">/mo</span></div>
+            <p class="tier-tag">For multi-vehicle firms with real LP volume + admin workflows.</p>
+            <ul class="tier-list">
+              <li>Unlimited live vehicles + parallel raises</li>
+              <li>Up to 500 investors per deal · workspaces &amp; roles</li>
+              <li>Document upload (100 GB) · custom report templates</li>
+              <li>Webhooks + API access · audit log</li>
+              <li>Priority human support, 1 business day SLA</li>
+            </ul>
+            <a href="onboarding.html?plan=pro" class="btn-gold w-full justify-center mt-6">Talk to sales</a>
+          </div>
+        </div>
+
+        <p class="mt-10 text-sm text-ink/55 max-w-2xl">
+          Volume-based pricing kicks in only above the tier limits. Enterprise / sovereign / DFI users — contact us for a custom contract with SSO, dedicated CSM, and on-prem deployment.
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="border-t border-line py-24 lg:py-32">
+      <div class="max-w-content mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-4">
+          <div class="eyebrow"><span>FAQ</span></div>
+          <h2 class="font-serif text-[36px] lg:text-[48px] leading-[1.05] tracking-tightest mt-5">Your questions, answered.</h2>
+          <p class="mt-5 text-ink/65">Still wondering? <a class="prose-link" href="mailto:hello@neiia.ng">Email the team</a>.</p>
+        </div>
+        <div class="lg:col-span-8">
+          <details class="faq-item" open>
+            <summary>What happened to Fund Administration, SPVs, Sub-Funds, etc.?</summary>
+            <div class="faq-body">
+              They're now stages and wrapper types inside Deal Room. The 6 product pages you might remember (Fund Administration, Investor Management, SPVs, Sub-Funds, Venture, Rolling, Scout, Roll-Up) collapsed into one product with a vehicle dropdown in Step 2 of the wizard. One workspace beats six landing pages that can't survive on their own.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>Walk me through the lifecycle.</summary>
+            <div class="faq-body">
+              <strong>Source</strong> — draft the memo + attach the deal letter. <strong>Structure</strong> — pick one of six vehicle wrappers, terms pre-fill. <strong>Outreach</strong> — invite subscribed investors, track soft &rarr; hard &rarr; signed. <strong>Diligence</strong> — open the data room to committed investors with doc gating. <strong>Close</strong> — generate subscription package, KYC/AML, e-sign, lock allocations. <strong>Administer</strong> — capital calls, distributions, NAV, quarterly LP updates. Every artifact you upload lives on the stage it belongs to.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>How are the six vehicles different?</summary>
+            <div class="faq-body">
+              Each wrapper carries template defaults (fees, carry, min check, doc set) AND type-aware mechanics (single vs multi-close, fixed term vs rolling vintages, fund-fee vs no-fee piggyback). The position schema is unified, but the *interpretation* of `commitment`, `called`, `unfunded` shifts by type. Pick a wrapper in Step 2; defaults populate; override what you need.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>Where do investors live? What about Investment Management?</summary>
+            <div class="faq-body">
+              Investment Management is folded into Deal Room as the *investor lens*. Open Portfolio in the sidebar to see every position you've committed to across every deal — KPIs (TVPI, DPI, MOIC), per-position multiples, an AI performance summary. The same deal record GPs see, with the camera flipped.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>What does the AI summary actually do?</summary>
+            <div class="faq-body">
+              Reads your live position data and writes an analyst-style note: total committed / called / distributed, TVPI verdict against vintage benchmarks, sector exposure + concentration risk, dispersion between best and weakest positions, and a recommendation (hold, stay disciplined, or pause). It's templated logic over your real numbers — fast, deterministic, not investment advice.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>Naira or Dollar?</summary>
+            <div class="faq-body">
+              Both. There's a segmented currency toggle in the workspace header. Storage is USD-canonical; display converts on the fly. Every dollar figure across the deal page, snapshot, portfolio KPIs, AI summary, and CSV exports flips together. FX rate is configurable in one place; default is the recent Naira-Dollar parity.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing CTA -->
+    <section class="bg-cream border-t border-line">
+      <div class="max-w-content mx-auto px-6 lg:px-10 py-24 lg:py-32 text-center">
+        <h2 class="font-serif text-[40px] sm:text-[56px] lg:text-[72px] leading-[1.02] tracking-tightest max-w-3xl mx-auto">
+          Three minutes to your <em class="italic">first deal.</em>
+        </h2>
+        <p class="mt-6 text-ink/65 text-lg max-w-xl mx-auto">Sign up free, draft a memo, pick a vehicle, set the terms. The lifecycle picks it up from there.</p>
+        <div class="mt-10 flex items-center justify-center gap-3 flex-wrap">
+          <a href="onboarding.html" class="btn-primary btn-lg">
+            Get started
+            <svg class="ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#pricing" class="btn-ghost btn-lg">See pricing</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-ink text-white">
+    <div class="max-w-content mx-auto px-6 lg:px-10 py-16">
+      <div class="grid md:grid-cols-12 gap-10">
+        <div class="md:col-span-5">
+          <div class="flex items-center gap-2.5">
+            <img src="assets/images/neiih_logo_white.png" alt="" class="h-7 w-auto" onerror="this.style.display='none'" />
+            <span class="font-semibold tracking-tight">Deal Room</span>
+          </div>
+          <p class="mt-5 text-white/55 text-sm max-w-sm leading-relaxed">
+            The end-to-end deal lifecycle for African capital. Source, structure, raise, close, administer — one workspace. Built on the NEIIA platform.
+          </p>
+        </div>
+        <div class="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8 text-sm">
+          <div>
+            <div class="text-white/55 text-xs uppercase tracking-[0.18em] mb-4">Product</div>
+            <ul class="space-y-2.5">
+              <li><a href="#lifecycle" class="footer-link">Lifecycle</a></li>
+              <li><a href="#vehicles" class="footer-link">Vehicles</a></li>
+              <li><a href="#outreach" class="footer-link">Outreach</a></li>
+              <li><a href="#portfolio" class="footer-link">Portfolio &amp; AI</a></li>
+              <li><a href="#pricing" class="footer-link">Pricing</a></li>
+              <li><a href="#faq" class="footer-link">FAQ</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-white/55 text-xs uppercase tracking-[0.18em] mb-4">Company</div>
+            <ul class="space-y-2.5">
+              <li><a href="#" class="footer-link">About NEIIA</a></li>
+              <li><a href="#" class="footer-link">Publishers</a></li>
+              <li><a href="#" class="footer-link">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-white/55 text-xs uppercase tracking-[0.18em] mb-4">Legal</div>
+            <ul class="space-y-2.5">
+              <li><a href="#" class="footer-link">Privacy</a></li>
+              <li><a href="#" class="footer-link">Terms</a></li>
+              <li><a href="#" class="footer-link">Security</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
+        <span>&copy; <span id="year"></span> NEIIA. All rights reserved.</span>
+        <span>Lagos &middot; Abuja</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+  <script src="assets/js/databank.js"></script>
+</body>
+</html>

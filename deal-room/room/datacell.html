@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Data Cell - NEIIA Deal Room</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { ink: "#0A0A0A", inkSoft: "#525252", paper: "#FFFFFF", muted: "#FBFAF6", border: "#E7E5E0", accent: "#E04F39" },
+      fontFamily: { sans: ["Inter","system-ui","sans-serif"], mono: ["JetBrains Mono","ui-monospace","monospace"], serif: ['"Instrument Serif"',"Georgia","serif"] }
+    } } };
+  </script>
+  <link rel="stylesheet" href="../assets/css/custom.css" />
+  <link rel="stylesheet" href="../assets/css/terminal.css" />
+  <style>
+    html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}
+
+    /* Publication card — what a publisher owns */
+    .pub-card {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr) auto auto auto;
+      gap: 14px;
+      align-items: center;
+      padding: 18px 20px;
+      border-radius: var(--r-lg);
+      border: 1px solid var(--border-t);
+      background: var(--bg-base);
+      transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-spring);
+    }
+    .pub-price {
+      display: flex; flex-direction: column; align-items: flex-end;
+      min-width: 110px;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: var(--r-md);
+      transition: background var(--dur-fast) var(--ease-out);
+    }
+    .pub-price:hover { background: var(--bg-panel); }
+    .pub-price .v {
+      font-size: 17px; font-weight: 600; color: var(--text-primary);
+      font-feature-settings: "tnum"; letter-spacing: -0.01em;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .pub-price .v .pencil { width: 11px; height: 11px; color: var(--text-muted); }
+    .pub-price:hover .v .pencil { color: var(--text-primary); }
+    .pub-price .l {
+      font-size: 11px; color: var(--text-muted); margin-top: 2px; white-space: nowrap;
+      font-feature-settings: "tnum";
+    }
+
+    /* Price breakdown panel (used inside New publication + Edit price modals) */
+    .price-calc {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border-t);
+      background: var(--bg-panel);
+      font-family: var(--font-sans);
+    }
+    .price-calc .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 4px 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .price-calc .row .amt {
+      font-feature-settings: "tnum";
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .price-calc .row.net {
+      padding-top: 10px;
+      margin-top: 4px;
+      border-top: 1px solid var(--border-t);
+    }
+    .price-calc .row.net .label,
+    .price-calc .row.net .amt {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 14px;
+    }
+    .price-calc .row.fee .amt { color: var(--down); }
+    .pub-card + .pub-card { margin-top: 10px; }
+    .pub-card:hover { border-color: var(--text-primary); transform: translateY(-1px); }
+    .pub-logo {
+      width: 48px; height: 48px; border-radius: 10px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 600; font-size: 18px;
+    }
+    .pub-meta { min-width: 0; }
+    .pub-name { font-size: 16px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.005em; }
+    .pub-sub  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .pub-stat {
+      display: flex; flex-direction: column; align-items: flex-end;
+      min-width: 110px;
+    }
+    .pub-stat .v { font-size: 17px; font-weight: 600; font-feature-settings: "tnum"; color: var(--text-primary); letter-spacing: -0.01em; }
+    .pub-stat .l { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .pub-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+
+    @media (max-width: 700px) {
+      .pub-card { grid-template-columns: 44px 1fr; row-gap: 12px; }
+      .pub-stat { grid-column: 1 / -1; align-items: flex-start; flex-direction: row; gap: 18px; }
+      .pub-actions { grid-column: 1 / -1; justify-content: flex-start; }
+    }
+
+    /* Recent-entries feed */
+    .entry-feed { display: flex; flex-direction: column; }
+    .entry-row {
+      display: grid;
+      grid-template-columns: 32px 1fr auto;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-t-soft);
+    }
+    .entry-row:last-child { border-bottom: 0; }
+    .entry-kind {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--bg-panel); color: var(--text-primary);
+      flex-shrink: 0;
+    }
+    .entry-kind.k-risk { background: rgba(220,38,38,0.10); color: var(--down); }
+    .entry-kind.k-briefing { background: rgba(224,79,57,0.10); color: var(--accent); }
+    .entry-kind.k-milestone { background: rgba(21,128,61,0.10); color: var(--up); }
+    .entry-kind.k-financial { background: rgba(31,41,55,0.08); color: var(--info); }
+    .entry-kind.k-news { background: var(--bg-panel-elev); color: var(--text-secondary); }
+
+    .entry-title { font-size: 14px; color: var(--text-primary); line-height: 1.45; font-weight: 500; }
+    .entry-meta {
+      font-size: 11px; color: var(--text-muted); margin-top: 4px;
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .entry-meta .dot { width: 3px; height: 3px; border-radius: 999px; background: var(--text-muted); align-self: center; }
+    .entry-when {
+      font-size: 11px; color: var(--text-muted); white-space: nowrap;
+      font-feature-settings: "tnum";
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <div data-workspace-shell data-active="datacell"></div>
+
+    <main class="workspace-content">
+
+      <header>
+        <div class="wh-eyebrow"><span class="dot"></span><span>Publisher workspace</span></div>
+        <h1 class="wh-greeting">Data <em>Cell</em>.</h1>
+        <p class="wh-dek">
+          Where you log company data. Anything you publish here shows up in the matching company profile — for the subscribers paying to see it.
+        </p>
+
+        <div class="wh-actions">
+          <button class="t-btn t-btn-primary" type="button" id="newEntryBtn">+ Log a new entry</button>
+          <button class="t-btn" type="button" id="newPubBtn">+ New publication</button>
+          <button class="t-btn" type="button" data-action="open-reports">Subscriber reports</button>
+        </div>
+
+        <div class="wh-snapshot" id="dcSnapshot"></div>
+      </header>
+
+      <!-- Your publications -->
+      <section class="wh-section">
+        <div class="wh-section-head">
+          <div>
+            <span class="wh-section-eyebrow">Owned by your workspace</span>
+            <h2 class="wh-section-title">Your publications</h2>
+          </div>
+          <a class="wh-section-link" href="deals.html">Browse all companies &rarr;</a>
+        </div>
+        <div id="pubList"></div>
+      </section>
+
+      <!-- Recent entries published -->
+      <section class="wh-section">
+        <div class="wh-section-head">
+          <div>
+            <span class="wh-section-eyebrow">Activity</span>
+            <h2 class="wh-section-title">Recently published</h2>
+          </div>
+          <span class="wh-section-link" id="entryCount">— entries</span>
+        </div>
+        <div class="panel">
+          <div class="panel-body">
+            <div class="entry-feed" id="entryFeed"></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="../assets/js/databank.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/terminal.js"></script>
+  <script src="../assets/js/workspace.js"></script>
+  <script src="../assets/js/dealflow.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const D = window.DataBankData;
+      const T = window.Terminal;
+      const STORE_KEY = "neiia_db_publications";
+
+      // ---- Publications model ----
+      // Demo seed: take the first three companies as the publications this user owns.
+      // Subscribers + recent entries are synthetic but deterministic per company.
+      function seedPublications() {
+        const seeded = window.DataBank.store.get(STORE_KEY, null);
+        if (seeded) {
+          // Migration: older seeds didn't have a price — fall back to the synthetic one once.
+          let dirty = false;
+          seeded.forEach(function (p) {
+            if (typeof p.price !== "number") {
+              const c = D.companies.find(function (x) { return x.id === p.id; }) || { id: p.id };
+              p.price = T.priceForCompany(c);
+              dirty = true;
+            }
+          });
+          if (dirty) window.DataBank.store.set(STORE_KEY, seeded);
+          return seeded;
+        }
+        const seeds = D.companies.slice(0, 3).map(function (c, i) {
+          const subBase = 28 + (i * 11) + (c.id.length * 3);
+          const entries = (c.risks || []).slice(0, 2).map(function (r, j) {
+            return {
+              id: c.id + "-r" + j,
+              kind: "risk",
+              title: r.name,
+              note: r.note,
+              level: r.level,
+              when: Date.now() - (i + j + 1) * 24 * 60 * 60 * 1000,
+              companyId: c.id
+            };
+          });
+          const milestone = (c.milestones || [])[0];
+          if (milestone) {
+            entries.push({
+              id: c.id + "-m0",
+              kind: "milestone",
+              title: milestone.text,
+              note: "Reported in the " + milestone.date + " update.",
+              when: Date.now() - (i + 5) * 24 * 60 * 60 * 1000,
+              companyId: c.id
+            });
+          }
+          return {
+            id: c.id,
+            name: c.name,
+            sector: c.sector,
+            price: T.priceForCompany(c),
+            subscribers: subBase,
+            entries: entries,
+            status: "Published"
+          };
+        });
+        window.DataBank.store.set(STORE_KEY, seeds);
+        return seeds;
+      }
+      const FEE_RATE = T.NEIIA_FEE_RATE;
+      const FEE_PCT = (FEE_RATE * 100).toFixed(1).replace(/\.0$/, "");
+      function fee(p)    { return T.neiiaFee(p); }
+      function netOf(p)  { return T.publisherNet(p); }
+      function fmt(n)    { return "$" + Number(n).toFixed(2); }
+      let pubs = seedPublications();
+
+      function savePubs() { window.DataBank.store.set(STORE_KEY, pubs); }
+      function logoColor(id) { return T && T.companyColor ? T.companyColor(id) : "#0A0A0A"; }
+      function initial(name) { return (name || "?").charAt(0).toUpperCase(); }
+      function priceFor(c) { return T && T.priceForCompany ? T.priceForCompany(c) : 49; }
+      function fmtWhen(ts) {
+        const diff = (Date.now() - ts) / 1000;
+        if (diff < 3600)    return Math.max(1, Math.round(diff / 60)) + "m ago";
+        if (diff < 86400)   return Math.round(diff / 3600) + "h ago";
+        if (diff < 86400 * 7) return Math.round(diff / 86400) + "d ago";
+        return new Date(ts).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+      }
+      function kindLabel(k) {
+        return { risk: "Risk note", briefing: "Briefing", milestone: "Milestone", financial: "Financial update", news: "News" }[k] || k;
+      }
+      function kindIcon(k) {
+        if (k === "risk")      return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+        if (k === "briefing")  return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>';
+        if (k === "milestone") return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+        if (k === "financial") return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>';
+        return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+      }
+
+      // ---- Snapshot ----
+      function renderSnapshot() {
+        const totalSubs = pubs.reduce(function (a, p) { return a + (p.subscribers || 0); }, 0);
+        const grossMRR = pubs.reduce(function (a, p) {
+          return a + (p.subscribers || 0) * (p.price || 0);
+        }, 0);
+        const netMRR = grossMRR * (1 - FEE_RATE);
+        function money(n) { return "$" + Math.round(n).toLocaleString(); }
+        document.getElementById("dcSnapshot").innerHTML = [
+          { value: pubs.length.toString(),         label: "Publications" },
+          { value: totalSubs.toString(),           label: "Paying subscribers" },
+          { value: money(grossMRR) + "/mo",        label: "Gross subscription revenue" },
+          { value: money(netMRR) + "/mo",          label: "Net to you (after " + FEE_PCT + "% VAT)" }
+        ].map(function (s) {
+          return '<div class="wh-snap"><div class="wh-snap-value">' + s.value + '</div><div class="wh-snap-label">' + s.label + '</div></div>';
+        }).join("");
+      }
+
+      // ---- Publications list ----
+      function renderPubs() {
+        const list = document.getElementById("pubList");
+        if (!pubs.length) {
+          list.innerHTML = (
+            '<div class="pub-card" style="background:var(--bg-panel);border-style:dashed;justify-content:center;text-align:center;display:block;padding:32px;">' +
+              '<div style="font-family:var(--serif);font-size:24px;letter-spacing:-0.02em;margin-bottom:6px;">No publications yet</div>' +
+              '<p style="font-size:14px;color:var(--text-secondary);max-width:46ch;margin:0 auto 14px;">Add a company you own or represent. Once published, subscribers pay to read your risk register, briefings, and financials.</p>' +
+              '<button class="t-btn t-btn-primary" type="button" id="emptyPubBtn">+ New publication</button>' +
+            '</div>'
+          );
+          const btn = document.getElementById("emptyPubBtn");
+          if (btn) btn.addEventListener("click", openNewPubModal);
+          return;
+        }
+        list.innerHTML = pubs.map(function (p) {
+          const lastEntry = (p.entries || []).slice().sort(function (a, b) { return b.when - a.when; })[0];
+          const lastWhen = lastEntry ? fmtWhen(lastEntry.when) : "No entries yet";
+          const price = p.price || 0;
+          return (
+            '<div class="pub-card" data-pub-id="' + p.id + '">' +
+              '<span class="pub-logo" style="background:' + logoColor(p.id) + '">' + initial(p.name) + '</span>' +
+              '<div class="pub-meta">' +
+                '<div class="pub-name">' + p.name + '</div>' +
+                '<div class="pub-sub">' + p.sector + ' · ' + (p.entries || []).length + ' entries · last update ' + lastWhen + '</div>' +
+              '</div>' +
+              '<div class="pub-stat">' +
+                '<span class="v">' + (p.subscribers || 0) + '</span>' +
+                '<span class="l">subscribers</span>' +
+              '</div>' +
+              '<button class="pub-price" type="button" data-edit-price="' + p.id + '" aria-label="Edit price">' +
+                '<span class="v">$' + price + '/mo' +
+                  '<svg class="pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>' +
+                '</span>' +
+                '<span class="l">net ' + fmt(netOf(price)) + '/mo</span>' +
+              '</button>' +
+              '<div class="pub-actions">' +
+                '<button class="t-btn" type="button" data-log-for="' + p.id + '">+ Log entry</button>' +
+                '<a class="t-btn" href="company.html?company=' + p.id + '">Open profile</a>' +
+              '</div>' +
+            '</div>'
+          );
+        }).join("");
+      }
+
+      // ---- Live-update breakdown in any modal that has [data-price-input] + [data-price-calc] ----
+      function bindPriceCalc(root) {
+        const input = root.querySelector('[data-price-input]');
+        const out = root.querySelector('[data-price-calc]');
+        if (!input || !out) return;
+        function paint() {
+          const p = Math.max(0, parseFloat(input.value) || 0);
+          out.innerHTML = (
+            '<div class="row"><span class="label">Subscriber pays</span><span class="amt">' + fmt(p) + '/mo</span></div>' +
+            '<div class="row fee"><span class="label">NEIIA fee (' + FEE_PCT + '% VAT)</span><span class="amt">−' + fmt(fee(p)) + '/mo</span></div>' +
+            '<div class="row net"><span class="label">Your earning per subscriber</span><span class="amt">' + fmt(netOf(p)) + '/mo</span></div>'
+          );
+        }
+        input.addEventListener("input", paint);
+        paint();
+      }
+
+      // ---- Edit-price modal ----
+      function openEditPriceModal(pubId) {
+        const pub = pubs.find(function (p) { return p.id === pubId; });
+        if (!pub) return;
+        T.modal("Set monthly subscription price", (
+          '<p style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin-bottom:14px;">' +
+            'What you charge each subscriber every month for access to <strong>' + pub.name + '</strong>. NEIIA collects ' + FEE_PCT + '% VAT on every sale.' +
+          '</p>' +
+          '<label for="editPriceInput">Monthly price (USD)</label>' +
+          '<div style="position:relative;">' +
+            '<span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;">$</span>' +
+            '<input id="editPriceInput" class="t-input" data-price-input type="number" min="1" step="1" value="' + pub.price + '" style="width:100%;padding-left:26px;" />' +
+          '</div>' +
+          '<div class="price-calc" data-price-calc></div>'
+        ), {
+          footer:
+            '<button class="t-btn" type="button" data-modal-close>Cancel</button>' +
+            '<button class="t-btn t-btn-primary" type="button" id="savePriceBtn">Save price</button>'
+        });
+        const root = document.querySelector("[data-modal-root]");
+        bindPriceCalc(root);
+        document.getElementById("savePriceBtn").addEventListener("click", function () {
+          const v = parseFloat(root.querySelector('[data-price-input]').value);
+          if (!isFinite(v) || v < 1) { T.toast("Set a price of at least $1"); return; }
+          pub.price = Math.round(v);
+          savePubs();
+          renderSnapshot(); renderPubs();
+          T.closeModal();
+          T.toast(pub.name + " is now $" + pub.price + "/mo");
+        });
+      }
+
+      // ---- Recent entries feed ----
+      function renderFeed() {
+        const all = [];
+        pubs.forEach(function (p) {
+          (p.entries || []).forEach(function (e) { all.push(Object.assign({ pubName: p.name }, e)); });
+        });
+        all.sort(function (a, b) { return b.when - a.when; });
+        const feedEl = document.getElementById("entryFeed");
+        document.getElementById("entryCount").textContent = all.length + (all.length === 1 ? " entry" : " entries");
+        if (!all.length) {
+          feedEl.innerHTML = '<div style="font-size:14px;color:var(--text-muted);padding:18px 4px;">No entries yet. Use <strong>+ Log a new entry</strong> above to publish your first update.</div>';
+          return;
+        }
+        feedEl.innerHTML = all.slice(0, 20).map(function (e) {
+          return (
+            '<div class="entry-row">' +
+              '<span class="entry-kind k-' + e.kind + '" aria-hidden="true">' + kindIcon(e.kind) + '</span>' +
+              '<div style="min-width:0;">' +
+                '<div class="entry-title">' + e.title + '</div>' +
+                '<div class="entry-meta">' +
+                  '<span><strong>' + e.pubName + '</strong></span>' +
+                  '<span class="dot"></span>' +
+                  '<span>' + kindLabel(e.kind) + '</span>' +
+                  (e.level ? '<span class="dot"></span><span>' + e.level + ' risk</span>' : "") +
+                '</div>' +
+              '</div>' +
+              '<span class="entry-when">' + fmtWhen(e.when) + '</span>' +
+            '</div>'
+          );
+        }).join("");
+      }
+
+      // ---- "Log a new entry" modal ----
+      function openLogModal(presetPubId) {
+        if (!pubs.length) { T.toast("Add a publication first"); openNewPubModal(); return; }
+        const opts = pubs.map(function (p) {
+          return '<option value="' + p.id + '"' + (p.id === presetPubId ? ' selected' : '') + '>' + p.name + '</option>';
+        }).join("");
+        T.modal("Log an entry", (
+          '<p style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin-bottom:14px;">' +
+            'Subscribers see the update inside the company profile as soon as you publish.' +
+          '</p>' +
+          '<div style="display:grid;gap:14px;">' +
+            '<div><label>Publication</label><select class="t-input" name="entryPub" style="width:100%">' + opts + '</select></div>' +
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">' +
+              '<div><label>Type</label><select class="t-input" name="entryKind" style="width:100%">' +
+                '<option value="risk">Risk note</option>' +
+                '<option value="briefing">Briefing</option>' +
+                '<option value="milestone">Milestone</option>' +
+                '<option value="financial">Financial update</option>' +
+                '<option value="news">News</option>' +
+              '</select></div>' +
+              '<div data-level-wrap><label>Risk level</label><select class="t-input" name="entryLevel" style="width:100%">' +
+                '<option>Low</option><option selected>Medium</option><option>High</option>' +
+              '</select></div>' +
+            '</div>' +
+            '<div><label>Headline</label><input class="t-input" name="entryTitle" placeholder="e.g. Regulatory tariff exposure" style="width:100%" /></div>' +
+            '<div><label>Editor note</label><textarea class="t-input" name="entryNote" rows="4" placeholder="What changed, why it matters, and what subscribers should watch." style="width:100%;resize:vertical;"></textarea></div>' +
+          '</div>'
+        ), {
+          footer:
+            '<button class="t-btn" type="button" data-modal-close>Save as draft</button>' +
+            '<button class="t-btn t-btn-primary" type="button" id="publishEntryBtn">Publish to subscribers</button>'
+        });
+
+        const root = document.querySelector("[data-modal-root]");
+        const kindEl = root.querySelector('[name="entryKind"]');
+        const levelWrap = root.querySelector('[data-level-wrap]');
+        function syncLevel() { levelWrap.style.display = kindEl.value === "risk" ? "" : "none"; }
+        kindEl.addEventListener("change", syncLevel);
+        syncLevel();
+
+        document.getElementById("publishEntryBtn").addEventListener("click", function () {
+          const pubId   = root.querySelector('[name="entryPub"]').value;
+          const kind    = root.querySelector('[name="entryKind"]').value;
+          const level   = kind === "risk" ? root.querySelector('[name="entryLevel"]').value : null;
+          const title   = root.querySelector('[name="entryTitle"]').value.trim();
+          const note    = root.querySelector('[name="entryNote"]').value.trim();
+          if (!title || !note) { T.toast("Add a headline and editor note"); return; }
+          const pub = pubs.find(function (p) { return p.id === pubId; });
+          if (!pub) return;
+          pub.entries = pub.entries || [];
+          pub.entries.unshift({
+            id: pub.id + "-" + Date.now(),
+            kind: kind,
+            title: title,
+            note: note,
+            level: level,
+            when: Date.now(),
+            companyId: pub.id
+          });
+          savePubs();
+          renderSnapshot(); renderPubs(); renderFeed();
+          T.closeModal();
+          T.toast("Published to " + pub.subscribers + " subscribers of " + pub.name);
+        });
+      }
+
+      // ---- "New publication" modal ----
+      function openNewPubModal() {
+        const owned = new Set(pubs.map(function (p) { return p.id; }));
+        const available = D.companies.filter(function (c) { return !owned.has(c.id); });
+        if (!available.length) { T.toast("All companies in your universe are already published"); return; }
+        const opts = available.map(function (c) {
+          return '<option value="' + c.id + '">' + c.name + ' — ' + c.sector + '</option>';
+        }).join("");
+        const defaultPrice = priceFor(available[0]);
+        T.modal("New publication", (
+          '<p style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin-bottom:14px;">' +
+            'Add a company you own or represent. You set the monthly price subscribers pay for data access — NEIIA collects ' + FEE_PCT + '% VAT on every sale.' +
+          '</p>' +
+          '<div style="display:grid;gap:14px;">' +
+            '<div><label>Company</label><select class="t-input" name="pubCo" style="width:100%">' + opts + '</select></div>' +
+            '<div>' +
+              '<label for="newPubPrice">Monthly price (USD)</label>' +
+              '<div style="position:relative;">' +
+                '<span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;">$</span>' +
+                '<input id="newPubPrice" class="t-input" data-price-input type="number" min="1" step="1" value="' + defaultPrice + '" style="width:100%;padding-left:26px;" />' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="price-calc" data-price-calc></div>'
+        ), {
+          footer:
+            '<button class="t-btn" type="button" data-modal-close>Cancel</button>' +
+            '<button class="t-btn t-btn-primary" type="button" id="createPubBtn">Create publication</button>'
+        });
+        const root = document.querySelector("[data-modal-root]");
+        const coEl  = root.querySelector('[name="pubCo"]');
+        const priceEl = root.querySelector('[data-price-input]');
+        // When the publisher picks a different company, suggest its synthetic default
+        // (only if they haven't already typed their own).
+        let priceTouched = false;
+        priceEl.addEventListener("input", function () { priceTouched = true; });
+        coEl.addEventListener("change", function () {
+          if (priceTouched) return;
+          const c = D.companies.find(function (x) { return x.id === coEl.value; });
+          if (c) priceEl.value = priceFor(c);
+          // re-fire to refresh the breakdown
+          priceEl.dispatchEvent(new Event("input"));
+        });
+        bindPriceCalc(root);
+
+        document.getElementById("createPubBtn").addEventListener("click", function () {
+          const id = coEl.value;
+          const c = D.companies.find(function (x) { return x.id === id; });
+          if (!c) return;
+          const p = parseFloat(priceEl.value);
+          if (!isFinite(p) || p < 1) { T.toast("Set a price of at least $1"); return; }
+          pubs.unshift({
+            id: c.id, name: c.name, sector: c.sector,
+            price: Math.round(p),
+            subscribers: 0, entries: [], status: "Published"
+          });
+          savePubs();
+          renderSnapshot(); renderPubs(); renderFeed();
+          T.closeModal();
+          T.toast(c.name + " is now a publication at $" + Math.round(p) + "/mo");
+        });
+      }
+
+      // ---- Wire up ----
+      document.getElementById("newEntryBtn").addEventListener("click", function () { openLogModal(null); });
+      document.getElementById("newPubBtn").addEventListener("click", openNewPubModal);
+      document.getElementById("pubList").addEventListener("click", function (e) {
+        const logBtn = e.target.closest("[data-log-for]");
+        if (logBtn) { openLogModal(logBtn.getAttribute("data-log-for")); return; }
+        const priceBtn = e.target.closest("[data-edit-price]");
+        if (priceBtn) { openEditPriceModal(priceBtn.getAttribute("data-edit-price")); }
+      });
+
+      renderSnapshot();
+      renderPubs();
+      renderFeed();
+    })();
+  </script>
+</body>
+</html>

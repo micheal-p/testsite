@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Watchlist - NEIIA Deal Room Terminal</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { ink: "#0A0A0A", inkSoft: "#525252", paper: "#FFFFFF", muted: "#FAFAFA", border: "#E5E7EB", accent: "#0A0A0A" }
+    } } };
+  </script>
+  <link rel="stylesheet" href="../assets/css/custom.css" />
+  <link rel="stylesheet" href="../assets/css/terminal.css" />
+  <style>html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}</style>
+</head>
+<body>
+  <div class="app-shell">
+    <div data-workspace-shell data-active="watchlist"></div>
+
+    <main class="workspace-content">
+      <header style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px;">Saved instruments</div>
+          <h1 style="font-size:22px;font-weight:600;color:var(--text-primary);letter-spacing:-0.01em;">Watchlist</h1>
+          <p style="font-size:12px;color:var(--text-secondary);font-family:var(--mono);margin-top:4px"><span id="wlCount">--</span> tracked &middot; <span id="wlExposure">--</span> exposure</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="t-btn" type="button" id="exportBtn">Export CSV</button>
+          <button class="t-btn" type="button" data-action="open-alerts">Set alert</button>
+          <button class="t-btn" type="button" id="clearWlBtn">Clear watchlist</button>
+        </div>
+      </header>
+
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
+        <div style="position:relative;flex:1;min-width:220px;max-width:340px;">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="wlSearch" type="search" placeholder="Search company or sector" class="t-input" style="padding-left:30px;width:100%" />
+        </div>
+        <select id="statusFilter" class="t-input">
+          <option value="">All statuses</option>
+        </select>
+        <select id="sectorFilter" class="t-input">
+          <option value="">All sectors</option>
+        </select>
+        <button class="t-btn" id="clearFilters" type="button" style="margin-left:auto">Clear filters</button>
+      </div>
+
+      <div id="chipRow" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;"></div>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title">SAVED</div>
+          <div class="panel-sub"><span id="visibleCount">--</span> visible</div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="db-table">
+            <thead id="wlHead">
+              <tr>
+                <th data-sort="company">Company <span class="arrow"></span></th>
+                <th data-sort="sector">Sector <span class="arrow"></span></th>
+                <th data-sort="stage">Stage <span class="arrow"></span></th>
+                <th data-sort="sizeNum" class="text-right">Size <span class="arrow"></span></th>
+                <th class="no-sort">Trend</th>
+                <th data-sort="status">Status <span class="arrow"></span></th>
+                <th data-sort="updated">Updated <span class="arrow"></span></th>
+                <th class="no-sort" aria-label="row actions"></th>
+              </tr>
+            </thead>
+            <tbody id="wlBody"></tbody>
+          </table>
+        </div>
+        <div id="wlEmpty" class="hidden t-empty">
+          <div class="empty-title">No saved instruments</div>
+          <div style="font-size:12px;margin-bottom:14px">Star a deal or company to track its progress here.</div>
+          <a class="t-btn t-btn-primary" href="deals.html">Browse deals</a>
+        </div>
+        <div id="wlNoMatch" class="hidden t-empty">
+          <div class="empty-title">No matches</div>
+          <div style="font-size:12px">Try clearing filters or broadening your search.</div>
+        </div>
+      </section>
+
+      <section class="panel" id="suggestPanel" style="margin-top:18px">
+        <div class="panel-header">
+          <div class="panel-title">SUGGESTED TO ADD</div>
+          <div class="panel-sub">Companies not yet on your watchlist</div>
+        </div>
+        <div id="suggestGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:12px"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/js/databank.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/terminal.js"></script>
+  <script src="../assets/js/workspace.js"></script>
+  <script src="../assets/js/dealflow.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const D = window.DataBankData || { companies: [], deals: [] };
+      const T = window.Terminal;
+      const wl = window.DataBank ? window.DataBank.watchlistApi() : null;
+
+      function logoColor(id) {
+        const palette = ["#0A0A0A", "#3B82F6", "#16A34A", "#A855F7", "#EAB308", "#0EA5E9", "#EC4899"];
+        let n = 0;
+        for (let i = 0; i < id.length; i++) n = (n + id.charCodeAt(i)) % palette.length;
+        return palette[n];
+      }
+
+      function priceSpark(id) {
+        const c = D.companies.find(function (x) { return x.id === id; });
+        return c && c.priceSpark ? T.sparkline(c.priceSpark, { width: 70, height: 22 }) : "";
+      }
+
+      function buildRows() {
+        if (!wl) return [];
+        const ids = wl.list();
+        return ids.map(function (id) {
+          const deal = D.deals.find(function (x) { return x.id === id; });
+          if (deal) return deal;
+          const c = D.companies.find(function (x) { return x.id === id; });
+          if (!c) return null;
+          return {
+            id: c.id,
+            company: c.name,
+            sector: c.sector || "—",
+            stage: c.stage || "Tracked",
+            size: c.size || "—",
+            sizeNum: c.sizeNum || 0,
+            status: c.status || "Active",
+            statusType: c.statusType || "info",
+            updated: c.updated || "—"
+          };
+        }).filter(Boolean);
+      }
+
+      const statusEl = document.getElementById("statusFilter");
+      const sectorEl = document.getElementById("sectorFilter");
+      const chipRow  = document.getElementById("chipRow");
+
+      function populateFilters(rows) {
+        const statuses = Array.from(new Set(rows.map(function (d) { return d.status; }))).sort();
+        const sectors  = Array.from(new Set(rows.map(function (d) { return d.sector; }))).sort();
+        statusEl.innerHTML = '<option value="">All statuses</option>' + statuses.map(function (s) { return '<option>' + s + '</option>'; }).join("");
+        sectorEl.innerHTML = '<option value="">All sectors</option>'  + sectors.map(function (s)  { return '<option>' + s + '</option>'; }).join("");
+        chipRow.innerHTML  = '<button class="t-chip is-active" data-chip="">ALL</button>' +
+          sectors.map(function (s) { return '<button class="t-chip" data-chip="' + s + '">' + s + '</button>'; }).join("");
+      }
+
+      function rowHtml(d) {
+        return (
+          '<tr data-row="' + d.id + '">' +
+            '<td><div style="display:flex;align-items:center;gap:10px;">' +
+              '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:3px;background:' + logoColor(d.id) + ';color:#FFFFFF;font-family:var(--mono);font-weight:700;font-size:11px">' + d.company.charAt(0) + '</span>' +
+              '<a href="company.html?company=' + d.id + '">' + d.company + '</a>' +
+            '</div></td>' +
+            '<td style="color:var(--text-secondary)">' + d.sector + '</td>' +
+            '<td style="color:var(--text-secondary)">' + d.stage + '</td>' +
+            '<td class="num">' + d.size + '</td>' +
+            '<td>' + priceSpark(d.id) + '</td>' +
+            '<td><span class="badge badge-' + (d.statusType || "info") + '">' + d.status + '</span></td>' +
+            '<td class="num" style="color:var(--text-secondary)">' + d.updated + '</td>' +
+            '<td style="text-align:right">' +
+              '<button class="star-cell is-active" data-star="' + d.id + '" aria-label="Remove from watchlist">' +
+                '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9 12 2"/></svg>' +
+              '</button>' +
+              '<button class="kebab-btn" data-kebab="' + d.id + '" aria-label="Row actions">' +
+                '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/></svg>' +
+              '</button>' +
+            '</td>' +
+          '</tr>'
+        );
+      }
+
+      const headers = [
+        { key: "company" }, { key: "sector" }, { key: "stage" },
+        { key: "sizeNum" }, { key: "status" }, { key: "updated" }
+      ];
+
+      let api = null;
+      let lastRows = [];
+
+      function refresh() {
+        const rows = buildRows();
+        lastRows = rows;
+        populateFilters(rows);
+        document.getElementById("wlCount").textContent = rows.length;
+        const cap = rows.reduce(function (a, d) { return a + (d.sizeNum || 0); }, 0);
+        document.getElementById("wlExposure").textContent = cap ? (cap >= 1000 ? "$" + (cap / 1000).toFixed(2) + "B" : "$" + cap + "M") : "$0";
+
+        const emptyAll = document.getElementById("wlEmpty");
+        const wlBody   = document.getElementById("wlBody");
+        const wlHead   = document.getElementById("wlHead");
+        if (rows.length === 0) {
+          emptyAll.classList.remove("hidden");
+          wlBody.innerHTML = "";
+          wlHead.style.display = "none";
+        } else {
+          emptyAll.classList.add("hidden");
+          wlHead.style.display = "";
+          api = T.tableApi({
+            thead: wlHead, tbody: wlBody,
+            search: document.getElementById("wlSearch"),
+            empty: document.getElementById("wlNoMatch"),
+            rows: rows, headers: headers,
+            searchKeys: ["company", "sector", "stage", "status"],
+            filters: [
+              { el: statusEl, key: "status" },
+              { el: sectorEl, key: "sector" }
+            ],
+            defaultSort: { key: "updated", dir: "desc" },
+            render: rowHtml,
+            afterRender: function (list) { document.getElementById("visibleCount").textContent = list.length; }
+          });
+        }
+        renderSuggestions();
+      }
+
+      function renderSuggestions() {
+        const grid = document.getElementById("suggestGrid");
+        const watched = wl ? wl.list() : [];
+        const universe = D.deals && D.deals.length ? D.deals : D.companies.map(function (c) {
+          return { id: c.id, company: c.name, sector: c.sector || "—", size: c.size || "" };
+        });
+        const pool = universe.filter(function (d) { return watched.indexOf(d.id) === -1; }).slice(0, 6);
+        if (pool.length === 0) {
+          document.getElementById("suggestPanel").style.display = "none";
+          return;
+        }
+        document.getElementById("suggestPanel").style.display = "";
+        grid.innerHTML = pool.map(function (d) {
+          return (
+            '<div class="kpi-card" style="padding:10px 12px;display:flex;align-items:center;gap:10px">' +
+              '<span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:3px;background:' + logoColor(d.id) + ';color:#FFFFFF;font-family:var(--mono);font-weight:700;font-size:12px">' + d.company.charAt(0) + '</span>' +
+              '<div style="flex:1;min-width:0">' +
+                '<div style="font-size:12px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><a href="company.html?company=' + d.id + '" style="color:inherit">' + d.company + '</a></div>' +
+                '<div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em">' + d.sector + (d.size ? ' &middot; ' + d.size : '') + '</div>' +
+              '</div>' +
+              '<button class="t-btn" data-suggest-add="' + d.id + '" style="font-size:11px;padding:4px 8px">+ Add</button>' +
+            '</div>'
+          );
+        }).join("");
+      }
+
+      refresh();
+
+      document.getElementById("wlBody").addEventListener("click", function (e) {
+        const star = e.target.closest("[data-star]");
+        if (star) {
+          const id = star.getAttribute("data-star");
+          const row = lastRows.find(function (x) { return x.id === id; });
+          wl.toggle(id);
+          T.toast((row ? row.company : id) + " removed from watchlist");
+          refresh();
+          return;
+        }
+        const k = e.target.closest("[data-kebab]");
+        if (k) {
+          const id = k.getAttribute("data-kebab");
+          const row = lastRows.find(function (x) { return x.id === id; });
+          T.popover(k, [
+            { label: "Open profile", onClick: function () { window.location.href = "company.html?company=" + id; } },
+            { label: "Remove from watchlist", onClick: function () {
+                wl.toggle(id);
+                T.toast((row ? row.company : id) + " removed from watchlist");
+                refresh();
+              }
+            },
+            { label: "Set alert on " + (row ? row.company : id), onClick: function () { T.openAlertsModal(); } },
+            { label: "Copy share link", onClick: function () {
+                const link = location.origin + location.pathname.replace("watchlist.html", "company.html") + "?company=" + id;
+                if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link);
+                T.toast("Link copied");
+              }
+            },
+            { label: "Export row (CSV)", onClick: function () { T.exportCSV(id + ".csv", [row]); } }
+          ]);
+        }
+      });
+
+      document.getElementById("suggestGrid").addEventListener("click", function (e) {
+        const b = e.target.closest("[data-suggest-add]");
+        if (!b) return;
+        const id = b.getAttribute("data-suggest-add");
+        const deal = D.deals.find(function (x) { return x.id === id; });
+        const comp = D.companies.find(function (x) { return x.id === id; });
+        wl.toggle(id);
+        T.toast(((deal && deal.company) || (comp && comp.name) || id) + " added to watchlist");
+        refresh();
+      });
+
+      document.getElementById("clearFilters").addEventListener("click", function () {
+        document.getElementById("wlSearch").value = "";
+        statusEl.value = "";
+        sectorEl.value = "";
+        Array.from(chipRow.children).forEach(function (x) { x.classList.remove("is-active"); });
+        const allChip = chipRow.querySelector('[data-chip=""]');
+        if (allChip) allChip.classList.add("is-active");
+        if (api) api.render();
+      });
+
+      chipRow.addEventListener("click", function (e) {
+        const c = e.target.closest("[data-chip]");
+        if (!c) return;
+        const v = c.getAttribute("data-chip");
+        sectorEl.value = v;
+        Array.from(chipRow.children).forEach(function (x) { x.classList.remove("is-active"); });
+        c.classList.add("is-active");
+        if (api) api.render();
+      });
+
+      document.getElementById("clearWlBtn").addEventListener("click", function () {
+        if (!wl || wl.list().length === 0) {
+          T.toast("Watchlist is already empty");
+          return;
+        }
+        T.modal("Clear watchlist?", (
+          '<div style="font-family:var(--mono);font-size:12px;color:var(--text-muted);margin-bottom:6px">This removes all <span style="color:var(--accent)">' + wl.list().length + '</span> saved instruments. You can re-add them at any time.</div>'
+        ), {
+          footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="confirmClearWl">Clear all</button>'
+        });
+        document.getElementById("confirmClearWl").addEventListener("click", function () {
+          wl.list().slice().forEach(function (id) { wl.toggle(id); });
+          T.closeModal();
+          T.toast("Watchlist cleared");
+          refresh();
+        });
+      });
+
+      document.getElementById("exportBtn").addEventListener("click", function () {
+        const rows = (api && api.currentFiltered) ? api.currentFiltered() : lastRows;
+        if (!rows.length) {
+          T.toast("Nothing to export");
+          return;
+        }
+        T.exportCSV("watchlist.csv", rows.map(function (d) {
+          return { company: d.company, sector: d.sector, stage: d.stage, size: d.size, status: d.status, updated: d.updated };
+        }));
+      });
+    })();
+  </script>
+</body>
+</html>

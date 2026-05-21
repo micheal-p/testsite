@@ -268,60 +268,43 @@ body:not(.dark-mode) .bulb-icon {
 
 /* Mega Menu Styles */
 .nav-item.dropdown {
-  position: static;
-  /* Allows menu to position relative to screen/pill */
+  position: relative;
+  /* Anchor the slim mega-menu directly under the NEFUND toggle */
 }
 
 /* Mega Menu Layout */
 .mega-menu {
   position: absolute;
-  top: 70px;
+  top: calc(100% + 12px);
   left: 50%;
-  -webkit-transform: translateX(-50%) translateY(10px);
-
-  transform: translateX(-50%) translateY(10px);
-  width: 90vw;
-  max-width: 980px;
+  -webkit-transform: translateX(-50%) translateY(6px);
+  transform: translateX(-50%) translateY(6px);
+  width: max-content;
+  min-width: 240px;
+  max-width: 320px;
   background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
   padding: 0;
-  /* Removing padding from grid container to allow panel */
   opacity: 0;
   visibility: hidden;
-  -webkit-transition: all 0.2s ease;
-
-  transition: all 0.2s ease;
+  -webkit-transition: all 0.18s ease;
+  transition: all 0.18s ease;
   z-index: 1200;
   color: #050c26;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1.6fr;
-  /* Adjusted ratio */
-  gap: 0;
-  /* Remove grid gap to handle padding internally */
   text-align: left;
   cursor: default;
   overflow: hidden;
-  /* For radius */
 }
 
-/* Left Columns Container */
+/* Slim mega-menu has just one column — drop the legacy 2-col grid */
 .mm-left-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column: 1 / 3;
-  gap: 40px;
-  padding: 40px 0 40px 40px;
-  /* Padding for left side */
+  display: block;
+  padding: 20px 22px;
 }
 
-/* Right Column (Product Suites) Panel */
-.mm-right-panel {
-  background: #fcfcfc;
-  /* Very light gray/off-white as per screenshot */
-  padding: 40px;
-  grid-column: 3;
-}
+/* Legacy right-panel slot — kept hidden in case any old markup still references it */
+.mm-right-panel { display: none; }
 
 .nav-item.dropdown:hover .mega-menu {
   opacity: 1;
@@ -1015,7 +998,7 @@ img {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-auto-rows: 250px;
-  /* Square-ish tiles */
+  /* 8 tiles = 4+4, two clean rows */
   width: 100%;
   max-width: 1200px;
   padding: 0 var(--spacing-md);
@@ -1064,57 +1047,47 @@ img {
   line-height: 1.1;
 }
 
-/* Grid Background Images */
+/* Grid Background Images — 8 modules, image follows module not slot */
+/* 01 NEFUND */
 .grid-1 {
-  background: url("assets/images/grid-1.webp") center/cover no-repeat;
+  background: url("assets/images/nefund.jpeg") center/cover no-repeat;
 }
 
+/* 02 eVillage — official e-Village logo on its brand navy */
 .grid-2 {
-  background: url("assets/images/grid-2.webp") center/cover no-repeat;
+  background: url("assets/images/images.png") center/contain no-repeat #0B1F44;
 }
 
+/* 03 National Energy Data Bank */
 .grid-3 {
-  background: url("assets/images/grid-4.jpg") center/cover no-repeat;
+  background: url("assets/images/feature-databank.jpg") center/cover no-repeat;
 }
 
+/* 04 Deal Room */
 .grid-4 {
-  background: url("assets/images/grid-4.webp") center/cover no-repeat;
+  background: url("deal-room/assets/images/screens/screen-home.png")
+    center/cover no-repeat;
 }
 
+/* 05 Energy Assets */
 .grid-5 {
   background: url("assets/images/Energy-Assets.jpg") center/cover no-repeat;
 }
 
+/* 06 Apex AI */
 .grid-6 {
+  background: url("deal-room/assets/images/portfolio_analytics.png")
+    center/cover no-repeat;
+}
+
+/* 07 Risk & ESG */
+.grid-7 {
   background: url("assets/images/Esgi.jpg.avif") center/cover no-repeat;
 }
 
-.grid-7 {
-  background: url("assets/images/Regulatory-change-management-Blog_Blog-Image.webp")
-    center/cover no-repeat;
-}
-
+/* 08 Reporting & LP Portals */
 .grid-8 {
-  background: url("assets/images/portal-logo-icon-flat-vector-600nw-2671058773.jpg.webp")
-    center/cover no-repeat;
-}
-
-.grid-9 {
-  background: url("assets/images/pexels-manuel-geissinger-325229.jpg")
-    center/cover no-repeat;
-}
-
-.grid-10 {
-  background: url("assets/images/business-people-using-digital-tablet_107420-95867.jpg.avif")
-    center/cover no-repeat;
-}
-
-.grid-11 {
-  background: url("assets/images/images.png") center/cover no-repeat;
-}
-
-.grid-12 {
-  background: url("assets/images/nefund.jpeg") center/cover no-repeat;
+  background: url("assets/images/reporting-lp.jpg") center/cover no-repeat;
 }
 
 @media (max-width: 900px) {

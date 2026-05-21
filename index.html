@@ -723,19 +723,15 @@
             .grid-item .grid-arrow i { display: none !important; }
             .grid-item:active { background: rgba(255,255,255,0.04) !important; }
 
-            /* Per-module thumbnails (mirror the desktop bg-image mappings) */
-            .grid-1  { --thumb: url("assets/images/grid-1.webp"); }
-            .grid-2  { --thumb: url("assets/images/grid-2.webp"); }
-            .grid-3  { --thumb: url("assets/images/grid-4.jpg"); }
-            .grid-4  { --thumb: url("assets/images/grid-4.webp"); }
-            .grid-5  { --thumb: url("assets/images/Energy-Assets.jpg"); }
-            .grid-6  { --thumb: url("assets/images/Esgi.jpg.avif"); }
-            .grid-7  { --thumb: url("assets/images/Regulatory-change-management-Blog_Blog-Image.webp"); }
-            .grid-8  { --thumb: url("assets/images/portal-logo-icon-flat-vector-600nw-2671058773.jpg.webp"); }
-            .grid-9  { --thumb: url("assets/images/pexels-manuel-geissinger-325229.jpg"); }
-            .grid-10 { --thumb: url("assets/images/business-people-using-digital-tablet_107420-95867.jpg.avif"); }
-            .grid-11 { --thumb: url("assets/images/images.png"); }
-            .grid-12 { --thumb: url("assets/images/nefund.jpeg"); }
+            /* Per-module thumbnails — 8 modules, image follows module not slot */
+            .grid-1  { --thumb: url("assets/images/nefund.jpeg"); }                                    /* 01 NEFUND */
+            .grid-2  { --thumb: url("assets/images/images.png"); }                                     /* 02 eVillage (e-Village logo) */
+            .grid-3  { --thumb: url("assets/images/feature-databank.jpg"); }                           /* 03 National Energy Data Bank */
+            .grid-4  { --thumb: url("deal-room/assets/images/screens/screen-home.png"); }              /* 04 Deal Room */
+            .grid-5  { --thumb: url("assets/images/Energy-Assets.jpg"); }                              /* 05 Energy Assets */
+            .grid-6  { --thumb: url("deal-room/assets/images/portfolio_analytics.png"); }              /* 06 Apex AI */
+            .grid-7  { --thumb: url("assets/images/Esgi.jpg.avif"); }                                  /* 07 Risk & ESG */
+            .grid-8  { --thumb: url("assets/images/reporting-lp.jpg"); }                               /* 08 Reporting & LP */
 
             .grid-section-header { padding: 0 20px !important; }
         }
@@ -1032,61 +1028,16 @@
                 <div class="mega-menu">
                     <div class="mm-left-columns">
                         <div class="mm-column">
-                            <h4>Fund Administration</h4>
                             <ul class="mm-list">
-                                <li><a href="sub-funds/subfunds.html">Sub Funds</a></li>
-                                <li><a href="venture-funds/venturefunds.html">Venture Funds</a></li>
-                                <li><a href="rolling-funds/rollingfunds.html">Rolling Funds</a></li>
-                                <li><a href="scout-funds/scout.html">Scout Funds</a></li>
-                                <li><a href="SPVs/SPVs.html">SPVs</a></li>
-                                <li><a href="roll-up-vehicles/rollup.html">Roll Up Vehicles</a></li>
-                            </ul>
-                        </div>
-                        <div class="mm-column">
-                            <h4>Investor Management</h4>
-                            <ul class="mm-list">
-                                <li><a href="databank/index.html">Data Bank</a></li>
+                                <li><a href="deal-room/index.html">Deal Room</a></li>
                             </ul>
                             <div style="margin-top: 24px;">
                                 <h4>Intelligence</h4>
                                 <ul class="mm-list">
-                                    <li><a href="apex/apex.html">Apex AI <span
-                                                style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a>
-                                    </li>
+                                    <li><a href="apex/apex.html">Apex AI <span style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a></li>
                                     <li><a href="edu-center/educenter.html">Edu Center</a></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="mm-footer"
-                            style="border-top: none; padding-top: 10px; margin-top: auto; color: #6b7280; font-size: 15px;">
-                            Looking for tools for startups? Explore <a href="roll-up-vehicles/rollup.html"
-                                style="color: #6b7280 !important; text-decoration: underline; margin-left: 2px;">Rollups.</a>
-                            <svg width="10" height="10" viewBox="0 0 12 12" fill="none"
-                                style="margin-left: 4px; display: inline-block;">
-                                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="#6b7280" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="mm-right-panel">
-                        <div class="mm-column">
-                            <h4>Product Suites</h4>
-                            <a href="fund-administration/fund-administration.html" class="mm-card">
-                                <div class="mm-icon"><img src="assets/images/fund_administration.png"
-                                        alt="Fund Administration"></div>
-                                <div class="mm-content">
-                                    <h5>Fund Administration</h5>
-                                    <p>All-in-one partner to launch an investment vehicle</p>
-                                </div>
-                            </a>
-                            <a href="investor-management.html" class="mm-card">
-                                <div class="mm-icon"><img src="assets/images/investor_management.png"
-                                        alt="Investor Management"></div>
-                                <div class="mm-content">
-                                    <h5>Investor Management</h5>
-                                    <p>Explore all offerings to streamline the investor experience.</p>
-                                </div>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -1149,21 +1100,8 @@
             <div class="submenu-content">
 
                 <div class="submenu-section">
-                    <span class="submenu-label">Fund Administration</span>
                     <ul class="submenu-list">
-                        <li><a href="sub-funds/subfunds.html">Sub Fund</a></li>
-                        <li><a href="venture-funds/venturefunds.html">Venture Funds</a></li>
-                        <li><a href="rolling-funds/rollingfunds.html">Rolling Funds</a></li>
-                        <li><a href="scout-funds/scout.html">Scout Funds</a></li>
-                        <li><a href="SPVs/SPVs.html">SPVs</a></li>
-                        <li><a href="roll-up-vehicles/rollup.html">Roll Up Vehicles</a></li>
-                    </ul>
-                </div>
-
-                <div class="submenu-section">
-                    <span class="submenu-label">Investor Management</span>
-                    <ul class="submenu-list">
-                        <li><a href="databank/index.html">Data Bank</a></li>
+                        <li><a href="deal-room/index.html">Deal Room</a></li>
                     </ul>
                 </div>
 
@@ -1171,42 +1109,9 @@
                     <span class="submenu-label">Intelligence</span>
                     <ul class="submenu-list">
                         <li><a href="apex/apex.html">Apex AI <span class="beta-badge">Beta</span></a></li>
-                        <li><a href="edu-center/educenter.html">Edu center</a></li>
+                        <li><a href="edu-center/educenter.html">Edu Center</a></li>
                     </ul>
                 </div>
-
-                <!-- Product Suites Box -->
-                <div class="product-suites-box">
-                    <span class="submenu-label" style="margin-bottom: 24px; display: block;">Product Suites</span>
-
-                    <a href="fund-administration/fund-administration.html" class="suite-card">
-                        <div class="suite-icon">
-                            <!-- Placeholder icon -->
-                            <i class="fas fa-circle-notch" style="color: #A3E635; font-size: 24px;"></i>
-                        </div>
-                        <div class="suite-info">
-                            <h4>Fund Administration</h4>
-                            <p>All-in-one partner to launch an investment vehicle</p>
-                        </div>
-                    </a>
-
-                    <a href="investor-management.html" class="suite-card">
-                        <div class="suite-icon">
-                            <!-- Placeholder icon -->
-                            <i class="fas fa-layer-group" style="color: #A3E635; font-size: 24px;"></i>
-                        </div>
-                        <div class="suite-info">
-                            <h4>Investor Management</h4>
-                            <p>Explore all offerings to streamline the investor experience.</p>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Footer Links/Buttons -->
-                <a href="roll-up-vehicles/rollup.html" class="submenu-footer-link">
-                    Looking for tools for startups? Explore Rollups. <i class="fas fa-arrow-right"
-                        style="font-size: 12px;"></i>
-                </a>
 
                 <div class="submenu-btn-group">
                     <a href="contact.html" class="btn-lavender">Contact us</a>
@@ -1250,68 +1155,48 @@
     <section class="grid-section" id="platform">
         <div class="grid-section-header">
             <span class="eyebrow">The Platform</span>
-            <h2>Twelve products. One coordinated system.</h2>
+            <h2>Eight products. One coordinated system.</h2>
             <p>Funds, vehicles, data, and oversight modules — built to move capital, intelligence, and accountability across Nigeria's energy sector.</p>
         </div>
         <div class="grid-container">
-            <a href="nefund.html" class="grid-item grid-12">
+            <a href="nefund.html" class="grid-item grid-1">
                 <span class="grid-id">01</span>
                 <h3>NEFUND</h3>
                 <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
             </a>
-            <a href="evillage/evillage.html" class="grid-item grid-11">
+            <a href="evillage/evillage.html" class="grid-item grid-2">
                 <span class="grid-id">02</span>
                 <h3>eVillage</h3>
                 <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
             </a>
-            <a href="energy-databank/index.html" class="grid-item grid-9">
+            <a href="energy-databank/index.html" class="grid-item grid-3">
                 <span class="grid-id">03</span>
                 <h3>National Energy Data Bank</h3>
                 <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
             </a>
-            <a href="venture-funds/venturefunds.html" class="grid-item grid-1">
+            <a href="deal-room/index.html" class="grid-item grid-4">
                 <span class="grid-id">04</span>
-                <h3>Venture Funds</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="rolling-funds/rollingfunds.html" class="grid-item grid-2">
-                <span class="grid-id">05</span>
-                <h3>Rolling Funds</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="SPVs/SPVs.html" class="grid-item grid-3">
-                <span class="grid-id">06</span>
-                <h3>SPVs</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="scout-funds/scout.html" class="grid-item grid-4">
-                <span class="grid-id">07</span>
-                <h3>Scout Funds</h3>
+                <h3>Deal Room</h3>
                 <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
             </a>
             <a href="energy-assets/index.html" class="grid-item grid-5">
-                <span class="grid-id">08</span>
+                <span class="grid-id">05</span>
                 <h3>Energy Assets</h3>
                 <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
             </a>
-            <a href="risk-esg/index.html" class="grid-item grid-6">
-                <span class="grid-id">09</span>
-                <h3>Risk & ESG Intelligence</h3>
+            <a href="apex/apex.html" class="grid-item grid-6">
+                <span class="grid-id">06</span>
+                <h3>Apex AI</h3>
                 <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
             </a>
-            <a href="compliance/index.html" class="grid-item grid-7">
-                <span class="grid-id">10</span>
-                <h3>Compliance & Regulatory Oversight</h3>
+            <a href="risk-esg/index.html" class="grid-item grid-7">
+                <span class="grid-id">07</span>
+                <h3>Risk &amp; ESG Intelligence</h3>
                 <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
             </a>
             <a href="reporting-lp/reporting-lp.html" class="grid-item grid-8">
-                <span class="grid-id">11</span>
-                <h3>Reporting & LP Portals</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="governance.html" class="grid-item grid-10">
-                <span class="grid-id">12</span>
-                <h3>Administration & Governance</h3>
+                <span class="grid-id">08</span>
+                <h3>Reporting &amp; LP Portals</h3>
                 <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
             </a>
         </div>
@@ -1360,47 +1245,45 @@
     <section class="features-section container">
         <div class="feature-block">
             <div class="feature-text">
-                <h2>Venture Funds</h2>
-                <p>Raise capital, structure investments, and manage energy venture portfolios — all from a single
-                    platform.</p>
-                <a href="venture-funds/venturefunds.html" class="btn btn-secondary">Learn more</a>
+                <h2>Deal Room</h2>
+                <p>The end-to-end deal lifecycle. Source &rarr; Structure &rarr; Outreach &rarr; Diligence &rarr; Close &rarr; Administer. Six vehicle wrappers in one wizard, two lenses (GP raising, LP investing) on one record.</p>
+                <a href="deal-room/index.html" class="btn btn-secondary">Open Deal Room</a>
             </div>
             <div class="feature-image">
-                <img src="assets/images/feature-venture.jpg" alt="Venture Funds — capital structuring">
+                <img src="deal-room/assets/images/screens/screen-home.png" alt="Deal Room workspace home">
             </div>
         </div>
 
         <div class="feature-block reverse">
             <div class="feature-text">
-                <h2>SPVs</h2>
-                <p>Raise capital on a deal-by-deal basis through Special Purpose Vehicles and leverage the NEIIA capital
-                    and partner network.</p>
-                <a href="SPVs/SPVs.html" class="btn btn-secondary">Learn more</a>
+                <h2>Apex AI <span style="font-size: 11px; background: #f3f4f6; color: #374151; padding: 3px 9px; border-radius: 999px; margin-left: 8px; letter-spacing: 0.06em; font-weight: 700; vertical-align: middle;">BETA</span></h2>
+                <p>Portfolio intelligence. On-demand analyst notes from your real position data &mdash; exposure, pacing, dispersion, vintage benchmarks and a recommendation. Reads like an LP report your team actually wrote.</p>
+                <a href="apex/apex.html" class="btn btn-secondary">Try Apex AI</a>
             </div>
             <div class="feature-image">
-                <img src="assets/images/feature-spv.jpg" alt="SPVs — deal-by-deal structuring">
+                <img src="deal-room/assets/images/portfolio_analytics.png" alt="Apex AI portfolio analytics">
             </div>
         </div>
 
         <div class="feature-block">
             <div class="feature-text">
                 <h2>National Energy Data Bank</h2>
-                <p>Time-series data across crude oil, electricity, coal, and natural gas — with company profiles, deals, and document archives — all in one queryable hub.</p>
+                <p>Open public datasets &mdash; crude oil, electricity, fuelwood, DPK, natural gas. Time-series indexed by source, plus company profiles, deals, and document archives. Source-of-truth data for policy and capital decisions.</p>
                 <a href="energy-databank/index.html" class="btn btn-secondary">Explore the Data Bank</a>
             </div>
             <div class="feature-image">
-                <img src="assets/images/feature-databank.jpg" alt="Oil and gas infrastructure">
+                <img src="assets/images/feature-databank.jpg" alt="National Energy Data Bank">
             </div>
         </div>
 
         <div class="feature-block reverse">
             <div class="feature-text">
                 <h2>eVillage</h2>
-                <p>Solar financing, mini-grid connections, utility payments, and SHINE subsidy administration — a verified portal governed by NEMiC oversight.</p>
+                <p>Solar financing, mini-grid connections, utility payments, and SHINE subsidy administration &mdash; a verified portal governed by NEMiC oversight, built for last-mile energy access.</p>
                 <a href="evillage/evillage.html" class="btn btn-secondary">Visit eVillage</a>
             </div>
             <div class="feature-image">
-                <img src="assets/images/feature-solar.jpg" alt="Solar panels">
+                <img src="assets/images/feature-solar.jpg" alt="eVillage solar financing">
             </div>
         </div>
     </section>
@@ -1429,12 +1312,12 @@
             <div class="footer-col">
                 <h4>Products</h4>
                 <ul>
-                    <li><a href="sub-funds/subfunds.html">Sub Funds</a></li>
-                    <li><a href="venture-funds/venturefunds.html">Venture Funds</a></li>
-                    <li><a href="rolling-funds/rollingfunds.html">Rolling Funds</a></li>
-                    <li><a href="SPVs/SPVs.html">SPVs</a></li>
-                    <li><a href="scout-funds/scout.html">Scout Funds</a></li>
-                    <li><a href="roll-up-vehicles/rollup.html">Roll Up Vehicles</a></li>
+                    <li style="margin-bottom: 12px;"><a href="deal-room/index.html"
+                            style="color: var(--text-secondary); text-decoration: none;">Deal Room</a></li>
+                    <li style="margin-bottom: 12px;"><a href="apex/apex.html"
+                            style="color: var(--text-secondary); text-decoration: none;">Apex AI <span style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px; color: var(--text-primary);">BETA</span></a></li>
+                    <li style="margin-bottom: 12px;"><a href="edu-center/educenter.html"
+                            style="color: var(--text-secondary); text-decoration: none;">Edu Center</a></li>
                 </ul>
             </div>
             <div class="footer-col">

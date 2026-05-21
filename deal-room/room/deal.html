@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deal - NEIIA Deal Room</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../assets/css/custom.css" />
+  <link rel="stylesheet" href="../assets/css/terminal.css" />
+  <style>html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}</style>
+</head>
+<body>
+  <div class="app-shell">
+    <div data-workspace-shell data-active="deals"></div>
+
+    <main class="workspace-content">
+      <div id="dealRoot"></div>
+    </main>
+  </div>
+
+  <script src="../assets/js/databank.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/terminal.js"></script>
+  <script src="../assets/js/workspace.js"></script>
+  <script src="../assets/js/dealflow.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const T = window.Terminal;
+      const DF = window.DealFlow;
+      const api = window.DataBank.dealsApi();
+      const positions = window.DataBank.positionsApi();
+      const root = document.getElementById("dealRoot");
+
+      const params = new URLSearchParams(location.search);
+      const id = params.get("id");
+      const deal = id ? api.get(id) : null;
+
+      if (!deal) {
+        root.innerHTML = (
+          '<div class="t-empty" style="margin-top:40px">' +
+            '<div class="empty-title">Deal not found</div>' +
+            '<div style="font-size:13px;color:var(--text-secondary);margin:8px 0 16px">Start a new one from the home screen.</div>' +
+            '<a class="t-btn t-btn-primary" href="index.html">Back to workspace</a>' +
+          '</div>'
+        );
+        document.documentElement.classList.add("is-ready");
+        return;
+      }
+
+      let activeStage = deal.stage; // open the current stage by default
+
+      function render() {
+        const v = DF.getVehicle(deal.vehicleType);
+        root.innerHTML = (
+          '<div class="deal-hero">' +
+            '<div>' +
+              '<div style="font-family:var(--mono);font-size:11px;letter-spacing:0.18em;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px">' +
+                '<a href="index.html" style="color:inherit">Workspace</a> &middot; Deal' +
+              '</div>' +
+              '<h1 style="font-family:var(--serif);font-size:36px;font-weight:400;color:var(--text-primary);letter-spacing:-0.025em;line-height:1.05">' + DF.esc(deal.name) + '</h1>' +
+              '<div class="deal-hero-meta" style="margin-top:10px">' +
+                (deal.sponsor ? '<span>' + DF.esc(deal.sponsor) + '</span><span>·</span>' : '') +
+                (deal.sector  ? '<span>' + DF.esc(deal.sector)  + '</span><span>·</span>' : '') +
+                '<span class="deal-chip">' + v.name + '</span>' +
+                '<span class="deal-chip" style="background:#fafafa">' + DF.esc(deal.status) + '</span>' +
+                '<button class="t-btn" id="commitBtn" type="button" style="margin-left:auto">+ Commit as investor</button>' +
+                '<span style="font-family:var(--mono);font-size:11px;color:var(--text-muted)">Updated ' + new Date(deal.updated).toLocaleDateString() + '</span>' +
+              '</div>' +
+            '</div>' +
+            stageStripHtml(deal.stage) +
+          '</div>' +
+
+          '<div class="deal-grid">' +
+            '<section class="panel">' +
+              '<div class="panel-header">' +
+                '<div class="panel-title">' + DF.stages[activeStage - 1].name + '</div>' +
+                '<div class="panel-sub">Stage ' + activeStage + ' of 6</div>' +
+              '</div>' +
+              '<div style="padding:14px 16px">' +
+                stagePanelHtml(activeStage) +
+              '</div>' +
+            '</section>' +
+
+            '<aside style="display:grid;gap:14px">' +
+              '<section class="panel">' +
+                '<div class="panel-header"><div class="panel-title">Snapshot</div></div>' +
+                '<div style="padding:14px 16px">' + snapshotHtml() + '</div>' +
+              '</section>' +
+              '<section class="panel">' +
+                '<div class="panel-header"><div class="panel-title">Activity</div></div>' +
+                '<div style="padding:8px 16px 14px;max-height:280px;overflow:auto">' +
+                  deal.activity.slice(0, 12).map(function (a) {
+                    return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-t);font-size:12px">' +
+                             '<span style="font-family:var(--mono);color:var(--text-muted);min-width:80px">' + new Date(a.at).toLocaleDateString() + '</span>' +
+                             '<span style="color:var(--text-secondary)">' + DF.esc(a.text) + '</span>' +
+                           '</div>';
+                  }).join("") +
+                '</div>' +
+              '</section>' +
+            '</aside>' +
+          '</div>'
+        );
+
+        // wire stage strip click
+        root.querySelectorAll("[data-go-stage]").forEach(function (b) {
+          b.addEventListener("click", function () {
+            activeStage = parseInt(b.getAttribute("data-go-stage"), 10);
+            render();
+          });
+        });
+        // wire primary CTAs
+        const advance = root.querySelector("#advanceBtn");
+        if (advance) advance.addEventListener("click", function () {
+          const next = DF.stages[deal.stage];
+          T.modal((DF.stages[deal.stage - 1].advance || "Advance") + " ?",
+            '<div style="font-size:13px;color:var(--text-secondary)">This will mark the deal as <strong>' + (next ? next.name : "next") + '</strong>. You can still revisit earlier stages.</div>',
+            { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="confirmAdvance">Confirm</button>' }
+          );
+          document.getElementById("confirmAdvance").addEventListener("click", function () {
+            api.advanceStage(deal.id);
+            const fresh = api.get(deal.id);
+            Object.assign(deal, fresh);
+            activeStage = deal.stage;
+            T.closeModal();
+            T.toast("Now in " + DF.stages[deal.stage - 1].name);
+            render();
+          });
+        });
+        const commit = root.querySelector("#commitBtn");
+        if (commit) commit.addEventListener("click", openCommitModal);
+        const editTerms = root.querySelector("#editTermsBtn");
+        if (editTerms) editTerms.addEventListener("click", openEditTerms);
+
+        const addArtifact = root.querySelector("#addArtifactBtn");
+        if (addArtifact) addArtifact.addEventListener("click", function () {
+          openAddArtifact(activeStage);
+        });
+        // commit-status changes in Outreach
+        root.querySelectorAll("[data-status-for]").forEach(function (sel) {
+          sel.addEventListener("change", function () {
+            const positionId = sel.getAttribute("data-status-for");
+            const next = sel.value; // soft | hard | signed
+            const investor = deal.investors.find(function (i) { return i.positionId === positionId; });
+            if (!investor) return;
+            investor.status = next;
+            deal.activity.unshift({ at: new Date().toISOString(), text: "Commitment status: " + next + " · " + DF.fmtMoney(investor.commitment) });
+            api.save(deal);
+            // also sync onto the position record so the LP-side reflects it
+            const pos = positions.get(positionId);
+            if (pos) {
+              pos.status = next === "signed" ? "Signed" : next === "hard" ? "Hard commit" : "Soft commit";
+              positions.save(pos);
+            }
+            T.toast("Status updated to " + next);
+            render();
+          });
+        });
+      }
+
+      function stageStripHtml(current) {
+        return '<div class="stage-strip">' + DF.stages.map(function (s) {
+          let cls = "stage-seg";
+          if (s.n < current) cls += " is-done";
+          if (s.n === activeStage) cls += " is-current";
+          return (
+            '<button type="button" class="' + cls + '" data-go-stage="' + s.n + '">' +
+              '<div class="stage-seg-num">STAGE ' + s.n + '</div>' +
+              '<div class="stage-seg-name">' + s.name + '</div>' +
+            '</button>'
+          );
+        }).join("") + '</div>';
+      }
+
+      function snapshotHtml() {
+        const v = DF.getVehicle(deal.vehicleType);
+        const committed = deal.investors.reduce(function (a, i) { return a + (i.commitment || 0); }, 0);
+        const target = deal.terms.targetRaise || 0;
+        const pct = target ? Math.min(100, Math.round(committed / target * 100)) : 0;
+        const raisedRow = (
+          '<div class="kv-row" style="flex-direction:column;align-items:stretch;gap:6px">' +
+            '<div style="display:flex;justify-content:space-between"><span class="kv-key">Committed</span>' +
+              '<span class="kv-val"><strong>' + DF.fmtMoney(committed) + '</strong> of ' + DF.fmtMoney(target) + '</span>' +
+            '</div>' +
+            '<div style="height:5px;background:var(--border-t);border-radius:3px;overflow:hidden"><div style="width:' + pct + '%;height:100%;background:var(--text-primary)"></div></div>' +
+            '<div style="font-size:11px;color:var(--text-muted);text-align:right">' + pct + '% of target · ' + deal.investors.length + ' investor' + (deal.investors.length === 1 ? '' : 's') + '</div>' +
+          '</div>'
+        );
+        return (
+          '<div class="kv-list">' +
+            raisedRow +
+            kvRow("Vehicle",       v.name) +
+            kvRow("Ask",           DF.fmtMoney(deal.ask)) +
+            kvRow("Min check",     DF.fmtMoney(deal.terms.minCheck)) +
+            kvRow("Mgmt fee",      deal.terms.mgmtFee + "%") +
+            kvRow("Carry",         deal.terms.carry + "%") +
+            kvRow("Close target",  deal.terms.closeDate || "—") +
+          '</div>'
+        );
+      }
+      function kvRow(k, v) { return '<div class="kv-row"><span class="kv-key">' + k + '</span><span class="kv-val">' + DF.esc(v) + '</span></div>'; }
+
+      function stagePanelHtml(n) {
+        const s = DF.stages[n - 1];
+        const isCurrent = n === deal.stage;
+        const isDone    = n < deal.stage;
+
+        const head = (
+          '<div class="stage-panel-head">' +
+            '<div class="stage-panel-blurb">' + s.blurb + '</div>' +
+            '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+              (n === 2 ? '<button class="t-btn" id="editTermsBtn" type="button">Edit terms</button>' : '') +
+              (isCurrent && s.advance ? '<button class="t-btn t-btn-primary" id="advanceBtn" type="button">' + s.advance + '</button>' : '') +
+              (isDone ? '<span class="badge badge-success">Complete</span>' : '') +
+            '</div>' +
+          '</div>'
+        );
+
+        let body = "";
+        if (s.key === "source")     body = sourceBody();
+        if (s.key === "structure")  body = structureBody();
+        if (s.key === "outreach")   body = outreachBody();
+        if (s.key === "diligence")  body = diligenceBody();
+        if (s.key === "close")      body = closeBody();
+        if (s.key === "administer") body = administerBody();
+
+        const artifacts = artifactsForStage(n);
+        const artifactsHtml = (
+          '<div style="margin-top:20px">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
+              '<div style="font-family:var(--mono);font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em">Artifacts</div>' +
+              '<button class="t-btn" id="addArtifactBtn" type="button" style="height:26px;padding:0 10px;font-size:11px">+ Add</button>' +
+            '</div>' +
+            (artifacts.length
+              ? '<div class="artifact-list">' + artifacts.map(artifactRow).join("") + '</div>'
+              : '<div style="font-size:12px;color:var(--text-muted);font-family:var(--mono);padding:8px 0">No artifacts yet. Suggested: ' + suggestedArtifactsLabel(n) + '.</div>'
+            ) +
+          '</div>'
+        );
+
+        return head + body + artifactsHtml;
+      }
+
+      function sourceBody() {
+        return (
+          '<div class="kv-list" style="background:var(--bg-base);border:1px solid var(--border-t);border-radius:4px;padding:12px 14px">' +
+            kvRow("Deal name", deal.name) +
+            kvRow("Sponsor",   deal.sponsor || "—") +
+            kvRow("Sector",    deal.sector  || "—") +
+            kvRow("Ask",       DF.fmtMoney(deal.ask)) +
+          '</div>' +
+          (deal.brief
+            ? '<div style="margin-top:12px;padding:12px 14px;background:var(--bg-base);border:1px solid var(--border-t);border-radius:4px;font-size:13px;color:var(--text-secondary);line-height:1.5">' + DF.esc(deal.brief) + '</div>'
+            : '<div style="margin-top:12px;font-size:12px;color:var(--text-muted);font-family:var(--mono)">No brief written yet.</div>'
+          )
+        );
+      }
+
+      function structureBody() {
+        const v = DF.getVehicle(deal.vehicleType);
+        return (
+          '<div style="background:var(--bg-base);border:1px solid var(--border-t);border-radius:4px;padding:12px 14px">' +
+            '<div style="font-family:var(--mono);font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Vehicle · ' + v.name + '</div>' +
+            '<div style="font-size:12px;color:var(--text-secondary);margin-bottom:14px">' + v.tagline + '</div>' +
+            '<div class="kv-list">' +
+              kvRow("Management fee", deal.terms.mgmtFee + "%") +
+              kvRow("Carry",          deal.terms.carry + "%") +
+              kvRow("Min check",      DF.fmtMoney(deal.terms.minCheck)) +
+              kvRow("Target raise",   DF.fmtMoney(deal.terms.targetRaise)) +
+              kvRow("Target close",   deal.terms.closeDate || "—") +
+            '</div>' +
+          '</div>'
+        );
+      }
+
+      function outreachBody() {
+        const totals = deal.investors.reduce(function (acc, i) {
+          acc.count += 1; acc.amt += (i.commitment || 0);
+          return acc;
+        }, { count: 0, amt: 0 });
+        const headStat = (
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:12px;flex-wrap:wrap">' +
+            '<div style="font-size:13px;color:var(--text-secondary)">People who committed to this deal. Track soft &rarr; hard &rarr; signed.</div>' +
+            '<div style="font-size:12px;color:var(--text-muted)">' +
+              '<strong style="color:var(--text-primary)">' + totals.count + '</strong> investors &middot; <strong style="color:var(--text-primary)">' + DF.fmtMoney(totals.amt) + '</strong> committed' +
+            '</div>' +
+          '</div>'
+        );
+
+        if (!deal.investors.length) {
+          return headStat +
+            '<div style="font-size:12px;color:var(--text-muted);padding:10px 12px;background:var(--bg-base);border:1px dashed var(--border-t);border-radius:4px">No commitments yet. Click <strong style="color:var(--text-primary)">+ Commit as investor</strong> at the top to test this surface.</div>';
+        }
+
+        const rows = deal.investors.map(function (i) {
+          const pos = positions.get(i.positionId);
+          const name = (pos && pos._investorName) || (window.DataBank.formatName() || "You");
+          const status = (i.status || "Soft").toLowerCase(); // soft | hard | signed
+          const statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
+          const badgeCls = status === "signed" ? "badge-success" : status === "hard" ? "badge-info" : "badge-warn";
+          return (
+            '<tr>' +
+              '<td>' + DF.esc(name) + '</td>' +
+              '<td class="num">' + DF.fmtMoney(i.commitment) + '</td>' +
+              '<td style="color:var(--text-secondary)">' + new Date(i.at).toLocaleDateString() + '</td>' +
+              '<td><span class="badge ' + badgeCls + '">' + statusLabel + '</span></td>' +
+              '<td style="text-align:right">' +
+                '<select class="t-input" data-status-for="' + i.positionId + '" style="height:26px;padding:0 8px;font-size:11px;width:auto">' +
+                  '<option value="soft"'   + (status === "soft"   ? " selected" : "") + '>Soft</option>' +
+                  '<option value="hard"'   + (status === "hard"   ? " selected" : "") + '>Hard</option>' +
+                  '<option value="signed"' + (status === "signed" ? " selected" : "") + '>Signed</option>' +
+                '</select>' +
+              '</td>' +
+            '</tr>'
+          );
+        }).join("");
+
+        return headStat +
+          '<div style="overflow-x:auto;background:var(--bg-base);border:1px solid var(--border-t);border-radius:4px">' +
+            '<table class="db-table">' +
+              '<thead><tr><th>Investor</th><th class="text-right">Commitment</th><th>Committed</th><th>Status</th><th></th></tr></thead>' +
+              '<tbody>' + rows + '</tbody>' +
+            '</table>' +
+          '</div>';
+      }
+
+      function diligenceBody() {
+        return '<div style="font-size:13px;color:var(--text-secondary)">Data room opens for hard-committed investors. Upload diligence pack, manage Q&amp;A, control doc visibility per investor.</div>';
+      }
+
+      function closeBody() {
+        return '<div style="font-size:13px;color:var(--text-secondary)">Generate subscription package per investor. Collect signatures, KYC, AML, wire confirmations. Lock allocations.</div>';
+      }
+
+      function administerBody() {
+        return (
+          '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">Vehicle is funded. Manage cap table, capital calls, distributions, NAV, and LP reporting.</div>' +
+          '<div class="kv-list" style="background:var(--bg-base);border:1px solid var(--border-t);border-radius:4px;padding:12px 14px">' +
+            kvRow("Capital committed", "$0") +
+            kvRow("Called to date",    "$0") +
+            kvRow("Distributed",       "$0") +
+            kvRow("NAV",               "—") +
+          '</div>'
+        );
+      }
+
+      // ---------- artifacts ----------
+      const SUGGESTED = {
+        1: [{ name: "Deal memo (draft)",       kind: "memo"   }],
+        2: [{ name: "Term sheet",              kind: "terms"  }],
+        3: [{ name: "Teaser",                  kind: "teaser" }, { name: "Interest tracker", kind: "tracker" }],
+        4: [{ name: "Diligence pack",          kind: "pack"   }, { name: "Q&A log",          kind: "qa"      }],
+        5: [{ name: "Subscription package",    kind: "subdoc" }, { name: "Wire instructions", kind: "wire"   }],
+        6: [{ name: "Capital call notice",     kind: "call"   }, { name: "Quarterly LP update", kind: "update" }, { name: "Distribution notice", kind: "dist" }],
+      };
+
+      function suggestedArtifactsLabel(n) {
+        return SUGGESTED[n].map(function (a) { return a.name; }).join(", ");
+      }
+
+      function artifactsForStage(n) {
+        return deal.artifacts.filter(function (a) { return a.stage === n; });
+      }
+
+      function artifactRow(a) {
+        const fileMeta = a.fileName
+          ? DF.esc(a.fileName) + ' · ' + fmtBytes(a.fileSize)
+          : DF.esc(a.kind) + ' · no file';
+        const badge = a.fileName
+          ? '<span class="badge badge-success">Uploaded</span>'
+          : '<span class="badge badge-info">Draft</span>';
+        return (
+          '<div class="artifact-row">' +
+            '<div class="artifact-row-left">' +
+              '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
+              '<div>' +
+                '<div class="artifact-row-name">' + DF.esc(a.name) + '</div>' +
+                '<div class="artifact-row-meta">' + fileMeta + ' · ' + new Date(a.created).toLocaleDateString() + '</div>' +
+              '</div>' +
+            '</div>' +
+            badge +
+          '</div>'
+        );
+      }
+
+      function fmtBytes(n) {
+        if (!n && n !== 0) return "—";
+        if (n < 1024) return n + " B";
+        if (n < 1024*1024) return (n / 1024).toFixed(1) + " KB";
+        return (n / (1024*1024)).toFixed(1) + " MB";
+      }
+
+      function openAddArtifact(stage) {
+        const suggested = SUGGESTED[stage];
+        const opts = suggested.map(function (s) {
+          return '<option value="' + s.kind + '" data-name="' + s.name + '">' + s.name + '</option>';
+        }).join("");
+        T.modal("Add artifact · " + DF.stages[stage - 1].name,
+          '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">Attach a document to this stage. Suggested artifacts are listed below.</div>' +
+          '<div style="display:grid;gap:10px">' +
+            '<div><label>Type</label><select class="t-input" id="artifactKind" style="width:100%"><option value="">Custom</option>' + opts + '</select></div>' +
+            '<div><label>Name</label><input class="t-input" id="artifactName" placeholder="e.g. Sunray PPM v1.2" style="width:100%" /></div>' +
+            '<div><label>File <span style="color:var(--text-muted);font-weight:400">(optional — metadata stored)</span></label><input class="t-input" id="artifactFile" type="file" style="width:100%;padding:6px 8px" /></div>' +
+          '</div>',
+          { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="saveArtifactBtn">Save artifact</button>' }
+        );
+        const sel = document.getElementById("artifactKind");
+        const nameEl = document.getElementById("artifactName");
+        sel.addEventListener("change", function () {
+          const opt = sel.options[sel.selectedIndex];
+          if (opt && opt.dataset.name) nameEl.value = opt.dataset.name;
+        });
+        document.getElementById("saveArtifactBtn").addEventListener("click", function () {
+          const name = nameEl.value.trim();
+          if (!name) { T.toast("Name the artifact"); return; }
+          const file = document.getElementById("artifactFile").files[0];
+          const record = {
+            name: name,
+            kind: sel.value || "custom",
+            stage: stage,
+            fileName: file ? file.name : null,
+            fileSize: file ? file.size : null,
+            fileType: file ? file.type : null,
+          };
+          saveArtifact(record);
+        });
+      }
+
+      function saveArtifact(a) {
+        a.created = new Date().toISOString();
+        deal.artifacts.unshift(a);
+        const note = a.fileName ? "Uploaded " + a.fileName + " (" + a.name + ")" : "Added artifact: " + a.name;
+        deal.activity.unshift({ at: a.created, text: note });
+        api.save(deal);
+        T.closeModal();
+        T.toast(a.fileName ? "File attached" : "Artifact added");
+        render();
+      }
+
+      function openCommitModal() {
+        const v = DF.getVehicle(deal.vehicleType);
+        T.modal("Commit to " + deal.name,
+          '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">Soft-commit a check size. The position appears in your <a href="portfolio.html" style="color:inherit;text-decoration:underline">Portfolio</a>.</div>' +
+          '<div style="background:var(--bg-base);border:1px solid var(--border-t);border-radius:4px;padding:10px 12px;margin-bottom:12px;font-size:12px;font-family:var(--mono);color:var(--text-secondary)">' +
+            'Min check: ' + DF.fmtMoney(deal.terms.minCheck) + ' · Target raise: ' + DF.fmtMoney(deal.terms.targetRaise) +
+          '</div>' +
+          '<div><label>Commitment (USD)</label><input class="t-input" id="commitAmt" type="number" min="0" value="' + (deal.terms.minCheck || 25000) + '" style="width:100%" /></div>',
+          { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="saveCommitBtn">Commit</button>' }
+        );
+        document.getElementById("saveCommitBtn").addEventListener("click", function () {
+          const amt = parseFloat(document.getElementById("commitAmt").value || "0") || 0;
+          if (amt <= 0) { T.toast("Enter an amount"); return; }
+          if (deal.terms.minCheck && amt < deal.terms.minCheck) { T.toast("Below min check"); return; }
+          const profileName = (window.DataBank.formatName && window.DataBank.formatName()) || "You";
+          const pos = positions.create({
+            dealId: deal.id,
+            dealName: deal.name,
+            sector: deal.sector,
+            vehicleType: deal.vehicleType,
+            commitment: amt,
+            called: Math.round(amt * 0.25),
+            distributed: 0,
+            currentNav: Math.round(amt * 0.27),
+            ownershipPct: deal.terms.targetRaise ? +(amt / deal.terms.targetRaise * 100).toFixed(2) : 0,
+            status: "Soft commit",
+            _investorName: profileName,
+          });
+          deal.investors.push({ positionId: pos.id, commitment: amt, at: pos.committedAt, status: "soft", name: profileName });
+          deal.activity.unshift({ at: pos.committedAt, text: "Soft commit " + DF.fmtMoney(amt) + " from " + profileName });
+          api.save(deal);
+          T.closeModal();
+          T.toast("Committed " + DF.fmtMoney(amt));
+          render();
+        });
+      }
+
+      function openEditTerms() {
+        T.modal("Edit terms",
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
+            '<div><label>Mgmt fee (%)</label><input class="t-input" id="et-mgmt" type="number" step="0.25" value="' + deal.terms.mgmtFee + '" style="width:100%" /></div>' +
+            '<div><label>Carry (%)</label><input class="t-input" id="et-carry" type="number" step="1" value="' + deal.terms.carry + '" style="width:100%" /></div>' +
+            '<div><label>Min check</label><input class="t-input" id="et-min" type="number" value="' + deal.terms.minCheck + '" style="width:100%" /></div>' +
+            '<div><label>Target raise</label><input class="t-input" id="et-raise" type="number" value="' + deal.terms.targetRaise + '" style="width:100%" /></div>' +
+            '<div style="grid-column:1 / -1"><label>Target close</label><input class="t-input" id="et-close" type="date" value="' + DF.esc(deal.terms.closeDate) + '" style="width:100%" /></div>' +
+          '</div>',
+          { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="saveTerms">Save</button>' }
+        );
+        document.getElementById("saveTerms").addEventListener("click", function () {
+          deal.terms.mgmtFee     = parseFloat(document.getElementById("et-mgmt").value || "0") || 0;
+          deal.terms.carry       = parseFloat(document.getElementById("et-carry").value || "0") || 0;
+          deal.terms.minCheck    = parseFloat(document.getElementById("et-min").value || "0") || 0;
+          deal.terms.targetRaise = parseFloat(document.getElementById("et-raise").value || "0") || 0;
+          deal.terms.closeDate   = document.getElementById("et-close").value || "";
+          deal.activity.unshift({ at: new Date().toISOString(), text: "Terms updated" });
+          api.save(deal);
+          T.closeModal();
+          T.toast("Terms saved");
+          render();
+        });
+      }
+
+      render();
+      document.documentElement.classList.add("is-ready");
+    })();
+  </script>
+</body>
+</html>

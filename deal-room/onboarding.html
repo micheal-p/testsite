@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Get started - NEIIA Deal Room</title>
+  <link rel="icon" type="image/svg+xml" href="assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: {
+        ink: "#0A0A0A", inkSoft: "#1F1F1F", paper: "#FFFFFF",
+        cream: "#FBFAF6", muted: "#F4F2EC", line: "#E7E5E0",
+        faint: "#8E867B", accent: "#E04F39", accentSoft: "#FBE9E3"
+      },
+      fontFamily: {
+        sans: ["Inter","system-ui","sans-serif"],
+        serif: ['"Instrument Serif"',"Georgia","serif"]
+      },
+      maxWidth: { content: "1240px" }
+    } } };
+  </script>
+  <link rel="stylesheet" href="assets/css/custom.css" />
+  <style>html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}</style>
+</head>
+<body class="bg-paper text-ink">
+
+  <!-- Slim brand bar -->
+  <header class="border-b border-line">
+    <div class="max-w-content mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <img src="assets/images/neiis-logo-green.png" alt="" class="h-7" />
+        <span class="font-semibold tracking-tight">Deal Room</span>
+      </a>
+      <div class="flex items-center gap-4">
+        <span class="hidden sm:inline-flex items-center gap-2 text-xs text-faint">
+          <span class="font-mono">01</span><span>/</span><span class="font-mono">04</span>
+        </span>
+        <a href="index.html" class="text-sm text-ink/60 hover:text-ink">Back to overview</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-content mx-auto px-6 lg:px-10 grid lg:grid-cols-[320px_1fr] gap-12 lg:gap-20 py-12 lg:py-20">
+
+    <!-- Editorial left rail -->
+    <aside class="lg:sticky lg:top-24 self-start">
+      <div class="eyebrow"><span class="dot"></span><span>Step 1 of 4</span></div>
+      <h2 class="font-serif text-[34px] lg:text-[42px] leading-[1.04] tracking-tightest mt-4">
+        Create your <em class="italic">free</em> account.
+      </h2>
+      <p class="mt-4 text-ink/65 text-[15px] leading-relaxed max-w-xs">
+        We need a few details to spin up your private workspace. You can change everything later.
+      </p>
+
+      <ol class="step-rail mt-10 space-y-5 text-[15px]">
+        <li class="flex items-center gap-3">
+          <span class="step-dot is-active"></span>
+          <span class="font-medium">Create your account</span>
+        </li>
+        <li class="flex items-center gap-3 text-ink/45">
+          <span class="step-dot"></span>
+          <span>Set up your deal room</span>
+        </li>
+        <li class="flex items-center gap-3 text-ink/45">
+          <span class="step-dot"></span>
+          <span>Choose your interests</span>
+        </li>
+        <li class="flex items-center gap-3 text-ink/45">
+          <span class="step-dot"></span>
+          <span>Enter your workspace</span>
+        </li>
+      </ol>
+
+      <figure class="hidden lg:block mt-12 pt-8 border-t border-line max-w-xs">
+        <blockquote class="font-serif text-xl leading-snug text-ink">
+          "We replaced two SaaS subscriptions with a single Deal Room."
+        </blockquote>
+        <figcaption class="mt-4 text-xs text-faint">
+          Adaeze Okafor &middot; Head of IR, Atlas Energy Partners
+        </figcaption>
+      </figure>
+    </aside>
+
+    <!-- Form -->
+    <main>
+      <h1 class="font-serif text-[40px] sm:text-[52px] lg:text-[60px] leading-[1.02] tracking-tightest">
+        Tell us who's on the other side.
+      </h1>
+      <p class="mt-5 text-ink/65 text-lg max-w-xl">
+        Two minutes. No credit card. We never share your details with investors or third parties.
+      </p>
+
+      <form data-validate action="setup.html" method="get" class="mt-12 max-w-xl">
+        <div class="space-y-8">
+
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div class="form-field">
+              <label for="firstName">First name</label>
+              <input id="firstName" name="firstName" type="text" autocomplete="given-name" data-required placeholder="Ada" />
+              <p class="field-error">Please enter your first name.</p>
+            </div>
+            <div class="form-field">
+              <label for="lastName">Last name</label>
+              <input id="lastName" name="lastName" type="text" autocomplete="family-name" data-required placeholder="Okafor" />
+              <p class="field-error">Please enter your last name.</p>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="email">Work email</label>
+            <input id="email" name="email" type="email" autocomplete="email" data-required placeholder="ada@firm.com" />
+            <p class="field-error">Please enter a valid email address.</p>
+          </div>
+
+          <div class="form-field">
+            <label for="role">Your role</label>
+            <select id="role" name="role" data-required>
+              <option value="">Select your role</option>
+              <option>Investor Relations</option>
+              <option>General Partner</option>
+              <option>Limited Partner</option>
+              <option>Founder / Operator</option>
+              <option>Service provider</option>
+              <option>Other</option>
+            </select>
+            <p class="field-error">Please choose the role that best describes you.</p>
+          </div>
+
+          <fieldset>
+            <legend class="form-legend">Choose your plan</legend>
+            <div class="grid sm:grid-cols-2 gap-3">
+              <label class="plan-card is-selected">
+                <input type="radio" name="plan" value="free" checked />
+                <div class="plan-body">
+                  <div class="flex items-center gap-2">
+                    <span class="font-semibold">Standard</span>
+                    <span class="plan-pill">Free forever</span>
+                  </div>
+                  <div class="plan-desc">10 banks, 50 GB each, unlimited viewers.</div>
+                </div>
+                <span class="plan-tick" aria-hidden="true"></span>
+              </label>
+              <label class="plan-card">
+                <input type="radio" name="plan" value="enterprise" />
+                <div class="plan-body">
+                  <div class="font-semibold">Enterprise</div>
+                  <div class="plan-desc">SSO, dedicated CSM, unlimited banks. Talk to sales.</div>
+                </div>
+                <span class="plan-tick" aria-hidden="true"></span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div>
+            <div class="flex items-start gap-3">
+              <input id="terms" name="terms" type="checkbox" data-required class="mt-1 accent-ink h-4 w-4 rounded" />
+              <label for="terms" class="text-sm text-ink/75 leading-relaxed">
+                I agree to NEIIA's <a href="#" class="prose-link">terms of service</a> and <a href="#" class="prose-link">privacy policy</a>.
+              </label>
+            </div>
+            <p class="field-error mt-2 ml-7" id="termsError">You must accept the terms to continue.</p>
+          </div>
+        </div>
+
+        <div class="mt-12 flex flex-col sm:flex-row sm:items-center gap-4 pt-6 border-t border-line">
+          <button type="submit" class="btn-primary btn-lg">
+            Continue to setup
+            <svg class="ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <p class="text-sm text-faint sm:ml-auto">Already have an account? <a href="signin.html" class="prose-link">Sign in</a></p>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script src="assets/js/databank.js"></script>
+  <script>
+    (function () {
+      const form = document.querySelector("form[data-validate]");
+
+      // Plan card visual select
+      const planRadios = form.querySelectorAll('input[name="plan"]');
+      planRadios.forEach((r) => r.addEventListener("change", () => {
+        form.querySelectorAll(".plan-card").forEach((c) => c.classList.toggle(
+          "is-selected", c.querySelector('input[name="plan"]').checked
+        ));
+      }));
+
+      form.addEventListener("submit", function (event) {
+        if (event.defaultPrevented) return;
+        const fd = new FormData(form);
+        DataBank.setProfile({
+          firstName: (fd.get("firstName") || "").toString().trim(),
+          lastName: (fd.get("lastName") || "").toString().trim(),
+          email: (fd.get("email") || "").toString().trim(),
+          role: (fd.get("role") || "").toString().trim(),
+        });
+        DataBank.store.set(DataBank.keys.plan, fd.get("plan") || "free");
+      });
+    })();
+  </script>
+</body>
+</html>
