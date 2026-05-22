@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Deals - NEIIA Deal Room Terminal</title>
+  <title>Deal Room · Browse deals</title>
   <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -30,7 +30,8 @@
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="t-btn" type="button" id="exportBtn">Export CSV</button>
           <button class="t-btn" type="button" data-action="open-alerts">Set alert</button>
-          <button class="t-btn t-btn-primary" type="button" id="newDealBtn">+ New deal</button>
+          <button class="t-btn" type="button" id="newDealBtn">+ New fund vehicle</button>
+          <button class="t-btn t-btn-primary" type="button" id="listDealBtn" title="Issue a CSAFE / Bond / PPM on the marketplace">+ List a deal</button>
         </div>
       </header>
 
@@ -40,6 +41,12 @@
           <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input id="dealSearch" type="search" placeholder="Search company or sector" class="t-input" style="padding-left:34px;width:100%" />
         </div>
+        <select id="laneFilter" class="t-input" aria-label="Filter by lane">
+          <option value="">All lanes</option>
+          <option value="lane-a">Lane A · Crowdfund</option>
+          <option value="lane-b">Lane B · Private</option>
+          <option value="fund">Fund vehicle</option>
+        </select>
         <select id="statusFilter" class="t-input" aria-label="Filter by status">
           <option value="">All statuses</option>
         </select>
@@ -47,6 +54,16 @@
           <option value="">All sectors</option>
         </select>
         <button class="t-btn" id="clearFilters" type="button" style="margin-left:auto">Clear filters</button>
+      </div>
+
+      <!-- Saved screens (preset filter combos) -->
+      <div class="screen-row" id="screenChips">
+        <button class="screen-chip is-active" type="button" data-screen="all">All deals</button>
+        <button class="screen-chip" type="button" data-screen="closing">Closing this week</button>
+        <button class="screen-chip" type="button" data-screen="lane-a-live">Live · Lane A</button>
+        <button class="screen-chip" type="button" data-screen="oversub">Oversubscribed</button>
+        <button class="screen-chip" type="button" data-screen="lane-b">Lane B private placements</button>
+        <button class="screen-chip" type="button" data-screen="under-review">Under review</button>
       </div>
 
       <!-- Active filter tags (only shown when a filter is set) -->
@@ -58,19 +75,17 @@
           <div class="panel-title">Pipeline</div>
           <div class="panel-sub"><span id="visibleCount">--</span> visible</div>
         </div>
-        <div style="overflow-x:auto">
-          <table class="db-table">
+        <div class="deals-table-wrap">
+          <table class="db-table deals-table">
             <thead id="dealsHead">
               <tr>
-                <th data-sort="company">Company <span class="arrow"></span></th>
-                <th data-sort="sector">Sector <span class="arrow"></span></th>
-                <th data-sort="stage">Stage <span class="arrow"></span></th>
-                <th data-sort="sizeNum" class="text-right">Size <span class="arrow"></span></th>
-                <th class="no-sort">Trend</th>
-                <th data-sort="status">Status <span class="arrow"></span></th>
-                <th class="no-sort">Data</th>
-                <th data-sort="updated">Updated <span class="arrow"></span></th>
-                <th class="no-sort" aria-label="row actions"></th>
+                <th class="col-company" data-sort="company">Company <span class="arrow"></span></th>
+                <th class="col-lane" data-sort="lane">Lane <span class="arrow"></span></th>
+                <th class="col-wrapper" data-sort="wrapper">Wrapper <span class="arrow"></span></th>
+                <th class="col-size text-right" data-sort="sizeNum">Size <span class="arrow"></span></th>
+                <th class="col-alloc no-sort">Allocation</th>
+                <th class="col-status" data-sort="status">Status <span class="arrow"></span></th>
+                <th class="col-actions no-sort" aria-label="row actions"></th>
               </tr>
             </thead>
             <tbody id="dealsBody"></tbody>
@@ -96,14 +111,26 @@
       const T = window.Terminal;
       const wl = window.DataBank ? window.DataBank.watchlistApi() : null;
       const subsApi = window.DataBank ? window.DataBank.subscriptionsApi() : null;
+      const acctApi = window.DataBank && window.DataBank.accountApi ? window.DataBank.accountApi() : null;
+      const dealsCrud = window.DataBank && window.DataBank.dealsApi ? window.DataBank.dealsApi() : null;
+
+      // Merge seeded deals with user-submitted deals from dealsApi (under-review issuances).
+      function getMergedDeals() {
+        const user = dealsCrud ? dealsCrud.list().filter(function (d) { return d.userCreated; }) : [];
+        return user.concat(D.deals);
+      }
+
+      // Re-render when account state changes (verify, tier upgrade) so locks/caps reflect.
+      window.addEventListener("norgroup:account-changed", function () { if (api && api.render) api.render(); });
 
       // Apply pre-filter from URL (?sector=...)
       const url = new URLSearchParams(location.search);
       const presetSector = url.get("sector");
 
-      // Filters
-      const statuses = Array.from(new Set(D.deals.map(function (d) { return d.status; }))).sort();
-      const sectors  = Array.from(new Set(D.deals.map(function (d) { return d.sector; }))).sort();
+      // Filters — include "Under Review" + sectors from user-submitted deals
+      const allForFilters = getMergedDeals();
+      const statuses = Array.from(new Set(allForFilters.map(function (d) { return d.status; }))).sort();
+      const sectors  = Array.from(new Set(allForFilters.map(function (d) { return d.sector; }))).sort();
       const statusEl = document.getElementById("statusFilter");
       const sectorEl = document.getElementById("sectorFilter");
       statuses.forEach(function (s) { const o = document.createElement("option"); o.textContent = s; statusEl.appendChild(o); });
@@ -115,9 +142,14 @@
       function renderActiveFilters() {
         const search = document.getElementById("dealSearch").value.trim();
         const tags = [];
-        if (search)         tags.push({ label: 'Search: "' + search + '"', kind: "search" });
-        if (statusEl.value) tags.push({ label: "Status: " + statusEl.value, kind: "status" });
-        if (sectorEl.value) tags.push({ label: "Sector: " + sectorEl.value, kind: "sector" });
+        const laneFilterEl = document.getElementById("laneFilter");
+        if (search)                tags.push({ label: 'Search: "' + search + '"', kind: "search" });
+        if (laneFilterEl && laneFilterEl.value) {
+          const laneText = laneFilterEl.options[laneFilterEl.selectedIndex].text;
+          tags.push({ label: "Lane: " + laneText, kind: "lane" });
+        }
+        if (statusEl.value)        tags.push({ label: "Status: " + statusEl.value, kind: "status" });
+        if (sectorEl.value)        tags.push({ label: "Sector: " + sectorEl.value, kind: "sector" });
         if (!tags.length) { activeFiltersEl.style.display = "none"; activeFiltersEl.innerHTML = ""; return; }
         activeFiltersEl.style.display = "flex";
         activeFiltersEl.innerHTML = tags.map(function (t) {
@@ -130,6 +162,7 @@
         if (!b) return;
         const kind = b.getAttribute("data-clear-filter");
         if (kind === "search") document.getElementById("dealSearch").value = "";
+        if (kind === "lane")   document.getElementById("laneFilter").value = "";
         if (kind === "status") statusEl.value = "";
         if (kind === "sector") sectorEl.value = "";
         api.render();
@@ -153,41 +186,121 @@
         return '<button type="button" class="sub-tag locked" data-subscribe="' + id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>$' + price + '/mo</span></button>';
       }
 
+      // ---- v3 tooltip + label helpers ----
+      const LANE_TIPS = {
+        'lane-a': 'Lane A · Crowdfund — SEC-regulated retail. Open to KYC Tier 1+. Wrappers: CSAFE, Convertible Note, Equity Subscription. Lane auto-routed by issuer SMEDAN caliber.',
+        'lane-b': 'Lane B · Private Placement — Qualified investors only (KYC Tier 3). No public solicitation. Wrappers: PPM, Commercial Paper, Bonds, Revenue Share.',
+        'fund':   'Fund Vehicle — Off-platform GP/LP raise (SPV, Sub-Fund, Rolling, Venture, Co-Invest, Roll-Up, Scout). Not a regulated issuance lane.'
+      };
+      const WRAPPER_TIPS = {
+        'CSAFE':                'CSAFE — Convertible SAFE, Nigeria-compliant. Converts to equity on trigger event.',
+        'Bonds':                'Bond Issuance — fixed-tenor debt with coupon. Lane B only.',
+        'Commercial Paper':     'Commercial Paper — short-tenor unsecured debt. Lane B only.',
+        'Equity Subscription':  'Equity Subscription Agreement — direct share subscription. Lane B (or Lane A for small raises).',
+        'SPV':                  'SPV — single-asset wrapper for a single close.',
+        'Sub-Fund':             'Sub-Fund — multi-asset vehicle with multiple closes.',
+        'Co-Invest':            'Co-Invest — piggyback alongside a lead, no fund fees.',
+        'Rolling Fund':         'Rolling Fund — quarterly closes, vintage-based.',
+        'Venture Fund':         'Venture Fund — 10-year LP, classic mechanics.',
+        'Roll-Up':              'Roll-Up — convert existing positions into a new wrapper.',
+        'Scout Fund':           'Scout Fund — solo-scout cheques backed by an upstream fund.'
+      };
+      function laneChip(d) {
+        const cls = d.lane === 'lane-a' ? 'lane-a' : d.lane === 'lane-b' ? 'lane-b' : 'lane-fund';
+        const tip = LANE_TIPS[d.lane] || '';
+        return '<span class="lane-chip ' + cls + '" data-tip="' + esc(tip) + '" title="' + esc(tip) + '">' + (d.laneLabel || d.lane) + '</span>';
+      }
+      function wrapperCell(d) {
+        const tip = WRAPPER_TIPS[d.wrapper] || d.wrapper;
+        return '<span data-tip="' + esc(tip) + '" title="' + esc(tip) + '" style="color:var(--text-secondary);font-size:12px;cursor:help;border-bottom:1px dotted rgba(0,0,0,0.18)">' + (d.wrapper || '') + '</span>';
+      }
+      function fmtNgn(n) {
+        if (!n) return '—';
+        if (n >= 1e9) return '₦' + (n / 1e9).toFixed(2) + 'bn';
+        if (n >= 1e6) return '₦' + (n / 1e6).toFixed(0) + 'm';
+        if (n >= 1e3) return '₦' + (n / 1e3).toFixed(0) + 'k';
+        return '₦' + n;
+      }
+      function allocBar(d) {
+        const pct = d.allocationPct || 0;
+        if (!pct) return '<span style="color:var(--text-muted);font-size:11px">—</span>';
+        const over = pct > 100;
+        const w = Math.min(pct, 100);
+        const cls = over ? 'over' : pct >= 75 ? 'hot' : 'mid';
+        const raise = d.raiseNGN ? fmtNgn(d.raiseNGN) : d.size;
+        const tip = pct + '% subscribed of ' + raise + ' target' + (d.daysLeft != null ? ' · ' + d.daysLeft + ' day' + (d.daysLeft === 1 ? '' : 's') + ' left' : '');
+        return (
+          '<div class="alloc-cell" data-tip="' + esc(tip) + '" title="' + esc(tip) + '">' +
+            '<div class="alloc-bar"><span class="alloc-fill ' + cls + '" style="width:' + w + '%"></span></div>' +
+            '<div class="alloc-pct">' + pct + '%</div>' +
+          '</div>'
+        );
+      }
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+        });
+      }
+      // v3 gating — Invest button reflects verification + KYC tier per deal lane.
+      function investGate(d) {
+        if (!acctApi) return { ok: true };
+        return acctApi.canSubscribeTo(d);
+      }
+      const LOCK_SVG = '<svg class="btn-lock" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
+      function investButtonHtml(d) {
+        const g = investGate(d);
+        if (g.ok) {
+          const t = d.lane === 'lane-a' || d.lane === 'lane-b' ? 'Subscribe to this ' + d.wrapper + ' issuance' : 'Co-invest in this fund vehicle';
+          return '<button class="t-btn t-btn-primary" data-invest="' + d.id + '" type="button" style="height:24px;padding:0 8px;font-size:11px;margin-right:6px" data-tip="' + esc(t) + '" title="' + esc(t) + '">+ Invest</button>';
+        }
+        if (g.reason === 'not-verified') {
+          return '<button class="t-btn t-btn-locked" data-invest-gate="verify" data-invest="' + d.id + '" type="button" data-tip="Verify your account to invest" title="Verify your account to invest">' + LOCK_SVG + '<span>Verify to invest</span></button>';
+        }
+        if (g.reason === 'tier-too-low') {
+          return '<button class="t-btn t-btn-locked" data-invest-gate="tier" data-invest="' + d.id + '" type="button" data-tip="KYC Tier ' + g.required + ' required for Lane B private placements" title="KYC Tier ' + g.required + ' required">' + LOCK_SVG + '<span>Tier ' + g.required + '</span></button>';
+        }
+        return '';
+      }
       function rowHtml(d) {
         const star = wl && wl.has(d.id) ? "is-active" : "";
+        const stageLine = d.stage ? '<span class="row-meta-dot">·</span>' + esc(d.stage) : '';
         return (
           '<tr data-row="' + d.id + '">' +
-            '<td><div style="display:flex;align-items:center;gap:10px;">' +
-              T.companyLogo(d.id, d.company, { size: 30, radius: 6 }) +
-              '<a href="company.html?company=' + d.id + '">' + d.company + '</a>' +
+            '<td class="col-company"><div class="row-co">' +
+              T.companyLogo(d.id, d.company, { size: 28, radius: 6 }) +
+              '<div class="row-co-text">' +
+                '<a class="row-co-name" href="' + (d.lane === 'lane-a' || d.lane === 'lane-b' ? 'deal.html?id=' : 'company.html?company=') + d.id + '">' + esc(d.company) + '</a>' +
+                (d.userCreated ? '<span class="your-raise-tag" title="Submitted by you. Awaiting compliance review.">Your raise</span>' : '') +
+                '<div class="row-co-meta"><span class="row-co-ticker">' + esc(d.ticker || '') + '</span>' +
+                  '<span class="row-meta-dot">·</span>' + esc(d.sector) + stageLine +
+                '</div>' +
+              '</div>' +
             '</div></td>' +
-            '<td style="color:var(--text-secondary)">' + d.sector + '</td>' +
-            '<td style="color:var(--text-secondary)">' + d.stage + '</td>' +
-            '<td class="num">' + d.size + '</td>' +
-            '<td>' + priceSpark(d.id) + '</td>' +
-            '<td><span class="badge badge-' + (d.statusType || "info") + '">' + d.status + '</span></td>' +
-            '<td>' + dataCellHtml(d.id) + '</td>' +
-            '<td class="num" style="color:var(--text-secondary)">' + d.updated + '</td>' +
-            '<td style="text-align:right;white-space:nowrap">' +
-              '<button class="t-btn" data-make-deal="' + d.id + '" type="button" style="height:24px;padding:0 8px;font-size:11px;margin-right:6px">+ Deal</button>' +
+            '<td class="col-lane">' + laneChip(d) + '</td>' +
+            '<td class="col-wrapper">' + wrapperCell(d) + '</td>' +
+            '<td class="col-size num">' + d.size + '</td>' +
+            '<td class="col-alloc">' + allocBar(d) + '</td>' +
+            '<td class="col-status"><span class="badge badge-' + (d.statusType || "info") + '" data-tip="Status: ' + esc(d.status) + ' · updated ' + esc(d.updated) + '" title="Status: ' + esc(d.status) + ' · updated ' + esc(d.updated) + '">' + d.status + '</span></td>' +
+            '<td class="col-actions">' +
+              investButtonHtml(d) +
               '<button class="star-cell ' + star + '" data-star="' + d.id + '" aria-label="Toggle watchlist">' +
-                '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9 12 2"/></svg>' +
+                '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9 12 2"/></svg>' +
               '</button>' +
               '<button class="kebab-btn" data-kebab="' + d.id + '" aria-label="Row actions">' +
-                '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/></svg>' +
+                '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/></svg>' +
               '</button>' +
             '</td>' +
           '</tr>'
         );
       }
 
+      const laneEl = document.getElementById("laneFilter");
       const headers = [
         { key: "company" },
-        { key: "sector" },
-        { key: "stage" },
+        { key: "lane" },
+        { key: "wrapper" },
         { key: "sizeNum" },
-        { key: "status" },
-        { key: "updated" }
+        { key: "status" }
       ];
 
       const api = T.tableApi({
@@ -195,10 +308,11 @@
         tbody: document.getElementById("dealsBody"),
         search: document.getElementById("dealSearch"),
         empty: document.getElementById("dealsEmpty"),
-        rows: D.deals,
+        rows: getMergedDeals(),
         headers: headers,
-        searchKeys: ["company", "sector", "stage", "status"],
+        searchKeys: ["company", "ticker", "sector", "stage", "status", "wrapper"],
         filters: [
+          { el: laneEl, key: "lane" },
           { el: statusEl, key: "status" },
           { el: sectorEl, key: "sector" }
         ],
@@ -210,6 +324,19 @@
         }
       });
 
+      // Initial paint — tableApi only renders on interaction otherwise.
+      api.render();
+
+      // Deep-link: ?invest=<id> opens the subscription modal on load
+      // (used by the "+ Invest" button on deal.html).
+      const investParam = url.get("invest");
+      if (investParam) {
+        const target = D.deals.concat(dealsCrud ? dealsCrud.list() : []).find(function (x) { return x.id === investParam; });
+        if (target && (target.lane === "lane-a" || target.lane === "lane-b")) {
+          setTimeout(function () { openSubscriptionModal(target); }, 100);
+        }
+      }
+
       // Headline stats
       document.getElementById("dealsCount").textContent = D.deals.length;
       const cap = D.deals.reduce(function (a, d) { return a + (d.sizeNum || 0); }, 0);
@@ -220,20 +347,323 @@
 
       document.getElementById("clearFilters").addEventListener("click", function () {
         document.getElementById("dealSearch").value = "";
+        document.getElementById("laneFilter").value = "";
         statusEl.value = "";
         sectorEl.value = "";
+        setActiveScreen("all");
         api.render();
       });
 
-      // Star + kebab + subscribe + make-deal (event delegation)
-      document.getElementById("dealsBody").addEventListener("click", function (e) {
-        const md = e.target.closest("[data-make-deal]");
-        if (md) {
-          const id = md.getAttribute("data-make-deal");
-          const d = D.deals.find(function (x) { return x.id === id; });
-          if (d && window.DealFlow) window.DealFlow.openWizard({
-            prefill: { name: d.company + " — Co-Invest", sponsor: d.company, sector: d.sector, vehicleType: "coinvest" }
+      // Saved screens — preset filter combos. Each chip programmatically sets
+      // the existing search/filter dropdowns and re-renders the table.
+      function setActiveScreen(id) {
+        document.querySelectorAll("#screenChips .screen-chip").forEach(function (c) {
+          c.classList.toggle("is-active", c.getAttribute("data-screen") === id);
+        });
+      }
+      function applyScreen(id) {
+        const search = document.getElementById("dealSearch");
+        const lane = document.getElementById("laneFilter");
+        // Reset everything first, then apply preset.
+        search.value = ""; lane.value = ""; statusEl.value = ""; sectorEl.value = "";
+        if (id === "all") {
+          /* no filters */
+        } else if (id === "closing") {
+          statusEl.value = "Closing";
+        } else if (id === "lane-a-live") {
+          lane.value = "lane-a";
+          statusEl.value = "Live";
+        } else if (id === "oversub") {
+          statusEl.value = "Oversubscribed";
+        } else if (id === "lane-b") {
+          lane.value = "lane-b";
+        } else if (id === "under-review") {
+          statusEl.value = "Under Review";
+        }
+        setActiveScreen(id);
+        api.render();
+      }
+      document.getElementById("screenChips").addEventListener("click", function (e) {
+        const b = e.target.closest("[data-screen]");
+        if (!b) return;
+        applyScreen(b.getAttribute("data-screen"));
+      });
+
+      // Lane A/B deals are *issuances* — investors subscribe to a wrapper (CSAFE/Bonds/etc.),
+      // they don't structure a fund vehicle around them. So "+ Invest" branches by lane:
+      //   lane-a / lane-b → open subscription modal (ticket size, attestations, PIN sign)
+      //   fund            → open the existing 3-step co-invest wizard
+      function openSubscriptionModal(d) {
+        const raise = d.raiseNGN ? fmtNgn(d.raiseNGN) : d.size;
+        // Effective ticket bounds = intersection of (deal-defined) and (user KYC tier) caps.
+        const caps = acctApi ? acctApi.caps() : { perDealMinNGN: 0, perDealMaxNGN: Infinity, annualMaxNGN: Infinity, label: '' };
+        const effMin = Math.max(d.ticketMinNGN || 0, caps.perDealMinNGN || 0);
+        const effMax = Math.min(d.ticketMaxNGN || Infinity, caps.perDealMaxNGN || Infinity);
+        const tmin  = effMin ? fmtNgn(effMin) : '—';
+        const tmax  = isFinite(effMax) ? fmtNgn(effMax) : 'No cap';
+        const laneTip = LANE_TIPS[d.lane] || '';
+        const wrapTip = WRAPPER_TIPS[d.wrapper] || '';
+        const acc = acctApi ? acctApi.get() : { kycTier: 1 };
+        const tierLine = 'Your KYC Tier ' + (acc.kycTier || 1) + (caps.label ? ' (' + caps.label + ')' : '') +
+                        ' caps you at ' + (effMin ? fmtNgn(caps.perDealMinNGN) : '₦0') + '–' + (isFinite(caps.perDealMaxNGN) ? fmtNgn(caps.perDealMaxNGN) : 'no cap') + ' per deal' +
+                        (isFinite(caps.annualMaxNGN) ? ' · ' + fmtNgn(caps.annualMaxNGN) + ' annual aggregate' : '') + '.';
+        const tierWarning = d.lane === 'lane-b'
+          ? '<div class="sub-callout warn"><strong>KYC Tier 3 required.</strong> Lane B private placements are restricted to qualified investors (₦100m+ net worth, ₦20m+ income, or SEC-registered institutional). ' + tierLine + '</div>'
+          : '<div class="sub-callout ok"><strong>Lane A · Crowdfund.</strong> ' + tierLine + '</div>';
+
+        // "What you're funding" — surfaces the deal brief and use of proceeds.
+        // Lane A deals carry full UoP table + milestones + whyNow; Lane B uses the lighter line from the PPM.
+        function briefHtml() {
+          if (!d.brief && !d.useOfProceeds && !d.useOfProceedsText) return '';
+          const uop = Array.isArray(d.useOfProceeds) && d.useOfProceeds.length
+            ? '<div class="brief-uop-title">Use of proceeds</div>' +
+              '<ul class="brief-uop">' + d.useOfProceeds.map(function (u) {
+                return '<li>' +
+                  '<div class="brief-uop-row">' +
+                    '<span class="brief-uop-label">' + esc(u.label) + '</span>' +
+                    '<span class="brief-uop-pct">' + u.pctRaise + '%</span>' +
+                    '<span class="brief-uop-ngn">' + fmtNgn(u.ngn) + '</span>' +
+                  '</div>' +
+                  '<div class="brief-uop-bar"><span style="width:' + u.pctRaise + '%"></span></div>' +
+                '</li>';
+              }).join('') + '</ul>'
+            : d.useOfProceedsText
+              ? '<div class="brief-uop-title">Use of proceeds</div><p class="brief-text">' + esc(d.useOfProceedsText) + '</p>'
+              : '';
+          const milestones = Array.isArray(d.milestones) && d.milestones.length
+            ? '<div class="brief-uop-title">Milestones</div><ul class="brief-bullets">' + d.milestones.map(function (m) { return '<li>' + esc(m) + '</li>'; }).join('') + '</ul>'
+            : '';
+          const whyNow = d.whyNow ? '<div class="brief-uop-title">Why now</div><p class="brief-text">' + esc(d.whyNow) + '</p>' : '';
+          return (
+            '<details class="brief-box" open>' +
+              '<summary class="brief-summary">' +
+                '<span>What you\'re funding</span>' +
+                '<span class="brief-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>' +
+              '</summary>' +
+              '<div class="brief-body">' +
+                (d.brief ? '<p class="brief-text">' + esc(d.brief) + '</p>' : '') +
+                uop + milestones + whyNow +
+              '</div>' +
+            '</details>'
+          );
+        }
+        const body = (
+          '<div class="sub-head">' +
+            '<div class="sub-ident">' +
+              '<div class="sub-ticker">' + esc(d.ticker || '') + '</div>' +
+              '<div class="sub-legal">' + esc(d.legalName || d.company) + (d.tradingName && d.tradingName !== d.legalName ? ' · ' + esc(d.tradingName) : '') + '</div>' +
+            '</div>' +
+            '<div class="sub-chips">' +
+              '<span class="lane-chip ' + (d.lane === 'lane-a' ? 'lane-a' : 'lane-b') + '" title="' + esc(laneTip) + '">' + esc(d.laneLabel) + '</span>' +
+              '<span class="wrap-chip" title="' + esc(wrapTip) + '">' + esc(d.wrapper) + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="sub-grid">' +
+            '<div><label>Target raise</label><div class="sub-val">' + esc(raise) + '</div></div>' +
+            '<div><label>Subscribed</label><div class="sub-val">' + (d.allocationPct || 0) + '%</div></div>' +
+            '<div><label>Ticket range</label><div class="sub-val">' + esc(tmin) + ' – ' + esc(tmax) + '</div></div>' +
+            '<div><label>Closing in</label><div class="sub-val">' + (d.daysLeft != null ? d.daysLeft + ' day' + (d.daysLeft === 1 ? '' : 's') : '—') + '</div></div>' +
+          '</div>' +
+          briefHtml() +
+          tierWarning +
+          '<div class="sub-form">' +
+            '<label>Your ticket size (NGN)</label>' +
+            '<input class="t-input" id="sub-ticket" type="number" min="' + effMin + '" ' + (isFinite(effMax) ? 'max="' + effMax + '" ' : '') + 'placeholder="' + (effMin || 100000) + '" style="width:100%" />' +
+            '<label style="margin-top:10px">Source of funds</label>' +
+            '<select class="t-input" id="sub-source" style="width:100%">' +
+              '<option>Salary / employment income</option>' +
+              '<option>Business income</option>' +
+              '<option>Savings / investment returns</option>' +
+              '<option>Inheritance / gift</option>' +
+              '<option>Sale of asset</option>' +
+              '<option>Other</option>' +
+            '</select>' +
+            '<label class="sub-check"><input type="checkbox" id="sub-risk" /> I acknowledge SEC risk disclosure and have reviewed the bilateral subscription agreement.</label>' +
+            '<label class="sub-check"><input type="checkbox" id="sub-cool" /> I understand the 14-day cooling-off period and refund mechanics.</label>' +
+          '</div>'
+        );
+        T.modal('Subscribe to ' + (d.ticker || d.company), body, {
+          footer:
+            '<button type="button" class="t-btn" data-modal-close>Cancel</button>' +
+            '<button type="button" class="t-btn t-btn-primary" id="sub-sign">Sign with 6-digit PIN →</button>'
+        });
+        const sign = document.getElementById('sub-sign');
+        if (sign) sign.addEventListener('click', function () {
+          const ticket = +(document.getElementById('sub-ticket').value || 0);
+          const source = document.getElementById('sub-source').value;
+          const risk = document.getElementById('sub-risk').checked;
+          const cool = document.getElementById('sub-cool').checked;
+          if (!ticket || ticket < effMin) { T.toast('Ticket below minimum ' + fmtNgn(effMin)); return; }
+          if (isFinite(effMax) && ticket > effMax) { T.toast('Ticket exceeds your tier cap ' + fmtNgn(effMax)); return; }
+          if (!risk || !cool) { T.toast('Both attestations are required'); return; }
+          T.closeModal();
+          T.pinPad({
+            title: 'Sign subscription · ' + (d.ticker || d.company),
+            subtitle: 'Enter your 6-digit transaction PIN to sign the Bilateral Subscription Agreement.',
+            onConfirm: function () {
+              openAgreementPreview(d, ticket, source);
+            }
           });
+        });
+      }
+
+      // Auto-populated bilateral subscription agreement preview (v3 Part 9).
+      // Investor block is mocked from the saved profile (or sensible defaults for demo).
+      function openAgreementPreview(d, ticketNGN, sourceOfFunds) {
+        const profile = (window.DataBank && window.DataBank.getProfile && window.DataBank.getProfile()) || {};
+        const investorName = (profile.firstName ? profile.firstName + ' ' + (profile.lastName || '') : 'Demo Investor').trim();
+        const investorEmail = profile.email || 'investor@demo.ng';
+        const investorTier = d.lane === 'lane-b' ? 3 : 2;
+        const today = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+        const wrapperBlock = d.wrapper === 'CSAFE'
+          ? '<li><strong>Instrument:</strong> Convertible SAFE (CSAFE), Nigeria-compliant. Converts to equity on next qualified financing.</li>' +
+            '<li><strong>Valuation cap:</strong> ' + fmtNgn(Math.round((d.raiseNGN || 50000000) * 5)) + '</li>' +
+            '<li><strong>Discount rate:</strong> 20% to next round price</li>' +
+            '<li><strong>MFN clause:</strong> Investor entitled to most-favoured-nation terms if better terms granted to subsequent CSAFE holders.</li>' +
+            '<li><strong>Anti-dilution:</strong> Broad-based weighted-average.</li>' +
+            '<li><strong>Information rights:</strong> Quarterly MD&amp;A report, annual audited financials, cap table snapshot.</li>'
+          : '<li><strong>Instrument:</strong> ' + esc(d.wrapper) + ' (Lane B private placement).</li>' +
+            '<li><strong>Terms:</strong> As set out in the Private Placement Memorandum filed with SEC Nigeria.</li>' +
+            '<li><strong>Tenor / coupon:</strong> Per wrapper-specific schedule attached.</li>';
+        const body = (
+          '<div class="agreement">' +
+            '<div class="agr-head">' +
+              '<div class="agr-eyebrow">Bilateral Subscription Agreement · Preview</div>' +
+              '<div class="agr-title">' + esc(d.legalName || d.company) + ' &mdash; ' + esc(d.ticker) + '</div>' +
+              '<div class="agr-meta">Dated ' + today + ' · Governing law: Federal Republic of Nigeria · Jurisdiction: FCT, Abuja</div>' +
+            '</div>' +
+            '<section class="agr-section">' +
+              '<h4>1. Issuer</h4>' +
+              '<ul>' +
+                '<li><strong>Legal name:</strong> ' + esc(d.legalName || d.company) + '</li>' +
+                '<li><strong>Trading name:</strong> ' + esc(d.tradingName || d.company) + ' (' + esc(d.ticker) + ')</li>' +
+                '<li><strong>CAC RC:</strong> RC-' + (1000000 + (d.ticker || 'NRG').charCodeAt(0) * 137 % 900000) + '</li>' +
+                '<li><strong>TIN:</strong> ' + (12340000 + (d.ticker || 'NRG').charCodeAt(0) * 19) + '-0001</li>' +
+                '<li><strong>Sector:</strong> ' + esc(d.sector) + '</li>' +
+                '<li><strong>Auditor:</strong> ' + (d.lane === 'lane-a' ? 'BDO Nigeria (FRCN registered)' : 'KPMG Nigeria (FRCN registered)') + '</li>' +
+                '<li><strong>Lane:</strong> ' + esc(d.laneLabel) + '</li>' +
+              '</ul>' +
+            '</section>' +
+            '<section class="agr-section">' +
+              '<h4>2. Investor</h4>' +
+              '<ul>' +
+                '<li><strong>Legal name:</strong> ' + esc(investorName) + '</li>' +
+                '<li><strong>Email:</strong> ' + esc(investorEmail) + '</li>' +
+                '<li><strong>NIN (verified):</strong> ••••-••••-' + (Math.abs(((investorEmail || '').charCodeAt(0) || 65) * 1337) % 9000 + 1000) + '</li>' +
+                '<li><strong>BVN-verified bank:</strong> Access Bank ••••••' + (Math.abs(((investorEmail || '').charCodeAt(1) || 90) * 421) % 9000 + 1000) + '</li>' +
+                '<li><strong>KYC tier:</strong> Tier ' + investorTier + '</li>' +
+                '<li><strong>Accreditation status:</strong> ' + (investorTier >= 3 ? 'Qualified (Lane B eligible)' : 'Retail (Lane A eligible)') + '</li>' +
+              '</ul>' +
+            '</section>' +
+            '<section class="agr-section">' +
+              '<h4>3. What this raise funds</h4>' +
+              (d.brief ? '<p class="agr-brief">' + esc(d.brief) + '</p>' : '') +
+              (Array.isArray(d.useOfProceeds) && d.useOfProceeds.length
+                ? '<ul>' + d.useOfProceeds.map(function (u) {
+                    return '<li><strong>' + u.pctRaise + '% · ' + fmtNgn(u.ngn) + '</strong> — ' + esc(u.label) + '</li>';
+                  }).join('') + '</ul>'
+                : d.useOfProceedsText
+                  ? '<ul><li><strong>Use of proceeds:</strong> ' + esc(d.useOfProceedsText) + '</li></ul>'
+                  : '') +
+            '</section>' +
+            '<section class="agr-section">' +
+              '<h4>4. Subscription</h4>' +
+              '<ul>' +
+                '<li><strong>Ticket size:</strong> ' + fmtNgn(ticketNGN) + '</li>' +
+                '<li><strong>Source of funds:</strong> ' + esc(sourceOfFunds) + '</li>' +
+                '<li><strong>Escrow custodian:</strong> Stanbic IBTC Bank (CBN-licensed)</li>' +
+                '<li><strong>Payment rail:</strong> NIBSS NIP (Instant Payment)</li>' +
+                '<li><strong>Cooling-off:</strong> 14 days from signature</li>' +
+              '</ul>' +
+            '</section>' +
+            '<section class="agr-section">' +
+              '<h4>5. Instrument terms</h4>' +
+              '<ul>' + wrapperBlock + '</ul>' +
+            '</section>' +
+            '<section class="agr-section agr-risk">' +
+              '<h4>6. SEC-mandated risk disclosure</h4>' +
+              '<p>Crowdfunding and private placement investments carry substantial risk, including total loss of capital. Past performance is not indicative of future results. This investment is illiquid; tokens are non-transferable until conversion or SEC-approved secondary window. The issuer has been verified by Deal Room compliance but Deal Room does not guarantee returns. You have a 14-day cooling-off period from the date of signature during which you may withdraw without penalty; thereafter the subscription is binding subject to escrow threshold and SEC rules.</p>' +
+            '</section>' +
+            '<section class="agr-section">' +
+              '<h4>7. Signatures</h4>' +
+              '<div class="agr-sig">' +
+                '<div><strong>Investor</strong><br/>' + esc(investorName) + '<br/><em>Signed with 6-digit PIN at ' + new Date().toLocaleTimeString() + '</em></div>' +
+                '<div><strong>Issuer</strong><br/>' + esc(d.legalName || d.company) + '<br/><em>Pending dual-signatory countersign</em></div>' +
+              '</div>' +
+            '</section>' +
+          '</div>'
+        );
+        T.modal('Bilateral Subscription Agreement', body, {
+          footer:
+            '<button type="button" class="t-btn" data-modal-close>Back</button>' +
+            '<button type="button" class="t-btn t-btn-primary" id="agr-file">File to Data Vault &amp; submit →</button>'
+        });
+        document.getElementById('agr-file').addEventListener('click', function () {
+          const inv = window.DataBank.investmentsApi().add({
+            dealId: d.id,
+            ticker: d.ticker,
+            legalName: d.legalName || d.company,
+            tradingName: d.tradingName || d.company,
+            wrapper: d.wrapper,
+            lane: d.lane,
+            laneLabel: d.laneLabel,
+            sector: d.sector,
+            ticketNGN: ticketNGN,
+            sourceOfFunds: sourceOfFunds,
+            dealStatus: d.status === 'Closed' ? 'Active' : d.status,
+            valuationCapNGN: Math.round((d.raiseNGN || 50000000) * 5),
+            kycTierAtSign: d.lane === 'lane-b' ? 3 : 2
+          });
+          // v3 Part 10 — Bilateral Subscription Agreement filed to the Data Vault.
+          if (window.DataBank.vaultApi) {
+            window.DataBank.vaultApi().add({
+              kind: 'agreement',
+              title: 'Bilateral Subscription Agreement · ' + d.ticker,
+              subtitle: d.legalName + ' · ' + d.wrapper + ' · ' + fmtNgn(ticketNGN),
+              dealId: d.id,
+              payload: {
+                ticker: d.ticker, wrapper: d.wrapper, ticketNGN: ticketNGN,
+                sourceOfFunds: sourceOfFunds, lane: d.laneLabel,
+                governing: 'Federal Republic of Nigeria · FCT Abuja',
+                escrow: 'Stanbic IBTC Bank (CBN-licensed)'
+              }
+            });
+          }
+          T.alerts().add({
+            symbol: d.ticker,
+            label: 'Subscribed · ' + fmtNgn(ticketNGN),
+            value: '',
+            unit: '',
+            templateId: 'subscription',
+            severity: 'critical',
+            href: 'portfolio.html'
+          });
+          T.closeModal();
+          T.toast(d.ticker + ' subscription filed to Data Vault · ' + fmtNgn(ticketNGN));
+        });
+      }
+
+      // Star + kebab + subscribe + invest (event delegation)
+      document.getElementById("dealsBody").addEventListener("click", function (e) {
+        const md = e.target.closest("[data-invest]");
+        if (md) {
+          const id = md.getAttribute("data-invest");
+          const d = D.deals.find(function (x) { return x.id === id; });
+          if (!d) return;
+          const g = investGate(d);
+          if (!g.ok) {
+            if (g.reason === 'not-verified' && T.openPaywallModal) { T.openPaywallModal(); return; }
+            if (g.reason === 'tier-too-low' && T.openTierUpgradeModal) { T.openTierUpgradeModal({ target: g.required, reason: 'Lane B private placement subscription' }); return; }
+            T.toast('Gated · ' + g.reason);
+            return;
+          }
+          if (d.lane === 'lane-a' || d.lane === 'lane-b') {
+            openSubscriptionModal(d);
+          } else if (window.DealFlow) {
+            window.DealFlow.openWizard({
+              prefill: { name: d.company + " — Co-Invest", sponsor: d.company, sector: d.sector, vehicleType: 'coinvest' }
+            });
+          }
           return;
         }
         const sub = e.target.closest("[data-subscribe]");
@@ -267,13 +697,29 @@
           const d = D.deals.find(function (x) { return x.id === id; });
           const isOn = wl.has(id);
           T.popover(k, [
-            { label: "+ Make a deal", onClick: function () {
-                if (window.DealFlow) window.DealFlow.openWizard({
-                  prefill: { name: d.company + " — Co-Invest", sponsor: d.company, sector: d.sector, vehicleType: "coinvest" }
-                });
+            { label: "+ Invest", onClick: function () {
+                const g = investGate(d);
+                if (!g.ok) {
+                  if (g.reason === 'not-verified' && T.openPaywallModal) { T.openPaywallModal(); return; }
+                  if (g.reason === 'tier-too-low' && T.openTierUpgradeModal) { T.openTierUpgradeModal({ target: g.required, reason: 'Lane B private placement subscription' }); return; }
+                  T.toast('Gated · ' + g.reason);
+                  return;
+                }
+                if (d.lane === 'lane-a' || d.lane === 'lane-b') {
+                  openSubscriptionModal(d);
+                } else if (window.DealFlow) {
+                  window.DealFlow.openWizard({
+                    prefill: { name: d.company + " — Co-Invest", sponsor: d.company, sector: d.sector, vehicleType: 'coinvest' }
+                  });
+                }
               }
             },
             { label: "Open profile", onClick: function () { window.location.href = "company.html?company=" + id; } },
+            { label: (subsApi && subsApi.has(id)) ? "Manage data subscription" : "Subscribe to data feed", onClick: function () {
+                const c = D.companies.find(function (x) { return x.id === id; }) || { id: id, name: d.company, sector: d.sector };
+                T.subscribeModal(c, function () { api.render(); });
+              }
+            },
             { label: isOn ? "Remove from watchlist" : "Add to watchlist", onClick: function () {
                 wl.toggle(id);
                 T.toast(d.company + (isOn ? " removed from watchlist" : " added to watchlist"));
@@ -297,9 +743,13 @@
         const rows = api.currentFiltered().map(function (d) {
           return {
             company: d.company,
+            ticker: d.ticker || '',
+            lane: d.laneLabel || d.lane || '',
+            wrapper: d.wrapper || '',
             sector: d.sector,
             stage: d.stage,
             size: d.size,
+            allocationPct: d.allocationPct || 0,
             status: d.status,
             updated: d.updated
           };
@@ -307,10 +757,22 @@
         T.exportCSV("deals.csv", rows);
       });
 
-      // New deal opens the 3-step lifecycle wizard
+      // "+ New fund vehicle" — existing 3-step DealFlow wizard (SPV/Sub-Fund/Co-Invest/etc.)
       document.getElementById("newDealBtn").addEventListener("click", function () {
         if (window.DealFlow) window.DealFlow.openWizard();
       });
+      // "+ List a deal" — v3 issuer flow (5-step, SMEDAN caliber → wrapper → terms → auditor → dual-PIN)
+      document.getElementById("listDealBtn").addEventListener("click", function () {
+        const acc = acctApi ? acctApi.get() : null;
+        if (!acc || !acc.verified) { T.openPaywallModal && T.openPaywallModal(); return; }
+        if (T.openListDealFlow) T.openListDealFlow();
+      });
+
+      // Expose a refresh hook so the wizard can re-render the table after submission.
+      window.RefreshDeals = function () {
+        if (api && api.setRows) api.setRows(getMergedDeals());
+        else if (api && api.render) api.render();
+      };
     })();
   </script>
 </body>

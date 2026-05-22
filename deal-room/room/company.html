@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Company - NEIIA Deal Room Terminal</title>
+  <title>Company · Deal Room</title>
   <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="../assets/css/terminal.css" />
   <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.49.1/dist/apexcharts.min.js"></script>
   <style>
-    /* Risk register — editorial entries authored by NEIIA Research */
+    /* Risk register — editorial entries authored by Deal Room Research */
     .risk-register { display: flex; flex-direction: column; gap: 0; }
     .risk-entry {
       display: grid;
@@ -138,7 +138,7 @@
           </div>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;">
-          <button id="makeDealBtn" class="t-btn t-btn-primary" type="button">+ Make a deal</button>
+          <button id="investBtn" class="t-btn t-btn-primary" type="button">+ Invest</button>
           <button id="watchToggle" class="t-btn" type="button" aria-pressed="false">
             <svg class="star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9 12 2"/></svg>
             <span id="watchToggleLabel">Add to watchlist</span>
@@ -194,7 +194,7 @@
             </div>
             <div class="panel-body">
               <div class="editorial-attrib">
-                <span class="by">NEIIA Research</span>
+                <span class="by">Deal Room Research</span>
                 <span class="sep">·</span>
                 <span>Editor-reviewed</span>
                 <span class="sep">·</span>
@@ -504,7 +504,7 @@
       setTimeout(applyPaywall, 0);
 
       // Header
-      document.title = company.name + " - NEIIA Deal Room Terminal";
+      document.title = company.name + " · Deal Room";
       document.getElementById("crumbCompany").textContent = company.name;
       document.getElementById("companyDisplayName").textContent = company.name;
       document.getElementById("companyHq").textContent = company.hq;
@@ -664,7 +664,7 @@
 
       // Deals tab
       const dealRows = [
-        { round: "Latest tracked round", date: deal ? deal.updated : "Mar 12, 2026", size: deal ? deal.size : "$--", lead: "NEIIA syndicate", status: deal ? deal.status : "Watching", statusType: deal ? (deal.statusType || "info") : "info" },
+        { round: "Latest tracked round", date: deal ? deal.updated : "Mar 12, 2026", size: deal ? deal.size : "$--", lead: "Deal Room syndicate", status: deal ? deal.status : "Watching", statusType: deal ? (deal.statusType || "info") : "info" },
         { round: "Prior round", date: "Sep 18, 2024", size: company.valuationNum >= 1000 ? "$80M" : "$10M", lead: "Existing investors", status: "Closed", statusType: "success" },
         { round: "Seed extension", date: "Apr 04, 2022", size: "$3M", lead: "Founders' Fund LA", status: "Closed", statusType: "success" }
       ];
@@ -920,8 +920,11 @@
         T.toast(added ? company.name + " added to watchlist" : company.name + " removed from watchlist");
       });
 
-      // Make a deal — opens wizard with this company prefilled as the target
-      document.getElementById("makeDealBtn").addEventListener("click", function () {
+      // Invest — opens co-invest wizard prefilled with this company. v3 paywall + tier gates applied.
+      document.getElementById("investBtn").addEventListener("click", function () {
+        const acctApi = window.DataBank && window.DataBank.accountApi ? window.DataBank.accountApi() : null;
+        const acc = acctApi ? acctApi.get() : null;
+        if (!acc || !acc.verified) { T.openPaywallModal && T.openPaywallModal(); return; }
         if (!window.DealFlow) return;
         window.DealFlow.openWizard({
           prefill: {

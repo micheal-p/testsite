@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Deal - NEIIA Deal Room</title>
+  <title>Deal · Deal Room</title>
   <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -30,13 +30,20 @@
       "use strict";
       const T = window.Terminal;
       const DF = window.DealFlow;
-      const api = window.DataBank.dealsApi();
-      const positions = window.DataBank.positionsApi();
+      const DB = window.DataBank;
+      const api = DB.dealsApi();
+      const positions = DB.positionsApi();
+      const D = window.DataBankData;
       const root = document.getElementById("dealRoot");
 
       const params = new URLSearchParams(location.search);
       const id = params.get("id");
-      const deal = id ? api.get(id) : null;
+      // Look up the deal: user-created first (dealsApi), then fall back to seeded D.deals.
+      let deal = id ? api.get(id) : null;
+      if (!deal && id) {
+        const seeded = D.deals.find(function (x) { return x.id === id; });
+        if (seeded) deal = Object.assign({}, seeded);
+      }
 
       if (!deal) {
         root.innerHTML = (
@@ -51,6 +58,496 @@
       }
 
       let activeStage = deal.stage; // open the current stage by default
+
+      // ---- v3 lane (Lane A / Lane B) — render the lifecycle state-machine view ----
+      if (deal.lane === "lane-a" || deal.lane === "lane-b") {
+        renderV3();
+        document.documentElement.classList.add("is-ready");
+        return;
+      }
+
+      function fmtNgn(n) {
+        n = +n; if (!n || isNaN(n)) return "—";
+        if (n >= 1e9) return "₦" + (n / 1e9).toFixed(2) + "bn";
+        if (n >= 1e6) return "₦" + (n / 1e6).toFixed(0) + "m";
+        if (n >= 1e3) return "₦" + (n / 1e3).toFixed(0) + "k";
+        return "₦" + n;
+      }
+
+      function renderV3() {
+        const meta = DB.lifecycleMeta(deal.status);
+        const tier = DB.allocationTier(deal.allocationPct);
+        const allowed = DB.allowedTransitions(deal.status);
+        const isOwner = !!deal.userCreated;
+
+        // Lifecycle pipeline — four columns, each with its set of states. Current state highlighted; completed groups muted.
+        const groupOrder = DB.LIFECYCLE_GROUPS;
+        const currentGroupIdx = groupOrder.indexOf(meta.group);
+        const pipeline = (
+          '<div class="lc-pipeline">' +
+            groupOrder.map(function (g, gi) {
+              const states = DB.statesInGroup(g);
+              const isCurrentGroup = (gi === currentGroupIdx);
+              const isPast = (gi < currentGroupIdx);
+              return (
+                '<div class="lc-group ' + (isCurrentGroup ? "is-current" : isPast ? "is-past" : "is-future") + '">' +
+                  '<div class="lc-group-head">' + g + (isCurrentGroup ? ' <span class="lc-here">here</span>' : '') + '</div>' +
+                  '<div class="lc-states">' +
+                    states.map(function (s) {
+                      const sm = DB.lifecycleMeta(s);
+                      const isCurrent = (s === deal.status);
+                      return (
+                        '<div class="lc-state' + (isCurrent ? " is-current" : "") + ' lc-' + sm.severity + '" title="' + DF.esc(s) + '">' +
+                          '<span class="lc-state-dot"></span>' +
+                          '<span class="lc-state-label">' + DF.esc(s) + '</span>' +
+                        '</div>'
+                      );
+                    }).join("") +
+                  '</div>' +
+                '</div>'
+              );
+            }).join("") +
+          '</div>'
+        );
+
+        // Allocation tier bar — 5 segments at 25/50/75/100 with current marker
+        const pct = +deal.allocationPct || 0;
+        const allocBlock = (
+          '<div class="lc-alloc">' +
+            '<div class="lc-alloc-label">' + tier.label + ' <span class="lc-alloc-blurb">· ' + tier.blurb + '</span></div>' +
+            '<div class="lc-alloc-bar">' +
+              [25, 50, 75, 100].map(function (t) { return '<span class="lc-alloc-tick" style="left:' + t + '%"></span>'; }).join("") +
+              '<span class="lc-alloc-fill ' + tier.id + '" style="width:' + Math.min(pct, 100) + '%"></span>' +
+            '</div>' +
+            '<div class="lc-alloc-foot">' + pct + '% of ' + fmtNgn(deal.raiseNGN || 0) + ' target' +
+              (deal.daysLeft != null ? ' · ' + deal.daysLeft + ' day' + (deal.daysLeft === 1 ? '' : 's') + ' to close' : '') +
+            '</div>' +
+          '</div>'
+        );
+
+        const briefBlock = deal.brief ? (
+          '<section class="panel">' +
+            '<div class="panel-header"><div class="panel-title">What this raise funds</div><div class="panel-sub">' + DF.esc(deal.wrapper) + '</div></div>' +
+            '<div class="lc-brief"><p>' + DF.esc(deal.brief) + '</p>' +
+              (Array.isArray(deal.useOfProceeds) && deal.useOfProceeds.length ? (
+                '<div class="lc-brief-uop-head">Use of proceeds</div>' +
+                '<ul class="brief-uop">' + deal.useOfProceeds.map(function (u) {
+                  return '<li>' +
+                    '<div class="brief-uop-row">' +
+                      '<span class="brief-uop-label">' + DF.esc(u.label) + '</span>' +
+                      '<span class="brief-uop-pct">' + u.pctRaise + '%</span>' +
+                      '<span class="brief-uop-ngn">' + fmtNgn(u.ngn) + '</span>' +
+                    '</div>' +
+                    '<div class="brief-uop-bar"><span style="width:' + u.pctRaise + '%"></span></div>' +
+                  '</li>';
+                }).join("") + '</ul>'
+              ) : (deal.useOfProceedsText ? '<p class="brief-text"><strong>Use of proceeds:</strong> ' + DF.esc(deal.useOfProceedsText) + '</p>' : '')) +
+              (Array.isArray(deal.milestones) && deal.milestones.length ? (
+                '<div class="lc-brief-uop-head">Milestones</div>' +
+                '<ul class="brief-bullets">' + deal.milestones.map(function (m) { return '<li>' + DF.esc(m) + '</li>'; }).join("") + '</ul>'
+              ) : "") +
+              (deal.whyNow ? ('<div class="lc-brief-uop-head">Why now</div><p class="brief-text">' + DF.esc(deal.whyNow) + '</p>') : "") +
+            '</div>' +
+          '</section>'
+        ) : "";
+
+        // Snapshot — universal terms in a key/value grid
+        const snap = (
+          '<section class="panel">' +
+            '<div class="panel-header"><div class="panel-title">Snapshot</div></div>' +
+            '<div class="lc-snap">' +
+              snapKV("Raise target", fmtNgn(deal.raiseNGN || 0)) +
+              snapKV("Allocation", pct + "%") +
+              snapKV("Ticket range", fmtNgn(deal.ticketMinNGN) + " – " + fmtNgn(deal.ticketMaxNGN)) +
+              snapKV("Valuation cap", deal.valuationCapNGN ? fmtNgn(deal.valuationCapNGN) : "—") +
+              snapKV("Discount", deal.discountPct ? (deal.discountPct + "%") : "—") +
+              snapKV("Wrapper", deal.wrapper || "—") +
+              snapKV("Closing window", deal.closingWindow || "—") +
+              snapKV("Auditor", deal.auditor || "—") +
+            '</div>' +
+          '</section>'
+        );
+
+        // Issuer transition controls — visible only for user-created deals (Publisher Workspace lens).
+        const transitions = (isOwner && allowed.length) ? (
+          '<section class="panel lc-trans">' +
+            '<div class="panel-header"><div class="panel-title">Issuer actions</div><div class="panel-sub">Allowed next states</div></div>' +
+            '<div class="lc-trans-body">' +
+              '<div class="lc-trans-current">Current: <span class="badge badge-' + meta.severity + '">' + DF.esc(deal.status) + '</span></div>' +
+              '<div class="lc-trans-btns">' +
+                allowed.map(function (next) {
+                  return '<button type="button" class="t-btn" data-transition="' + DF.esc(next) + '">→ ' + DF.esc(next) + '</button>';
+                }).join("") +
+              '</div>' +
+            '</div>' +
+          '</section>'
+        ) : "";
+
+        // Reporting cadence (v3 Part 8) — issuer-only, visible for Active and post-close states.
+        const reportsAllowed = isOwner && ["Active", "Converting", "Converted", "Matured", "Defaulted", "Written Off"].indexOf(deal.status) >= 0;
+        const reportsBlock = reportsAllowed ? renderReportsPanel() : "";
+        // Structured Q&A (v3 Part 13) — visible to all deal viewers, with role-aware controls.
+        const qaBlock = renderQaPanel();
+
+        // Activity feed — show whatever exists; user-created deals have an activity array from dealsApi.
+        const activity = (deal.activity && deal.activity.length) ? (
+          '<section class="panel">' +
+            '<div class="panel-header"><div class="panel-title">Activity</div></div>' +
+            '<div class="lc-activity">' +
+              deal.activity.slice(0, 12).map(function (a) {
+                return '<div class="lc-activity-row">' +
+                  '<span class="lc-activity-date">' + new Date(a.at).toLocaleDateString() + '</span>' +
+                  '<span class="lc-activity-text">' + DF.esc(a.text) + '</span>' +
+                '</div>';
+              }).join("") +
+            '</div>' +
+          '</section>'
+        ) : "";
+
+        const laneCls = deal.lane === "lane-a" ? "lane-a" : "lane-b";
+
+        root.innerHTML = (
+          '<div class="lc-hero">' +
+            '<div class="lc-hero-eyebrow"><a href="deals.html" style="color:inherit">Deal room</a> · ' + DF.esc(deal.laneLabel || "") + '</div>' +
+            '<h1 class="lc-hero-title">' + DF.esc(deal.legalName || deal.company) + ' <span class="lc-hero-ticker">' + DF.esc(deal.ticker || "") + '</span></h1>' +
+            '<div class="lc-hero-meta">' +
+              '<span class="lane-chip ' + laneCls + '">' + DF.esc(deal.laneLabel) + '</span>' +
+              '<span class="wrap-chip">' + DF.esc(deal.wrapper || "") + '</span>' +
+              '<span class="badge badge-' + meta.severity + '">' + DF.esc(deal.status) + '</span>' +
+              (deal.sector ? '<span class="lc-hero-meta-text">' + DF.esc(deal.sector) + '</span>' : '') +
+              (deal.stage  ? '<span class="lc-hero-meta-text">' + DF.esc(deal.stage)  + '</span>' : '') +
+              (isOwner ? '<span class="your-raise-tag" style="margin-left:auto">Your raise</span>' : '') +
+              (!isOwner ? '<button class="t-btn t-btn-primary" id="v3InvestBtn" style="margin-left:auto">+ Invest</button>' : '') +
+            '</div>' +
+          '</div>' +
+
+          pipeline +
+          allocBlock +
+
+          '<div class="lc-grid">' +
+            '<div class="lc-main">' + briefBlock + transitions + reportsBlock + qaBlock + activity + '</div>' +
+            '<aside class="lc-side">' + snap + '</aside>' +
+          '</div>'
+        );
+
+        // Wire issuer transitions
+        root.querySelectorAll("[data-transition]").forEach(function (b) {
+          b.addEventListener("click", function () {
+            const to = b.getAttribute("data-transition");
+            const from = deal.status;
+            T.modal("Confirm transition", '<div style="font-size:13px;color:var(--text-secondary)">Move deal from <strong>' + DF.esc(from) + '</strong> to <strong>' + DF.esc(to) + '</strong>? This is logged and pushed to the activity feed.</div>',
+              { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="lcConfirmTransition">Confirm</button>' });
+            document.getElementById("lcConfirmTransition").addEventListener("click", function () {
+              deal.status = to;
+              deal.statusType = DB.lifecycleMeta(to).severity;
+              deal.activity = deal.activity || [];
+              deal.activity.unshift({ at: new Date().toISOString(), text: "Status: " + from + " → " + to });
+              if (deal.userCreated) api.save(deal);
+              T.alerts().add({
+                symbol: deal.ticker, label: from + " → " + to, value: "", unit: "",
+                templateId: "lifecycle", severity: DB.transitionSeverity(from, to)
+              });
+              T.closeModal();
+              T.toast("Now " + to);
+              renderV3();
+            });
+          });
+        });
+
+        // Wire report-form buttons
+        root.querySelectorAll("[data-rep]").forEach(function (b) {
+          b.addEventListener("click", function () { openReportModal(b.getAttribute("data-rep")); });
+        });
+
+        // Wire Q&A — ask + answer
+        const askBtn = root.querySelector("#qa-ask");
+        if (askBtn) askBtn.addEventListener("click", openAskQuestionModal);
+        root.querySelectorAll("[data-qa-answer]").forEach(function (b) {
+          b.addEventListener("click", function () { openAnswerQuestionModal(b.getAttribute("data-qa-answer")); });
+        });
+
+        // Wire investor "+ Invest" — same gating as deals.html
+        const inv = root.querySelector("#v3InvestBtn");
+        if (inv) inv.addEventListener("click", function () {
+          const acctApi = DB.accountApi ? DB.accountApi() : null;
+          const acc = acctApi ? acctApi.get() : null;
+          if (!acc || !acc.verified) { T.openPaywallModal && T.openPaywallModal(); return; }
+          if (deal.lane === "lane-b" && (acc.kycTier || 1) < 3) {
+            T.openTierUpgradeModal && T.openTierUpgradeModal({ target: 3, reason: "Lane B private placement subscription" });
+            return;
+          }
+          window.location.href = "deals.html?invest=" + encodeURIComponent(deal.id);
+        });
+      }
+
+      function snapKV(k, v) {
+        return '<div class="lc-snap-row"><span class="lc-snap-k">' + k + '</span><span class="lc-snap-v">' + DF.esc(v) + '</span></div>';
+      }
+
+      // ---- v3 Reporting cadence (Part 8) — Daily auto / Weekly pulse / Monthly fiscal / Quarterly MD&A ----
+      function renderReportsPanel() {
+        deal.reports = deal.reports || [];
+        const reports = deal.reports.slice().reverse();
+        // Daily auto-tracker — derived from investmentsApi for this deal.
+        const investmentsApi = DB.investmentsApi();
+        const subs = investmentsApi.list().filter(function (i) { return i.dealId === deal.id; });
+        const committed = subs.reduce(function (a, i) { return a + (i.ticketNGN || 0); }, 0);
+        const avgTicket = subs.length ? Math.round(committed / subs.length) : 0;
+        const dailyAuto = (
+          '<div class="rep-card rep-daily">' +
+            '<div class="rep-card-head"><span class="rep-card-cycle">Daily · auto</span><span class="rep-card-date">' + new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) + '</span></div>' +
+            '<div class="rep-daily-row"><span>Committed</span><strong>' + fmtNgn(committed) + '</strong></div>' +
+            '<div class="rep-daily-row"><span>Investors</span><strong>' + subs.length + '</strong></div>' +
+            '<div class="rep-daily-row"><span>Avg ticket</span><strong>' + fmtNgn(avgTicket) + '</strong></div>' +
+            '<div class="rep-card-foot">Auto-generated · refreshes on every subscription.</div>' +
+          '</div>'
+        );
+        const reportItems = reports.length ? reports.map(function (r) {
+          return (
+            '<div class="rep-item rep-' + r.cycle + '">' +
+              '<div class="rep-item-head">' +
+                '<span class="rep-card-cycle">' + cycleLabel(r.cycle) + '</span>' +
+                '<span class="rep-card-date">' + new Date(r.at).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) + '</span>' +
+              '</div>' +
+              renderReportBody(r) +
+            '</div>'
+          );
+        }).join("") : '<div class="rep-empty">No filed reports yet. Issuer-side cadence: Weekly pulse · Monthly fiscal · Quarterly MD&amp;A.</div>';
+
+        return (
+          '<section class="panel">' +
+            '<div class="panel-header">' +
+              '<div class="panel-title">Reporting cadence</div>' +
+              '<div class="panel-sub">Issuer view · v3 Part 8</div>' +
+            '</div>' +
+            '<div class="rep-body">' +
+              '<div class="rep-toolbar">' +
+                '<button class="t-btn" type="button" data-rep="weekly">+ Weekly pulse</button>' +
+                '<button class="t-btn" type="button" data-rep="monthly">+ Monthly fiscal</button>' +
+                '<button class="t-btn" type="button" data-rep="quarterly">+ Quarterly MD&amp;A</button>' +
+                '<span class="rep-note">SEC mandatory cadence for crowdfunding issuers.</span>' +
+              '</div>' +
+              dailyAuto +
+              '<div class="rep-list">' + reportItems + '</div>' +
+            '</div>' +
+          '</section>'
+        );
+      }
+      function cycleLabel(c) {
+        return c === "weekly" ? "Weekly pulse" : c === "monthly" ? "Monthly fiscal" : c === "quarterly" ? "Quarterly MD&A" : c;
+      }
+      function renderReportBody(r) {
+        if (r.cycle === "weekly") {
+          return '<p class="rep-text">' + DF.esc(r.pulse || "") + '</p>';
+        }
+        if (r.cycle === "monthly") {
+          return (
+            '<dl class="rep-fiscal">' +
+              repKV("Revenue", r.revenue) +
+              repKV("Cash position", r.cash) +
+              repKV("Burn rate", r.burn) +
+              repKV("Headcount", r.headcount) +
+              '<div class="rep-fiscal-full"><dt>Wins / losses</dt><dd>' + DF.esc(r.wins || "") + '</dd></div>' +
+            '</dl>'
+          );
+        }
+        if (r.cycle === "quarterly") {
+          return (
+            '<div class="rep-mda">' +
+              '<p class="rep-text">' + DF.esc(r.narrative || "") + '</p>' +
+              (r.kpis ? '<dl class="rep-fiscal">' +
+                repKV("Revenue", r.kpis.revenue) + repKV("Gross margin", r.kpis.margin) +
+                repKV("Cash runway", r.kpis.runway) + repKV("ARR", r.kpis.arr) +
+              '</dl>' : "") +
+            '</div>'
+          );
+        }
+        return "";
+      }
+      function repKV(k, v) {
+        return '<div><dt>' + k + '</dt><dd>' + DF.esc(v || "—") + '</dd></div>';
+      }
+
+      // ---- v3 Structured Q&A (Part 13) — no free-form chat. Answers auto-publish to all subscribers. ----
+      function renderQaPanel() {
+        deal.qa = deal.qa || [];
+        const qa = deal.qa.slice().reverse();
+        const acctApi = DB.accountApi ? DB.accountApi() : null;
+        const acc = acctApi ? acctApi.get() : null;
+        const owner = !!deal.userCreated;
+        const verified = acc && acc.verified;
+
+        const investorAsk = (!owner && verified) ? (
+          '<button class="t-btn t-btn-primary" type="button" id="qa-ask">+ Ask a question</button>'
+        ) : (!owner && !verified) ? (
+          '<button class="t-btn" type="button" data-action="open-paywall">Verify to ask a question</button>'
+        ) : '';
+
+        const items = qa.length ? qa.map(function (q) {
+          const askedDate = new Date(q.askedAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+          const answeredDate = q.answeredAt ? new Date(q.answeredAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "";
+          const ans = q.answer ? (
+            '<div class="qa-answer">' +
+              '<div class="qa-answer-head"><strong>Issuer reply</strong> <span class="qa-date">· ' + answeredDate + ' · published to all subscribers</span></div>' +
+              '<p>' + DF.esc(q.answer) + '</p>' +
+            '</div>'
+          ) : (owner ? (
+            '<div class="qa-answer qa-pending"><div class="qa-pending-row"><span>Awaiting your published response</span>' +
+              '<button class="t-btn t-btn-primary" type="button" data-qa-answer="' + q.id + '" style="height:26px;padding:0 10px;font-size:11px">Publish answer</button>' +
+            '</div></div>'
+          ) : '<div class="qa-answer qa-pending"><em>Awaiting issuer response.</em></div>');
+          return (
+            '<div class="qa-item">' +
+              '<div class="qa-question">' +
+                '<div class="qa-q-head"><strong>' + DF.esc(q.askedBy || "Investor") + '</strong> <span class="qa-date">· ' + askedDate + '</span></div>' +
+                '<p>' + DF.esc(q.question) + '</p>' +
+              '</div>' +
+              ans +
+            '</div>'
+          );
+        }).join("") : '<div class="rep-empty">No questions yet. Once posted, issuer answers are auto-published to all subscribed investors simultaneously and immutably (v3 Part 13).</div>';
+
+        return (
+          '<section class="panel">' +
+            '<div class="panel-header">' +
+              '<div class="panel-title">Q&amp;A · fair disclosure</div>' +
+              '<div class="panel-sub">No private chat · all answers go to all subscribers</div>' +
+            '</div>' +
+            '<div class="qa-body">' +
+              '<div class="qa-toolbar">' + investorAsk + '</div>' +
+              '<div class="qa-list">' + items + '</div>' +
+            '</div>' +
+          '</section>'
+        );
+      }
+      function openAskQuestionModal() {
+        const body = (
+          '<p class="rep-hint">Your question goes into the issuer\'s queue. When answered, the response auto-publishes to all subscribed investors (you can\'t get a private reply — that would breach fair-disclosure rules).</p>' +
+          '<label class="rep-label">Your question</label>' +
+          '<textarea class="t-input" id="qa-q" rows="4" placeholder="e.g. What\'s the unit economics on the new Ibadan hub vs the Lagos one?"></textarea>'
+        );
+        T.modal("Ask a question", body, {
+          footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="qa-submit">Submit</button>'
+        });
+        document.getElementById("qa-submit").addEventListener("click", function () {
+          const text = document.getElementById("qa-q").value.trim();
+          if (!text) { T.toast("Type your question first"); return; }
+          const profile = (DB.getProfile && DB.getProfile()) || {};
+          const asker = profile.firstName ? (profile.firstName + " " + (profile.lastName || "")).trim() : "Investor";
+          deal.qa = deal.qa || [];
+          deal.qa.push({
+            id: "qa_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+            question: text, askedBy: asker, askedAt: new Date().toISOString(),
+            answer: "", answeredAt: null
+          });
+          if (deal.userCreated) api.save(deal);
+          T.alerts().add({
+            symbol: deal.ticker, label: "New Q&A question", value: "", unit: "",
+            templateId: "qa", severity: "standard"
+          });
+          T.closeModal();
+          T.toast("Question submitted.");
+          renderV3();
+        });
+      }
+      function openAnswerQuestionModal(qid) {
+        const q = (deal.qa || []).find(function (x) { return x.id === qid; });
+        if (!q) return;
+        const body = (
+          '<p class="rep-hint">This answer publishes to <strong>all subscribed investors</strong> simultaneously. It is timestamped and cannot be edited or removed (v3 Part 13).</p>' +
+          '<div class="qa-q-preview"><strong>' + DF.esc(q.askedBy) + '</strong>: ' + DF.esc(q.question) + '</div>' +
+          '<label class="rep-label">Your published response</label>' +
+          '<textarea class="t-input" id="qa-a" rows="5" placeholder="Be specific. Cite documents in your Data Cell where helpful."></textarea>'
+        );
+        T.modal("Publish answer", body, {
+          footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="qa-publish">Publish to all subscribers</button>'
+        });
+        document.getElementById("qa-publish").addEventListener("click", function () {
+          const text = document.getElementById("qa-a").value.trim();
+          if (!text) { T.toast("Answer can't be empty"); return; }
+          q.answer = text;
+          q.answeredAt = new Date().toISOString();
+          deal.activity = deal.activity || [];
+          deal.activity.unshift({ at: q.answeredAt, text: "Q&A answer published" });
+          if (deal.userCreated) api.save(deal);
+          T.alerts().add({
+            symbol: deal.ticker, label: "Q&A answered · broadcast to subscribers", value: "", unit: "",
+            templateId: "qa", severity: "critical"
+          });
+          T.closeModal();
+          T.toast("Answer published.");
+          renderV3();
+        });
+      }
+      function openReportModal(cycle) {
+        let body, foot;
+        if (cycle === "weekly") {
+          body = (
+            '<label class="rep-label">One-line operational pulse <span class="rep-hint">(visible to committed investors only · 240 chars)</span></label>' +
+            '<textarea class="t-input" id="rep-pulse" rows="2" maxlength="240" placeholder="e.g. Closed our first QSR offtake renewal at +12% volume. Hub utilisation at 78%."></textarea>'
+          );
+          foot = '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="repSave">File report</button>';
+        } else if (cycle === "monthly") {
+          body = (
+            '<p class="rep-hint">v3 Part 8 — 5 structured sections, not free-text upload. Enables auto-comparison across portfolio companies.</p>' +
+            '<div class="rep-form-grid">' +
+              '<div><label class="rep-label">Revenue (this month)</label><input class="t-input" id="rep-revenue" placeholder="e.g. ₦42m" /></div>' +
+              '<div><label class="rep-label">Cash position</label><input class="t-input" id="rep-cash" placeholder="e.g. ₦110m end-of-month" /></div>' +
+              '<div><label class="rep-label">Burn rate</label><input class="t-input" id="rep-burn" placeholder="e.g. ₦18m/mo net" /></div>' +
+              '<div><label class="rep-label">Headcount</label><input class="t-input" id="rep-headcount" placeholder="e.g. 38 (+2 vs last)" /></div>' +
+            '</div>' +
+            '<label class="rep-label" style="margin-top:10px">Wins &amp; losses</label>' +
+            '<textarea class="t-input" id="rep-wins" rows="3" placeholder="Three bullets: biggest win, biggest loss, what we learned."></textarea>'
+          );
+          foot = '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="repSave">File monthly fiscal</button>';
+        } else {
+          body = (
+            '<p class="rep-hint">v3 Part 8 — quarterly MD&amp;A narrative (SEC mandatory for crowdfunding issuers).</p>' +
+            '<label class="rep-label">Narrative</label>' +
+            '<textarea class="t-input" id="rep-narrative" rows="6" placeholder="Tell investors what you did this quarter, what worked, what didn\'t, and what to expect next."></textarea>' +
+            '<div class="rep-form-grid" style="margin-top:10px">' +
+              '<div><label class="rep-label">Revenue (qtr)</label><input class="t-input" id="rep-q-revenue" placeholder="₦" /></div>' +
+              '<div><label class="rep-label">Gross margin</label><input class="t-input" id="rep-q-margin" placeholder="%" /></div>' +
+              '<div><label class="rep-label">Cash runway</label><input class="t-input" id="rep-q-runway" placeholder="months" /></div>' +
+              '<div><label class="rep-label">ARR</label><input class="t-input" id="rep-q-arr" placeholder="₦" /></div>' +
+            '</div>'
+          );
+          foot = '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="repSave">File MD&amp;A</button>';
+        }
+        T.modal("File " + cycleLabel(cycle), body, { footer: foot });
+        document.getElementById("repSave").addEventListener("click", function () {
+          const rec = { cycle: cycle, at: new Date().toISOString() };
+          if (cycle === "weekly")    rec.pulse = document.getElementById("rep-pulse").value.trim();
+          if (cycle === "monthly") {
+            rec.revenue = document.getElementById("rep-revenue").value.trim();
+            rec.cash = document.getElementById("rep-cash").value.trim();
+            rec.burn = document.getElementById("rep-burn").value.trim();
+            rec.headcount = document.getElementById("rep-headcount").value.trim();
+            rec.wins = document.getElementById("rep-wins").value.trim();
+          }
+          if (cycle === "quarterly") {
+            rec.narrative = document.getElementById("rep-narrative").value.trim();
+            rec.kpis = {
+              revenue: document.getElementById("rep-q-revenue").value.trim(),
+              margin:  document.getElementById("rep-q-margin").value.trim(),
+              runway:  document.getElementById("rep-q-runway").value.trim(),
+              arr:     document.getElementById("rep-q-arr").value.trim()
+            };
+          }
+          deal.reports = deal.reports || [];
+          deal.reports.push(rec);
+          deal.activity = deal.activity || [];
+          deal.activity.unshift({ at: rec.at, text: "Filed " + cycleLabel(cycle) });
+          if (deal.userCreated) api.save(deal);
+          T.alerts().add({
+            symbol: deal.ticker, label: cycleLabel(cycle) + " filed", value: "", unit: "",
+            templateId: "report", severity: "standard"
+          });
+          T.closeModal();
+          T.toast(cycleLabel(cycle) + " filed.");
+          renderV3();
+        });
+      }
 
       function render() {
         const v = DF.getVehicle(deal.vehicleType);

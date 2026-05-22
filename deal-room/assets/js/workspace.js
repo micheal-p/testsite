@@ -42,6 +42,20 @@
     const usdActive = ccy === "USD" ? " is-active" : "";
     const ngnActive = ccy === "NGN" ? " is-active" : "";
 
+    // v3 account state — drives Verified + Tier badges
+    const acc = (window.DataBank && window.DataBank.accountApi) ? window.DataBank.accountApi().get() : { verified: false, kycTier: 1, accountType: "individual" };
+    const tier = acc.kycTier || 1;
+    const verifiedBadge = acc.verified
+      ? '<button type="button" class="t-verify-pill is-verified" data-action="open-account" title="Verified · ' + (acc.accountType === "corporate" ? "Corporate" : "Individual") + ' · ' + (acc.plan ? acc.plan.cycleLabel : "active") + '" aria-label="Verified account">' +
+          '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+          '<span>Verified</span>' +
+        '</button>'
+      : '<button type="button" class="t-verify-pill is-unverified" data-action="open-paywall" title="Verify your account to view deals and invest">' +
+          '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' +
+          '<span>Verify</span>' +
+        '</button>';
+    const tierBadge = '<span class="t-tier-pill t-tier-' + tier + '" title="KYC Tier ' + tier + (tier === 1 ? " — Retail (Lane A)" : tier === 2 ? " — Sophisticated" : " — Qualified (Lane B eligible)") + '">T' + tier + '</span>';
+
     return (
       '<header class="t-header" role="banner">' +
         '<button class="icon-btn t-mobile-trigger" type="button" data-toggle="mobile-nav" aria-label="Toggle navigation">' + icon("menu") + '</button>' +
@@ -65,6 +79,7 @@
         '<button class="icon-btn" type="button" data-action="open-help" aria-label="Keyboard shortcuts (?)" title="Help (?)">' +
           '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
         '</button>' +
+        verifiedBadge + tierBadge +
         '<div style="position:relative;">' +
           '<button class="t-profile-btn" type="button" data-toggle="profile-menu" aria-haspopup="true" aria-expanded="false">' +
             '<span class="avatar">' + initials + '</span>' +
@@ -134,18 +149,27 @@
       }
     } catch (_) {}
 
-    const items = [
-      { key: "home",      href: "index.html",     label: "Home",          icon: "dashboard" },
-      { key: "deals",     href: "deals.html",     label: "Companies",     icon: "company" },
-      { key: "datacell",  href: "datacell.html",  label: "Data Cell",     icon: "datacell" },
-      { key: "messages",  href: "messages.html",  label: "Messages",      icon: "messages", badge: unreadMsgs },
-      { key: "investors", href: "investors.html", label: "Investors",     icon: "deals" },
-      { key: "portfolio", href: "portfolio.html", label: "Portfolio",     icon: "watchlist" },
-      { key: "watchlist", href: "watchlist.html", label: "Watchlist",     icon: "watchlist" },
-      { key: "alerts",    href: "#",              label: "Alerts",        icon: "alerts", dataAction: "open-alerts", badge: aCount },
-      { key: "reports",   href: "#",              label: "Reports",       icon: "reports", dataAction: "open-reports" },
-      { key: "settings",  href: "settings.html",  label: "Settings",      icon: "settings" }
+    // v3 account-aware sidebar. Individual = investor-only; Corporate = both lenses.
+    // Unverified users see fewer items — they get locked out of deal data and Vault.
+    const sbAcc = (window.DataBank && window.DataBank.accountApi) ? window.DataBank.accountApi().get() : { accountType: "individual", verified: false };
+    const isCorp = sbAcc.accountType === "corporate";
+    const isVerified = !!sbAcc.verified;
+
+    const allItems = [
+      { key: "home",       href: "index.html",      label: "Home",              icon: "dashboard",                                                                  show: true },
+      { key: "deals",      href: "deals.html",      label: "Deal room",         icon: "company",                                                                    show: true },
+      { key: "portfolio",  href: "portfolio.html",  label: "Portfolio",         icon: "watchlist",                                                                  show: true },
+      { key: "watchlist",  href: "watchlist.html",  label: "Watchlist",         icon: "watchlist",                                                                  show: true },
+      { key: "vault",      href: "vault.html",      label: "Data Vault",        icon: "datacell",                                                                   show: isVerified, lens: "Investor" },
+      { key: "datacell",   href: "datacell.html",   label: "Data Cell",         icon: "datacell",                                                                   show: isCorp,     lens: "Publisher" },
+      { key: "investors",  href: "investors.html",  label: "Investors",         icon: "deals",                                                                      show: isCorp,     lens: "Publisher" },
+      { key: "compliance", href: "compliance.html", label: "Compliance review", icon: "deals",                                                                      show: true,       lens: "Compliance" },
+      { key: "messages",   href: "messages.html",   label: "Messages",          icon: "messages", badge: unreadMsgs,                                                show: isVerified },
+      { key: "alerts",     href: "#",               label: "Alerts",            icon: "alerts",   dataAction: "open-alerts", badge: aCount,                         show: true },
+      { key: "reports",    href: "#",               label: "Reports",           icon: "reports",  dataAction: "open-reports",                                       show: isCorp },
+      { key: "settings",   href: "settings.html",   label: "Settings",          icon: "settings",                                                                   show: true }
     ];
+    const items = allItems.filter(function (i) { return i.show; });
 
     const nav = items.map(function (it) {
       const isActive = it.key === activeKey;
@@ -276,8 +300,36 @@
     }
   }
 
+  // Re-render header + sidebar in-place (no full reload) — used when account state changes.
+  function refresh() {
+    const shell = document.querySelector("[data-workspace-shell]");
+    if (!shell) return;
+    const active = shell.getAttribute("data-active") || "home";
+    // Rebuild the header chunk (first .t-header child)
+    const oldHeader = shell.querySelector(".t-header");
+    if (oldHeader) {
+      const wrap = document.createElement("div");
+      wrap.innerHTML = renderHeader();
+      const newHeader = wrap.firstChild;
+      oldHeader.parentNode.replaceChild(newHeader, oldHeader);
+    }
+    // Rebuild sidebar
+    const oldNav = shell.querySelector(".workspace-nav");
+    if (oldNav) {
+      const wrap2 = document.createElement("div");
+      wrap2.innerHTML = renderSidebar(active);
+      const newNav = wrap2.firstChild;
+      oldNav.parentNode.replaceChild(newNav, oldNav);
+    }
+    if (window.Terminal && window.Terminal.bindShell) window.Terminal.bindShell();
+  }
+
+  // React to v3 account-state changes from databank.accountApi().
+  window.addEventListener("norgroup:account-changed", refresh);
+
   window.WorkspaceShell = {
     renderSidebar: renderSidebar,
-    refreshSubscriptions: refreshSubscriptions
+    refreshSubscriptions: refreshSubscriptions,
+    refresh: refresh
   };
 })();

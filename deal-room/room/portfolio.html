@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Portfolio - NEIIA Deal Room</title>
+  <title>Portfolio · Deal Room</title>
   <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -30,15 +30,56 @@
 
       <div id="kpiStrip" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px"></div>
 
+      <!-- v3 bucket tabs (Part 19J) -->
+      <nav class="pf-tabs" role="tablist" aria-label="Portfolio buckets">
+        <button type="button" class="pf-tab is-active" data-bucket="Pipeline"  role="tab" aria-selected="true"><span class="pf-tab-label">Pipeline</span><span class="pf-tab-count" id="pf-count-Pipeline">0</span></button>
+        <button type="button" class="pf-tab"           data-bucket="Active"    role="tab" aria-selected="false"><span class="pf-tab-label">Active</span><span class="pf-tab-count" id="pf-count-Active">0</span></button>
+        <button type="button" class="pf-tab"           data-bucket="Converted" role="tab" aria-selected="false"><span class="pf-tab-label">Converted</span><span class="pf-tab-count" id="pf-count-Converted">0</span></button>
+        <button type="button" class="pf-tab"           data-bucket="Lost"      role="tab" aria-selected="false"><span class="pf-tab-label">Lost</span><span class="pf-tab-count" id="pf-count-Lost">0</span></button>
+      </nav>
+      <p class="pf-tabhint" id="pf-tabhint">Pre-close commitments and pre-mint allocations live here.</p>
+
       <div id="aiPanel" style="display:none"></div>
 
-      <section class="panel">
+      <!-- v3 subscriptions (CSAFE / Bonds / Equity Sub / etc.) -->
+      <section class="panel" id="invPanel" style="margin-bottom:14px">
         <div class="panel-header">
-          <div class="panel-title">Positions</div>
-          <div class="panel-sub"><span id="posCount">0</span> total</div>
+          <div class="panel-title">Subscriptions <span style="font-weight:400;color:var(--text-muted);font-size:11px;margin-left:8px">Lane A / Lane B issuances</span></div>
+          <div class="panel-sub"><span id="invCount">0</span> in this bucket</div>
         </div>
         <div style="overflow-x:auto">
-          <table class="db-table">
+          <table class="db-table compact-table">
+            <thead>
+              <tr>
+                <th>Ticker / Issuer</th>
+                <th>Lane</th>
+                <th>Wrapper</th>
+                <th>Sector</th>
+                <th class="text-right">Ticket</th>
+                <th class="text-right">Valuation cap</th>
+                <th>Status</th>
+                <th>Signed</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="invBody"></tbody>
+          </table>
+        </div>
+        <div id="invEmpty" class="t-empty" style="display:none">
+          <div class="empty-title">No subscriptions in this bucket</div>
+          <div style="font-size:13px;color:var(--text-secondary);margin:8px 0 4px">Subscribe to a Lane A / Lane B deal from the deal room.</div>
+          <a class="t-btn t-btn-primary" href="deals.html" style="margin-top:8px">Browse deals →</a>
+        </div>
+      </section>
+
+      <!-- Fund vehicle positions (LP / GP mechanics) -->
+      <section class="panel" id="posPanel">
+        <div class="panel-header">
+          <div class="panel-title">Fund vehicle positions <span style="font-weight:400;color:var(--text-muted);font-size:11px;margin-left:8px">SPV · Sub-Fund · Co-Invest · Roll-Up · Scout</span></div>
+          <div class="panel-sub"><span id="posCount">0</span> in this bucket</div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="db-table compact-table">
             <thead>
               <tr>
                 <th>Deal</th>
@@ -57,7 +98,7 @@
           </table>
         </div>
         <div id="posEmpty" class="t-empty" style="display:none">
-          <div class="empty-title">No positions yet</div>
+          <div class="empty-title">No fund positions in this bucket</div>
           <div style="font-size:13px;color:var(--text-secondary);margin:8px 0 16px">Commit to a deal from the deal page, or add one manually.</div>
           <button class="t-btn t-btn-primary" id="emptyAddBtn" type="button">Add your first position</button>
         </div>
@@ -77,21 +118,90 @@
       const DF = window.DealFlow;
       const positions = window.DataBank.positionsApi();
       const dealsApi = window.DataBank.dealsApi();
+      const investments = window.DataBank.investmentsApi();
+
+      // v3 bucket state (default Pipeline)
+      let currentBucket = "Pipeline";
+      const BUCKET_HINTS = {
+        Pipeline:  "Pre-close commitments and pre-mint allocations live here.",
+        Active:    "CSAFEs in force (pre-conversion) and fund vehicles drawing capital.",
+        Converted: "Converted CSAFEs (now equity) and matured debt instruments.",
+        Lost:      "Failed raises, withdrawn deals, defaults, and write-offs. Kept for FIRS tax-loss offsetting."
+      };
+      function bucketForPosition(p) {
+        const s = (p.status || "").toLowerCase();
+        if (s.includes("converted") || s.includes("realized")) return "Converted";
+        if (s.includes("written") || s.includes("default") || s.includes("lost")) return "Lost";
+        if (s === "committed" || s === "in progress" || s.includes("pending")) return "Pipeline";
+        return "Active";
+      }
+      function fmtNgnInline(n) {
+        if (!n) return "—";
+        if (n >= 1e9) return "₦" + (n / 1e9).toFixed(2) + "bn";
+        if (n >= 1e6) return "₦" + (n / 1e6).toFixed(0) + "m";
+        if (n >= 1e3) return "₦" + (n / 1e3).toFixed(0) + "k";
+        return "₦" + n;
+      }
 
       function render() {
-        const list = positions.list();
-        const k = aggregate(list);
+        const positionsAll = positions.list();
+        const investmentsAll = investments.list();
+        // Per-bucket counts (drives the tab pill badges)
+        const counts = { Pipeline: 0, Active: 0, Converted: 0, Lost: 0 };
+        investmentsAll.forEach(function (i) { counts[i.bucket] = (counts[i.bucket] || 0) + 1; });
+        positionsAll.forEach(function (p) { const b = bucketForPosition(p); counts[b] = (counts[b] || 0) + 1; });
+        Object.keys(counts).forEach(function (b) { document.getElementById("pf-count-" + b).textContent = counts[b]; });
+        document.getElementById("pf-tabhint").textContent = BUCKET_HINTS[currentBucket];
+
+        // Filter to current bucket
+        const list = positionsAll.filter(function (p) { return bucketForPosition(p) === currentBucket; });
+        const invList = investmentsAll.filter(function (i) { return i.bucket === currentBucket; });
+
+        // KPI strip aggregates across all buckets (whole portfolio summary, not bucket-filtered)
+        const k = aggregate(positionsAll);
+        const ticketSumNGN = investmentsAll.reduce(function (a, i) { return a + (i.ticketNGN || 0); }, 0);
         document.getElementById("kpiStrip").innerHTML = [
-          { label: "Positions",        value: list.length },
-          { label: "Total committed",  value: DF.fmtMoney(k.commitment) },
-          { label: "Called",           value: DF.fmtMoney(k.called) },
-          { label: "Distributed",      value: DF.fmtMoney(k.distributed) },
-          { label: "NAV",              value: DF.fmtMoney(k.nav) },
-          { label: "TVPI",             value: k.tvpi.toFixed(2) + "x" },
-          { label: "DPI",              value: k.dpi.toFixed(2) + "x" },
+          { label: "Subscriptions",     value: investmentsAll.length },
+          { label: "Ticket total",      value: fmtNgnInline(ticketSumNGN) },
+          { label: "Fund positions",    value: positionsAll.length },
+          { label: "Total committed",   value: DF.fmtMoney(k.commitment) },
+          { label: "Distributed",       value: DF.fmtMoney(k.distributed) },
+          { label: "NAV",               value: DF.fmtMoney(k.nav) },
+          { label: "TVPI",              value: k.tvpi.toFixed(2) + "x" },
         ].map(function (s) {
           return '<div class="wh-snap"><div class="wh-snap-value">' + s.value + '</div><div class="wh-snap-label">' + s.label + '</div></div>';
         }).join("");
+
+        // --- v3 investments table ---
+        document.getElementById("invCount").textContent = invList.length;
+        const invBody = document.getElementById("invBody");
+        const invEmpty = document.getElementById("invEmpty");
+        if (!invList.length) {
+          invBody.innerHTML = "";
+          invEmpty.style.display = "block";
+        } else {
+          invEmpty.style.display = "none";
+          invBody.innerHTML = invList.map(function (i) {
+            const laneCls = i.lane === 'lane-a' ? 'lane-a' : i.lane === 'lane-b' ? 'lane-b' : 'lane-fund';
+            const signed = new Date(i.signedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            return (
+              '<tr>' +
+                '<td>' +
+                  '<div style="font-family:var(--mono);font-weight:600;letter-spacing:0.05em">' + DF.esc(i.ticker || '') + '</div>' +
+                  '<div style="font-size:11px;color:var(--text-secondary)">' + DF.esc(i.legalName || '') + '</div>' +
+                '</td>' +
+                '<td><span class="lane-chip ' + laneCls + '">' + DF.esc(i.laneLabel || i.lane) + '</span></td>' +
+                '<td style="color:var(--text-secondary);font-size:12px">' + DF.esc(i.wrapper || '') + '</td>' +
+                '<td style="color:var(--text-secondary)">' + DF.esc(i.sector || '') + '</td>' +
+                '<td class="num">' + fmtNgnInline(i.ticketNGN) + '</td>' +
+                '<td class="num">' + (i.valuationCapNGN ? fmtNgnInline(i.valuationCapNGN) : '—') + '</td>' +
+                '<td><span class="badge badge-info">' + DF.esc(i.dealStatus || '') + '</span></td>' +
+                '<td style="color:var(--text-secondary);font-size:11px">' + signed + '</td>' +
+                '<td style="text-align:right"><button class="t-btn" type="button" data-inv-remove="' + i.id + '" style="height:24px;padding:0 8px;font-size:11px">Remove</button></td>' +
+              '</tr>'
+            );
+          }).join("");
+        }
 
         document.getElementById("posCount").textContent = list.length;
         const body = document.getElementById("posBody");
@@ -269,6 +379,36 @@
           render();
         });
       }
+
+      // Bucket tab switching
+      document.querySelectorAll(".pf-tab").forEach(function (t) {
+        t.addEventListener("click", function () {
+          currentBucket = t.getAttribute("data-bucket");
+          document.querySelectorAll(".pf-tab").forEach(function (x) {
+            const on = x === t;
+            x.classList.toggle("is-active", on);
+            x.setAttribute("aria-selected", String(on));
+          });
+          render();
+        });
+      });
+
+      // Remove subscription (mirrors fund-position remove)
+      document.getElementById("invBody").addEventListener("click", function (e) {
+        const b = e.target.closest("[data-inv-remove]");
+        if (!b) return;
+        const id = b.getAttribute("data-inv-remove");
+        T.modal("Remove subscription?",
+          '<div style="font-size:13px;color:var(--text-secondary)">This removes the subscription from your portfolio view. The underlying agreement in your Data Vault is not affected.</div>',
+          { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="confirmInvRemove">Remove</button>' }
+        );
+        document.getElementById("confirmInvRemove").addEventListener("click", function () {
+          investments.remove(id);
+          T.closeModal();
+          T.toast("Subscription removed");
+          render();
+        });
+      });
 
       document.getElementById("addPositionBtn").addEventListener("click", openAddPosition);
       document.getElementById("emptyAddBtn").addEventListener("click", openAddPosition);

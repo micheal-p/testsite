@@ -16,6 +16,8 @@
       defaults: { mgmtFee: 0,   carry: 0,  minCheck: 50000,  targetRaise: 2000000,  closeDate: "" } },
     { id: "rollup",  name: "Roll-Up",      tagline: "Convert existing positions",
       defaults: { mgmtFee: 1,   carry: 10, minCheck: 0,      targetRaise: 10000000, closeDate: "" } },
+    { id: "scout",   name: "Scout Fund",   tagline: "Solo-scout cheques · backed by an upstream fund",
+      defaults: { mgmtFee: 0,   carry: 25, minCheck: 25000,  targetRaise: 1500000,  closeDate: "" } },
   ];
 
   const STAGES = [

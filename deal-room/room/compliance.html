@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Compliance review · Deal Room</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../assets/css/custom.css" />
+  <link rel="stylesheet" href="../assets/css/terminal.css" />
+  <style>html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}</style>
+</head>
+<body>
+  <div class="app-shell">
+    <div data-workspace-shell data-active="compliance"></div>
+
+    <main class="workspace-content">
+      <header style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:11px;letter-spacing:0.18em;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;font-weight:500">Compliance ops · manual sign-off required</div>
+          <h1 style="font-family:var(--serif);font-size:36px;font-weight:400;color:var(--text-primary);letter-spacing:-0.025em;line-height:1.05">Review queue</h1>
+          <p style="font-size:14px;color:var(--text-secondary);margin-top:8px;line-height:1.55;max-width:62ch">Every listed deal lands here before it can go Live. Run the 16-point checklist, approve to release it to the marketplace, or issue a hold with a remediation note. Five business-day SLA. Three holds on the same submission trigger a 30-day cooling-off before the issuer can resubmit.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <div class="cmpl-stat"><span class="cmpl-stat-n" id="qUR">0</span><span class="cmpl-stat-l">Under Review</span></div>
+          <div class="cmpl-stat"><span class="cmpl-stat-n" id="qCH">0</span><span class="cmpl-stat-l">On Hold</span></div>
+        </div>
+      </header>
+
+      <div class="cmpl-grid">
+        <section class="panel cmpl-list-panel">
+          <div class="panel-header">
+            <div class="panel-title">Queue</div>
+            <div class="panel-sub"><span id="qCount">0</span> in review</div>
+          </div>
+          <div id="cmplList"></div>
+        </section>
+
+        <section class="panel cmpl-detail-panel" id="cmplDetail">
+          <div class="cmpl-empty">
+            <div class="empty-title">Select a deal to review</div>
+            <div style="font-size:13px;color:var(--text-secondary);margin-top:8px">Click any deal on the left to open its 16-point checklist.</div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="../assets/js/databank.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/terminal.js"></script>
+  <script src="../assets/js/workspace.js"></script>
+  <script src="../assets/js/dealflow.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const T = window.Terminal;
+      const DB = window.DataBank;
+      const D = window.DataBankData;
+      const dealsCrud = DB.dealsApi();
+      const cmpl = DB.complianceApi();
+      const vault = DB.vaultApi();
+
+      function fmtNgn(n) {
+        n = +n; if (!n || isNaN(n)) return "—";
+        if (n >= 1e9) return "₦" + (n / 1e9).toFixed(2) + "bn";
+        if (n >= 1e6) return "₦" + (n / 1e6).toFixed(0) + "m";
+        if (n >= 1e3) return "₦" + (n / 1e3).toFixed(0) + "k";
+        return "₦" + n;
+      }
+      function esc(s) {
+        return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+        });
+      }
+
+      function getReviewable() {
+        // User-created deals in Under Review or Compliance Hold
+        return dealsCrud.list().filter(function (d) {
+          return d.status === "Under Review" || d.status === "Compliance Hold";
+        });
+      }
+
+      let selectedId = null;
+
+      function renderList() {
+        const list = getReviewable();
+        const ur = list.filter(function (d) { return d.status === "Under Review"; }).length;
+        const ch = list.filter(function (d) { return d.status === "Compliance Hold"; }).length;
+        document.getElementById("qUR").textContent = ur;
+        document.getElementById("qCH").textContent = ch;
+        document.getElementById("qCount").textContent = list.length;
+
+        const target = document.getElementById("cmplList");
+        if (!list.length) {
+          target.innerHTML = '<div class="cmpl-list-empty">Queue is empty. Submitted deals from "+ List a deal" land here for review.</div>';
+          return;
+        }
+        target.innerHTML = list.map(function (d) {
+          const sev = d.status === "Compliance Hold" ? "danger" : "warning";
+          const sel = d.id === selectedId ? " is-selected" : "";
+          const state = cmpl.getState(d.id);
+          const checked = Object.values(state.checklist || {}).filter(Boolean).length;
+          return (
+            '<button type="button" class="cmpl-row' + sel + '" data-cmpl-pick="' + d.id + '">' +
+              '<div class="cmpl-row-top">' +
+                '<span class="cmpl-row-ticker">' + esc(d.ticker || "—") + '</span>' +
+                '<span class="badge badge-' + sev + '">' + esc(d.status) + '</span>' +
+              '</div>' +
+              '<div class="cmpl-row-name">' + esc(d.legalName || d.company) + '</div>' +
+              '<div class="cmpl-row-meta">' +
+                '<span class="lane-chip ' + (d.lane === "lane-a" ? "lane-a" : "lane-b") + '">' + esc(d.laneLabel || d.lane) + '</span>' +
+                '<span class="cmpl-row-meta-text">' + esc(d.wrapper || "") + ' · ' + fmtNgn(d.raiseNGN || 0) + '</span>' +
+              '</div>' +
+              '<div class="cmpl-row-foot">' +
+                '<span>Checklist: ' + checked + ' / 16</span>' +
+                '<span>Failed: ' + (state.failedReviews || 0) + ' / 3</span>' +
+              '</div>' +
+            '</button>'
+          );
+        }).join("");
+        target.querySelectorAll("[data-cmpl-pick]").forEach(function (b) {
+          b.addEventListener("click", function () {
+            selectedId = b.getAttribute("data-cmpl-pick");
+            render();
+          });
+        });
+      }
+
+      function renderDetail() {
+        const target = document.getElementById("cmplDetail");
+        if (!selectedId) {
+          target.innerHTML = '<div class="cmpl-empty"><div class="empty-title">Select a deal to review</div><div style="font-size:13px;color:var(--text-secondary);margin-top:8px">Click any deal on the left to open its 16-point checklist.</div></div>';
+          return;
+        }
+        const d = dealsCrud.get(selectedId);
+        if (!d) { target.innerHTML = '<div class="cmpl-empty">Deal not found.</div>'; return; }
+        const state = cmpl.getState(selectedId);
+        const items = cmpl.checklistItems();
+        const allOk = cmpl.allChecked(selectedId);
+        const resub = cmpl.canResubmit(selectedId);
+        const cooldownBanner = (!resub.ok) ? (
+          '<div class="cmpl-cooldown">3 failed reviews. Resubmission locked until <strong>' + new Date(resub.until).toLocaleDateString("en-GB", { day:"2-digit", month:"short", year:"numeric"}) + '</strong> per v3 Part 19E.</div>'
+        ) : "";
+
+        target.innerHTML = (
+          '<div class="cmpl-detail-head">' +
+            '<div>' +
+              '<div class="cmpl-detail-eyebrow">' + esc(d.laneLabel || "") + ' · ' + esc(d.wrapper || "") + '</div>' +
+              '<h2 class="cmpl-detail-title">' + esc(d.legalName || d.company) + ' <span class="cmpl-detail-ticker">' + esc(d.ticker || "") + '</span></h2>' +
+              '<div class="cmpl-detail-meta">' +
+                'Raise: <strong>' + fmtNgn(d.raiseNGN || 0) + '</strong>' +
+                ' · Ticket: <strong>' + fmtNgn(d.ticketMinNGN) + '–' + fmtNgn(d.ticketMaxNGN) + '</strong>' +
+                ' · Auditor: <strong>' + esc(d.auditor || "—") + '</strong>' +
+              '</div>' +
+            '</div>' +
+            '<div class="cmpl-detail-status">' +
+              '<span class="badge badge-' + (d.status === "Compliance Hold" ? "danger" : "warning") + '">' + esc(d.status) + '</span>' +
+              '<div class="cmpl-detail-failed">Failed: ' + (state.failedReviews || 0) + ' / 3</div>' +
+            '</div>' +
+          '</div>' +
+          cooldownBanner +
+          (d.brief ? '<div class="cmpl-brief"><strong>Brief:</strong> ' + esc(d.brief) + '</div>' : "") +
+          (state.lastHoldNote ? '<div class="cmpl-hold-note"><strong>Last hold note:</strong> ' + esc(state.lastHoldNote) + '</div>' : "") +
+          '<div class="cmpl-checklist">' +
+            '<div class="cmpl-checklist-head">Review checklist · v3 Part 19E (all 16 items required for approval)</div>' +
+            items.map(function (it) {
+              const checked = !!(state.checklist && state.checklist[it.id]);
+              return (
+                '<label class="cmpl-check-row' + (checked ? " is-checked" : "") + '">' +
+                  '<input type="checkbox" data-cmpl-item="' + it.id + '" ' + (checked ? "checked" : "") + ' />' +
+                  '<span class="cmpl-check-label">' + esc(it.label) + '</span>' +
+                '</label>'
+              );
+            }).join("") +
+          '</div>' +
+          '<div class="cmpl-actions">' +
+            '<button class="t-btn" type="button" id="cmpl-hold">Issue compliance hold</button>' +
+            '<button class="t-btn t-btn-primary" type="button" id="cmpl-approve" ' + (allOk && resub.ok ? "" : "disabled") + '>' +
+              (allOk ? "Approve deal" : "Approve (need all 16)") +
+            '</button>' +
+          '</div>'
+        );
+
+        // Wire checklist toggles
+        target.querySelectorAll("[data-cmpl-item]").forEach(function (cb) {
+          cb.addEventListener("change", function () {
+            cmpl.setChecklistItem(selectedId, cb.getAttribute("data-cmpl-item"), cb.checked);
+            render();
+          });
+        });
+        // Approve
+        const approve = target.querySelector("#cmpl-approve");
+        if (approve) approve.addEventListener("click", function () {
+          if (!cmpl.allChecked(selectedId)) return;
+          T.modal("Approve " + (d.ticker || d.company) + "?",
+            '<div style="font-size:13px;color:var(--text-secondary);line-height:1.55">Issuer is notified. A digitally-signed approval certificate is filed to their Data Vault. The deal moves to <strong>Approved</strong> and is ready for the issuer to go Live.</div>',
+            { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="confirmApprove">Confirm approval</button>' });
+          document.getElementById("confirmApprove").addEventListener("click", function () {
+            const prev = d.status;
+            d.status = "Approved";
+            d.statusType = "success";
+            d.activity = d.activity || [];
+            d.activity.unshift({ at: new Date().toISOString(), text: "Compliance approval (Under Review → Approved)" });
+            dealsCrud.save(d);
+            cmpl.approve(d, "Compliance ops");
+            // Drop the approval certificate into the (issuer's) Data Vault
+            vault.add({
+              kind: "compliance-approval",
+              title: "Compliance approval certificate · " + d.ticker,
+              subtitle: d.legalName + " · " + d.laneLabel + " · " + d.wrapper,
+              dealId: d.id,
+              payload: { approvedBy: "Compliance ops", approvedAt: new Date().toISOString() }
+            });
+            T.alerts().add({
+              symbol: d.ticker, label: "Approved · ready to go Live", value: "", unit: "",
+              templateId: "compliance", severity: "critical"
+            });
+            T.closeModal();
+            T.toast(d.ticker + " approved. Certificate filed to Data Vault.");
+            selectedId = null;
+            render();
+          });
+        });
+        // Hold
+        const hold = target.querySelector("#cmpl-hold");
+        if (hold) hold.addEventListener("click", function () {
+          T.modal("Issue compliance hold",
+            '<p class="rep-hint">v3 Part 19E — issuer is notified, must address and resubmit. Three failed reviews trigger a 30-day cooling-off.</p>' +
+            '<label class="rep-label">Remediation note (visible to issuer)</label>' +
+            '<textarea class="t-input" id="cmpl-hold-note" rows="4" placeholder="Be specific. e.g. \'Auditor engagement letter missing\' or \'PEP screening flagged on Director #2 — provide cleared documentation\'."></textarea>',
+            { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="confirmHold">Issue hold</button>' });
+          document.getElementById("confirmHold").addEventListener("click", function () {
+            const note = document.getElementById("cmpl-hold-note").value.trim();
+            if (!note) { T.toast("Note is required"); return; }
+            d.status = "Compliance Hold";
+            d.statusType = "danger";
+            d.activity = d.activity || [];
+            d.activity.unshift({ at: new Date().toISOString(), text: "Compliance hold: " + note });
+            dealsCrud.save(d);
+            cmpl.hold(d, note, "Compliance ops");
+            T.alerts().add({
+              symbol: d.ticker, label: "Compliance hold issued · " + note.slice(0, 60), value: "", unit: "",
+              templateId: "compliance", severity: "critical"
+            });
+            T.closeModal();
+            T.toast(d.ticker + " on hold. Issuer notified.");
+            render();
+          });
+        });
+      }
+
+      function render() { renderList(); renderDetail(); }
+      render();
+      document.documentElement.classList.add("is-ready");
+    })();
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Settings - NEIIA Deal Room</title>
+  <title>Settings · Deal Room</title>
   <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -271,7 +271,8 @@
 
       <div class="settings-grid">
         <nav class="settings-nav" id="settingsNav" aria-label="Settings navigation">
-          <a href="#profile"        class="is-active">Profile</a>
+          <a href="#account"        class="is-active">Account &amp; KYC</a>
+          <a href="#profile">Profile</a>
           <a href="#organization">Organization</a>
           <a href="#team">Team members</a>
           <a href="#emails">Notification emails</a>
@@ -283,6 +284,15 @@
         </nav>
 
         <div style="min-width:0">
+
+          <!-- ACCOUNT & KYC (v3) -->
+          <section id="account" class="panel" style="padding:20px;margin-bottom:18px">
+            <div class="panel-header" style="padding:0 0 12px;border:0">
+              <div class="panel-title">ACCOUNT &amp; KYC</div>
+              <div class="panel-sub">Verification status, KYC tier, and ticket caps</div>
+            </div>
+            <div id="acctSummary"></div>
+          </section>
 
           <!-- PROFILE -->
           <section id="profile" class="panel" style="padding:20px;margin-bottom:18px">
@@ -372,7 +382,7 @@
                   <div class="help">What appears in the sidebar, reports, and external share links.</div>
                 </div>
                 <div class="ctl">
-                  <input class="t-input" id="orgName" name="orgName" placeholder="e.g. NEIIA Investment Office" />
+                  <input class="t-input" id="orgName" name="orgName" placeholder="e.g. Anie Investment Office" />
                 </div>
               </div>
 
@@ -639,6 +649,72 @@
       const T = window.Terminal;
       const DB = window.DataBank;
       if (!DB) return;
+
+      // ---------- account & KYC ----------
+      const acctApi = DB.accountApi ? DB.accountApi() : null;
+      function fmtNgn(n) {
+        if (n == null || !isFinite(n)) return "No cap";
+        if (n >= 1e9) return "₦" + (n / 1e9).toFixed(2) + "bn";
+        if (n >= 1e6) return "₦" + (n / 1e6).toFixed(1) + "m";
+        if (n >= 1e3) return "₦" + (n / 1e3).toFixed(0) + "k";
+        return "₦" + n;
+      }
+      function renderAccount() {
+        if (!acctApi) return;
+        const acc = acctApi.get();
+        const caps = acctApi.caps();
+        const verifiedLine = acc.verified
+          ? '<span class="acct-pill ok">✓ Verified</span>'
+          : '<span class="acct-pill warn">Unverified — public-browse only</span>';
+        const tierBadge = '<span class="t-tier-pill t-tier-' + acc.kycTier + '" style="margin-left:8px;cursor:default">T' + acc.kycTier + '</span>';
+        const tierLabel = caps.label || "";
+        const planLine = acc.verified && acc.plan
+          ? '<div><strong>' + acc.plan.cycleLabel + '</strong> · ' + (acc.plan.type === 'corporate' ? 'Corporate' : 'Individual') + ' · ' + fmtNgn(acc.plan.priceNGN) + ' ($' + acc.plan.priceUSD + ')' +
+            (acc.plan.renewsAt ? ' · renews ' + new Date(acc.plan.renewsAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '') +
+            '</div>'
+          : '<div style="color:var(--text-muted)">No active plan</div>';
+        const capLine = '<div>Per-deal cap <strong>' + (acc.kycTier === 1 ? '₦100k' : acc.kycTier === 2 ? '₦5m' : '₦0') + '–' + (isFinite(caps.perDealMaxNGN) ? fmtNgn(caps.perDealMaxNGN) : 'no cap') + '</strong>' +
+                       (isFinite(caps.annualMaxNGN) ? ' · Annual aggregate <strong>' + fmtNgn(caps.annualMaxNGN) + '</strong>' : ' · No annual cap') + '</div>';
+        const upgradeBtn = acc.kycTier < 3
+          ? '<button class="t-btn" type="button" data-action="open-tier-upgrade" data-target="' + (acc.kycTier + 1) + '">Upgrade to Tier ' + (acc.kycTier + 1) + '</button>'
+          : '';
+        const verifyBtn = acc.verified
+          ? '<button class="t-btn" type="button" data-action="open-paywall">Change plan</button>'
+          : '<button class="t-btn t-btn-primary" type="button" data-action="open-paywall">Verify account →</button>';
+        const cancelBtn = acc.verified
+          ? '<button class="t-btn" type="button" id="acct-cancel" style="color:var(--down)">Cancel verification</button>'
+          : '';
+        document.getElementById("acctSummary").innerHTML = (
+          '<div class="acct-grid">' +
+            '<div class="acct-cell"><div class="acct-label">Status</div><div class="acct-val">' + verifiedLine + '</div></div>' +
+            '<div class="acct-cell"><div class="acct-label">Account type</div><div class="acct-val">' + (acc.accountType === 'corporate' ? 'Corporate (Issuer + Investor)' : 'Individual (Investor)') + '</div></div>' +
+            '<div class="acct-cell"><div class="acct-label">KYC tier</div><div class="acct-val">Tier ' + acc.kycTier + tierBadge + ' <span style="color:var(--text-muted);font-size:12px;margin-left:6px">' + tierLabel + '</span></div></div>' +
+            '<div class="acct-cell"><div class="acct-label">Plan</div><div class="acct-val">' + planLine + '</div></div>' +
+            '<div class="acct-cell acct-cell-wide"><div class="acct-label">Ticket caps</div><div class="acct-val">' + capLine + '</div></div>' +
+          '</div>' +
+          '<div class="acct-actions">' + verifyBtn + upgradeBtn + cancelBtn + '</div>'
+        );
+        const cancel = document.getElementById("acct-cancel");
+        if (cancel) cancel.addEventListener("click", function () {
+          if (!confirm("Cancel verification? You will retain access until the current period ends.")) return;
+          acctApi.cancel();
+          if (window.WorkspaceShell && window.WorkspaceShell.refresh) window.WorkspaceShell.refresh();
+          renderAccount();
+        });
+      }
+      // Wire the data-action buttons inside the account section
+      document.getElementById("acctSummary").addEventListener("click", function (e) {
+        const a = e.target.closest("[data-action]");
+        if (!a) return;
+        const action = a.getAttribute("data-action");
+        if (action === "open-paywall") { T.openPaywallModal && T.openPaywallModal(); return; }
+        if (action === "open-tier-upgrade") {
+          T.openTierUpgradeModal && T.openTierUpgradeModal({ target: +a.getAttribute("data-target") });
+          return;
+        }
+      });
+      window.addEventListener("norgroup:account-changed", renderAccount);
+      renderAccount();
 
       // ---------- nav highlight ----------
       const nav = document.querySelectorAll("#settingsNav a");
@@ -1166,7 +1242,7 @@
                 '</span>' +
                 '<div>' +
                   '<div style="font-weight:600;font-size:15px;">Verified · $' + DB.VERIFIED_PRICE_USD + '/mo</div>' +
-                  '<div style="font-size:12px;color:var(--text-muted);">Cancel anytime. NEIIA collects 9.5% VAT on this subscription.</div>' +
+                  '<div style="font-size:12px;color:var(--text-muted);">Cancel anytime. Deal Room collects 9.5% VAT on this subscription.</div>' +
                 '</div>' +
               '</div>' +
               '<ul style="margin:0;padding:0;list-style:none;font-size:13px;color:var(--text-secondary);line-height:1.7;">' +

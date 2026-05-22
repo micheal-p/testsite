@@ -460,4 +460,232 @@
     c.radar = risksProfile(c);
     c.ratings = ratings(c);
   });
+
+  // ---------- v3 enrichment ----------
+  // Adds lane / wrapper / ticker / kycTier / sizeTier / allocationPct to every deal,
+  // and appends Lane A CSAFE crowdfund deals alongside the existing PE/VC roster.
+  // Lane semantics:
+  //   'lane-a' = SEC-regulated retail crowdfund (CSAFE, KYC Tier 1 OK)
+  //   'lane-b' = qualified private placement on listed/large corporates (KYC Tier 3)
+  //   'fund'   = off-platform GP/LP vehicle (SPV/Sub-Fund/Co-Invest etc.)
+  const V3 = {
+    geregu:        { lane: 'lane-b', wrapper: 'Bonds',               ticker: 'GERG', kycTier: 3 },
+    seplat:        { lane: 'lane-b', wrapper: 'Commercial Paper',    ticker: 'SEPL', kycTier: 3 },
+    okomu:         { lane: 'lane-b', wrapper: 'Equity Subscription', ticker: 'OKOM', kycTier: 3 },
+    dangotecement: { lane: 'lane-b', wrapper: 'Bonds',               ticker: 'DCEM', kycTier: 3 },
+    mtnnigeria:    { lane: 'lane-b', wrapper: 'Equity Subscription', ticker: 'MTNN', kycTier: 3 },
+    accesshold:    { lane: 'lane-b', wrapper: 'Bonds',               ticker: 'ACCH', kycTier: 3 },
+    jumia:         { lane: 'lane-b', wrapper: 'Equity Subscription', ticker: 'JMIA', kycTier: 3 },
+    nbplc:         { lane: 'lane-b', wrapper: 'Bonds',               ticker: 'NBPL', kycTier: 3 },
+    buafoods:      { lane: 'lane-b', wrapper: 'Equity Subscription', ticker: 'BUAF', kycTier: 3 },
+    aiico:         { lane: 'lane-b', wrapper: 'Equity Subscription', ticker: 'AIIC', kycTier: 3 },
+    lafargewa:     { lane: 'lane-b', wrapper: 'Commercial Paper',    ticker: 'LAFA', kycTier: 3 },
+    transcorpht:   { lane: 'lane-b', wrapper: 'Equity Subscription', ticker: 'TCHL', kycTier: 3 },
+    ardova:        { lane: 'lane-b', wrapper: 'Bonds',               ticker: 'ARDO', kycTier: 3 },
+    guinness:      { lane: 'lane-b', wrapper: 'Equity Subscription', ticker: 'GUIN', kycTier: 3 },
+    lekoil:        { lane: 'lane-b', wrapper: 'Commercial Paper',    ticker: 'LEKO', kycTier: 3 },
+    arnergy:       { lane: 'fund',   wrapper: 'SPV',                 ticker: 'ARNG', kycTier: 2 },
+    daystar:       { lane: 'fund',   wrapper: 'SPV',                 ticker: 'DAYS', kycTier: 2 },
+    transcorp:     { lane: 'fund',   wrapper: 'Sub-Fund',            ticker: 'TPWR', kycTier: 2 },
+    starsight:     { lane: 'fund',   wrapper: 'SPV',                 ticker: 'STAR', kycTier: 2 },
+    flutterwave:   { lane: 'fund',   wrapper: 'Co-Invest',           ticker: 'FLUT', kycTier: 2 },
+    kuda:          { lane: 'fund',   wrapper: 'SPV',                 ticker: 'KUDA', kycTier: 2 },
+    paystack:      { lane: 'fund',   wrapper: 'Co-Invest',           ticker: 'PYST', kycTier: 2 },
+    opay:          { lane: 'fund',   wrapper: 'Sub-Fund',            ticker: 'OPAY', kycTier: 2 },
+    andela:        { lane: 'fund',   wrapper: 'Co-Invest',           ticker: 'ANDL', kycTier: 2 },
+    ulesson:       { lane: 'fund',   wrapper: 'SPV',                 ticker: 'ULES', kycTier: 2 },
+    helium:        { lane: 'fund',   wrapper: 'SPV',                 ticker: 'HELM', kycTier: 2 },
+    kobo360:       { lane: 'fund',   wrapper: 'SPV',                 ticker: 'KOBO', kycTier: 2 },
+    giglogistics:  { lane: 'fund',   wrapper: 'Sub-Fund',            ticker: 'GIGL', kycTier: 2 },
+    maxng:         { lane: 'fund',   wrapper: 'Co-Invest',           ticker: 'MAXN', kycTier: 2 }
+  };
+
+  function sizeTierFor(sizeNum) {
+    // sizeNum is in USD millions
+    if (sizeNum >= 2000) return 'Mega';
+    if (sizeNum >= 500)  return 'Large';
+    if (sizeNum >= 100)  return 'Mid';
+    if (sizeNum >= 50)   return 'Small';
+    return 'Micro';
+  }
+  function allocationFor(status) {
+    switch ((status || '').toLowerCase()) {
+      case 'active':              return 100;
+      case 'converted':
+      case 'matured':             return 100;
+      case 'closed - successful': return 100;
+      case 'closed':              return 100;
+      case 'oversubscribed':      return 124;
+      case 'allocating':          return 87;
+      case 'closing':             return 78;
+      case 'live':                return 42;
+      case 'scheduled':           return 0;
+      case 'approved':            return 0;
+      case 'paused':              return 30;
+      case 'closed - failed':
+      case 'defaulted':
+      case 'written off':         return 50;
+      default:                    return 0;
+    }
+  }
+  function laneLabelFor(lane) {
+    if (lane === 'lane-a') return 'Lane A · Crowdfund';
+    if (lane === 'lane-b') return 'Lane B · Private';
+    return 'Fund vehicle';
+  }
+
+  // Map legacy PE/VC seed statuses to v3 lifecycle (Part 19B).
+  // "Due diligence" / "Term sheet" → Live (open, accepting commitments)
+  // "Closed" → Active (raise done, instrument outstanding pre-conversion)
+  // "On hold" → Paused
+  // "Acquired" → Converted (instrument retired via exit)
+  const STATUS_MAP = {
+    "Due diligence": "Live",
+    "Term sheet":    "Live",
+    "Allocating":    "Allocating",
+    "Closed":        "Active",
+    "On hold":       "Paused",
+    "Acquired":      "Converted",
+    "Live":          "Live",
+    "Oversubscribed":"Oversubscribed",
+    "Closing":       "Closing"
+  };
+  const STATUS_SEVERITY = {
+    "Draft":"info","Under Review":"warning","Compliance Hold":"danger","Approved":"success","Scheduled":"info",
+    "Live":"info","Allocating":"warning","Oversubscribed":"success","Paused":"warning",
+    "Closing":"warning","Closed - Successful":"success","Closed - Failed":"danger","Closed - Withdrawn":"danger",
+    "Active":"success","Converting":"warning","Converted":"success","Matured":"success","Defaulted":"danger","Written Off":"danger"
+  };
+
+  window.DataBankData.deals.forEach(function (d) {
+    const v = V3[d.id] || { lane: 'fund', wrapper: 'SPV', ticker: d.id.slice(0, 4).toUpperCase(), kycTier: 2 };
+    d.lane = v.lane;
+    d.laneLabel = laneLabelFor(v.lane);
+    d.wrapper = v.wrapper;
+    d.ticker = v.ticker;
+    d.kycTier = v.kycTier;
+    d.sizeTier = sizeTierFor(d.sizeNum);
+    d.status = STATUS_MAP[d.status] || d.status;
+    d.statusType = STATUS_SEVERITY[d.status] || d.statusType || "info";
+    d.allocationPct = allocationFor(d.status);
+    d.tradingName = d.tradingName || d.company;
+    d.legalName = d.legalName || (d.company + ' Limited');
+  });
+
+  const csafeDeals = [
+    { id: 'agrimex', company: 'Agrimex Foods', tradingName: 'Agrimex', legalName: 'Anie Limited',
+      ticker: 'AGRMX', sector: 'Food & Agribusiness', stage: 'Seed',
+      size: '$95K', sizeNum: 0.095, status: 'Allocating', statusType: 'info', updated: 'May 18, 2026',
+      lane: 'lane-a', laneLabel: 'Lane A · Crowdfund', wrapper: 'CSAFE', kycTier: 1,
+      sizeTier: 'Micro', allocationPct: 87,
+      raiseNGN: 85000000, ticketMinNGN: 100000, ticketMaxNGN: 5000000, daysLeft: 14,
+      brief: 'Agrimex aggregates produce from 400+ smallholder farms in Benue and Nasarawa, processes it through two cold-chain hubs in Lagos, and supplies four QSR chains under offtake contracts. Two-year track record; ₦480m revenue FY2025.',
+      useOfProceeds: [
+        { label: 'Cold storage expansion (Ibadan hub)', pctRaise: 45, ngn: 38250000 },
+        { label: 'Working capital — farmer prepayments', pctRaise: 30, ngn: 25500000 },
+        { label: 'Two refrigerated trucks (CFAO finance match)', pctRaise: 15, ngn: 12750000 },
+        { label: 'NAFDAC + HACCP certification', pctRaise: 5, ngn: 4250000 },
+        { label: 'Marketing + 4 sales hires', pctRaise: 5, ngn: 4250000 }
+      ],
+      milestones: [
+        '12-mo: Ibadan hub commissioned; capacity 600 tons/month',
+        '18-mo: Offtake deals with two more QSR chains',
+        '24-mo: ₦1.2bn revenue run-rate; Series A or convert'
+      ],
+      whyNow: 'Locked-in offtake from QSR chains creates demand certainty; cold-chain gap is the binding constraint on growth.',
+      issuerSignatories: ['Aniebiet Akpan, CEO', 'Folake Adebayo, COO'] },
+
+    { id: 'sunray', company: 'Sunray Solar Co-op', tradingName: 'Sunray', legalName: 'Sunray Energy Cooperative Limited',
+      ticker: 'SUNR', sector: 'Renewable Energy', stage: 'Pre-Seed',
+      size: '$55K', sizeNum: 0.055, status: 'Oversubscribed', statusType: 'success', updated: 'May 17, 2026',
+      lane: 'lane-a', laneLabel: 'Lane A · Crowdfund', wrapper: 'CSAFE', kycTier: 1,
+      sizeTier: 'Micro', allocationPct: 124,
+      raiseNGN: 50000000, ticketMinNGN: 100000, ticketMaxNGN: 5000000, daysLeft: 2,
+      brief: 'Sunray installs and operates rooftop solar-plus-storage systems for SMEs in Lagos and Abeokuta on lease-to-own contracts. 38 systems deployed; 91% payment-on-time.',
+      useOfProceeds: [
+        { label: 'Inventory — 50 systems @ ₦750k landed', pctRaise: 75, ngn: 37500000 },
+        { label: 'Field technician hiring + training', pctRaise: 10, ngn: 5000000 },
+        { label: 'Battery monitoring software (CAPEX)', pctRaise: 10, ngn: 5000000 },
+        { label: 'Compliance + reporting overhead', pctRaise: 5, ngn: 2500000 }
+      ],
+      milestones: [
+        '6-mo: 50 new installations; ARR ₦42m',
+        '12-mo: 110 systems live; payback per system <22 months',
+        '18-mo: Convert to equity at Seed round; expand to PH'
+      ],
+      whyNow: 'Grid power costs up 38% YoY; SME payback on solar dropped from 32 to 19 months. Demand visible in 6-mo waitlist.',
+      issuerSignatories: ['Tunde Bakare, Managing Director', 'Halima Yusuf, Head of Operations'] },
+
+    { id: 'lekkicargo', company: 'Lekki Cargo Hub', tradingName: 'Lekki Cargo', legalName: 'Lekki Cargo Hub Limited',
+      ticker: 'LCRG', sector: 'Logistics', stage: 'Seed',
+      size: '$78K', sizeNum: 0.078, status: 'Live', statusType: 'info', updated: 'May 20, 2026',
+      lane: 'lane-a', laneLabel: 'Lane A · Crowdfund', wrapper: 'CSAFE', kycTier: 1,
+      sizeTier: 'Micro', allocationPct: 23,
+      raiseNGN: 70000000, ticketMinNGN: 100000, ticketMaxNGN: 5000000, daysLeft: 28,
+      brief: 'Bonded last-mile cargo hub serving the Lekki Free Zone. Handles customs clearance + warehousing + dispatch for 14 importers on monthly retainers.',
+      useOfProceeds: [
+        { label: 'Hub expansion — second 4,000 sq ft warehouse', pctRaise: 55, ngn: 38500000 },
+        { label: 'Customs bond top-up (₦20m face)', pctRaise: 25, ngn: 17500000 },
+        { label: 'WMS software (warehouse management)', pctRaise: 10, ngn: 7000000 },
+        { label: 'Working capital — duty prepayments', pctRaise: 10, ngn: 7000000 }
+      ],
+      milestones: [
+        '9-mo: Second warehouse live; 8 new importer contracts',
+        '15-mo: Add 1 sister-hub in Onne (PH)',
+        '24-mo: Convert; raise Series A or run on cash flow'
+      ],
+      whyNow: 'Lekki Free Zone traffic up 4x post-Dangote refinery commissioning. Bonded hub capacity is the constraint.',
+      issuerSignatories: ['Ifeanyi Okoye, Director', 'Aisha Bello, Head of Compliance'] },
+
+    { id: 'naijathreads', company: 'Naija Threads', tradingName: 'NT', legalName: 'Naija Threads Apparel Limited',
+      ticker: 'NTHR', sector: 'Consumer Goods', stage: 'Seed',
+      size: '$110K', sizeNum: 0.110, status: 'Closing', statusType: 'warning', updated: 'May 21, 2026',
+      lane: 'lane-a', laneLabel: 'Lane A · Crowdfund', wrapper: 'CSAFE', kycTier: 1,
+      sizeTier: 'Micro', allocationPct: 84,
+      raiseNGN: 95000000, ticketMinNGN: 100000, ticketMaxNGN: 5000000, daysLeft: 1,
+      brief: 'DTC apparel brand making locally-produced staples (tees, polos, ankara-trimmed shirts). 18-month-old brand; ₦210m revenue LTM; gross margin 54%.',
+      useOfProceeds: [
+        { label: 'Aba production unit (5 cutters + 12 sewing)', pctRaise: 40, ngn: 38000000 },
+        { label: 'Inventory build for Q4 holiday push', pctRaise: 30, ngn: 28500000 },
+        { label: 'Performance marketing budget (12 months)', pctRaise: 20, ngn: 19000000 },
+        { label: 'Two flagship store fit-outs (Lagos, Abuja)', pctRaise: 10, ngn: 9500000 }
+      ],
+      milestones: [
+        '6-mo: Aba unit at 70% capacity; COGS down 22%',
+        '12-mo: ₦480m revenue; first export pilot (Ghana)',
+        '24-mo: Convert; explore Series A or M&A interest'
+      ],
+      whyNow: 'Naira devaluation made imported apparel uneconomic for the mass market; local-make brands gaining share. Founder previously scaled and exited a similar concept.',
+      issuerSignatories: ['Chioma Eze, Founder/CEO', 'Yemi Adetona, CFO'] }
+  ];
+  Array.prototype.push.apply(window.DataBankData.deals, csafeDeals);
+
+  // Lighter use-of-proceeds for existing Lane B (PPMs filed with SEC carry the full prospectus)
+  const LANE_B_BRIEFS = {
+    geregu:        { brief: '1.6GW expansion roadmap — bond issuance to fund second-generation gas turbines and pipeline reinforcement.', useOfProceedsText: 'Gas turbine acquisition + pipeline reinforcement (per PPM filed with SEC).' },
+    seplat:        { brief: 'Commercial paper to refinance senior facility at improved terms post-MPNU acquisition close.', useOfProceedsText: 'Refinancing of senior facility; bridge to ANOH gas plant ramp-up.' },
+    okomu:         { brief: 'Equity subscription to fund mill capacity expansion and new oil palm plantation in Edo.', useOfProceedsText: 'Mill capacity build-out + new estate acquisition (per prospectus).' },
+    dangotecement: { brief: 'Bond issuance to refinance USD facility into NGN, lowering FX exposure on FY26 capex.', useOfProceedsText: 'USD-to-NGN debt refinancing; capex on Tanzania and Ethiopia plants.' },
+    mtnnigeria:    { brief: 'Equity subscription supporting 5G rollout and tower densification across South-West and FCT.', useOfProceedsText: '5G capex and tower densification (per prospectus filed Q1 2026).' },
+    accesshold:    { brief: 'Subordinated bond issuance — Tier-2 capital raise per CBN regulatory minimums for 2027.', useOfProceedsText: 'Tier-2 regulatory capital top-up; M&A acquisition reserve.' },
+    jumia:         { brief: 'Equity subscription to fund logistics-arm spin-off and reduce reliance on cross-border courier partners.', useOfProceedsText: 'Logistics arm capitalization; tech platform consolidation.' },
+    nbplc:         { brief: 'Bond issuance to refinance shareholder loan from Heineken N.V. into local-currency debt.', useOfProceedsText: 'Shareholder loan refinancing; expanded malt sourcing.' },
+    buafoods:      { brief: 'Equity subscription supporting backward integration into wheat farming and second sugar refinery.', useOfProceedsText: 'Wheat farm acquisition; second sugar refinery (Edo state).' },
+    aiico:         { brief: 'Equity subscription to fund Tier-2 capital top-up and group-life book expansion.', useOfProceedsText: 'Solvency capital top-up; expanded group-life portfolio.' },
+    lafargewa:     { brief: 'Commercial paper to fund alternative-fuel kiln retrofit at Mfamosing plant — emissions and cost win.', useOfProceedsText: 'Alternative-fuel kiln retrofit; spare-parts inventory.' },
+    transcorpht:   { brief: 'Equity subscription supporting two new property acquisitions in Abuja and Calabar.', useOfProceedsText: 'Property acquisition + brand-flag refit at two existing hotels.' },
+    ardova:        { brief: 'Bond issuance to fund LPG distribution network buildout and gas station refresh.', useOfProceedsText: 'LPG retail network buildout; gas-station refresh capex.' },
+    guinness:      { brief: 'Equity subscription supporting working-capital and post-divestment recap by the new local-majority owners.', useOfProceedsText: 'Working capital; recapitalization post-Diageo divestment.' },
+    lekoil:        { brief: 'Commercial paper — restructuring facility with conversion option for legacy creditors.', useOfProceedsText: 'Operational restructuring; legacy creditor settlement reserve.' }
+  };
+  window.DataBankData.deals.forEach(function (d) {
+    const b = LANE_B_BRIEFS[d.id];
+    if (b) { d.brief = b.brief; d.useOfProceedsText = b.useOfProceedsText; }
+  });
+
+  window.DataBankData.v3 = {
+    sizeTierFor: sizeTierFor,
+    allocationFor: allocationFor,
+    laneLabelFor: laneLabelFor
+  };
 })();

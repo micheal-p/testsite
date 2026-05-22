@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Data Cell - NEIIA Deal Room</title>
+  <title>Data Cell · Deal Room</title>
   <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -367,7 +367,7 @@
           const p = Math.max(0, parseFloat(input.value) || 0);
           out.innerHTML = (
             '<div class="row"><span class="label">Subscriber pays</span><span class="amt">' + fmt(p) + '/mo</span></div>' +
-            '<div class="row fee"><span class="label">NEIIA fee (' + FEE_PCT + '% VAT)</span><span class="amt">−' + fmt(fee(p)) + '/mo</span></div>' +
+            '<div class="row fee"><span class="label">Platform fee (' + FEE_PCT + '% VAT)</span><span class="amt">−' + fmt(fee(p)) + '/mo</span></div>' +
             '<div class="row net"><span class="label">Your earning per subscriber</span><span class="amt">' + fmt(netOf(p)) + '/mo</span></div>'
           );
         }
@@ -381,7 +381,7 @@
         if (!pub) return;
         T.modal("Set monthly subscription price", (
           '<p style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin-bottom:14px;">' +
-            'What you charge each subscriber every month for access to <strong>' + pub.name + '</strong>. NEIIA collects ' + FEE_PCT + '% VAT on every sale.' +
+            'What you charge each subscriber every month for access to <strong>' + pub.name + '</strong>. Deal Room collects ' + FEE_PCT + '% VAT on every sale.' +
           '</p>' +
           '<label for="editPriceInput">Monthly price (USD)</label>' +
           '<div style="position:relative;">' +
@@ -516,7 +516,7 @@
         const defaultPrice = priceFor(available[0]);
         T.modal("New publication", (
           '<p style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin-bottom:14px;">' +
-            'Add a company you own or represent. You set the monthly price subscribers pay for data access — NEIIA collects ' + FEE_PCT + '% VAT on every sale.' +
+            'Add a company you own or represent. You set the monthly price subscribers pay for data access — Deal Room collects ' + FEE_PCT + '% VAT on every sale.' +
           '</p>' +
           '<div style="display:grid;gap:14px;">' +
             '<div><label>Company</label><select class="t-input" name="pubCo" style="width:100%">' + opts + '</select></div>' +

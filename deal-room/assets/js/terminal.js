@@ -138,24 +138,114 @@
     if (m) m.classList.remove("is-open");
   }
 
+  // ---------- PIN pad (6-digit transaction PIN per v3 Part 10) ----------
+  // Demo: validates any 6 digits. Real impl will verify against user's PIN hash.
+  function pinPad(opts) {
+    opts = opts || {};
+    const title = opts.title || "Enter transaction PIN";
+    const subtitle = opts.subtitle || "Your 6-digit PIN is required to sign this subscription.";
+    let pin = "";
+    function render() {
+      const cells = Array.from({ length: 6 }).map(function (_, i) {
+        const filled = i < pin.length;
+        return '<span class="pin-cell' + (filled ? ' filled' : '') + '">' + (filled ? '•' : '') + '</span>';
+      }).join("");
+      const keys = ["1","2","3","4","5","6","7","8","9","","0","⌫"];
+      const pad = keys.map(function (k) {
+        if (!k) return '<span></span>';
+        if (k === "⌫") return '<button type="button" class="pin-key pin-key-back" data-pin-key="back" aria-label="Backspace">⌫</button>';
+        return '<button type="button" class="pin-key" data-pin-key="' + k + '">' + k + '</button>';
+      }).join("");
+      const body = (
+        '<div class="pin-wrap">' +
+          '<div class="pin-subtitle">' + subtitle + '</div>' +
+          '<div class="pin-cells" aria-label="PIN entry">' + cells + '</div>' +
+          '<div class="pin-pad">' + pad + '</div>' +
+          '<div class="pin-help">PIN attempts are limited. 3 wrong entries trigger a 24-hour cooldown.</div>' +
+        '</div>'
+      );
+      modal(title, body, {
+        footer:
+          '<button type="button" class="t-btn" data-modal-close>Cancel</button>' +
+          '<button type="button" class="t-btn t-btn-primary" id="pinConfirm" ' + (pin.length === 6 ? '' : 'disabled') + '>Confirm →</button>'
+      });
+      const root = document.querySelector("[data-modal-root]");
+      root.querySelectorAll("[data-pin-key]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          const k = b.getAttribute("data-pin-key");
+          if (k === "back") pin = pin.slice(0, -1);
+          else if (pin.length < 6) pin += k;
+          render();
+        });
+      });
+      const confirmBtn = root.querySelector("#pinConfirm");
+      if (confirmBtn) confirmBtn.addEventListener("click", function () {
+        if (pin.length !== 6) return;
+        const entered = pin;
+        closeModal();
+        if (typeof opts.onConfirm === "function") opts.onConfirm(entered);
+      });
+      // physical keyboard
+      document.addEventListener("keydown", keyHandler);
+      function keyHandler(e) {
+        if (!document.querySelector("[data-modal-root].is-open")) { document.removeEventListener("keydown", keyHandler); return; }
+        if (/^[0-9]$/.test(e.key)) { if (pin.length < 6) { pin += e.key; render(); } }
+        else if (e.key === "Backspace") { pin = pin.slice(0, -1); render(); }
+        else if (e.key === "Enter" && pin.length === 6) {
+          document.removeEventListener("keydown", keyHandler);
+          const entered = pin;
+          closeModal();
+          if (typeof opts.onConfirm === "function") opts.onConfirm(entered);
+        }
+      }
+    }
+    render();
+  }
+
   // ---------- alerts modal ----------
   function openAlertsModal() {
     const templates = (window.DataBankData && window.DataBankData.alertTemplates) || [];
     const tickers = ((window.DataBankData && window.DataBankData.companies) || []).map(function (c) { return c.id; });
     const existing = alerts().list();
+
+    // v3 Part 19I — group alerts by severity tier: Critical / Standard / Passive
+    const TIERS = [
+      { id: "critical", label: "Critical", blurb: "push + email + banner" },
+      { id: "standard", label: "Standard", blurb: "in-app" },
+      { id: "passive",  label: "Passive",  blurb: "daily digest" }
+    ];
+    function alertCard(a) {
+      const sev = a.severity || "standard";
+      return (
+        '<div class="alert-card alert-' + sev + '">' +
+          '<div class="alert-card-body">' +
+            '<div class="alert-card-line">' +
+              '<span class="alert-card-symbol">' + (a.symbol || "") + '</span>' +
+              '<span class="alert-card-label">' + (a.label || "") + (a.value ? ' @ ' + a.value + ' ' + (a.unit || "") : "") + '</span>' +
+            '</div>' +
+            '<div class="alert-card-time">' + new Date(a.created).toLocaleString() + '</div>' +
+          '</div>' +
+          '<button class="t-btn" data-remove-alert="' + a.id + '" type="button" style="height:24px;padding:0 8px;font-size:10.5px">Remove</button>' +
+        '</div>'
+      );
+    }
+    function tierSection(tier) {
+      const matching = existing.filter(function (a) { return (a.severity || "standard") === tier.id; });
+      if (!matching.length) return "";
+      return (
+        '<div class="alert-tier alert-tier-' + tier.id + '">' +
+          '<div class="alert-tier-head">' +
+            '<span class="alert-tier-label">' + tier.label + '</span>' +
+            '<span class="alert-tier-count">' + matching.length + '</span>' +
+            '<span class="alert-tier-blurb">' + tier.blurb + '</span>' +
+          '</div>' +
+          matching.map(alertCard).join("") +
+        '</div>'
+      );
+    }
     const list = existing.length
-      ? existing.map(function (a) {
-          return (
-            '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border:1px solid var(--border-t);border-radius:4px;margin-bottom:6px;background:var(--bg-base);">' +
-              '<div style="min-width:0;">' +
-                '<div style="font-family:var(--mono);font-size:12px;color:var(--text-primary);">' + a.symbol + ' &mdash; ' + a.label + (a.value ? ' @ ' + a.value + ' ' + (a.unit || "") : "") + '</div>' +
-                '<div style="font-size:10px;color:var(--text-muted);font-family:var(--mono);margin-top:2px">' + new Date(a.created).toLocaleString() + '</div>' +
-              '</div>' +
-              '<button class="t-btn" data-remove-alert="' + a.id + '" type="button" style="height:26px;padding:0 8px;font-size:11px">Remove</button>' +
-            '</div>'
-          );
-        }).join("")
-      : '<div style="font-size:12px;color:var(--text-muted);font-family:var(--mono);padding:8px 0">No alerts configured.</div>';
+      ? TIERS.map(tierSection).join("")
+      : '<div style="font-size:12px;color:var(--text-muted);font-family:var(--mono);padding:8px 0">No alerts yet. Activity from subscriptions, status changes, and Q&amp;A will appear here.</div>';
 
     const optionTpl = templates.map(function (t) { return '<option value="' + t.id + '">' + t.label + '</option>'; }).join("");
     const optionSym = tickers.map(function (id) { return '<option value="' + id.toUpperCase() + '">' + id.toUpperCase() + '</option>'; }).join("");
@@ -265,6 +355,633 @@
       '</div>'
     );
     modal("Account", body);
+  }
+
+  // v3 verification paywall — Part 12 prices, NGN billed, USD shown for transparency.
+  // Mandatory: no free tier. Activates Verified badge + grants KYC Tier 1 floor.
+  function openPaywallModal(opts) {
+    opts = opts || {};
+    const accountApi = window.DataBank && window.DataBank.accountApi ? window.DataBank.accountApi() : null;
+    if (!accountApi) return;
+    const acc = accountApi.get();
+    const PLANS = window.DataBank.VERIFICATION_PLANS;
+    let selectedType = acc.accountType || "individual";
+    let selectedCycle = "annual"; // default to highest commitment for demo
+
+    function fmtNgn(n) {
+      if (n >= 1e6) return "₦" + (n / 1e6).toFixed(2) + "m";
+      if (n >= 1e3) return "₦" + (n / 1e3).toFixed(0) + "k";
+      return "₦" + n;
+    }
+    function planCard(type, cycle) {
+      const p = PLANS[type][cycle];
+      const monthlyEquivUSD = type === "individual" ? 70 : 150;
+      const baseAnnualUSD = monthlyEquivUSD * 12;
+      const savePct = cycle === "monthly" ? 0 : cycle === "quarterly" ? 10 : 20;
+      const isSel = selectedType === type && selectedCycle === cycle;
+      return (
+        '<button type="button" class="pw-card' + (isSel ? ' is-selected' : '') + '" data-pw-pick="' + type + ':' + cycle + '">' +
+          '<div class="pw-card-head">' +
+            '<span class="pw-card-cycle">' + p.cycleLabel + '</span>' +
+            (savePct ? '<span class="pw-card-save">Save ' + savePct + '%</span>' : '') +
+          '</div>' +
+          '<div class="pw-card-price">' + fmtNgn(p.priceNGN) + '</div>' +
+          '<div class="pw-card-usd">$' + p.priceUSD + ' equiv · billed in NGN</div>' +
+          '<div class="pw-card-foot">' +
+            (cycle === "monthly" ? "Pay each month." :
+             cycle === "quarterly" ? "Billed every 3 months." :
+             "Billed once a year.") +
+          '</div>' +
+        '</button>'
+      );
+    }
+    function render() {
+      const switcher = (
+        '<div class="pw-switch" role="tablist">' +
+          '<button type="button" class="pw-switch-btn' + (selectedType === "individual" ? " is-active" : "") + '" data-pw-type="individual">' +
+            '<strong>Individual</strong>' +
+            '<span>NIN + BVN + selfie. Invest only.</span>' +
+          '</button>' +
+          '<button type="button" class="pw-switch-btn' + (selectedType === "corporate" ? " is-active" : "") + '" data-pw-type="corporate">' +
+            '<strong>Corporate</strong>' +
+            '<span>CAC + TIN + 2 signatories. Issue + invest.</span>' +
+          '</button>' +
+        '</div>'
+      );
+      const cards = (
+        '<div class="pw-grid">' +
+          planCard(selectedType, "monthly") +
+          planCard(selectedType, "quarterly") +
+          planCard(selectedType, "annual") +
+        '</div>'
+      );
+      const includes = (
+        '<ul class="pw-includes">' +
+          '<li>Verified badge across the platform</li>' +
+          '<li>KYC Tier 1 floor (Lane A retail access)</li>' +
+          '<li>Encrypted Data Vault with PIN-gated documents</li>' +
+          '<li>Full deal data, financials, structured Q&amp;A</li>' +
+          '<li>NIBSS NIP escrow rail for subscriptions</li>' +
+          (selectedType === "corporate" ? '<li>Publisher Workspace + List-a-Deal flow (dual-signatory)</li>' : '') +
+        '</ul>'
+      );
+      const body = (
+        '<div class="pw-wrap">' +
+          '<div class="pw-lede">SEC Nigeria requires verification before you can view deal data or transact. Pre-paywall users see anonymized headlines only.</div>' +
+          switcher +
+          cards +
+          '<div class="pw-foot-note">All fees billed in NGN at the prevailing CBN rate. USD shown for transparency. No free tier per v3 Part 12.</div>' +
+          '<details class="pw-details"><summary>What\'s included</summary>' + includes + '</details>' +
+        '</div>'
+      );
+      modal("Verify your account", body, {
+        footer:
+          '<button type="button" class="t-btn" data-modal-close>Maybe later</button>' +
+          '<button type="button" class="t-btn t-btn-primary" id="pw-confirm">Pay ' + fmtNgn(PLANS[selectedType][selectedCycle].priceNGN) + ' & verify →</button>'
+      });
+      const root = document.querySelector("[data-modal-root]");
+      root.querySelectorAll("[data-pw-type]").forEach(function (b) {
+        b.addEventListener("click", function () { selectedType = b.getAttribute("data-pw-type"); render(); });
+      });
+      root.querySelectorAll("[data-pw-pick]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          const parts = b.getAttribute("data-pw-pick").split(":");
+          selectedType = parts[0]; selectedCycle = parts[1]; render();
+        });
+      });
+      root.querySelector("#pw-confirm").addEventListener("click", function () {
+        accountApi.verify(selectedType, selectedCycle);
+        alerts().add({
+          symbol: "ACCT", label: "Verified · " + selectedType + " · " + PLANS[selectedType][selectedCycle].cycleLabel,
+          value: "", unit: "", templateId: "verification"
+        });
+        // Drop a verification receipt into the Data Vault.
+        if (window.DataBank && window.DataBank.vaultApi) {
+          window.DataBank.vaultApi().add({
+            kind: "receipt",
+            title: "Verification receipt · " + PLANS[selectedType][selectedCycle].cycleLabel,
+            subtitle: (selectedType === "corporate" ? "Corporate" : "Individual") + " plan · ₦" + PLANS[selectedType][selectedCycle].priceNGN.toLocaleString() + " ($" + PLANS[selectedType][selectedCycle].priceUSD + ")",
+            payload: { type: selectedType, cycle: selectedCycle, priceUSD: PLANS[selectedType][selectedCycle].priceUSD, priceNGN: PLANS[selectedType][selectedCycle].priceNGN }
+          });
+        }
+        closeModal();
+        toast("Verified. Welcome to Deal Room.");
+        // Refresh header + sidebar so badges update without a full reload.
+        if (window.WorkspaceShell && window.WorkspaceShell.refresh) window.WorkspaceShell.refresh();
+        else location.reload();
+      });
+    }
+    render();
+  }
+
+  // v3 KYC tier upgrade — mocks the attestation step per Part 5.
+  // T1→T2 needs income/asset evidence; T2→T3 needs net-worth / institutional status.
+  function openTierUpgradeModal(opts) {
+    opts = opts || {};
+    const accountApi = window.DataBank && window.DataBank.accountApi ? window.DataBank.accountApi() : null;
+    if (!accountApi) return;
+    const acc = accountApi.get();
+    const current = acc.kycTier || 1;
+    const target = Math.max(current + 1, Math.min(3, opts.target | 0 || current + 1));
+    if (target <= current) { toast("Already at Tier " + current); return; }
+    const reason = opts.reason || "Unlock higher per-deal caps and broader lane access.";
+
+    const T2_OPTIONS = [
+      { id: "bank",  label: "Bank statements (last 6 months)",  hint: "Two account-holder Nigerian bank accounts, downloaded as PDFs." },
+      { id: "pay",   label: "Payslips (last 3 months)",         hint: "Salary stubs from PAYE-registered employer." },
+      { id: "tax",   label: "Tax returns (last fiscal year)",   hint: "FIRS-stamped Form A or Self-Assessment receipt." }
+    ];
+    const T3_OPTIONS = [
+      { id: "net",   label: "Net worth attestation — ₦100m+",   hint: "Statement of assets countersigned by your auditor (FRCN-registered)." },
+      { id: "inc",   label: "Annual income — ₦20m+",            hint: "Two consecutive years of audited income statements." },
+      { id: "inst",  label: "SEC-registered institutional",     hint: "Upload your SEC certificate of registration (fund manager, PFA, broker)." }
+    ];
+    const options = target === 2 ? T2_OPTIONS : T3_OPTIONS;
+
+    function render(selected) {
+      const items = options.map(function (o) {
+        const sel = o.id === selected ? " is-selected" : "";
+        return (
+          '<button type="button" class="tier-opt' + sel + '" data-tier-opt="' + o.id + '">' +
+            '<div class="tier-opt-head">' +
+              '<span class="tier-opt-radio' + (o.id === selected ? " is-on" : "") + '"></span>' +
+              '<strong>' + o.label + '</strong>' +
+            '</div>' +
+            '<div class="tier-opt-hint">' + o.hint + '</div>' +
+          '</button>'
+        );
+      }).join("");
+      const body = (
+        '<div class="tier-wrap">' +
+          '<div class="tier-meta">' +
+            '<div class="tier-from-to">' +
+              '<span class="t-tier-pill t-tier-' + current + '">T' + current + '</span>' +
+              '<span class="tier-arrow">→</span>' +
+              '<span class="t-tier-pill t-tier-' + target + '">T' + target + '</span>' +
+            '</div>' +
+            '<div class="tier-reason">' + reason + '</div>' +
+          '</div>' +
+          '<div class="tier-lede">Pick one evidence type. The compliance team will verify within 5 business days. For this demo, attestation is accepted on submission.</div>' +
+          '<div class="tier-opts">' + items + '</div>' +
+        '</div>'
+      );
+      modal("Upgrade to KYC Tier " + target, body, {
+        footer:
+          '<button type="button" class="t-btn" data-modal-close>Cancel</button>' +
+          '<button type="button" class="t-btn t-btn-primary" id="tier-confirm" ' + (selected ? '' : 'disabled') + '>Submit attestation →</button>'
+      });
+      const root = document.querySelector("[data-modal-root]");
+      root.querySelectorAll("[data-tier-opt]").forEach(function (b) {
+        b.addEventListener("click", function () { render(b.getAttribute("data-tier-opt")); });
+      });
+      const confirmBtn = root.querySelector("#tier-confirm");
+      if (confirmBtn) confirmBtn.addEventListener("click", function () {
+        if (!selected) return;
+        accountApi.upgradeTier(target);
+        const evidence = (options.find(function (o) { return o.id === selected; }) || {}).label;
+        alerts().add({ symbol: "ACCT", label: "KYC Tier " + target + " granted · " + evidence, value: "", unit: "", templateId: "tier-upgrade" });
+        // Drop the tier-upgrade attestation receipt into the Data Vault.
+        if (window.DataBank && window.DataBank.vaultApi) {
+          window.DataBank.vaultApi().add({
+            kind: "kyc",
+            title: "KYC Tier " + target + " attestation",
+            subtitle: "Evidence: " + (evidence || "—"),
+            payload: { fromTier: current, toTier: target, evidence: selected, evidenceLabel: evidence }
+          });
+        }
+        closeModal();
+        toast("KYC Tier " + target + " granted.");
+        if (window.WorkspaceShell && window.WorkspaceShell.refresh) window.WorkspaceShell.refresh();
+      });
+    }
+    render(null);
+  }
+
+  // v3 issuer-side "List a Deal" flow (5 steps).
+  // 1. SMEDAN caliber attestation → auto-routes to Lane A or Lane B
+  // 2. Deal identity + wrapper (constrained to lane's allowed list)
+  // 3. Universal deal terms + brief + use-of-proceeds breakdown
+  // 4. Auditor (FRCN list or FBNQuest fallback) + closing window
+  // 5. Dual-signatory PIN sign-off → submits as "Under Review"
+  function openListDealFlow() {
+    const DB = window.DataBank;
+    if (!DB || !DB.smedanRoute) return;
+    const FRCN_AUDITORS = [
+      { tier: 1, name: "PwC Nigeria" }, { tier: 1, name: "KPMG Nigeria" },
+      { tier: 1, name: "Deloitte Nigeria" }, { tier: 1, name: "Ernst & Young" },
+      { tier: 2, name: "BDO Professional Services" }, { tier: 2, name: "Grant Thornton" },
+      { tier: 2, name: "Baker Tilly Nigeria" }, { tier: 2, name: "PKF Professional Services" },
+      { tier: 2, name: "SIAO Partners" },
+      { tier: 3, name: "Local FRCN-registered firm (specify in submission)" }
+    ];
+    const draft = {
+      step: 1, totalSteps: 5,
+      employees: "", assetsNGN: "", yearsInOp: "", isListed: false,
+      smedan: null,
+      legalName: "", tradingName: "", ticker: "", sector: "Food & Agribusiness", wrapper: "",
+      raiseNGN: "", ticketMinNGN: 100000, ticketMaxNGN: 5000000,
+      valuationCapNGN: "", discountPct: 20, conversionTrigger: "Next qualified financing ≥ ₦250m", tenor: "",
+      brief: "", useOfProceeds: [{ label: "", pctRaise: "", ngn: 0 }],
+      auditor: "", auditorFallback: false, closingWindow: "72h",
+      signatory1Done: false, signatory2Done: false
+    };
+
+    function esc(s) {
+      return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+      });
+    }
+    function fmtNgn(n) {
+      n = +n; if (!n || isNaN(n)) return "—";
+      if (n >= 1e9) return "₦" + (n / 1e9).toFixed(2) + "bn";
+      if (n >= 1e6) return "₦" + (n / 1e6).toFixed(0) + "m";
+      if (n >= 1e3) return "₦" + (n / 1e3).toFixed(0) + "k";
+      return "₦" + n;
+    }
+    function recomputeSmedan() {
+      draft.smedan = DB.smedanRoute({
+        employees: draft.employees,
+        assetsNGN: draft.assetsNGN,
+        yearsInOp: draft.yearsInOp,
+        isListed: draft.isListed
+      });
+      // Snap wrapper choice if it's not in the new allowed set
+      if (draft.wrapper && draft.smedan.allowedWrappers.indexOf(draft.wrapper) < 0) draft.wrapper = "";
+    }
+
+    function header() {
+      return (
+        '<div class="ld-progress">' +
+          '<div class="ld-progress-bar"><span style="width:' + Math.round((draft.step / draft.totalSteps) * 100) + '%"></span></div>' +
+          '<div class="ld-progress-label">Step ' + draft.step + ' of ' + draft.totalSteps + '</div>' +
+        '</div>'
+      );
+    }
+
+    function step1() {
+      recomputeSmedan();
+      const s = draft.smedan;
+      const route = s ? (
+        '<div class="ld-route ' + (s.incorporationOK && s.caliber !== "Nano" ? "ok" : "warn") + '">' +
+          '<div class="ld-route-head">' +
+            '<span class="ld-route-caliber">' + esc(s.caliber) + ' caliber</span>' +
+            '<span class="lane-chip ' + (s.lane === "lane-a" ? "lane-a" : "lane-b") + '">' + esc(s.laneLabel) + '</span>' +
+          '</div>' +
+          '<div class="ld-route-body">' +
+            (s.reason ? '<div class="ld-route-reason">' + esc(s.reason) + '</div>' : '') +
+            '<div class="ld-route-meta">' +
+              (isFinite(s.raiseCapNGN) ? 'Max annual raise: <strong>' + fmtNgn(s.raiseCapNGN) + '</strong>' : 'No raise cap (qualified investors)') +
+              ' · Wrappers: <strong>' + s.allowedWrappers.join(", ") + '</strong>' +
+            '</div>' +
+          '</div>' +
+        '</div>'
+      ) : '';
+      return (
+        header() +
+        '<div class="ld-step">' +
+          '<h3 class="ld-h3">Tell us about your company</h3>' +
+          '<p class="ld-sub">SMEDAN caliber determines your lane and raise cap. The platform auto-routes — you don\'t choose Lane A or B yourself.</p>' +
+          '<div class="ld-grid">' +
+            '<div><label>Employees (full-time)</label><input class="t-input" id="ld-employees" type="number" min="0" value="' + esc(draft.employees) + '" placeholder="e.g. 12" /></div>' +
+            '<div><label>Total assets (NGN)</label><input class="t-input" id="ld-assets" type="number" min="0" value="' + esc(draft.assetsNGN) + '" placeholder="e.g. 80000000" /></div>' +
+            '<div><label>Years in operation</label><input class="t-input" id="ld-years" type="number" min="0" value="' + esc(draft.yearsInOp) + '" placeholder="≥ 2 for Lane A" /></div>' +
+            '<div><label class="ld-check-inline"><input type="checkbox" id="ld-listed" ' + (draft.isListed ? "checked" : "") + ' /> Listed on NGX</label></div>' +
+          '</div>' +
+          route +
+        '</div>'
+      );
+    }
+
+    function step2() {
+      const s = draft.smedan || {};
+      const wrappers = (s.allowedWrappers || []).map(function (w) {
+        const sel = draft.wrapper === w ? " is-selected" : "";
+        return '<button type="button" class="ld-wrap-card' + sel + '" data-ld-wrap="' + esc(w) + '"><strong>' + esc(w) + '</strong><span>' + wrapperOneLiner(w) + '</span></button>';
+      }).join("");
+      return (
+        header() +
+        '<div class="ld-step">' +
+          '<h3 class="ld-h3">Deal identity &amp; wrapper</h3>' +
+          '<p class="ld-sub">Issuer picks the wrapper within the auto-routed lane. Wrapper choices reflect what the law allows for your caliber.</p>' +
+          '<div class="ld-grid">' +
+            '<div><label>Legal name</label><input class="t-input" id="ld-legal" value="' + esc(draft.legalName) + '" placeholder="As on your CAC certificate" /></div>' +
+            '<div><label>Trading name</label><input class="t-input" id="ld-trading" value="' + esc(draft.tradingName) + '" placeholder="As marketed" /></div>' +
+            '<div><label>Ticker (4–5 chars)</label><input class="t-input" id="ld-ticker" value="' + esc(draft.ticker) + '" maxlength="5" placeholder="e.g. AGRMX" style="text-transform:uppercase" /></div>' +
+            '<div><label>Sector</label><input class="t-input" id="ld-sector" value="' + esc(draft.sector) + '" /></div>' +
+          '</div>' +
+          '<label style="margin-top:14px;display:block">Wrapper</label>' +
+          '<div class="ld-wrap-grid">' + wrappers + '</div>' +
+        '</div>'
+      );
+    }
+    function wrapperOneLiner(w) {
+      switch (w) {
+        case "CSAFE": return "Convertible SAFE — converts on next qualified round";
+        case "Convertible Note": return "Debt with conversion option + interest";
+        case "Equity Subscription": return "Direct share subscription";
+        case "PPM": return "Private Placement Memorandum (qualified only)";
+        case "Commercial Paper": return "Short-tenor unsecured debt";
+        case "Bonds": return "Fixed-tenor debt with coupon";
+        case "Revenue Share": return "Revenue-share agreement (non-equity)";
+      }
+      return "";
+    }
+
+    function step3() {
+      const s = draft.smedan || {};
+      const cap = s.raiseCapNGN;
+      const overCap = isFinite(cap) && cap > 0 && +draft.raiseNGN > cap;
+      const uopRows = draft.useOfProceeds.map(function (u, i) {
+        return (
+          '<div class="ld-uop-row" data-uop-row="' + i + '">' +
+            '<input class="t-input" data-uop="label" data-i="' + i + '" placeholder="e.g. Cold storage expansion" value="' + esc(u.label) + '" />' +
+            '<input class="t-input" data-uop="pctRaise" data-i="' + i + '" type="number" min="0" max="100" placeholder="%" value="' + esc(u.pctRaise) + '" style="width:80px" />' +
+            '<span class="ld-uop-ngn">' + fmtNgn((+draft.raiseNGN || 0) * (+u.pctRaise || 0) / 100) + '</span>' +
+            '<button type="button" class="ld-uop-rm" data-uop-rm="' + i + '" aria-label="Remove row">×</button>' +
+          '</div>'
+        );
+      }).join("");
+      const uopTotal = draft.useOfProceeds.reduce(function (a, u) { return a + (+u.pctRaise || 0); }, 0);
+      return (
+        header() +
+        '<div class="ld-step">' +
+          '<h3 class="ld-h3">Terms &amp; what this raise funds</h3>' +
+          '<p class="ld-sub">These are the universal deal-sheet fields. Investors see all of this before subscribing.</p>' +
+          '<div class="ld-grid">' +
+            '<div><label>Total raise target (NGN)</label><input class="t-input" id="ld-raise" type="number" min="0" value="' + esc(draft.raiseNGN) + '" placeholder="' + (isFinite(cap) ? "Max " + fmtNgn(cap) : "e.g. 85000000") + '" /></div>' +
+            '<div><label>Valuation cap (NGN)</label><input class="t-input" id="ld-valcap" type="number" min="0" value="' + esc(draft.valuationCapNGN) + '" placeholder="e.g. 425000000" /></div>' +
+            '<div><label>Min ticket (NGN)</label><input class="t-input" id="ld-tmin" type="number" min="0" value="' + esc(draft.ticketMinNGN) + '" /></div>' +
+            '<div><label>Max ticket (NGN)</label><input class="t-input" id="ld-tmax" type="number" min="0" value="' + esc(draft.ticketMaxNGN) + '" /></div>' +
+            '<div><label>Discount rate (%)</label><input class="t-input" id="ld-discount" type="number" min="0" max="100" value="' + esc(draft.discountPct) + '" /></div>' +
+            '<div><label>Tenor</label><input class="t-input" id="ld-tenor" value="' + esc(draft.tenor) + '" placeholder="e.g. 24 months" /></div>' +
+            '<div style="grid-column:1 / -1"><label>Conversion trigger</label><input class="t-input" id="ld-trigger" value="' + esc(draft.conversionTrigger) + '" /></div>' +
+          '</div>' +
+          (overCap ? '<div class="ld-warn">Raise target exceeds your caliber\'s annual cap of ' + fmtNgn(cap) + '. Adjust below the cap or upgrade caliber.</div>' : '') +
+          '<label style="margin-top:14px;display:block">Brief — what does the business do?</label>' +
+          '<textarea class="t-input" id="ld-brief" rows="3" placeholder="2-3 sentences. What you do, traction, why now.">' + esc(draft.brief) + '</textarea>' +
+          '<label style="margin-top:14px;display:block">Use of proceeds <span style="color:var(--text-muted);font-weight:400;font-size:11px;margin-left:6px">Total: ' + uopTotal + '%</span></label>' +
+          '<div class="ld-uop">' + uopRows + '</div>' +
+          '<button type="button" class="t-btn" id="ld-uop-add" style="height:26px;padding:0 10px;font-size:11px;margin-top:8px">+ Add row</button>' +
+        '</div>'
+      );
+    }
+
+    function step4() {
+      const cycles = [
+        { id: "24h", label: "24 hours", hint: "Hard close. No extensions." },
+        { id: "72h", label: "72 hours", hint: "Standard window." },
+        { id: "7d",  label: "7 days",   hint: "Extended — for larger or complex deals." }
+      ];
+      const auditorOpts = FRCN_AUDITORS.map(function (a) {
+        return '<option value="' + esc(a.name) + '" ' + (draft.auditor === a.name ? "selected" : "") + '>Tier ' + a.tier + ' · ' + esc(a.name) + '</option>';
+      }).join("");
+      const closing = cycles.map(function (c) {
+        const sel = draft.closingWindow === c.id ? " is-selected" : "";
+        return '<button type="button" class="ld-cw-card' + sel + '" data-ld-cw="' + c.id + '"><strong>' + c.label + '</strong><span>' + c.hint + '</span></button>';
+      }).join("");
+      return (
+        header() +
+        '<div class="ld-step">' +
+          '<h3 class="ld-h3">Auditor &amp; closing window</h3>' +
+          '<p class="ld-sub">FRCN-registered auditor is required. Engagement letter must be uploaded before the deal goes Live. Closing window cannot be changed once Live.</p>' +
+          '<label>Auditor</label>' +
+          '<select class="t-input" id="ld-auditor" style="width:100%">' +
+            '<option value="">— Select FRCN-registered firm —</option>' +
+            auditorOpts +
+          '</select>' +
+          '<label class="ld-check-inline" style="margin-top:8px"><input type="checkbox" id="ld-fallback" ' + (draft.auditorFallback ? "checked" : "") + ' /> No auditor — route to FBNQuest Merchant Bank fallback (2.5% of deal size, capped ₦15m).</label>' +
+          '<label style="margin-top:14px;display:block">Closing window</label>' +
+          '<div class="ld-cw-grid">' + closing + '</div>' +
+        '</div>'
+      );
+    }
+
+    function step5() {
+      const s = draft.smedan || {};
+      const summary = (
+        '<dl class="ld-review">' +
+          '<div><dt>Caliber → Lane</dt><dd>' + esc(s.caliber || "—") + ' → ' + esc(s.laneLabel || "—") + '</dd></div>' +
+          '<div><dt>Identity</dt><dd>' + esc(draft.legalName || "—") + ' · ' + esc(draft.ticker || "—") + '</dd></div>' +
+          '<div><dt>Wrapper</dt><dd>' + esc(draft.wrapper || "—") + '</dd></div>' +
+          '<div><dt>Raise target</dt><dd>' + fmtNgn(draft.raiseNGN) + '</dd></div>' +
+          '<div><dt>Ticket range</dt><dd>' + fmtNgn(draft.ticketMinNGN) + " – " + fmtNgn(draft.ticketMaxNGN) + '</dd></div>' +
+          '<div><dt>Auditor</dt><dd>' + (draft.auditorFallback ? "FBNQuest fallback" : esc(draft.auditor || "—")) + '</dd></div>' +
+          '<div><dt>Closing window</dt><dd>' + esc(draft.closingWindow) + '</dd></div>' +
+        '</dl>'
+      );
+      const sigState = '<div class="ld-sig-grid">' +
+        '<div class="ld-sig-tile' + (draft.signatory1Done ? " done" : "") + '">' +
+          '<div class="ld-sig-label">Signatory 1</div>' +
+          (draft.signatory1Done
+            ? '<div class="ld-sig-ok">' + svgCheck() + ' Signed</div>'
+            : '<button type="button" class="t-btn t-btn-primary" id="ld-sig1">Sign with PIN</button>') +
+        '</div>' +
+        '<div class="ld-sig-tile' + (draft.signatory2Done ? " done" : "") + '">' +
+          '<div class="ld-sig-label">Signatory 2</div>' +
+          (draft.signatory2Done
+            ? '<div class="ld-sig-ok">' + svgCheck() + ' Signed</div>'
+            : '<button type="button" class="t-btn ' + (draft.signatory1Done ? "t-btn-primary" : "") + '" id="ld-sig2" ' + (draft.signatory1Done ? "" : "disabled") + '>Sign with PIN</button>') +
+        '</div>' +
+      '</div>';
+      return (
+        header() +
+        '<div class="ld-step">' +
+          '<h3 class="ld-h3">Review &amp; dual-signatory sign-off</h3>' +
+          '<p class="ld-sub">v3 Part 3 requires two authorized signatories to sign every corporate action. Both must enter their PIN before the deal submits.</p>' +
+          summary + sigState +
+        '</div>'
+      );
+    }
+    function svgCheck() {
+      return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+    }
+
+    function bodyFor(n) {
+      if (n === 1) return step1();
+      if (n === 2) return step2();
+      if (n === 3) return step3();
+      if (n === 4) return step4();
+      return step5();
+    }
+    function canAdvance(n) {
+      if (n === 1) {
+        const s = draft.smedan || {};
+        if (s.caliber === "Nano") return false;
+        if (!s.incorporationOK) return false;
+        return draft.employees !== "" && draft.assetsNGN !== "" && draft.yearsInOp !== "";
+      }
+      if (n === 2) return draft.legalName && draft.ticker && draft.wrapper;
+      if (n === 3) {
+        const s = draft.smedan || {};
+        if (!draft.raiseNGN) return false;
+        if (isFinite(s.raiseCapNGN) && s.raiseCapNGN > 0 && +draft.raiseNGN > s.raiseCapNGN) return false;
+        if (!draft.brief) return false;
+        return true;
+      }
+      if (n === 4) return (draft.auditor || draft.auditorFallback) && draft.closingWindow;
+      return draft.signatory1Done && draft.signatory2Done;
+    }
+    function footerFor(n) {
+      const back = n > 1 ? '<button type="button" class="t-btn" id="ld-back">Back</button>' : '<button type="button" class="t-btn" data-modal-close>Cancel</button>';
+      const next = n < 5 ? '<button type="button" class="t-btn t-btn-primary" id="ld-next" ' + (canAdvance(n) ? "" : "disabled") + '>Next →</button>'
+                         : '<button type="button" class="t-btn t-btn-primary" id="ld-submit" ' + (canAdvance(n) ? "" : "disabled") + '>Submit for review →</button>';
+      return back + next;
+    }
+
+    function render() {
+      modal("List a deal · Issuer flow", bodyFor(draft.step), { footer: footerFor(draft.step) });
+      wire();
+    }
+
+    function wire() {
+      const $ = function (id) { return document.getElementById(id); };
+      // Universal nav
+      const back = $("ld-back"); if (back) back.addEventListener("click", function () { draft.step = Math.max(1, draft.step - 1); render(); });
+      const next = $("ld-next"); if (next) next.addEventListener("click", function () { draft.step = Math.min(5, draft.step + 1); render(); });
+      const submit = $("ld-submit"); if (submit) submit.addEventListener("click", finalizeSubmission);
+
+      // Step 1
+      ["ld-employees","ld-assets","ld-years","ld-listed"].forEach(function (id) {
+        const el = $(id); if (!el) return;
+        el.addEventListener("input", function () {
+          if (id === "ld-employees") draft.employees = el.value;
+          if (id === "ld-assets")    draft.assetsNGN = el.value;
+          if (id === "ld-years")     draft.yearsInOp = el.value;
+          if (id === "ld-listed")    draft.isListed = el.checked;
+          render(); // re-renders the route preview
+        });
+        el.addEventListener("change", function () {
+          if (id === "ld-listed") { draft.isListed = el.checked; render(); }
+        });
+      });
+
+      // Step 2
+      ["ld-legal","ld-trading","ld-ticker","ld-sector"].forEach(function (id) {
+        const el = $(id); if (!el) return;
+        el.addEventListener("input", function () {
+          if (id === "ld-legal")   draft.legalName = el.value;
+          if (id === "ld-trading") draft.tradingName = el.value;
+          if (id === "ld-ticker")  draft.ticker = el.value.toUpperCase();
+          if (id === "ld-sector")  draft.sector = el.value;
+          // Toggle disabled state on next
+          const n = $("ld-next"); if (n) n.disabled = !canAdvance(draft.step);
+        });
+      });
+      document.querySelectorAll("[data-ld-wrap]").forEach(function (b) {
+        b.addEventListener("click", function () { draft.wrapper = b.getAttribute("data-ld-wrap"); render(); });
+      });
+
+      // Step 3
+      ["ld-raise","ld-valcap","ld-tmin","ld-tmax","ld-discount","ld-tenor","ld-trigger","ld-brief"].forEach(function (id) {
+        const el = $(id); if (!el) return;
+        el.addEventListener("input", function () {
+          const map = { "ld-raise":"raiseNGN","ld-valcap":"valuationCapNGN","ld-tmin":"ticketMinNGN","ld-tmax":"ticketMaxNGN","ld-discount":"discountPct","ld-tenor":"tenor","ld-trigger":"conversionTrigger","ld-brief":"brief" };
+          draft[map[id]] = el.value;
+          if (id === "ld-raise" || id === "ld-brief") render(); // re-renders UoP totals / warnings
+          else { const n = $("ld-next"); if (n) n.disabled = !canAdvance(draft.step); }
+        });
+      });
+      document.querySelectorAll("[data-uop]").forEach(function (el) {
+        el.addEventListener("input", function () {
+          const i = +el.getAttribute("data-i");
+          const field = el.getAttribute("data-uop");
+          draft.useOfProceeds[i][field] = el.value;
+          if (field === "pctRaise") render(); // re-renders NGN preview
+        });
+      });
+      document.querySelectorAll("[data-uop-rm]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          const i = +b.getAttribute("data-uop-rm");
+          draft.useOfProceeds.splice(i, 1);
+          if (!draft.useOfProceeds.length) draft.useOfProceeds.push({ label: "", pctRaise: "", ngn: 0 });
+          render();
+        });
+      });
+      const uopAdd = $("ld-uop-add"); if (uopAdd) uopAdd.addEventListener("click", function () {
+        draft.useOfProceeds.push({ label: "", pctRaise: "", ngn: 0 }); render();
+      });
+
+      // Step 4
+      const auditor = $("ld-auditor"); if (auditor) auditor.addEventListener("change", function () { draft.auditor = auditor.value; draft.auditorFallback = false; render(); });
+      const fallback = $("ld-fallback"); if (fallback) fallback.addEventListener("change", function () { draft.auditorFallback = fallback.checked; if (fallback.checked) draft.auditor = ""; render(); });
+      document.querySelectorAll("[data-ld-cw]").forEach(function (b) {
+        b.addEventListener("click", function () { draft.closingWindow = b.getAttribute("data-ld-cw"); render(); });
+      });
+
+      // Step 5
+      const sig1 = $("ld-sig1"); if (sig1) sig1.addEventListener("click", function () {
+        closeModal();
+        pinPad({
+          title: "Signatory 1 — " + (draft.legalName || draft.ticker),
+          subtitle: "First authorized signatory enters their 6-digit PIN.",
+          onConfirm: function () { draft.signatory1Done = true; render(); }
+        });
+      });
+      const sig2 = $("ld-sig2"); if (sig2) sig2.addEventListener("click", function () {
+        if (!draft.signatory1Done) return;
+        closeModal();
+        pinPad({
+          title: "Signatory 2 — " + (draft.legalName || draft.ticker),
+          subtitle: "Second authorized signatory enters their 6-digit PIN. v3 Part 3 requires both before submission.",
+          onConfirm: function () { draft.signatory2Done = true; render(); }
+        });
+      });
+    }
+
+    function finalizeSubmission() {
+      const s = draft.smedan || {};
+      const dealsApi = DB.dealsApi();
+      const today = new Date().toISOString();
+      const niceDate = new Date().toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" });
+      const rec = dealsApi.create({
+        company: draft.tradingName || draft.legalName,
+        legalName: draft.legalName,
+        tradingName: draft.tradingName || draft.legalName,
+        ticker: draft.ticker.toUpperCase(),
+        sector: draft.sector || "Other",
+        stage: s.lane === "lane-a" ? "Seed" : "Growth",
+        size: "—",
+        sizeNum: (+draft.raiseNGN || 0) / 1550 / 1e6, // rough USDm
+        status: "Under Review",
+        statusType: "warning",
+        updated: niceDate,
+        lane: s.lane,
+        laneLabel: s.laneLabel,
+        wrapper: draft.wrapper,
+        kycTier: s.lane === "lane-b" ? 3 : 1,
+        sizeTier: "Micro",
+        allocationPct: 0,
+        raiseNGN: +draft.raiseNGN || 0,
+        ticketMinNGN: +draft.ticketMinNGN || 100000,
+        ticketMaxNGN: +draft.ticketMaxNGN || 5000000,
+        valuationCapNGN: +draft.valuationCapNGN || 0,
+        discountPct: +draft.discountPct || 0,
+        conversionTrigger: draft.conversionTrigger,
+        tenor: draft.tenor,
+        brief: draft.brief,
+        useOfProceeds: draft.useOfProceeds.filter(function (u) { return u.label && u.pctRaise; }).map(function (u) {
+          const pct = +u.pctRaise || 0;
+          return { label: u.label, pctRaise: pct, ngn: Math.round((+draft.raiseNGN || 0) * pct / 100) };
+        }),
+        auditor: draft.auditor || "FBNQuest Merchant Bank (fallback)",
+        closingWindow: draft.closingWindow,
+        signedAt: today,
+        submittedAt: today,
+        userCreated: true
+      });
+      alerts().add({
+        symbol: rec.ticker,
+        label: "Submitted for compliance review · " + rec.lane,
+        value: "", unit: "", templateId: "deal-submitted"
+      });
+      closeModal();
+      toast(rec.ticker + " submitted for review. Compliance SLA: 5 business days.");
+      if (window.WorkspaceShell && window.WorkspaceShell.refresh) window.WorkspaceShell.refresh();
+      // Refresh the deals table if we're on deals.html
+      if (window.RefreshDeals) window.RefreshDeals();
+    }
+
+    render();
   }
 
   function openReportsModal() {
@@ -470,7 +1187,7 @@
             '<input class="pay-input" name="cardName" placeholder="Ada Okafor" required />' +
           '</div>' +
           '<p class="pay-fineprint">' +
-            'You\'ll be charged <strong>$' + price + ' today</strong> and then every month. Your data subscription unlocks the full ' + company.name + ' profile across NEIIA Deal Room.' +
+            'You\'ll be charged <strong>$' + price + ' today</strong> and then every month. Your data subscription unlocks the full ' + company.name + ' profile across Deal Room.' +
           '</p>' +
         '</form>' +
       '</div>'
@@ -822,6 +1539,7 @@
         if (k === "open-help")    { e.preventDefault(); openHelpModal();   return; }
         if (k === "open-prefs")   { e.preventDefault(); openPrefsModal();  return; }
         if (k === "open-account") { e.preventDefault(); openAccountModal();return; }
+        if (k === "open-paywall") { e.preventDefault(); openPaywallModal();return; }
         if (k === "open-reports") { e.preventDefault(); openReportsModal();return; }
         if (k === "signout") {
           try { localStorage.clear(); } catch (_) {}
@@ -1018,6 +1736,7 @@
     alerts: alerts,
     modal: modal,
     closeModal: closeModal,
+    pinPad: pinPad,
     popover: popover,
     closePopover: closePopover,
     toast: toast,
@@ -1033,6 +1752,9 @@
     openHelpModal: openHelpModal,
     openPrefsModal: openPrefsModal,
     openAccountModal: openAccountModal,
+    openPaywallModal: openPaywallModal,
+    openTierUpgradeModal: openTierUpgradeModal,
+    openListDealFlow: openListDealFlow,
     openReportsModal: openReportsModal,
     executeCommand: executeCommand,
     charts: { indexAreaChart: indexAreaChart, priceChart: priceChart, volumeChart: volumeChart, radarChart: radarChart }

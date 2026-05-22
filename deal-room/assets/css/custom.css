@@ -1596,3 +1596,30 @@ textarea:focus-visible {
   .lp-veh-grid { grid-template-columns: repeat(2, 1fr); }
   .lp-kpi-strip { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* v3 framework-card grid (landing) */
+.fr-card { padding: 24px 22px; border: 1px solid var(--db-line, #E7E5E0); border-radius: 14px; background: #FFFFFF; transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease; }
+.fr-card:hover { border-color: #0A0A0A; transform: translateY(-2px); box-shadow: 0 12px 32px rgba(15,23,42,0.06); }
+.fr-card-eyebrow { font-family: "Inter", system-ui, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: #8E867B; font-weight: 600; margin-bottom: 10px; }
+.fr-card-title { font-family: "Instrument Serif", Georgia, serif; font-size: 22px; line-height: 1.15; color: #0A0A0A; margin-bottom: 10px; letter-spacing: -0.015em; }
+.fr-card-body { font-size: 13.5px; color: rgba(10,10,10,0.65); line-height: 1.6; margin: 0; }
+
+/* Public-browse teaser cards (anonymized live deals) */
+.teaser-card { padding: 20px; border: 1px solid var(--db-line, #E7E5E0); border-radius: 12px; background: #FFFFFF; display: flex; flex-direction: column; gap: 10px; transition: border-color 160ms ease, transform 160ms ease; min-height: 180px; }
+.teaser-card:hover { border-color: #0A0A0A; transform: translateY(-2px); }
+.teaser-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.teaser-lane { font-family: "Inter", system-ui, sans-serif; font-size: 9.5px; font-weight: 600; padding: 3px 8px; border-radius: 999px; letter-spacing: 0.04em; border: 1px solid; white-space: nowrap; }
+.teaser-lane.lane-a { background: rgba(224,79,57,0.10); color: #B43A28; border-color: rgba(224,79,57,0.32); }
+.teaser-lane.lane-b { background: rgba(201,162,39,0.12); color: #8A6F1A; border-color: rgba(201,162,39,0.34); }
+.teaser-status { font-family: "Inter", system-ui, sans-serif; font-size: 9.5px; font-weight: 600; padding: 3px 8px; border-radius: 4px; background: rgba(15,23,42,0.06); color: #475569; text-transform: uppercase; letter-spacing: 0.06em; border: 1px solid rgba(15,23,42,0.12); }
+.teaser-status.hot { background: rgba(22,163,74,0.10); color: #15803D; border-color: rgba(22,163,74,0.30); }
+.teaser-headline { font-family: "Instrument Serif", Georgia, serif; font-size: 22px; line-height: 1.2; color: #0A0A0A; letter-spacing: -0.015em; flex: 1; }
+.teaser-headline strong { font-weight: 400; }
+.teaser-meta { font-size: 11.5px; color: #8E867B; line-height: 1.4; }
+.teaser-bar { position: relative; height: 5px; background: rgba(15,23,42,0.07); border-radius: 3px; overflow: hidden; }
+.teaser-bar span { display: block; height: 100%; background: #0A0A0A; border-radius: 3px; }
+.teaser-foot { display: flex; justify-content: space-between; font-size: 11px; color: #475569; font-family: "Inter", system-ui, sans-serif; font-feature-settings: "tnum"; }
+.teaser-locked { background: var(--db-cream, #FBFAF6); align-items: center; justify-content: center; text-align: center; border-style: dashed; }
+.teaser-lock-icon { color: rgba(10,10,10,0.4); margin-bottom: 8px; }
+.teaser-lock-head { font-family: "Instrument Serif", Georgia, serif; font-size: 20px; color: #0A0A0A; line-height: 1.2; margin-bottom: 6px; }
+.teaser-lock-sub { font-size: 12.5px; color: rgba(10,10,10,0.6); line-height: 1.5; max-width: 28ch; margin: 0 auto; }
