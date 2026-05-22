@@ -139,12 +139,40 @@
   }
 
   // ---------- PIN pad (6-digit transaction PIN per v3 Part 10) ----------
-  // Demo: validates any 6 digits. Real impl will verify against user's PIN hash.
+  // Validates against the user's stored salted hash. 3 wrong entries → 24h lockout.
+  // If no PIN has been set yet, accepts any 6 digits and recommends setup.
   function pinPad(opts) {
     opts = opts || {};
     const title = opts.title || "Enter transaction PIN";
-    const subtitle = opts.subtitle || "Your 6-digit PIN is required to sign this subscription.";
+    const baseSub = opts.subtitle || "Your 6-digit PIN is required to sign this subscription.";
+    const acctApi = window.DataBank && window.DataBank.accountApi ? window.DataBank.accountApi() : null;
+    // Setup mode: capture PIN twice and store the hash (no verification).
+    const setupMode = opts.mode === "setup";
     let pin = "";
+    let confirmStage = setupMode ? "first" : "verify"; // "first" → "confirm" → done
+    let firstPin = "";
+    let errorMsg = "";
+
+    // Lockout pre-check (skip in setup mode).
+    if (!setupMode && acctApi) {
+      const lock = acctApi.lockoutState();
+      if (lock.locked) {
+        modal("PIN locked", '<p style="font-size:13px;color:var(--text-secondary);line-height:1.55">Too many failed attempts. PIN is locked until <strong>' + new Date(lock.until).toLocaleString("en-GB") + '</strong>. Real reset requires re-KYC (NIN + BVN + selfie liveness).</p>', { footer: '<button class="t-btn" data-modal-close>Close</button>' });
+        return;
+      }
+    }
+
+    function subText() {
+      if (setupMode) return confirmStage === "first" ? "Choose a 6-digit PIN. You'll be asked to confirm it on the next screen." : "Re-enter the same 6 digits to confirm.";
+      return baseSub;
+    }
+    function helpText() {
+      const lock = acctApi ? acctApi.lockoutState() : { attemptsLeft: 3 };
+      const noPin = acctApi && !acctApi.hasPin();
+      if (setupMode) return "PIN is hashed with a per-user salt before storage. Real production stack also bcrypts server-side.";
+      if (noPin) return "No PIN set yet — any 6 digits accepted. Set a real PIN in Settings → Account & KYC.";
+      return "Attempts left: " + lock.attemptsLeft + ". 3 wrong entries trigger a 24-hour lockout.";
+    }
     function render() {
       const cells = Array.from({ length: 6 }).map(function (_, i) {
         const filled = i < pin.length;
@@ -156,18 +184,23 @@
         if (k === "⌫") return '<button type="button" class="pin-key pin-key-back" data-pin-key="back" aria-label="Backspace">⌫</button>';
         return '<button type="button" class="pin-key" data-pin-key="' + k + '">' + k + '</button>';
       }).join("");
+      const errBlock = errorMsg ? '<div class="pin-error">' + errorMsg + '</div>' : '';
       const body = (
         '<div class="pin-wrap">' +
-          '<div class="pin-subtitle">' + subtitle + '</div>' +
+          '<div class="pin-subtitle">' + subText() + '</div>' +
           '<div class="pin-cells" aria-label="PIN entry">' + cells + '</div>' +
           '<div class="pin-pad">' + pad + '</div>' +
-          '<div class="pin-help">PIN attempts are limited. 3 wrong entries trigger a 24-hour cooldown.</div>' +
+          errBlock +
+          '<div class="pin-help">' + helpText() + '</div>' +
         '</div>'
       );
+      const confirmLabel = setupMode
+        ? (confirmStage === "first" ? "Next →" : "Set PIN →")
+        : "Confirm →";
       modal(title, body, {
         footer:
           '<button type="button" class="t-btn" data-modal-close>Cancel</button>' +
-          '<button type="button" class="t-btn t-btn-primary" id="pinConfirm" ' + (pin.length === 6 ? '' : 'disabled') + '>Confirm →</button>'
+          '<button type="button" class="t-btn t-btn-primary" id="pinConfirm" ' + (pin.length === 6 ? '' : 'disabled') + '>' + confirmLabel + '</button>'
       });
       const root = document.querySelector("[data-modal-root]");
       root.querySelectorAll("[data-pin-key]").forEach(function (b) {
@@ -175,30 +208,73 @@
           const k = b.getAttribute("data-pin-key");
           if (k === "back") pin = pin.slice(0, -1);
           else if (pin.length < 6) pin += k;
+          errorMsg = "";
           render();
         });
       });
       const confirmBtn = root.querySelector("#pinConfirm");
-      if (confirmBtn) confirmBtn.addEventListener("click", function () {
-        if (pin.length !== 6) return;
-        const entered = pin;
-        closeModal();
-        if (typeof opts.onConfirm === "function") opts.onConfirm(entered);
-      });
+      if (confirmBtn) confirmBtn.addEventListener("click", onConfirm);
       // physical keyboard
       document.addEventListener("keydown", keyHandler);
       function keyHandler(e) {
         if (!document.querySelector("[data-modal-root].is-open")) { document.removeEventListener("keydown", keyHandler); return; }
-        if (/^[0-9]$/.test(e.key)) { if (pin.length < 6) { pin += e.key; render(); } }
+        if (/^[0-9]$/.test(e.key)) { if (pin.length < 6) { pin += e.key; errorMsg = ""; render(); } }
         else if (e.key === "Backspace") { pin = pin.slice(0, -1); render(); }
         else if (e.key === "Enter" && pin.length === 6) {
           document.removeEventListener("keydown", keyHandler);
-          const entered = pin;
-          closeModal();
-          if (typeof opts.onConfirm === "function") opts.onConfirm(entered);
+          onConfirm();
         }
       }
     }
+
+    function onConfirm() {
+      if (pin.length !== 6) return;
+      const entered = pin;
+      if (setupMode) {
+        if (confirmStage === "first") {
+          firstPin = entered;
+          pin = "";
+          confirmStage = "confirm";
+          render();
+          return;
+        }
+        // confirm stage
+        if (entered !== firstPin) {
+          pin = "";
+          errorMsg = "PINs don't match. Re-enter the same 6 digits.";
+          render();
+          return;
+        }
+        if (acctApi && acctApi.setPin(entered)) {
+          closeModal();
+          toast("Transaction PIN set.");
+          if (typeof opts.onConfirm === "function") opts.onConfirm(entered);
+        }
+        return;
+      }
+      // verify mode
+      if (acctApi) {
+        const r = acctApi.verifyPin(entered);
+        if (r.ok) {
+          closeModal();
+          if (typeof opts.onConfirm === "function") opts.onConfirm(entered);
+          return;
+        }
+        if (r.locked) {
+          closeModal();
+          toast("Too many wrong attempts. PIN locked for 24h.");
+          return;
+        }
+        pin = "";
+        errorMsg = "Wrong PIN. " + r.attemptsLeft + " attempt" + (r.attemptsLeft === 1 ? "" : "s") + " left.";
+        render();
+        return;
+      }
+      // Fallback (no accountApi available)
+      closeModal();
+      if (typeof opts.onConfirm === "function") opts.onConfirm(entered);
+    }
+
     render();
   }
 
@@ -583,8 +659,15 @@
       valuationCapNGN: "", discountPct: 20, conversionTrigger: "Next qualified financing ≥ ₦250m", tenor: "",
       brief: "", useOfProceeds: [{ label: "", pctRaise: "", ngn: 0 }],
       auditor: "", auditorFallback: false, closingWindow: "72h",
+      files: { engagement: null, financials: null, tcc: null, sector: null },
       signatory1Done: false, signatory2Done: false
     };
+    function fmtFileSize(b) {
+      if (!b) return "";
+      if (b < 1024) return b + " B";
+      if (b < 1024 * 1024) return (b / 1024).toFixed(1) + " KB";
+      return (b / (1024 * 1024)).toFixed(1) + " MB";
+    }
 
     function esc(s) {
       return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
@@ -652,12 +735,27 @@
       );
     }
 
+    function tickerTaken(t) {
+      if (!t) return false;
+      const upper = t.toUpperCase();
+      const D = window.DataBankData;
+      const dealsApi = window.DataBank && window.DataBank.dealsApi ? window.DataBank.dealsApi() : null;
+      const seedHit = D && D.deals && D.deals.some(function (d) { return (d.ticker || "").toUpperCase() === upper; });
+      const userHit = dealsApi && dealsApi.list().some(function (d) { return (d.ticker || "").toUpperCase() === upper; });
+      return seedHit || userHit;
+    }
     function step2() {
       const s = draft.smedan || {};
       const wrappers = (s.allowedWrappers || []).map(function (w) {
         const sel = draft.wrapper === w ? " is-selected" : "";
         return '<button type="button" class="ld-wrap-card' + sel + '" data-ld-wrap="' + esc(w) + '"><strong>' + esc(w) + '</strong><span>' + wrapperOneLiner(w) + '</span></button>';
       }).join("");
+      const taken = tickerTaken(draft.ticker);
+      const tickerHint = !draft.ticker
+        ? '<div class="ld-ticker-hint">4–5 letters. Will be uppercase. Must be unique across the platform.</div>'
+        : taken
+          ? '<div class="ld-ticker-hint ld-ticker-taken">Ticker <strong>' + esc(draft.ticker) + '</strong> is already reserved. Pick another.</div>'
+          : '<div class="ld-ticker-hint ld-ticker-ok">Available — <strong>' + esc(draft.ticker) + '</strong> is yours.</div>';
       return (
         header() +
         '<div class="ld-step">' +
@@ -666,7 +764,11 @@
           '<div class="ld-grid">' +
             '<div><label>Legal name</label><input class="t-input" id="ld-legal" value="' + esc(draft.legalName) + '" placeholder="As on your CAC certificate" /></div>' +
             '<div><label>Trading name</label><input class="t-input" id="ld-trading" value="' + esc(draft.tradingName) + '" placeholder="As marketed" /></div>' +
-            '<div><label>Ticker (4–5 chars)</label><input class="t-input" id="ld-ticker" value="' + esc(draft.ticker) + '" maxlength="5" placeholder="e.g. AGRMX" style="text-transform:uppercase" /></div>' +
+            '<div>' +
+              '<label>Ticker (4–5 chars)</label>' +
+              '<input class="t-input ' + (taken ? "is-invalid" : "") + '" id="ld-ticker" value="' + esc(draft.ticker) + '" maxlength="5" placeholder="e.g. AGRMX" style="text-transform:uppercase" />' +
+              tickerHint +
+            '</div>' +
             '<div><label>Sector</label><input class="t-input" id="ld-sector" value="' + esc(draft.sector) + '" /></div>' +
           '</div>' +
           '<label style="margin-top:14px;display:block">Wrapper</label>' +
@@ -739,18 +841,40 @@
         const sel = draft.closingWindow === c.id ? " is-selected" : "";
         return '<button type="button" class="ld-cw-card' + sel + '" data-ld-cw="' + c.id + '"><strong>' + c.label + '</strong><span>' + c.hint + '</span></button>';
       }).join("");
+      function fileRow(key, label, hint, required) {
+        const f = draft.files[key];
+        const status = f
+          ? '<span class="ld-file-meta">' + esc(f.name) + ' · ' + fmtFileSize(f.size) + '</span>'
+          : '<span class="ld-file-meta ld-file-empty">' + (required ? "Required" : "Optional") + '</span>';
+        return (
+          '<div class="ld-file-row">' +
+            '<label class="ld-file-label">' + label + '<span class="ld-file-hint">' + hint + '</span></label>' +
+            '<div class="ld-file-control">' +
+              status +
+              '<input type="file" class="ld-file-input" data-ld-file="' + key + '" accept=".pdf,.doc,.docx" />' +
+            '</div>' +
+          '</div>'
+        );
+      }
       return (
         header() +
         '<div class="ld-step">' +
-          '<h3 class="ld-h3">Auditor &amp; closing window</h3>' +
-          '<p class="ld-sub">FRCN-registered auditor is required. Engagement letter must be uploaded before the deal goes Live. Closing window cannot be changed once Live.</p>' +
+          '<h3 class="ld-h3">Auditor, documents &amp; closing window</h3>' +
+          '<p class="ld-sub">FRCN-registered auditor required. Engagement letter, audited financials, and Tax Clearance Certificate must be on file before going Live. Closing window cannot be changed once Live.</p>' +
           '<label>Auditor</label>' +
           '<select class="t-input" id="ld-auditor" style="width:100%">' +
             '<option value="">— Select FRCN-registered firm —</option>' +
             auditorOpts +
           '</select>' +
           '<label class="ld-check-inline" style="margin-top:8px"><input type="checkbox" id="ld-fallback" ' + (draft.auditorFallback ? "checked" : "") + ' /> No auditor — route to FBNQuest Merchant Bank fallback (2.5% of deal size, capped ₦15m).</label>' +
-          '<label style="margin-top:14px;display:block">Closing window</label>' +
+          '<label style="margin-top:16px;display:block">Required documents</label>' +
+          '<div class="ld-files">' +
+            fileRow("engagement", "Audit engagement letter",     "Signed by your FRCN-registered auditor", true) +
+            fileRow("financials", "Audited financials (2 years)", "PDF, last two completed fiscal years",   true) +
+            fileRow("tcc",        "Tax Clearance Certificate",   "FIRS-issued TCC, last 3 years",          true) +
+            fileRow("sector",     "Sector clearances",           "CBN / NCC / NAFDAC etc. where applicable", false) +
+          '</div>' +
+          '<label style="margin-top:16px;display:block">Closing window</label>' +
           '<div class="ld-cw-grid">' + closing + '</div>' +
         '</div>'
       );
@@ -810,7 +934,7 @@
         if (!s.incorporationOK) return false;
         return draft.employees !== "" && draft.assetsNGN !== "" && draft.yearsInOp !== "";
       }
-      if (n === 2) return draft.legalName && draft.ticker && draft.wrapper;
+      if (n === 2) return draft.legalName && draft.ticker && draft.wrapper && !tickerTaken(draft.ticker);
       if (n === 3) {
         const s = draft.smedan || {};
         if (!draft.raiseNGN) return false;
@@ -818,7 +942,13 @@
         if (!draft.brief) return false;
         return true;
       }
-      if (n === 4) return (draft.auditor || draft.auditorFallback) && draft.closingWindow;
+      if (n === 4) {
+        if (!(draft.auditor || draft.auditorFallback)) return false;
+        if (!draft.closingWindow) return false;
+        // Required documents per v3 Part 19E
+        if (!draft.files.engagement || !draft.files.financials || !draft.files.tcc) return false;
+        return true;
+      }
       return draft.signatory1Done && draft.signatory2Done;
     }
     function footerFor(n) {
@@ -861,7 +991,28 @@
         el.addEventListener("input", function () {
           if (id === "ld-legal")   draft.legalName = el.value;
           if (id === "ld-trading") draft.tradingName = el.value;
-          if (id === "ld-ticker")  draft.ticker = el.value.toUpperCase();
+          if (id === "ld-ticker") {
+            // Live-update ticker hint without full re-render (preserves focus/cursor)
+            const upper = el.value.toUpperCase();
+            draft.ticker = upper;
+            if (el.value !== upper) el.value = upper;
+            const hint = document.querySelector(".ld-ticker-hint");
+            if (hint) {
+              if (!upper) {
+                hint.className = "ld-ticker-hint";
+                hint.innerHTML = "4–5 letters. Will be uppercase. Must be unique across the platform.";
+                el.classList.remove("is-invalid");
+              } else if (tickerTaken(upper)) {
+                hint.className = "ld-ticker-hint ld-ticker-taken";
+                hint.innerHTML = "Ticker <strong>" + upper + "</strong> is already reserved. Pick another.";
+                el.classList.add("is-invalid");
+              } else {
+                hint.className = "ld-ticker-hint ld-ticker-ok";
+                hint.innerHTML = "Available — <strong>" + upper + "</strong> is yours.";
+                el.classList.remove("is-invalid");
+              }
+            }
+          }
           if (id === "ld-sector")  draft.sector = el.value;
           // Toggle disabled state on next
           const n = $("ld-next"); if (n) n.disabled = !canAdvance(draft.step);
@@ -906,6 +1057,17 @@
       const fallback = $("ld-fallback"); if (fallback) fallback.addEventListener("change", function () { draft.auditorFallback = fallback.checked; if (fallback.checked) draft.auditor = ""; render(); });
       document.querySelectorAll("[data-ld-cw]").forEach(function (b) {
         b.addEventListener("click", function () { draft.closingWindow = b.getAttribute("data-ld-cw"); render(); });
+      });
+      // File uploads — capture metadata only (demo mock; real impl uploads to S3/equivalent).
+      document.querySelectorAll("[data-ld-file]").forEach(function (input) {
+        input.addEventListener("change", function () {
+          const key = input.getAttribute("data-ld-file");
+          const f = input.files && input.files[0];
+          if (f) {
+            draft.files[key] = { name: f.name, size: f.size, type: f.type, uploadedAt: new Date().toISOString() };
+            render();
+          }
+        });
       });
 
       // Step 5
@@ -967,6 +1129,7 @@
         closingWindow: draft.closingWindow,
         signedAt: today,
         submittedAt: today,
+        files: draft.files,
         userCreated: true
       });
       alerts().add({

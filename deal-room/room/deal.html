@@ -169,14 +169,29 @@
         );
 
         // Issuer transition controls — visible only for user-created deals (Publisher Workspace lens).
+        // Compliance Hold deals: friendlier "Resubmit for review" label + cooldown gate.
+        let cooldownLine = "";
+        if (isOwner && deal.status === "Compliance Hold" && DB.complianceApi) {
+          const cmpl = DB.complianceApi();
+          const resub = cmpl.canResubmit(deal.id);
+          if (!resub.ok) {
+            cooldownLine = '<div class="lc-trans-cooldown">3 failed reviews — resubmission locked until <strong>' +
+              new Date(resub.until).toLocaleDateString("en-GB", { day:"2-digit", month:"short", year:"numeric" }) +
+              '</strong>. Address remediation notes from compliance before retry.</div>';
+          }
+        }
         const transitions = (isOwner && allowed.length) ? (
           '<section class="panel lc-trans">' +
             '<div class="panel-header"><div class="panel-title">Issuer actions</div><div class="panel-sub">Allowed next states</div></div>' +
             '<div class="lc-trans-body">' +
               '<div class="lc-trans-current">Current: <span class="badge badge-' + meta.severity + '">' + DF.esc(deal.status) + '</span></div>' +
+              cooldownLine +
               '<div class="lc-trans-btns">' +
                 allowed.map(function (next) {
-                  return '<button type="button" class="t-btn" data-transition="' + DF.esc(next) + '">→ ' + DF.esc(next) + '</button>';
+                  const label = (deal.status === "Compliance Hold" && next === "Under Review") ? "Resubmit for review" : ("→ " + next);
+                  // Disable resubmit during cooldown
+                  const isResubmitBlocked = (deal.status === "Compliance Hold" && next === "Under Review" && cooldownLine);
+                  return '<button type="button" class="t-btn ' + (next === "Under Review" && deal.status === "Compliance Hold" ? "t-btn-primary" : "") + '" data-transition="' + DF.esc(next) + '"' + (isResubmitBlocked ? " disabled" : "") + '>' + DF.esc(label) + '</button>';
                 }).join("") +
               '</div>' +
             '</div>' +
@@ -242,7 +257,7 @@
               deal.statusType = DB.lifecycleMeta(to).severity;
               deal.activity = deal.activity || [];
               deal.activity.unshift({ at: new Date().toISOString(), text: "Status: " + from + " → " + to });
-              if (deal.userCreated) api.save(deal);
+              api.save(deal);
               T.alerts().add({
                 symbol: deal.ticker, label: from + " → " + to, value: "", unit: "",
                 templateId: "lifecycle", severity: DB.transitionSeverity(from, to)
@@ -440,7 +455,7 @@
             question: text, askedBy: asker, askedAt: new Date().toISOString(),
             answer: "", answeredAt: null
           });
-          if (deal.userCreated) api.save(deal);
+          api.save(deal);
           T.alerts().add({
             symbol: deal.ticker, label: "New Q&A question", value: "", unit: "",
             templateId: "qa", severity: "standard"
@@ -469,7 +484,7 @@
           q.answeredAt = new Date().toISOString();
           deal.activity = deal.activity || [];
           deal.activity.unshift({ at: q.answeredAt, text: "Q&A answer published" });
-          if (deal.userCreated) api.save(deal);
+          api.save(deal);
           T.alerts().add({
             symbol: deal.ticker, label: "Q&A answered · broadcast to subscribers", value: "", unit: "",
             templateId: "qa", severity: "critical"
@@ -538,7 +553,7 @@
           deal.reports.push(rec);
           deal.activity = deal.activity || [];
           deal.activity.unshift({ at: rec.at, text: "Filed " + cycleLabel(cycle) });
-          if (deal.userCreated) api.save(deal);
+          api.save(deal);
           T.alerts().add({
             symbol: deal.ticker, label: cycleLabel(cycle) + " filed", value: "", unit: "",
             templateId: "report", severity: "standard"

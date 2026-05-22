@@ -114,10 +114,14 @@
       const acctApi = window.DataBank && window.DataBank.accountApi ? window.DataBank.accountApi() : null;
       const dealsCrud = window.DataBank && window.DataBank.dealsApi ? window.DataBank.dealsApi() : null;
 
-      // Merge seeded deals with user-submitted deals from dealsApi (under-review issuances).
+      // Merge seeded deals with dealsApi entries. dealsApi takes priority for any id present
+      // (covers both user-created issuances + mutated seeded deals — status, reports, Q&A).
       function getMergedDeals() {
-        const user = dealsCrud ? dealsCrud.list().filter(function (d) { return d.userCreated; }) : [];
-        return user.concat(D.deals);
+        const stored = dealsCrud ? dealsCrud.list() : [];
+        const storedIds = {};
+        stored.forEach(function (d) { storedIds[d.id] = true; });
+        const seedFallback = D.deals.filter(function (d) { return !storedIds[d.id]; });
+        return stored.concat(seedFallback);
       }
 
       // Re-render when account state changes (verify, tier upgrade) so locks/caps reflect.
@@ -404,12 +408,25 @@
         const laneTip = LANE_TIPS[d.lane] || '';
         const wrapTip = WRAPPER_TIPS[d.wrapper] || '';
         const acc = acctApi ? acctApi.get() : { kycTier: 1 };
+        // v3 Part 5 — annual aggregate counter against tier cap (₦20m T1, ₦200m T2, none T3)
+        const investmentsApi = window.DataBank && window.DataBank.investmentsApi ? window.DataBank.investmentsApi() : null;
+        const annualUsed = investmentsApi ? investmentsApi.annualSubscribedNGN() : 0;
+        const annualCap = caps.annualMaxNGN;
+        const annualRemaining = isFinite(annualCap) ? Math.max(0, annualCap - annualUsed) : Infinity;
+        const annualPct = isFinite(annualCap) && annualCap > 0 ? Math.min(100, Math.round((annualUsed / annualCap) * 100)) : 0;
+        const annualBlock = isFinite(annualCap)
+          ? '<div class="sub-annual">' +
+              '<div class="sub-annual-row"><span>Annual cap used</span><strong>' + fmtNgn(annualUsed) + ' / ' + fmtNgn(annualCap) + '</strong></div>' +
+              '<div class="sub-annual-bar"><span style="width:' + annualPct + '%"></span></div>' +
+              '<div class="sub-annual-foot">Remaining for ' + new Date().getFullYear() + ': <strong>' + fmtNgn(annualRemaining) + '</strong></div>' +
+            '</div>'
+          : '';
         const tierLine = 'Your KYC Tier ' + (acc.kycTier || 1) + (caps.label ? ' (' + caps.label + ')' : '') +
                         ' caps you at ' + (effMin ? fmtNgn(caps.perDealMinNGN) : '₦0') + '–' + (isFinite(caps.perDealMaxNGN) ? fmtNgn(caps.perDealMaxNGN) : 'no cap') + ' per deal' +
                         (isFinite(caps.annualMaxNGN) ? ' · ' + fmtNgn(caps.annualMaxNGN) + ' annual aggregate' : '') + '.';
         const tierWarning = d.lane === 'lane-b'
-          ? '<div class="sub-callout warn"><strong>KYC Tier 3 required.</strong> Lane B private placements are restricted to qualified investors (₦100m+ net worth, ₦20m+ income, or SEC-registered institutional). ' + tierLine + '</div>'
-          : '<div class="sub-callout ok"><strong>Lane A · Crowdfund.</strong> ' + tierLine + '</div>';
+          ? '<div class="sub-callout warn"><strong>KYC Tier 3 required.</strong> Lane B private placements are restricted to qualified investors (₦100m+ net worth, ₦20m+ income, or SEC-registered institutional). ' + tierLine + '</div>' + annualBlock
+          : '<div class="sub-callout ok"><strong>Lane A · Crowdfund.</strong> ' + tierLine + '</div>' + annualBlock;
 
         // "What you're funding" — surfaces the deal brief and use of proceeds.
         // Lane A deals carry full UoP table + milestones + whyNow; Lane B uses the lighter line from the PPM.
@@ -495,6 +512,10 @@
           const cool = document.getElementById('sub-cool').checked;
           if (!ticket || ticket < effMin) { T.toast('Ticket below minimum ' + fmtNgn(effMin)); return; }
           if (isFinite(effMax) && ticket > effMax) { T.toast('Ticket exceeds your tier cap ' + fmtNgn(effMax)); return; }
+          if (isFinite(annualCap) && (annualUsed + ticket) > annualCap) {
+            T.toast('Would exceed annual cap. Remaining: ' + fmtNgn(annualRemaining));
+            return;
+          }
           if (!risk || !cool) { T.toast('Both attestations are required'); return; }
           T.closeModal();
           T.pinPad({
@@ -761,10 +782,21 @@
       document.getElementById("newDealBtn").addEventListener("click", function () {
         if (window.DealFlow) window.DealFlow.openWizard();
       });
-      // "+ List a deal" — v3 issuer flow (5-step, SMEDAN caliber → wrapper → terms → auditor → dual-PIN)
+      // "+ List a deal" — v3 issuer flow. Per Part 3: issuance is Corporate-only.
       document.getElementById("listDealBtn").addEventListener("click", function () {
         const acc = acctApi ? acctApi.get() : null;
         if (!acc || !acc.verified) { T.openPaywallModal && T.openPaywallModal(); return; }
+        if (acc.accountType !== 'corporate') {
+          T.modal("Corporate account required",
+            '<p style="font-size:13px;color:var(--text-secondary);line-height:1.55">Per v3 Part 3, only Corporate accounts can issue deals. Corporate accounts require CAC RC + TIN, two authorized signatories, audited financials, and Tax Clearance Certificates.</p>' +
+            '<p style="font-size:13px;color:var(--text-secondary);line-height:1.55;margin-top:10px">Switch your plan to Corporate to access the List-a-Deal flow.</p>',
+            { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="switchToCorp">Switch to Corporate plan</button>' });
+          document.getElementById("switchToCorp").addEventListener("click", function () {
+            T.closeModal();
+            if (T.openPaywallModal) T.openPaywallModal();
+          });
+          return;
+        }
         if (T.openListDealFlow) T.openListDealFlow();
       });
 

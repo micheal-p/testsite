@@ -676,6 +676,15 @@ html.terminal .lane-chip {
 .sub-check { display: flex; align-items: flex-start; gap: 8px; margin-top: 10px; font-size: 12px; line-height: 1.45; color: var(--text-secondary, #475569); text-transform: none; letter-spacing: 0; font-weight: 400; cursor: pointer; }
 .sub-check input { margin-top: 2px; flex-shrink: 0; }
 
+/* Tier-cap annual aggregate counter (v3 Part 5) */
+.sub-annual { padding: 10px 12px; border: 1px solid var(--border-t, #E7E5E0); border-radius: 6px; background: var(--bg-panel-elev, #FBFAF6); margin-bottom: 14px; }
+.sub-annual-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary, #475569); margin-bottom: 6px; }
+.sub-annual-row strong { font-family: var(--mono, ui-monospace, monospace); color: #0A0A0A; }
+.sub-annual-bar { position: relative; height: 5px; background: rgba(15,23,42,0.08); border-radius: 3px; overflow: hidden; }
+.sub-annual-bar span { display: block; height: 100%; background: #0A0A0A; border-radius: 3px; transition: width 240ms ease; }
+.sub-annual-foot { font-size: 11px; color: var(--text-muted, #94a3b8); margin-top: 6px; }
+.sub-annual-foot strong { color: #0A0A0A; font-family: var(--mono, ui-monospace, monospace); }
+
 /* PIN pad — 6-digit transaction PIN per v3 */
 .pin-wrap     { max-width: 280px; margin: 0 auto; padding: 4px 0 8px; }
 .pin-subtitle { font-size: 12px; color: var(--text-secondary, #475569); line-height: 1.5; text-align: center; margin-bottom: 18px; }
@@ -688,6 +697,7 @@ html.terminal .lane-chip {
 .pin-key:active { transform: scale(0.97); background: #EDEAE1; }
 .pin-key-back  { background: #FBFAF6; font-size: 16px; }
 .pin-help      { font-size: 11px; color: var(--text-muted, #94a3b8); text-align: center; line-height: 1.5; }
+.pin-error     { font-size: 12px; color: #B43A28; text-align: center; padding: 8px 12px; margin: 0 0 10px; background: rgba(224,79,57,0.06); border: 1px solid rgba(224,79,57,0.22); border-radius: 6px; font-weight: 500; }
 
 /* Bilateral Subscription Agreement preview */
 .agreement     { font-family: var(--sans, system-ui, sans-serif); color: #0A0A0A; max-height: 60vh; overflow-y: auto; padding-right: 8px; }
@@ -860,6 +870,20 @@ html.terminal .lane-chip {
 .ld-sig-tile.done { border-style: solid; border-color: #16A34A; background: rgba(22,163,74,0.04); }
 .ld-sig-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted, #94a3b8); font-weight: 600; margin-bottom: 10px; }
 .ld-sig-ok    { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #15803D; font-weight: 600; }
+.ld-ticker-hint { font-size: 11px; color: var(--text-muted, #94a3b8); margin-top: 4px; line-height: 1.4; }
+.ld-ticker-hint.ld-ticker-ok    { color: #15803D; }
+.ld-ticker-hint.ld-ticker-taken { color: #B43A28; }
+.t-input.is-invalid { border-color: #B43A28; background: rgba(224,79,57,0.04); }
+
+/* List-a-Deal Step 4 file uploads */
+.ld-files { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+.ld-file-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; padding: 10px 12px; border: 1px solid var(--border-t, #E7E5E0); border-radius: 8px; background: #FFFFFF; }
+.ld-file-label { font-size: 12.5px; color: #0A0A0A; font-weight: 500; display: flex; flex-direction: column; gap: 2px; text-transform: none; letter-spacing: 0; margin-bottom: 0; }
+.ld-file-hint  { font-size: 11px; color: var(--text-muted, #94a3b8); font-weight: 400; }
+.ld-file-control { display: flex; align-items: center; gap: 10px; }
+.ld-file-meta { font-size: 11.5px; color: var(--text-secondary, #475569); font-family: var(--mono, ui-monospace, monospace); white-space: nowrap; }
+.ld-file-empty { color: var(--text-muted, #94a3b8); font-style: italic; font-family: var(--sans, system-ui, sans-serif); }
+.ld-file-input { font-size: 11px; max-width: 180px; }
 .your-raise-tag { display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: 999px; background: rgba(224,79,57,0.10); color: #B43A28; font-family: var(--sans, system-ui, sans-serif); font-size: 9px; font-weight: 600; letter-spacing: 0.02em; text-transform: none; vertical-align: middle; border: 1px solid rgba(224,79,57,0.32); }
 
 /* Activity feed severity tiers (v3 Part 19I) */
@@ -1050,6 +1074,7 @@ html.terminal .lane-chip {
 .lc-trans-current .badge { margin-left: 4px; }
 .lc-trans-btns { display: flex; gap: 6px; flex-wrap: wrap; }
 .lc-trans-btns .t-btn { height: 30px; padding: 0 12px; font-size: 12px; }
+.lc-trans-cooldown { padding: 10px 12px; background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.22); border-radius: 6px; font-size: 12.5px; color: #991B1B; line-height: 1.5; margin-bottom: 12px; }
 
 .lc-activity { padding: 4px 16px 12px; max-height: 280px; overflow: auto; }
 .lc-activity-row { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border-t-soft, #EFEDE6); font-size: 12px; }

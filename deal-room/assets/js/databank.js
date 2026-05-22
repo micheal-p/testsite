@@ -503,8 +503,31 @@
         const groups = { Pipeline: [], Active: [], Converted: [], Lost: [] };
         this.list().forEach(function (i) { (groups[i.bucket] || groups.Pipeline).push(i); });
         return groups;
+      },
+      // v3 Part 5 — investor's signed-tickets total for a given calendar year.
+      // Used to enforce annual aggregate caps (T1: ₦20m, T2: ₦200m, T3: no cap).
+      annualSubscribedNGN(year) {
+        const y = year || new Date().getFullYear();
+        return this.list().reduce(function (a, i) {
+          const t = new Date(i.signedAt || i.updated || 0).getFullYear();
+          return a + (t === y ? (+i.ticketNGN || 0) : 0);
+        }, 0);
       }
     };
+  }
+
+  // Demo-only salted hash. Real impl uses crypto.subtle (SHA-256) client-side + bcrypt on server.
+  function _hashPin(pin, salt) {
+    const input = (salt || "") + ":" + (pin || "");
+    let h = 2166136261 >>> 0;
+    for (let i = 0; i < input.length; i++) {
+      h ^= input.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return ("00000000" + (h >>> 0).toString(16)).slice(-8);
+  }
+  function _newSalt() {
+    return Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 10);
   }
 
   // v3 account state: type, KYC tier, verification status, current plan.
@@ -567,6 +590,36 @@
       upgradeTier(toTier) {
         const t = Math.min(3, Math.max(1, toTier | 0));
         return this.set({ kycTier: t });
+      },
+      // v3 Part 10 — transaction PIN. Stored as salted hash; never plaintext.
+      // 3 wrong entries lock the PIN out for 24h. Reset requires re-KYC (out of demo scope).
+      hasPin() { return !!(load().pinHash); },
+      setPin(pin) {
+        if (!/^\d{6}$/.test(String(pin))) return false;
+        const salt = _newSalt();
+        return this.set({ pinSalt: salt, pinHash: _hashPin(pin, salt), pinSetAt: Date.now(), pinFailedAttempts: 0, pinLockoutUntil: null });
+      },
+      clearPin() { return this.set({ pinSalt: null, pinHash: null, pinSetAt: null, pinFailedAttempts: 0, pinLockoutUntil: null }); },
+      lockoutState() {
+        const acc = load();
+        if (!acc.pinLockoutUntil) return { locked: false, attemptsLeft: 3 - (acc.pinFailedAttempts || 0) };
+        if (Date.now() >= +new Date(acc.pinLockoutUntil)) return { locked: false, attemptsLeft: 3 };
+        return { locked: true, until: acc.pinLockoutUntil };
+      },
+      verifyPin(pin) {
+        const acc = load();
+        if (!acc.pinHash) return { ok: true, noPinSet: true }; // demo fallback: any PIN accepted until one is set
+        if (this.lockoutState().locked) return { ok: false, locked: true, until: acc.pinLockoutUntil };
+        const computed = _hashPin(pin, acc.pinSalt);
+        if (computed === acc.pinHash) {
+          this.set({ pinFailedAttempts: 0 });
+          return { ok: true };
+        }
+        const failed = (acc.pinFailedAttempts || 0) + 1;
+        const patch = { pinFailedAttempts: failed };
+        if (failed >= 3) patch.pinLockoutUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+        this.set(patch);
+        return { ok: false, attemptsLeft: Math.max(0, 3 - failed), locked: failed >= 3, until: patch.pinLockoutUntil };
       },
       caps() {
         const acc = load();

@@ -684,6 +684,17 @@
         const cancelBtn = acc.verified
           ? '<button class="t-btn" type="button" id="acct-cancel" style="color:var(--down)">Cancel verification</button>'
           : '';
+        const pinBtn = acctApi.hasPin()
+          ? '<button class="t-btn" type="button" id="acct-pin-reset">Reset transaction PIN</button>'
+          : (acc.verified ? '<button class="t-btn t-btn-primary" type="button" id="acct-pin-set">Set transaction PIN</button>' : '');
+        const lock = acctApi.lockoutState();
+        const pinLine = !acc.verified ? ''
+          : acctApi.hasPin()
+            ? '<div class="acct-cell"><div class="acct-label">Transaction PIN</div><div class="acct-val">' +
+                '<span class="acct-pill ok">Set</span>' +
+                (lock.locked ? ' <span class="acct-pill warn">Locked until ' + new Date(lock.until).toLocaleString("en-GB") + '</span>' : '') +
+              '</div></div>'
+            : '<div class="acct-cell"><div class="acct-label">Transaction PIN</div><div class="acct-val"><span class="acct-pill warn">Not set — any 6 digits accepted</span></div></div>';
         document.getElementById("acctSummary").innerHTML = (
           '<div class="acct-grid">' +
             '<div class="acct-cell"><div class="acct-label">Status</div><div class="acct-val">' + verifiedLine + '</div></div>' +
@@ -691,9 +702,20 @@
             '<div class="acct-cell"><div class="acct-label">KYC tier</div><div class="acct-val">Tier ' + acc.kycTier + tierBadge + ' <span style="color:var(--text-muted);font-size:12px;margin-left:6px">' + tierLabel + '</span></div></div>' +
             '<div class="acct-cell"><div class="acct-label">Plan</div><div class="acct-val">' + planLine + '</div></div>' +
             '<div class="acct-cell acct-cell-wide"><div class="acct-label">Ticket caps</div><div class="acct-val">' + capLine + '</div></div>' +
+            pinLine +
           '</div>' +
-          '<div class="acct-actions">' + verifyBtn + upgradeBtn + cancelBtn + '</div>'
+          '<div class="acct-actions">' + verifyBtn + upgradeBtn + pinBtn + cancelBtn + '</div>'
         );
+        const pinSet = document.getElementById("acct-pin-set");
+        if (pinSet) pinSet.addEventListener("click", function () {
+          T.pinPad({ mode: "setup", title: "Set transaction PIN", onConfirm: function () { renderAccount(); } });
+        });
+        const pinReset = document.getElementById("acct-pin-reset");
+        if (pinReset) pinReset.addEventListener("click", function () {
+          if (!confirm("Reset your transaction PIN? In production this requires a fresh KYC liveness check.")) return;
+          acctApi.clearPin();
+          T.pinPad({ mode: "setup", title: "Set new transaction PIN", onConfirm: function () { renderAccount(); } });
+        });
         const cancel = document.getElementById("acct-cancel");
         if (cancel) cancel.addEventListener("click", function () {
           if (!confirm("Cancel verification? You will retain access until the current period ends.")) return;
