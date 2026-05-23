@@ -193,11 +193,22 @@
             renderAccessLog(rec) +
           '</div>'
         );
-        T.modal(rec.title, body, {
-          footer: '<button class="t-btn" data-modal-close>Close</button><button class="t-btn t-btn-primary" id="vault-download">Download watermarked PDF</button>'
-        });
+        // For Bilateral Subscription Agreements, the Download / Print button opens a real
+        // print-styled standalone page. User saves as PDF via the browser's native print dialog.
+        const isAgreement = rec.kind === "agreement" && rec.investmentId;
+        const footer = isAgreement
+          ? '<button class="t-btn" data-modal-close>Close</button>' +
+            '<button class="t-btn t-btn-primary" id="vault-download">Open · Print / Save as PDF</button>'
+          : '<button class="t-btn" data-modal-close>Close</button>' +
+            '<button class="t-btn t-btn-primary" id="vault-download">Download watermarked PDF</button>';
+        T.modal(rec.title, body, { footer: footer });
         document.getElementById("vault-download").addEventListener("click", function () {
-          T.toast("Watermarked PDF generation queued (demo mock).");
+          if (isAgreement) {
+            // Open the printable agreement view; user prints/saves from there
+            window.open("agreement.html?id=" + encodeURIComponent(rec.investmentId), "_blank");
+          } else {
+            T.toast("Watermarked PDF generation queued (demo mock).");
+          }
         });
       }
 

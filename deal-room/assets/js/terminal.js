@@ -15,30 +15,50 @@
   function alerts() {
     return {
       list() { return store.get(ALERTS_KEY, []); },
+      unreadCount() { return this.list().filter(function (a) { return !a.read; }).length; },
       add(a) {
         const list = this.list();
-        list.unshift(Object.assign({ id: "a_" + Date.now().toString(36) + Math.random().toString(36).slice(2,6), created: new Date().toISOString() }, a));
+        list.unshift(Object.assign({
+          id: "a_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+          created: new Date().toISOString(),
+          read: false
+        }, a));
         store.set(ALERTS_KEY, list);
         refreshAlertsCount();
         return list;
+      },
+      markRead(id) {
+        const list = this.list();
+        const i = list.findIndex(function (a) { return a.id === id; });
+        if (i < 0) return;
+        list[i].read = true;
+        store.set(ALERTS_KEY, list);
+        refreshAlertsCount();
+      },
+      markAllRead() {
+        const list = this.list().map(function (a) { return Object.assign({}, a, { read: true }); });
+        store.set(ALERTS_KEY, list);
+        refreshAlertsCount();
       },
       remove(id) {
         const list = this.list().filter(function (a) { return a.id !== id; });
         store.set(ALERTS_KEY, list);
         refreshAlertsCount();
         return list;
+      },
+      clearAll() {
+        store.set(ALERTS_KEY, []);
+        refreshAlertsCount();
       }
     };
   }
 
+  // Show unread count in the bell badge (was: total count)
   function refreshAlertsCount() {
-    const n = alerts().list().length;
+    const n = alerts().unreadCount();
     document.querySelectorAll("[data-alerts-count]").forEach(function (el) {
       el.textContent = String(n);
       el.style.display = n > 0 ? "" : "none";
-    });
-    document.querySelectorAll(".workspace-nav .nav-badge").forEach(function (el) {
-      // only the alerts nav badge is auto-managed; mark target by attribute if needed
     });
   }
 
@@ -279,90 +299,256 @@
   }
 
   // ---------- alerts modal ----------
-  function openAlertsModal() {
-    const templates = (window.DataBankData && window.DataBankData.alertTemplates) || [];
-    const tickers = ((window.DataBankData && window.DataBankData.companies) || []).map(function (c) { return c.id; });
-    const existing = alerts().list();
+  // v3 Part 19I — group alerts by severity tier: Critical / Standard / Passive
+  function _relativeTime(iso) {
+    const t = new Date(iso).getTime();
+    if (isNaN(t)) return "—";
+    const s = Math.floor((Date.now() - t) / 1000);
+    if (s < 5)    return "just now";
+    if (s < 60)   return s + "s ago";
+    if (s < 3600) return Math.floor(s / 60) + "m ago";
+    if (s < 86400)return Math.floor(s / 3600) + "h ago";
+    const d = Math.floor(s / 86400);
+    if (d < 7)    return d + "d ago";
+    return new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
+  }
+  function _alertCategory(a) {
+    const id = (a.templateId || "").toLowerCase();
+    if (id === "subscription") return "subscriptions";
+    if (id === "lifecycle")    return "lifecycle";
+    if (id === "compliance")   return "compliance";
+    if (id === "qa" || id === "broadcast") return "comms";
+    if (id === "report")       return "reports";
+    if (id === "verification" || id === "tier-upgrade") return "account";
+    if (id === "deal-submitted") return "lifecycle";
+    return "other";
+  }
+  function _alertHref(a) {
+    if (a.href) return a.href;
+    const cat = _alertCategory(a);
+    if (cat === "compliance")    return "compliance.html";
+    if (cat === "subscriptions") return "portfolio.html";
+    if (cat === "account")       return "settings.html#account";
+    return null;
+  }
+  function _alertSvg(cat) {
+    if (cat === "subscriptions") return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>';
+    if (cat === "lifecycle")     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+    if (cat === "compliance")    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"/></svg>';
+    if (cat === "comms")         return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
+    if (cat === "reports")       return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>';
+    if (cat === "account")       return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  }
 
-    // v3 Part 19I — group alerts by severity tier: Critical / Standard / Passive
+  let _alertFilter = "all";
+
+  function openAlertsModal() {
     const TIERS = [
       { id: "critical", label: "Critical", blurb: "push + email + banner" },
       { id: "standard", label: "Standard", blurb: "in-app" },
       { id: "passive",  label: "Passive",  blurb: "daily digest" }
     ];
+    const FILTERS = [
+      { id: "all", label: "All" },
+      { id: "subscriptions", label: "Subscriptions" },
+      { id: "lifecycle", label: "Lifecycle" },
+      { id: "compliance", label: "Compliance" },
+      { id: "comms", label: "Q&A + Broadcasts" },
+      { id: "reports", label: "Reports" },
+      { id: "account", label: "Account" }
+    ];
+
+    const allList = alerts().list();
+    const unread = alerts().unreadCount();
+    const filtered = _alertFilter === "all" ? allList : allList.filter(function (a) { return _alertCategory(a) === _alertFilter; });
+
     function alertCard(a) {
       const sev = a.severity || "standard";
-      return (
-        '<div class="alert-card alert-' + sev + '">' +
-          '<div class="alert-card-body">' +
-            '<div class="alert-card-line">' +
-              '<span class="alert-card-symbol">' + (a.symbol || "") + '</span>' +
-              '<span class="alert-card-label">' + (a.label || "") + (a.value ? ' @ ' + a.value + ' ' + (a.unit || "") : "") + '</span>' +
-            '</div>' +
-            '<div class="alert-card-time">' + new Date(a.created).toLocaleString() + '</div>' +
+      const cat = _alertCategory(a);
+      const href = _alertHref(a);
+      const rel = _relativeTime(a.created);
+      const abs = new Date(a.created).toLocaleString("en-GB");
+      const value = a.value ? '<span class="alert-card-value"> @ ' + a.value + ' ' + (a.unit || "") + '</span>' : '';
+      const unreadDot = a.read ? '' : '<span class="alert-unread-dot" title="Unread"></span>';
+      const symbolBlock = a.symbol ? '<span class="alert-card-symbol">' + a.symbol + '</span>' : '';
+      const inner = (
+        '<span class="alert-card-icon">' + _alertSvg(cat) + '</span>' +
+        '<div class="alert-card-body">' +
+          '<div class="alert-card-line">' +
+            unreadDot +
+            symbolBlock +
+            '<span class="alert-card-label">' + (a.label || "") + value + '</span>' +
           '</div>' +
-          '<button class="t-btn" data-remove-alert="' + a.id + '" type="button" style="height:24px;padding:0 8px;font-size:10.5px">Remove</button>' +
+          '<div class="alert-card-time" title="' + abs + '">' + rel + '</div>' +
         '</div>'
       );
+      const action = '<button class="t-btn alert-card-remove" data-remove-alert="' + a.id + '" type="button" title="Dismiss">×</button>';
+      // Whole card is clickable when href exists; falls back to mark-read only.
+      const cls = "alert-card alert-" + sev + (a.read ? "" : " is-unread") + (href ? " has-href" : "");
+      if (href) {
+        return (
+          '<div class="' + cls + '">' +
+            '<a class="alert-card-link" href="' + href + '" data-alert-id="' + a.id + '">' + inner + '</a>' +
+            action +
+          '</div>'
+        );
+      }
+      return (
+        '<div class="' + cls + '" data-mark-read="' + a.id + '">' + inner + action + '</div>'
+      );
     }
+
     function tierSection(tier) {
-      const matching = existing.filter(function (a) { return (a.severity || "standard") === tier.id; });
+      const matching = filtered.filter(function (a) { return (a.severity || "standard") === tier.id; });
       if (!matching.length) return "";
+      const unreadHere = matching.filter(function (a) { return !a.read; }).length;
       return (
         '<div class="alert-tier alert-tier-' + tier.id + '">' +
           '<div class="alert-tier-head">' +
             '<span class="alert-tier-label">' + tier.label + '</span>' +
-            '<span class="alert-tier-count">' + matching.length + '</span>' +
+            '<span class="alert-tier-count">' + matching.length + (unreadHere ? " · " + unreadHere + " new" : "") + '</span>' +
             '<span class="alert-tier-blurb">' + tier.blurb + '</span>' +
           '</div>' +
           matching.map(alertCard).join("") +
         '</div>'
       );
     }
-    const list = existing.length
-      ? TIERS.map(tierSection).join("")
-      : '<div style="font-size:12px;color:var(--text-muted);font-family:var(--mono);padding:8px 0">No alerts yet. Activity from subscriptions, status changes, and Q&amp;A will appear here.</div>';
 
-    const optionTpl = templates.map(function (t) { return '<option value="' + t.id + '">' + t.label + '</option>'; }).join("");
-    const optionSym = tickers.map(function (id) { return '<option value="' + id.toUpperCase() + '">' + id.toUpperCase() + '</option>'; }).join("");
+    const tiers = TIERS.map(tierSection).join("");
+    const emptyState = !allList.length
+      ? '<div class="alert-empty">' +
+          '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>' +
+          '<div class="alert-empty-head">All caught up</div>' +
+          '<div class="alert-empty-sub">Activity from subscriptions, status changes, Q&amp;A, broadcasts and reports will appear here.</div>' +
+        '</div>'
+      : "";
+    const filteredEmpty = (allList.length && !filtered.length)
+      ? '<div class="alert-empty"><div class="alert-empty-head">Nothing in this filter</div><div class="alert-empty-sub">Switch the filter above or clear it to see everything.</div></div>'
+      : "";
+
+    const filterChips = FILTERS.map(function (f) {
+      const count = f.id === "all" ? allList.length : allList.filter(function (a) { return _alertCategory(a) === f.id; }).length;
+      if (count === 0 && f.id !== "all") return "";
+      const sel = _alertFilter === f.id ? " is-active" : "";
+      return '<button type="button" class="alert-filter-chip' + sel + '" data-alert-filter="' + f.id + '">' + f.label + ' <span class="alert-filter-count">' + count + '</span></button>';
+    }).filter(Boolean).join("");
 
     const body = (
-      '<div style="margin-bottom:14px;">' +
-        '<div style="font-size:11px;color:var(--text-muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Active alerts</div>' +
-        list +
-      '</div>' +
-      '<form id="alertForm" autocomplete="off">' +
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">' +
-          '<div><label>Symbol</label><select name="symbol">' + optionSym + '</select></div>' +
-          '<div><label>Condition</label><select name="template">' + optionTpl + '</select></div>' +
+      '<div class="alerts-modal">' +
+        '<div class="alerts-toolbar">' +
+          '<div class="alerts-summary">' +
+            '<strong>' + allList.length + '</strong> total · <strong class="alerts-unread">' + unread + '</strong> unread' +
+          '</div>' +
+          '<div class="alerts-toolbar-actions">' +
+            (unread ? '<button type="button" class="t-btn" id="alerts-mark-all">Mark all read</button>' : '') +
+            (allList.length ? '<button type="button" class="t-btn" id="alerts-clear-all" style="color:var(--down)">Clear all</button>' : '') +
+            '<button type="button" class="t-btn t-btn-primary" id="alerts-new-price">+ New price alert</button>' +
+          '</div>' +
         '</div>' +
-        '<div><label>Threshold</label><input name="value" type="text" placeholder="e.g. 150.00 or 5%" /></div>' +
-      '</form>'
+        (allList.length ? '<div class="alert-filters">' + filterChips + '</div>' : '') +
+        emptyState +
+        filteredEmpty +
+        tiers +
+      '</div>'
     );
 
-    const m = modal("Alerts", body, {
-      footer:
-        '<button type="button" class="t-btn" data-modal-close>Cancel</button>' +
-        '<button type="button" class="t-btn t-btn-primary" id="alertSaveBtn">Save alert</button>'
+    const m = modal("Activity feed", body, {
+      footer: '<button type="button" class="t-btn" data-modal-close>Close</button>'
     });
 
-    m.querySelector("#alertSaveBtn").addEventListener("click", function () {
-      const f = m.querySelector("#alertForm");
-      const sym = f.querySelector('[name="symbol"]').value;
-      const tplId = f.querySelector('[name="template"]').value;
-      const tpl = templates.find(function (t) { return t.id === tplId; });
-      const val = f.querySelector('[name="value"]').value.trim();
-      alerts().add({ symbol: sym, label: tpl ? tpl.label : tplId, templateId: tplId, value: val, unit: tpl ? tpl.unit : "" });
-      toast("Alert saved");
-      openAlertsModal(); // re-render
-    });
-
-    m.querySelectorAll("[data-remove-alert]").forEach(function (b) {
+    // Filter chip click
+    m.querySelectorAll("[data-alert-filter]").forEach(function (b) {
       b.addEventListener("click", function () {
-        alerts().remove(b.getAttribute("data-remove-alert"));
-        toast("Alert removed");
+        _alertFilter = b.getAttribute("data-alert-filter");
         openAlertsModal();
       });
+    });
+
+    // Mark all read
+    const markAll = m.querySelector("#alerts-mark-all");
+    if (markAll) markAll.addEventListener("click", function () {
+      alerts().markAllRead();
+      toast("All alerts marked read.");
+      openAlertsModal();
+    });
+
+    // Clear all (with confirm)
+    const clearAll = m.querySelector("#alerts-clear-all");
+    if (clearAll) clearAll.addEventListener("click", function () {
+      if (!confirm("Clear all " + allList.length + " alerts? This can't be undone.")) return;
+      alerts().clearAll();
+      toast("Alerts cleared.");
+      openAlertsModal();
+    });
+
+    // New price alert → sub-modal
+    const newPrice = m.querySelector("#alerts-new-price");
+    if (newPrice) newPrice.addEventListener("click", openNewPriceAlertModal);
+
+    // Remove single alert
+    m.querySelectorAll("[data-remove-alert]").forEach(function (b) {
+      b.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        alerts().remove(b.getAttribute("data-remove-alert"));
+        openAlertsModal();
+      });
+    });
+
+    // Click anywhere on a card → mark read (and follow href if it's a link)
+    m.querySelectorAll("[data-mark-read]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        alerts().markRead(el.getAttribute("data-mark-read"));
+        openAlertsModal();
+      });
+    });
+    m.querySelectorAll(".alert-card-link").forEach(function (a) {
+      a.addEventListener("click", function () {
+        alerts().markRead(a.getAttribute("data-alert-id"));
+        // navigation proceeds via the anchor href
+      });
+    });
+  }
+
+  // Separate sub-modal for configuring a price alert on a ticker
+  function openNewPriceAlertModal() {
+    const templates = (window.DataBankData && window.DataBankData.alertTemplates) || [];
+    const tickers = ((window.DataBankData && window.DataBankData.companies) || []).map(function (c) { return c.id; });
+    if (!tickers.length) { toast("No companies available to alert on."); return; }
+    const optionTpl = templates.length
+      ? templates.map(function (t) { return '<option value="' + t.id + '">' + t.label + '</option>'; }).join("")
+      : '<option value="custom">Custom condition</option>';
+    const optionSym = tickers.map(function (id) { return '<option value="' + id.toUpperCase() + '">' + id.toUpperCase() + '</option>'; }).join("");
+    const body = (
+      '<p class="rep-hint">Watch a ticker for a price, volume, or news condition. Triggers fire as a Standard-severity alert in your feed.</p>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">' +
+        '<div><label class="rep-label">Symbol</label><select class="t-input" name="symbol" id="pa-sym">' + optionSym + '</select></div>' +
+        '<div><label class="rep-label">Condition</label><select class="t-input" name="template" id="pa-tpl">' + optionTpl + '</select></div>' +
+      '</div>' +
+      '<div><label class="rep-label">Threshold</label><input class="t-input" id="pa-val" type="text" placeholder="e.g. 150.00 or 5%" /></div>'
+    );
+    modal("Set a price alert", body, {
+      footer:
+        '<button type="button" class="t-btn" data-modal-close>Cancel</button>' +
+        '<button type="button" class="t-btn t-btn-primary" id="pa-save">Save alert</button>'
+    });
+    document.getElementById("pa-save").addEventListener("click", function () {
+      const sym = document.getElementById("pa-sym").value;
+      const tplId = document.getElementById("pa-tpl").value;
+      const tpl = templates.find(function (t) { return t.id === tplId; });
+      const val = document.getElementById("pa-val").value.trim();
+      alerts().add({
+        symbol: sym,
+        label: tpl ? tpl.label : "Custom alert",
+        templateId: "price",
+        value: val,
+        unit: tpl ? tpl.unit : "",
+        severity: "standard"
+      });
+      closeModal();
+      toast("Price alert saved on " + sym + ".");
+      openAlertsModal();
     });
   }
 
@@ -373,19 +559,23 @@
         '<kbd>/</kbd><span class="desc">Focus the command bar</span>' +
         '<kbd>?</kbd><span class="desc">Show this shortcuts cheat sheet</span>' +
         '<kbd>g h</kbd><span class="desc">Go to Home (workspace)</span>' +
-        '<kbd>g d</kbd><span class="desc">Go to Deals</span>' +
+        '<kbd>g d</kbd><span class="desc">Go to Deal room</span>' +
         '<kbd>g w</kbd><span class="desc">Go to Watchlist</span>' +
-        '<kbd>g c</kbd><span class="desc">Go to Companies</span>' +
-        '<kbd>Esc</kbd><span class="desc">Close modal / popover</span>' +
+        '<kbd>g p</kbd><span class="desc">Go to Portfolio</span>' +
+        '<kbd>g v</kbd><span class="desc">Go to Data Vault</span>' +
+        '<kbd>g s</kbd><span class="desc">Go to Settings</span>' +
         '<kbd>a</kbd><span class="desc">Open Alerts</span>' +
+        '<kbd>?</kbd><span class="desc">Help (this dialog)</span>' +
+        '<kbd>Esc</kbd><span class="desc">Close modal / popover</span>' +
       '</div>' +
       '<div style="margin-top:18px;font-size:11px;color:var(--text-muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.08em;">Command bar syntax</div>' +
       '<div style="margin-top:6px;font-family:var(--mono);font-size:12px;color:var(--text-secondary);line-height:1.7">' +
         '<div><span style="color:var(--accent)">&lt;TICKER&gt;</span> <span style="color:var(--text-primary)">GO</span> &mdash; open the company page</div>' +
         '<div><span style="color:var(--accent)">&lt;TICKER&gt;</span> <span style="color:var(--text-primary)">NEWS</span> &mdash; open company news feed</div>' +
-        '<div><span style="color:var(--accent)">DEALS</span> &mdash; open deals</div>' +
+        '<div><span style="color:var(--accent)">DEALS</span> &mdash; open the deal room</div>' +
         '<div><span style="color:var(--accent)">WATCHLIST</span> &mdash; open watchlist</div>' +
         '<div><span style="color:var(--accent)">ALERTS</span> &mdash; open alerts dialog</div>' +
+        '<div><span style="color:var(--accent)">VAULT</span> &mdash; open Data Vault</div>' +
         '<div><span style="color:var(--accent)">HELP</span> &mdash; this dialog</div>' +
       '</div>'
     );
@@ -393,44 +583,188 @@
   }
 
   function openPrefsModal() {
+    const prefsApi = window.DataBank && window.DataBank.prefsApi ? window.DataBank.prefsApi() : null;
+    const currencyApi = window.DataBank && window.DataBank.currencyApi ? window.DataBank.currencyApi() : null;
+    const prefs = prefsApi ? prefsApi.get() : { landingPage: "index.html", alertDigest: "instant", alertMinSeverity: "standard", numberFormat: "comma-dot", emailNotifications: true, browserNotifications: false };
+    const ccy = currencyApi ? currencyApi.get() : "USD";
+    function opt(value, label, current) { return '<option value="' + value + '"' + (value === current ? ' selected' : '') + '>' + label + '</option>'; }
     const body = (
-      '<div style="display:grid;gap:12px">' +
-        '<div><label>Default landing page</label><select name="land">' +
-          '<option value="index.html">Workspace home</option>' +
-          '<option value="deals.html">Deals</option>' +
-          '<option value="watchlist.html">Watchlist</option>' +
-        '</select></div>' +
-        '<div><label>Number format</label><select name="fmt">' +
-          '<option>1,234,567.89 (default)</option>' +
-          '<option>1.234.567,89</option>' +
-        '</select></div>' +
-        '<div><label>Theme</label><select name="theme">' +
-          '<option>Bloomberg dark (default)</option>' +
-        '</select></div>' +
+      '<div class="prefs-grid">' +
+        '<div class="pref-row">' +
+          '<div><label>Default landing page</label><div class="pref-hint">Where Deal Room opens when you sign in.</div></div>' +
+          '<select id="pref-landing" class="t-input">' +
+            opt("index.html", "Workspace home", prefs.landingPage) +
+            opt("deals.html", "Deal room", prefs.landingPage) +
+            opt("portfolio.html", "Portfolio", prefs.landingPage) +
+            opt("watchlist.html", "Watchlist", prefs.landingPage) +
+            opt("vault.html", "Data Vault", prefs.landingPage) +
+          '</select>' +
+        '</div>' +
+        '<div class="pref-row">' +
+          '<div><label>Default currency</label><div class="pref-hint">USD canonical, NGN at CBN rate.</div></div>' +
+          '<select id="pref-currency" class="t-input">' +
+            opt("USD", "USD ($)", ccy) +
+            opt("NGN", "NGN (₦)", ccy) +
+          '</select>' +
+        '</div>' +
+        '<div class="pref-row">' +
+          '<div><label>Alert digest</label><div class="pref-hint">How often you want alerts batched.</div></div>' +
+          '<select id="pref-digest" class="t-input">' +
+            opt("instant", "Instant (no batching)", prefs.alertDigest) +
+            opt("daily", "Daily digest", prefs.alertDigest) +
+            opt("weekly", "Weekly digest", prefs.alertDigest) +
+            opt("off", "Off (in-app only)", prefs.alertDigest) +
+          '</select>' +
+        '</div>' +
+        '<div class="pref-row">' +
+          '<div><label>Min severity to surface</label><div class="pref-hint">Lower-severity alerts roll into the daily digest.</div></div>' +
+          '<select id="pref-severity" class="t-input">' +
+            opt("critical", "Critical only (push + email)", prefs.alertMinSeverity) +
+            opt("standard", "Critical + Standard (in-app)", prefs.alertMinSeverity) +
+            opt("all", "All (including passive)", prefs.alertMinSeverity) +
+          '</select>' +
+        '</div>' +
+        '<div class="pref-row">' +
+          '<div><label>Number format</label><div class="pref-hint">Display only — does not affect stored values.</div></div>' +
+          '<select id="pref-numfmt" class="t-input">' +
+            opt("comma-dot", "1,234,567.89 (default)", prefs.numberFormat) +
+            opt("dot-comma", "1.234.567,89", prefs.numberFormat) +
+          '</select>' +
+        '</div>' +
+        '<div class="pref-row">' +
+          '<div><label>Email notifications</label><div class="pref-hint">Critical alerts also go to your email.</div></div>' +
+          '<label class="pref-toggle"><input type="checkbox" id="pref-email" ' + (prefs.emailNotifications ? "checked" : "") + ' /><span>On</span></label>' +
+        '</div>' +
+        '<div class="pref-row">' +
+          '<div><label>Browser notifications</label><div class="pref-hint">Native browser pop-ups for Critical events.</div></div>' +
+          '<label class="pref-toggle"><input type="checkbox" id="pref-browser" ' + (prefs.browserNotifications ? "checked" : "") + ' /><span>On</span></label>' +
+        '</div>' +
       '</div>'
     );
     modal("Preferences", body, {
       footer:
         '<button type="button" class="t-btn" data-modal-close>Cancel</button>' +
-        '<button type="button" class="t-btn t-btn-primary" data-modal-close id="prefSave">Save</button>'
+        '<button type="button" class="t-btn t-btn-primary" id="prefSave">Save preferences</button>'
     });
     const save = document.getElementById("prefSave");
-    if (save) save.addEventListener("click", function () { toast("Preferences saved"); });
+    if (save) save.addEventListener("click", function () {
+      const patch = {
+        landingPage: document.getElementById("pref-landing").value,
+        alertDigest: document.getElementById("pref-digest").value,
+        alertMinSeverity: document.getElementById("pref-severity").value,
+        numberFormat: document.getElementById("pref-numfmt").value,
+        emailNotifications: document.getElementById("pref-email").checked,
+        browserNotifications: document.getElementById("pref-browser").checked
+      };
+      if (prefsApi) prefsApi.set(patch);
+      const newCcy = document.getElementById("pref-currency").value;
+      if (currencyApi && newCcy !== ccy) {
+        currencyApi.set(newCcy);
+        if (window.WorkspaceShell && window.WorkspaceShell.refresh) window.WorkspaceShell.refresh();
+      }
+      closeModal();
+      toast("Preferences saved.");
+    });
   }
 
   function openAccountModal() {
-    const profile = (window.DataBank && window.DataBank.getProfile()) || {};
-    const org = (window.DataBank && window.DataBank.store.get(window.DataBank.keys.org, {})) || {};
+    const DB = window.DataBank;
+    const profile = (DB && DB.getProfile()) || {};
+    const acctApi = DB && DB.accountApi ? DB.accountApi() : null;
+    const acc = acctApi ? acctApi.get() : { accountType: "individual", verified: false, kycTier: 1, plan: null };
+    const caps = acctApi ? acctApi.caps() : null;
+    const inv = DB && DB.investmentsApi ? DB.investmentsApi() : null;
+    const vault = DB && DB.vaultApi ? DB.vaultApi() : null;
+    const investments = inv ? inv.list() : [];
+    const annualUsed = inv ? inv.annualSubscribedNGN() : 0;
+    const vaultCount = vault ? vault.list().length : 0;
+    const fullName = ((profile.firstName || "") + " " + (profile.lastName || "")).trim() || "Deal Room user";
+    const email = profile.email || "—";
+    function fmtNgn(n) {
+      n = +n; if (!n || isNaN(n)) return "—";
+      if (n >= 1e9) return "₦" + (n / 1e9).toFixed(2) + "bn";
+      if (n >= 1e6) return "₦" + (n / 1e6).toFixed(1) + "m";
+      if (n >= 1e3) return "₦" + (n / 1e3).toFixed(0) + "k";
+      return "₦" + n;
+    }
+    const verifiedPill = acc.verified
+      ? '<span class="acct-pill ok">' +
+          '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>' +
+          'Verified' +
+        '</span>'
+      : '<span class="acct-pill warn">Unverified · public-browse only</span>';
+    const planLine = acc.verified && acc.plan
+      ? acc.plan.cycleLabel + ' · ' + (acc.plan.type === "corporate" ? "Corporate" : "Individual") + ' · ' + fmtNgn(acc.plan.priceNGN) +
+        (acc.plan.renewsAt ? ' · renews ' + new Date(acc.plan.renewsAt).toLocaleDateString("en-GB", { day:"2-digit", month:"short", year:"numeric" }) : '')
+      : "No active plan";
+    const tierBadge = '<span class="t-tier-pill t-tier-' + acc.kycTier + '" style="margin-left:6px;cursor:default">T' + acc.kycTier + '</span>';
+    const capLine = caps
+      ? (acc.kycTier === 1 ? "₦100k" : acc.kycTier === 2 ? "₦5m" : "₦0") + '–' +
+        (isFinite(caps.perDealMaxNGN) ? fmtNgn(caps.perDealMaxNGN) : "no cap") + ' per deal · ' +
+        (isFinite(caps.annualMaxNGN) ? fmtNgn(annualUsed) + ' / ' + fmtNgn(caps.annualMaxNGN) + ' used this year' : 'No annual cap')
+      : "—";
+    const pinLine = acctApi && acctApi.hasPin()
+      ? '<span class="acct-pill ok">Set</span>'
+      : '<span class="acct-pill warn">Not set — any 6 digits accepted</span>';
+
     const body = (
-      '<div style="display:grid;gap:10px;font-family:var(--mono);font-size:12px;color:var(--text-secondary);">' +
-        '<div>Name: <span style="color:var(--text-primary)">' + ((profile.firstName || "") + " " + (profile.lastName || "")).trim() || "&mdash;" + '</span></div>' +
-        '<div>Email: <span style="color:var(--text-primary)">' + (profile.email || "&mdash;") + '</span></div>' +
-        '<div>Organization: <span style="color:var(--text-primary)">' + (org.name || "&mdash;") + '</span></div>' +
-        '<div>Deal Room: <span style="color:var(--text-primary)">' + (org.databank || "Investor Deal Room") + '</span></div>' +
-        '<div>Plan: <span style="color:var(--text-primary)">' + ((window.DataBank && window.DataBank.store.get(window.DataBank.keys.plan, {})).id || "free") + '</span></div>' +
+      '<div class="acct-modal">' +
+        '<div class="acct-modal-head">' +
+          '<div>' +
+            '<div class="acct-modal-name">' + esc(fullName) + '</div>' +
+            '<div class="acct-modal-email">' + esc(email) + '</div>' +
+          '</div>' +
+          '<div class="acct-modal-pills">' + verifiedPill + tierBadge + '</div>' +
+        '</div>' +
+        '<dl class="acct-modal-grid">' +
+          '<div><dt>Account type</dt><dd>' + (acc.accountType === "corporate" ? "Corporate (Issuer + Investor)" : "Individual (Investor only)") + '</dd></div>' +
+          '<div><dt>KYC tier</dt><dd>Tier ' + acc.kycTier + ' · ' + (caps ? caps.label : "—") + '</dd></div>' +
+          '<div><dt>Plan</dt><dd>' + esc(planLine) + '</dd></div>' +
+          '<div><dt>Transaction PIN</dt><dd>' + pinLine + '</dd></div>' +
+          '<div class="full"><dt>Ticket caps</dt><dd>' + capLine + '</dd></div>' +
+          '<div><dt>Subscriptions</dt><dd>' + investments.length + (investments.length === 1 ? " position" : " positions") + '</dd></div>' +
+          '<div><dt>Data Vault</dt><dd>' + vaultCount + (vaultCount === 1 ? " document" : " documents") + '</dd></div>' +
+        '</dl>' +
+        '<div class="acct-modal-actions">' +
+          '<a class="t-btn" href="settings.html#account">Open settings →</a>' +
+          (acc.verified
+            ? '<button type="button" class="t-btn" data-action="open-paywall">Change plan</button>'
+            : '<button type="button" class="t-btn t-btn-primary" data-action="open-paywall">Verify account</button>') +
+          (acc.kycTier < 3
+            ? '<button type="button" class="t-btn" id="acct-upgrade-tier">Upgrade to Tier ' + (acc.kycTier + 1) + '</button>'
+            : '') +
+          '<button type="button" class="t-btn" id="acct-signout-confirm" style="color:var(--down);margin-left:auto">Sign out</button>' +
+        '</div>' +
       '</div>'
     );
     modal("Account", body);
+    const up = document.getElementById("acct-upgrade-tier");
+    if (up) up.addEventListener("click", function () { closeModal(); openTierUpgradeModal({ target: acc.kycTier + 1 }); });
+    const so = document.getElementById("acct-signout-confirm");
+    if (so) so.addEventListener("click", confirmSignOut);
+  }
+
+  // Sign-out confirmation — clears localStorage + redirects to signin
+  function confirmSignOut() {
+    closeModal();
+    modal("Sign out of Deal Room?",
+      '<p style="font-size:13px;color:var(--text-secondary);line-height:1.55;margin:0">' +
+        'Your session ends and all local state (subscriptions, vault entries, transitions, PIN) is cleared. ' +
+        'On a real backend this would persist server-side; on this demo it lives in localStorage and will be wiped.' +
+      '</p>',
+      { footer:
+          '<button type="button" class="t-btn" data-modal-close>Stay signed in</button>' +
+          '<button type="button" class="t-btn t-btn-primary" id="signout-go" style="background:var(--down);border-color:var(--down)">Sign out</button>'
+      });
+    document.getElementById("signout-go").addEventListener("click", function () {
+      try { localStorage.clear(); } catch (_) {}
+      location.href = "../signin.html";
+    });
+  }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
   }
 
   // v3 verification paywall — Part 12 prices, NGN billed, USD shown for transparency.
@@ -1887,6 +2221,14 @@
         return;
       }
 
+      // Close mobile nav when tapping a nav link or anywhere outside the drawer
+      const openNav = document.querySelector(".workspace-nav.is-mobile-open");
+      if (openNav) {
+        const insideNav = e.target.closest(".workspace-nav");
+        const onNavLink = e.target.closest(".workspace-nav a, .workspace-nav button[data-action]");
+        if (!insideNav || onNavLink) openNav.classList.remove("is-mobile-open");
+      }
+
       // Currency segmented toggle in the header
       const ccyBtn = e.target.closest("[data-set-ccy]");
       if (ccyBtn) {
@@ -1938,8 +2280,8 @@
         if (k === "open-paywall") { e.preventDefault(); openPaywallModal();return; }
         if (k === "open-reports") { e.preventDefault(); openReportsModal();return; }
         if (k === "signout") {
-          try { localStorage.clear(); } catch (_) {}
-          // let the default link navigation proceed
+          e.preventDefault();
+          confirmSignOut();
           return;
         }
       }

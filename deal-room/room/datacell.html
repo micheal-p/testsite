@@ -153,20 +153,33 @@
     <main class="workspace-content">
 
       <header>
-        <div class="wh-eyebrow"><span class="dot"></span><span>Publisher workspace</span></div>
+        <div class="wh-eyebrow"><span class="dot"></span><span>Publisher workspace · list deals + publish data</span></div>
         <h1 class="wh-greeting">Data <em>Cell</em>.</h1>
         <p class="wh-dek">
-          Where you log company data. Anything you publish here shows up in the matching company profile — for the subscribers paying to see it.
+          Your issuer back-office. List a regulated raise, track incoming subscriptions, manage countersigns, and publish company data — all from here.
         </p>
 
         <div class="wh-actions">
-          <button class="t-btn t-btn-primary" type="button" id="newEntryBtn">+ Log a new entry</button>
+          <button class="t-btn t-btn-primary" type="button" id="dcListDealBtn">+ List a deal</button>
+          <button class="t-btn" type="button" id="newEntryBtn">+ Log a new entry</button>
           <button class="t-btn" type="button" id="newPubBtn">+ New publication</button>
           <button class="t-btn" type="button" data-action="open-reports">Subscriber reports</button>
         </div>
 
         <div class="wh-snapshot" id="dcSnapshot"></div>
       </header>
+
+      <!-- v3 Publisher Workspace — your listed deals -->
+      <section class="wh-section" id="myListingsSection">
+        <div class="wh-section-head">
+          <div>
+            <span class="wh-section-eyebrow">Capital raises</span>
+            <h2 class="wh-section-title">Your listed deals</h2>
+          </div>
+          <a class="wh-section-link" href="deals.html">Open deal room &rarr;</a>
+        </div>
+        <div id="myListings"></div>
+      </section>
 
       <!-- Your publications -->
       <section class="wh-section">
@@ -209,7 +222,89 @@
       "use strict";
       const D = window.DataBankData;
       const T = window.Terminal;
+      const DB = window.DataBank;
       const STORE_KEY = "neiia_db_publications";
+
+      // ----- v3 Publisher Workspace: list user-listed deals at the top -----
+      function fmtNgnPub(n) {
+        n = +n; if (!n || isNaN(n)) return "—";
+        if (n >= 1e9) return "₦" + (n / 1e9).toFixed(2) + "bn";
+        if (n >= 1e6) return "₦" + (n / 1e6).toFixed(0) + "m";
+        if (n >= 1e3) return "₦" + (n / 1e3).toFixed(0) + "k";
+        return "₦" + n;
+      }
+      function renderMyListings() {
+        const target = document.getElementById("myListings");
+        if (!target) return;
+        const dealsApi = DB.dealsApi();
+        const investmentsApi = DB.investmentsApi();
+        const listed = dealsApi.list().filter(function (d) { return d.userCreated; });
+        if (!listed.length) {
+          target.innerHTML = (
+            '<div class="my-listings-empty">' +
+              '<div class="empty-title">You haven\'t listed any deals yet</div>' +
+              '<div style="font-size:13px;color:var(--text-secondary);margin:8px 0 14px;max-width:50ch">' +
+                'Click <strong>+ List a deal</strong> above to open the issuer wizard. SMEDAN caliber routes you into Lane A (crowdfund) or Lane B (private placement) automatically.' +
+              '</div>' +
+            '</div>'
+          );
+          return;
+        }
+        target.innerHTML = '<div class="my-listings-grid">' + listed.map(function (d) {
+          const subs = investmentsApi.list().filter(function (i) { return i.dealId === d.id; });
+          const pending = subs.filter(function (i) { return (i.countersignState || "pending") === "pending"; }).length;
+          const executed = subs.filter(function (i) { return i.countersignState === "accepted"; }).length;
+          const committed = subs.filter(function (i) { return i.countersignState === "accepted"; })
+            .reduce(function (a, i) { return a + (i.ticketNGN || 0); }, 0);
+          const sev = (d.statusType || "info");
+          const laneCls = d.lane === "lane-a" ? "lane-a" : d.lane === "lane-b" ? "lane-b" : "lane-fund";
+          return (
+            '<a class="my-listing-card" href="deal.html?id=' + d.id + '">' +
+              '<div class="my-listing-head">' +
+                '<div>' +
+                  '<div class="my-listing-ticker">' + (d.ticker || "—") + '</div>' +
+                  '<div class="my-listing-name">' + (d.legalName || d.company) + '</div>' +
+                '</div>' +
+                '<span class="badge badge-' + sev + '">' + (d.status || "—") + '</span>' +
+              '</div>' +
+              '<div class="my-listing-chips">' +
+                '<span class="lane-chip ' + laneCls + '">' + (d.laneLabel || d.lane) + '</span>' +
+                '<span class="wrap-chip">' + (d.wrapper || "") + '</span>' +
+              '</div>' +
+              '<dl class="my-listing-stats">' +
+                '<div><dt>Target</dt><dd>' + fmtNgnPub(d.raiseNGN) + '</dd></div>' +
+                '<div><dt>Allocated</dt><dd>' + (d.allocationPct || 0) + '%</dd></div>' +
+                '<div><dt>Subscriptions</dt><dd>' + subs.length + ' <span style="color:var(--text-muted);font-size:11px">(' + executed + ' exec)</span></dd></div>' +
+                '<div><dt>Pending sign</dt><dd>' + (pending ? '<span style="color:#92400E;font-weight:600">' + pending + '</span>' : '0') + '</dd></div>' +
+                '<div class="full"><dt>Capital committed</dt><dd>' + fmtNgnPub(committed) + ' of ' + fmtNgnPub(d.raiseNGN) + '</dd></div>' +
+              '</dl>' +
+            '</a>'
+          );
+        }).join("") + '</div>';
+      }
+      renderMyListings();
+
+      // "+ List a deal" — gated on Corporate verification
+      const listDealBtn = document.getElementById("dcListDealBtn");
+      if (listDealBtn) listDealBtn.addEventListener("click", function () {
+        const acctApi = DB.accountApi ? DB.accountApi() : null;
+        const acc = acctApi ? acctApi.get() : null;
+        if (!acc || !acc.verified) { T.openPaywallModal && T.openPaywallModal(); return; }
+        if (acc.accountType !== "corporate") {
+          T.modal("Corporate account required",
+            '<p style="font-size:13px;color:var(--text-secondary);line-height:1.55">Per v3 Part 3, only Corporate accounts can issue deals. Corporate accounts require CAC RC + TIN, two authorized signatories, audited financials, and Tax Clearance Certificates.</p>',
+            { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="switchToCorp">Switch to Corporate plan</button>' });
+          document.getElementById("switchToCorp").addEventListener("click", function () {
+            T.closeModal();
+            T.openPaywallModal && T.openPaywallModal();
+          });
+          return;
+        }
+        T.openListDealFlow && T.openListDealFlow();
+      });
+      // Refresh listings when wizard saves a new deal
+      window.RefreshDeals = function () { renderMyListings(); };
+
 
       // ---- Publications model ----
       // Demo seed: take the first three companies as the publications this user owns.

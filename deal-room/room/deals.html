@@ -113,6 +113,29 @@
       const subsApi = window.DataBank ? window.DataBank.subscriptionsApi() : null;
       const acctApi = window.DataBank && window.DataBank.accountApi ? window.DataBank.accountApi() : null;
       const dealsCrud = window.DataBank && window.DataBank.dealsApi ? window.DataBank.dealsApi() : null;
+      const investmentsCrud = window.DataBank && window.DataBank.investmentsApi ? window.DataBank.investmentsApi() : null;
+      // Lookup: dealId → most recent subscription state, for "Your sub · X" badge on rows
+      function mySubscriptionState(dealId) {
+        if (!investmentsCrud) return null;
+        const matches = investmentsCrud.list().filter(function (i) { return i.dealId === dealId; });
+        if (!matches.length) return null;
+        // Prefer accepted > pending > declined/withdrawn so the latest active state shows
+        return matches.find(function (i) { return i.countersignState === "accepted"; })
+            || matches.find(function (i) { return (i.countersignState || "pending") === "pending"; })
+            || matches[0];
+      }
+      function mySubBadge(dealId) {
+        const inv = mySubscriptionState(dealId);
+        if (!inv) return "";
+        const s = inv.countersignState || "pending";
+        const label = s === "accepted" ? "executed" : s === "declined" ? "declined" : s === "withdrawn" ? "withdrawn" : "pending";
+        const cls = "your-sub-tag your-sub-" + s;
+        const title = s === "accepted" ? "Your subscription is fully executed" :
+                      s === "declined" ? "Issuer declined your subscription" :
+                      s === "withdrawn" ? "You withdrew within cooling-off" :
+                      "Your subscription is pending issuer countersign";
+        return '<span class="' + cls + '" title="' + title + '">Your sub · ' + label + '</span>';
+      }
 
       // Merge seeded deals with dealsApi entries. dealsApi takes priority for any id present
       // (covers both user-created issuances + mutated seeded deals — status, reports, Q&A).
@@ -245,9 +268,22 @@
           return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
         });
       }
-      // v3 gating — Invest button reflects verification + KYC tier per deal lane.
+      // v3 gating — Invest button reflects verification + KYC tier + deal status.
+      // Per v3 Part 19B: only Live + Closing accept new commitments. Allocating means cooling-off
+      // is in progress; Oversubscribed means issuer is triaging — no new subs in either.
+      const INVESTABLE_STATUSES = { "Live": 1, "Closing": 1 };
+      function statusGateMessage(s) {
+        if (INVESTABLE_STATUSES[s]) return null;
+        if (["Draft", "Under Review", "Compliance Hold", "Approved", "Scheduled"].indexOf(s) >= 0) return "Not yet live";
+        if (["Allocating", "Oversubscribed"].indexOf(s) >= 0) return "Allocation closed";
+        if (s === "Paused") return "Paused by issuer";
+        if (["Closed - Successful", "Closed - Failed", "Closed - Withdrawn", "Active", "Converting", "Converted", "Matured", "Defaulted", "Written Off"].indexOf(s) >= 0) return "Raise complete";
+        return "Unavailable";
+      }
       function investGate(d) {
         if (!acctApi) return { ok: true };
+        const sm = statusGateMessage(d.status);
+        if (sm) return { ok: false, reason: "status-closed", statusMsg: sm };
         return acctApi.canSubscribeTo(d);
       }
       const LOCK_SVG = '<svg class="btn-lock" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
@@ -263,6 +299,9 @@
         if (g.reason === 'tier-too-low') {
           return '<button class="t-btn t-btn-locked" data-invest-gate="tier" data-invest="' + d.id + '" type="button" data-tip="KYC Tier ' + g.required + ' required for Lane B private placements" title="KYC Tier ' + g.required + ' required">' + LOCK_SVG + '<span>Tier ' + g.required + '</span></button>';
         }
+        if (g.reason === 'status-closed') {
+          return '<button class="t-btn t-btn-locked" disabled type="button" data-tip="' + esc(g.statusMsg) + ' · ' + esc(d.status) + '" title="' + esc(g.statusMsg) + ' · ' + esc(d.status) + '">' + LOCK_SVG + '<span>' + esc(g.statusMsg) + '</span></button>';
+        }
         return '';
       }
       function rowHtml(d) {
@@ -275,6 +314,7 @@
               '<div class="row-co-text">' +
                 '<a class="row-co-name" href="' + (d.lane === 'lane-a' || d.lane === 'lane-b' ? 'deal.html?id=' : 'company.html?company=') + d.id + '">' + esc(d.company) + '</a>' +
                 (d.userCreated ? '<span class="your-raise-tag" title="Submitted by you. Awaiting compliance review.">Your raise</span>' : '') +
+                mySubBadge(d.id) +
                 '<div class="row-co-meta"><span class="row-co-ticker">' + esc(d.ticker || '') + '</span>' +
                   '<span class="row-meta-dot">·</span>' + esc(d.sector) + stageLine +
                 '</div>' +
@@ -331,14 +371,12 @@
       // Initial paint — tableApi only renders on interaction otherwise.
       api.render();
 
-      // Deep-link: ?invest=<id> opens the subscription modal on load
-      // (used by the "+ Invest" button on deal.html).
+      // Deep-link: ?invest=<id> opens the subscription modal on load (from deal.html or other pages).
+      // Open subscription for any lane — Invest = commit capital, regardless of lane.
       const investParam = url.get("invest");
       if (investParam) {
         const target = D.deals.concat(dealsCrud ? dealsCrud.list() : []).find(function (x) { return x.id === investParam; });
-        if (target && (target.lane === "lane-a" || target.lane === "lane-b")) {
-          setTimeout(function () { openSubscriptionModal(target); }, 100);
-        }
+        if (target) setTimeout(function () { openSubscriptionModal(target); }, 100);
       }
 
       // Headline stats
@@ -638,34 +676,37 @@
               valuationCapNGN: Math.round((d.raiseNGN || 50000000) * 5),
               kycTierAtSign: d.lane === 'lane-b' ? 3 : 2,
               payment: payment
+              // countersignState defaults to "pending" — issuer must dual-sign to execute (v3 Part 9)
             });
-            // v3 Part 10 — Bilateral Subscription Agreement filed to the Data Vault.
+            // v3 Part 10 — Bilateral Subscription Agreement filed to the Data Vault (pending state).
             if (window.DataBank.vaultApi) {
               window.DataBank.vaultApi().add({
                 kind: 'agreement',
-                title: 'Bilateral Subscription Agreement · ' + d.ticker,
+                title: 'Bilateral Subscription Agreement · ' + d.ticker + ' · pending countersign',
                 subtitle: d.legalName + ' · ' + d.wrapper + ' · ' + fmtNgn(ticketNGN),
                 dealId: d.id,
+                investmentId: inv.id,
                 payload: {
                   ticker: d.ticker, wrapper: d.wrapper, ticketNGN: ticketNGN,
                   sourceOfFunds: sourceOfFunds, lane: d.laneLabel,
                   governing: 'Federal Republic of Nigeria · FCT Abuja',
                   escrow: 'Stanbic IBTC Bank (CBN-licensed)',
                   paymentRef: payment.refCode,
-                  escrowAccount: payment.escrowAcct
+                  escrowAccount: payment.escrowAcct,
+                  countersignState: 'pending'
                 }
               });
             }
             T.alerts().add({
               symbol: d.ticker,
-              label: 'Subscribed · ' + fmtNgn(ticketNGN) + ' · ref ' + payment.refCode,
+              label: 'Subscription submitted · ' + fmtNgn(ticketNGN) + ' · awaiting issuer countersign',
               value: '',
               unit: '',
               templateId: 'subscription',
               severity: 'critical',
               href: 'portfolio.html'
             });
-            T.toast(d.ticker + ' subscription filed · awaiting NIBSS transfer to escrow');
+            T.toast(d.ticker + ' submitted · awaiting issuer countersign');
           });
         });
       }
@@ -736,13 +777,8 @@
             T.toast('Gated · ' + g.reason);
             return;
           }
-          if (d.lane === 'lane-a' || d.lane === 'lane-b') {
-            openSubscriptionModal(d);
-          } else if (window.DealFlow) {
-            window.DealFlow.openWizard({
-              prefill: { name: d.company + " — Co-Invest", sponsor: d.company, sector: d.sector, vehicleType: 'coinvest' }
-            });
-          }
+          // All lanes route to the subscription modal — Invest commits capital, never creates a deal.
+          openSubscriptionModal(d);
           return;
         }
         const sub = e.target.closest("[data-subscribe]");
@@ -781,16 +817,11 @@
                 if (!g.ok) {
                   if (g.reason === 'not-verified' && T.openPaywallModal) { T.openPaywallModal(); return; }
                   if (g.reason === 'tier-too-low' && T.openTierUpgradeModal) { T.openTierUpgradeModal({ target: g.required, reason: 'Lane B private placement subscription' }); return; }
+                  if (g.reason === 'status-closed') { T.toast(g.statusMsg + ' · ' + d.status); return; }
                   T.toast('Gated · ' + g.reason);
                   return;
                 }
-                if (d.lane === 'lane-a' || d.lane === 'lane-b') {
-                  openSubscriptionModal(d);
-                } else if (window.DealFlow) {
-                  window.DealFlow.openWizard({
-                    prefill: { name: d.company + " — Co-Invest", sponsor: d.company, sector: d.sector, vehicleType: 'coinvest' }
-                  });
-                }
+                openSubscriptionModal(d);
               }
             },
             { label: "Open profile", onClick: function () { window.location.href = "company.html?company=" + id; } },

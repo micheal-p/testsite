@@ -226,48 +226,67 @@
         { key: "manager" }, { key: "status" }, { key: "lastContact" }
       ];
 
-      // ---- Live commitments: real data from your deals (lifecycle) ----
+      // ---- v3 Live subscriptions: investors who subscribed to deals you listed ----
+      // Pulls from investmentsApi for every deal where userCreated=true (your raises).
+      // Shows ticker, investor, ticket, signed-at, countersign state, payment ref. Issuer-side view.
       function renderLiveCommits() {
         const DF = window.DealFlow;
         const dealsApi = DB.dealsApi();
-        const deals = dealsApi.list();
-        const commits = [];
-        deals.forEach(function (d) {
-          (d.investors || []).forEach(function (i) {
-            commits.push({
-              dealId: d.id, dealName: d.name, sector: d.sector,
-              name: i.name || "You", amount: i.commitment || 0,
-              at: i.at, status: i.status || "soft",
-            });
-          });
-        });
-        commits.sort(function (a, b) { return (b.at || "").localeCompare(a.at || ""); });
+        const investmentsApi = DB.investmentsApi();
+        const myDeals = dealsApi.list().filter(function (d) { return d.userCreated; });
+        const myDealIds = {};
+        myDeals.forEach(function (d) { myDealIds[d.id] = d; });
+        const allSubs = investmentsApi.list().filter(function (i) { return myDealIds[i.dealId]; });
+        allSubs.sort(function (a, b) { return (b.signedAt || "").localeCompare(a.signedAt || ""); });
 
-        const total = commits.reduce(function (a, c) { return a + c.amount; }, 0);
-        document.getElementById("liveCount").textContent = commits.length;
-        document.getElementById("liveTotal").textContent = DF ? DF.fmtMoney(total) : ("$" + total);
+        function fmtNgn(n) {
+          n = +n; if (!n || isNaN(n)) return "—";
+          if (n >= 1e9) return "₦" + (n / 1e9).toFixed(2) + "bn";
+          if (n >= 1e6) return "₦" + (n / 1e6).toFixed(0) + "m";
+          if (n >= 1e3) return "₦" + (n / 1e3).toFixed(0) + "k";
+          return "₦" + n;
+        }
+        const totalCommitted = allSubs
+          .filter(function (i) { return i.countersignState === "accepted"; })
+          .reduce(function (a, i) { return a + (i.ticketNGN || 0); }, 0);
+        const pendingCount = allSubs.filter(function (i) { return (i.countersignState || "pending") === "pending"; }).length;
+
+        document.getElementById("liveCount").textContent = allSubs.length;
+        document.getElementById("liveTotal").textContent = fmtNgn(totalCommitted) + (pendingCount ? " · " + pendingCount + " pending" : "");
 
         const body = document.getElementById("liveCommitsBody");
-        if (!commits.length) {
-          body.innerHTML = '<div style="padding:14px 16px;font-size:13px;color:var(--text-muted)">No live commitments yet. When someone clicks <strong style="color:var(--text-primary)">+ Commit as investor</strong> on a deal page, the commitment appears here with deal context.</div>';
+        if (!myDeals.length) {
+          body.innerHTML = '<div style="padding:14px 16px;font-size:13px;color:var(--text-muted);line-height:1.55">You haven\'t listed any deals yet. Visit <a href="datacell.html" style="color:var(--text-primary);font-weight:600">Data Cell</a> or click <strong style="color:var(--text-primary)">+ List a deal</strong> on the home dashboard to start raising. Subscribers will appear here as they subscribe.</div>';
+          return;
+        }
+        if (!allSubs.length) {
+          body.innerHTML = '<div style="padding:14px 16px;font-size:13px;color:var(--text-muted);line-height:1.55">No subscriptions yet on your ' + myDeals.length + ' listed deal' + (myDeals.length === 1 ? "" : "s") + '. Investors who subscribe will appear here with countersign state.</div>';
           return;
         }
         body.innerHTML =
-          '<div style="overflow-x:auto"><table class="db-table">' +
-            '<thead><tr><th>Investor</th><th>Deal</th><th>Sector</th><th class="text-right">Commitment</th><th>Date</th><th>Status</th><th></th></tr></thead>' +
-            '<tbody>' + commits.map(function (c) {
-              const status = c.status.toLowerCase();
-              const statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
-              const badgeCls = status === "signed" ? "badge-success" : status === "hard" ? "badge-info" : "badge-warn";
+          '<div style="overflow-x:auto"><table class="db-table compact-table">' +
+            '<thead><tr><th>Ticker / Deal</th><th>Investor</th><th class="text-right">Ticket</th><th>Signed</th><th>Execution</th><th>Payment ref</th><th></th></tr></thead>' +
+            '<tbody>' + allSubs.map(function (inv) {
+              const deal = myDealIds[inv.dealId];
+              const signed = inv.signedAt ? new Date(inv.signedAt).toLocaleDateString("en-GB", { day:"2-digit", month:"short", year:"numeric" }) : "—";
+              const cs = inv.countersignState || "pending";
+              const csChip = cs === "accepted" ? '<span class="cs-pill cs-accepted">Executed</span>'
+                          : cs === "declined" ? '<span class="cs-pill cs-declined" title="' + escapeHtml(inv.declineReason || "") + '">Declined</span>'
+                          : cs === "withdrawn" ? '<span class="cs-pill cs-withdrawn">Withdrawn (refund)</span>'
+                          : '<span class="cs-pill cs-pending">Pending countersign</span>';
+              const ref = inv.payment ? inv.payment.refCode : (inv.id || "—");
               return (
                 '<tr>' +
-                  '<td>' + escapeHtml(c.name) + '</td>' +
-                  '<td><a href="deal.html?id=' + c.dealId + '">' + escapeHtml(c.dealName) + '</a></td>' +
-                  '<td style="color:var(--text-secondary)">' + escapeHtml(c.sector || "—") + '</td>' +
-                  '<td class="num">' + (DF ? DF.fmtMoney(c.amount) : ("$" + c.amount)) + '</td>' +
-                  '<td style="color:var(--text-secondary)">' + new Date(c.at).toLocaleDateString() + '</td>' +
-                  '<td><span class="badge ' + badgeCls + '">' + statusLabel + '</span></td>' +
-                  '<td style="text-align:right"><a href="deal.html?id=' + c.dealId + '" class="t-btn" style="height:24px;padding:0 8px;font-size:11px">Open deal</a></td>' +
+                  '<td>' +
+                    '<div style="font-family:var(--mono);font-weight:600;letter-spacing:0.04em">' + escapeHtml(deal.ticker || "—") + '</div>' +
+                    '<div style="font-size:11px;color:var(--text-secondary)"><a href="deal.html?id=' + escapeHtml(deal.id) + '">' + escapeHtml(deal.legalName || deal.company || deal.name) + '</a></div>' +
+                  '</td>' +
+                  '<td>' + escapeHtml(inv.investorName || "Demo Investor") + '</td>' +
+                  '<td class="num">' + fmtNgn(inv.ticketNGN) + '</td>' +
+                  '<td style="color:var(--text-secondary);font-size:11px">' + signed + '</td>' +
+                  '<td>' + csChip + '</td>' +
+                  '<td style="font-family:var(--mono);font-size:10.5px;color:var(--text-secondary)">' + escapeHtml(ref) + '</td>' +
+                  '<td style="text-align:right"><a href="agreement.html?id=' + escapeHtml(inv.id) + '" target="_blank" class="t-btn" style="height:24px;padding:0 8px;font-size:11px">View agreement</a></td>' +
                 '</tr>'
               );
             }).join("") + '</tbody>' +

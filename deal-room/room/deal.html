@@ -7,6 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.49.1/dist/apexcharts.min.js"></script>
   <link rel="stylesheet" href="../assets/css/custom.css" />
   <link rel="stylesheet" href="../assets/css/terminal.css" />
   <style>html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}</style>
@@ -36,6 +37,23 @@
       const D = window.DataBankData;
       const root = document.getElementById("dealRoot");
 
+      // Const tables hoisted to the top of the IIFE — referenced by hoisted helper functions
+      // (renderV3 → renderBroadcastsPanel uses BROADCAST_CATEGORIES; renderV3 → renderAiPanel
+      // → tokenize uses STOP_WORDS). If declared below the renderV3() call site, TDZ throws.
+      const BROADCAST_CATEGORIES = [
+        { id: "operational", label: "Operational",  color: "info"    },
+        { id: "milestone",   label: "Milestone",    color: "success" },
+        { id: "risk",        label: "Risk",         color: "danger"  },
+        { id: "funding",     label: "Funding",      color: "warning" },
+        { id: "other",       label: "Other",        color: "muted"   }
+      ];
+      const STOP_WORDS = { the:1, a:1, an:1, is:1, are:1, of:1, to:1, in:1, on:1, for:1, this:1, that:1, what:1, how:1, when:1, where:1, why:1, who:1, you:1, your:1, i:1, it:1, with:1, and:1, or:1, do:1, does:1, did:1, can:1, will:1, "?":1 };
+      // Session-scoped Q&A history for the AI assistant. Hoisted to avoid TDZ when renderV3
+      // (hoisted function declaration) calls renderAiPanel which reads this array.
+      const _aiHistory = [];
+      // Active tab on the countersign queue panel — Pending / Accepted / Declined.
+      let _csTab = "pending";
+
       const params = new URLSearchParams(location.search);
       const id = params.get("id");
       // Look up the deal: user-created first (dealsApi), then fall back to seeded D.deals.
@@ -59,10 +77,21 @@
 
       let activeStage = deal.stage; // open the current stage by default
 
-      // ---- v3 lane (Lane A / Lane B) — render the lifecycle state-machine view ----
-      if (deal.lane === "lane-a" || deal.lane === "lane-b") {
-        renderV3();
-        document.documentElement.classList.add("is-ready");
+      // Always reveal the page first so no exception below can leave it invisible.
+      document.documentElement.classList.add("is-ready");
+
+      // ---- v3 lane (Lane A / Lane B / Fund) — use the lifecycle state-machine view.
+      // Fund-vehicle seeded deals (Arnergy etc.) also route here because the legacy 6-stage
+      // renderer expects integer deal.stage; seeded deals carry strings ("Series B", "Public").
+      // Only legacy user-created fund vehicles (from the original 3-step wizard) have an
+      // undefined lane + integer stage — those still fall through to render() below.
+      if (deal.lane === "lane-a" || deal.lane === "lane-b" || deal.lane === "fund") {
+        try {
+          renderV3();
+        } catch (err) {
+          console.error("renderV3 failed for", deal.id, err);
+          root.innerHTML = '<section class="panel" style="padding:24px"><div class="empty-title">Couldn\'t render this deal</div><div style="font-size:13px;color:var(--text-secondary);margin-top:8px;line-height:1.5">A rendering error occurred. The deal record exists but couldn\'t be displayed.<br/><br/><code style="font-family:var(--mono);font-size:11px;color:var(--down)">' + (err && err.message ? err.message : String(err)) + '</code></div><a class="t-btn t-btn-primary" href="deals.html" style="margin-top:16px">Back to deal room</a></section>';
+        }
         return;
       }
 
@@ -125,7 +154,33 @@
           '</div>'
         );
 
-        const briefBlock = deal.brief ? (
+        // Chart panel — every deal gets a graph. Seeded deals use the price series in D.companies;
+        // user-created v3 listings get a synthetic subscription-momentum line.
+        const chartHostId = "deal-chart-" + (deal.id || "x").replace(/[^a-z0-9]/gi, "");
+        const seededCompany = (D.companies || []).find(function (c) { return c.id === deal.id; });
+        const hasPriceSeries = !!(seededCompany && Array.isArray(seededCompany.priceHistory12m) && seededCompany.priceHistory12m.length > 1);
+        const chartTitle = hasPriceSeries ? "Price history (12 months)" : "Subscription momentum";
+        const chartSubtitle = hasPriceSeries ? "Synthetic series · for demo" : "Synthetic curve · 0 → " + (deal.allocationPct || 0) + "% over the raise window";
+        const chartBlock = (
+          '<section class="panel deal-chart-panel">' +
+            '<div class="panel-header">' +
+              '<div class="panel-title">' + chartTitle + '</div>' +
+              '<div class="panel-sub">' + chartSubtitle + '</div>' +
+            '</div>' +
+            '<div id="' + chartHostId + '" class="deal-chart-host"></div>' +
+          '</section>'
+        );
+
+        // Only render the dedicated brief panel when the deal has *rich* content
+        // (UoP array, milestones, or Why Now). Thin Lane B / Fund deals route their brief
+        // string into the snapshot sidebar instead — keeps the page structure consistent
+        // with MAX.ng-style deals that have no narrative.
+        const hasRichBrief = !!(
+          (Array.isArray(deal.useOfProceeds) && deal.useOfProceeds.length) ||
+          (Array.isArray(deal.milestones) && deal.milestones.length) ||
+          deal.whyNow
+        );
+        const briefBlock = (deal.brief && hasRichBrief) ? (
           '<section class="panel">' +
             '<div class="panel-header"><div class="panel-title">What this raise funds</div><div class="panel-sub">' + DF.esc(deal.wrapper) + '</div></div>' +
             '<div class="lc-brief"><p>' + DF.esc(deal.brief) + '</p>' +
@@ -151,11 +206,21 @@
           '</section>'
         ) : "";
 
-        // Snapshot — universal terms in a key/value grid
+        // Snapshot — universal terms in a key/value grid.
+        // For thin deals (no rich brief panel), fold brief + use-of-proceeds-text into the snapshot
+        // so the content is still surfaced even though the dedicated panel is hidden.
+        const briefInSnap = (deal.brief && !hasRichBrief)
+          ? '<div class="lc-snap-row lc-snap-brief"><span class="lc-snap-k">Brief</span><span class="lc-snap-v">' + DF.esc(deal.brief) + '</span></div>'
+          : '';
+        const uopInSnap = (deal.useOfProceedsText && !hasRichBrief)
+          ? '<div class="lc-snap-row lc-snap-brief"><span class="lc-snap-k">Use of proceeds</span><span class="lc-snap-v">' + DF.esc(deal.useOfProceedsText) + '</span></div>'
+          : '';
         const snap = (
           '<section class="panel">' +
             '<div class="panel-header"><div class="panel-title">Snapshot</div></div>' +
             '<div class="lc-snap">' +
+              briefInSnap +
+              uopInSnap +
               snapKV("Raise target", fmtNgn(deal.raiseNGN || 0)) +
               snapKV("Allocation", pct + "%") +
               snapKV("Ticket range", fmtNgn(deal.ticketMinNGN) + " – " + fmtNgn(deal.ticketMaxNGN)) +
@@ -198,6 +263,8 @@
           '</section>'
         ) : "";
 
+        // Countersign queue (v3 Part 9) — issuer-only, lists pending investor subscriptions.
+        const countersignBlock = isOwner ? renderCountersignQueue() : "";
         // Reporting cadence (v3 Part 8) — issuer-only, visible for Active and post-close states.
         const reportsAllowed = isOwner && ["Active", "Converting", "Converted", "Matured", "Defaulted", "Written Off"].indexOf(deal.status) >= 0;
         const reportsBlock = reportsAllowed ? renderReportsPanel() : "";
@@ -243,11 +310,73 @@
           pipeline +
           allocBlock +
 
+          chartBlock +
           '<div class="lc-grid">' +
-            '<div class="lc-main">' + briefBlock + transitions + reportsBlock + broadcastBlock + aiBlock + qaBlock + activity + '</div>' +
+            '<div class="lc-main">' + briefBlock + transitions + countersignBlock + reportsBlock + broadcastBlock + aiBlock + qaBlock + activity + '</div>' +
             '<aside class="lc-side">' + snap + '</aside>' +
           '</div>'
         );
+
+        // Render the chart once the host element exists.
+        setTimeout(function () {
+          const host = document.getElementById(chartHostId);
+          if (!host || !window.ApexCharts) return;
+          host.innerHTML = ""; // clear any prior render
+          let series;
+          if (hasPriceSeries) {
+            // Real price history — convert from values array to {x,y} pairs spaced over 12 months.
+            const arr = seededCompany.priceHistory12m;
+            const n = arr.length;
+            const now = Date.now();
+            const startMs = now - 365 * 24 * 60 * 60 * 1000;
+            series = arr.map(function (y, i) {
+              const t = startMs + Math.round((i / Math.max(1, n - 1)) * (now - startMs));
+              return [t, +y];
+            });
+          } else {
+            // Synthetic subscription-momentum curve: 0 → allocationPct over the deal window.
+            const target = +deal.allocationPct || 50;
+            const startMs = deal.signedAt ? new Date(deal.signedAt).getTime() : (Date.now() - 90 * 24 * 60 * 60 * 1000);
+            const endMs = Date.now();
+            const steps = 36;
+            series = [];
+            for (let i = 0; i <= steps; i++) {
+              const frac = i / steps;
+              // S-curve (logistic-ish) so it accelerates mid-raise
+              const eased = 1 / (1 + Math.exp(-6 * (frac - 0.5)));
+              const y = +(target * eased).toFixed(1);
+              const t = startMs + Math.round(frac * (endMs - startMs));
+              series.push([t, y]);
+            }
+          }
+          new ApexCharts(host, {
+            chart: { type: "area", height: 280, toolbar: { show: false }, animations: { enabled: true, speed: 320 }, zoom: { enabled: false } },
+            series: [{ name: hasPriceSeries ? "Price" : "% subscribed", data: series }],
+            colors: ["#0E7A3C"],
+            stroke: { curve: "smooth", width: 2.2, lineCap: "round" },
+            fill: { type: "gradient", gradient: { shadeIntensity: 1, opacityFrom: 0.22, opacityTo: 0, stops: [0, 100] } },
+            markers: { size: 0, hover: { size: 5 }, strokeWidth: 0, colors: ["#0E7A3C"] },
+            grid: { borderColor: "rgba(15,23,42,0.06)", strokeDashArray: 0, padding: { left: 8, right: 8, top: 0, bottom: 0 } },
+            tooltip: {
+              theme: "light",
+              x: { format: "MMM dd, yyyy" },
+              y: { formatter: function (v) { return hasPriceSeries ? "$" + v.toFixed(2) : v.toFixed(1) + "%"; } }
+            },
+            xaxis: {
+              type: "datetime",
+              labels: { style: { colors: "#94a3b8", fontSize: "10px", fontFamily: "ui-monospace, monospace" } },
+              axisBorder: { color: "rgba(15,23,42,0.08)" },
+              axisTicks: { color: "rgba(15,23,42,0.08)" }
+            },
+            yaxis: {
+              labels: {
+                style: { colors: "#94a3b8", fontSize: "10px", fontFamily: "ui-monospace, monospace" },
+                formatter: function (v) { return hasPriceSeries ? "$" + v.toFixed(0) : v.toFixed(0) + "%"; }
+              }
+            },
+            dataLabels: { enabled: false }
+          }).render();
+        }, 0);
 
         // Wire issuer transitions
         root.querySelectorAll("[data-transition]").forEach(function (b) {
@@ -276,6 +405,17 @@
         // Wire report-form buttons
         root.querySelectorAll("[data-rep]").forEach(function (b) {
           b.addEventListener("click", function () { openReportModal(b.getAttribute("data-rep")); });
+        });
+
+        // Wire countersign queue actions (issuer-only) + tab switching
+        root.querySelectorAll("[data-cs-tab]").forEach(function (b) {
+          b.addEventListener("click", function () { _csTab = b.getAttribute("data-cs-tab"); renderV3(); });
+        });
+        root.querySelectorAll("[data-cs-accept]").forEach(function (b) {
+          b.addEventListener("click", function () { openCountersignAccept(b.getAttribute("data-cs-accept")); });
+        });
+        root.querySelectorAll("[data-cs-decline]").forEach(function (b) {
+          b.addEventListener("click", function () { openCountersignDecline(b.getAttribute("data-cs-decline")); });
         });
 
         // Wire broadcast composer (issuer-only)
@@ -315,6 +455,161 @@
 
       function snapKV(k, v) {
         return '<div class="lc-snap-row"><span class="lc-snap-k">' + k + '</span><span class="lc-snap-v">' + DF.esc(v) + '</span></div>';
+      }
+
+      // ---- v3 Countersign queue (Part 9) — pending investor subscriptions awaiting issuer dual-PIN ----
+      function renderCountersignQueue() {
+        const investmentsApi = DB.investmentsApi();
+        const all = investmentsApi.list().filter(function (i) { return i.dealId === deal.id; });
+        if (!all.length) return ""; // hide panel entirely for owners with zero subscriptions on this deal
+        const groups = {
+          pending: all.filter(function (i) { return (i.countersignState || "pending") === "pending"; }),
+          accepted: all.filter(function (i) { return i.countersignState === "accepted"; }),
+          declined: all.filter(function (i) { return i.countersignState === "declined" || i.countersignState === "withdrawn"; })
+        };
+        const active = groups[_csTab] && groups[_csTab].length ? _csTab : (groups.pending.length ? "pending" : groups.accepted.length ? "accepted" : "declined");
+
+        function row(inv) {
+          const signed = new Date(inv.signedAt).toLocaleString("en-GB", { day:"2-digit", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" });
+          const investor = inv.investorName || "Demo Investor";
+          let meta = "Signed " + signed + " · " + DF.esc(inv.payment ? inv.payment.refCode : (inv.id || ""));
+          let actions = "";
+          if (active === "pending") {
+            actions = (
+              '<div class="cs-row-actions">' +
+                '<button class="t-btn" type="button" data-cs-decline="' + inv.id + '">Decline</button>' +
+                '<button class="t-btn t-btn-primary" type="button" data-cs-accept="' + inv.id + '">Accept &amp; sign</button>' +
+              '</div>'
+            );
+          } else if (active === "accepted") {
+            const when = inv.countersignedAt ? new Date(inv.countersignedAt).toLocaleString("en-GB", { day:"2-digit", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" }) : "—";
+            const by = (inv.countersignedBy || ["Signatory 1", "Signatory 2"]).map(DF.esc).join(" + ");
+            meta = "Signed " + signed + " · Countersigned " + when + " by " + by;
+            actions = '<a class="t-btn" href="agreement.html?id=' + DF.esc(inv.id) + '" target="_blank" style="height:30px;padding:0 12px;font-size:12px">View doc</a>';
+          } else {
+            const when = inv.countersignedAt ? new Date(inv.countersignedAt).toLocaleString("en-GB", { day:"2-digit", month:"short", year:"numeric" }) : (inv.withdrawnAt ? new Date(inv.withdrawnAt).toLocaleString("en-GB", { day:"2-digit", month:"short", year:"numeric" }) : "—");
+            const verb = inv.countersignState === "withdrawn" ? "Withdrawn (cooling-off)" : "Declined";
+            const reason = inv.declineReason || inv.withdrawReason || "—";
+            meta = "Signed " + signed + " · " + verb + " " + when + " · Reason: " + DF.esc(reason);
+            actions = "";
+          }
+          const stateBorder = active === "accepted" ? "cs-row-accepted" : active === "declined" ? "cs-row-declined" : "cs-row-pending";
+          return (
+            '<div class="cs-row ' + stateBorder + '">' +
+              '<div class="cs-row-main">' +
+                '<div class="cs-row-head">' +
+                  '<strong>' + DF.esc(investor) + '</strong>' +
+                  '<span class="cs-row-amt">' + fmtNgn(inv.ticketNGN) + '</span>' +
+                '</div>' +
+                '<div class="cs-row-meta">' + meta + '</div>' +
+              '</div>' +
+              actions +
+            '</div>'
+          );
+        }
+
+        const tabBtn = function (id, label, count) {
+          const sel = active === id ? " is-active" : "";
+          return '<button type="button" class="cs-tab' + sel + '" data-cs-tab="' + id + '">' + label + ' <span class="cs-tab-count">' + count + '</span></button>';
+        };
+        const list = groups[active].length
+          ? groups[active].map(row).join("")
+          : '<div class="cs-empty">Nothing in this tab.</div>';
+
+        return (
+          '<section class="panel">' +
+            '<div class="panel-header">' +
+              '<div class="panel-title">Subscriptions on this deal</div>' +
+              '<div class="panel-sub">' + all.length + ' total · v3 Part 9 · dual-signatory required to execute</div>' +
+            '</div>' +
+            '<div class="cs-tabs">' +
+              tabBtn("pending",  "Pending",  groups.pending.length) +
+              tabBtn("accepted", "Executed", groups.accepted.length) +
+              tabBtn("declined", "Declined / Withdrawn", groups.declined.length) +
+            '</div>' +
+            '<div class="cs-body">' + list + '</div>' +
+          '</section>'
+        );
+      }
+
+      function openCountersignAccept(invId) {
+        const investmentsApi = DB.investmentsApi();
+        const inv = investmentsApi.list().find(function (i) { return i.id === invId; });
+        if (!inv) return;
+        // Step 1 — Signatory 1 PIN
+        T.pinPad({
+          title: "Signatory 1 countersign · " + (deal.ticker || deal.company),
+          subtitle: "First authorized signatory enters their 6-digit PIN to countersign this Bilateral Subscription Agreement.",
+          onConfirm: function () {
+            // Step 2 — Signatory 2 PIN (corporate dual-signatory rule, v3 Part 3)
+            T.pinPad({
+              title: "Signatory 2 countersign · " + (deal.ticker || deal.company),
+              subtitle: "Second authorized signatory enters their 6-digit PIN. Both signatures are required per v3 Part 3.",
+              onConfirm: function () {
+                const now = new Date().toISOString();
+                investmentsApi.update(invId, {
+                  countersignState: "accepted",
+                  countersignedAt: now,
+                  countersignedBy: ["Signatory 1", "Signatory 2"]
+                });
+                // File executed copy to Vault
+                if (DB.vaultApi) {
+                  DB.vaultApi().add({
+                    kind: "agreement",
+                    title: "Bilateral Subscription Agreement · " + deal.ticker + " · executed",
+                    subtitle: (inv.investorName || "Demo Investor") + " · " + fmtNgn(inv.ticketNGN) + " · countersigned " + new Date(now).toLocaleDateString("en-GB", { day:"2-digit", month:"short", year:"numeric" }),
+                    dealId: deal.id,
+                    investmentId: invId,
+                    payload: Object.assign({}, inv.payment ? { paymentRef: inv.payment.refCode, escrowAccount: inv.payment.escrowAcct } : {}, {
+                      ticker: deal.ticker, wrapper: deal.wrapper, ticketNGN: inv.ticketNGN,
+                      lane: deal.laneLabel, governing: "Federal Republic of Nigeria · FCT Abuja",
+                      countersignState: "accepted", countersignedAt: now,
+                      countersignedBy: ["Signatory 1", "Signatory 2"]
+                    })
+                  });
+                }
+                T.alerts().add({
+                  symbol: deal.ticker,
+                  label: "Subscription countersigned · " + fmtNgn(inv.ticketNGN) + " · executed",
+                  value: "", unit: "", templateId: "subscription", severity: "critical"
+                });
+                deal.activity = deal.activity || [];
+                deal.activity.unshift({ at: now, text: "Countersigned subscription · " + fmtNgn(inv.ticketNGN) });
+                api.save(deal);
+                T.toast("Countersigned and filed to both Vaults.");
+                renderV3();
+              }
+            });
+          }
+        });
+      }
+
+      function openCountersignDecline(invId) {
+        const investmentsApi = DB.investmentsApi();
+        const inv = investmentsApi.list().find(function (i) { return i.id === invId; });
+        if (!inv) return;
+        T.modal("Decline subscription · " + deal.ticker,
+          '<p class="rep-hint">v3 Part 9 — declined subscriptions trigger full refund within 5 business days. Investor is notified with your remediation note.</p>' +
+          '<label class="rep-label">Reason (visible to investor)</label>' +
+          '<textarea class="t-input" id="cs-decline-note" rows="4" placeholder="e.g. Allocation exhausted by earlier subscriptions. Refund initiated."></textarea>',
+          { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="cs-decline-confirm">Decline subscription</button>' });
+        document.getElementById("cs-decline-confirm").addEventListener("click", function () {
+          const note = document.getElementById("cs-decline-note").value.trim();
+          if (!note) { T.toast("Reason is required"); return; }
+          investmentsApi.update(invId, {
+            countersignState: "declined",
+            declineReason: note,
+            countersignedAt: new Date().toISOString()
+          });
+          T.alerts().add({
+            symbol: deal.ticker,
+            label: "Subscription declined · " + fmtNgn(inv.ticketNGN) + " · refund initiated",
+            value: "", unit: "", templateId: "subscription", severity: "critical"
+          });
+          T.closeModal();
+          T.toast("Declined. Investor notified, refund initiated.");
+          renderV3();
+        });
       }
 
       // ---- v3 Reporting cadence (Part 8) — Daily auto / Weekly pulse / Monthly fiscal / Quarterly MD&A ----
@@ -402,13 +697,7 @@
       }
 
       // ---- v3 Issuer broadcast updates (Part 13) — one-to-many, immutable, timestamped ----
-      const BROADCAST_CATEGORIES = [
-        { id: "operational", label: "Operational",  color: "info"    },
-        { id: "milestone",   label: "Milestone",    color: "success" },
-        { id: "risk",        label: "Risk",         color: "danger"  },
-        { id: "funding",     label: "Funding",      color: "warning" },
-        { id: "other",       label: "Other",        color: "muted"   }
-      ];
+      // Note: BROADCAST_CATEGORIES is declared at the top of the IIFE (avoids TDZ via hoisted renderV3).
       function renderBroadcastsPanel() {
         deal.broadcasts = deal.broadcasts || [];
         const broadcasts = deal.broadcasts.slice().reverse();
@@ -498,7 +787,7 @@
       // ---- v3 AI assistant (Part 13) — strictly corpus-bound, cites sources, refuses out-of-corpus questions ----
       // Builds a retrievable corpus from everything the issuer has published on this deal. Mock retrieval
       // uses token overlap scoring; real impl would use embeddings + RAG with the same corpus boundary.
-      const STOP_WORDS = { the:1, a:1, an:1, is:1, are:1, of:1, to:1, in:1, on:1, for:1, this:1, that:1, what:1, how:1, when:1, where:1, why:1, who:1, you:1, your:1, i:1, it:1, with:1, and:1, or:1, do:1, does:1, did:1, can:1, will:1, "?":1 };
+      // Note: STOP_WORDS is declared at the top of the IIFE (avoids TDZ via hoisted renderV3).
       function tokenize(s) {
         return String(s || "").toLowerCase().replace(/[^a-z0-9₦% ]/g, " ").split(/\s+/).filter(function (w) { return w && !STOP_WORDS[w] && w.length > 1; });
       }
@@ -584,7 +873,7 @@
         const topThreshold = scored[0].score * 0.6;
         return scored.filter(function (s) { return s.score >= topThreshold; }).slice(0, 3);
       }
-      const _aiHistory = [];
+      // _aiHistory is declared at the top of the IIFE (TDZ-safe under hoisted renderV3).
       function renderAiPanel() {
         const corpus = buildCorpus();
         const corpusSummary = corpus.length
@@ -1272,7 +1561,13 @@
         });
       }
 
-      render();
+      // Legacy 6-stage fund-vehicle renderer — wrap in try/catch so a missing field doesn't blank the page.
+      try {
+        render();
+      } catch (err) {
+        console.error("legacy render() failed for", deal.id, err);
+        root.innerHTML = '<section class="panel" style="padding:24px"><div class="empty-title">Couldn\'t render this fund-vehicle deal</div><div style="font-size:13px;color:var(--text-secondary);margin-top:8px;line-height:1.5">This deal\'s data shape doesn\'t match the legacy 6-stage renderer. It may be a seeded deal that should use the v3 lifecycle view instead.<br/><br/><code style="font-family:var(--mono);font-size:11px;color:var(--down)">' + (err && err.message ? err.message : String(err)) + '</code></div><a class="t-btn t-btn-primary" href="deals.html" style="margin-top:16px">Back to deal room</a></section>';
+      }
       document.documentElement.classList.add("is-ready");
     })();
   </script>

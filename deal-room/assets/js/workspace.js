@@ -225,20 +225,36 @@
       '</div>'
     );
 
+    // v3 sidebar account block — mirrors the desktop profile dropdown with real badges + actions
+    const sbAcc2 = (window.DataBank && window.DataBank.accountApi) ? window.DataBank.accountApi().get() : { verified: false, kycTier: 1, accountType: "individual" };
+    const sbTier = sbAcc2.kycTier || 1;
+    const sbBadges =
+      (sbAcc2.verified
+        ? '<span class="acct-mini-pill ok">' +
+            '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>' +
+            'Verified' +
+          '</span>'
+        : '<button type="button" class="acct-mini-pill warn" data-action="open-paywall" title="Verify your account">Verify →</button>'
+      ) +
+      '<span class="acct-mini-pill t-tier-' + sbTier + '" title="KYC Tier ' + sbTier + '">T' + sbTier + '</span>';
+
     return (
       '<nav class="workspace-nav" aria-label="Workspace">' +
         nav +
         subsHtml +
         '<div class="nav-spacer"></div>' +
         '<div class="acct">' +
-          '<div style="display:flex;gap:10px;align-items:center;">' +
-            '<span style="display:inline-flex;align-items:center;justify-content:center;height:32px;width:32px;border-radius:8px;background:var(--text-primary);color:#FFFFFF;font-weight:600;font-size:12px">' + initials + '</span>' +
-            '<div style="min-width:0;">' +
-              '<div style="color:var(--text-primary);font-size:13px;font-weight:600;line-height:1.2">' + displayName + '</div>' +
-              '<div style="color:var(--text-muted);font-size:11px;overflow:hidden;text-overflow:ellipsis;max-width:160px;white-space:nowrap;">' + (email || (org.name || "Workspace")) + '</div>' +
+          '<div class="acct-id">' +
+            '<span class="acct-avatar">' + initials + '</span>' +
+            '<div class="acct-id-text">' +
+              '<div class="acct-id-name">' + displayName + '</div>' +
+              '<div class="acct-id-email">' + (email || (org.name || "Workspace")) + '</div>' +
             '</div>' +
           '</div>' +
-          '<a href="../signin.html" data-action="signout" style="margin-top:12px;padding-left:0;border-left:0;">' + icon("signout") + '<span>Sign out</span></a>' +
+          '<div class="acct-mini-badges">' + sbBadges + '</div>' +
+          // Full menu (Account / Settings / Preferences / Shortcuts) lives in the top-right profile
+          // dropdown to avoid duplication. Only Sign out stays here for always-visible escape.
+          '<button type="button" class="acct-link acct-link-danger acct-signout-only" data-action="signout">' + icon("signout") + '<span>Sign out</span></button>' +
         '</div>' +
       '</nav>'
     );

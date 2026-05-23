@@ -33,7 +33,9 @@
 
         <!-- Quick actions -->
         <div class="wh-actions">
-          <button class="t-btn t-btn-primary" type="button" id="whNewDealBtn">+ New deal</button>
+          <button class="t-btn t-btn-primary" type="button" id="whListDealBtn">+ List a deal</button>
+          <a class="t-btn" href="deals.html">Browse deals</a>
+          <button class="t-btn" type="button" id="whNewDealBtn">+ New fund vehicle</button>
           <button class="t-btn" type="button" data-action="open-alerts">Set alert</button>
           <button class="t-btn" type="button" data-action="open-reports">Reports</button>
         </div>
@@ -178,10 +180,29 @@
       }
       renderSnapshot();
 
-      // ---- New deal button (opens 3-step lifecycle wizard) ----
+      // ---- "+ New fund vehicle" — opens the legacy 3-step GP/LP wizard ----
       function openWizard() { if (window.DealFlow) window.DealFlow.openWizard(); }
       document.getElementById("whNewDealBtn").addEventListener("click", openWizard);
       document.getElementById("whDealsNewBtn").addEventListener("click", openWizard);
+
+      // ---- "+ List a deal" — opens the v3 issuer wizard. Gated on Corporate verification. ----
+      document.getElementById("whListDealBtn").addEventListener("click", function () {
+        const T = window.Terminal;
+        const acctApi = window.DataBank && window.DataBank.accountApi ? window.DataBank.accountApi() : null;
+        const acc = acctApi ? acctApi.get() : null;
+        if (!acc || !acc.verified) { T.openPaywallModal && T.openPaywallModal(); return; }
+        if (acc.accountType !== "corporate") {
+          T.modal("Corporate account required",
+            '<p style="font-size:13px;color:var(--text-secondary);line-height:1.55">Per v3 Part 3, only Corporate accounts can issue deals. Switch your plan to Corporate to access the List-a-Deal flow.</p>',
+            { footer: '<button class="t-btn" data-modal-close>Cancel</button><button class="t-btn t-btn-primary" id="whCorpSwitch">Switch to Corporate plan</button>' });
+          document.getElementById("whCorpSwitch").addEventListener("click", function () {
+            T.closeModal();
+            T.openPaywallModal && T.openPaywallModal();
+          });
+          return;
+        }
+        T.openListDealFlow && T.openListDealFlow();
+      });
 
       // ---- Your deals (lifecycle) ----
       function renderDeals() {

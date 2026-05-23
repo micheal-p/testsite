@@ -18,6 +18,7 @@
     account: "neiia_db_account",
     vault: "neiia_db_vault",
     compliance: "neiia_db_compliance",
+    prefs: "neiia_db_prefs",
     currency: "neiia_db_currency",
   };
 
@@ -488,11 +489,27 @@
           dealStatus: "Allocating",
           signedAt: now,
           updated: now,
+          // v3 Part 9 — bilateral subscription requires issuer countersign after investor signs.
+          countersignState: "pending",
+          countersignedAt: null,
+          countersignedBy: null,
+          declineReason: null
         }, rec || {});
         inv.bucket = bucketFor(inv.dealStatus);
         list.unshift(inv);
         store.set(key, list);
         return inv;
+      },
+      update(id, patch) {
+        const list = this.list();
+        const i = list.findIndex(function (x) { return x.id === id; });
+        if (i < 0) return null;
+        list[i] = Object.assign(list[i], patch || {}, { updated: new Date().toISOString() });
+        store.set(key, list);
+        return list[i];
+      },
+      getPendingForDeal(dealId) {
+        return this.list().filter(function (i) { return i.dealId === dealId && i.countersignState === "pending"; });
       },
       remove(id) {
         const list = this.list().filter(function (i) { return i.id !== id; });
@@ -769,6 +786,29 @@
     };
   }
 
+  // User preferences — persist landing page, alert cadence, number format, etc.
+  function prefsApi() {
+    const key = STORAGE_KEYS.prefs;
+    const DEFAULTS = {
+      landingPage: "index.html",
+      alertDigest: "instant",         // instant | daily | weekly | off
+      alertMinSeverity: "standard",   // critical | standard | all
+      numberFormat: "comma-dot",      // comma-dot (1,234.56) | dot-comma (1.234,56)
+      emailNotifications: true,
+      browserNotifications: false
+    };
+    return {
+      get() { return Object.assign({}, DEFAULTS, store.get(key, {}) || {}); },
+      set(patch) {
+        const merged = Object.assign(this.get(), patch || {});
+        store.set(key, merged);
+        try { window.dispatchEvent(new CustomEvent("norgroup:prefs-changed", { detail: merged })); } catch (_) {}
+        return merged;
+      },
+      reset() { store.remove(key); }
+    };
+  }
+
   function currencyApi() {
     const key = STORAGE_KEYS.currency;
     return {
@@ -884,6 +924,7 @@
     accountApi,
     vaultApi,
     complianceApi,
+    prefsApi,
     currencyApi,
     VERIFICATION_PLANS,
     TIER_CAPS,

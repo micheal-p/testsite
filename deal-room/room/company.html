@@ -920,20 +920,22 @@
         T.toast(added ? company.name + " added to watchlist" : company.name + " removed from watchlist");
       });
 
-      // Invest — opens co-invest wizard prefilled with this company. v3 paywall + tier gates applied.
+      // Invest — routes to the company's live deal (if any) instead of opening the creation wizard.
+      // Invest = commit capital, never create a deal. Creation lives on Data Cell / "+ List a deal".
       document.getElementById("investBtn").addEventListener("click", function () {
         const acctApi = window.DataBank && window.DataBank.accountApi ? window.DataBank.accountApi() : null;
         const acc = acctApi ? acctApi.get() : null;
         if (!acc || !acc.verified) { T.openPaywallModal && T.openPaywallModal(); return; }
-        if (!window.DealFlow) return;
-        window.DealFlow.openWizard({
-          prefill: {
-            name: company.name + " — Co-Invest",
-            sponsor: company.name,
-            sector: company.sector || "",
-            vehicleType: "coinvest",
-          }
-        });
+        // Find a v3 deal for this company id (Lane A / Lane B / Fund). If found, jump to the deal page.
+        const D = window.DataBankData;
+        const dealsApi = window.DataBank.dealsApi();
+        const candidate = (dealsApi.list().find(function (d) { return d.id === company.id; }))
+                        || (D.deals.find(function (d) { return d.id === company.id; }));
+        if (candidate) {
+          location.href = "deal.html?id=" + encodeURIComponent(candidate.id);
+        } else {
+          T.toast(company.name + " has no live deal on Deal Room right now.");
+        }
       });
 
       // Alert button

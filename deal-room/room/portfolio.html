@@ -41,11 +41,19 @@
 
       <div id="aiPanel" style="display:none"></div>
 
-      <!-- v3 subscriptions (CSAFE / Bonds / Equity Sub / etc.) -->
+      <!-- v3 subscriptions (CSAFE / Bonds / Equity Sub / etc.) — always shows all, filterable by state -->
       <section class="panel" id="invPanel" style="margin-bottom:14px">
         <div class="panel-header">
-          <div class="panel-title">Subscriptions <span style="font-weight:400;color:var(--text-muted);font-size:11px;margin-left:8px">Lane A / Lane B issuances</span></div>
-          <div class="panel-sub"><span id="invCount">0</span> in this bucket</div>
+          <div class="panel-title">Subscriptions <span style="font-weight:400;color:var(--text-muted);font-size:11px;margin-left:8px">Every deal you've subscribed to</span></div>
+          <div class="panel-sub"><span id="invCount">0</span> visible · <span id="invTotal">0</span> total</div>
+        </div>
+        <!-- State filter chips — All / Pending / Executed / Declined / Withdrawn -->
+        <div class="inv-state-row" id="invStateChips" style="padding:10px 16px 0">
+          <button type="button" class="inv-state-chip is-active" data-inv-state="all">All <span class="inv-state-count" id="ic-all">0</span></button>
+          <button type="button" class="inv-state-chip" data-inv-state="pending">Pending <span class="inv-state-count" id="ic-pending">0</span></button>
+          <button type="button" class="inv-state-chip" data-inv-state="accepted">Executed <span class="inv-state-count" id="ic-accepted">0</span></button>
+          <button type="button" class="inv-state-chip" data-inv-state="declined">Declined <span class="inv-state-count" id="ic-declined">0</span></button>
+          <button type="button" class="inv-state-chip" data-inv-state="withdrawn">Withdrawn <span class="inv-state-count" id="ic-withdrawn">0</span></button>
         </div>
         <div style="overflow-x:auto">
           <table class="db-table compact-table">
@@ -57,7 +65,7 @@
                 <th>Sector</th>
                 <th class="text-right">Ticket</th>
                 <th class="text-right">Valuation cap</th>
-                <th>Status</th>
+                <th>Execution</th>
                 <th>Signed</th>
                 <th></th>
               </tr>
@@ -122,6 +130,8 @@
 
       // v3 bucket state (default Pipeline)
       let currentBucket = "Pipeline";
+      // Subscriptions panel filters by execution state (independent of bucket tabs which now only filter Fund positions)
+      let _invStateFilter = "all";
       const BUCKET_HINTS = {
         Pipeline:  "Pre-close commitments and pre-mint allocations live here.",
         Active:    "CSAFEs in force (pre-conversion) and fund vehicles drawing capital.",
@@ -153,9 +163,29 @@
         Object.keys(counts).forEach(function (b) { document.getElementById("pf-count-" + b).textContent = counts[b]; });
         document.getElementById("pf-tabhint").textContent = BUCKET_HINTS[currentBucket];
 
-        // Filter to current bucket
+        // Filter to current bucket — applies only to Fund positions now.
         const list = positionsAll.filter(function (p) { return bucketForPosition(p) === currentBucket; });
-        const invList = investmentsAll.filter(function (i) { return i.bucket === currentBucket; });
+        // Subscriptions are filtered by execution state (Pending / Executed / Declined / Withdrawn), not bucket.
+        // Default "all" shows every subscription across all buckets.
+        const invList = _invStateFilter === "all"
+          ? investmentsAll
+          : investmentsAll.filter(function (i) { return (i.countersignState || "pending") === _invStateFilter; });
+
+        // Update state-filter chip counts (always shows full universe of subscriptions)
+        const stateCounts = { all: investmentsAll.length, pending: 0, accepted: 0, declined: 0, withdrawn: 0 };
+        investmentsAll.forEach(function (i) {
+          const s = i.countersignState || "pending";
+          if (stateCounts[s] != null) stateCounts[s] += 1;
+        });
+        Object.keys(stateCounts).forEach(function (s) {
+          const el = document.getElementById("ic-" + s);
+          if (el) el.textContent = stateCounts[s];
+        });
+        document.querySelectorAll("#invStateChips .inv-state-chip").forEach(function (b) {
+          b.classList.toggle("is-active", b.getAttribute("data-inv-state") === _invStateFilter);
+        });
+        const invTotalEl = document.getElementById("invTotal");
+        if (invTotalEl) invTotalEl.textContent = investmentsAll.length;
 
         // KPI strip aggregates across all buckets (whole portfolio summary, not bucket-filtered)
         const k = aggregate(positionsAll);
@@ -184,6 +214,26 @@
           invBody.innerHTML = invList.map(function (i) {
             const laneCls = i.lane === 'lane-a' ? 'lane-a' : i.lane === 'lane-b' ? 'lane-b' : 'lane-fund';
             const signed = new Date(i.signedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            // v3 Part 9 — surface countersign state per row + offer Withdraw within 14-day cooling-off
+            const cs = i.countersignState || 'pending';
+            let csChip;
+            if (cs === 'accepted')      csChip = '<span class="cs-pill cs-accepted">Executed</span>';
+            else if (cs === 'declined') csChip = '<span class="cs-pill cs-declined" title="' + DF.esc(i.declineReason || '') + '">Declined</span>';
+            else if (cs === 'withdrawn')csChip = '<span class="cs-pill cs-withdrawn">Withdrawn (refund)</span>';
+            else                        csChip = '<span class="cs-pill cs-pending">Pending countersign</span>';
+            // Cooling-off countdown — 14 days from countersignedAt
+            let actionBtn = '';
+            if (cs === 'accepted' && i.countersignedAt) {
+              const daysIn = Math.floor((Date.now() - new Date(i.countersignedAt).getTime()) / 86400000);
+              const daysLeft = 14 - daysIn;
+              if (daysLeft > 0) {
+                actionBtn = '<button class="t-btn" type="button" data-inv-withdraw="' + i.id + '" style="height:24px;padding:0 8px;font-size:11px;color:var(--down)" title="Withdraw within 14-day cooling-off period (' + daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + ' left)">Withdraw</button>';
+              } else {
+                actionBtn = '<button class="t-btn" type="button" data-inv-remove="' + i.id + '" style="height:24px;padding:0 8px;font-size:11px">Remove</button>';
+              }
+            } else {
+              actionBtn = '<button class="t-btn" type="button" data-inv-remove="' + i.id + '" style="height:24px;padding:0 8px;font-size:11px">Remove</button>';
+            }
             return (
               '<tr>' +
                 '<td>' +
@@ -195,9 +245,9 @@
                 '<td style="color:var(--text-secondary)">' + DF.esc(i.sector || '') + '</td>' +
                 '<td class="num">' + fmtNgnInline(i.ticketNGN) + '</td>' +
                 '<td class="num">' + (i.valuationCapNGN ? fmtNgnInline(i.valuationCapNGN) : '—') + '</td>' +
-                '<td><span class="badge badge-info">' + DF.esc(i.dealStatus || '') + '</span></td>' +
+                '<td>' + csChip + '</td>' +
                 '<td style="color:var(--text-secondary);font-size:11px">' + signed + '</td>' +
-                '<td style="text-align:right"><button class="t-btn" type="button" data-inv-remove="' + i.id + '" style="height:24px;padding:0 8px;font-size:11px">Remove</button></td>' +
+                '<td style="text-align:right">' + actionBtn + '</td>' +
               '</tr>'
             );
           }).join("");
@@ -380,6 +430,14 @@
         });
       }
 
+      // Subscription state filter chips
+      document.querySelectorAll("#invStateChips .inv-state-chip").forEach(function (b) {
+        b.addEventListener("click", function () {
+          _invStateFilter = b.getAttribute("data-inv-state");
+          render();
+        });
+      });
+
       // Bucket tab switching
       document.querySelectorAll(".pf-tab").forEach(function (t) {
         t.addEventListener("click", function () {
@@ -395,6 +453,37 @@
 
       // Remove subscription (mirrors fund-position remove)
       document.getElementById("invBody").addEventListener("click", function (e) {
+        const wd = e.target.closest("[data-inv-withdraw]");
+        if (wd) {
+          const id = wd.getAttribute("data-inv-withdraw");
+          const inv = investments.list().find(function (x) { return x.id === id; });
+          if (!inv) return;
+          const daysIn = inv.countersignedAt ? Math.floor((Date.now() - new Date(inv.countersignedAt).getTime()) / 86400000) : 0;
+          const daysLeft = 14 - daysIn;
+          T.modal("Withdraw subscription · " + (inv.ticker || ""),
+            '<p style="font-size:13px;color:var(--text-secondary);line-height:1.55;margin:0 0 10px">v3 Part 9 — you have <strong>' + daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + '</strong> left in the 14-day cooling-off period. Withdrawing now triggers a full refund of <strong>' + fmtNgnInline(inv.ticketNGN) + '</strong> to your BVN-verified bank account within 5 business days. After cooling-off the subscription is binding (subject to escrow threshold).</p>' +
+            '<label class="rep-label">Reason (optional)</label>' +
+            '<textarea class="t-input" id="wd-reason" rows="2" placeholder="Reason for withdrawal — visible to issuer for audit."></textarea>',
+            { footer: '<button class="t-btn" data-modal-close>Stay subscribed</button><button class="t-btn t-btn-primary" id="confirmWithdraw" style="background:var(--down);border-color:var(--down)">Withdraw &amp; refund</button>' });
+          document.getElementById("confirmWithdraw").addEventListener("click", function () {
+            const reason = (document.getElementById("wd-reason").value || "").trim();
+            investments.update(id, {
+              countersignState: "withdrawn",
+              withdrawnAt: new Date().toISOString(),
+              withdrawReason: reason
+            });
+            T.alerts().add({
+              symbol: inv.ticker,
+              label: "Subscription withdrawn within cooling-off · " + fmtNgnInline(inv.ticketNGN) + " refund initiated",
+              value: "", unit: "",
+              templateId: "subscription", severity: "critical"
+            });
+            T.closeModal();
+            T.toast("Withdrawn. Refund initiated.");
+            render();
+          });
+          return;
+        }
         const b = e.target.closest("[data-inv-remove]");
         if (!b) return;
         const id = b.getAttribute("data-inv-remove");

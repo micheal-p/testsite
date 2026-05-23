@@ -175,17 +175,31 @@
       </div>
     </section>
 
-    <!-- Logo strip -->
+    <!-- Regulatory anchor strip — the real infrastructure Deal Room sits on top of -->
     <section class="bg-cream border-b border-line">
-      <div class="max-w-content mx-auto px-6 lg:px-10 py-12">
-        <p class="text-center text-[11px] uppercase tracking-[0.22em] text-faint mb-8">Trusted by publishers, allocators, and IR teams</p>
-        <div class="grid grid-cols-2 md:grid-cols-6 gap-y-6 gap-x-10 items-center">
-          <div class="logo-tile">NEFUND</div>
-          <div class="logo-tile">Apex AI</div>
-          <div class="logo-tile">CitiBIM</div>
-          <div class="logo-tile">Rollups</div>
-          <div class="logo-tile">EduCenter</div>
-          <div class="logo-tile">FBNQuest</div>
+      <div class="max-w-content mx-auto px-6 lg:px-10 py-14">
+        <p class="text-center text-[11px] uppercase tracking-[0.22em] text-faint mb-10">Regulated under · Built on · Custody by</p>
+        <div class="reg-strip">
+          <div class="reg-group">
+            <div class="reg-label">Licensed by</div>
+            <div class="reg-items"><span>SEC Nigeria</span></div>
+            <div class="reg-foot">Crowdfunding Rules 2021 · DAOP Rules 2022 · ISA 2025</div>
+          </div>
+          <div class="reg-group">
+            <div class="reg-label">KYC + AML rails</div>
+            <div class="reg-items"><span>CAC</span><span>FIRS</span><span>NIBSS</span><span>NIMC</span><span>NFIU</span></div>
+            <div class="reg-foot">Auto-verified live during onboarding</div>
+          </div>
+          <div class="reg-group">
+            <div class="reg-label">Escrow custody</div>
+            <div class="reg-items"><span>Stanbic IBTC</span><span>UBA</span><span>Access Bank</span><span>Zenith</span></div>
+            <div class="reg-foot">CBN-licensed custodians · funds never on platform balance sheet</div>
+          </div>
+          <div class="reg-group">
+            <div class="reg-label">Audit + valuation</div>
+            <div class="reg-items"><span>PwC</span><span>KPMG</span><span>Deloitte</span><span>EY</span><span>FBNQuest</span></div>
+            <div class="reg-foot">FRCN-registered firms · FBNQuest fallback for issuer valuation</div>
+          </div>
         </div>
       </div>
     </section>
@@ -295,6 +309,92 @@
               <a href="onboarding.html" class="btn-ghost mt-4">Get verified</a>
             </div>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inside the workspace — preview using actual workspace component styles -->
+    <section id="workspace" class="py-20 lg:py-28 border-b border-line">
+      <div class="max-w-content mx-auto px-6 lg:px-10">
+        <div class="max-w-3xl">
+          <div class="eyebrow"><span>Inside the workspace</span></div>
+          <h2 class="font-serif text-[36px] sm:text-[48px] lg:text-[56px] leading-[1.04] tracking-tightest mt-5">
+            Every deal page. <em class="italic">Same shape.</em>
+          </h2>
+          <p class="mt-5 text-ink/65 leading-relaxed">
+            Whatever lane a deal sits in, the page is built the same way: status pipeline at the top, allocation progress, what-this-raise-funds brief, instrument terms, subscription flow. Investors don't relearn the surface every time.
+          </p>
+        </div>
+
+        <div class="lp-deal-preview mt-12">
+          <div class="lp-deal-mock">
+            <!-- Hero -->
+            <div class="lp-mock-eyebrow">Deal · Lane A · Growth Capital</div>
+            <h3 class="lp-mock-title">Anie Limited <span class="lp-mock-tick">AGRMX</span></h3>
+            <div class="lp-mock-chips">
+              <span class="lp-chip lp-chip-laneA">Lane A · Growth Capital</span>
+              <span class="lp-chip lp-chip-wrap">CSAFE</span>
+              <span class="lp-chip lp-chip-warn">Allocating</span>
+              <span class="lp-chip-meta">Food &amp; Agribusiness · Seed</span>
+            </div>
+
+            <!-- Mini lifecycle pipeline (4 groups) -->
+            <div class="lp-lifecycle-mini">
+              <div class="lp-lg lp-lg-past"><div class="lp-lg-head">Pre-Launch</div><div class="lp-lg-state">Approved</div></div>
+              <div class="lp-lg lp-lg-current"><div class="lp-lg-head">Live <span class="lp-lg-here">here</span></div><div class="lp-lg-state lp-lg-on">Allocating</div></div>
+              <div class="lp-lg"><div class="lp-lg-head">Closing</div><div class="lp-lg-state">—</div></div>
+              <div class="lp-lg"><div class="lp-lg-head">Post-Close</div><div class="lp-lg-state">—</div></div>
+            </div>
+
+            <!-- Allocation bar -->
+            <div class="lp-alloc-block">
+              <div class="lp-alloc-label">75–99% Subscribed <span class="lp-alloc-blurb">· near close</span></div>
+              <div class="lp-alloc-bar">
+                <span class="lp-alloc-tick" style="left:25%"></span>
+                <span class="lp-alloc-tick" style="left:50%"></span>
+                <span class="lp-alloc-tick" style="left:75%"></span>
+                <span class="lp-alloc-tick" style="left:100%"></span>
+                <span class="lp-alloc-fill" style="width:87%"></span>
+              </div>
+              <div class="lp-alloc-foot">87% of ₦85m target · 14 days to close</div>
+            </div>
+
+            <!-- Two-col body: brief + snapshot -->
+            <div class="lp-deal-grid">
+              <div class="lp-deal-main">
+                <div class="lp-mini-panel">
+                  <div class="lp-mini-panel-head">What this raise funds <span>CSAFE</span></div>
+                  <p class="lp-mini-panel-text">Agrimex aggregates produce from 400+ smallholder farms, processes it through two cold-chain hubs in Lagos, and supplies four QSR chains under offtake contracts. ₦480m revenue FY2025.</p>
+                  <div class="lp-uop">
+                    <div class="lp-uop-row"><span>Cold storage expansion (Ibadan)</span><b>45%</b><i>₦38.3m</i></div>
+                    <div class="lp-uop-bar"><span style="width:45%"></span></div>
+                    <div class="lp-uop-row"><span>Working capital — farmer prepayments</span><b>30%</b><i>₦25.5m</i></div>
+                    <div class="lp-uop-bar"><span style="width:30%"></span></div>
+                    <div class="lp-uop-row"><span>Two refrigerated trucks</span><b>15%</b><i>₦12.8m</i></div>
+                    <div class="lp-uop-bar"><span style="width:15%"></span></div>
+                  </div>
+                </div>
+              </div>
+
+              <aside class="lp-deal-side">
+                <div class="lp-mini-panel">
+                  <div class="lp-mini-panel-head">Snapshot</div>
+                  <dl class="lp-snap">
+                    <div><dt>Raise target</dt><dd>₦85m</dd></div>
+                    <div><dt>Allocation</dt><dd>87%</dd></div>
+                    <div><dt>Ticket range</dt><dd>₦100k – ₦5m</dd></div>
+                    <div><dt>Valuation cap</dt><dd>₦425m</dd></div>
+                    <div><dt>Discount</dt><dd>20%</dd></div>
+                    <div><dt>Wrapper</dt><dd>CSAFE</dd></div>
+                    <div><dt>Closing</dt><dd>72h</dd></div>
+                    <div><dt>Auditor</dt><dd>BDO Nigeria</dd></div>
+                  </dl>
+                </div>
+              </aside>
+            </div>
+          </div>
+
+          <p class="text-center text-sm text-faint mt-5">Mock data · the live workspace renders the same components for every deal in every lane.</p>
         </div>
       </div>
     </section>
