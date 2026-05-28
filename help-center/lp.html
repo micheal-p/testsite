@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LP Portal Help | NEIIA Help Center</title>
+    <meta name="description" content="Support and Help for LP Portal." />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="helpcenter.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: '#0E7A3C',
+              brandSoft: '#E7F4EC',
+              brandInk: '#0A4A24',
+              amber: '#F59E0B',
+              paper: '#FAFAF7',
+              ink: '#0A0A0A',
+              ink2: '#1F2937',
+              muted: '#6B7280',
+              line: '#E5E7EB',
+            },
+            fontFamily: {
+              sans: ['Mulish', 'system-ui', 'sans-serif'],
+              serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50" />
+    <style>
+      body, p, li, a, span, div { font-family: 'Mulish', system-ui, sans-serif; }
+      h1, h2, h3, h4 { font-family: 'Mulish', system-ui, sans-serif; }
+      .serif { font-family: 'Instrument Serif', Georgia, serif !important; font-weight: 400; }
+    </style>
+    <script src="../auth-check.js"></script>
+    <script src="../edu-center/educenter.js"></script>
+</head>
+
+<body class="hc-body">
+
+    <!-- Logo -->
+    <a href="../index.html" class="logo-fixed" id="edu-hero-logo" style="background: #021a1f;">
+        <div class="logo-wrapper">
+            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo" style="max-width: 120px; display: block !important;">
+            <div class="brand-text" style="color: #ffffff !important;">NATIONAL ENERGY INVESTMENT &amp; INTELLIGENCE ADMINISTRATION</div>
+        </div>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="navbar pill-nav">
+        <div class="nav-links">
+            <div class="nav-item dropdown">
+                <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down" style="font-size: 12px; margin-left: 6px;"></i></span>
+                <div class="mega-menu">
+                    <div class="mm-left-columns">
+                        <div class="mm-column">
+                            <ul class="mm-list">
+                                <li><a href="../deal-room/index.html">Deal Room</a></li>
+                            </ul>
+                            <div style="margin-top: 24px;">
+                                <h4>Intelligence</h4>
+                                <ul class="mm-list">
+                                    <li><a href="../apex/apex.html">Apex AI <span style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a></li>
+                                    <li><a href="../edu-center/educenter.html">Edu Center</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="../about.html">About</a>
+            <a href="../contact.html">Contact</a>
+            <a href="index.html" style="font-weight:700">Help center</a>
+        </div>
+    </nav>
+
+    <!-- Auth Links -->
+    <div class="auth-fixed">
+        <a href="../newsletter.html" class="btn btn-black">Join</a>
+    </div>
+
+    <!-- Header (Slim) -->
+    <header style="background: linear-gradient(180deg, #021a1f 0%, #0c4a4c 100%); color: #fff; padding: 120px 24px 60px;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <a href="index.html" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;"><i class="fas fa-arrow-left"></i> Back to Help Center</a>
+            <h1 style="font-size: 2.5rem; font-weight: 700; margin: 0;"><i class="fas fa-chart-line" style="color: #A3E635; margin-right: 12px;"></i> LP Portal</h1>
+        </div>
+    </header>
+
+    <!-- Main Docs Area -->
+    <div class="hc-shell">
+        <aside class="hc-sidebar">
+            <h3>Start Here</h3>
+            <nav class="hc-sidebar-menu">
+                <a href="index.html" class="hc-sidebar-item">Overview</a>
+            </nav>
+            <h3>Topics</h3>
+            <nav class="hc-sidebar-menu">
+                <a href="apex.html" class="hc-sidebar-item">Apex AI</a>
+                <a href="lp.html" class="hc-sidebar-item is-active">LP Portal</a>
+                <a href="esg.html" class="hc-sidebar-item">Risk &amp; ESG</a>
+                <a href="energy-assets.html" class="hc-sidebar-item">Energy Assets</a>
+                <a href="dealroom.html" class="hc-sidebar-item">Deal Room</a>
+                <a href="account.html" class="hc-sidebar-item">Account &amp; Security</a>
+            </nav>
+        </aside>
+
+        <main class="hc-main">
+            <h2>Using the LP Portal</h2>
+            <p>The LP Portal is your secure gateway to monitor your investments, review capital calls, and access confidential reports shared by General Partners through the Deal Room.</p>
+
+            <h3>Viewing Your Commitments</h3>
+            <p>Once you are granted access to a fund, it will appear in your LP Dashboard. You can track your total commitment, called capital, and outstanding capital across all your active investments in the Energy sector.</p>
+
+            <h3>Handling Capital Calls</h3>
+            <ul>
+                <li><strong>Notifications</strong>: You will receive an email and a platform alert when a new capital call is issued.</li>
+                <li><strong>Wiring Instructions</strong>: Verified wire details are securely provided within the call notice. Always verify via the platform rather than email to avoid phishing.</li>
+                <li><strong>Status</strong>: Mark a call as "Funded" once the wire is initiated. The GP will confirm receipt on their end, updating your funded percentage.</li>
+            </ul>
+
+            <h3>Troubleshooting</h3>
+            <div class="hc-faq">
+                <details>
+                    <summary>I was invited to a fund but I don't see it in my dashboard.</summary>
+                    <p>Ensure that you have accepted the invitation using the exact email address it was sent to. If you have multiple NEIIA accounts, log into the one associated with the invitation link.</p>
+                </details>
+                <details>
+                    <summary>How do I download K-1s and tax documents?</summary>
+                    <p>Tax documents are securely uploaded to the "Vault" section of your specific fund view. Navigate to the fund, select "Vault", and look for the "Tax Documents" folder.</p>
+                </details>
+            </div>
+
+            <div class="hc-feedback">
+                <span style="color: #6b7280; font-size: 0.95rem;">Was this page helpful?</span>
+                <div style="display: flex; gap: 12px;">
+                    <button class="hc-feedback-btn"><i class="far fa-thumbs-up"></i> Yes</button>
+                    <button class="hc-feedback-btn"><i class="far fa-thumbs-down"></i> No</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer container" style="margin-top: 0; padding: 60px 20px; background-color: #fafafa; color: #111; border-top: 1px solid #eaeaea;">
+        <div class="footer-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; text-align: left;">
+            <div class="footer-col">
+                <h4 style="margin-bottom: 20px; font-weight: 600;">Products</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 12px;"><a href="../deal-room/index.html" style="color: #666; text-decoration: none;">Deal Room</a></li>
+                    <li style="margin-bottom: 12px;"><a href="../apex/apex.html" style="color: #666; text-decoration: none;">Apex AI</a></li>
+                    <li style="margin-bottom: 12px;"><a href="../edu-center/educenter.html" style="color: #666; text-decoration: none;">Edu Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 style="margin-bottom: 20px; font-weight: 600;">Administration</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 12px;"><a href="../about.html" style="color: #666; text-decoration: none;">About NEIIA</a></li>
+                    <li style="margin-bottom: 12px;"><a href="../newsletter.html" style="color: #666; text-decoration: none;">News &amp; Updates</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 style="margin-bottom: 20px; font-weight: 600;">Engagement</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 12px;"><a href="index.html" style="color: #666; text-decoration: none;">Support &amp; Enquiries</a></li>
+                    <li style="margin-bottom: 12px;"><a href="../contact.html" style="color: #666; text-decoration: none;">Contact NEIIA</a></li>
+                </ul>
+            </div>
+        </div>
+        <p style="margin-top: 40px; color: #999; font-size: 0.9rem; max-width: 1200px; margin-left: auto; margin-right: auto;">&copy; 2026 NEIIA</p>
+    </footer>
+</body>
+</html>
