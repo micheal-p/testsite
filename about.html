@@ -175,17 +175,26 @@
             min-height: 44px;
         }
         .ab-agency-seal {
-            width: 32px; height: 32px; flex-shrink: 0;
-            border-radius: 50%;
+            width: 36px; height: 36px; flex-shrink: 0;
+            border-radius: 6px;
             display: inline-flex; align-items: center; justify-content: center;
             font-family: "Instrument Serif", serif;
             font-size: 11px; font-weight: 600; color: #fff;
             letter-spacing: 0.02em;
             position: relative;
+            object-fit: contain;
+            background: #fff;
+        }
+        img.ab-agency-seal {
+            object-fit: contain;
+            padding: 2px;
         }
         .ab-agency-seal::before {
             content: ''; position: absolute; inset: 3px;
-            border: 1px solid rgba(255,255,255,0.4); border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.4); border-radius: 4px;
+        }
+        img.ab-agency-seal::before {
+            display: none;
         }
         .ab-agency-name {
             font-size: 12px; font-weight: 600; color: var(--ab-ink);
@@ -576,24 +585,24 @@
                     <div class="ab-marquee">
                         <div class="ab-marquee-track">
                             <!-- Agency set 1 -->
-                            <span class="ab-agency"><img class="ab-agency-seal" src="assets/images/logos/fmp-petroleum-resources.svg" alt="Federal Ministry of Petroleum Resources" style="border-radius: 6px;"><span><span class="ab-agency-name">Federal Ministry of Petroleum</span><span class="ab-agency-sub">Resources</span></span></span>
+                            <span class="ab-agency"><img class="ab-agency-seal" src="assets/images/Coat_of_arms_of_Nigeria.svg" alt="Federal Ministry of Petroleum Resources" style="border-radius: 6px;"><span><span class="ab-agency-name">Federal Ministry of Petroleum</span><span class="ab-agency-sub">Resources</span></span></span>
                             <span class="ab-agency"><img class="ab-agency-seal" src="assets/images/logos/federal-ministry-power.png" alt="Federal Ministry of Power" style="border-radius: 6px;"><span><span class="ab-agency-name">Federal Ministry of Power</span><span class="ab-agency-sub">Federal Republic of Nigeria</span></span></span>
-                            <span class="ab-agency"><img class="ab-agency-seal" src="assets/images/logos/nuprc-official.svg" alt="NUPRC" style="border-radius: 6px;"><span><span class="ab-agency-name">NUPRC</span><span class="ab-agency-sub">Upstream Regulatory</span></span></span>
-                            <span class="ab-agency"><img class="ab-agency-seal" src="assets/images/logos/nmdpra-official.svg" alt="NMDPRA" style="border-radius: 6px;"><span><span class="ab-agency-name">NMDPRA</span><span class="ab-agency-sub">Midstream &amp; Downstream</span></span></span>
+                            <span class="ab-agency"><img class="ab-agency-seal" src="assets/images/logos/nuprc-official.png" alt="NUPRC" style="border-radius: 6px;"><span><span class="ab-agency-name">NUPRC</span><span class="ab-agency-sub">Upstream Regulatory</span></span></span>
+                            <span class="ab-agency"><img class="ab-agency-seal" src="assets/images/logos/nmdpra-official.png" alt="NMDPRA" style="border-radius: 6px;"><span><span class="ab-agency-name">NMDPRA</span><span class="ab-agency-sub">Midstream &amp; Downstream</span></span></span>
                             <span class="ab-agency"><img class="ab-agency-seal" src="assets/images/logos/nnpc-official.svg" alt="NNPC Ltd." style="border-radius: 6px;"><span><span class="ab-agency-name">NNPC Ltd.</span><span class="ab-agency-sub">National Petroleum Co.</span></span></span>
-                            <span class="ab-agency"><img class="ab-agency-seal" src="assets/images/logos/nerc.png" alt="NERC" style="border-radius: 6px;"><span><span class="ab-agency-name">NERC</span><span class="ab-agency-sub">Electricity Regulator</span></span></span>
-                            <span class="ab-agency"><svg class="ab-agency-seal" style="background:#7C3AED" viewBox="0 0 32 32"><text x="16" y="20" text-anchor="middle" fill="#fff" font-family="Instrument Serif,serif" font-size="11" font-weight="600">ECN</text></svg><span><span class="ab-agency-name">ECN</span><span class="ab-agency-sub">Energy Commission</span></span></span>
-                            <span class="ab-agency"><svg class="ab-agency-seal" style="background:#C03E2A" viewBox="0 0 32 32"><text x="16" y="20" text-anchor="middle" fill="#fff" font-family="Instrument Serif,serif" font-size="10" font-weight="600">FIRS</text></svg><span><span class="ab-agency-name">FIRS</span><span class="ab-agency-sub">Inland Revenue Service</span></span></span>
+                            <span class="ab-agency"><img class="ab-agency-seal" src="assets/images/logos/nerc-official.png" alt="NERC" style="border-radius: 6px;"><span><span class="ab-agency-name">NERC</span><span class="ab-agency-sub">Electricity Regulator</span></span></span>
+                            <span class="ab-agency"><img class="ab-agency-seal" src="assets/images/logos/energy-commission-nigeria.png" alt="ECN" style="border-radius: 6px;"><span><span class="ab-agency-name">ECN</span><span class="ab-agency-sub">Energy Commission</span></span></span>
+                            <span class="ab-agency"><img class="ab-agency-seal" src="assets/images/logos/firs-logo.png.webp" alt="FIRS" style="border-radius: 6px;"><span><span class="ab-agency-name">FIRS</span><span class="ab-agency-sub">Inland Revenue Service</span></span></span>
 
                             <!-- Agency set 2 (duplicate for seamless loop) -->
-                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal" src="assets/images/logos/fmp-petroleum-resources.svg" alt="Federal Ministry of Petroleum Resources" style="border-radius: 6px;"><span><span class="ab-agency-name">Federal Ministry of Petroleum</span><span class="ab-agency-sub">Resources</span></span></span>
+                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal" src="assets/images/Coat_of_arms_of_Nigeria.svg" alt="Federal Ministry of Petroleum Resources" style="border-radius: 6px;"><span><span class="ab-agency-name">Federal Ministry of Petroleum</span><span class="ab-agency-sub">Resources</span></span></span>
                             <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal" src="assets/images/logos/federal-ministry-power.png" alt="Federal Ministry of Power" style="border-radius: 6px;"><span><span class="ab-agency-name">Federal Ministry of Power</span><span class="ab-agency-sub">Federal Republic of Nigeria</span></span></span>
-                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal" src="assets/images/logos/nuprc-official.svg" alt="NUPRC" style="border-radius: 6px;"><span><span class="ab-agency-name">NUPRC</span><span class="ab-agency-sub">Upstream Regulatory</span></span></span>
-                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal" src="assets/images/logos/nmdpra-official.svg" alt="NMDPRA" style="border-radius: 6px;"><span><span class="ab-agency-name">NMDPRA</span><span class="ab-agency-sub">Midstream &amp; Downstream</span></span></span>
+                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal" src="assets/images/logos/nuprc-official.png" alt="NUPRC" style="border-radius: 6px;"><span><span class="ab-agency-name">NUPRC</span><span class="ab-agency-sub">Upstream Regulatory</span></span></span>
+                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal" src="assets/images/logos/nmdpra-official.png" alt="NMDPRA" style="border-radius: 6px;"><span><span class="ab-agency-name">NMDPRA</span><span class="ab-agency-sub">Midstream &amp; Downstream</span></span></span>
                             <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal" src="assets/images/logos/nnpc-official.svg" alt="NNPC Ltd." style="border-radius: 6px;"><span><span class="ab-agency-name">NNPC Ltd.</span><span class="ab-agency-sub">National Petroleum Co.</span></span></span>
-                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal" src="assets/images/logos/nerc.png" alt="NERC" style="border-radius: 6px;"><span><span class="ab-agency-name">NERC</span><span class="ab-agency-sub">Electricity Regulator</span></span></span>
-                            <span class="ab-agency" aria-hidden="true"><svg class="ab-agency-seal" style="background:#7C3AED" viewBox="0 0 32 32"><text x="16" y="20" text-anchor="middle" fill="#fff" font-family="Instrument Serif,serif" font-size="11" font-weight="600">ECN</text></svg><span><span class="ab-agency-name">ECN</span><span class="ab-agency-sub">Energy Commission</span></span></span>
-                            <span class="ab-agency" aria-hidden="true"><svg class="ab-agency-seal" style="background:#C03E2A" viewBox="0 0 32 32"><text x="16" y="20" text-anchor="middle" fill="#fff" font-family="Instrument Serif,serif" font-size="10" font-weight="600">FIRS</text></svg><span><span class="ab-agency-name">FIRS</span><span class="ab-agency-sub">Inland Revenue Service</span></span></span>
+                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal" src="assets/images/logos/nerc-official.png" alt="NERC" style="border-radius: 6px;"><span><span class="ab-agency-name">NERC</span><span class="ab-agency-sub">Electricity Regulator</span></span></span>
+                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal" src="assets/images/logos/energy-commission-nigeria.png" alt="ECN" style="border-radius: 6px;"><span><span class="ab-agency-name">ECN</span><span class="ab-agency-sub">Energy Commission</span></span></span>
+                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal" src="assets/images/logos/firs-logo.png.webp" alt="FIRS" style="border-radius: 6px;"><span><span class="ab-agency-name">FIRS</span><span class="ab-agency-sub">Inland Revenue Service</span></span></span>
                         </div>
                     </div>
                 </div>
