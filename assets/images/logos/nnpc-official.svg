@@ -1,0 +1,13 @@
+<svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- NNPC Ltd. Official Style -->
+  <defs>
+    <linearGradient id="nnpcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F172A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="100" fill="url(#nnpcGrad)" rx="8"/>
+  <text x="100" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="white" font-family="Arial, sans-serif">NNPC</text>
+  <text x="100" y="58" text-anchor="middle" font-size="11" fill="#FFD700" font-family="Arial, sans-serif">Nigerian National Petroleum</text>
+  <text x="100" y="73" text-anchor="middle" font-size="11" fill="#FFD700" font-family="Arial, sans-serif">Company Limited</text>
+</svg>
