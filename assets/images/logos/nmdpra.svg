@@ -1,0 +1,5 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" fill="#B91C1C" rx="8"/>
+  <text x="50" y="65" text-anchor="middle" font-size="20" font-weight="bold" fill="white" font-family="Arial, sans-serif">NMDPRA</text>
+  <text x="50" y="82" text-anchor="middle" font-size="8" fill="white" font-family="Arial, sans-serif">M & D</text>
+</svg>
