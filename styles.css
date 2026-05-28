@@ -1055,7 +1055,7 @@ img {
 
 /* 02 eVillage — official e-Village logo on its brand navy */
 .grid-2 {
-  background: url("assets/images/images.png") center/contain no-repeat #0B1F44;
+  background: url("assets/images/evillage.png") center/cover no-repeat;
 }
 
 /* 03 National Energy Data Bank */
