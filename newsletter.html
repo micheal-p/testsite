@@ -6,7 +6,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join Newsletter - NEAP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Mulish:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body, p, a, input, button { font-family: 'Mulish', sans-serif !important; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Instrument Serif', serif !important; font-weight: 400; }
+        
+        .newsletter-page {
+            padding: 140px 24px 80px;
+            background: linear-gradient(180deg, #021a1f 0%, #0a3a40 100%);
+            color: #ffffff;
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .newsletter-content {
+            max-width: 640px;
+            width: 100%;
+        }
+
+        .newsletter-content h1 {
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            margin-bottom: 16px;
+            color: #A3E635;
+            line-height: 1.1;
+        }
+
+        .newsletter-content p {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .newsletter-form input {
+            padding: 16px 24px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            flex: 1;
+            min-width: 250px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-form input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .newsletter-form input:focus {
+            border-color: #A3E635;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .newsletter-form button {
+            padding: 16px 36px;
+            border-radius: 50px;
+            background: #A3E635;
+            color: #021a1f;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            font-size: 1rem;
+        }
+
+        .newsletter-form button:hover {
+            transform: translateY(-2px);
+            background: #b4f746;
+        }
+    </style>
     <script src="auth-check.js"></script>
     <link rel="icon" type="image/svg+xml" href="./assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
 </head>
@@ -21,11 +102,10 @@
     <!-- Logo (Separate from Pill Navbar) -->
     <a href="index.html" class="logo-fixed">
         <div class="logo-wrapper">
-            <img src="assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
-                style="max-width: 120px;">
             <img src="assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
-                style="max-width: 120px; display: none;">
-            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
+                style="max-width: 120px; display: block !important;">
+
+            <div class="brand-text" style="color: #ffffff !important;">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
         </div>
     </a>
 

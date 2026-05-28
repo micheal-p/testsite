@@ -115,27 +115,38 @@
 
         <main class="hc-main">
             <h2>Understanding EVillage</h2>
-            <p>EVillage is NEIIA's community-driven ecosystem for managing localized smart energy assets, microgrids, and decentralized energy distribution.</p>
+            <p>EVillage is NEIIA's community-driven ecosystem for managing localized smart energy assets, microgrids, and decentralized energy distribution. It empowers communities, local governments, and cooperatives to transition from being passive consumers of energy to active participants in the national grid.</p>
+            <p>By registering your community's microgrid or distributed solar assets on the EVillage ledger, you gain access to institutional-grade analytics, federal incentive structures, and peer-to-peer energy trading capabilities.</p>
 
             <h3>Connecting Your Assets</h3>
-            <p>You can connect solar arrays, battery storage units, and smart meters directly to the EVillage network to track your contribution to the local grid.</p>
-
-            <h3>Community Initiatives</h3>
+            <p>You can connect solar arrays, battery storage units, and smart meters directly to the EVillage network to track your contribution to the local grid. Our hardware-agnostic API integrates with most major inverter and smart meter manufacturers.</p>
             <ul>
-                <li><strong>Energy Sharing</strong>: Participate in peer-to-peer energy trading within your localized EVillage zone.</li>
-                <li><strong>Analytics</strong>: View real-time dashboards of community energy generation vs consumption.</li>
-                <li><strong>Incentives</strong>: Earn credits for supplying surplus energy during peak demand periods.</li>
+                <li><strong>Hardware Integration:</strong> Navigate to "Asset Manager" -> "Add Device" and enter your inverter's API key or physical serial number.</li>
+                <li><strong>Telemetry Setup:</strong> Configure your telemetry ping rate. For peer-to-peer trading, a ping rate of at least once per 5 minutes is required.</li>
+                <li><strong>Capacity Verification:</strong> Once connected, NEIIA engineers will digitally verify your asset's nameplate capacity before it can participate in federal incentive programs.</li>
+            </ul>
+
+            <h3>Community Initiatives & Trading</h3>
+            <p>Once your EVillage node is active, you can participate in local energy economies:</p>
+            <ul>
+                <li><strong>Energy Sharing:</strong> Participate in peer-to-peer energy trading within your localized EVillage zone, setting automated floor and ceiling prices for your surplus yields.</li>
+                <li><strong>Analytics:</strong> View real-time, interactive dashboards comparing your community's energy generation versus consumption, identifying peak load times and optimization opportunities.</li>
+                <li><strong>Grid Incentives:</strong> Earn federal credits and fiat payouts for supplying surplus energy during critical peak demand periods, acting as a virtual power plant (VPP).</li>
             </ul>
 
             <h3>Troubleshooting</h3>
             <div class="hc-faq">
                 <details>
                     <summary>Why isn't my smart meter data syncing with EVillage?</summary>
-                    <p>Ensure that your meter is connected to the designated EVillage IoT gateway. If the connection drops, data will retroactively sync once the connection is restored.</p>
+                    <p>Ensure that your meter is connected to the designated EVillage IoT gateway. Check the LED status on your gateway—if it is flashing yellow, it has lost Wi-Fi or Cellular connectivity. If the connection drops, your local hardware will cache the data and retroactively sync once the connection is restored.</p>
                 </details>
                 <details>
                     <summary>How do I join an EVillage zone?</summary>
-                    <p>EVillage zones are geographically bounded. If your address falls within an active zone, you can apply to join through the main EVillage portal on your dashboard.</p>
+                    <p>EVillage zones are geographically bounded based on local substation topology. If your address falls within an active zone, you can apply to join through the main EVillage portal on your dashboard. If a zone does not exist, you can petition to start a new one with a minimum of 50 participating households.</p>
+                </details>
+                <details>
+                    <summary>Are my energy credits taxable?</summary>
+                    <p>Yes. Any fiat payouts or tradable credits earned through EVillage energy sharing are considered taxable income under current FIRS guidelines. You can download an annual 1099/Tax summary directly from the EVillage "Reports" tab.</p>
                 </details>
             </div>
 

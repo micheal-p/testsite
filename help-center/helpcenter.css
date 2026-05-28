@@ -205,10 +205,10 @@ body.hc-body {
     letter-spacing: -0.005em;
 }
 .hc-main p {
-    font-size: 1.05rem;
+    font-size: 1.15rem;
     color: var(--hc-ink-2);
-    line-height: 1.7;
-    margin: 0 0 16px;
+    line-height: 1.8;
+    margin: 0 0 20px;
 }
 .hc-main a { color: var(--hc-brand); text-decoration: underline; text-underline-offset: 2px; }
 .hc-main ul {
@@ -242,7 +242,8 @@ body.hc-body {
     padding: 0 20px 20px;
     margin: 0;
     color: var(--hc-ink-2);
-    font-size: 0.95rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
 }
 
 /* Feedback section */

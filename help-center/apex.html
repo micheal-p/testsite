@@ -115,27 +115,38 @@
 
         <main class="hc-main">
             <h2>Understanding Apex AI</h2>
-            <p>Apex AI is the NEIIA platform's intelligence layer. It is a corpus-bound, retrieval-augmented conversational assistant that reads your live portfolio data across seven distinct signals.</p>
+            <p>Apex AI is the NEIIA platform's intelligence layer. It is a corpus-bound, retrieval-augmented conversational assistant that reads your live portfolio data across seven distinct signals. Unlike generic chatbots, Apex is structurally aware of your fund’s operating environment—meaning it understands the difference between committed capital, called capital, and your underlying asset performance.</p>
+            <p>Whether you're looking to generate a rapid quarterly update for limited partners, or running a deep dive into your geographic exposure, Apex synthesizes millions of data points into clear, actionable prose.</p>
 
             <h3>How it handles your data</h3>
-            <p>Your portfolio data, vehicle structures, and capital calls remain siloed. Apex AI queries your specific instance and does not use your financial data to train base models. It is strictly bounded by the permissions of the authenticated user.</p>
+            <p>Your portfolio data, vehicle structures, and capital calls remain strictly siloed. Apex AI queries your specific instance locally and does not use your financial data to train base models. Furthermore, its context window is strictly bounded by the permissions of the authenticated user.</p>
+            <p>For example, if an analyst asks for the fund's overall internal rate of return (IRR), but their Deal Room permissions only allow them to see specific portfolio companies, Apex will gently refuse the overarching query and only provide insights on the subset of data they are authorized to view.</p>
 
-            <h3>Common Commands</h3>
+            <h3>Common Commands & Use Cases</h3>
+            <p>Apex AI supports both analytical queries and generative drafting. Try pasting these directly into your console:</p>
             <ul>
-                <li><strong>"Summarize my portfolio pacing"</strong>: Retrieves DPI, TVPI, and called capital percentage across active funds.</li>
-                <li><strong>"Draft a quarterly note"</strong>: Pulls the latest distributions and constructs a narrative summary for your LPs.</li>
-                <li><strong>"Where is the book most concentrated?"</strong>: Analyzes sector and asset type allocation to identify concentration risks.</li>
+                <li><strong>"Summarize my portfolio pacing"</strong>: Retrieves DPI, TVPI, and called capital percentage across active funds, generating a highly formatted table.</li>
+                <li><strong>"Draft a quarterly note"</strong>: Pulls the latest distributions, capital calls, and major news from portfolio companies to construct a narrative summary for your LPs.</li>
+                <li><strong>"Where is the book most concentrated?"</strong>: Analyzes sector and asset type allocation to identify concentration risks, outputting a risk matrix.</li>
+                <li><strong>"Compare Q1 vs Q2 energy yields"</strong>: For EVillage or Energy Asset managers, this cross-references physical output with financial returns.</li>
             </ul>
+
+            <h3>Best Practices for Prompting</h3>
+            <p>To get the best results, be specific about the entities and timeframes you want Apex to evaluate. For instance, rather than asking "How is the fund doing?", ask "What is the TVPI of Fund III as of Q3 2026, and what are the top three underperforming assets?" This reduces ambiguity and allows the intelligence layer to target exact tables in your NEFUND database.</p>
 
             <h3>Troubleshooting</h3>
             <div class="hc-faq">
                 <details>
                     <summary>Why is Apex AI saying it doesn't have access to a specific fund?</summary>
-                    <p>Apex AI respects Deal Room permissions. If you are not assigned as an Admin or GP for a specific wrapper, the assistant will not pull data from it. Check your Deal Room role assignments.</p>
+                    <p>Apex AI respects Deal Room permissions. If you are not assigned as an Admin or GP for a specific wrapper, the assistant will not pull data from it. Check your Deal Room role assignments or consult your firm's administrator.</p>
                 </details>
                 <details>
                     <summary>Can Apex AI execute trades on Energy Assets?</summary>
-                    <p>No. Apex AI currently operates in a read-only and drafting capacity. It can summarize the order book or write investment memos, but it cannot place bids or execute trades on your behalf.</p>
+                    <p>No. Apex AI currently operates in a read-only and drafting capacity. It can summarize the order book or write investment memos, but it cannot place bids, trigger capital calls, or execute trades on your behalf. All execution requires manual dual-authorization.</p>
+                </details>
+                <details>
+                    <summary>How frequently is the data updated for Apex?</summary>
+                    <p>Apex queries your live database in real-time. The moment a capital call is approved or an ESG metric is logged in the Risk module, it becomes available for Apex to reference in its very next response.</p>
                 </details>
             </div>
 

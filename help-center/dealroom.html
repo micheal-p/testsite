@@ -115,27 +115,40 @@
 
         <main class="hc-main">
             <h2>Navigating the Deal Room</h2>
-            <p>The Deal Room is where General Partners and fund administrators manage fundraising cycles, distribute offering materials, and process investor subscriptions securely.</p>
+            <p>The Deal Room is where General Partners and fund administrators manage fundraising cycles, distribute offering materials, and process investor subscriptions securely. It acts as the central hub for capital formation, bridging the gap between sponsors and Limited Partners through a standardized, regulatory-compliant digital environment.</p>
 
             <h3>Setting Up a New Offering</h3>
-            <p>Go to "Offerings" and select "New Deal". You can build a customized landing page, upload your Private Placement Memorandum (PPM), and configure the digital subscription agreement using our docu-sign integration.</p>
+            <p>Go to "Offerings" and select "New Deal". The setup wizard will guide you through the following phases:</p>
+            <ul>
+                <li><strong>Landing Page Construction:</strong> Build a customized, branded landing page detailing the investment thesis, target returns, and sponsor background.</li>
+                <li><strong>Document Upload:</strong> Upload your Private Placement Memorandum (PPM), Limited Partnership Agreement (LPA), and risk disclosures.</li>
+                <li><strong>Digital Subscriptions:</strong> Configure the digital subscription agreement using our native e-signature integration, allowing LPs to sign and submit funds seamlessly.</li>
+            </ul>
 
             <h3>Managing Access (The Vault)</h3>
+            <p>The Vault is your secure document repository. It provides granular control over who sees what, and when.</p>
             <ul>
-                <li><strong>Permissions</strong>: You can grant access at the individual document level or the folder level.</li>
-                <li><strong>Watermarking</strong>: Enable dynamic watermarking on confidential documents to deter unauthorized sharing. Watermarks will include the viewing LP's email and IP address.</li>
-                <li><strong>Analytics</strong>: See exactly who has viewed or downloaded specific documents and when.</li>
+                <li><strong>Permissions:</strong> You can grant access at the individual document level, folder level, or globally to an entire LP tier (e.g., "Anchor Investors").</li>
+                <li><strong>Watermarking:</strong> Enable dynamic watermarking on confidential documents to deter unauthorized sharing. Watermarks automatically embed the viewing LP's email, IP address, and a timestamp across the document.</li>
+                <li><strong>Analytics & Audit Trails:</strong> See exactly who has viewed or downloaded specific documents, how long they spent on page 4 of the PPM, and export these audit logs for compliance reporting.</li>
             </ul>
+
+            <h3>Managing the Funnel</h3>
+            <p>The CRM view allows you to track the status of every prospective LP. Move investors through stages like "Invited", "Reviewing Docs", "Signed", and "Funded". Automated reminders can be configured to nudge investors who have stalled at the signature stage.</p>
 
             <h3>Troubleshooting</h3>
             <div class="hc-faq">
                 <details>
                     <summary>Why can't my LP sign the subscription agreement?</summary>
-                    <p>Ensure that the LP has completed their mandatory KYC/AML profile. The signature block remains locked until identity verification is approved by the compliance team.</p>
+                    <p>Ensure that the LP has completed their mandatory KYC/AML profile. The signature block remains locked until identity verification is approved by the compliance team. Once approved, the document will unlock automatically.</p>
                 </details>
                 <details>
                     <summary>How do I revoke access to the Data Vault?</summary>
-                    <p>Navigate to "Manage Access" within your Deal Room, locate the user, and switch their status to "Revoked". Their access to all associated documents will be terminated immediately.</p>
+                    <p>Navigate to "Manage Access" within your Deal Room, locate the user, and switch their status to "Revoked". Their access to all associated documents and the offering page will be terminated immediately. If they have a document open, they will be forcibly redirected.</p>
+                </details>
+                <details>
+                    <summary>Can I upload my own custom NDA?</summary>
+                    <p>Yes. In the Deal Room settings under "Gateways," you can require LPs to sign a custom Non-Disclosure Agreement before they can view the Data Vault or the PPM.</p>
                 </details>
             </div>
 
