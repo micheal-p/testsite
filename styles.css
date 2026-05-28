@@ -19,8 +19,7 @@
 
 @font-face {
   font-family: "NEIIA Display";
-  src: url("assets/font/NEIIADisplay_Regular-s.p.9a576876.woff2")
-    format("woff2");
+  src: url("assets/font/NEIIADisplay_Regular-s.p.9a576876.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -304,7 +303,9 @@ body:not(.dark-mode) .bulb-icon {
 }
 
 /* Legacy right-panel slot — kept hidden in case any old markup still references it */
-.mm-right-panel { display: none; }
+.mm-right-panel {
+  display: none;
+}
 
 .nav-item.dropdown:hover .mega-menu {
   opacity: 1;
@@ -951,6 +952,7 @@ img {
 }
 
 @media (max-width: 768px) {
+
   .feature-block,
   .feature-block.reverse {
     flex-direction: column;
@@ -1065,8 +1067,7 @@ img {
 
 /* 04 Deal Room */
 .grid-4 {
-  background: url("deal-room/assets/images/screens/screen-home.png")
-    center/cover no-repeat;
+  background: url("assets/images/deal.jpeg") center/cover no-repeat;
 }
 
 /* 05 Energy Assets */
@@ -1076,8 +1077,7 @@ img {
 
 /* 06 Apex AI */
 .grid-6 {
-  background: url("deal-room/assets/images/portfolio_analytics.png")
-    center/cover no-repeat;
+  background: url("deal-room/assets/images/portfolio_analytics.png") center/cover no-repeat;
 }
 
 /* 07 Risk & ESG */
@@ -1092,8 +1092,7 @@ img {
 
 /* 09 Administration & Governance */
 .grid-9 {
-  background: url("assets/images/enterprise_grc_dashboard_mockup_1770596060655.png")
-    center/cover no-repeat;
+  background: url("assets/images/enterprise_grc_dashboard_mockup_1770596060655.png") center/cover no-repeat;
 }
 
 @media (max-width: 900px) {
@@ -1376,7 +1375,7 @@ img {
   color: var(--text-primary);
 }
 
-.contact-card > p {
+.contact-card>p {
   margin-bottom: 32px;
   color: var(--text-secondary);
 }
@@ -1451,6 +1450,7 @@ img {
 /* GLOBAL MOBILE RESPONSIVENESS */
 /* ==================== */
 @media (max-width: 768px) {
+
   /* Header/Nav Mobile */
   .logo-fixed {
     top: 16px;
@@ -1625,6 +1625,7 @@ img {
 
 /* Mobile: Unstick Header Elements */
 @media (max-width: 768px) {
+
   .logo-fixed,
   .auth-fixed,
   .bulb-container {
@@ -1758,6 +1759,7 @@ body.dark-mode .brand-text {
    MOBILE HORIZONTAL SCROLL ENHANCEMENTS
    ============================================ */
 @media (max-width: 768px) {
+
   /* Remove previous pseudo-element dots */
   .grid-section::after,
   .grid-section::before {
@@ -1802,7 +1804,7 @@ body.dark-mode .brand-text {
   }
 
   /* Hide the old span styling that might conflict */
-  .grid-item > span:not(.grid-id) {
+  .grid-item>span:not(.grid-id) {
     display: none;
   }
 
@@ -1894,6 +1896,7 @@ body.dark-mode .brand-text {
    NEW MOBILE MENU DESIGN
    ============================================ */
 @media (max-width: 768px) {
+
   /* Full screen overlay */
   .mobile-nav-overlay {
     display: flex;
