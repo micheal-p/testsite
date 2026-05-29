@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECN Paid Audit & ESG Clearance Portal | NEIIA</title>
+    <meta name="description" content="Official Energy Commission of Nigeria B2B portal for mandatory energy compliance audit and ESG clearance certification.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="esg-portal.css">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
+</head>
+<body>
+
+    <!-- App Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <a href="index.html" class="header-brand">
+                <img src="../assets/images/neiis-logo-green.png" alt="NEIIA logo">
+                <div class="brand-title">ESG Clearance</div>
+                <div class="brand-subtitle">Energy Commission of Nigeria</div>
+            </a>
+            
+            <div class="header-actions">
+                <div class="view-toggle">
+                    <button class="toggle-btn active" id="btn-client-view" onclick="switchRole('client')">
+                        <i class="fas fa-building"></i> Company Dashboard
+                    </button>
+                    <button class="toggle-btn" id="btn-auditor-view" onclick="switchRole('auditor')">
+                        <i class="fas fa-shield-halved"></i> ECN Staff Portal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN PORTAL APPLICATION -->
+    <main class="app-layout" id="main-content-layout">
+        
+        <!-- ==========================================
+             COMPANY WORKSPACE (CLIENT ROLE)
+             ========================================== -->
+        <div id="role-client" style="display: contents;">
+            <!-- Left Steps Rail -->
+            <aside class="sidebar-rail" id="client-sidebar">
+                <div class="eyebrow">
+                    <span class="dot"></span>
+                    <span id="rail-eyebrow-text">Step 1 of 3 · Profile</span>
+                </div>
+                <h2 class="font-serif text-[34px] leading-[1.04] tracking-tightest mt-4">
+                    Audited ESG <br><em class="italic">Clearance</em>.
+                </h2>
+                <p class="mt-4 text-db-text-muted text-[14px] leading-relaxed max-w-xs" style="color: var(--db-text-muted);">
+                    Complete your profile, pay the mandatory audit fee, and upload environment logs to secure your official clearance certificate.
+                </p>
+
+                <ol class="step-rail">
+                    <li class="active" id="step-rail-1">
+                        <span class="step-dot"></span>
+                        <span>Company Profile</span>
+                    </li>
+                    <li id="step-rail-2">
+                        <span class="step-dot"></span>
+                        <span>Audit Fee Payment</span>
+                    </li>
+                    <li id="step-rail-3">
+                        <span class="step-dot"></span>
+                        <span>Document Upload</span>
+                    </li>
+                </ol>
+
+                <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--db-border); max-width: 280px; font-size: 13px; color: var(--db-text-muted);">
+                    <div class="eyebrow" style="font-size: 10px; margin-bottom: 8px;">Compliance Info</div>
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
+                        <li><i class="fas fa-check" style="color:var(--db-green); margin-right:6px;"></i> Fixed Audit Fee: ₦300,000</li>
+                        <li><i class="fas fa-check" style="color:var(--db-green); margin-right:6px;"></i> Sector specific evaluation</li>
+                        <li><i class="fas fa-check" style="color:var(--db-green); margin-right:6px;"></i> 1-Year Certificate validity</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Right Workspace Pane -->
+            <section id="client-workspace">
+                
+                <!-- Client Active Audit Tracker (LocalStorage persistent state renderer) -->
+                <div id="client-active-dashboard" style="display: none;">
+                    <div class="dashboard-heading">
+                        <div>
+                            <h1 class="font-serif text-[42px] leading-[1.02] tracking-tightest" id="dash-company-name">Dangote Cement</h1>
+                            <p style="color: var(--db-text-muted); font-size: 14px; margin-top: 4px;">Sector: <span id="dash-sector">Manufacturing</span> · RC Number: <span id="dash-rc">RC-9830219</span></p>
+                        </div>
+                        <span class="status-badge pending" id="dash-status-badge">Under Review</span>
+                    </div>
+
+                    <!-- Needs Revision Feedback Banner -->
+                    <div class="feedback-banner" id="dash-revision-banner" style="display: none;">
+                        <i class="fas fa-circle-exclamation"></i>
+                        <div>
+                            <div class="feedback-title">Revision Requested by ECN Auditor</div>
+                            <div class="feedback-desc" id="dash-revision-reason">Please upload clean environmental logging files. Section 4 logs did not map to regional benchmarks.</div>
+                            <button class="btn btn-primary btn-sm" style="margin-top: 12px;" onclick="enableReupload()">
+                                <i class="fas fa-arrow-up-from-bracket"></i> Upload New Document
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Approved Success Banner -->
+                    <div class="feedback-banner" id="dash-approved-banner" style="display: none; background: #e3fcf0; border-color: rgba(14,122,60,0.2);">
+                        <i class="fas fa-circle-check" style="color: var(--db-green);"></i>
+                        <div>
+                            <div class="feedback-title" style="color: var(--db-green-deep);">Official ESG Clearance Stamped</div>
+                            <div class="feedback-desc">Your energy audits met national standards. The Energy Commission of Nigeria has generated your Audited ESG Clearance Certificate. A copy has been dispatched to your corporate email.</div>
+                            <div style="display:flex; gap:10px; margin-top: 12px;">
+                                <button class="btn btn-primary btn-sm" onclick="viewCertificate()">
+                                    <i class="fas fa-certificate"></i> View Certificate
+                                </button>
+                                <button class="btn btn-ghost btn-sm" onclick="printCertificate()">
+                                    <i class="fas fa-print"></i> Print Document
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Grid -->
+                    <div class="dashboard-grid">
+                        <!-- Main Panel -->
+                        <div>
+                            <div class="dashboard-panel">
+                                <div class="panel-header">Submitted Audit Package</div>
+                                <div class="file-item" style="border-style: solid; background: var(--db-cream);">
+                                    <i class="far fa-file-pdf file-item-icon"></i>
+                                    <div class="file-item-details">
+                                        <div class="file-item-name" id="dash-file-name">environment_audit_logs.pdf</div>
+                                        <div class="file-item-size" id="dash-file-size">1.4 MB · Verified Signed</div>
+                                    </div>
+                                    <span class="status-badge approved" style="font-size: 10px; padding: 2px 8px;"><i class="fas fa-shield"></i> Secure</span>
+                                </div>
+
+                                <div style="margin-top: 20px; font-size: 13px; color: var(--db-text-muted); line-height: 1.6;">
+                                    <p style="margin-bottom: 8px;"><strong>Audit Context:</strong> Companies routing compliance packages to ECN must submit quarterly environment log sheets. Once verified PAID, our administrative queue initializes evaluation based on the regulatory frameworks aligned with your business category.</p>
+                                    <p>Any updates or compliance remarks will automatically prompt notification alerts on this panel.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Side Timeline -->
+                        <aside>
+                            <div class="dashboard-panel">
+                                <div class="panel-header">Audit Progress Pipeline</div>
+                                <div class="timeline">
+                                    <div class="timeline-item active">
+                                        <span class="timeline-dot"></span>
+                                        <div class="timeline-header">
+                                            <span>Profile Registered</span>
+                                            <span class="timeline-date" id="time-step1-date">Today</span>
+                                        </div>
+                                        <div class="timeline-desc">Corporate onboarding information successfully cataloged.</div>
+                                    </div>
+                                    <div class="timeline-item active">
+                                        <span class="timeline-dot"></span>
+                                        <div class="timeline-header">
+                                            <span>₦300,000 Paid</span>
+                                            <span class="timeline-date" id="time-step2-date">Today</span>
+                                        </div>
+                                        <div class="timeline-desc" id="time-step2-desc">Paystack reference: PSTK_82901</div>
+                                    </div>
+                                    <div class="timeline-item active" id="timeline-item-upload">
+                                        <span class="timeline-dot"></span>
+                                        <div class="timeline-header">
+                                            <span>Document Uploaded</span>
+                                            <span class="timeline-date" id="time-step3-date">Today</span>
+                                        </div>
+                                        <div class="timeline-desc">Environmental logging PDF verified. Queue active.</div>
+                                    </div>
+                                    <div class="timeline-item" id="timeline-item-review">
+                                        <span class="timeline-dot"></span>
+                                        <div class="timeline-header">
+                                            <span>ECN Audit Review</span>
+                                            <span class="timeline-date">—</span>
+                                        </div>
+                                        <div class="timeline-desc" id="time-step4-desc">Internal specialists reviewing risks &amp; metrics.</div>
+                                    </div>
+                                    <div class="timeline-item" id="timeline-item-clearance">
+                                        <span class="timeline-dot"></span>
+                                        <div class="timeline-header">
+                                            <span>Clearance Stamped</span>
+                                            <span class="timeline-date">—</span>
+                                        </div>
+                                        <div class="timeline-desc">Clearance certificate issued &amp; cataloged.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+
+                <!-- Wizard Form (Step 1 -> 2 -> 3) -->
+                <div class="form-card" id="client-wizard-box">
+                    <h1 class="font-serif text-[42px] leading-[1.02] tracking-tightest" id="wizard-title">Apply for ECN ESG Compliance Clearance.</h1>
+                    <p style="color: var(--db-text-muted); font-size: 16px; margin-top: 12px; margin-bottom: 32px; max-width: 580px;">
+                        Establish your enterprise profile, complete the mandatory audit fee payment, and securely deposit your environmental logging files.
+                    </p>
+
+                    <!-- STEP 1: profile onboarding -->
+                    <div id="step-box-1">
+                        <div class="form-group">
+                            <label for="companyName">Company Legal Name (as on CAC)</label>
+                            <input type="text" id="companyName" placeholder="e.g. Chevron Nigeria Limited">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="rcNumber">Corporate RC Number</label>
+                                <input type="text" id="rcNumber" placeholder="e.g. RC-9482910">
+                            </div>
+                            <div class="form-group">
+                                <label for="corporateEmail">Corporate Contact Email</label>
+                                <input type="email" id="corporateEmail" placeholder="ir@company.com">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="corporatePhone">Corporate Contact Phone Number</label>
+                                <input type="tel" id="corporatePhone" placeholder="e.g. +234 803 123 4567">
+                            </div>
+                            <div class="form-group">
+                                <label for="businessSector">Business Sector</label>
+                                <select id="businessSector">
+                                    <option value="">Select sector</option>
+                                    <option value="Oil & Gas">Oil &amp; Gas</option>
+                                    <option value="Manufacturing">Manufacturing</option>
+                                    <option value="Power Generation">Power Generation</option>
+                                    <option value="Telecommunications">Telecommunications</option>
+                                    <option value="Infrastructure">Infrastructure</option>
+                                    <option value="Mining">Mining</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--db-border); display: flex; justify-content: flex-end;">
+                            <button class="btn btn-primary btn-lg" onclick="goToStep(2)">
+                                Continue to Payment <i class="fas fa-chevron-right" style="margin-left:8px; font-size:12px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: paystack integration -->
+                    <div id="step-box-2" style="display: none;">
+                        <div class="payment-box">
+                            <div class="payment-header">
+                                <span class="payment-label">Regulatory Audit Processing Fee</span>
+                                <div class="payment-amount">
+                                    <small>₦</small>300,000<span style="font-size: 16px; font-weight:500; color:var(--db-text-muted);">.00</span>
+                                </div>
+                            </div>
+                            <div class="payment-details">
+                                <div class="payment-details-row">
+                                    <dt>Mandated Authority</dt>
+                                    <dd>Energy Commission of Nigeria (ECN)</dd>
+                                </div>
+                                <div class="payment-details-row" style="margin-top: 6px;">
+                                    <dt>Audit Target</dt>
+                                    <dd id="payment-company-label">Chevron Nigeria Limited</dd>
+                                </div>
+                                <div class="payment-details-row" style="margin-top: 6px;">
+                                    <dt>Sector Routing</dt>
+                                    <dd id="payment-sector-label">Oil &amp; Gas Specialists</dd>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p style="font-size: 13px; color: var(--db-text-muted); line-height: 1.5; margin-bottom: 24px;">
+                            <strong>Note:</strong> Under administrative guidelines, the environmental document dropzone is locked until payment has been processed and stamped PAID. Payment will launch our interactive Paystack checkout simulation window.
+                        </p>
+
+                        <div style="padding-top: 24px; border-top: 1px solid var(--db-border); display: flex; justify-content: space-between;">
+                            <button class="btn btn-ghost btn-lg" onclick="goToStep(1)">
+                                <i class="fas fa-chevron-left" style="margin-right:8px; font-size:12px;"></i> Back to Profile
+                            </button>
+                            <button class="btn btn-primary btn-lg" onclick="launchPaystack()">
+                                <i class="fas fa-credit-card" style="margin-right:8px;"></i> Pay ₦300,000 with Paystack
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: upload logs (lockable dropzone) -->
+                    <div id="step-box-3" style="display: none;">
+                        <div class="upload-card-wrapper" id="upload-wrapper-zone">
+                            <!-- Padlock overlay before payment is validated -->
+                            <div class="upload-lock-overlay" id="upload-lock-pane">
+                                <div class="lock-badge">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <div class="lock-title">Document Upload Locked</div>
+                                <div class="lock-desc">
+                                    Please complete the ₦300,000 Paystack payment in Step 2 to unlock this compliance dropzone. Unverified files cannot clog ECN queue nodes.
+                                </div>
+                            </div>
+
+                            <div class="dropzone" onclick="triggerFileSelect()">
+                                <div class="dropzone-icon">
+                                    <i class="fas fa-cloud-arrow-up"></i>
+                                </div>
+                                <h4>Drag and drop your compliance PDF</h4>
+                                <p>Mandatory energy audit log sheet or environmental risk profiles (Max file size: 10MB)</p>
+                                <input type="file" id="audit-file-input" style="display: none;" accept=".pdf" onchange="handleFileSelect(event)">
+                            </div>
+                        </div>
+
+                        <div class="file-list" id="selected-file-list" style="display: none;">
+                            <div class="file-item">
+                                <i class="far fa-file-pdf file-item-icon"></i>
+                                <div class="file-item-details">
+                                    <div class="file-item-name" id="file-lbl-name">energy_compliance_audit_2026.pdf</div>
+                                    <div class="file-item-size" id="file-lbl-size">1.4 MB</div>
+                                    <div class="upload-progress">
+                                        <div class="upload-progress-fill" id="upload-progress-fill-bar"></div>
+                                    </div>
+                                </div>
+                                <button class="file-item-remove" onclick="removeSelectedFile()">
+                                    <i class="fas fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--db-border); display: flex; justify-content: space-between;">
+                            <button class="btn btn-ghost btn-lg" onclick="goToStep(2)">
+                                <i class="fas fa-chevron-left" style="margin-right:8px; font-size:12px;"></i> Back to Payment
+                            </button>
+                            <button class="btn btn-primary btn-lg" id="btn-final-submit" disabled onclick="submitAuditPackage()">
+                                Submit Compliance Package <i class="fas fa-arrow-up-from-bracket" style="margin-left:8px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+
+        <!-- ==========================================
+             ECN AUDITOR CONSOLE (AUDITOR ROLE)
+             ========================================== -->
+        <div id="role-auditor" style="display: none;">
+            
+            <!-- Auditor Dashboard Content (takes full 2 columns layout) -->
+            <div style="grid-column: 1 / -1;">
+                
+                <!-- Stats Strip -->
+                <div class="auditor-stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Verified Intake Nodes</div>
+                        <div class="stat-value" id="stat-total-subs">3</div>
+                        <div class="stat-foot">Dynamic active companies</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Audit Inflows Stamped</div>
+                        <div class="stat-value" id="stat-total-fees">₦900k</div>
+                        <div class="stat-foot">Verified via Paystack webhook</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Clearance Certificates</div>
+                        <div class="stat-value" id="stat-total-approved">2</div>
+                        <div class="stat-foot">Stamps issued YTD</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Needs Evaluation</div>
+                        <div class="stat-value" id="stat-total-pending" style="color:var(--db-accent);">1</div>
+                        <div class="stat-foot">Compliance queue targets</div>
+                    </div>
+                </div>
+
+                <!-- Table & Split Details View -->
+                <div class="auditor-table-card">
+                    <div class="panel-header" style="padding: 16px 20px; border-bottom: 1px solid var(--db-border); background: var(--db-cream); margin-bottom: 0;">
+                        <span>ECN Compliance Submissions (Paid Queue Only)</span>
+                        <span class="status-badge approved" style="font-size: 11px;"><i class="fas fa-circle-check"></i> Webhook Active</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="db-table" id="auditor-submission-table">
+                            <thead>
+                                <tr>
+                                    <th>Company / Sector</th>
+                                    <th>Paystack Ref</th>
+                                    <th>Fee Paid</th>
+                                    <th>Date Submitted</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="auditor-submission-tbody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Review Panel: Inline Doc Viewer & Actions Split -->
+                <div class="review-layout" id="auditor-review-layout" style="display: none;">
+                    
+                    <!-- Inline Doc Viewer Card -->
+                    <div class="viewer-card">
+                        <div class="viewer-header">
+                            <div class="viewer-title">
+                                <i class="far fa-file-pdf"></i>
+                                <span id="view-doc-title">audit_logs_dangote.pdf</span>
+                            </div>
+                            <span style="font-size: 12px; color: var(--db-text-muted); font-weight: 500;">Page 1 of 1</span>
+                        </div>
+                        <div class="viewer-page">
+                            <div class="viewer-watermark">
+                                <i class="fas fa-shield"></i> ENERGY COMMISSION OF NIGERIA · PAYSTACK VERIFIED ID: <span id="view-doc-pay-ref">PSTK_982402941</span>
+                            </div>
+                            
+                            <h2 class="font-serif" style="text-align: center; color: var(--db-ink); font-size: 24px; margin-top: 10px;" id="view-doc-heading">Dangote Cement Plc</h2>
+                            <p style="text-align: center; font-size: 12px; color: var(--db-text-muted); margin-top:-14px;">RC-8294019 · ESG Performance Verification Log Sheet</p>
+                            
+                            <div class="doc-section-title">Corporate Essentials & Categorization</div>
+                            <div class="doc-grid">
+                                <div class="doc-item">
+                                    <dt>Company Name</dt>
+                                    <dd id="view-doc-company">Dangote Cement Plc</dd>
+                                </div>
+                                <div class="doc-item">
+                                    <dt>Categorized Sector</dt>
+                                    <dd id="view-doc-sector">Manufacturing</dd>
+                                </div>
+                                <div class="doc-item">
+                                    <dt>Compliance Email</dt>
+                                    <dd id="view-doc-email">compliance@dangotecement.com</dd>
+                                </div>
+                                <div class="doc-item">
+                                    <dt>Contact Telephone</dt>
+                                    <dd id="view-doc-phone">+234 803 999 8888</dd>
+                                </div>
+                            </div>
+
+                            <div class="doc-section-title">Environmental Performance Indicators (Q1)</div>
+                            <div class="doc-grid">
+                                <div class="doc-item">
+                                    <dt>Carbon Emission Intensity</dt>
+                                    <dd>214 gCO2e / KWh <span class="risk-tag low" style="margin-left:6px;">Acceptable</span></dd>
+                                </div>
+                                <div class="doc-item">
+                                    <dt>Energy Efficiency Index</dt>
+                                    <dd>94.2% <span class="risk-tag low" style="margin-left:6px;">Excellent</span></dd>
+                                </div>
+                                <div class="doc-item">
+                                    <dt>Grid Deficit Drawdown</dt>
+                                    <dd>1.14 MW <span class="risk-tag low" style="margin-left:6px;">Low Risk</span></dd>
+                                </div>
+                                <div class="doc-item">
+                                    <dt>Resource Waste Disposal Rate</dt>
+                                    <dd>Highly structured <span class="risk-tag medium" style="margin-left:6px;">Moderate</span></dd>
+                                </div>
+                            </div>
+
+                            <div class="doc-section-title">ECN Officer Verification Checklists</div>
+                            <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--db-text-muted);">
+                                <li><i class="fas fa-square-check" style="color:var(--db-green); margin-right:6px;"></i> Checked: ₦300,000 compliance payment validated via webhook reference.</li>
+                                <li><i class="fas fa-square-check" style="color:var(--db-green); margin-right:6px;"></i> Verified: National Grid drawdown standards conform to administrative codes.</li>
+                                <li><i class="fas fa-square-check" style="color:var(--db-green); margin-right:6px;"></i> Audited: Company is actively running waste mitigation logs as required by law.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Auditor Decision Side Panel -->
+                    <div class="review-actions-card">
+                        <div class="panel-header" style="border-bottom: 1px solid var(--db-border); padding-bottom: 12px; margin-bottom: 0;">
+                            <span>Auditor Assessment</span>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 10px;">
+                            <label for="auditor-remarks">Technical Evaluation Remarks</label>
+                            <textarea id="auditor-remarks" style="width: 100%; height: 120px; border: 1px solid var(--db-border); border-radius: 8px; padding: 12px; font-family: inherit; font-size: 13px; outline:none; resize:none;" placeholder="Write evaluation comments or requested fixes..."></textarea>
+                        </div>
+
+                        <div style="display:flex; flex-direction: column; gap: 12px;">
+                            <button class="btn btn-primary btn-lg" onclick="handleAuditorApproval()">
+                                <i class="fas fa-stamp" style="margin-right:8px;"></i> Approve &amp; Stamp Clearance
+                            </button>
+                            <button class="btn btn-danger btn-lg" onclick="handleAuditorRevision()">
+                                <i class="fas fa-circle-exclamation" style="margin-right:8px;"></i> Request Needs Revision
+                            </button>
+                        </div>
+
+                        <div style="font-size: 11px; color: var(--db-text-faint); line-height: 1.4; text-align: center; margin-top: 10px;">
+                            Official administrative updates immediately sync back to the Company's portal workspace in real-time.
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ==========================================
+         PAYSTACK SIMULATION MODAL OVERLAY
+         ========================================== -->
+    <div class="paystack-modal" id="paystack-popup">
+        <div class="paystack-iframe">
+            <div class="paystack-header">
+                <div class="paystack-header-left">
+                    <span class="paystack-header-title">ECN Compliance Gate</span>
+                    <span class="paystack-header-email" id="pstk-email-lbl">ir@company.com</span>
+                </div>
+                <div class="paystack-header-amount">
+                    ₦300,000
+                </div>
+            </div>
+            
+            <div class="paystack-body">
+                <!-- Tabs -->
+                <div class="paystack-methods">
+                    <div class="paystack-method-tab active" id="pstk-tab-card" onclick="switchPayMethod('card')">Pay with Card</div>
+                    <div class="paystack-method-tab" id="pstk-tab-bank" onclick="switchPayMethod('bank')">Bank Transfer</div>
+                </div>
+
+                <!-- Card Details View -->
+                <div class="paystack-card-view" id="pstk-view-card">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="text" class="paystack-input" placeholder="CARD NUMBER" value="4084 0824 0924 0842" disabled>
+                    </div>
+                    <div class="paystack-grid">
+                        <input type="text" class="paystack-input" placeholder="EXPIRY (MM/YY)" value="12/29" disabled>
+                        <input type="password" class="paystack-input" placeholder="CVV" value="984" disabled>
+                    </div>
+                    <p style="font-size: 11px; color: var(--db-text-muted); text-align: center;">Mock sandbox credentials pre-filled. Press button to trigger verification.</p>
+                    <button class="paystack-pay-btn" onclick="triggerOTPStep()">
+                        Pay ₦300,000.00
+                    </button>
+                </div>
+
+                <!-- OTP View -->
+                <div class="paystack-otp-view" id="pstk-view-otp">
+                    <h4>Two-Step OTP Security</h4>
+                    <p>Enter the 6-digit sandbox verification PIN sent to your phone number or email.</p>
+                    <input type="text" class="paystack-input" style="text-align: center; font-size: 20px; letter-spacing: 0.5em; font-weight: 700; width: 180px; margin: 0 auto;" value="123456" disabled>
+                    <button class="paystack-pay-btn" style="background:#09A5DB;" onclick="triggerPaymentSuccess()">
+                        Verify Transaction
+                    </button>
+                </div>
+
+                <!-- Success View -->
+                <div class="paystack-success-view" id="pstk-view-success">
+                    <div class="success-icon-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h3>₦300,000 Payment Complete</h3>
+                    <p>Receipt logged under: <strong id="pstk-ref-code">PSTK_72840924</strong></p>
+                    <button class="btn btn-primary" onclick="closePaystackModal()">
+                        Return to Onboarding
+                    </button>
+                </div>
+
+            </div>
+            
+            <div class="paystack-footer">
+                <i class="fas fa-lock"></i> Secured by <span>paystack</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         OFFICIAL COMPLIANCE CERTIFICATE MODAL
+         ========================================== -->
+    <div class="certificate-preview-modal" id="certificate-modal">
+        <div class="certificate-scroll-wrap">
+            <div style="display:flex; justify-content: flex-end; margin-bottom: 12px; gap: 10px;">
+                <button class="btn btn-ghost" style="background: white; border-color: white;" onclick="printCertificate()">
+                    <i class="fas fa-print" style="margin-right:6px;"></i> Print / Download PDF
+                </button>
+                <button class="btn btn-ghost" style="background: rgba(255,255,255,0.2); border-color: transparent; color: white;" onclick="closeCertificateModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Print Page Certificate -->
+            <div class="cert-card" id="printable-certificate">
+                <div class="cert-header">
+                    <img src="../assets/images/Coat_of_arms_of_Nigeria.svg" alt="Coat of Arms of Nigeria" class="cert-coa">
+                    <div class="cert-org">Energy Commission of Nigeria</div>
+                    <div class="cert-title">Audited ESG Clearance Certificate</div>
+                    <div class="cert-title-sub">Issued under National Energy Compliance Guidelines (2026)</div>
+                </div>
+
+                <div class="cert-body">
+                    <p class="cert-witness">This is to officially certify that</p>
+                    <h2 class="cert-company" id="cert-company-name"> Dangote Cement Plc</h2>
+                    <p class="cert-scope">
+                        has successfully completed the mandatory ECN Paid Environmental Audit. A thorough evaluation of risk, energy intensity, and carbon logging verified that operations meet all regulatory and sustainability benchmarks.
+                    </p>
+
+                    <div class="cert-meta-grid">
+                        <div class="cert-meta-item">
+                            <dt>Certificate Number</dt>
+                            <dd id="cert-number-lbl">ECN-ESG-2294A</dd>
+                        </div>
+                        <div class="cert-meta-item">
+                            <dt>Date of Issuance</dt>
+                            <dd id="cert-issue-lbl">May 29, 2026</dd>
+                        </div>
+                        <div class="cert-meta-item">
+                            <dt>Date of Expiry</dt>
+                            <dd id="cert-expiry-lbl">May 28, 2027</dd>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cert-footer">
+                    <div class="cert-seal-wrap">
+                        <img src="../assets/images/neiih_logo_white.png" alt="Official Seal" class="cert-seal" style="filter: brightness(0.2) sepia(1) hue-rotate(80deg) saturate(3);">
+                    </div>
+                    <div class="cert-sign-wrap">
+                        <div class="cert-signature">Dr. Mustapha Abdullahi</div>
+                        <div class="cert-sign-label">Director General, ECN</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Toast Notifications -->
+    <div class="toast-msg" id="toast-notif">
+        <i class="fas fa-circle-check"></i>
+        <span id="toast-text">Payment Confirmed. Upload unlocked.</span>
+    </div>
+
+    <!-- APPLICATION SCRIPTS -->
+    <script>
+        // Database simulation schema in LocalStorage
+        const DB_KEY = 'ecn_portal_submissions';
+
+        // Preload default companies into database to give a realistic look
+        function initDatabase() {
+            if (!localStorage.getItem(DB_KEY)) {
+                const defaults = [
+                    {
+                        companyName: 'Dangote Cement Plc',
+                        rcNumber: 'RC-893048',
+                        corporateEmail: 'compliance@dangotecement.com',
+                        corporatePhone: '+234 803 999 8888',
+                        businessSector: 'Manufacturing',
+                        paystackRef: 'PSTK_982402941',
+                        amountPaid: 300000,
+                        status: 'approved',
+                        submittedFile: 'dangote_cement_energy_audit.pdf',
+                        fileSize: '2.1 MB',
+                        dateSubmitted: '2026-05-24',
+                        auditorRemarks: 'Excellent emission scoring. Met waste mitigation thresholds completely.',
+                        certificateNum: 'ECN-ESG-2026-8942A',
+                        issueDate: '2026-05-24',
+                        expiryDate: '2027-05-23'
+                    },
+                    {
+                        companyName: 'Chevron Nigeria Limited',
+                        rcNumber: 'RC-204812',
+                        corporateEmail: 'environmental-audit@chevron.com',
+                        corporatePhone: '+234 802 777 5555',
+                        businessSector: 'Oil & Gas',
+                        paystackRef: 'PSTK_782490212',
+                        amountPaid: 300000,
+                        status: 'approved',
+                        submittedFile: 'chevron_environmental_log_q1.pdf',
+                        fileSize: '4.8 MB',
+                        dateSubmitted: '2026-05-26',
+                        auditorRemarks: 'Verified and signed off. Flare gas drawdown meets standard rules.',
+                        certificateNum: 'ECN-ESG-2026-7284C',
+                        issueDate: '2026-05-26',
+                        expiryDate: '2027-05-25'
+                    },
+                    {
+                        companyName: 'Zungeru Hydro Partners',
+                        rcNumber: 'RC-429810',
+                        corporateEmail: 'ops@zungeruhydro.gov.ng',
+                        corporatePhone: '+234 901 222 3333',
+                        businessSector: 'Power Generation',
+                        paystackRef: 'PSTK_382109401',
+                        amountPaid: 300000,
+                        status: 'submitted',
+                        submittedFile: 'zungeru_turbines_log.pdf',
+                        fileSize: '3.1 MB',
+                        dateSubmitted: '2026-05-28',
+                        auditorRemarks: ''
+                    }
+                ];
+                localStorage.setItem(DB_KEY, JSON.stringify(defaults));
+            }
+        }
+
+        // Active Application memory state
+        let currentStep = 1;
+        let applicantProfile = {
+            companyName: '',
+            rcNumber: '',
+            corporateEmail: '',
+            corporatePhone: '',
+            businessSector: '',
+            paystackRef: '',
+            amountPaid: 0,
+            status: 'draft',
+            submittedFile: '',
+            fileSize: '',
+            dateSubmitted: ''
+        };
+
+        let selectedFile = null;
+        let activeAuditorSelectedRef = null;
+
+        // Startup routine
+        window.addEventListener('load', () => {
+            initDatabase();
+            loadStateFromLocalStorage();
+            renderAuditorTable();
+        });
+
+        // Switch role views: Company Dashboard vs ECN Staff Portal
+        function switchRole(role) {
+            document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+            
+            if (role === 'client') {
+                document.getElementById('btn-client-view').classList.add('active');
+                document.getElementById('role-client').style.display = 'contents';
+                document.getElementById('role-auditor').style.display = 'none';
+                
+                // Re-evaluate client dashboard / wizard views
+                loadStateFromLocalStorage();
+            } else {
+                document.getElementById('btn-auditor-view').classList.add('active');
+                document.getElementById('role-client').style.display = 'none';
+                document.getElementById('role-auditor').style.display = 'block';
+                
+                renderAuditorTable();
+            }
+        }
+
+        // Save active applicant state to localStorage
+        function saveStateToLocalStorage() {
+            localStorage.setItem('ecn_active_applicant_profile', JSON.stringify(applicantProfile));
+        }
+
+        // Load active applicant state
+        function loadStateFromLocalStorage() {
+            const stored = localStorage.getItem('ecn_active_applicant_profile');
+            if (stored) {
+                applicantProfile = JSON.parse(stored);
+                
+                // If company has already submitted their package, take them directly to their persistent Audit Dashboard!
+                if (applicantProfile.status !== 'draft' && applicantProfile.status !== '') {
+                    showClientDashboard();
+                    return;
+                }
+                
+                // Else prefill onboarding fields
+                document.getElementById('companyName').value = applicantProfile.companyName || '';
+                document.getElementById('rcNumber').value = applicantProfile.rcNumber || '';
+                document.getElementById('corporateEmail').value = applicantProfile.corporateEmail || '';
+                document.getElementById('corporatePhone').value = applicantProfile.corporatePhone || '';
+                document.getElementById('businessSector').value = applicantProfile.businessSector || '';
+                
+                if (applicantProfile.paystackRef) {
+                    unlockDropzone();
+                }
+            }
+        }
+
+        // Toggle Company Wizard Steps
+        function goToStep(step) {
+            if (step === 2) {
+                // Validate Step 1
+                const name = document.getElementById('companyName').value.trim();
+                const rc = document.getElementById('rcNumber').value.trim();
+                const email = document.getElementById('corporateEmail').value.trim();
+                const phone = document.getElementById('corporatePhone').value.trim();
+                const sector = document.getElementById('businessSector').value;
+                
+                if (!name || !rc || !email || !phone || !sector) {
+                    showToast('Please fill in all company information fields.', true);
+                    return;
+                }
+                
+                applicantProfile.companyName = name;
+                applicantProfile.rcNumber = rc;
+                applicantProfile.corporateEmail = email;
+                applicantProfile.corporatePhone = phone;
+                applicantProfile.businessSector = sector;
+                saveStateToLocalStorage();
+
+                // Prefill labels on Step 2 payment ticket
+                document.getElementById('payment-company-label').textContent = name;
+                document.getElementById('payment-sector-label').textContent = sector + ' Specialists';
+            }
+            
+            // Toggle step boxes
+            document.getElementById('step-box-1').style.display = (step === 1) ? 'block' : 'none';
+            document.getElementById('step-box-2').style.display = (step === 2) ? 'block' : 'none';
+            document.getElementById('step-box-3').style.display = (step === 3) ? 'block' : 'none';
+            
+            // Handle rail items
+            document.getElementById('step-rail-1').className = (step === 1) ? 'active' : (step > 1 ? 'completed' : '');
+            document.getElementById('step-rail-2').className = (step === 2) ? 'active' : (step > 2 ? 'completed' : '');
+            document.getElementById('step-rail-3').className = (step === 3) ? 'active' : '';
+            
+            document.getElementById('rail-eyebrow-text').textContent = `Step ${step} of 3 · ` + (step === 1 ? 'Profile' : (step === 2 ? 'Payment' : 'Upload'));
+            currentStep = step;
+        }
+
+        // Simulated Paystack payment popup launcher
+        function launchPaystack() {
+            const email = document.getElementById('corporateEmail').value.trim();
+            document.getElementById('pstk-email-lbl').textContent = email || 'ir@company.com';
+            
+            // Show Modal
+            document.getElementById('paystack-popup').classList.add('show');
+        }
+
+        function closePaystackModal() {
+            document.getElementById('paystack-popup').classList.remove('show');
+        }
+
+        function switchPayMethod(method) {
+            document.getElementById('pstk-tab-card').className = (method === 'card') ? 'paystack-method-tab active' : 'paystack-method-tab';
+            document.getElementById('pstk-tab-bank').className = (method === 'bank') ? 'paystack-method-tab active' : 'paystack-method-tab';
+        }
+
+        function triggerOTPStep() {
+            document.getElementById('pstk-view-card').style.display = 'none';
+            document.getElementById('pstk-view-otp').style.display = 'flex';
+        }
+
+        function triggerPaymentSuccess() {
+            const randRef = 'PSTK_' + Math.floor(10000000 + Math.random() * 90000000);
+            document.getElementById('pstk-ref-code').textContent = randRef;
+            
+            applicantProfile.paystackRef = randRef;
+            applicantProfile.amountPaid = 300000;
+            saveStateToLocalStorage();
+
+            document.getElementById('pstk-view-otp').style.display = 'none';
+            document.getElementById('pstk-view-success').style.display = 'flex';
+            
+            // Fire lock reveal animation immediately
+            unlockDropzone();
+            showToast('Transaction success webhook received! Upload unlocked.', false);
+        }
+
+        function unlockDropzone() {
+            const wrapper = document.getElementById('upload-wrapper-zone');
+            if (wrapper) {
+                wrapper.classList.add('unlocked');
+            }
+        }
+
+        // Trigger PDF selection
+        function triggerFileSelect() {
+            document.getElementById('audit-file-input').click();
+        }
+
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            if (files.length === 0) return;
+            
+            const file = files[0];
+            if (file.type !== 'application/pdf') {
+                showToast('Format not supported. Please select a compliance PDF file.', true);
+                return;
+            }
+
+            selectedFile = file;
+            document.getElementById('file-lbl-name').textContent = file.name;
+            const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+            document.getElementById('file-lbl-size').textContent = `${sizeMB} MB · Unsigned File`;
+            document.getElementById('selected-file-list').style.display = 'block';
+            
+            // Progress Bar simulation
+            const fill = document.getElementById('upload-progress-fill-bar');
+            fill.style.width = '0%';
+            
+            let w = 0;
+            const t = setInterval(() => {
+                w += 10;
+                fill.style.width = `${w}%`;
+                if (w >= 100) {
+                    clearInterval(t);
+                    document.getElementById('btn-final-submit').removeAttribute('disabled');
+                    document.getElementById('file-lbl-size').innerHTML = `${sizeMB} MB · <i class="fas fa-check-circle" style="color:var(--db-green);"></i> Ready for Review`;
+                }
+            }, 100);
+        }
+
+        function removeSelectedFile() {
+            selectedFile = null;
+            document.getElementById('selected-file-list').style.display = 'none';
+            document.getElementById('btn-final-submit').setAttribute('disabled', 'true');
+            document.getElementById('audit-file-input').value = '';
+        }
+
+        // Final Submit: add company record to global pool and display dashboard!
+        function submitAuditPackage() {
+            applicantProfile.submittedFile = selectedFile ? selectedFile.name : 'environment_audit_logs.pdf';
+            applicantProfile.fileSize = selectedFile ? (selectedFile.size / (1024 * 1024)).toFixed(1) + ' MB' : '1.4 MB';
+            applicantProfile.status = 'submitted';
+            applicantProfile.dateSubmitted = new Date().toISOString().split('T')[0];
+            
+            saveStateToLocalStorage();
+            
+            // Append or update in ECN Global list
+            const globalList = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+            const idx = globalList.findIndex(c => c.rcNumber === applicantProfile.rcNumber);
+            if (idx >= 0) {
+                globalList[idx] = { ...globalList[idx], ...applicantProfile };
+            } else {
+                globalList.push(applicantProfile);
+            }
+            localStorage.setItem(DB_KEY, JSON.stringify(globalList));
+
+            showToast('Audit package successfully pushed to ECN review queue!', false);
+            showClientDashboard();
+        }
+
+        // Client Active Dashboard state presenter
+        function showClientDashboard() {
+            document.getElementById('client-wizard-box').style.display = 'none';
+            document.getElementById('client-active-dashboard').style.display = 'block';
+            
+            // Bind stats
+            document.getElementById('dash-company-name').textContent = applicantProfile.companyName;
+            document.getElementById('dash-sector').textContent = applicantProfile.businessSector;
+            document.getElementById('dash-rc').textContent = applicantProfile.rcNumber;
+            document.getElementById('dash-file-name').textContent = applicantProfile.submittedFile || 'environment_logs.pdf';
+            document.getElementById('dash-file-size').textContent = (applicantProfile.fileSize || '1.4 MB') + ' · Verified Signed';
+            
+            // Configure status-badge styling
+            const badge = document.getElementById('dash-status-badge');
+            badge.textContent = applicantProfile.status;
+            badge.className = `status-badge ${applicantProfile.status}`;
+
+            // Configure timeline nodes classes & displays
+            const timelineItemUpload = document.getElementById('timeline-item-upload');
+            const timelineItemReview = document.getElementById('timeline-item-review');
+            const timelineItemClearance = document.getElementById('timeline-item-clearance');
+            
+            timelineItemUpload.className = 'timeline-item active';
+            timelineItemReview.className = 'timeline-item';
+            timelineItemClearance.className = 'timeline-item';
+            
+            document.getElementById('time-step2-desc').textContent = `Paystack reference: ${applicantProfile.paystackRef}`;
+            
+            // Reset feedback display panels
+            document.getElementById('dash-revision-banner').style.display = 'none';
+            document.getElementById('dash-approved-banner').style.display = 'none';
+
+            if (applicantProfile.status === 'submitted') {
+                timelineItemReview.className = 'timeline-item active';
+                document.getElementById('time-step4-desc').textContent = 'Audit queue active. Specialist assigned.';
+            } else if (applicantProfile.status === 'revision') {
+                timelineItemReview.className = 'timeline-item active';
+                document.getElementById('time-step4-desc').textContent = 'Audit flagged for revisions.';
+                
+                document.getElementById('dash-revision-banner').style.display = 'flex';
+                document.getElementById('dash-revision-reason').textContent = applicantProfile.auditorRemarks || 'Auditor requested update.';
+            } else if (applicantProfile.status === 'approved') {
+                timelineItemReview.className = 'timeline-item active';
+                timelineItemClearance.className = 'timeline-item active';
+                document.getElementById('time-step4-desc').textContent = 'Review evaluated. Score met standard targets.';
+                
+                document.getElementById('dash-approved-banner').style.display = 'flex';
+            }
+        }
+
+        // Enable re-uploading file on flagged status
+        function enableReupload() {
+            // Take back to step 3 wizard to overwrite file submission
+            document.getElementById('client-active-dashboard').style.display = 'none';
+            document.getElementById('client-wizard-box').style.display = 'block';
+            goToStep(3);
+        }
+
+        // ==========================================
+        // AUDITOR INTERACTION ACTIONS
+        // ==========================================
+        function renderAuditorTable() {
+            const list = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+            const tbody = document.getElementById('auditor-submission-tbody');
+            tbody.innerHTML = '';
+            
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 24px; color:var(--db-text-faint);">No verified paid audit submissions found.</td></tr>';
+                return;
+            }
+
+            list.forEach(sub => {
+                const tr = document.createElement('tr');
+                tr.id = `row-${sub.paystackRef}`;
+                tr.onclick = () => selectSubmissionForReview(sub.paystackRef);
+                
+                if (activeAuditorSelectedRef === sub.paystackRef) {
+                    tr.className = 'selected';
+                }
+
+                tr.innerHTML = `
+                    <td>
+                        <div class="company-cell">
+                            <span class="company-cell-name">${sub.companyName}</span>
+                            <span class="company-cell-sector">${sub.businessSector}</span>
+                        </div>
+                    </td>
+                    <td class="ref-cell">${sub.paystackRef}</td>
+                    <td>₦300,000</td>
+                    <td>${sub.dateSubmitted || '2026-05-24'}</td>
+                    <td><span class="status-badge ${sub.status}">${sub.status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Recalculate statistics values on top of Auditor
+            document.getElementById('stat-total-subs').textContent = list.length;
+            document.getElementById('stat-total-fees').textContent = `₦${(list.length * 300000 / 1000).toFixed(0)}k`;
+            
+            const approved = list.filter(s => s.status === 'approved').length;
+            document.getElementById('stat-total-approved').textContent = approved;
+            
+            const pending = list.filter(s => s.status === 'submitted').length;
+            document.getElementById('stat-total-pending').textContent = pending;
+            document.getElementById('stat-total-pending').style.color = pending > 0 ? 'var(--db-accent)' : 'var(--db-text-muted)';
+        }
+
+        // Select row to initialize inline inspector view
+        function selectSubmissionForReview(ref) {
+            activeAuditorSelectedRef = ref;
+            
+            // Highlight selected row in table
+            document.querySelectorAll('#auditor-submission-tbody tr').forEach(row => row.classList.remove('selected'));
+            const selectedRow = document.getElementById(`row-${ref}`);
+            if (selectedRow) selectedRow.classList.add('selected');
+
+            // Find applicant metadata
+            const list = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+            const sub = list.find(s => s.paystackRef === ref);
+            if (!sub) return;
+
+            // Bind inspector view fields
+            document.getElementById('view-doc-title').textContent = sub.submittedFile || 'audit_logs.pdf';
+            document.getElementById('view-doc-pay-ref').textContent = sub.paystackRef;
+            document.getElementById('view-doc-heading').textContent = sub.companyName;
+            document.getElementById('view-doc-company').textContent = sub.companyName;
+            document.getElementById('view-doc-sector').textContent = sub.businessSector;
+            document.getElementById('view-doc-email').textContent = sub.corporateEmail;
+            document.getElementById('view-doc-phone').textContent = sub.corporatePhone || '+234 803 123 4567';
+            document.getElementById('auditor-remarks').value = sub.auditorRemarks || '';
+
+            // Open doc view layout
+            document.getElementById('auditor-review-layout').style.display = 'grid';
+            
+            // Scroll inline viewer smoothly into window range
+            document.getElementById('auditor-review-layout').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // ECN Auditor Decision: request revisions
+        function handleAuditorRevision() {
+            if (!activeAuditorSelectedRef) return;
+            const remarks = document.getElementById('auditor-remarks').value.trim();
+            if (!remarks) {
+                showToast('Please state evaluation comments explaining what requires revision.', true);
+                return;
+            }
+
+            const list = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+            const idx = list.findIndex(s => s.paystackRef === activeAuditorSelectedRef);
+            if (idx < 0) return;
+
+            list[idx].status = 'revision';
+            list[idx].auditorRemarks = remarks;
+            localStorage.setItem(DB_KEY, JSON.stringify(list));
+
+            // Sync with current applicant profile if it is the active localStorage applicant
+            const activeApp = JSON.parse(localStorage.getItem('ecn_active_applicant_profile'));
+            if (activeApp && activeApp.rcNumber === list[idx].rcNumber) {
+                activeApp.status = 'revision';
+                activeApp.auditorRemarks = remarks;
+                localStorage.setItem('ecn_active_applicant_profile', JSON.stringify(activeApp));
+            }
+
+            showToast('Audit revision requested. Compliance notification sent!', false);
+            document.getElementById('auditor-review-layout').style.display = 'none';
+            activeAuditorSelectedRef = null;
+            
+            renderAuditorTable();
+        }
+
+        // ECN Auditor Decision: approve and issue Clearance Stamped
+        function handleAuditorApproval() {
+            if (!activeAuditorSelectedRef) return;
+            const remarks = document.getElementById('auditor-remarks').value.trim() || 'Verified and approved by the ECN Audit Control Board.';
+
+            const list = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+            const idx = list.findIndex(s => s.paystackRef === activeAuditorSelectedRef);
+            if (idx < 0) return;
+
+            const certNum = 'ECN-ESG-2026-' + Math.floor(1000 + Math.random() * 9000) + String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            
+            const today = new Date();
+            const expiry = new Date();
+            expiry.setFullYear(today.getFullYear() + 1);
+
+            list[idx].status = 'approved';
+            list[idx].auditorRemarks = remarks;
+            list[idx].certificateNum = certNum;
+            list[idx].issueDate = today.toISOString().split('T')[0];
+            list[idx].expiryDate = expiry.toISOString().split('T')[0];
+            
+            localStorage.setItem(DB_KEY, JSON.stringify(list));
+
+            // Sync with current applicant profile if active
+            const activeApp = JSON.parse(localStorage.getItem('ecn_active_applicant_profile'));
+            if (activeApp && activeApp.rcNumber === list[idx].rcNumber) {
+                activeApp.status = 'approved';
+                activeApp.auditorRemarks = remarks;
+                activeApp.certificateNum = certNum;
+                activeApp.issueDate = list[idx].issueDate;
+                activeApp.expiryDate = list[idx].expiryDate;
+                localStorage.setItem('ecn_active_applicant_profile', JSON.stringify(activeApp));
+            }
+
+            showToast('ESG compliance clearance issued! PDF Certificate cataloged.', false);
+            
+            // Pop the beautiful dynamic certificate preview modal!
+            openCertificatePreview(list[idx]);
+            
+            document.getElementById('auditor-review-layout').style.display = 'none';
+            activeAuditorSelectedRef = null;
+            
+            renderAuditorTable();
+        }
+
+        // ==========================================
+        // CERTIFICATE CERTIFICATION VIEWS
+        // ==========================================
+        function openCertificatePreview(sub) {
+            document.getElementById('cert-company-name').textContent = sub.companyName;
+            document.getElementById('cert-number-lbl').textContent = sub.certificateNum || 'ECN-ESG-2026-TBD';
+            
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const issueDate = sub.issueDate ? new Date(sub.issueDate) : new Date();
+            const expiryDate = sub.expiryDate ? new Date(sub.expiryDate) : new Date();
+
+            document.getElementById('cert-issue-lbl').textContent = issueDate.toLocaleDateString('en-US', options);
+            document.getElementById('cert-expiry-lbl').textContent = expiryDate.toLocaleDateString('en-US', options);
+
+            document.getElementById('certificate-modal').classList.add('show');
+        }
+
+        function viewCertificate() {
+            openCertificatePreview(applicantProfile);
+        }
+
+        function closeCertificateModal() {
+            document.getElementById('certificate-modal').classList.remove('show');
+        }
+
+        function printCertificate() {
+            window.print();
+        }
+
+        // ==========================================
+        // INTERFACE NOTIFICATION TOASTS
+        // ==========================================
+        function showToast(message, isError) {
+            const toast = document.getElementById('toast-notif');
+            const text = document.getElementById('toast-text');
+            
+            text.textContent = message;
+            if (isError) {
+                toast.style.background = '#E04F39';
+                toast.querySelector('i').className = 'fas fa-circle-xmark';
+                toast.querySelector('i').style.color = '#FFFFFF';
+            } else {
+                toast.style.background = '#0A0A0A';
+                toast.querySelector('i').className = 'fas fa-circle-check';
+                toast.querySelector('i').style.color = '#15803D';
+            }
+            
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
