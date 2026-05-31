@@ -1153,6 +1153,7 @@
         function showClientDashboard() {
             document.getElementById('client-wizard-box').style.display = 'none';
             document.getElementById('client-active-dashboard').style.display = 'block';
+            document.getElementById('main-content-layout').classList.add('dashboard-active');
             
             // Bind stats
             document.getElementById('dash-company-name').textContent = applicantProfile.companyName;
@@ -1207,6 +1208,7 @@
             // Take back to step 3 wizard to overwrite file submission
             document.getElementById('client-active-dashboard').style.display = 'none';
             document.getElementById('client-wizard-box').style.display = 'block';
+            document.getElementById('main-content-layout').classList.remove('dashboard-active');
             goToStep(3);
         }
 
