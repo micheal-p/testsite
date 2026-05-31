@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About ESG Clearance · NEIIA</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: {
+        ink: "#0A0A0A", inkSoft: "#1F1F1F", paper: "#FFFFFF",
+        cream: "#FBFAF6", muted: "#F4F2EC", line: "#E7E5E0",
+        faint: "#8E867B", brandGreen: "#0E7A3C"
+      },
+      fontFamily: {
+        sans: ["Inter","system-ui","sans-serif"],
+        serif: ['"Instrument Serif"',"Georgia","serif"]
+      },
+      maxWidth: { content: "1200px" },
+      typography: {
+        DEFAULT: {
+          css: {
+            color: '#1F1F1F',
+            h2: { fontFamily: '"Instrument Serif", Georgia, serif', fontWeight: '400', color: '#0A0A0A' },
+            h3: { fontFamily: '"Inter", system-ui, sans-serif', fontWeight: '600' }
+          }
+        }
+      }
+    } } };
+  </script>
+</head>
+<body class="bg-paper text-ink">
+
+  <!-- Slim brand bar -->
+  <header class="border-b border-line sticky top-0 bg-white/80 backdrop-blur-md z-50">
+    <div class="max-w-content mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
+      <a href="https://neiia.energy" class="flex items-center gap-2.5">
+        <img src="../assets/images/neiis-logo-green.png" alt="NEIIA" class="h-7" />
+        <span class="font-semibold tracking-tight">ESG Clearance Portal</span>
+      </a>
+      <div class="flex items-center gap-6">
+        <a href="pricing.html" class="text-sm font-medium hover:text-brandGreen transition">Pricing</a>
+        <div class="w-px h-4 bg-line"></div>
+        <a href="signin.html" class="text-sm font-semibold hover:text-brandGreen transition">Log in</a>
+        <a href="signup.html" class="bg-ink text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-inkSoft transition">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-content mx-auto px-6 lg:px-10 py-16 lg:py-24 grid lg:grid-cols-[1fr_320px] gap-16">
+    
+    <!-- Main Content -->
+    <article class="prose prose-lg prose-green max-w-none">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-muted text-ink text-xs font-semibold rounded-full mb-6">
+        <i class="fas fa-leaf text-brandGreen"></i> NEIIA Information Directive
+      </div>
+      <h1 class="font-serif text-[48px] leading-[1.05] tracking-tightest mb-8 text-ink">
+        Understanding the Mandatory <br><span class="italic text-brandGreen">ESG Clearance</span> Requirement.
+      </h1>
+
+      <p class="text-xl text-ink/70 leading-relaxed mb-10">
+        Environmental, Social, and Governance (ESG) compliance is no longer optional for businesses operating within Nigeria's critical energy, manufacturing, and industrial sectors. Mandated by the Federal Ministry of Environment, the ESG Clearance Certificate serves as the ultimate proof of a company's commitment to sustainable practices.
+      </p>
+
+      <hr class="border-line my-10" />
+
+      <h2 class="text-[32px] mb-4">Why is ESG Clearance Compulsory?</h2>
+      <p class="mb-6">
+        Under the latest National Environmental Standards and Regulations directives, all expanding local businesses, SMEs, and large-scale industries must undergo periodic assessments. This ensures that industrial growth does not come at the cost of environmental degradation, public health, or ethical governance.
+      </p>
+      <p class="mb-8">
+        Without a valid ESG Clearance Certificate, companies face regulatory bottlenecks, including:
+      </p>
+      <ul class="space-y-3 mb-10 pl-5">
+        <li class="flex items-start gap-3"><i class="fas fa-ban text-red-500 mt-1.5 text-sm"></i> <span>Inability to secure government contracts or grants.</span></li>
+        <li class="flex items-start gap-3"><i class="fas fa-ban text-red-500 mt-1.5 text-sm"></i> <span>Suspension of operational licenses for high-risk sites.</span></li>
+        <li class="flex items-start gap-3"><i class="fas fa-ban text-red-500 mt-1.5 text-sm"></i> <span>Denial of access to green financing and international investment funds.</span></li>
+      </ul>
+
+      <h2 class="text-[32px] mb-4">What the Audit Entails</h2>
+      <p class="mb-4">
+        The ESG Clearance Portal streamlines the verification process. Depending on your operational scale, you will be required to undergo either a Baseline Gap Analysis or a Full Third-Party Certification. Evaluators from NEIIA and the Ministry of Environment will verify:
+      </p>
+      <div class="grid sm:grid-cols-2 gap-6 my-8">
+        <div class="p-6 bg-muted rounded-xl">
+          <i class="fas fa-smog text-brandGreen text-2xl mb-4"></i>
+          <h3 class="font-semibold text-lg mb-2 mt-0">Environmental Impact</h3>
+          <p class="text-sm text-ink/70 m-0">Carbon emission intensity, waste water treatment protocols, and overall ecological footprint.</p>
+        </div>
+        <div class="p-6 bg-muted rounded-xl">
+          <i class="fas fa-users text-brandGreen text-2xl mb-4"></i>
+          <h3 class="font-semibold text-lg mb-2 mt-0">Social & Governance</h3>
+          <p class="text-sm text-ink/70 m-0">Corporate governance charters, labor practices, and community impact assessments.</p>
+        </div>
+      </div>
+
+      <h2 class="text-[32px] mb-4">The Clearance Pipeline</h2>
+      <p>
+        Our portal connects your submitted documentation directly to NEIIA auditors. Once your files and payment are securely validated, your application enters the fast-tracked review queue. Successful applicants receive a digitally stamped Clearance Certificate directly to their dashboard.
+      </p>
+
+    </article>
+
+    <!-- Sidebar -->
+    <aside>
+      <div class="border border-line rounded-2xl p-6 bg-white sticky top-24 shadow-sm">
+        <h3 class="font-semibold text-lg mb-2">Ready to comply?</h3>
+        <p class="text-sm text-ink/60 mb-6">Start your application today to secure your Federal Ministry of Environment certificate.</p>
+        
+        <div class="space-y-3">
+          <a href="signup.html" class="block w-full py-3 text-center bg-brandGreen text-white rounded-lg font-medium hover:bg-green-800 transition-colors shadow-sm text-sm">
+            Begin Audit Application
+          </a>
+          <a href="pricing.html" class="block w-full py-3 text-center border border-line text-ink rounded-lg font-medium hover:bg-muted transition-colors text-sm">
+            View Pricing Tiers
+          </a>
+        </div>
+
+        <hr class="border-line my-6" />
+
+        <div class="text-xs text-ink/50 space-y-2">
+          <div class="flex justify-between">
+            <span>Current Review Time:</span>
+            <span class="font-semibold text-ink">48-72 Hours</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Mandating Authority:</span>
+            <span class="font-semibold text-ink">Min. of Environment</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Start Application · ESG Clearance Portal</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: {
+        ink: "#0A0A0A", inkSoft: "#1F1F1F", paper: "#FFFFFF",
+        cream: "#FBFAF6", muted: "#F4F2EC", line: "#E7E5E0",
+        faint: "#8E867B", accent: "#E04F39", accentSoft: "#FBE9E3",
+        brandGreen: "#16a34a"
+      },
+      fontFamily: {
+        sans: ["Inter","system-ui","sans-serif"],
+        serif: ['"Instrument Serif"',"Georgia","serif"]
+      },
+      maxWidth: { content: "1240px" }
+    } } };
+  </script>
+  <link rel="stylesheet" href="../deal-room/assets/css/custom.css" />
+  <style>
+    html:not(.is-ready) body{opacity:0}body{transition:opacity 180ms ease-out}
+  </style>
+</head>
+<body class="bg-paper text-ink">
+
+  <!-- Slim brand bar -->
+  <header class="border-b border-line">
+    <div class="max-w-content mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <img src="../assets/images/neiis-logo-green.png" alt="" class="h-7" />
+        <span class="font-semibold tracking-tight">ESG Clearance Portal</span>
+      </a>
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="text-sm text-ink/60 hover:text-ink">Back to Home</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-content mx-auto px-6 lg:px-10 grid lg:grid-cols-[320px_1fr] gap-12 lg:gap-20 py-12 lg:py-20">
+
+    <!-- Editorial left rail -->
+    <aside class="lg:sticky lg:top-24 self-start">
+      <div class="eyebrow"><span class="dot" style="background:var(--brandGreen)"></span><span>Application</span></div>
+      <h2 class="font-serif text-[34px] lg:text-[42px] leading-[1.04] tracking-tightest mt-4">
+        Begin your <em class="italic">Clearance</em> journey.
+      </h2>
+      <p class="mt-4 text-ink/65 text-[15px] leading-relaxed max-w-xs">
+        Register your company profile to access the official ESG Audit Pipeline. Once registered, you'll be able to complete the questionnaire, pay the audit fee, and submit your documentation.
+      </p>
+      
+      <div class="mt-10 p-6 bg-cream border border-line rounded-xl max-w-xs">
+        <h4 class="font-semibold text-sm mb-3">Ministry of Environment Guidelines</h4>
+        <p class="text-sm text-ink/70 leading-relaxed">
+          All provided corporate information must match your CAC registration exactly. This information will appear on your final certificate.
+        </p>
+      </div>
+    </aside>
+
+    <!-- Form -->
+    <main>
+      <h1 class="font-serif text-[40px] sm:text-[52px] lg:text-[60px] leading-[1.02] tracking-tightest">
+        Corporate Onboarding.
+      </h1>
+      <p class="mt-5 text-ink/65 text-lg max-w-xl">
+        Enter your primary company details below to initialize your secure application workspace.
+      </p>
+
+      <form data-validate id="signupForm" class="mt-12 max-w-xl">
+        <div class="space-y-6">
+
+          <div class="form-field">
+            <label for="companyName">Company Legal Name</label>
+            <input id="companyName" name="companyName" type="text" required placeholder="e.g. Chevron Nigeria Limited" class="w-full border border-line rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-field">
+              <label for="rcNumber">RC Number</label>
+              <input id="rcNumber" name="rcNumber" type="text" required placeholder="e.g. RC-9482910" class="w-full border border-line rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500" />
+            </div>
+            <div class="form-field">
+              <label for="businessSector">Primary Sector</label>
+              <select id="businessSector" name="businessSector" required class="w-full border border-line rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-green-500">
+                <option value="">Select a sector...</option>
+                <option value="Oil & Gas">Oil & Gas</option>
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Power Generation">Power Generation</option>
+                <option value="Telecommunications">Telecommunications</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="Mining">Mining</option>
+                <option value="Agriculture">Agriculture</option>
+                <option value="Finance & Banking">Finance & Banking</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-field">
+              <label for="email">Corporate Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required placeholder="compliance@company.com" class="w-full border border-line rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500" />
+            </div>
+            <div class="form-field">
+              <label for="phone">Contact Phone</label>
+              <input id="phone" name="phone" type="tel" required placeholder="+234..." class="w-full border border-line rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500" />
+            </div>
+          </div>
+          
+          <div class="form-field pt-2">
+            <label for="password">Create Password</label>
+            <input id="password" name="password" type="password" required placeholder="Minimum 8 characters" class="w-full border border-line rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+
+          <div class="pt-4">
+            <button type="submit" class="w-full bg-brandGreen text-white rounded-lg px-4 py-3.5 font-medium flex items-center justify-center transition-colors hover:bg-green-700" id="continueBtn">
+              <span data-btn-label>Create Account & Continue</span>
+              <svg class="ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+            <p class="text-xs text-center text-ink/50 mt-4">
+              By creating an account, you agree to our <a href="terms-of-service.html" class="underline hover:text-ink">Terms of Service</a> and <a href="privacy-policy.html" class="underline hover:text-ink">Privacy Policy</a>.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-10 flex flex-col sm:flex-row sm:items-center gap-4 pt-6 border-t border-line">
+          <p class="text-sm text-faint">
+            Already registered? <a href="signin.html" class="text-green-600 font-medium hover:underline">Sign in to your dashboard</a>
+          </p>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      const form = document.getElementById("signupForm");
+      const btn = document.getElementById("continueBtn");
+      const btnLabel = btn.querySelector("[data-btn-label]");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const email = (document.getElementById("email").value || "").trim();
+        const companyName = document.getElementById("companyName").value.trim();
+        const rcNumber = document.getElementById("rcNumber").value.trim();
+        const sector = document.getElementById("businessSector").value;
+        const phone = document.getElementById("phone").value.trim();
+        
+        if (!email || !companyName || !rcNumber || !sector || !phone) return;
+
+        // Fake load
+        btnLabel.textContent = "Creating workspace…";
+        btn.disabled = true;
+        btn.style.opacity = "0.7";
+        btn.style.cursor = "wait";
+
+        setTimeout(function () {
+          // Setup auth session
+          localStorage.setItem("esg_auth_user", email);
+          localStorage.setItem("esg_user_role", "client");
+          
+          // Pre-fill the profile data in the portal's format
+          const profile = {
+            companyName: companyName,
+            rcNumber: rcNumber,
+            corporateEmail: email,
+            corporatePhone: phone,
+            businessSector: sector,
+            paystackRef: '',
+            amountPaid: 0,
+            status: 'draft',
+            submittedFile: '',
+            fileSize: '',
+            dateSubmitted: ''
+          };
+          
+          localStorage.setItem('ecn_active_applicant_profile', JSON.stringify(profile));
+          
+          window.location.href = "esg-portal.html";
+        }, 1200);
+      });
+
+      document.documentElement.classList.add("is-ready");
+    })();
+  </script>
+</body>
+</html>

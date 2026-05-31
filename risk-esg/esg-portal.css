@@ -74,16 +74,26 @@ a:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   font-family: inherit;
   font-weight: 500;
   font-size: 14px;
   height: 40px;
   padding: 0 18px;
   border-radius: 8px;
-  transition: all 150ms ease;
   cursor: pointer;
-  border: 1px solid transparent;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: none;
+  text-decoration: none;
   white-space: nowrap;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
 .btn-primary {
@@ -95,14 +105,10 @@ a:hover {
   background: var(--db-green-deep);
 }
 
-.btn-primary:active {
-  transform: translateY(1px);
-}
-
 .btn-ghost {
   background: transparent;
   color: var(--db-ink);
-  border-color: var(--db-border);
+  border: 1px solid var(--db-border);
 }
 
 .btn-ghost:hover {
@@ -139,12 +145,12 @@ a:hover {
    ============================================= */
 .app-header {
   border-bottom: 1px solid var(--db-border);
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 50;
 }
 
 .header-container {
@@ -347,9 +353,14 @@ a:hover {
 .form-card {
   background: var(--db-surface);
   border: 1px solid var(--db-border);
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 60px -15px rgba(0,0,0,0.08), 0 5px 15px rgba(0,0,0,0.03);
+  transition: box-shadow 0.3s ease;
+}
+
+.form-card:hover {
+  box-shadow: 0 25px 70px -20px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.04);
 }
 
 .form-group {
@@ -786,28 +797,26 @@ a:hover {
 
 /* Dropzone styling */
 .dropzone {
-  border: 2px dashed var(--db-border);
-  border-radius: 12px;
-  padding: 40px 24px;
+  background: var(--db-surface-muted);
+  border: 2px dashed rgba(10, 10, 10, 0.15);
+  border-radius: 16px;
+  padding: 48px 32px;
   text-align: center;
-  background: var(--db-cream);
   cursor: pointer;
-  transition: all 150ms ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 24px;
 }
 
 .dropzone:hover {
   border-color: var(--db-green);
-  background: var(--db-green-tint);
+  background: rgba(14, 122, 60, 0.03);
+  transform: scale(1.01);
 }
 
 .dropzone-icon {
   font-size: 28px;
   color: var(--db-green);
+  margin-bottom: 12px;
 }
 
 .dropzone h4 {
@@ -1600,5 +1609,207 @@ a:hover {
     border: none;
     box-shadow: none;
     padding: 0;
+  }
+}
+
+/* ==========================================
+   TIER SELECTION CARDS
+   ========================================== */
+.tier-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.tier-card {
+  background: var(--db-surface);
+  border: 1px solid var(--db-border);
+  border-radius: 16px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+}
+
+.tier-card:hover {
+  border-color: rgba(14, 122, 60, 0.4);
+  box-shadow: 0 8px 24px rgba(14, 122, 60, 0.05);
+  transform: translateY(-2px);
+}
+
+.tier-card.selected {
+    border-color: var(--db-green);
+    background: #f2fcf6;
+}
+
+.tier-card-radio {
+    margin-top: 4px;
+    margin-right: 16px;
+    accent-color: var(--db-green);
+    width: 18px;
+    height: 18px;
+}
+
+.tier-card-content h4 {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--db-ink);
+    margin-bottom: 4px;
+}
+
+.tier-card-content p {
+    font-size: 13px;
+    color: var(--db-text-muted);
+    line-height: 1.5;
+}
+
+.tier-card-price {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--db-ink);
+}
+
+/* ==========================================
+   ESG QUESTIONNAIRE
+   ========================================== */
+.questionnaire-box {
+    background: #fafafa;
+    border: 1px solid var(--db-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.question-group {
+    margin-bottom: 24px;
+}
+
+.question-group:last-child {
+    margin-bottom: 0;
+}
+
+.question-label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--db-ink);
+    margin-bottom: 12px;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--db-text-muted);
+    cursor: pointer;
+}
+
+.radio-option input[type="radio"],
+.radio-option input[type="checkbox"] {
+    accent-color: var(--db-green);
+    width: 16px;
+    height: 16px;
+}
+
+/* ==========================================
+   AUDITOR OVERLAY MODAL
+   ========================================== */
+.auditor-overlay-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.auditor-overlay-modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.auditor-overlay-content {
+  background: transparent;
+  width: 100%;
+  max-width: 1240px;
+  height: 90vh;
+  transform: translateY(20px) scale(0.98);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.auditor-overlay-modal.show .auditor-overlay-content {
+  transform: translateY(0) scale(1);
+}
+
+.auditor-overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.auditor-overlay-header h3 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 32px;
+  color: white;
+}
+
+.auditor-overlay-close {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auditor-overlay-close:hover {
+  background: white;
+  color: var(--db-ink);
+  transform: rotate(90deg);
+}
+
+/* Redefine layout inside modal */
+.auditor-overlay-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+  .auditor-overlay-body {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
   }
 }

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pricing & Audit Tiers · ESG Clearance Portal</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: {
+        ink: "#0A0A0A", inkSoft: "#1F1F1F", paper: "#FFFFFF",
+        cream: "#FBFAF6", muted: "#F4F2EC", line: "#E7E5E0",
+        faint: "#8E867B", brandGreen: "#0E7A3C"
+      },
+      fontFamily: {
+        sans: ["Inter","system-ui","sans-serif"],
+        serif: ['"Instrument Serif"',"Georgia","serif"]
+      },
+      maxWidth: { content: "1200px" }
+    } } };
+  </script>
+</head>
+<body class="bg-paper text-ink">
+
+  <!-- Slim brand bar -->
+  <header class="border-b border-line sticky top-0 bg-white/80 backdrop-blur-md z-50">
+    <div class="max-w-content mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
+      <a href="https://neiia.energy" class="flex items-center gap-2.5">
+        <img src="../assets/images/neiis-logo-green.png" alt="NEIIA" class="h-7" />
+        <span class="font-semibold tracking-tight">ESG Clearance Portal</span>
+      </a>
+      <div class="flex items-center gap-6">
+        <a href="about.html" class="text-sm font-medium hover:text-brandGreen transition">About ESG</a>
+        <div class="w-px h-4 bg-line"></div>
+        <a href="signin.html" class="text-sm font-semibold hover:text-brandGreen transition">Log in</a>
+        <a href="signup.html" class="bg-ink text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-inkSoft transition">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-content mx-auto px-6 lg:px-10 py-20">
+    
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-muted text-ink text-xs font-semibold rounded-full mb-6">
+        <i class="fas fa-shield-alt text-brandGreen"></i> Official Audit Rates
+      </div>
+      <h1 class="font-serif text-[48px] leading-[1.05] tracking-tightest mb-6">
+        Transparent Pricing for your <br><span class="italic text-brandGreen">Compliance Audit</span>.
+      </h1>
+      <p class="text-ink/70 text-lg leading-relaxed">
+        Select the mandatory audit tier that matches your corporate requirements. All payments are processed securely, and successful audits guarantee immediate issuance of your clearance certificate.
+      </p>
+    </div>
+
+    <!-- Pricing Grid -->
+    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      
+      <!-- Tier 1 -->
+      <div class="border border-line rounded-2xl p-8 bg-white flex flex-col hover:border-ink transition-colors duration-300">
+        <div class="mb-6">
+          <h3 class="font-semibold text-xl mb-2">Corporate ESG Readiness & Gap Analysis</h3>
+          <p class="text-ink/60 text-sm h-10">Baseline compliance check for expanding local businesses and SMEs.</p>
+        </div>
+        <div class="mb-8">
+          <div class="text-[40px] font-serif tracking-tightest leading-none">₦1,800,000</div>
+          <div class="text-xs text-ink/50 uppercase tracking-widest mt-2 font-semibold">One-time Assessment Fee</div>
+        </div>
+        <ul class="space-y-4 mb-10 flex-1 text-sm text-ink/80">
+          <li class="flex items-start gap-3"><i class="fas fa-check text-brandGreen mt-1"></i> <span>Basic Carbon Footprint Assessment</span></li>
+          <li class="flex items-start gap-3"><i class="fas fa-check text-brandGreen mt-1"></i> <span>Waste Management Policy Review</span></li>
+          <li class="flex items-start gap-3"><i class="fas fa-check text-brandGreen mt-1"></i> <span>Ministry of Environment Gap Analysis</span></li>
+          <li class="flex items-start gap-3"><i class="fas fa-check text-brandGreen mt-1"></i> <span>Clearance valid for 12 months</span></li>
+        </ul>
+        <a href="signup.html?tier=1" class="w-full py-3.5 px-4 text-center border border-line rounded-lg font-medium hover:bg-muted transition-colors">
+          Select Tier 1
+        </a>
+      </div>
+
+      <!-- Tier 2 -->
+      <div class="border-2 border-brandGreen rounded-2xl p-8 bg-brandGreen/5 flex flex-col relative">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-brandGreen text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+          Standard Requirement
+        </div>
+        <div class="mb-6">
+          <h3 class="font-semibold text-xl mb-2">Third-Party ESG Audit & Certification</h3>
+          <p class="text-ink/60 text-sm h-10">Comprehensive audit and certification for large-scale operations and heavy industries.</p>
+        </div>
+        <div class="mb-8">
+          <div class="text-[40px] font-serif tracking-tightest leading-none">₦2,400,000</div>
+          <div class="text-xs text-ink/50 uppercase tracking-widest mt-2 font-semibold">One-time Audit Fee</div>
+        </div>
+        <ul class="space-y-4 mb-10 flex-1 text-sm text-ink/80">
+          <li class="flex items-start gap-3"><i class="fas fa-check text-brandGreen mt-1"></i> <span>Full Independent Site Inspection</span></li>
+          <li class="flex items-start gap-3"><i class="fas fa-check text-brandGreen mt-1"></i> <span>Energy Efficiency & Drawdown Analysis</span></li>
+          <li class="flex items-start gap-3"><i class="fas fa-check text-brandGreen mt-1"></i> <span>Advanced Corporate Governance Check</span></li>
+          <li class="flex items-start gap-3"><i class="fas fa-check text-brandGreen mt-1"></i> <span>Direct Federal Clearance Issuance</span></li>
+        </ul>
+        <a href="signup.html?tier=2" class="w-full py-3.5 px-4 text-center bg-brandGreen text-white rounded-lg font-medium hover:bg-green-800 transition-colors shadow-[0_4px_14px_rgba(14,122,60,0.39)]">
+          Select Tier 2
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Pricing Footnote -->
+    <div class="mt-8 text-center text-sm text-ink/60 max-w-2xl mx-auto">
+      <p>* Note: All tier prices are exclusive of the mandatory <strong>₦200,000 NEIIA Admittance Fee</strong> and standard <strong>7.5% VAT</strong>. The full breakdown will be calculated at checkout before payment.</p>
+    </div>
+
+  </main>
+
+</body>
+</html>
