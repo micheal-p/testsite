@@ -250,6 +250,79 @@ a:hover {
     grid-template-columns: 1fr;
     gap: 32px;
   }
+  
+  .sidebar-rail {
+    position: static !important;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--db-border);
+    padding-bottom: 24px;
+  }
+  
+  .sidebar-rail > p,
+  .sidebar-rail > div[style*="margin-top: 40px"] {
+    display: none;
+  }
+  
+  .step-rail {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    margin-top: 24px;
+    padding-bottom: 8px;
+  }
+  
+  .step-rail::before {
+    display: none;
+  }
+  
+  .step-rail li {
+    margin-bottom: 0;
+    padding-left: 20px;
+    white-space: nowrap;
+  }
+  
+  .step-rail li::before {
+    top: 5px;
+    left: 0;
+  }
+}
+
+/* =============================================
+   AUDITOR LAYOUT STYLES
+   ============================================= */
+.auditor-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.auditor-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 1024px) {
+  .auditor-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  
+  .auditor-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .auditor-layout > aside {
+    position: static !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .auditor-stats {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Left sidebar step rail */

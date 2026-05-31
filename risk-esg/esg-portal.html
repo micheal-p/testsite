@@ -438,7 +438,7 @@
         <div id="role-auditor" style="display: none; grid-column: 1 / -1;">
             
             <!-- Sleek Dashboard Grid -->
-            <div style="display: grid; grid-template-columns: 260px 1fr; gap: 48px; align-items: start;">
+            <div class="auditor-layout">
                 
                 <!-- Auditor Sidebar -->
                 <aside style="position: sticky; top: 32px;">
@@ -470,7 +470,7 @@
                 <div class="auditor-main-content">
                     
                     <!-- Stats Strip -->
-                    <div class="auditor-stats" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px;">
+                    <div class="auditor-stats">
                         <div class="stat-card" style="background: white; border: 1px solid var(--db-border); border-radius: 12px; padding: 20px;">
                             <div class="stat-label" style="font-size: 12px; font-weight: 600; color: var(--db-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Verified Nodes</div>
                             <div class="stat-value" id="stat-total-subs" style="font-size: 32px; font-weight: 700; color: var(--db-ink); font-family: 'Instrument Serif', serif;">3</div>
