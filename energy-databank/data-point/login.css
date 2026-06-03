@@ -1,12 +1,23 @@
 /* --- GOOGLE FONTS --- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap');
 
 :root {
-    --green: #10b981;
-    --green-dim: rgba(16, 185, 129, 0.1);
-    --bg-surface: #f8fafc;
-    --text-dark: #0f172a;
-    --border-light: rgba(0, 0, 0, 0.05);
+    /* Deal Room / Energy Databank Tokens */
+    --db-ink: #0A0A0A;
+    --db-ink-soft: #1F1F1F;
+    --db-paper: #FFFFFF;
+    --db-cream: #FBFAF6;
+    --db-muted: #F4F2EC;
+    --db-border: #E7E5E0;
+    --db-text-muted: #5C5650;
+    --db-text-faint: #8E867B;
+    --db-green: #0E7A3C;
+    --db-green-dark: #0A5C2D;
+    
+    --shadow-sm: 0 1px 2px rgba(10,10,10,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(10,10,10,0.05), 0 2px 4px -1px rgba(10,10,10,0.03);
+    --shadow-lg: 0 10px 15px -3px rgba(10,10,10,0.05), 0 4px 6px -2px rgba(10,10,10,0.02);
+    
     --r-md: 20px;
 }
 
@@ -14,11 +25,12 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--bg-surface);
+    background-color: var(--db-cream);
+    /* Subtle dot pattern matching the warm theme */
     background-image: 
-        radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 20%),
-        url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2364748b' fill-opacity='0.03' fill-rule='evenodd'%3E%3Ccircle cx='2' cy='2' r='2'/%3E%3C/g%3E%3C/svg%3E");
-    color: var(--text-dark);
+        radial-gradient(circle at 10% 20%, rgba(14, 122, 60, 0.03) 0%, transparent 20%),
+        url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%238E867B' fill-opacity='0.08' fill-rule='evenodd'%3E%3Ccircle cx='2' cy='2' r='2'/%3E%3C/g%3E%3C/svg%3E");
+    color: var(--db-ink);
     height: 100vh;
     display: flex;
     align-items: center;
@@ -29,11 +41,11 @@ body {
 .login-page { width: 100%; max-width: 440px; padding: 2rem; }
 
 .login-card {
-    background: #ffffff;
-    border: 1px solid var(--border-light);
+    background: var(--db-paper);
+    border: 1px solid var(--db-border);
     padding: 3rem;
     border-radius: var(--r-md);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-lg);
     animation: fadeIn 0.8s ease-out;
 }
 
@@ -47,19 +59,32 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    font-weight: 800;
-    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.25rem;
     margin-bottom: 2.5rem;
+    color: var(--db-ink);
 }
 
-.brand-logo { height: 40px; }
+.brand-logo { height: 36px; }
 
 .login-title { text-align: center; margin-bottom: 2.5rem; }
-.login-title h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-.login-title p { color: #94a3b8; font-size: 0.9rem; }
+.login-title h2 { 
+    font-size: 2.25rem; 
+    font-family: 'Instrument Serif', Georgia, serif; 
+    font-weight: 400; 
+    letter-spacing: -0.02em; 
+    margin-bottom: 0.5rem; 
+    color: var(--db-ink);
+}
+.login-title h2 em {
+    font-style: italic;
+    color: var(--db-green);
+}
+.login-title p { color: var(--db-text-muted); font-size: 0.95rem; }
 
 .input-group { margin-bottom: 1.5rem; }
-.input-label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 0.5rem; }
+.input-label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--db-text-faint); margin-bottom: 0.5rem; }
 
 .input-field-icon {
     position: relative;
@@ -70,17 +95,17 @@ body {
 .input-field-icon i {
     position: absolute;
     left: 1rem;
-    color: #475569;
+    color: var(--db-text-faint);
     font-size: 0.9rem;
 }
 
 .input-field {
     width: 100%;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: var(--db-cream);
+    border: 1px solid var(--db-border);
     padding: 0.875rem 1rem 0.875rem 2.8rem;
     border-radius: 12px;
-    color: var(--text-dark);
+    color: var(--db-ink);
     font-family: inherit;
     font-size: 0.95rem;
     transition: all 0.2s;
@@ -88,19 +113,20 @@ body {
 
 .input-field:focus {
     outline: none;
-    border-color: var(--green);
-    background: #fff;
-    box-shadow: 0 0 0 4px var(--green-dim);
+    border-color: var(--db-green);
+    background: var(--db-paper);
+    box-shadow: 0 0 0 4px rgba(14, 122, 60, 0.1);
 }
 
 .btn-login {
     width: 100%;
-    background: var(--green);
+    background: var(--db-green);
     color: #fff;
     border: none;
     padding: 1rem;
     border-radius: 10px;
-    font-weight: 700;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
     cursor: pointer;
     display: flex;
@@ -109,14 +135,15 @@ body {
     gap: 0.75rem;
     transition: all 0.2s;
     margin-top: 1rem;
+    box-shadow: var(--shadow-sm);
 }
 
-.btn-login:hover { background: #16a34a; transform: translateY(-1px); box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.3); }
+.btn-login:hover { background: var(--db-green-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
 .btn-login:disabled { opacity: 0.7; cursor: not-allowed; }
 
 .login-back { text-align: center; margin-top: 2rem; }
-.login-back a { color: #64748b; text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
-.login-back a:hover { color: var(--text-light); }
+.login-back a { color: var(--db-text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+.login-back a:hover { color: var(--db-ink); }
 
 .fa-spinner { animation: spin 1s linear infinite; }
 @keyframes spin { 100% { transform: rotate(360deg); } }

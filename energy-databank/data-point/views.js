@@ -6,9 +6,9 @@ const VIEWS = {
         <div class="badge badge-green" style="margin-bottom: 1rem;">
              <span class="live-dot"></span> SECURE NATIONAL NEXUS
         </div>
-        <h2 class="page-title" id="dashTitle" style="font-size: 2.2rem; line-height: 1.1; font-weight: 300;">
+        <h2 class="page-title" id="dashTitle">
             National Downstream<br>
-            <span style="color: var(--green); font-weight: 800;">Intel Command Center.</span>
+            <em>Intel Command Center.</em>
             <i class="fas fa-info-circle info-btn" title="Quick System Overview" onclick="showPageInfo('overview')"></i>
         </h2>
         <p class="page-subtitle" id="dashSubtitle" style="max-width: 500px; margin-top: 0.75rem; color: #64748b;">
@@ -25,23 +25,23 @@ const VIEWS = {
 
 <!-- High-Impact Metrics -->
 <div class="metrics-grid reveal" style="gap: 1.25rem;">
-    <div class="metric-card glass-card" style="position: relative; overflow: hidden;">
+    <div class="metric-card " style="position: relative; overflow: hidden;">
         <div style="position: absolute; top: 0; left: 0; height: 100%; width: 4px; background: var(--green);"></div>
         <div class="metric-label" style="display: flex; justify-content: space-between;">PMS Volume (L) <i class="fas fa-gas-pump" style="opacity: 0.2;"></i></div>
         <div class="metric-value" id="pmsMetric" style="letter-spacing: -0.03em;">—</div>
         <div class="metric-trend up"><i class="fas fa-arrow-up-right"></i> +2.1% <span style="font-size: 0.65rem; opacity: 0.7; margin-left: 4px;">Velocity</span></div>
     </div>
-    <div class="metric-card glass-card">
+    <div class="metric-card ">
         <div class="metric-label" style="display: flex; justify-content: space-between;">AGO Equivalence <i class="fas fa-truck-fade" style="opacity: 0.2;"></i></div>
         <div class="metric-value" id="agoMetric" style="letter-spacing: -0.03em;">—</div>
         <div class="metric-trend down"><i class="fas fa-arrow-down-right"></i> -0.8% <span style="font-size: 0.65rem; opacity: 0.7; margin-left: 4px;">Demand Shift</span></div>
     </div>
-    <div class="metric-card glass-card" style="background: #111827; color: #fff;">
-        <div class="metric-label" style="color: rgba(255,255,255,0.6); display: flex; justify-content: space-between;">Settled Revenue (₦) <i class="fas fa-university" style="opacity: 0.4;"></i></div>
-        <div class="metric-value" id="revMetric" style="color: #fff; letter-spacing: -0.03em;">—</div>
+    <div class="metric-card " style="background: var(--ink); color: var(--surface-raised);">
+        <div class="metric-label" style="color: rgba(251,250,246,0.8); display: flex; justify-content: space-between;">Settled Revenue (₦) <i class="fas fa-university" style="opacity: 0.4;"></i></div>
+        <div class="metric-value" id="revMetric" style="color: var(--surface-raised); letter-spacing: -0.03em;">—</div>
         <div class="metric-trend up" style="color: var(--green);"><i class="fas fa-shield-check"></i> Verified via CBN</div>
     </div>
-    <div class="metric-card glass-card">
+    <div class="metric-card ">
         <div class="metric-label" style="display: flex; justify-content: space-between;">Active IoT Nodes <i class="fas fa-microchip" style="opacity: 0.2;"></i></div>
         <div class="metric-value" id="iotMetric" style="letter-spacing: -0.03em;">—</div>
         <div class="metric-trend neutral"><i class="fas fa-circle-nodes"></i> Real-time Mesh</div>
@@ -49,7 +49,7 @@ const VIEWS = {
 </div>
 
 <!-- Multi-Model Intelligence Chart -->
-<div class="chart-block glass-card reveal" style="margin-top: 1.5rem; padding: 2rem;">
+<div class="chart-block  reveal" style="margin-top: 1.5rem; padding: 2rem;">
     <div class="chart-header" style="margin-bottom: 2rem;">
         <div>
             <h3 style="font-size: 1.1rem; font-weight: 700;">Throughput Intelligence Projections</h3>
@@ -76,7 +76,7 @@ const VIEWS = {
     nodemap: `
 <div class="page-header reveal">
     <div style="flex: 1;">
-        <h2 class="page-title">Live Node Map<br><span>& National Asset Tracker.</span></h2>
+        <h2 class="page-title">Live Node Map<br><em>& National Asset Tracker.</em></h2>
         <p class="page-subtitle">Standardized 2D tactical visualization of downstream infrastructure pins.</p>
     </div>
     <div style="background: #fff; padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-card); display: flex; gap: 2rem;">
@@ -122,7 +122,7 @@ const VIEWS = {
     revenue: `
 <div class="page-header reveal">
     <div>
-        <h2 class="page-title" style="font-weight: 300;">Revenue <span style="font-weight:700;">Portal.</span></h2>
+        <h2 class="page-title">Revenue <em>Portal.</em></h2>
         <p class="page-subtitle">Consolidated tracking of energy company sales, taxes, and national revenue accruals.</p>
     </div>
 </div>
@@ -181,7 +181,7 @@ const VIEWS = {
         <div style="display: flex; align-items: center; gap: 1.5rem;">
              <img src="../assets/cbn.webp" style="height: 50px; border-radius: 8px;" alt="CBN Logo">
              <div>
-                <h2 class="page-title" style="font-weight: 300;">Transaction <span style="font-weight:700;">Ledger.</span></h2>
+                <h2 class="page-title">Transaction <em>Ledger.</em></h2>
                 <p class="page-subtitle">Recent CBN-Nexus Bridge activity — secured financial settlements.</p>
              </div>
         </div>
@@ -218,7 +218,7 @@ const VIEWS = {
 <div class="page-header reveal" style="margin-bottom: 2rem;">
     <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
         <div>
-            <h2 class="page-title" style="font-weight: 300;">IoT Node <span style="font-weight:700; color: var(--green);">Network.</span></h2>
+            <h2 class="page-title">IoT Node <em>Network.</em></h2>
             <p class="page-subtitle">12,402 hardware nodes streaming tamper-proof consumption data across all regions.</p>
         </div>
         <div style="text-align: right;">
@@ -268,22 +268,22 @@ const VIEWS = {
     comingsoon: `
 <div class="page-header reveal">
     <div>
-        <h2 class="page-title" id="sectorTitle" style="color: #fff;">Sector Intelligence<br><span style="color: var(--green);">Expansion Link.</span></h2>
-        <p class="page-subtitle" style="color: #94a3b8;">National technical architecture expansion in progress — Node onboarding phase.</p>
+        <h2 class="page-title" id="sectorTitle">Sector Intelligence<br><em>Expansion Link.</em></h2>
+        <p class="page-subtitle" style="color: var(--text-secondary);">National technical architecture expansion in progress — Node onboarding phase.</p>
     </div>
 </div>
 
-<div class="log-block glass-card reveal" style="padding: 4.5rem !important; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0f172a; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 40px 80px rgba(0,0,0,0.4);">
+<div class="log-block  reveal" style="padding: 4.5rem !important; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--surface-raised); border: 1px solid var(--border); box-shadow: var(--shadow-elevated);">
     <div style="width: 90px; height: 90px; background: rgba(5, 150, 105, 0.1); border: 1px solid rgba(5, 150, 105, 0.2); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin-bottom: 2.5rem; position: relative;">
         <i class="fas fa-satellite-dish" id="sectorIcon" style="font-size: 2.5rem; color: var(--green);"></i>
         <div style="position: absolute; inset: -15px; border: 2px solid rgba(5, 150, 105, 0.1); border-radius: 30px; animation: marker-pulse-inner 3s linear infinite;"></div>
     </div>
     
-    <h3 style="color: #fff; font-size: 1.8rem; margin-bottom: 1.25rem; font-weight: 700; letter-spacing: -0.02em;">Telemetry Link Pending</h3>
-    <p style="max-width: 500px; margin: 0 auto 3rem; color: #94a3b8; font-size: 1rem; line-height: 1.6;">
-        The <b id="sectorLabel" style="color: #fff;">Sector</b> data pipeline is currently being integrated into the National Energy Data Bank framework. 
+    <h3 style="color: var(--ink); font-size: 1.8rem; margin-bottom: 1.25rem; font-weight: 700; letter-spacing: -0.02em;">Telemetry Link Pending</h3>
+    <p style="max-width: 500px; margin: 0 auto 3rem; color: var(--text-muted); font-size: 1rem; line-height: 1.6;">
+        The <b id="sectorLabel" style="color: var(--ink);">Sector</b> data pipeline is currently being integrated into the National Energy Data Bank framework. 
         <br>
-        <span style="display: inline-block; margin-top: 15px; padding: 4px 10px; background: rgba(255,255,255,0.05); border-radius: 6px; font-family: var(--mono); font-size: 0.8rem; color: #64748b;">MAPPING STATUS: ONBOARDING_ACTIVE</span>
+        <span style="display: inline-block; margin-top: 15px; padding: 4px 10px; background: var(--border-light); border-radius: 6px; font-family: var(--mono); font-size: 0.8rem; color: #64748b;">MAPPING STATUS: ONBOARDING_ACTIVE</span>
     </p>
 
     <div style="display: inline-flex; gap: 0.75rem; background: rgba(5, 150, 105, 0.1); color: var(--green); border: 1px solid rgba(5, 150, 105, 0.2); padding: 0.8rem 1.75rem; border-radius: var(--r-pill); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.05em; text-transform: uppercase;">
