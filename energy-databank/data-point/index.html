@@ -50,12 +50,12 @@
             <!-- Stats Banner -->
             <div class="stats-banner reveal">
                 <div class="stat-item">
-                    <div class="stat-label">FX Source (CBN)</div>
-                    <div class="stat-value mono" id="cbnTicker">₦1,485.20</div>
+                    <div class="stat-label">Verified Volume (FY)</div>
+                    <div class="stat-value mono" id="volumeTicker">62.0M L</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-label">Energy Mix</div>
-                    <div class="stat-value green">100%</div>
+                    <div class="stat-label">Coverage</div>
+                    <div class="stat-value green">36 States</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-label">IoT Verified Nodes</div>
@@ -95,9 +95,9 @@
                     <p>Over 12,400 verified hardware nodes streaming tamper-proof consumption data in real time.</p>
                 </div>
                 <div class="feature-card glass-card reveal">
-                    <div class="feature-icon"><i class="fas fa-file-invoice-dollar"></i></div>
-                    <h3>CBN Settlements</h3>
-                    <p>Automated reconciliation of petroleum subsidy flows via secure CBN-Nexus financial bridge.</p>
+                    <div class="feature-icon"><i class="fas fa-landmark"></i></div>
+                    <h3>Revenue Portal</h3>
+                    <p>Per-company volumes in liters with full attribution to the IoT locations producing each figure.</p>
                 </div>
                 <div class="feature-card glass-card reveal">
                     <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
@@ -136,13 +136,15 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // CBN Rate Ticker
-        const ticker = document.getElementById('cbnTicker');
-        setInterval(() => {
-            const drift = (Math.random() * 3 - 1).toFixed(2);
-            const rate = (1485.20 + parseFloat(drift)).toFixed(2);
-            ticker.textContent = `₦${rate}`;
-        }, 5000);
+        // Verified Volume Ticker
+        const ticker = document.getElementById('volumeTicker');
+        if (ticker) {
+            setInterval(() => {
+                const drift = (Math.random() * 0.04 - 0.02).toFixed(2);
+                const vol = (62.0 + parseFloat(drift)).toFixed(2);
+                ticker.textContent = `${vol}M L`;
+            }, 5000);
+        }
 
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(link => {

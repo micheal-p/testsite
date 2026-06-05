@@ -4,7 +4,6 @@
 let currentPage = 'overview';
 let currentKey = 'national';
 let currentCompany = 'National Aggregate';
-let globalFx = 1485.20;
 let mixChart = null;
 let iotMap = null;
 let mapInstance;
@@ -108,7 +107,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     initShell();
     initDropdowns();
     initGlobalSearch();
-    fetchCbnRate();
     renderPage(currentPage);
 });
 
@@ -127,6 +125,12 @@ async function renderPage(pageId) {
     // Map 'downstream' to the primary overview/dashboard for this phase
     if (pageId === 'downstream') {
         actualViewId = 'overview';
+    }
+
+    // Legacy redirect: settlements page has been folded into the revenue portal
+    if (pageId === 'settlements') {
+        pageId = 'revenue';
+        actualViewId = 'revenue';
     }
 
     currentPage = pageId;
@@ -159,12 +163,14 @@ async function renderPage(pageId) {
         initChart('daily');
         initPillTabs();
         initChartFilters();
+        renderOverviewOperators();
+        renderOverviewProductMix();
+        renderOverviewActivity();
     } else if (actualViewId === 'nodemap') {
         initMap();
+        initNodemapControls();
     } else if (actualViewId === 'revenue') {
         initRevenuePortal();
-    } else if (actualViewId === 'settlements') {
-        initSettlementLedger();
     } else if (actualViewId === 'iot') {
         initIoTAnalytics();
     }
@@ -255,7 +261,13 @@ function syncUI(key) {
 function initMetrics(key) {
     const d = companyData[key];
     if (!d) return;
-    const targets = { pmsMetric: d.pms.toLocaleString(), agoMetric: d.ago.toLocaleString(), revMetric: `₦${d.revenue}B`, iotMetric: d.nodes.toLocaleString() };
+    const attributedRev = d.pms * PMS_PRICE_PER_L + d.ago * 1000 * AGO_PRICE_PER_L;
+    const targets = {
+        pmsMetric: fmtLiters(d.pms),
+        agoMetric: fmtLiters(d.ago * 1000),
+        revMetric: fmtNaira(attributedRev),
+        iotMetric: d.nodes.toLocaleString()
+    };
     Object.keys(targets).forEach(tid => { const el = document.getElementById(tid); if (el) el.textContent = targets[tid]; });
 }
 
@@ -263,10 +275,15 @@ function initChart(range = 'daily') {
     const ctx = document.getElementById('mixChart');
     if (!ctx) return;
     if (mixChart) mixChart.destroy();
-    
+
     const companyMix = companyData[currentKey].mix;
     const data = companyMix[range] || companyMix['daily'];
-    
+
+    const ctx2d = ctx.getContext('2d');
+    const gradient = ctx2d.createLinearGradient(0, 0, 0, 360);
+    gradient.addColorStop(0, 'rgba(14, 122, 60, 0.18)');
+    gradient.addColorStop(1, 'rgba(14, 122, 60, 0.02)');
+
     mixChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -275,21 +292,29 @@ function initChart(range = 'daily') {
                 {
                     label: 'PMS',
                     data: data.pms,
-                    borderColor: '#059669',
-                    backgroundColor: 'rgba(5, 150, 105, 0.05)',
+                    borderColor: '#0E7A3C',
+                    backgroundColor: gradient,
                     fill: true,
                     tension: 0.4,
-                    pointRadius: 3,
-                    borderWidth: 2
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: '#0E7A3C',
+                    pointHoverBorderColor: '#fff',
+                    pointHoverBorderWidth: 2,
+                    borderWidth: 2.4
                 },
                 {
                     label: 'AGO',
                     data: data.ago,
-                    borderColor: '#2563eb',
+                    borderColor: '#0A0A0A',
                     backgroundColor: 'transparent',
                     fill: false,
                     tension: 0.4,
-                    pointRadius: 3,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: '#0A0A0A',
+                    pointHoverBorderColor: '#fff',
+                    pointHoverBorderWidth: 2,
                     borderWidth: 2,
                     borderDash: [5, 5]
                 }
@@ -298,81 +323,382 @@ function initChart(range = 'daily') {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
             plugins: {
-                legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 10, font: { size: 10 } } }
+                legend: {
+                    display: true, position: 'top', align: 'end',
+                    labels: { boxWidth: 10, boxHeight: 10, font: { size: 11, family: 'Inter' }, color: '#5C5650', usePointStyle: true, pointStyle: 'rectRounded' }
+                },
+                tooltip: {
+                    backgroundColor: '#0A0A0A', padding: 10, cornerRadius: 8,
+                    titleFont: { size: 11, family: 'Inter', weight: '600' },
+                    bodyFont: { size: 12, family: 'JetBrains Mono' },
+                    displayColors: false
+                }
             },
             scales: {
                 y: { display: false },
-                x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+                x: { grid: { display: false }, ticks: { font: { size: 10, family: 'Inter' }, color: '#8E867B' } }
             }
         }
     });
 }
 
-function initIoTAnalytics() {
-    const grid = document.getElementById('regionHealthGrid');
-    if (!grid) return;
+// --- Overview helpers ---
+function renderOverviewOperators() {
+    const el = document.getElementById('overviewOperators');
+    if (!el) return;
+    const ops = Object.keys(companyData)
+        .filter(k => k !== 'national')
+        .map(k => {
+            const d = companyData[k];
+            const liters = companyTotalLiters(k);
+            const revenue = d.pms * PMS_PRICE_PER_L + d.ago * 1000 * AGO_PRICE_PER_L;
+            return { key: k, name: d.name, logo: d.logo, liters, revenue };
+        })
+        .sort((a, b) => b.liters - a.liters);
 
-    grid.innerHTML = regionHealth.map(r => `
-        <div class="metric-card reveal active" style="padding: 1.25rem; position: relative; border-left: 4px solid ${r.color};">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-dark);">${r.name}</div>
-                <div class="badge" style="font-size: 0.6rem; padding: 2px 8px; border-radius: 4px; background: #f8fafc; border: 1px solid #eee; color: ${r.color}; font-weight: 800;">${r.status.toUpperCase()}</div>
+    const max = ops[0] ? ops[0].liters : 1;
+
+    el.innerHTML = ops.map((o, i) => `
+        <button class="overview-op-row" onclick="selectCompany('${o.key}'); renderPage('revenue');">
+            <div class="overview-op-rank">${String(i + 1).padStart(2, '0')}</div>
+            <img src="${o.logo}" class="overview-op-logo" alt="${o.name}">
+            <div class="overview-op-main">
+                <div class="overview-op-name">${o.name}</div>
+                <div class="overview-op-bar"><div class="overview-op-bar-fill" style="width: ${Math.round((o.liters / max) * 100)}%;"></div></div>
             </div>
-            <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 1rem;">
-                <span style="font-weight: 700; color: var(--text-dark);">${r.nodes.toLocaleString()}</span> Nodes online
+            <div class="overview-op-figures">
+                <div class="overview-op-vol">${fmtLiters(o.liters)}</div>
+                <div class="overview-op-rev mono">${fmtNaira(o.revenue)}</div>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="font-family: var(--mono); font-weight: 700; font-size: 0.85rem; color: var(--text-dark);">${r.uptime}% <span style="font-size: 0.65rem; color: var(--text-muted); font-weight: 400;">Uptime</span></div>
-                <div style="width: 60px; height: 4px; background: #f1f5f9; border-radius: 2px; overflow: hidden;">
-                    <div style="width: ${r.uptime}%; height: 100%; background: ${r.color};"></div>
+        </button>
+    `).join('');
+}
+
+function renderOverviewProductMix() {
+    const el = document.getElementById('overviewProductMix');
+    if (!el) return;
+    const totals = Object.keys(companyData).filter(k => k !== 'national').reduce((acc, k) => {
+        acc.pms += companyData[k].pms;
+        acc.ago += companyData[k].ago * 1000;
+        return acc;
+    }, { pms: 0, ago: 0 });
+
+    const total = totals.pms + totals.ago;
+    const pmsPct = total ? (totals.pms / total) * 100 : 0;
+    const agoPct = total ? (totals.ago / total) * 100 : 0;
+    const pmsRev = totals.pms * PMS_PRICE_PER_L;
+    const agoRev = totals.ago * AGO_PRICE_PER_L;
+
+    el.innerHTML = `
+        <div class="overview-mix-bar">
+            <div class="overview-mix-seg overview-mix-pms" style="flex: ${pmsPct};" title="PMS"></div>
+            <div class="overview-mix-seg overview-mix-ago" style="flex: ${agoPct};" title="AGO"></div>
+        </div>
+        <div class="overview-mix-rows">
+            <div class="overview-mix-row">
+                <span class="overview-mix-dot pms"></span>
+                <div class="overview-mix-label">PMS · Premium Motor Spirit</div>
+                <div class="overview-mix-figures">
+                    <div class="overview-mix-vol">${fmtLiters(totals.pms)}</div>
+                    <div class="overview-mix-rev mono">${fmtNaira(pmsRev)}</div>
                 </div>
+                <div class="overview-mix-pct">${pmsPct.toFixed(1)}%</div>
+            </div>
+            <div class="overview-mix-row">
+                <span class="overview-mix-dot ago"></span>
+                <div class="overview-mix-label">AGO · Automotive Gas Oil</div>
+                <div class="overview-mix-figures">
+                    <div class="overview-mix-vol">${fmtLiters(totals.ago)}</div>
+                    <div class="overview-mix-rev mono">${fmtNaira(agoRev)}</div>
+                </div>
+                <div class="overview-mix-pct">${agoPct.toFixed(1)}%</div>
+            </div>
+        </div>`;
+}
+
+function renderOverviewActivity() {
+    const el = document.getElementById('overviewActivity');
+    if (!el) return;
+    const products = ['PMS', 'AGO'];
+    const items = [];
+    for (let i = 0; i < 6; i++) {
+        const n = iotNodes[Math.floor(Math.random() * iotNodes.length)];
+        const c = companyData[n.company];
+        const product = products[Math.floor(Math.random() * products.length)];
+        const liters = Math.floor(Math.random() * 9000 + 500);
+        const rate = product === 'PMS' ? PMS_PRICE_PER_L : AGO_PRICE_PER_L;
+        const minsAgo = i * 4 + Math.floor(Math.random() * 3);
+        items.push({ company: (c && c.name) || 'Unknown', node: n.label, id: n.id, product, liters, revenue: liters * rate, when: minsAgo });
+    }
+    el.innerHTML = items.map(it => `
+        <div class="overview-act-row">
+            <div class="overview-act-icon ${it.product.toLowerCase()}"><i class="fas fa-${it.product === 'PMS' ? 'gas-pump' : 'truck'}"></i></div>
+            <div class="overview-act-main">
+                <div class="overview-act-title">${it.company} · <span class="overview-act-product">${it.product}</span> · ${fmtLiters(it.liters)}</div>
+                <div class="overview-act-meta"><span class="mono">${it.id}</span> · ${it.node}</div>
+            </div>
+            <div class="overview-act-side">
+                <div class="overview-act-rev mono">${fmtNaira(it.revenue)}</div>
+                <div class="overview-act-time">${it.when === 0 ? 'just now' : it.when + 'm ago'}</div>
             </div>
         </div>
     `).join('');
 }
 
-function initSettlementLedger() {
-    const tbody = document.getElementById('ledgerTableBody');
-    if (!tbody) return;
+function selectCompany(key) {
+    if (!companyData[key]) return;
+    currentKey = key;
+    currentCompany = companyData[key].name;
+    saveState();
+}
 
-    // Generate Ledger from all companies
-    let rows = [];
-    Object.keys(companyData).forEach(key => {
-        if (key === 'national') return;
-        const d = companyData[key];
-        d.remissions.forEach(rem => {
-            rows.push({
-                ref: rem.txid,
-                entity: d.name,
-                logo: d.logo,
-                type: rem.type,
-                amount: rem.amount,
-                date: rem.date,
-                status: rem.status
-            });
+let iotStatusChart = null;
+let iotTelemetryTimer = null;
+
+const TYPE_META = {
+    pump:     { icon: 'fa-gas-pump',   label: 'Pump stations' },
+    truck:    { icon: 'fa-truck',      label: 'Fleet trucks' },
+    refinery: { icon: 'fa-industry',   label: 'Refineries' },
+    well:     { icon: 'fa-oil-well',   label: 'Extraction wells' }
+};
+
+function initIoTAnalytics() {
+    if (iotTelemetryTimer) { clearInterval(iotTelemetryTimer); iotTelemetryTimer = null; }
+    renderIotMetrics();
+    renderIotTypeBreakdown();
+    renderIotStatusDonut();
+    renderIotAlerts();
+    renderIotTelemetry();
+    renderIotRegions('all');
+    initIotRegionFilters();
+    initIotTimestamp();
+}
+
+function initIotTimestamp() {
+    const el = document.getElementById('iotTimestamp');
+    if (!el) return;
+    const tick = () => { el.textContent = new Date().toLocaleTimeString('en-NG', { hour12: false }); };
+    tick();
+    setInterval(tick, 1000);
+}
+
+function renderIotMetrics() {
+    const grid = document.getElementById('iotMetricsGrid');
+    if (!grid) return;
+    const totalRegionNodes = regionHealth.reduce((s, r) => s + r.nodes, 0);
+    const avgUptime = (regionHealth.reduce((s, r) => s + r.uptime, 0) / regionHealth.length).toFixed(2);
+    const alertZones = regionHealth.filter(r => r.status !== 'Optimal').length;
+    const alertNodes = iotNodes.filter(n => n.status === 'Alert').length;
+
+    grid.innerHTML = `
+        <div class="metric-card">
+            <div class="metric-label">Total Nodes Deployed</div>
+            <div class="metric-value">12,402</div>
+            <div class="metric-trend up"><i class="fas fa-arrow-up"></i> 64 added this week</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Currently Online</div>
+            <div class="metric-value" style="color: var(--green);">${totalRegionNodes.toLocaleString()}</div>
+            <div class="metric-trend up" style="color: var(--green);"><i class="fas fa-check-circle"></i> ${avgUptime}% avg uptime</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Active Alerts</div>
+            <div class="metric-value" style="color: var(--amber);">${(alertNodes + 32).toString()}</div>
+            <div class="metric-trend" style="color: var(--red);"><i class="fas fa-triangle-exclamation"></i> Across ${alertZones} zone${alertZones === 1 ? '' : 's'}</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Avg Data Latency</div>
+            <div class="metric-value">1.2s</div>
+            <div class="metric-trend" style="color: var(--text-muted);"><i class="fas fa-signal"></i> Within SLA</div>
+        </div>
+    `;
+}
+
+function renderIotTypeBreakdown() {
+    const el = document.getElementById('iotTypeBreakdown');
+    if (!el) return;
+
+    // Real deployed counts are much larger than the 8-node sample — scale visible counts
+    const scale = { pump: 1180, truck: 96, refinery: 6, well: 215 };
+    const counts = {};
+    Object.keys(TYPE_META).forEach(t => { counts[t] = (iotNodes.filter(n => n.type === t).length) * scale[t]; });
+    const max = Math.max(...Object.values(counts));
+
+    el.innerHTML = Object.keys(TYPE_META).map(t => {
+        const meta = TYPE_META[t];
+        const count = counts[t];
+        const pct = max > 0 ? Math.round((count / max) * 100) : 0;
+        return `
+            <div class="iot-type-row">
+                <div class="iot-type-icon"><i class="fas ${meta.icon}"></i></div>
+                <div class="iot-type-main">
+                    <div class="iot-type-row-head">
+                        <span class="iot-type-label">${meta.label}</span>
+                        <span class="iot-type-count">${count.toLocaleString()}</span>
+                    </div>
+                    <div class="iot-type-bar"><div class="iot-type-bar-fill" style="width:${pct}%;"></div></div>
+                </div>
+            </div>`;
+    }).join('');
+}
+
+function renderIotStatusDonut() {
+    const canvas = document.getElementById('iotStatusDonut');
+    if (!canvas || typeof Chart === 'undefined') return;
+    if (iotStatusChart) iotStatusChart.destroy();
+
+    const optimal = regionHealth.filter(r => r.status === 'Optimal').reduce((s, r) => s + r.nodes, 0);
+    const alert   = regionHealth.filter(r => r.status === 'Alert').reduce((s, r) => s + r.nodes, 0);
+    const critical = regionHealth.filter(r => r.status === 'Critical').reduce((s, r) => s + r.nodes, 0);
+
+    const segments = [
+        { label: 'Optimal',  value: optimal,  color: '#0E7A3C' },
+        { label: 'Alert',    value: alert,    color: '#f59e0b' },
+        { label: 'Critical', value: critical, color: '#ef4444' }
+    ];
+
+    iotStatusChart = new Chart(canvas, {
+        type: 'doughnut',
+        data: {
+            labels: segments.map(s => s.label),
+            datasets: [{
+                data: segments.map(s => s.value),
+                backgroundColor: segments.map(s => s.color),
+                borderColor: '#fff',
+                borderWidth: 3,
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            cutout: '68%',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { padding: 10, displayColors: false } }
+        }
+    });
+
+    const total = segments.reduce((s, x) => s + x.value, 0);
+    const legend = document.getElementById('iotStatusLegend');
+    if (legend) {
+        legend.innerHTML = segments.map(s => `
+            <div class="iot-legend-row">
+                <span class="iot-legend-dot" style="background:${s.color};"></span>
+                <span class="iot-legend-label">${s.label}</span>
+                <span class="iot-legend-value">${s.value.toLocaleString()} <em>(${total ? Math.round((s.value/total)*100) : 0}%)</em></span>
+            </div>
+        `).join('');
+    }
+}
+
+function renderIotAlerts() {
+    const list = document.getElementById('iotAlertList');
+    const counter = document.getElementById('iotAlertCount');
+    if (!list) return;
+
+    const alerts = [];
+    iotNodes.filter(n => n.status === 'Alert').forEach(n => {
+        const c = companyData[n.company];
+        alerts.push({ kind: 'node', name: n.label, meta: `${n.id} · ${(c && c.name) || 'Unknown operator'}`, severity: 'high' });
+    });
+    regionHealth.filter(r => r.status !== 'Optimal').forEach(r => {
+        alerts.push({
+            kind: 'region',
+            name: r.name,
+            meta: `${r.nodes.toLocaleString()} nodes · ${r.uptime}% uptime`,
+            severity: r.status === 'Critical' ? 'critical' : 'high'
         });
     });
 
-    tbody.innerHTML = rows.map(r => `
-        <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.2s;" onmouseenter="this.style.background='#fcfdfe'" onmouseleave="this.style.background='transparent'">
-            <td style="padding: 1.25rem 1.5rem; font-family: var(--mono); color: var(--blue); font-weight: 600; font-size: 0.8rem;">${r.ref}</td>
-            <td style="padding: 1rem 0;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="${r.logo}" style="width: 24px; height: 24px; border-radius: 4px; object-fit: contain;">
-                    <span style="font-weight: 700; color: var(--text-dark);">${r.entity}</span>
-                </div>
-            </td>
-            <td><span soft-tag style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; color: var(--text-secondary);">${r.type}</span></td>
-            <td style="font-family: var(--mono); font-weight: 800; color: var(--text-dark); font-size: 0.95rem;">₦${r.amount}${r.amount > 100 ? 'M' : 'B'}</td>
-            <td><span class="badge badge-green" style="font-size: 0.65rem; padding: 4px 10px; font-weight: 700;"><i class="fas fa-check-circle"></i> ${r.status.toUpperCase()}</span></td>
-            <td style="padding-right: 1.5rem; color: var(--text-muted); font-size: 0.8rem; text-align: right; font-weight: 500;">${r.date}</td>
-        </tr>
+    if (counter) counter.innerHTML = `<i class="fas fa-triangle-exclamation"></i> ${alerts.length}`;
+
+    if (alerts.length === 0) {
+        list.innerHTML = `<div class="iot-empty"><i class="fas fa-circle-check"></i> All zones reporting nominal.</div>`;
+        return;
+    }
+
+    list.innerHTML = alerts.map(a => `
+        <div class="iot-alert-row sev-${a.severity}">
+            <div class="iot-alert-icon"><i class="fas ${a.kind === 'region' ? 'fa-map-location-dot' : 'fa-microchip'}"></i></div>
+            <div class="iot-alert-main">
+                <div class="iot-alert-name">${a.name}</div>
+                <div class="iot-alert-meta">${a.meta}</div>
+            </div>
+            <span class="iot-alert-sev">${a.severity === 'critical' ? 'CRITICAL' : 'ALERT'}</span>
+        </div>
     `).join('');
 }
 
+function renderIotTelemetry() {
+    const feed = document.getElementById('iotTelemetryFeed');
+    if (!feed) return;
+
+    const pushPacket = () => {
+        const n = iotNodes[Math.floor(Math.random() * iotNodes.length)];
+        const c = companyData[n.company];
+        const variants = [
+            { msg: 'Flow meter packet received', metric: `${(Math.random()*450+50).toFixed(1)} L/min` },
+            { msg: 'Telemetry heartbeat OK',     metric: `${(Math.random()*0.8+0.4).toFixed(2)}s rtt` },
+            { msg: 'Tank level sample',          metric: `${(Math.random()*95+5).toFixed(1)}% full` },
+            { msg: 'Pressure reading',           metric: `${(Math.random()*2+0.8).toFixed(2)} bar` }
+        ];
+        const v = variants[Math.floor(Math.random() * variants.length)];
+        const time = new Date().toLocaleTimeString('en-NG', { hour12: false });
+        const row = document.createElement('div');
+        row.className = 'iot-tel-row';
+        row.innerHTML = `
+            <span class="iot-tel-time mono">${time}</span>
+            <span class="iot-tel-id mono">${n.id}</span>
+            <span class="iot-tel-msg">${v.msg} <em>· ${(c && c.name) || ''}</em></span>
+            <span class="iot-tel-metric mono">${v.metric}</span>
+        `;
+        feed.prepend(row);
+        while (feed.children.length > 12) feed.removeChild(feed.lastChild);
+    };
+
+    feed.innerHTML = '';
+    for (let i = 0; i < 6; i++) pushPacket();
+    iotTelemetryTimer = setInterval(pushPacket, 2200);
+}
+
+function renderIotRegions(filter) {
+    const grid = document.getElementById('regionHealthGrid');
+    if (!grid) return;
+    const items = (filter && filter !== 'all') ? regionHealth.filter(r => r.status === filter) : regionHealth;
+
+    if (items.length === 0) {
+        grid.innerHTML = `<div class="iot-empty" style="grid-column: 1 / -1;">No zones match this filter.</div>`;
+        return;
+    }
+
+    grid.innerHTML = items.map(r => `
+        <div class="iot-region-card status-${r.status.toLowerCase()}">
+            <div class="iot-region-head">
+                <div class="iot-region-name">${r.name}</div>
+                <span class="iot-region-badge">${r.status}</span>
+            </div>
+            <div class="iot-region-nodes"><strong>${r.nodes.toLocaleString()}</strong> nodes online</div>
+            <div class="iot-region-foot">
+                <span class="iot-region-uptime mono">${r.uptime}%<em> uptime</em></span>
+                <div class="iot-region-bar"><div class="iot-region-bar-fill" style="width:${r.uptime}%;"></div></div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function initIotRegionFilters() {
+    document.querySelectorAll('.iot-region-filter').forEach(btn => {
+        btn.onclick = () => {
+            document.querySelectorAll('.iot-region-filter').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderIotRegions(btn.dataset.status);
+        };
+    });
+}
+
 function initTimestamp() { const el = document.getElementById('lastUpdated'); if (el) el.textContent = new Date().toLocaleTimeString(); }
-function fetchCbnRate() { const el = document.getElementById('fxRate'); if (el) el.textContent = `₦${globalFx.toLocaleString()}`; }
+// CBN FX widget removed — sidebar now shows verified volume directly in markup.
 function saveState() { localStorage.setItem('dp_page', currentPage); localStorage.setItem('dp_key', currentKey); }
 function loadState() { currentPage = localStorage.getItem('dp_page') || 'overview'; currentKey = localStorage.getItem('dp_key') || 'national'; }
 
@@ -393,31 +719,130 @@ function initPillTabs() {
     });
 }
 
+// --- Revenue helpers ---
+// PMS retail ≈ ₦665/L, AGO retail ≈ ₦1,180/L (FY 2026 reference figures used in this mock data set)
+const PMS_PRICE_PER_L = 665;
+const AGO_PRICE_PER_L = 1180;
+
+function fmtLiters(n) {
+    if (n >= 1_000_000) return (n / 1_000_000).toFixed(2) + 'M L';
+    if (n >= 1_000) return (n / 1_000).toFixed(1) + 'K L';
+    return Math.round(n).toLocaleString() + ' L';
+}
+
+function fmtNaira(n) {
+    if (n >= 1_000_000_000_000) return '₦' + (n / 1_000_000_000_000).toFixed(2) + 'T';
+    if (n >= 1_000_000_000) return '₦' + (n / 1_000_000_000).toFixed(2) + 'B';
+    if (n >= 1_000_000) return '₦' + (n / 1_000_000).toFixed(2) + 'M';
+    return '₦' + Math.round(n).toLocaleString();
+}
+
+function companyTotalLiters(key) {
+    const d = companyData[key];
+    if (!d) return 0;
+    // dataset stores AGO in equivalence units (not raw liters) — scale to litres for parity with PMS
+    return d.pms + d.ago * 1000;
+}
+
+function companyLocations(key) {
+    return iotNodes.filter(n => n.company === key);
+}
+
+function distributeAcrossLocations(key) {
+    // Spread company's PMS/AGO across its IoT locations using a stable hash on node id
+    const d = companyData[key];
+    const nodes = companyLocations(key);
+    if (!d || nodes.length === 0) return [];
+
+    const weights = nodes.map(n => {
+        const h = Array.from(n.id).reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+        return 0.6 + ((h % 80) / 100); // 0.60 – 1.39
+    });
+    const sumW = weights.reduce((a, b) => a + b, 0);
+
+    return nodes.map((n, i) => {
+        const share = weights[i] / sumW;
+        const pmsL = Math.round(d.pms * share);
+        const agoL = Math.round(d.ago * 1000 * share);
+        const revenue = pmsL * PMS_PRICE_PER_L + agoL * AGO_PRICE_PER_L;
+        return { node: n, pmsL, agoL, totalL: pmsL + agoL, revenue };
+    });
+}
+
 function initRevenuePortal() {
     const list = document.getElementById('revenueList');
     const search = document.getElementById('revenueSearch');
+    const metricsEl = document.getElementById('revenueTopMetrics');
     if (!list) return;
+
+    if (metricsEl) {
+        const companies = Object.keys(companyData).filter(k => k !== 'national');
+        const totalL = companies.reduce((sum, k) => sum + companyTotalLiters(k), 0);
+        const totalRev = companies.reduce((sum, k) => {
+            const d = companyData[k];
+            return sum + d.pms * PMS_PRICE_PER_L + d.ago * 1000 * AGO_PRICE_PER_L;
+        }, 0);
+        const totalLocations = companies.reduce((sum, k) => sum + companyLocations(k).length, 0);
+
+        metricsEl.innerHTML = `
+            <div class="metric-card">
+                <div class="metric-label">Volume Sold (FY 2026)</div>
+                <div class="metric-value">${fmtLiters(totalL)}</div>
+                <div class="metric-trend up"><i class="fas fa-arrow-up"></i> Across ${companies.length} operators</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Attributed Revenue</div>
+                <div class="metric-value">${fmtNaira(totalRev)}</div>
+                <div class="metric-trend up"><i class="fas fa-shield-check"></i> IoT verified</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Reporting IoT Locations</div>
+                <div class="metric-value">${totalLocations}</div>
+                <div class="metric-trend neutral"><i class="fas fa-microchip"></i> Streaming live</div>
+            </div>
+        `;
+    }
 
     function renderList(filter = '') {
         list.innerHTML = '';
         Object.keys(companyData).forEach(key => {
             if (key === 'national') return;
             const d = companyData[key];
-            if (d.name.toLowerCase().includes(filter.toLowerCase())) {
-                const item = document.createElement('div');
-                item.className = 'rev-item reveal active';
-                item.innerHTML = `
-                    <div class="rev-info">
-                        <img src="${d.logo}" class="rev-logo">
-                        <div><div style="font-weight:700;">${d.name}</div><span class="rev-tag">${key}</span></div>
+            if (!d.name.toLowerCase().includes(filter.toLowerCase())) return;
+
+            const liters = companyTotalLiters(key);
+            const locs = companyLocations(key);
+            const revenue = d.pms * PMS_PRICE_PER_L + d.ago * 1000 * AGO_PRICE_PER_L;
+            const locPreview = locs.slice(0, 3).map(n => n.label.split(' ')[0]).join(' · ') + (locs.length > 3 ? ` +${locs.length - 3}` : '');
+
+            const avgRate = liters > 0 ? Math.round(revenue / liters) : 0;
+
+            const item = document.createElement('div');
+            item.className = 'rev-item reveal active';
+            item.innerHTML = `
+                <div class="rev-info">
+                    <img src="${d.logo}" class="rev-logo">
+                    <div>
+                        <div style="font-weight:700;">${d.name}</div>
+                        <div class="rev-loc-preview"><i class="fas fa-location-dot"></i> ${locs.length} location${locs.length === 1 ? '' : 's'} · ${locPreview || 'No active nodes'}</div>
                     </div>
-                    <div style="text-align:right;">
-                        <div style="font-family:var(--mono); font-weight:700;">₦${d.revenue}B</div>
-                        <div style="font-size:0.7rem; color:var(--text-secondary);">Verified Revenue</div>
-                    </div>`;
-                item.onclick = () => showRevDetail(key);
-                list.appendChild(item);
-            }
+                </div>
+                <div class="rev-figures">
+                    <div class="rev-fig">
+                        <div class="rev-fig-label">Volume</div>
+                        <div class="rev-fig-value">${fmtLiters(liters)}</div>
+                    </div>
+                    <div class="rev-fig">
+                        <div class="rev-fig-label">Avg ₦/L</div>
+                        <div class="rev-fig-value mono">₦${avgRate.toLocaleString()}</div>
+                    </div>
+                    <div class="rev-fig">
+                        <div class="rev-fig-label">Revenue</div>
+                        <div class="rev-fig-value mono">${fmtNaira(revenue)}</div>
+                    </div>
+                </div>`;
+            item.onclick = () => showRevDetail(key);
+            list.appendChild(item);
         });
     }
 
@@ -425,153 +850,111 @@ function initRevenuePortal() {
     renderList();
 }
 
-function showRevDetail(key, monthFilter = 'All', yearFilter = 'All') {
+function showRevDetail(key) {
     const d = companyData[key];
     const panel = document.getElementById('revDetailPanel');
     const overlay = document.getElementById('revDetailOverlay');
     const content = document.getElementById('revDetailContent');
-    if (!panel) return;
+    if (!panel || !d) return;
 
-    const vat = (d.revenue * 0.075).toFixed(2);
-    const edu = (d.revenue * 0.02).toFixed(2);
+    const breakdown = distributeAcrossLocations(key);
+    const totalL = breakdown.reduce((s, b) => s + b.totalL, 0);
+    const totalRev = breakdown.reduce((s, b) => s + b.revenue, 0);
+    const totalPmsL = breakdown.reduce((s, b) => s + b.pmsL, 0);
+    const totalAgoL = breakdown.reduce((s, b) => s + b.agoL, 0);
 
-    // Composite Filtering logic
-    const filteredRemissions = d.remissions.filter(r => {
-        const date = new Date(r.date);
-        const m = date.toLocaleString('default', { month: 'long' });
-        const y = date.getFullYear().toString();
-        
-        const mMatch = (monthFilter === 'All' || m === monthFilter);
-        const yMatch = (yearFilter === 'All' || y === yearFilter);
-        return mMatch && yMatch;
-    });
+    const avgRate = totalL > 0 ? Math.round(totalRev / totalL) : 0;
 
-    const years = ['All', ...new Set(d.remissions.map(r => new Date(r.date).getFullYear().toString()))];
-    const months = ['All', ...new Set(d.remissions.map(r => new Date(r.date).toLocaleString('default', { month: 'long' })))];
+    const locationsHtml = breakdown.length === 0
+        ? `<tr><td colspan="6" style="padding:24px; text-align:center; color:var(--text-secondary);">No IoT locations attributed to this operator yet.</td></tr>`
+        : breakdown.map(b => {
+            const locAvg = b.totalL > 0 ? Math.round(b.revenue / b.totalL) : 0;
+            return `
+            <tr class="loc-row">
+                <td style="padding:14px 16px;">
+                    <div style="font-weight:700; color:var(--ink);">${b.node.label}</div>
+                    <div style="font-family:var(--mono); font-size:0.7rem; color:var(--text-muted); margin-top:2px;">${b.node.id}</div>
+                </td>
+                <td><span class="loc-type-tag">${b.node.type}</span></td>
+                <td style="font-family:var(--mono); font-weight:600;">${fmtLiters(b.pmsL)}</td>
+                <td style="font-family:var(--mono); font-weight:600;">${fmtLiters(b.agoL)}</td>
+                <td style="font-family:var(--mono); font-weight:600;">₦${locAvg.toLocaleString()}</td>
+                <td style="text-align:right; padding-right:16px; font-family:var(--mono); font-weight:700; color:var(--ink);">${fmtNaira(b.revenue)}</td>
+            </tr>`;
+        }).join('');
 
-    let remissionsHtml = '';
-    if (d.remissions && d.remissions.length > 0) {
-        remissionsHtml = `
-            <div style="margin-top:2.5rem;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;" class="no-print">
-                    <h4 style="font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-secondary); display:flex; align-items:center; gap:8px; margin:0;">
-                        <i class="fas fa-history"></i> Registry of Remittances (NEDB Ledger)
-                    </h4>
-                    <div style="display:flex; gap:8px;">
-                        <select class="ledger-filter-select" onchange="showRevDetail('${key}', '${monthFilter}', this.value)">
-                            ${years.map(y => `<option value="${y}" ${yearFilter === y ? 'selected' : ''}>Year: ${y}</option>`).join('')}
-                        </select>
-                        <select class="ledger-filter-select" onchange="showRevDetail('${key}', this.value, '${yearFilter}')">
-                            ${months.map(m => `<option value="${m}" ${monthFilter === m ? 'selected' : ''}>Month: ${m}</option>`).join('')}
-                        </select>
-                    </div>
-                </div>
-                <div class="table-responsive" style="background:rgba(0,0,0,0.02); border-radius:12px; border:1px solid #eee;">
-                    <table style="width:100%; min-width: 400px; border-collapse:collapse; font-size:0.8rem;">
-                        <thead>
-                            <tr style="text-align:left; background:rgba(0,0,0,0.02); color:var(--text-secondary); border-bottom:1px solid #eee;">
-                                <th style="padding:12px;">Date</th>
-                                <th>Transaction ID</th>
-                                <th>Category</th>
-                                <th style="text-align:right; padding-right:12px;">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${filteredRemissions.map(r => `
-                                <tr style="border-bottom:1px solid rgba(0,0,0,0.03);">
-                                    <td style="padding:12px;">${r.date}</td>
-                                    <td style="font-family:var(--mono);">${r.txid}</td>
-                                    <td><span style="font-size:0.65rem; padding:2px 6px; background:#f1f5f9; border-radius:4px;">${r.type}</span></td>
-                                    <td style="text-align:right; padding-right:12px; font-weight:700;">₦${r.amount}${r.amount > 100 ? 'M' : 'B'}</td>
-                                </tr>
-                            `).join('')}
-                            ${filteredRemissions.length === 0 ? '<tr><td colspan="4" style="padding:20px; text-align:center; color:var(--text-secondary);">No records found for the selected period.</td></tr>' : ''}
-                        </tbody>
-                    </table>
-                </div>
-            </div>`;
-    }
+    const today = new Date().toLocaleDateString('en-NG', { year: 'numeric', month: 'long', day: 'numeric' });
+    const certNo = 'NEDB-' + key.toUpperCase() + '-' + Date.now().toString().slice(-6);
 
     content.innerHTML = `
-        <div class="audit-certificate-wrap" style="padding: 1rem; position: relative; background:#fff;">
-            <!-- Official Header -->
-            <!-- Official Header - Grid Based for Mathematical Centering -->
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); align-items:center; gap:20px; margin-bottom:2.5rem; padding-bottom:1.5rem; border-bottom:3px solid var(--text-dark);">
-                <div style="display:flex; justify-content:center;">
-                    <img src="${d.logo}" style="height:55px; width:auto; object-fit:contain;">
+        <div class="rev-detail-inner" id="revDetailPrintable">
+            <header class="rev-detail-head">
+                <img src="${d.logo}" class="rev-detail-logo" alt="${d.name}">
+                <div style="flex:1; min-width:0;">
+                    <h2 class="rev-detail-name">${d.name}</h2>
+                    <p class="rev-detail-sub">Sales attribution by IoT location · FY 2026</p>
                 </div>
-                <div style="text-align:center;">
-                    <img src="../assets/fgn_logo_small.png" style="height:45px; margin-bottom:8px; display:inline-block;">
-                    <h1 style="font-size:0.85rem; margin:0; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-dark); font-weight:800;">Energy Commission of Nigeria</h1>
-                    <p style="font-size:0.6rem; margin:0; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">National Energy Data Bank (NEDB) Registry</p>
+                <div class="rev-detail-meta">
+                    <div class="rev-meta-label">Ref</div>
+                    <div class="rev-meta-value">${certNo}</div>
+                    <div class="rev-meta-label" style="margin-top:6px;">Generated</div>
+                    <div class="rev-meta-value">${today}</div>
                 </div>
-                <div style="text-align:center;">
-                    <div style="font-size:0.55rem; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px; font-weight:600;">Certificate No.</div>
-                    <div style="font-family:var(--mono); font-weight:800; font-size:0.75rem; color:var(--text-dark);">CERT-${Math.floor(Math.random()*900000)+100000}</div>
+            </header>
+
+            <div class="rev-rates-bar">
+                <div class="rev-rate"><span>PMS rate</span><strong>₦${PMS_PRICE_PER_L.toLocaleString()} / L</strong></div>
+                <div class="rev-rate"><span>AGO rate</span><strong>₦${AGO_PRICE_PER_L.toLocaleString()} / L</strong></div>
+                <div class="rev-rate"><span>Blended avg.</span><strong>₦${avgRate.toLocaleString()} / L</strong></div>
+            </div>
+
+            <div class="rev-detail-stats">
+                <div class="rev-stat">
+                    <div class="rev-stat-label">Total Volume Sold</div>
+                    <div class="rev-stat-value">${fmtLiters(totalL)}</div>
+                    <div class="rev-stat-sub">PMS ${fmtLiters(totalPmsL)} · AGO ${fmtLiters(totalAgoL)}</div>
+                </div>
+                <div class="rev-stat">
+                    <div class="rev-stat-label">Attributed Revenue</div>
+                    <div class="rev-stat-value">${fmtNaira(totalRev)}</div>
+                    <div class="rev-stat-sub">Derived from verified pump telemetry</div>
+                </div>
+                <div class="rev-stat">
+                    <div class="rev-stat-label">IoT Locations</div>
+                    <div class="rev-stat-value">${breakdown.length}</div>
+                    <div class="rev-stat-sub">Reporting nodes</div>
                 </div>
             </div>
 
-            <div style="text-align:center; margin-bottom:2rem;">
-                <h2 style="font-size:1.5rem; margin:0; letter-spacing:-0.02em; color:var(--text-dark);">${d.name}</h2>
-                <p style="color:#64748b; margin:0; font-weight:500; text-transform:uppercase; font-size:0.75rem; letter-spacing:0.1em;">Fiscal Performance Verification Certificate — FY 2026</p>
-            </div>
-            
-            <div class="metrics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important; gap:1.5rem; margin-bottom:2rem;">
-                <div class="metric-card" style="background:#f8fafc; border:1px solid #e2e8f0; padding:1.1rem;">
-                    <div class="metric-label" style="font-size:0.65rem;">Total Validated Revenue</div>
-                    <div class="metric-value" style="color:var(--text-dark); font-size:1.4rem;">₦${d.revenue}B</div>
+            <div class="rev-detail-section">
+                <div class="rev-section-head">
+                    <h3>Per-location breakdown</h3>
+                    <span class="rev-section-tag"><i class="fas fa-microchip"></i> IoT-verified</span>
                 </div>
-                <div class="metric-card" style="background:#f8fafc; border:1px solid #e2e8f0; padding:1.1rem;">
-                    <div class="metric-label" style="font-size:0.65rem;">Total Tax Remissions</div>
-                    <div class="metric-value" style="color:var(--green); font-size:1.4rem;">₦${(parseFloat(vat)+parseFloat(edu)).toFixed(2)}B</div>
+                <div class="table-responsive rev-loc-table-wrap">
+                    <table class="rev-loc-table">
+                        <thead>
+                            <tr>
+                                <th>IoT Location</th>
+                                <th>Type</th>
+                                <th>PMS (litres)</th>
+                                <th>AGO (litres)</th>
+                                <th>Amount / L</th>
+                                <th style="text-align:right; padding-right:16px;">Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody>${locationsHtml}</tbody>
+                    </table>
                 </div>
             </div>
 
-            <table style="width:100%; border-collapse:collapse; margin-top:1rem; font-size:0.9rem;">
-                <thead>
-                    <tr style="text-align:left; border-bottom:2px solid var(--text-dark); color:var(--text-dark); text-transform:uppercase; font-size:0.7rem; letter-spacing:0.1em;">
-                        <th style="padding:12px 10px;">Audit Component</th>
-                        <th>Value (₦B)</th>
-                        <th style="text-align:right; padding-right:10px;">Verification</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="border-bottom:1px solid #eee;">
-                        <td style="padding:15px 10px; font-weight:600;">Value Added Tax (7.5%)</td>
-                        <td style="font-family:var(--mono); font-weight:700;">₦${vat}B</td>
-                        <td style="text-align:right; color:#059669; font-weight:700; padding-right:10px;"><i class="fas fa-check-circle"></i> REMITTED</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #eee;">
-                        <td style="padding:15px 10px; font-weight:600;">Education Tax (2%)</td>
-                        <td style="font-family:var(--mono); font-weight:700;">₦${edu}B</td>
-                        <td style="text-align:right; color:#059669; font-weight:700; padding-right:10px;"><i class="fas fa-check-circle"></i> REMITTED</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            ${remissionsHtml}
-
-            <div style="margin-top:4rem; padding-top:2rem; border-top:1px solid #eee; display:flex; justify-content:space-between; align-items:flex-end;">
-                <div style="text-align:center;">
-                   <div style="height:40px; border-bottom:1px solid var(--text-dark); width:180px; margin:0 auto 5px;"></div>
-                   <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase;">Director of Finance (NEDB)</div>
-                </div>
-                <div style="text-align:center; opacity:0.15; position:absolute; left:50%; transform:translateX(-50%); bottom:100px;">
-                    <i class="fas fa-certificate" style="font-size:12rem; color:var(--green);"></i>
-                </div>
-                <div style="text-align:center;">
-                   <div style="height:40px; border-bottom:1px solid var(--text-dark); width:180px; margin:0 auto 5px;"></div>
-                   <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase;">Audit Commissioner</div>
-                </div>
-            </div>
-            
-            <div style="margin-top:3rem; text-align:center; font-size:0.6rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; line-height:1.6;">
-                This document serves as an official proof of fiscal audit within the National Energy Data Bank framework.<br>
-                Verification Code: ${btoa(key + Date.now()).substring(0, 12)}
-            </div>
+            <footer class="rev-detail-footer">
+                <div>National Energy Data Bank · Revenue Portal</div>
+                <div>This document is an IoT-verified extract of downstream sales attribution.</div>
+            </footer>
         </div>
-        <div style="margin-top:2rem; text-align:right;" class="no-print">
-                     <button class="topbar-action" onclick="downloadAudit('${d.name.replace(/'/g, "\\'")}')"><i class="fas fa-file-pdf"></i> Download Audit Certificate</button>
+        <div class="rev-detail-actions no-print">
+            <button class="topbar-action" id="revDetailDownload"><i class="fas fa-file-arrow-down"></i> Download PDF</button>
         </div>`;
 
     panel.classList.add('active');
@@ -581,58 +964,113 @@ function showRevDetail(key, monthFilter = 'All', yearFilter = 'All') {
         panel.classList.remove('active');
         overlay.classList.remove('active');
     };
+
+    document.getElementById('revDetailDownload').onclick = () => downloadRevDetail(d.name);
 }
+
+function downloadRevDetail(companyName) {
+    const node = document.getElementById('revDetailPrintable');
+    if (!node) return;
+    const cleanName = companyName.replace(/[^a-z0-9]/gi, '_').toUpperCase();
+
+    // Collect existing stylesheets so the print window matches the dashboard look
+    const styles = Array.from(document.styleSheets).map(sheet => {
+        try {
+            const rules = Array.from(sheet.cssRules).map(r => r.cssText).join('\n');
+            return `<style>${rules}</style>`;
+        } catch {
+            return sheet.href ? `<link rel="stylesheet" href="${sheet.href}">` : '';
+        }
+    }).join('\n');
+
+    const win = window.open('', '_blank', 'width=920,height=760');
+    if (!win) return;
+    win.document.write(`<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>${cleanName}_Revenue_Attribution_FY2026</title>
+    ${styles}
+    <style>
+        body { background: #fff; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding: 32px; color: #0a0a0a; }
+        .rev-detail-inner { padding: 0 !important; }
+        .rev-detail-actions, .no-print { display: none !important; }
+        @media print {
+            body { margin: 0; padding: 18mm; }
+            .rev-detail-stats { break-inside: avoid; }
+            .rev-loc-table-wrap { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    ${node.outerHTML}
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => { window.print(); window.close(); }, 400);
+        });
+    <\/script>
+</body>
+</html>`);
+    win.document.close();
+}
+
+let nodemapTypeFilter = 'all';
+let nodemapSearch = '';
 
 function initMap() {
     const mapContainer = document.getElementById('iotMap');
     if (!mapContainer) return;
 
-    // Initialize MapLibre in Top-Down 2D Mode (Light Theme)
     mapInstance = new maplibregl.Map({
         container: 'iotMap',
         style: 'https://tiles.basemaps.cartocdn.com/gl/positron-gl-style/style.json',
         center: [8.6753, 9.0820],
-        zoom: 6.0,
+        zoom: 5.7,
         pitch: 0,
         bearing: 0,
         antialias: true
     });
 
+    mapInstance.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+
     mapInstance.on('load', () => {
         renderMapNodes();
-        setTimeout(() => mapInstance.resize(), 500);
+        renderNodemapList();
+        setTimeout(() => mapInstance.resize(), 300);
     });
 }
 
-function updateFilteredMap() {
-    renderMapNodes();
+function getFilteredNodes() {
+    const q = nodemapSearch.trim().toLowerCase();
+    return iotNodes.filter(node => {
+        const typeMatch = (nodemapTypeFilter === 'all' || node.type === nodemapTypeFilter);
+        if (!typeMatch) return false;
+        if (!q) return true;
+        return node.id.toLowerCase().includes(q)
+            || node.label.toLowerCase().includes(q)
+            || (companyData[node.company] && companyData[node.company].name.toLowerCase().includes(q));
+    });
 }
 
 function renderMapNodes() {
     if (!mapInstance) return;
 
-    // Clear existing markers
     mapMarkers.forEach(m => m.remove());
     mapMarkers = [];
 
-    // Get active filters
-    const activeFilters = Array.from(document.querySelectorAll('.map-filter:checked')).map(cb => cb.value);
-    
+    const filtered = getFilteredNodes();
     let activeTotal = 0;
     let alertTotal = 0;
-
-    const filtered = iotNodes.filter(node => activeFilters.includes(node.type));
 
     filtered.forEach(node => {
         const el = document.createElement('div');
         el.className = `marker ${node.type}`;
         const icon = { truck: 'fa-truck', pump: 'fa-gas-pump', refinery: 'fa-industry', well: 'fa-oil-well' }[node.type] || 'fa-microchip';
-        
         const isAlert = node.status === 'Alert';
         if (isAlert) alertTotal++; else activeTotal++;
 
         el.innerHTML = `
-            <div class="marker-pin-classic" style="color:${isAlert ? 'var(--red)' : 'var(--blue)'};">
+            <div class="marker-pin-classic" style="color:${isAlert ? 'var(--red)' : 'var(--ink)'};">
                 <i class="fas fa-map-marker-alt" style="font-size: 1.8rem;"></i>
                 <div class="marker-icon-overlay" style="color: #fff;">
                     <i class="fas ${icon}" style="font-size: 0.6rem;"></i>
@@ -640,86 +1078,96 @@ function renderMapNodes() {
             </div>
         `;
 
+        const company = companyData[node.company];
         const marker = new maplibregl.Marker(el)
             .setLngLat([node.lng, node.lat])
             .setPopup(new maplibregl.Popup({ offset: 25 })
                 .setHTML(`
-                    <div class="map-popup" style="color:#0f172a; padding:12px; min-width: 180px;">
-                        <div style="font-size:0.6rem; font-weight:800; color:${isAlert ? 'var(--red)' : 'var(--green)'}; text-transform:uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">${node.type} // STATUS: ${node.status.toUpperCase()}</div>
-                        <h3 style="font-size:1rem; margin:0 0 8px; font-weight: 700;">${node.label}</h3>
-                        <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 12px;">ID: ${node.id}</div>
-                        <button class="popup-btn" style="background:var(--ink-secondary); color:#fff; border:none; width:100%; padding:10px; border-radius:6px; font-size: 0.75rem; font-weight:700; cursor:pointer;" onclick="mapInstance.flyTo({center: [${node.lng}, ${node.lat}], zoom: 14})">Center View</button>
+                    <div class="map-popup" style="padding:14px; min-width: 220px;">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                            <span class="map-popup-tag ${isAlert ? 'alert' : 'ok'}">${node.type} · ${node.status}</span>
+                        </div>
+                        <h3 style="font-size:0.95rem; margin:0 0 4px; font-weight: 700; color: var(--ink);">${node.label}</h3>
+                        <div style="font-family: var(--mono); font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px;">${node.id}${company ? ' · ' + company.name : ''}</div>
+                        <button class="popup-btn" onclick="mapInstance.flyTo({center: [${node.lng}, ${node.lat}], zoom: 14, duration: 1200})">Centre view</button>
                     </div>
                 `))
             .addTo(mapInstance);
-            
         mapMarkers.push(marker);
     });
 
-    // Update Counter UI
+    const totalEl = document.getElementById('totalNodesCount');
     const activeEl = document.getElementById('activeNodesCount');
     const alertEl = document.getElementById('alertNodesCount');
+    if (totalEl) totalEl.textContent = filtered.length;
     if (activeEl) activeEl.textContent = activeTotal;
     if (alertEl) alertEl.textContent = alertTotal;
 }
 
-function downloadAudit(companyName) {
-    const element = document.querySelector('.audit-certificate-wrap');
-    if (!element) {
-        alert("Certificate container not found.");
+function renderNodemapList() {
+    const list = document.getElementById('nodemapList');
+    const counter = document.getElementById('nodemapVisibleCount');
+    if (!list) return;
+    const filtered = getFilteredNodes();
+    if (counter) counter.textContent = filtered.length;
+
+    if (filtered.length === 0) {
+        list.innerHTML = `<div class="iot-empty">No nodes match this filter.</div>`;
         return;
     }
 
-    // Snapshot the current HTML so images aren't re-fetched
-    const certHTML = element.outerHTML;
-    const cleanName = companyName.replace(/[^a-z0-9]/gi, '_').toUpperCase();
+    const iconMap = { truck: 'fa-truck', pump: 'fa-gas-pump', refinery: 'fa-industry', well: 'fa-oil-well' };
+    list.innerHTML = filtered.map(n => {
+        const c = companyData[n.company];
+        const isAlert = n.status === 'Alert';
+        return `
+            <button class="nodemap-row${isAlert ? ' is-alert' : ''}" data-lng="${n.lng}" data-lat="${n.lat}">
+                <div class="nodemap-row-icon"><i class="fas ${iconMap[n.type] || 'fa-microchip'}"></i></div>
+                <div class="nodemap-row-main">
+                    <div class="nodemap-row-name">${n.label}</div>
+                    <div class="nodemap-row-meta"><span class="mono">${n.id}</span>${c ? ' · ' + c.name : ''}</div>
+                </div>
+                <span class="nodemap-row-status ${isAlert ? 'alert' : 'ok'}">${n.status}</span>
+            </button>`;
+    }).join('');
 
-    // Collect all existing <style> and <link rel="stylesheet"> from the host page
-    const styles = Array.from(document.styleSheets).map(sheet => {
-        try {
-            const rules = Array.from(sheet.cssRules).map(r => r.cssText).join('\n');
-            return `<style>${rules}</style>`;
-        } catch {
-            // Cross-origin sheets can't be read — link them by href instead
-            return sheet.href ? `<link rel="stylesheet" href="${sheet.href}">` : '';
-        }
-    }).join('\n');
+    list.querySelectorAll('.nodemap-row').forEach(btn => {
+        btn.onclick = () => {
+            if (!mapInstance) return;
+            const lng = parseFloat(btn.dataset.lng);
+            const lat = parseFloat(btn.dataset.lat);
+            mapInstance.flyTo({ center: [lng, lat], zoom: 12.5, duration: 1200 });
+        };
+    });
+}
 
-    const printWin = window.open('', '_blank', 'width=900,height=700');
-    printWin.document.write(`<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>${cleanName}_NEDB_Audit_2026</title>
-    ${styles}
-    <style>
-        @media print {
-            body { margin: 0; padding: 0; }
-            .no-print { display: none !important; }
-        }
-        body { background: #fff; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif; }
-    </style>
-</head>
-<body>
-    ${certHTML}
-    <script>
-        // Wait for images to load before printing
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                window.print();
-                window.close();
-            }, 400);
-        });
-    <\/script>
-</body>
-</html>`);
-    printWin.document.close();
+function initNodemapControls() {
+    nodemapTypeFilter = 'all';
+    nodemapSearch = '';
+
+    document.querySelectorAll('.nodemap-filter').forEach(btn => {
+        btn.onclick = () => {
+            const f = btn.dataset.filter;
+            nodemapTypeFilter = f;
+            document.querySelectorAll('.nodemap-filter').forEach(b => b.classList.toggle('active', b === btn || (f === 'all')));
+            renderMapNodes();
+            renderNodemapList();
+        };
+    });
+
+    const search = document.getElementById('nodemapSearch');
+    if (search) {
+        search.oninput = (e) => {
+            nodemapSearch = e.target.value;
+            renderMapNodes();
+            renderNodemapList();
+        };
+    }
 }
 
 function showPageInfo(view) {
     const info = {
-        overview: "Executive summary of national petroleum throughput, showing fiscal settlement velocity and distribution health across all 36 states.",
-        settlements: "Central Bank of Nigeria (CBN) verification portal. Tracks the immediate transmission of product revenues into the Single Treasury Account.",
+        overview: "Executive summary of national petroleum throughput and distribution health across all 36 states.",
         iot: "Tactical engineering substrate monitoring real-time pressure, signal integrity, and location telemetry for 12,000+ national mesh nodes."
     };
     alert(`[NEDB INTELLIGENCE OVERVIEW]\n\n${info[view] || "Sector documentation is currently restricted to cleared operators."}`);

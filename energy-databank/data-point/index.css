@@ -263,7 +263,55 @@ h1 em, h2 em, h3 em, .display em {
 .reveal { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .reveal.active { opacity: 1; transform: translateY(0); }
 
-@media (max-width: 900px) {
-    .features-grid, .stats-banner { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
+@media (max-width: 1024px) {
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats-banner { grid-template-columns: repeat(3, 1fr); padding: 2rem; gap: 1rem; }
+    .stat-value { font-size: 2rem; }
+    .stat-value.mono { font-size: 1.7rem; }
+    .section-header h2 { font-size: 2.5rem; }
+}
+
+@media (max-width: 768px) {
+    .container { padding: 0 1.25rem; }
+    .top-nav { padding: 1rem 0; }
+    .nav-links {
+        gap: 1rem;
+    }
+    .nav-links .nav-link { display: none; }
+    .nav-links .btn { padding: 0.5rem 1rem !important; font-size: 0.8rem !important; }
+    .hero { padding: 4.5rem 0 3rem; }
+    .badge { margin-bottom: 1.25rem; font-size: 0.7rem; }
+    .display { font-size: clamp(2.1rem, 9vw, 3.5rem); margin-bottom: 1.1rem; }
+    .hero p { font-size: 1rem; margin-bottom: 1.8rem; }
+    .hero-cta { flex-direction: column; gap: 0.65rem; align-items: stretch; max-width: 280px; margin: 0 auto; }
+    .hero-cta .btn { justify-content: center; padding: 0.85rem 1.1rem; }
+    .stats-banner {
+        grid-template-columns: 1fr;
+        margin-top: 3rem;
+        padding: 1.5rem;
+        gap: 1.25rem;
+        border-radius: 18px;
+    }
+    .stat-item { padding-bottom: 1.25rem; border-bottom: 1px solid var(--db-border); }
+    .stat-item:last-child { padding-bottom: 0; border-bottom: none; }
+    .stat-value { font-size: 1.75rem; }
+    .stat-value.mono { font-size: 1.5rem; }
+    .features-section { padding: 3.5rem 0; }
+    .features-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .feature-card { padding: 1.75rem; }
+    .feature-card h3 { font-size: 1.3rem; margin-bottom: 0.75rem; }
+    .feature-card p { font-size: 0.9rem; }
+    .section-header { margin-bottom: 2.5rem; }
+    .section-header h2 { font-size: 2rem; }
+    .footer-bottom { flex-direction: column; text-align: center; gap: 14px; }
+    .footer-bottom .logo-wrapper { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+    .container { padding: 0 1rem; }
+    .brand { font-size: 1.05rem; gap: 0.55rem; }
+    .brand-logo { height: 26px; }
+    .display { font-size: clamp(1.85rem, 10vw, 2.6rem); letter-spacing: -0.025em; }
+    .hero { padding: 3rem 0 2.5rem; }
+    .feature-icon { width: 42px; height: 42px; font-size: 1.4rem; margin-bottom: 1.1rem; }
 }

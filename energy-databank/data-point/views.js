@@ -1,121 +1,166 @@
 const VIEWS = {
     overview: `
 <!-- Executive Header -->
-<div class="page-header reveal" style="margin-bottom: 2.5rem;">
-    <div style="flex: 1;">
+<div class="page-header reveal overview-head">
+    <div style="flex: 1; min-width: 0;">
         <div class="badge badge-green" style="margin-bottom: 1rem;">
-             <span class="live-dot"></span> SECURE NATIONAL NEXUS
+            <span class="live-dot" style="background: var(--green);"></span> SECURE NATIONAL NEXUS
         </div>
         <h2 class="page-title" id="dashTitle">
             National Downstream<br>
             <em>Intel Command Center.</em>
             <i class="fas fa-info-circle info-btn" title="Quick System Overview" onclick="showPageInfo('overview')"></i>
         </h2>
-        <p class="page-subtitle" id="dashSubtitle" style="max-width: 500px; margin-top: 0.75rem; color: #64748b;">
-            Unified analytical substrate for verified petroleum distribution, fiscal settlements, and IoT telemetry across the 36 states.
+        <p class="page-subtitle" id="dashSubtitle" style="max-width: 540px; margin-top: 0.75rem;">
+            Unified analytical substrate for verified petroleum distribution and IoT telemetry across the 36 states.
         </p>
     </div>
-    <div style="text-align: right; background: #fff; padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow-card);">
-        <div style="font-size: 0.65rem; font-weight: 700; color: var(--text-dark-secondary); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem;">
-            Network Heartbeat</div>
-        <div style="font-family: var(--mono); font-size: 1.1rem; color: var(--text-dark); font-weight: 700;" id="lastUpdated">—</div>
-        <div style="font-size: 0.65rem; color: var(--green); font-weight: 600; margin-top: 4px;">SYNCED VIA NEDB MESH</div>
+    <div class="overview-heartbeat">
+        <div class="overview-heartbeat-label">Network heartbeat</div>
+        <div class="overview-heartbeat-value mono" id="lastUpdated">—</div>
+        <div class="overview-heartbeat-tag"><span class="live-dot" style="background: var(--green);"></span> Synced via NEDB mesh</div>
     </div>
 </div>
 
 <!-- High-Impact Metrics -->
 <div class="metrics-grid reveal" style="gap: 1.25rem;">
-    <div class="metric-card " style="position: relative; overflow: hidden;">
-        <div style="position: absolute; top: 0; left: 0; height: 100%; width: 4px; background: var(--green);"></div>
-        <div class="metric-label" style="display: flex; justify-content: space-between;">PMS Volume (L) <i class="fas fa-gas-pump" style="opacity: 0.2;"></i></div>
-        <div class="metric-value" id="pmsMetric" style="letter-spacing: -0.03em;">—</div>
-        <div class="metric-trend up"><i class="fas fa-arrow-up-right"></i> +2.1% <span style="font-size: 0.65rem; opacity: 0.7; margin-left: 4px;">Velocity</span></div>
+    <div class="metric-card overview-metric">
+        <div class="overview-metric-rail"></div>
+        <div class="metric-label"><span>PMS Volume (L)</span><i class="fas fa-gas-pump"></i></div>
+        <div class="metric-value" id="pmsMetric">—</div>
+        <div class="metric-trend up"><i class="fas fa-arrow-up-right"></i> +2.1% <span class="trend-sub">Velocity</span></div>
     </div>
-    <div class="metric-card ">
-        <div class="metric-label" style="display: flex; justify-content: space-between;">AGO Equivalence <i class="fas fa-truck-fade" style="opacity: 0.2;"></i></div>
-        <div class="metric-value" id="agoMetric" style="letter-spacing: -0.03em;">—</div>
-        <div class="metric-trend down"><i class="fas fa-arrow-down-right"></i> -0.8% <span style="font-size: 0.65rem; opacity: 0.7; margin-left: 4px;">Demand Shift</span></div>
+    <div class="metric-card overview-metric">
+        <div class="metric-label"><span>AGO Equivalence</span><i class="fas fa-truck"></i></div>
+        <div class="metric-value" id="agoMetric">—</div>
+        <div class="metric-trend down"><i class="fas fa-arrow-down-right"></i> -0.8% <span class="trend-sub">Demand shift</span></div>
     </div>
-    <div class="metric-card " style="background: var(--ink); color: var(--surface-raised);">
-        <div class="metric-label" style="color: rgba(251,250,246,0.8); display: flex; justify-content: space-between;">Settled Revenue (₦) <i class="fas fa-university" style="opacity: 0.4;"></i></div>
-        <div class="metric-value" id="revMetric" style="color: var(--surface-raised); letter-spacing: -0.03em;">—</div>
-        <div class="metric-trend up" style="color: var(--green);"><i class="fas fa-shield-check"></i> Verified via CBN</div>
+    <div class="metric-card overview-metric overview-metric-dark">
+        <div class="metric-label"><span>Attributed Revenue</span><i class="fas fa-coins"></i></div>
+        <div class="metric-value" id="revMetric">—</div>
+        <div class="metric-trend up"><i class="fas fa-shield-check"></i> NEDB verified</div>
     </div>
-    <div class="metric-card ">
-        <div class="metric-label" style="display: flex; justify-content: space-between;">Active IoT Nodes <i class="fas fa-microchip" style="opacity: 0.2;"></i></div>
-        <div class="metric-value" id="iotMetric" style="letter-spacing: -0.03em;">—</div>
-        <div class="metric-trend neutral"><i class="fas fa-circle-nodes"></i> Real-time Mesh</div>
+    <div class="metric-card overview-metric">
+        <div class="metric-label"><span>Active IoT Nodes</span><i class="fas fa-microchip"></i></div>
+        <div class="metric-value" id="iotMetric">—</div>
+        <div class="metric-trend neutral"><i class="fas fa-circle-nodes"></i> Real-time mesh</div>
     </div>
 </div>
 
-<!-- Multi-Model Intelligence Chart -->
-<div class="chart-block  reveal" style="margin-top: 1.5rem; padding: 2rem;">
-    <div class="chart-header" style="margin-bottom: 2rem;">
+<!-- Throughput Chart -->
+<div class="chart-block reveal overview-chart-block">
+    <div class="chart-header">
         <div>
-            <h3 style="font-size: 1.1rem; font-weight: 700;">Throughput Intelligence Projections</h3>
-            <div class="chart-desc" style="font-size: 0.75rem;">Aggregated PMS & AGO distribution cycles — Temporal Projection Mode</div>
+            <h3 class="overview-chart-title">Throughput intelligence</h3>
+            <div class="chart-desc">PMS &amp; AGO distribution cycles · temporal projection mode</div>
         </div>
-        <div style="display: flex; gap: 1rem; align-items: center;">
-            <div class="pill-tabs" style="background: rgba(0,0,0,0.04); padding: 4px; border-radius: 10px;">
+        <div class="overview-chart-controls">
+            <div class="pill-tabs">
                 <button class="pill-tab active" data-range="daily">24H</button>
                 <button class="pill-tab" data-range="weekly">7D</button>
                 <button class="pill-tab" data-range="monthly">30D</button>
             </div>
-            <button class="topbar-action" id="filterBtn" style="border-radius: 10px; padding: 0.5rem 1rem;">
-                <i class="fas fa-sliders-h"></i> <span>Parameters</span>
+            <button class="topbar-action" id="filterBtn">
+                <i class="fas fa-sliders-h"></i> <span>Series</span>
             </button>
         </div>
     </div>
-    <div class="chart-canvas-wrap" style="height: 380px;">
+    <div class="chart-canvas-wrap" style="height: 360px;">
         <canvas id="mixChart"></canvas>
     </div>
 </div>
 
+<!-- Operators + Product Split -->
+<div class="overview-split reveal">
+    <div class="chart-block iot-card">
+        <div class="iot-card-head">
+            <div>
+                <h3>Top operators</h3>
+                <div class="chart-desc">Verified volume sold this fiscal year.</div>
+            </div>
+            <span class="iot-pill"><i class="fas fa-ranking-star"></i> By volume</span>
+        </div>
+        <div id="overviewOperators" class="overview-operators"></div>
+    </div>
+
+    <div class="chart-block iot-card">
+        <div class="iot-card-head">
+            <div>
+                <h3>Sales by product</h3>
+                <div class="chart-desc">PMS vs AGO share of attributed volume.</div>
+            </div>
+            <span class="iot-pill"><i class="fas fa-droplet"></i> Mix</span>
+        </div>
+        <div id="overviewProductMix" class="overview-product-mix"></div>
+    </div>
+</div>
+
+<!-- Recent activity -->
+<div class="chart-block reveal iot-card" style="margin-top: 1.5rem;">
+    <div class="iot-card-head">
+        <div>
+            <h3>Recent activity</h3>
+            <div class="chart-desc">Latest verified transactions across the network.</div>
+        </div>
+        <span class="iot-pill"><span class="live-dot" style="background: var(--green);"></span> Streaming</span>
+    </div>
+    <div id="overviewActivity" class="overview-activity"></div>
+</div>
 `,
 
     nodemap: `
-<div class="page-header reveal">
-    <div style="flex: 1;">
-        <h2 class="page-title">Live Node Map<br><em>& National Asset Tracker.</em></h2>
-        <p class="page-subtitle">Standardized 2D tactical visualization of downstream infrastructure pins.</p>
+<div class="page-header reveal nodemap-head">
+    <div style="flex: 1; min-width: 0;">
+        <h2 class="page-title">Live Node Map<br><em>&amp; National Asset Tracker.</em></h2>
+        <p class="page-subtitle">Real-time positions of pumps, fleets, refineries, and extraction sites across Nigeria.</p>
     </div>
-    <div style="background: #fff; padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-card); display: flex; gap: 2rem;">
-        <div style="text-align: center;">
-            <div style="font-size: 0.6rem; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Active Nodes</div>
-            <div style="font-family: var(--mono); color: var(--green); font-size: 1.25rem; font-weight: 700;" id="activeNodesCount">—</div>
+    <div class="nodemap-chips">
+        <div class="nodemap-chip">
+            <div class="nodemap-chip-label">Total</div>
+            <div class="nodemap-chip-value mono" id="totalNodesCount">—</div>
         </div>
-        <div style="border-left: 1px solid #f1f5f9;"></div>
-        <div style="text-align: center;">
-            <div style="font-size: 0.6rem; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Node Alerts</div>
-            <div style="font-family: var(--mono); color: var(--red); font-size: 1.25rem; font-weight: 700;" id="alertNodesCount">—</div>
+        <div class="nodemap-chip">
+            <div class="nodemap-chip-label">Active</div>
+            <div class="nodemap-chip-value mono nodemap-chip-active" id="activeNodesCount">—</div>
+        </div>
+        <div class="nodemap-chip">
+            <div class="nodemap-chip-label">Alerts</div>
+            <div class="nodemap-chip-value mono nodemap-chip-alert" id="alertNodesCount">—</div>
         </div>
     </div>
 </div>
 
-<!-- Map Filter Bar -->
-<div class="chart-block reveal" style="padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-    <div style="display: flex; align-items: center; gap: 1.5rem;">
-        <span style="font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Map Filters:</span>
-        <div style="display: flex; gap: 1.2rem;">
-            <label style="display: flex; align-items: center; gap: 8px; color: var(--text-dark); font-size: 0.85rem; font-weight: 600; cursor: pointer;">
-                <input type="checkbox" checked class="map-filter" value="truck" onchange="updateFilteredMap()"> <i class="fas fa-truck" style="font-size: 0.75rem; color: #94a3b8;"></i> Trucks
-            </label>
-            <label style="display: flex; align-items: center; gap: 8px; color: var(--text-dark); font-size: 0.85rem; font-weight: 600; cursor: pointer;">
-                <input type="checkbox" checked class="map-filter" value="pump" onchange="updateFilteredMap()"> <i class="fas fa-gas-pump" style="font-size: 0.75rem; color: #94a3b8;"></i> Pumps
-            </label>
-            <label style="display: flex; align-items: center; gap: 8px; color: var(--text-dark); font-size: 0.85rem; font-weight: 600; cursor: pointer;">
-                <input type="checkbox" checked class="map-filter" value="refinery" onchange="updateFilteredMap()"> <i class="fas fa-industry" style="font-size: 0.75rem; color: #94a3b8;"></i> Refineries
-            </label>
-            <label style="display: flex; align-items: center; gap: 8px; color: var(--text-dark); font-size: 0.85rem; font-weight: 600; cursor: pointer;">
-                <input type="checkbox" checked class="map-filter" value="well" onchange="updateFilteredMap()"> <i class="fas fa-oil-well" style="font-size: 0.75rem; color: #94a3b8;"></i> Wells
-            </label>
-        </div>
+<div class="nodemap-controls reveal">
+    <div class="nodemap-filters" id="nodemapFilters">
+        <button class="nodemap-filter active" data-filter="all"><i class="fas fa-globe"></i> All</button>
+        <button class="nodemap-filter active" data-filter="pump"><i class="fas fa-gas-pump"></i> Pumps</button>
+        <button class="nodemap-filter active" data-filter="truck"><i class="fas fa-truck"></i> Trucks</button>
+        <button class="nodemap-filter active" data-filter="refinery"><i class="fas fa-industry"></i> Refineries</button>
+        <button class="nodemap-filter active" data-filter="well"><i class="fas fa-oil-well"></i> Wells</button>
     </div>
-    <div style="font-size: 0.7rem; color: #94a3b8; font-family: var(--mono);">SYSTEM_MAPPING_V4.2</div>
+    <div class="nodemap-search-wrap">
+        <i class="fas fa-magnifying-glass"></i>
+        <input type="text" id="nodemapSearch" placeholder="Search node, ID, or location…">
+    </div>
 </div>
 
-<div class="chart-block reveal" style="padding: 0; overflow: hidden; height: 620px; position: relative;">
-    <div id="iotMap" style="height: 100%; width: 100%; z-index: 1;"></div>
+<div class="nodemap-layout reveal">
+    <div class="nodemap-map-wrap">
+        <div id="iotMap"></div>
+        <div class="nodemap-legend">
+            <div class="nodemap-legend-title">Legend</div>
+            <div class="nodemap-legend-row"><i class="fas fa-location-dot" style="color:var(--ink);"></i> Active node</div>
+            <div class="nodemap-legend-row"><i class="fas fa-location-dot" style="color:var(--red);"></i> Alert</div>
+            <div class="nodemap-legend-row"><span class="nodemap-legend-mono">NG-XXX-##</span> Node ID format</div>
+        </div>
+    </div>
+    <aside class="nodemap-side">
+        <div class="nodemap-side-head">
+            <h4>Nodes <span id="nodemapVisibleCount" class="nodemap-side-count">0</span></h4>
+            <span class="chart-desc" style="font-size: 0.7rem;">Click a row to centre the map.</span>
+        </div>
+        <div id="nodemapList" class="nodemap-list"></div>
+    </aside>
 </div>
 `,
 
@@ -123,33 +168,19 @@ const VIEWS = {
 <div class="page-header reveal">
     <div>
         <h2 class="page-title">Revenue <em>Portal.</em></h2>
-        <p class="page-subtitle">Consolidated tracking of energy company sales, taxes, and national revenue accruals.</p>
+        <p class="page-subtitle">Volume sold per company, in liters, traced back to the IoT locations that produced each figure.</p>
     </div>
 </div>
 
-<div class="metrics-grid reveal">
-    <div class="metric-card">
-        <div class="metric-label">National Sales (FY 2026)</div>
-        <div class="metric-value">₦1.48T</div>
-        <div class="metric-trend up"><i class="fas fa-arrow-up"></i> 8.2% YoY</div>
-    </div>
-    <div class="metric-card">
-        <div class="metric-label">Taxes Accrued (EduTax/VAT)</div>
-        <div class="metric-value">₦12.4B</div>
-        <div class="metric-trend up"><i class="fas fa-arrow-up"></i> 4.1% YoY</div>
-    </div>
-    <div class="metric-card">
-        <div class="metric-label">Avg. Margin / Liter</div>
-        <div class="metric-value">₦12.40</div>
-        <div class="metric-trend neutral"><i class="fas fa-minus"></i> Stable</div>
-    </div>
+<div class="metrics-grid reveal" id="revenueTopMetrics">
+    <!-- Rendered via JS -->
 </div>
 
 <div class="chart-block reveal">
     <div class="chart-header">
         <div>
-            <h3>Company Revenue Registry</h3>
-            <div class="chart-desc" style="color: var(--text-secondary);">All verified downstream operators and their financial standing.</div>
+            <h3>Company Sales Registry</h3>
+            <div class="chart-desc" style="color: var(--text-secondary);">Verified downstream operators with attributed volume in liters and IoT location count.</div>
         </div>
         <div style="display: flex; gap: 0.75rem; align-items: center;">
             <div class="search-wrap" style="background: rgba(0,0,0,0.03); padding: 5px 12px; border-radius: var(--r-sm); border: 1px solid var(--border);">
@@ -175,93 +206,89 @@ const VIEWS = {
 </div>
 `,
 
-    settlements: `
-<div class="page-header reveal">
-    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-        <div style="display: flex; align-items: center; gap: 1.5rem;">
-             <img src="../assets/cbn.webp" style="height: 50px; border-radius: 8px;" alt="CBN Logo">
-             <div>
-                <h2 class="page-title">Transaction <em>Ledger.</em></h2>
-                <p class="page-subtitle">Recent CBN-Nexus Bridge activity — secured financial settlements.</p>
-             </div>
-        </div>
-        <div class="badge" style="background: rgba(16, 185, 129, 0.1); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.2); height: fit-content; padding: 8px 16px; border-radius: 100px; font-weight: 700; font-size: 0.75rem;">
-             <i class="fas fa-shield-halved"></i> CBN-SECURED
-        </div>
-    </div>
-</div>
-
-<div class="chart-block reveal" style="padding: 0; overflow: hidden; border-radius: 16px;">
-    <div class="table-responsive">
-        <div class="ledger-table-wrap">
-            <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
-                <thead>
-                    <tr style="text-align: left; background: #f8fafc; color: var(--text-secondary); border-bottom: 1px solid #eee;">
-                        <th style="padding: 1.25rem 1.5rem; text-transform: uppercase; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;">Reference</th>
-                        <th style="text-transform: uppercase; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;">Entity</th>
-                        <th style="text-transform: uppercase; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;">Type</th>
-                        <th style="text-transform: uppercase; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;">Amount</th>
-                        <th style="text-transform: uppercase; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;">Status</th>
-                        <th style="padding-right: 1.5rem; text-transform: uppercase; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-align: right;">Date</th>
-                    </tr>
-                </thead>
-                <tbody id="ledgerTableBody">
-                    <!-- Data populated via main.js -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-`,
-
     iot: `
 <div class="page-header reveal" style="margin-bottom: 2rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 1rem; flex-wrap: wrap;">
         <div>
             <h2 class="page-title">IoT Node <em>Network.</em></h2>
             <p class="page-subtitle">12,402 hardware nodes streaming tamper-proof consumption data across all regions.</p>
         </div>
-        <div style="text-align: right;">
-            <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 4px;">Last Updated</div>
-            <div style="font-family: var(--mono); font-size: 1.1rem; color: var(--text-dark); font-weight: 600;" id="iotTimestamp">18:52:25</div>
+        <div class="iot-heartbeat">
+            <div class="iot-heartbeat-label">Last Updated</div>
+            <div class="iot-heartbeat-value mono" id="iotTimestamp">18:52:25</div>
+            <div class="iot-heartbeat-tag"><span class="live-dot" style="background:var(--green);"></span> Live mesh sync</div>
         </div>
     </div>
 </div>
 
-<div class="metrics-grid reveal" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 2.5rem;">
-    <div class="metric-card">
-        <div class="metric-label">Total Nodes Deployed</div>
-        <div class="metric-value">12,402</div>
-        <div class="metric-trend up"><i class="fas fa-arrow-up"></i> 64 added this week</div>
+<div class="metrics-grid reveal" id="iotMetricsGrid"></div>
+
+<div class="iot-split reveal">
+    <div class="chart-block iot-card">
+        <div class="iot-card-head">
+            <div>
+                <h3>Nodes by Type</h3>
+                <div class="chart-desc">Hardware composition across the national mesh.</div>
+            </div>
+            <span class="iot-pill"><i class="fas fa-microchip"></i> Composition</span>
+        </div>
+        <div id="iotTypeBreakdown" class="iot-type-list"></div>
     </div>
-    <div class="metric-card">
-        <div class="metric-label">Currently Online</div>
-        <div class="metric-value" style="color: var(--green);">12,362</div>
-        <div class="metric-trend up" style="color: var(--green);"><i class="fas fa-check-circle"></i> 99.68% uptime</div>
-    </div>
-    <div class="metric-card">
-        <div class="metric-label">Active Alerts</div>
-        <div class="metric-value" style="color: var(--amber);">40</div>
-        <div class="metric-trend" style="color: var(--red);"><i class="fas fa-triangle-exclamation"></i> Across 7 zones</div>
-    </div>
-    <div class="metric-card">
-        <div class="metric-label">Avg Data Latency</div>
-        <div class="metric-value">1.2s</div>
-        <div class="metric-trend" style="color: var(--text-muted);"><i class="fas fa-signal"></i> Within SLA</div>
+
+    <div class="chart-block iot-card">
+        <div class="iot-card-head">
+            <div>
+                <h3>Health Distribution</h3>
+                <div class="chart-desc">Live status across deployment zones.</div>
+            </div>
+            <span class="iot-pill"><i class="fas fa-heart-pulse"></i> 99.68% uptime</span>
+        </div>
+        <div class="iot-donut-wrap">
+            <canvas id="iotStatusDonut"></canvas>
+        </div>
+        <div id="iotStatusLegend" class="iot-donut-legend"></div>
     </div>
 </div>
 
-<div class="chart-block reveal" style="padding: 2.5rem; border-radius: 20px;">
-    <div class="chart-header" style="border-bottom: 1px solid #f1f5f9; padding-bottom: 1.5rem; margin-bottom: 2.5rem;">
+<div class="iot-split reveal" style="grid-template-columns: 1.4fr 1fr;">
+    <div class="chart-block iot-card">
+        <div class="iot-card-head">
+            <div>
+                <h3>Active Alerts</h3>
+                <div class="chart-desc">Nodes and zones currently flagged for review.</div>
+            </div>
+            <span class="iot-pill iot-pill-amber" id="iotAlertCount"><i class="fas fa-triangle-exclamation"></i> 0</span>
+        </div>
+        <div id="iotAlertList" class="iot-alert-list"></div>
+    </div>
+
+    <div class="chart-block iot-card">
+        <div class="iot-card-head">
+            <div>
+                <h3>Live Telemetry</h3>
+                <div class="chart-desc">Latest packets received from the mesh.</div>
+            </div>
+            <span class="iot-pill"><span class="live-dot" style="background:var(--green);"></span> Streaming</span>
+        </div>
+        <div id="iotTelemetryFeed" class="iot-telemetry-feed"></div>
+    </div>
+</div>
+
+<div class="chart-block reveal iot-card" style="margin-top: 1.5rem;">
+    <div class="iot-card-head" style="border-bottom: 1px solid var(--border-light); padding-bottom: 1.25rem; margin-bottom: 1.5rem;">
         <div>
-            <h3 style="font-size: 1.25rem; font-weight: 700;">Node Health by Region</h3>
-            <div class="chart-desc" style="color: var(--text-secondary);">Online status, alert count, and uptime for all deployment zones.</div>
+            <h3>Node Health by Region</h3>
+            <div class="chart-desc">Online status, alert count, and uptime for all deployment zones.</div>
+        </div>
+        <div class="iot-region-filters">
+            <button class="iot-region-filter active" data-status="all">All</button>
+            <button class="iot-region-filter" data-status="Optimal">Optimal</button>
+            <button class="iot-region-filter" data-status="Alert">Alert</button>
+            <button class="iot-region-filter" data-status="Critical">Critical</button>
         </div>
     </div>
-    
-    <div id="regionHealthGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-        <!-- Population handled via main.js render function -->
-    </div>
+
+    <div id="regionHealthGrid" class="iot-region-grid"></div>
 </div>
 `,
 
