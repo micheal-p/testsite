@@ -474,7 +474,7 @@
       address: 'Alausa Secretariat, Ikeja, Lagos',
       city: 'Lagos', state: 'Lagos', lat: j(LAG,0.13,0.012).lat, lng: j(LAG,0.13,0.012).lng,
       established: 2024, enablingLaw: 'Lagos State Electricity Law 2024 / Electricity Act 2023',
-      leadership: [{ title: 'Chairman', name: 'Tinuade Sanda' }],
+      leadership: [],
       reportsTo: 'Lagos State Government / Lagos Ministry of Energy & Mineral Resources',
       mandate: 'Regulates the intra-state Lagos electricity market — licensing, tariffs, mini-grids.',
       jurisdiction: ['distribution','generation-sub-1MW','mini-grid'],
@@ -533,7 +533,7 @@
       status: 'active'
     }),
     e({
-      id: 'kdserc', name: 'Kaduna State Electricity Regulatory Authority', acronym: 'KDSERA',
+      id: 'kdsera', name: 'Kaduna State Electricity Regulatory Authority', acronym: 'KDSERA',
       subSector: 'power', role: 'regulator',
       address: 'Secretariat, Kaduna',
       city: 'Kaduna', state: 'Kaduna', lat: j(KAD,0.005,-0.003).lat, lng: j(KAD,0.005,-0.003).lng,
