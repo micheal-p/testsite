@@ -1062,27 +1062,27 @@ img {
 
 /* 03 National Energy Data Bank */
 .grid-3 {
-  background: url("assets/images/feature-databank.jpg") center/cover no-repeat;
+  background: url("assets/images/databank.jpg") center/cover no-repeat;
 }
 
 /* 04 Deal Room */
 .grid-4 {
-  background: url("assets/images/deal.jpeg") center/cover no-repeat;
+  background: url("assets/images/deal-room.png") center/cover no-repeat;
 }
 
 /* 05 Energy Assets */
 .grid-5 {
-  background: url("assets/images/Energy-Assets.jpg") center/cover no-repeat;
+  background: url("assets/images/energy-assets.jpg") center/cover no-repeat;
 }
 
 /* 06 Apex AI */
 .grid-6 {
-  background: url("deal-room/assets/images/portfolio_analytics.png") center/cover no-repeat;
+  background: url("assets/images/apex-ai.webp") center/cover no-repeat;
 }
 
 /* 07 Risk & ESG */
 .grid-7 {
-  background: url("assets/images/Esgi.jpg.avif") center/cover no-repeat;
+  background: url("assets/images/esg.jpg") center/cover no-repeat;
 }
 
 /* 08 Reporting & LP Portals */
