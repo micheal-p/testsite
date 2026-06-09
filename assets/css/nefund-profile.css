@@ -1,0 +1,166 @@
+/* ==========================================================================
+   NEFUND — Fund Profile: elevated editorial layer (scoped under .nf-profile)
+   Pairs Instrument Serif (display) with Mulish (UI), teal accent from the deck.
+   Theme-adaptive via currentColor so it works on light + ink sections.
+   ========================================================================== */
+.nf-profile{ --nfp-teal:#10b981; --nfp-ink:#0a0f0d; }
+
+/* ---- scroll reveal ---- */
+.nf-profile [data-reveal]{
+  opacity:0; transform:translateY(20px);
+  transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);
+}
+.nf-profile [data-reveal].nfp-in{ opacity:1; transform:none; }
+.nf-profile [data-reveal-d="1"]{ transition-delay:.07s }
+.nf-profile [data-reveal-d="2"]{ transition-delay:.14s }
+.nf-profile [data-reveal-d="3"]{ transition-delay:.21s }
+.nf-profile [data-reveal-d="4"]{ transition-delay:.28s }
+.nf-profile [data-reveal-d="5"]{ transition-delay:.35s }
+@media (prefers-reduced-motion:reduce){
+  .nf-profile [data-reveal]{opacity:1!important;transform:none!important;transition:none!important}
+}
+
+/* ---- shared bits ---- */
+.nfp-eyebrow{
+  display:inline-flex; align-items:center; gap:.7em;
+  font:700 .8rem/1 'Mulish',sans-serif; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--nfp-teal);
+}
+.nfp-eyebrow::before{ content:""; width:.5em; height:.5em; border-radius:99px; background:currentColor; }
+
+/* ============================== STATEMENT BAND ============================ */
+.nfp-statement{ position:relative; overflow:hidden; background:var(--nfp-ink); color:#eafff7; isolation:isolate; }
+.nfp-statement .nfp-bg{
+  position:absolute; inset:0; background-size:cover; background-position:center;
+  opacity:.16; filter:grayscale(.4) brightness(.8); z-index:-2;
+}
+.nfp-statement .nfp-glow{
+  position:absolute; inset:0; z-index:-1;
+  background:
+    radial-gradient(55% 55% at 78% 22%, rgba(16,185,129,.28), transparent 70%),
+    radial-gradient(60% 60% at 0% 100%, rgba(16,185,129,.10), transparent 60%);
+}
+.nfp-statement-inner{ position:relative; max-width:1536px; margin:0 auto; padding:104px 40px 112px; }
+@media (max-width:640px){ .nfp-statement-inner{ padding:72px 24px 80px; } }
+.nfp-statement-head{
+  font-family:'Instrument Serif',Georgia,serif; font-weight:400;
+  font-size:clamp(2rem,4.6vw,3.7rem); line-height:1.05; letter-spacing:-.01em;
+  max-width:20ch; margin:1.1rem 0 0;
+}
+.nfp-bignum{
+  font-family:'Instrument Serif',Georgia,serif; font-weight:400; line-height:.86;
+  font-size:clamp(4.5rem,15vw,12.5rem); letter-spacing:-.035em; margin:.18em 0 .12em;
+  background:linear-gradient(176deg,#ffffff 30%,#7ef0cd); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.nfp-bignum .u{ font-size:.42em; vertical-align:.62em; -webkit-text-fill-color:var(--nfp-teal); color:var(--nfp-teal); margin-right:.04em; }
+.nfp-bignum .b{ font-size:.42em; vertical-align:.62em; -webkit-text-fill-color:var(--nfp-teal); color:var(--nfp-teal); }
+.nfp-statement-dek{ max-width:62ch; margin:0; color:#c4ece0; font:400 1.06rem/1.65 'Mulish',sans-serif; }
+.nfp-factrow{
+  list-style:none; margin:52px 0 0; padding:30px 0 0; display:grid; gap:26px 32px;
+  grid-template-columns:repeat(2,1fr); border-top:1px solid rgba(255,255,255,.16);
+}
+@media (min-width:768px){ .nfp-factrow{ grid-template-columns:repeat(4,1fr); } }
+.nfp-factrow b{ display:block; font:600 1.3rem/1 'Mulish',sans-serif; color:#fff; }
+.nfp-factrow span{ display:block; margin-top:7px; color:#9fd6c4; font-size:.88rem; }
+
+/* ========================= EDITORIAL NUMBERED LIST ======================= */
+.nfp-numlist{ list-style:none; margin:0; padding:0; }
+.nfp-numrow{
+  display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:28px;
+  padding:26px 6px; border-top:1px solid color-mix(in srgb,currentColor 15%,transparent);
+  transition:background .35s, padding .35s;
+}
+.nfp-numrow:last-child{ border-bottom:1px solid color-mix(in srgb,currentColor 15%,transparent); }
+.nfp-index{ font-family:'Instrument Serif',Georgia,serif; font-size:clamp(2rem,3vw,2.8rem); line-height:1; color:var(--nfp-teal); min-width:1.7em; }
+.nfp-numbody h3{ font:600 1.22rem/1.25 'Mulish',sans-serif; margin:0 0 4px; }
+.nfp-numbody p{ margin:0; color:inherit; opacity:.64; max-width:62ch; }
+.nfp-numicon{ color:var(--nfp-teal); opacity:.5; transition:opacity .35s, transform .35s; }
+.nfp-numicon svg{ width:26px; height:26px; }
+.nfp-numrow:hover{ background:color-mix(in srgb,var(--nfp-teal) 7%,transparent); padding-left:22px; padding-right:18px; }
+.nfp-numrow:hover .nfp-numicon{ opacity:1; transform:translateX(-4px); }
+
+/* ============================== FEATURE CARDS ============================= */
+.nfp-cards{ display:grid; gap:20px; grid-template-columns:1fr; }
+@media (min-width:640px){ .nfp-cards{ grid-template-columns:repeat(2,1fr); } }
+@media (min-width:1024px){ .nfp-cards.c3{ grid-template-columns:repeat(3,1fr); } }
+.nfp-card{
+  position:relative; overflow:hidden; border-radius:18px; padding:26px;
+  border:1px solid color-mix(in srgb,currentColor 14%,transparent);
+  transition:transform .4s cubic-bezier(.2,.7,.2,1), border-color .4s, box-shadow .4s;
+}
+.nfp-card::after{ content:""; position:absolute; left:0; top:0; height:3px; width:0; background:var(--nfp-teal); transition:width .45s cubic-bezier(.2,.7,.2,1); }
+.nfp-card:hover{ transform:translateY(-5px); border-color:color-mix(in srgb,var(--nfp-teal) 55%,transparent); box-shadow:0 22px 48px -28px rgba(16,185,129,.5); }
+.nfp-card:hover::after{ width:100%; }
+.nfp-ico{ display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:14px; background:rgba(16,185,129,.13); color:var(--nfp-teal); margin-bottom:18px; }
+.nfp-ico svg{ width:24px; height:24px; }
+.nfp-card h3{ font:600 1.12rem/1.28 'Mulish',sans-serif; margin:0 0 6px; }
+.nfp-card p{ margin:0; color:inherit; opacity:.66; }
+
+/* small inline meta (location / security) */
+.nfp-meta{ display:grid; gap:20px; grid-template-columns:1fr; margin-top:40px; padding-top:28px; border-top:1px solid color-mix(in srgb,currentColor 15%,transparent); }
+@media (min-width:640px){ .nfp-meta{ grid-template-columns:repeat(2,1fr); } }
+.nfp-meta-item{ display:flex; gap:14px; align-items:flex-start; }
+.nfp-meta-item .nfp-ico{ margin-bottom:0; flex:0 0 auto; }
+.nfp-meta-item h4{ font:600 1rem/1.3 'Mulish',sans-serif; margin:.4em 0 2px; }
+.nfp-meta-item p{ margin:0; color:inherit; opacity:.66; }
+
+/* ================================ PEOPLE ================================= */
+.nfp-people{ display:grid; gap:30px 22px; grid-template-columns:repeat(2,1fr); }
+@media (min-width:768px){ .nfp-people.c3{ grid-template-columns:repeat(3,1fr); } .nfp-people.c4{ grid-template-columns:repeat(4,1fr); } }
+.nfp-person{ margin:0; }
+.nfp-photo{ position:relative; aspect-ratio:4/5; border-radius:16px; overflow:hidden; background:#e7efeb; }
+.nfp-photo img{ width:100%; height:100%; object-fit:cover; object-position:top center; transition:transform .7s cubic-bezier(.2,.7,.2,1); }
+.nfp-person:hover .nfp-photo img{ transform:scale(1.045); }
+.nfp-photo::after{ content:""; position:absolute; left:16px; right:16px; bottom:0; height:3px; background:var(--nfp-teal); transform:scaleX(0); transform-origin:left; transition:transform .5s cubic-bezier(.2,.7,.2,1); }
+.nfp-person:hover .nfp-photo::after{ transform:scaleX(1); }
+.nfp-name{ margin-top:15px; font:600 1.02rem/1.3 'Mulish',sans-serif; }
+.nfp-role{ margin-top:3px; color:inherit; opacity:.64; font-size:.9rem; line-height:1.4; }
+
+/* ============================== LOGO WALL (compact grid) ================= */
+.nfp-party-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:6px 32px; }
+.nfp-party{ padding:20px 0; border-top:1px solid color-mix(in srgb,currentColor 14%,transparent); }
+.nfp-party-role{ font:700 .76rem/1.3 'Mulish',sans-serif; letter-spacing:.08em; text-transform:uppercase; opacity:.68; margin-bottom:12px; }
+.nfp-logos{ display:flex; flex-wrap:wrap; gap:10px; }
+.nfp-logo{ display:flex; align-items:center; justify-content:center; height:58px; width:116px; background:#fff; border:1px solid rgba(15,23,20,.09); border-radius:11px; padding:11px; transition:transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s; }
+.nfp-logo:hover{ transform:translateY(-3px); box-shadow:0 12px 26px -18px rgba(0,0,0,.42); }
+.nfp-logo img{ max-height:28px; max-width:100%; object-fit:contain; }
+
+/* ============================== HERO (first screen) ===================== */
+.nf-hero{ --nfp-teal:#10b981; --nfp-ink:#0a0f0d; }
+.nf-hero .nfp-statement-inner{ padding-top:124px; }
+@media (max-width:640px){ .nf-hero .nfp-statement-inner{ padding-top:96px; } }
+.nf-hero-grid{ display:grid; grid-template-columns:1fr; gap:40px; align-items:center; }
+@media (min-width:960px){ .nf-hero-grid{ grid-template-columns:1.05fr .95fr; gap:64px; } }
+.nf-hero .nfp-statement-head{ margin-top:14px; }
+.nf-hero-dek{ max-width:54ch; margin:18px 0 0; color:#c4ece0; font:400 1.05rem/1.6 'Mulish',sans-serif; }
+.nf-hero-dek strong{ color:#fff; }
+.nf-hero-cta{ display:inline-flex; align-items:center; gap:9px; margin-top:24px; height:48px; padding:0 22px; border-radius:7px; background:var(--nfp-teal); color:#04140e; font:600 1rem/1 'Mulish',sans-serif; text-decoration:none; transition:transform .25s, box-shadow .25s; }
+.nf-hero-cta svg{ width:18px; height:18px; }
+.nf-hero-cta:hover{ transform:translateY(-2px); box-shadow:0 16px 32px -16px rgba(16,185,129,.65); }
+.nf-hero-right .nfp-eyebrow{ margin-bottom:10px; }
+.nf-hero .nfp-bignum{ margin:0; }
+.nf-hero-cap{ max-width:44ch; margin:8px 0 0; color:#bfe9da; font:400 .98rem/1.55 'Mulish',sans-serif; }
+.nf-hero .nfp-factrow{ margin-top:30px; grid-template-columns:repeat(2,1fr); }
+
+/* green rectangle card with bullets */
+.nf-greencard{ margin-top:26px; background:linear-gradient(135deg,#10b981,#0c9269); color:#04140e; border-radius:18px; padding:24px 26px; box-shadow:0 26px 54px -30px rgba(16,185,129,.65); }
+.nf-greencard p{ margin:0 0 15px; font:600 1.06rem/1.5 'Mulish',sans-serif; }
+.nf-greencard ul{ list-style:none; margin:0; padding:0; display:grid; gap:12px; }
+.nf-greencard li{ display:flex; gap:11px; align-items:flex-start; font:500 .98rem/1.45 'Mulish',sans-serif; }
+.nf-greencard li svg{ flex:0 0 auto; width:19px; height:19px; margin-top:1px; }
+
+/* ===================== NUMBERED AIM CARDS (grid) ======================= */
+.nfp-numcard-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.nfp-numcard-top .nfp-ico{ margin-bottom:0; }
+.nfp-numbadge{ display:inline-flex; align-items:center; justify-content:center; min-width:42px; height:42px; padding:0 10px; border-radius:12px; background:var(--nfp-teal); color:#fff; font:600 1.08rem/1 'Mulish',sans-serif; }
+
+/* ============== Logo: scroll with the page (not pinned) ================= */
+/* nefund-profile.css loads only on nefund.html, so this override is scoped
+   to this page and does not affect the fixed logo elsewhere on the site. */
+.logo-fixed{ position:absolute; }
+
+/* hero CTA row + secondary (ghost) button */
+.nf-hero-ctas{ display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+.nf-hero-ctas .nf-hero-cta{ margin-top:0; }
+.nf-hero-cta-ghost{ background:transparent; color:#eafff7; border:1px solid rgba(255,255,255,.35); }
+.nf-hero-cta-ghost:hover{ background:rgba(255,255,255,.08); border-color:var(--nfp-teal); box-shadow:none; transform:translateY(-2px); }
