@@ -15,6 +15,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
+    <style>
+      /* Logo sits over the dark hero and scrolls away — use the white variant + light brand text */
+      .logo-fixed .light-mode-logo { display: none !important; }
+      .logo-fixed .dark-mode-logo  { display: block !important; }
+      .logo-fixed .brand-text      { color: #cfe8d8 !important; }
+      /* Color-responsive nav: light while over the dark hero, dark over the light body */
+      .auth-sticky a:not(.btn-black),
+      .auth-sticky > div { transition: color .25s ease, background-color .25s ease; }
+      .auth-sticky.nav-over-dark a:not(.btn-black) { color: #ffffff !important; }
+      .auth-sticky.nav-over-dark > div { background: rgba(255,255,255,0.35) !important; }
+    </style>
 </head>
 
 <body>
@@ -122,27 +133,33 @@
          HERO SECTION (Premium Redesign)
          ========================================== -->
     <section class="hero" id="hero"
-        style="background: var(--bg-alt); padding: 120px 20px 80px; position: relative; overflow: hidden; border-bottom: 1px solid var(--border);">
-        <div
-            style="position: absolute; top: -200px; right: -100px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(163,230,53,0.1) 0%, transparent 70%); border-radius: 50%; pointer-events: none;">
+        style="background: #0a140d; margin-top: -80px; padding: 200px 20px 96px; position: relative; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.10);">
+        <div aria-hidden="true"
+            style="position: absolute; inset: 0; background: url('../assets/images/esg.jpg') center center / cover no-repeat; opacity: 0.85; filter: brightness(0.72) saturate(1.05); pointer-events: none;">
+        </div>
+        <div aria-hidden="true"
+            style="position: absolute; inset: 0; pointer-events: none; background:
+              radial-gradient(70% 75% at 50% 42%, transparent 0%, transparent 32%, rgba(7,14,10,0.55) 72%, rgba(7,14,10,0.96) 100%),
+              radial-gradient(60% 60% at 80% 18%, rgba(34,197,94,0.22) 0%, transparent 70%),
+              linear-gradient(180deg, rgba(7,14,10,0.35) 0%, transparent 30%, rgba(7,14,10,0.45) 100%);">
         </div>
         <div class="hero-inner"
-            style="max-width: 800px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 40px;">
+            style="position: relative; z-index: 1; max-width: 800px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 40px;">
             <div class="hero-content" style="display: flex; flex-direction: column; align-items: center;">
                 <div class="hero-badge"
-                    style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: #E7E5E0; color: #1F1F1F; border-radius: 100px; font-size: 12px; font-weight: 600; margin-bottom: 24px;">
+                    style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: rgba(255,255,255,0.12); color: #eafff1; border: 1px solid rgba(255,255,255,0.18); border-radius: 100px; font-size: 12px; font-weight: 600; margin-bottom: 24px;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
                     </svg>
                     Ministry of Environment Audit & Clearance
                 </div>
                 <h1
-                    style="font-family: 'Instrument Serif', serif; font-size: 72px; font-weight: 400; line-height: 1.05; letter-spacing: -0.02em; color: #0A0A0A; margin-bottom: 24px;">
-                    Secure your corporate <br><span style="font-style: italic; color: #0E7A3C;">ESG Clearance</span>
+                    style="font-family: 'Instrument Serif', serif; font-size: 72px; font-weight: 400; line-height: 1.05; letter-spacing: -0.02em; color: #ffffff; margin-bottom: 24px;">
+                    Secure your corporate <br><span style="font-style: italic; color: #5ee08f;">ESG Clearance</span>
                     effortlessly.
                 </h1>
                 <p class="hero-subtitle"
-                    style="font-size: 20px; color: #5e6d8a; max-width: 600px; margin-bottom: 40px; line-height: 1.6;">
+                    style="font-size: 20px; color: #c4d6cb; max-width: 600px; margin-bottom: 40px; line-height: 1.6;">
                     Complete the mandatory compliance questionnaire, upload
                     your environmental logs, and receive an official verified Certificate from the Federal Ministry of
                     Environment.
@@ -150,7 +167,7 @@
                 <div class="hero-actions"
                     style="display: flex; gap: 16px; align-items: center; justify-content: center;">
                     <a href="signup.html" class="btn btn-black"
-                        style="padding: 16px 28px; font-size: 16px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px;">
+                        style="padding: 16px 28px; font-size: 16px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; background: #22c55e; color: #04140e; border: none;">
                         Start Application
                         <i class="fas fa-arrow-right"></i>
                     </a>
@@ -308,6 +325,20 @@
                     activeBar.style.height = `${height}%`;
                 }
             }, 2500);
+
+            // ==========================================
+            // COLOR-RESPONSIVE NAV (light over dark hero, dark over light body)
+            // ==========================================
+            const authSticky = document.querySelector('.auth-sticky');
+            const heroEl = document.getElementById('hero');
+            function updateNavTheme() {
+                if (!authSticky || !heroEl) return;
+                const threshold = heroEl.offsetHeight - 80;
+                authSticky.classList.toggle('nav-over-dark', window.scrollY < threshold);
+            }
+            updateNavTheme();
+            window.addEventListener('scroll', updateNavTheme, { passive: true });
+            window.addEventListener('resize', updateNavTheme);
 
             // ==========================================
             // MOBILE MENU LOGIC
