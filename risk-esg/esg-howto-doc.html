@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ESG Clearance Portal — How to use</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Mulish:wght@400;500;600;700&display=swap">
+<style>
+  :root{ --green:#0E7A3C; --green-deep:#0A4A24; --soft:#E7F4EC; --ink:#0A0A0A; --muted:#5b6470; --line:#E2E6E2; --amber:#B45309; }
+  *{ box-sizing:border-box; }
+  body{ font-family:'Mulish',system-ui,sans-serif; color:var(--ink); margin:0; font-size:11.2pt; line-height:1.55; }
+  .serif{ font-family:'Instrument Serif',Georgia,serif; font-weight:400; }
+  h1,h2,h3{ font-family:'Instrument Serif',Georgia,serif; font-weight:400; color:var(--green-deep); line-height:1.12; }
+  .page{ padding:46px 54px; }
+  .section{ page-break-before:always; padding:40px 54px; }
+  /* Cover */
+  .cover{ height:96vh; display:flex; flex-direction:column; justify-content:center; padding:0 60px; page-break-after:always; }
+  .cover .kicker{ color:var(--green); font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:10.5pt; }
+  .cover h1{ font-size:58pt; margin:6px 0 0; color:var(--ink); }
+  .cover .sub{ font-size:15pt; color:var(--muted); max-width:560px; margin-top:18px; line-height:1.45; }
+  .cover .meta{ margin-top:40px; font-size:11pt; color:var(--muted); border-top:2px solid var(--green); padding-top:16px; display:inline-block; }
+  .cover .ver{ color:var(--green); font-weight:700; }
+  /* Contents */
+  .toc{ counter-reset:item; list-style:none; padding:0; margin:18px 0 0; font-size:12pt; }
+  .toc li{ padding:7px 0; border-bottom:1px dotted var(--line); color:var(--ink); }
+  .toc li b{ color:var(--green); display:inline-block; width:26px; }
+  /* Headings */
+  h2.sec{ font-size:27pt; margin:0 0 4px; }
+  .sec-num{ color:var(--green); font-weight:700; font-family:'Mulish'; font-size:11pt; letter-spacing:.1em; text-transform:uppercase; }
+  h3{ font-size:16pt; margin:22px 0 4px; color:var(--ink); }
+  p{ margin:9px 0; }
+  ul,ol{ margin:9px 0; padding-left:22px; }
+  li{ margin:5px 0; }
+  strong{ color:var(--ink); }
+  /* Figure */
+  figure{ margin:18px 0 6px; }
+  figure img{ width:100%; border:1px solid var(--line); border-radius:8px; box-shadow:0 6px 24px rgba(0,0,0,.06); }
+  figcaption{ font-style:italic; color:var(--muted); font-size:10pt; margin-top:8px; text-align:center; }
+  /* Callout */
+  .note{ background:var(--soft); border:1px solid #BFE3CD; border-left:4px solid var(--green); border-radius:8px; padding:14px 18px; margin:16px 0; font-size:10.6pt; }
+  .note b{ color:var(--green-deep); }
+  .flow{ background:#0E7A3C; color:#fff; border-radius:10px; padding:20px 24px; margin:18px 0; }
+  .flow b{ color:#CFF3DD; }
+  .flow ol{ margin:8px 0 0; }
+  .flow li{ margin:7px 0; }
+  /* Tables */
+  table{ width:100%; border-collapse:collapse; margin:12px 0; font-size:10.4pt; }
+  th{ background:var(--soft); text-align:left; padding:9px 11px; border:1px solid var(--line); color:var(--green-deep); }
+  td{ padding:9px 11px; border:1px solid var(--line); vertical-align:top; }
+  code{ font-family:ui-monospace,Menlo,monospace; font-size:9.6pt; background:#F3F5F3; padding:1px 5px; border-radius:4px; color:#0A4A24; }
+  pre{ background:#0d1f14; color:#d7f0e0; padding:14px 16px; border-radius:8px; font-family:ui-monospace,Menlo,monospace; font-size:9pt; line-height:1.5; overflow-x:auto; }
+  .pill{ display:inline-block; font-size:9pt; font-weight:700; padding:2px 9px; border-radius:20px; background:var(--soft); color:var(--green-deep); }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="kicker">NEIIA · Federal Ministry of Environment</div>
+  <h1 class="serif">ESG Clearance<br>Portal</h1>
+  <div class="sub">How to use — the paid environmental audit and clearance flow, for both the <b>applicant company</b> and the <b>Ministry of Environment</b> reviewer.</div>
+  <div class="meta">
+    <span class="ver">v1.0 · Refined two-party model</span><br>
+    Applicant pays → Ministry is notified → Ministry issues the certificate to the applicant's account &amp; email.<br>
+    NEIIA · Norgroup · June 2026 · Engineering handover
+  </div>
+</div>
+
+<!-- CONTENTS -->
+<div class="page">
+  <h2 class="serif" style="font-size:30pt;">Contents</h2>
+  <ol class="toc">
+    <li><b>1</b> What the ESG Clearance Portal is</li>
+    <li><b>2</b> The two sides &amp; the refined flow</li>
+    <li><b>3</b> Applicant — Step 1: Company profile</li>
+    <li><b>4</b> Applicant — Step 2: ESG benchmark metrics</li>
+    <li><b>5</b> Applicant — Step 3: Upload the audit package</li>
+    <li><b>6</b> Applicant — Step 4: Pay the clearance fee</li>
+    <li><b>7</b> Applicant — Tracking your application</li>
+    <li><b>8</b> Ministry — Notification &amp; the review queue</li>
+    <li><b>9</b> Ministry — Reviewing an application</li>
+    <li><b>10</b> Ministry — Issuing the certificate</li>
+    <li><b>11</b> Applicant — Receiving the certificate (account + email)</li>
+    <li><b>12</b> Handling a revision request</li>
+    <li><b>13</b> Understanding the metrics</li>
+    <li><b>14</b> Application statuses</li>
+    <li><b>15</b> Engineering notes (data model &amp; wiring)</li>
+    <li><b>16</b> FAQ</li>
+    <li><b>17</b> Glossary</li>
+    <li><b>18</b> Document history</li>
+  </ol>
+</div>
+
+<!-- 1 -->
+<div class="section">
+  <div class="sec-num">Section 1</div>
+  <h2 class="sec serif">What the ESG Clearance Portal is</h2>
+  <p>The ESG Clearance Portal is a paid environmental-audit service operated on the NEIIA platform on behalf of the <b>Federal Ministry of Environment</b>. A Nigerian company applies for an official ESG clearance certificate by submitting its corporate profile and environmental benchmark metrics, uploading its audit logs, and paying the clearance fee through Paystack.</p>
+  <p>Once payment is confirmed, the application is pushed to the Ministry of Environment's review dashboard. A Ministry officer reviews the submission and either <b>issues the certificate</b> — which is uploaded to the applicant's account and emailed to them — or <b>requests a revision</b>. The certificate carries a number, an issue date and a one-year expiry.</p>
+  <figure>
+    <img src="_howto_shots/00_landing.png">
+    <figcaption>ESG Clearance Portal — the public landing page on the NEIIA platform.</figcaption>
+  </figure>
+  <div class="note"><b>One sentence:</b> the company pays, the Ministry of Environment is notified, the Ministry issues the certificate to the company's account and email.</div>
+</div>
+
+<!-- 2 -->
+<div class="section">
+  <div class="sec-num">Section 2</div>
+  <h2 class="sec serif">The two sides &amp; the refined flow</h2>
+  <p>The portal has <b>two roles</b> that share one application record:</p>
+  <ul>
+    <li><b>Applicant (company)</b> — completes the four-step wizard, pays, and tracks the application until the certificate arrives.</li>
+    <li><b>Ministry of Environment (reviewer)</b> — is notified the moment payment lands, reviews the submission, and issues the certificate or requests a revision.</li>
+  </ul>
+  <div class="flow">
+    <b>END-TO-END FLOW</b>
+    <ol>
+      <li>The company completes the application and <b>pays the clearance fee</b> (Paystack).</li>
+      <li>On successful payment, the application is <b>pushed to the Ministry of Environment dashboard</b>, which is auto-notified.</li>
+      <li>A Ministry officer <b>reviews</b> the company profile, metrics and uploaded audit logs.</li>
+      <li>The officer <b>issues the certificate</b> — it is <b>uploaded to the applicant's account</b> and a copy is <b>emailed</b> to them — or requests a revision.</li>
+      <li>The applicant sees the certificate on their dashboard and can view, download or print it.</li>
+    </ol>
+  </div>
+  <p>The sections that follow walk through each side in order, with a screenshot of every screen.</p>
+</div>
+
+<!-- 3 -->
+<div class="section">
+  <div class="sec-num">Section 3 · Applicant</div>
+  <h2 class="sec serif">Step 1 — Company profile</h2>
+  <p>After signing in, the company clicks <b>Apply for ESG Clearance</b> to open a four-step wizard. The first step shows the company profile, drawn from the registered account details. These fields are read-only here, so the applicant simply confirms they are correct:</p>
+  <ul>
+    <li>Company Legal Name (as on CAC)</li>
+    <li>Corporate RC Number</li>
+    <li>Corporate Contact Email</li>
+    <li>Corporate Contact Phone Number</li>
+    <li>Business Sector</li>
+  </ul>
+  <figure>
+    <img src="_howto_shots/01_wizard_step1.png">
+    <figcaption>Step 1 — the read-only company profile, confirmed before the applicant continues.</figcaption>
+  </figure>
+</div>
+
+<!-- 4 -->
+<div class="section">
+  <div class="sec-num">Section 4 · Applicant</div>
+  <h2 class="sec serif">Step 2 — ESG benchmark metrics</h2>
+  <p>On the second step the company enters its four environmental benchmark figures for the reporting period. These are the numbers the Ministry assesses against national thresholds, so they are entered carefully. Each metric is explained in Section 13.</p>
+  <ul>
+    <li>Carbon Emission Intensity (gCO<sub>2</sub>e / kWh)</li>
+    <li>Energy Efficiency Index (%)</li>
+    <li>Grid Deficit Drawdown (MW)</li>
+    <li>Waste Disposal Rate Classification</li>
+  </ul>
+  <figure>
+    <img src="_howto_shots/02_wizard_step2_metrics.png">
+    <figcaption>Step 2 — the ESG benchmark metrics form.</figcaption>
+  </figure>
+  <div class="note">Where a company cannot self-report, the step offers an <b>on-site audit</b> path, which flags the metrics as pending a physical Ministry inspection rather than self-declared figures.</div>
+</div>
+
+<!-- 5 -->
+<div class="section">
+  <div class="sec-num">Section 5 · Applicant</div>
+  <h2 class="sec serif">Step 3 — Upload the audit package</h2>
+  <p>On the third step the company uploads its <b>audit package</b> — the environmental logs or report that support the metrics — as a single PDF. The upload shows a progress bar and, once complete, confirms the file name and size. Uploading a new file replaces the previous one before submission.</p>
+  <figure>
+    <img src="_howto_shots/03_wizard_step3_upload.png">
+    <figcaption>Step 3 — uploading the supporting audit logs.</figcaption>
+  </figure>
+</div>
+
+<!-- 6 -->
+<div class="section">
+  <div class="sec-num">Section 6 · Applicant</div>
+  <h2 class="sec serif">Step 4 — Pay the clearance fee</h2>
+  <p>The final step shows the tiered clearance fee and a summary of the application. The company clicks <b>Pay &amp; Submit</b> and completes payment through the Paystack gateway. When the payment succeeds, a Paystack reference (for example <code>PSTK_55120934</code>) is recorded against the application and the package is submitted to the Ministry in one action.</p>
+  <figure>
+    <img src="_howto_shots/04_wizard_step4_pay.png">
+    <figcaption>Step 4 — the tiered fee and Pay &amp; Submit action.</figcaption>
+  </figure>
+  <figure>
+    <img src="_howto_shots/05_paystack.png">
+    <figcaption>The Paystack payment gateway. Payment is the trigger that notifies the Ministry.</figcaption>
+  </figure>
+</div>
+
+<!-- 7 -->
+<div class="section">
+  <div class="sec-num">Section 7 · Applicant</div>
+  <h2 class="sec serif">Tracking your application</h2>
+  <p>After submitting, the company's workspace switches to a live dashboard. It shows the submitted audit package, a status badge (<span class="pill">Under Review</span>), and an audit-progress pipeline: profile registered, fee paid, document uploaded, Ministry of Environment review, and clearance stamped. Any decision by the Ministry updates this dashboard automatically.</p>
+  <figure>
+    <img src="_howto_shots/06_applicant_under_review.png">
+    <figcaption>The applicant dashboard while the Ministry of Environment reviews the submission.</figcaption>
+  </figure>
+</div>
+
+<!-- 8 -->
+<div class="section">
+  <div class="sec-num">Section 8 · Ministry of Environment</div>
+  <h2 class="sec serif">Notification &amp; the review queue</h2>
+  <p>The moment a company's payment is confirmed, its application appears in the Ministry of Environment's <b>Clearance Console</b>. A green notification banner surfaces the new paid application, the <b>Awaiting Review</b> counter increments, and the application is added to the <b>Incoming Paid Applications</b> table — marked <em>auto-notified on payment</em>.</p>
+  <figure>
+    <img src="_howto_shots/09_ministry_queue.png">
+    <figcaption>The Ministry console — a new paid application notification and the incoming queue.</figcaption>
+  </figure>
+  <div class="note"><b>This is the core of the refined idea:</b> payment is the event that notifies the Ministry. No manual hand-off is needed — paying for the service places the application directly on the Ministry's dashboard.</div>
+</div>
+
+<!-- 9 -->
+<div class="section">
+  <div class="sec-num">Section 9 · Ministry of Environment</div>
+  <h2 class="sec serif">Reviewing an application</h2>
+  <p>The officer clicks a row to open the review screen. The left panel shows the submitted document with the company's verified Paystack ID, corporate details, and the four environmental performance indicators — each automatically tagged (Acceptable, Excellent, Low Risk, Moderate, High Risk) to guide the assessment. The right panel is the <b>Ministry Assessment</b>, with a remarks field and two decisions.</p>
+  <figure>
+    <img src="_howto_shots/10_ministry_review.png">
+    <figcaption>The review screen — submitted document, tagged metrics, and the Ministry's decision panel.</figcaption>
+  </figure>
+  <p>The two decisions are <b>Approve &amp; Issue Certificate</b> and <b>Request Revision</b>. Requesting a revision sends the officer's remarks back to the applicant's dashboard; the applicant corrects and re-submits without paying again.</p>
+</div>
+
+<!-- 10 -->
+<div class="section">
+  <div class="sec-num">Section 10 · Ministry of Environment</div>
+  <h2 class="sec serif">Issuing the certificate</h2>
+  <p>When the officer clicks <b>Approve &amp; Issue Certificate</b>, the system generates the official certificate with a unique number (prefix <code>FME-ESG-2026-</code>), an issue date and a one-year expiry. The certificate is then <b>uploaded to the applicant's account</b> and a copy is <b>emailed to the applicant</b> automatically. The Ministry's <em>Certificates Issued</em> count increments.</p>
+  <figure>
+    <img src="_howto_shots/11_ministry_certificate.png">
+    <figcaption>The issued ESG clearance certificate, generated on approval.</figcaption>
+  </figure>
+</div>
+
+<!-- 11 -->
+<div class="section">
+  <div class="sec-num">Section 11 · Applicant</div>
+  <h2 class="sec serif">Receiving the certificate (account + email)</h2>
+  <p>On the applicant's side the dashboard updates to <span class="pill">Approved</span>. A success banner confirms: <em>"The Federal Ministry of Environment has issued your Audited ESG Clearance Certificate, uploaded it to your account below, and dispatched a copy to your corporate email."</em> The applicant can view, download or print the certificate directly.</p>
+  <figure>
+    <img src="_howto_shots/07_applicant_approved.png">
+    <figcaption>The applicant dashboard after issue — certificate in the account and emailed.</figcaption>
+  </figure>
+  <figure>
+    <img src="_howto_shots/08_certificate.png">
+    <figcaption>The certificate as the applicant sees it — number, issue date and one-year expiry.</figcaption>
+  </figure>
+</div>
+
+<!-- 12 -->
+<div class="section">
+  <div class="sec-num">Section 12</div>
+  <h2 class="sec serif">Handling a revision request</h2>
+  <p>If the Ministry needs changes, the application status becomes <span class="pill">Revision</span> and a banner on the applicant's dashboard explains the reason in the officer's own remarks. The applicant reopens the application, corrects the metrics or re-uploads a corrected audit package, and submits again.</p>
+  <p><b>Re-submission after a revision does not require a second payment</b> — the original clearance fee covers the cycle. Once corrected, the application returns to the Ministry queue and the review repeats.</p>
+</div>
+
+<!-- 13 -->
+<div class="section">
+  <div class="sec-num">Section 13</div>
+  <h2 class="sec serif">Understanding the metrics</h2>
+  <p>Each ESG benchmark field captures one dimension of a company's environmental performance. The portal tags each value automatically to guide the Ministry officer.</p>
+  <table>
+    <tr><th>Metric</th><th>What it measures</th><th>Direction</th></tr>
+    <tr><td><b>Carbon Emission Intensity</b><br>(gCO<sub>2</sub>e / kWh)</td><td>Grams of CO<sub>2</sub>-equivalent emitted per kilowatt-hour of energy used or produced.</td><td>Lower is better</td></tr>
+    <tr><td><b>Energy Efficiency Index</b><br>(%)</td><td>How efficiently the operation converts energy input into useful output.</td><td>Higher is better</td></tr>
+    <tr><td><b>Grid Deficit Drawdown</b><br>(MW)</td><td>Load drawn from the national grid during deficit periods.</td><td>Lower is better</td></tr>
+    <tr><td><b>Waste Disposal Rate Classification</b></td><td>How waste is handled, from formal/regulated disposal to informal channels.</td><td>Formal is better</td></tr>
+  </table>
+</div>
+
+<!-- 14 -->
+<div class="section">
+  <div class="sec-num">Section 14</div>
+  <h2 class="sec serif">Application statuses</h2>
+  <table>
+    <tr><th>Status</th><th>Meaning</th><th>Where it shows</th></tr>
+    <tr><td><b>draft</b></td><td>Started but not yet paid or submitted.</td><td>Applicant wizard</td></tr>
+    <tr><td><b>submitted</b></td><td>Paid and pushed to the Ministry; awaiting review.</td><td>Both — queue &amp; dashboard</td></tr>
+    <tr><td><b>revision</b></td><td>Ministry requested changes; reason shown to applicant.</td><td>Both</td></tr>
+    <tr><td><b>approved</b></td><td>Cleared — certificate issued, uploaded to account &amp; emailed.</td><td>Both</td></tr>
+  </table>
+  <div class="note">The status is the single shared field that keeps the applicant dashboard and the Ministry queue in sync.</div>
+</div>
+
+<!-- 15 -->
+<div class="section">
+  <div class="sec-num">Section 15 · Engineers</div>
+  <h2 class="sec serif">Engineering notes (data model &amp; wiring)</h2>
+  <p>The current portal is a single page (<code>risk-esg/esg-portal.html</code>) that simulates both roles and the backend in the browser using <code>localStorage</code>. This section maps the demo to what a production build needs.</p>
+
+  <h3>Roles</h3>
+  <p>The page renders one of two role views, chosen by <code>localStorage.esg_user_role</code> (<code>'client'</code> or <code>'auditor'</code>). In production these become two authenticated audiences: the company account and the Ministry officer account.</p>
+
+  <h3>Application record (the shared object)</h3>
+  <p>Every application is one object in the <code>ecn_portal_submissions</code> list. The key fields:</p>
+  <pre>{
+  companyName, rcNumber, businessSector,
+  corporateEmail, corporatePhone,
+  paystackRef, amountPaid,
+  manualMetrics: { carbon, efficiency, grid, waste },
+  requiresOnSiteAudit,
+  submittedFile, fileSize, dateSubmitted,
+  status: 'draft' | 'submitted' | 'revision' | 'approved',
+  auditorRemarks,
+  certificateNum, issueDate, expiryDate
+}</pre>
+
+  <h3>The flow in code</h3>
+  <ul>
+    <li><code>triggerPaymentSuccess()</code> → <code>submitAuditPackage()</code> sets <code>status:'submitted'</code> and pushes the record to the shared list — this is the <b>payment-notifies-Ministry</b> event.</li>
+    <li><code>renderAuditorTable()</code> shows the queue and the <b>new-paid-application banner</b> based on the count of <code>submitted</code> records.</li>
+    <li><code>handleAuditorApproval()</code> sets <code>status:'approved'</code>, generates <code>certificateNum / issueDate / expiryDate</code>, and pushes the certificate back onto the applicant record.</li>
+    <li><code>handleAuditorRevision()</code> sets <code>status:'revision'</code> with the officer's remarks.</li>
+  </ul>
+
+  <h3>What to wire for production</h3>
+  <table>
+    <tr><th>Concern</th><th>Demo (now)</th><th>Production</th></tr>
+    <tr><td>Storage</td><td>browser <code>localStorage</code></td><td>server database with the same record shape</td></tr>
+    <tr><td>Payment</td><td>simulated Paystack modal</td><td>real Paystack init + <b>webhook</b> that flips status to <code>submitted</code></td></tr>
+    <tr><td>Ministry notification</td><td>queue + banner on render</td><td>push/in-app notification + optional officer email on new paid application</td></tr>
+    <tr><td>Certificate</td><td>generated client-side on approve</td><td>server-generated signed PDF, stored to the account's document vault</td></tr>
+    <tr><td>Email to applicant</td><td>copy text in the banner</td><td>transactional email with the certificate PDF attached, on <code>approved</code></td></tr>
+  </table>
+  <div class="note"><b>The one rule to preserve:</b> <em>payment</em> is the trigger that moves an application onto the Ministry's dashboard, and <em>approval</em> is the trigger that delivers the certificate to the applicant's account and email. Everything else is presentation.</div>
+</div>
+
+<!-- 16 -->
+<div class="section">
+  <div class="sec-num">Section 16</div>
+  <h2 class="sec serif">FAQ</h2>
+  <h3>Does the Ministry see the application before payment?</h3>
+  <p>No. The application only reaches the Ministry's dashboard once payment is confirmed. Paying is what notifies the Ministry.</p>
+  <h3>Who issues the certificate?</h3>
+  <p>The Ministry of Environment officer, from the review screen. On approval the certificate is uploaded to the applicant's account and emailed to them automatically.</p>
+  <h3>Does a revision cost another payment?</h3>
+  <p>No. The original clearance fee covers the review cycle, including re-submission after a revision request.</p>
+  <h3>Where does the applicant get the certificate?</h3>
+  <p>Two places: on their portal dashboard (view / download / print) and as a copy emailed to their corporate address.</p>
+  <h3>What is the certificate's validity?</h3>
+  <p>One year from the issue date. The expiry date is printed on the certificate; the company renews before it lapses.</p>
+</div>
+
+<!-- 17 -->
+<div class="section">
+  <div class="sec-num">Section 17</div>
+  <h2 class="sec serif">Glossary</h2>
+  <p><b>Applicant</b> — the Nigerian company applying for ESG clearance.</p>
+  <p><b>Ministry of Environment</b> — the reviewing authority that is notified on payment and issues the certificate.</p>
+  <p><b>Clearance Console</b> — the Ministry's dashboard: queue, review screen and issued certificates.</p>
+  <p><b>Audit package</b> — the environmental logs/report the applicant uploads to support its metrics.</p>
+  <p><b>Paystack reference</b> — the unique ID of the clearance payment; proof that the fee was paid.</p>
+  <p><b>ESG benchmark metrics</b> — the four environmental indicators the Ministry assesses.</p>
+  <p><b>On-site audit</b> — the path for companies whose metrics require a physical Ministry inspection.</p>
+  <p><b>Certificate number</b> — the unique ESG clearance ID (prefix <code>FME-ESG-2026-</code>).</p>
+  <p><b>NEIIA</b> — the platform operator hosting the portal for the Ministry.</p>
+</div>
+
+<!-- 18 -->
+<div class="section">
+  <div class="sec-num">Section 18</div>
+  <h2 class="sec serif">Document history</h2>
+  <table>
+    <tr><th>Version</th><th>Date</th><th>Change summary</th></tr>
+    <tr><td>v1.0</td><td>2026-06-16</td><td>First engineering handover. Refined two-party model: payment notifies the Ministry of Environment, which reviews and issues the certificate to the applicant's account and email. Reviewer console rebranded from NEIIA auditor to Ministry of Environment; payment-notification banner added; approval reframed as issue-and-deliver.</td></tr>
+  </table>
+</div>
+
+</body>
+</html>

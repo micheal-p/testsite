@@ -94,7 +94,7 @@
                     <div class="feedback-banner" id="dash-revision-banner" style="display: none;">
                         <i class="fas fa-circle-exclamation"></i>
                         <div>
-                            <div class="feedback-title">Revision Requested by ECN Auditor</div>
+                            <div class="feedback-title">Revision Requested by the Ministry of Environment</div>
                             <div class="feedback-desc" id="dash-revision-reason">Please upload clean environmental logging files. Section 4 logs did not map to regional benchmarks.</div>
                             <button class="btn btn-primary btn-sm" style="margin-top: 12px;" onclick="enableReupload()">
                                 <i class="fas fa-arrow-up-from-bracket"></i> Upload New Document
@@ -106,8 +106,8 @@
                     <div class="feedback-banner" id="dash-approved-banner" style="display: none; background: #e3fcf0; border-color: rgba(14,122,60,0.2);">
                         <i class="fas fa-circle-check" style="color: var(--db-green);"></i>
                         <div>
-                            <div class="feedback-title" style="color: var(--db-green-deep);">Official ESG Clearance Stamped</div>
-                            <div class="feedback-desc">Your energy audits met national standards. The Energy Commission of Nigeria has generated your Audited ESG Clearance Certificate. A copy has been dispatched to your corporate email.</div>
+                            <div class="feedback-title" style="color: var(--db-green-deep);">Official ESG Clearance Issued</div>
+                            <div class="feedback-desc">Your environmental audit met national standards. The Federal Ministry of Environment has issued your Audited ESG Clearance Certificate, uploaded it to your account below, and dispatched a copy to your corporate email.</div>
                             <div style="display:flex; gap:10px; margin-top: 12px;">
                                 <button class="btn btn-primary btn-sm" onclick="viewCertificate()">
                                     <i class="fas fa-certificate"></i> View Certificate
@@ -135,7 +135,7 @@
                                 </div>
 
                                 <div style="margin-top: 20px; font-size: 13px; color: var(--db-text-muted); line-height: 1.6;">
-                                    <p style="margin-bottom: 8px;"><strong>Audit Context:</strong> Companies routing compliance packages to ECN must submit quarterly environment log sheets. Once verified PAID, our administrative queue initializes evaluation based on the regulatory frameworks aligned with your business category.</p>
+                                    <p style="margin-bottom: 8px;"><strong>Audit Context:</strong> Companies routing compliance packages to the Federal Ministry of Environment submit quarterly environment log sheets. As soon as your payment is verified, the application is pushed to the Ministry's review dashboard for evaluation against the regulatory frameworks aligned with your business category.</p>
                                     <p>Any updates or compliance remarks will automatically prompt notification alerts on this panel.</p>
                                 </div>
                             </div>
@@ -173,7 +173,7 @@
                                     <div class="timeline-item" id="timeline-item-review">
                                         <span class="timeline-dot"></span>
                                         <div class="timeline-header">
-                                            <span>ECN Audit Review</span>
+                                            <span>Ministry of Environment Review</span>
                                             <span class="timeline-date">—</span>
                                         </div>
                                         <div class="timeline-desc" id="time-step4-desc">Internal specialists reviewing risks &amp; metrics.</div>
@@ -443,8 +443,8 @@
                 <!-- Auditor Sidebar -->
                 <aside style="position: sticky; top: 32px;">
                     <div style="margin-bottom: 32px;">
-                        <h2 class="font-serif" style="font-size: 32px; line-height: 1.1; color: var(--db-ink); margin-bottom: 8px;">NEIIA <br><em style="color: var(--db-green); font-style: italic;">Command Center</em></h2>
-                        <p style="font-size: 13px; color: var(--db-text-muted);">Manage incoming ESG clearances and compliance audits.</p>
+                        <h2 class="font-serif" style="font-size: 32px; line-height: 1.1; color: var(--db-ink); margin-bottom: 8px;">Ministry of <br><em style="color: var(--db-green); font-style: italic;">Environment</em></h2>
+                        <p style="font-size: 13px; color: var(--db-text-muted);">Clearance Console — review paid applications and issue ESG certificates.</p>
                     </div>
 
                     <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
@@ -469,35 +469,42 @@
                 <!-- Auditor Main Content -->
                 <div class="auditor-main-content">
                     <div class="dashboard-content" id="auditor-main-view">
+                        <!-- Payment Notification Banner -->
+                        <div id="ministry-notif-banner" style="display:none; align-items:center; gap:12px; background:#e3fcf0; border:1px solid rgba(14,122,60,0.25); border-left:4px solid var(--db-green); border-radius:10px; padding:14px 18px; margin-bottom:20px;">
+                            <i class="fas fa-bell" style="color:var(--db-green); font-size:18px;"></i>
+                            <div style="font-size:13.5px; color:var(--db-ink);">
+                                <strong id="ministry-notif-count">1 new paid application</strong> received and awaiting your review. The applicant was charged through Paystack; open the row below to review and issue the certificate.
+                            </div>
+                        </div>
                         <!-- Stats Strip -->
                     <div class="auditor-stats">
                         <div class="stat-card" style="background: white; border: 1px solid var(--db-border); border-radius: 12px; padding: 20px;">
-                            <div class="stat-label" style="font-size: 12px; font-weight: 600; color: var(--db-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Verified Nodes</div>
+                            <div class="stat-label" style="font-size: 12px; font-weight: 600; color: var(--db-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Registered Companies</div>
                             <div class="stat-value" id="stat-total-subs" style="font-size: 32px; font-weight: 700; color: var(--db-ink); font-family: 'Instrument Serif', serif;">3</div>
                             <div class="stat-foot" style="font-size: 11px; color: var(--db-text-faint); margin-top: 8px;">Active companies</div>
                         </div>
                         <div class="stat-card" style="background: white; border: 1px solid var(--db-border); border-radius: 12px; padding: 20px;">
-                            <div class="stat-label" style="font-size: 12px; font-weight: 600; color: var(--db-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Inflows Stamped</div>
+                            <div class="stat-label" style="font-size: 12px; font-weight: 600; color: var(--db-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Fees Received</div>
                             <div class="stat-value" id="stat-total-fees" style="font-size: 32px; font-weight: 700; color: var(--db-ink); font-family: 'Instrument Serif', serif;">₦900k</div>
-                            <div class="stat-foot" style="font-size: 11px; color: var(--db-text-faint); margin-top: 8px;">Verified via webhook</div>
+                            <div class="stat-foot" style="font-size: 11px; color: var(--db-text-faint); margin-top: 8px;">Via Paystack</div>
                         </div>
                         <div class="stat-card" style="background: white; border: 1px solid var(--db-border); border-radius: 12px; padding: 20px;">
-                            <div class="stat-label" style="font-size: 12px; font-weight: 600; color: var(--db-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Clearances</div>
+                            <div class="stat-label" style="font-size: 12px; font-weight: 600; color: var(--db-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Certificates Issued</div>
                             <div class="stat-value" id="stat-total-approved" style="font-size: 32px; font-weight: 700; color: var(--db-ink); font-family: 'Instrument Serif', serif;">2</div>
-                            <div class="stat-foot" style="font-size: 11px; color: var(--db-text-faint); margin-top: 8px;">Stamps issued YTD</div>
+                            <div class="stat-foot" style="font-size: 11px; color: var(--db-text-faint); margin-top: 8px;">Issued this year</div>
                         </div>
                         <div class="stat-card" style="background: var(--db-surface-muted); border: 1px solid var(--db-border); border-radius: 12px; padding: 20px;">
-                            <div class="stat-label" style="font-size: 12px; font-weight: 600; color: var(--db-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Needs Evaluation</div>
+                            <div class="stat-label" style="font-size: 12px; font-weight: 600; color: var(--db-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Awaiting Review</div>
                             <div class="stat-value" id="stat-total-pending" style="font-size: 32px; font-weight: 700; color: var(--db-accent); font-family: 'Instrument Serif', serif;">1</div>
-                            <div class="stat-foot" style="font-size: 11px; color: var(--db-text-faint); margin-top: 8px;">Compliance queue</div>
+                            <div class="stat-foot" style="font-size: 11px; color: var(--db-text-faint); margin-top: 8px;">Pending queue</div>
                         </div>
                     </div>
 
                 <!-- Table & Split Details View -->
                 <div class="auditor-table-card" style="background: white; border: 1px solid var(--db-border); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
                     <div class="panel-header" style="padding: 20px 24px; border-bottom: 1px solid var(--db-border); background: var(--db-surface); display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-weight: 600; font-size: 15px;">NEIIA Compliance Submissions</span>
-                        <span class="status-badge approved" style="font-size: 11px; padding: 4px 10px; border-radius: 20px; background: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fas fa-circle-check"></i> Webhook Active</span>
+                        <span style="font-weight: 600; font-size: 15px;">Incoming Paid Applications</span>
+                        <span class="status-badge approved" style="font-size: 11px; padding: 4px 10px; border-radius: 20px; background: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fas fa-bell"></i> Auto-notified on payment</span>
                     </div>
                     <div class="table-responsive">
                         <table class="db-table" id="auditor-submission-table">
@@ -549,7 +556,7 @@
         <div class="paystack-iframe">
             <div class="paystack-header">
                 <div class="paystack-header-left">
-                    <span class="paystack-header-title">ECN Compliance Gate</span>
+                    <span class="paystack-header-title">Ministry of Environment · Clearance</span>
                     <span class="paystack-header-email" id="pstk-email-lbl">ir@company.com</span>
                 </div>
                 <div class="paystack-header-amount" id="pstk-amount-header">
@@ -1038,7 +1045,7 @@
             }
             localStorage.setItem(DB_KEY, JSON.stringify(globalList));
 
-            showToast('Audit package successfully pushed to NEIIA review queue!', false);
+            showToast('Payment confirmed — your application has been sent to the Ministry of Environment for review.', false);
             showClientDashboard();
         }
 
@@ -1077,7 +1084,7 @@
 
             if (applicantProfile.status === 'submitted') {
                 timelineItemReview.className = 'timeline-item active';
-                document.getElementById('time-step4-desc').textContent = 'Audit queue active. NEIIA Specialist assigned.';
+                document.getElementById('time-step4-desc').textContent = 'Application received. Ministry officer assigned.';
             } else if (applicantProfile.status === 'forwarded') {
                 timelineItemReview.className = 'timeline-item active';
                 document.getElementById('time-step4-desc').textContent = 'Application forwarded to Ministry of Environment for final clearance.';
@@ -1187,6 +1194,18 @@
             const pending = list.filter(s => s.status === 'submitted').length;
             document.getElementById('stat-total-pending').textContent = pending;
             document.getElementById('stat-total-pending').style.color = pending > 0 ? 'var(--db-accent)' : 'var(--db-text-muted)';
+
+            // Payment notification banner — surfaces newly-paid applications
+            const banner = document.getElementById('ministry-notif-banner');
+            if (banner) {
+                if (pending > 0) {
+                    document.getElementById('ministry-notif-count').textContent =
+                        pending + ' new paid application' + (pending > 1 ? 's' : '');
+                    banner.style.display = 'flex';
+                } else {
+                    banner.style.display = 'none';
+                }
+            }
         }
 
         // Select row to initialize inline inspector view
@@ -1342,7 +1361,7 @@
                 localStorage.setItem('ecn_active_applicant_profile', JSON.stringify(activeApp));
             }
 
-            showToast('ESG compliance clearance issued! PDF Certificate cataloged.', false);
+            showToast('Certificate issued — uploaded to the applicant\'s account and emailed to them.', false);
             
             // Pop the beautiful dynamic certificate preview modal!
             openCertificatePreview(list[idx]);
@@ -1409,7 +1428,7 @@
         <div class="auditor-overlay-modal" id="auditor-review-modal">
             <div class="auditor-overlay-content">
                 <div class="auditor-overlay-header">
-                    <h3>Compliance Audit Review</h3>
+                    <h3>Ministry of Environment — Application Review</h3>
                     <div class="auditor-overlay-close" onclick="closeAuditorReview()">
                         <i class="fas fa-times"></i>
                     </div>
@@ -1476,11 +1495,11 @@
                                 </div>
                             </div>
 
-                            <div class="doc-section-title">NEIIA Officer Verification Checklists</div>
+                            <div class="doc-section-title">Ministry Officer Verification Checklist</div>
                             <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--db-text-muted);">
-                                <li><i class="fas fa-square-check" style="color:var(--db-green); margin-right:6px;"></i> Checked: Compliance payment validated via webhook reference.</li>
+                                <li><i class="fas fa-square-check" style="color:var(--db-green); margin-right:6px;"></i> Checked: Clearance payment validated via Paystack reference.</li>
                                 <li><i class="fas fa-square-check" style="color:var(--db-green); margin-right:6px;"></i> Verified: Corporate questionnaire matches provided documentation.</li>
-                                <li><i class="fas fa-square-check" style="color:var(--db-green); margin-right:6px;"></i> Audited: Ready to be forwarded to Federal Ministry of Environment.</li>
+                                <li><i class="fas fa-square-check" style="color:var(--db-green); margin-right:6px;"></i> Reviewed: Application ready for the Ministry's issue or revision decision.</li>
                             </ul>
                         </div>
                     </div>
@@ -1488,7 +1507,7 @@
                     <!-- Auditor Decision Side Panel -->
                     <div class="review-actions-card" style="background: white; border: 1px solid var(--db-border); border-radius: 12px; padding: 24px; overflow-y: auto; height: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
                         <div class="panel-header" style="border-bottom: 1px solid var(--db-border); padding-bottom: 16px; margin-bottom: 20px;">
-                            <span style="font-weight: 600; font-size: 16px;">NEIIA Assessment</span>
+                            <span style="font-weight: 600; font-size: 16px;">Ministry Assessment</span>
                         </div>
 
                         <div class="form-group" style="margin-top: 10px;">
@@ -1497,19 +1516,16 @@
                         </div>
 
                         <div style="display:flex; flex-direction: column; gap: 12px;">
-                            <button class="btn btn-primary btn-lg" style="background:#0F172A;" onclick="handleForwardToMinistry()">
-                                <i class="fas fa-share-nodes" style="margin-right:8px;"></i> Forward to Ministry
-                            </button>
                             <button class="btn btn-primary btn-lg" onclick="handleAuditorApproval()">
-                                <i class="fas fa-stamp" style="margin-right:8px;"></i> Ministry Verified (Issue Clearance)
+                                <i class="fas fa-stamp" style="margin-right:8px;"></i> Approve &amp; Issue Certificate
                             </button>
                             <button class="btn btn-danger btn-lg" onclick="handleAuditorRevision()">
-                                <i class="fas fa-circle-exclamation" style="margin-right:8px;"></i> Request Needs Revision
+                                <i class="fas fa-circle-exclamation" style="margin-right:8px;"></i> Request Revision
                             </button>
                         </div>
 
                         <div style="font-size: 11px; color: var(--db-text-faint); line-height: 1.5; text-align: center; margin-top: 16px; padding: 12px; background: var(--db-surface-muted); border-radius: 8px;">
-                            <i class="fas fa-info-circle" style="margin-right: 4px;"></i> Official administrative updates immediately sync back to the Company's portal workspace in real-time.
+                            <i class="fas fa-info-circle" style="margin-right: 4px;"></i> On approval, the certificate is uploaded to the applicant's account and a copy is emailed automatically. All updates sync back to the company's workspace in real time.
                         </div>
                     </div>
                 </div>
