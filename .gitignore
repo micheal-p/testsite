@@ -1,3 +1,6 @@
 
 .env
 deal-room/Deal Room - How to use.docx
+*.bak
+.DS_Store
+__pycache__/

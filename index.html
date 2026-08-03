@@ -3,2231 +3,704 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>NEIIA — The energy operating system of Nigeria</title>
     <meta name="description"
-        content="NEIIA is Nigeria's centralized platform for energy investment intelligence, asset visibility, and strategic coordination — operated under the Federal Republic of Nigeria.">
+        content="NEIIA is Nigeria's centralised platform for energy investment intelligence, asset visibility and strategic coordination — operated under the Federal Republic of Nigeria.">
+    <meta name="theme-color" content="#0B1F24">
+
     <meta property="og:title" content="NEIIA — The energy operating system of Nigeria">
     <meta property="og:description"
-        content="Energy investment intelligence, data, and strategic coordination for Nigeria.">
+        content="Energy investment intelligence, data and strategic coordination for Nigeria.">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="./assets/images/hero.jpg">
+    <!-- TODO: og:image must be an absolute URL once the production domain is confirmed. -->
+    <meta property="og:image" content="assets/images/neiia-hero.webp">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Mulish:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/svg+xml" href="./assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
 
-    <style>
-        /* === Page-scoped overrides for index.html only === */
-
-        /* Typography: Mulish (closest free Avenir alternative — matches hellotractor.com's typeface) */
-        body,
-        .hero,
-        .hero p,
-        .hero-eyebrow,
-        .grid-section-header,
-        .grid-section-header p,
-        .grid-section-header .eyebrow,
-        .grid-item,
-        .grid-item h3,
-        .grid-item .grid-id,
-        .stats-section,
-        .stats-left,
-        .stats-left .stats-label,
-        .stats-left .stats-desc,
-        .stat-item,
-        .stat-number,
-        .stat-label,
-        .features-section,
-        .feature-text,
-        .feature-text p,
-        .cta-band,
-        .cta-inner,
-        .cta-inner .eyebrow,
-        .footer,
-        .footer-col,
-        .footer-col h4,
-        .footer-col ul li,
-        .footer-bottom,
-        .footer-legal,
-        .trust-strip,
-        .trust-label,
-        .trust-tags,
-        .navbar,
-        .nav-links,
-        .nav-link,
-        .nav-item,
-        .auth-fixed,
-        .btn,
-        .mobile-nav-overlay,
-        .mobile-nav-list,
-        .submenu-list,
-        .submenu-content,
-        .login-box,
-        .login-field,
-        .login-submit,
-        .login-error,
-        .login-lockout {
-            font-family: "Mulish", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif !important;
-        }
-
-        /* Headings use Instrument Serif */
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        .hero h1,
-        .grid-section-header h2,
-        .stats-left .stats-heading,
-        .feature-text h2,
-        .cta-inner h2 {
-            font-family: "Instrument Serif", Georgia, serif !important;
-            font-weight: 400 !important;
-        }
-
-        /* Section rhythm — professional whitespace */
-        section,
-        header {
-            scroll-snap-align: none;
-            min-height: auto;
-            padding: 80px 0;
-        }
-
-        @media (max-width: 768px) {
-
-            section,
-            header {
-                padding: 60px 0;
-            }
-        }
-
-        /* === HERO === */
-        .hero {
-            padding: 100px 32px 60px !important;
-            max-width: 1240px;
-            margin: 0 auto;
-            text-align: left;
-            display: grid;
-            grid-template-columns: 0.95fr 1.05fr;
-            gap: 64px;
-            align-items: center;
-        }
-
-        @media (max-width: 968px) {
-            .hero {
-                grid-template-columns: 1fr;
-                gap: 48px;
-                padding: 110px 24px 60px !important;
-            }
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 5.5vw, 4.5rem);
-            letter-spacing: -0.03em;
-            line-height: 1.05;
-            max-width: 18ch;
-            font-weight: 600;
-            margin-bottom: 28px;
-        }
-
-        .hero p {
-            font-size: clamp(1.05rem, 1.3vw, 1.2rem);
-            line-height: 1.55;
-            color: #4a5568;
-            max-width: 560px;
-            margin-bottom: 40px;
-        }
-
-        body.dark-mode .hero p {
-            color: #94a3b8;
-        }
-
-        .hero-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.22em;
-            color: #0B1F24;
-            margin-bottom: 32px;
-        }
-
-        .hero-eyebrow::before {
-            content: '';
-            width: 24px;
-            height: 1px;
-            background: currentColor;
-            opacity: 0.6;
-        }
-
-        body.dark-mode .hero-eyebrow {
-            color: #ffffff;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 64px;
-            flex-wrap: wrap;
-        }
-
-        .hero .btn {
-            padding: 14px 26px;
-            border-radius: 999px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.18s ease;
-        }
-
-        .hero .btn-primary {
-            background: #0B1F24;
-            color: #fff;
-            border: 1px solid #0B1F24;
-        }
-
-        .hero .btn-primary:hover {
-            background: #000;
-            transform: translateY(-1px);
-        }
-
-        .hero .btn-secondary {
-            background: transparent;
-            color: #0B1F24;
-            border: 1px solid rgba(11, 31, 36, 0.18);
-        }
-
-        .hero .btn-secondary:hover {
-            background: #0B1F24;
-            color: #fff;
-            border-color: #0B1F24;
-        }
-
-        body.dark-mode .hero .btn-primary {
-            background: #fff;
-            color: #0B1F24;
-            border-color: #fff;
-        }
-
-        body.dark-mode .hero .btn-primary:hover {
-            background: #A3E635;
-            border-color: #A3E635;
-        }
-
-        body.dark-mode .hero .btn-secondary {
-            color: #fff;
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        body.dark-mode .hero .btn-secondary:hover {
-            background: #fff;
-            color: #0B1F24;
-        }
-
-        .hero-image-wrapper {
-            margin: 0;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            background: #0B1F24;
-        }
-
-        .hero-image-wrapper img {
-            width: 100%;
-            height: auto;
-            display: block;
-            aspect-ratio: 1024 / 501;
-            object-fit: cover;
-        }
-
-        body.dark-mode .hero-image-wrapper {
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-
-        /* === TRUST STRIP === */
-        .trust-strip {
-            padding: 28px 0 !important;
-            border-top: 1px solid rgba(0, 0, 0, 0.06);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            display: block;
-        }
-
-        .trust-inner {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 0 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 24px;
-        }
-
-        .trust-brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            min-width: 0;
-        }
-
-        .trust-arms {
-            height: 26px;
-            width: auto;
-            flex-shrink: 0;
-            display: block;
-        }
-
-        .trust-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.22em;
-            font-weight: 600;
-            color: #5e6d8a;
-            line-height: 1.4;
-        }
-
-        .trust-tags {
-            display: flex;
-            gap: 36px;
-            font-size: 12.5px;
-            color: #5e6d8a;
-            flex-wrap: wrap;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: 500;
-        }
-
-        body.dark-mode .trust-strip {
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-
-        body.dark-mode .trust-label,
-        body.dark-mode .trust-tags {
-            color: #94a3b8;
-        }
-
-        @media (max-width: 768px) {
-            .trust-inner {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 18px;
-                padding: 0 24px;
-            }
-
-            .trust-tags {
-                gap: 18px 24px;
-                font-size: 11.5px;
-            }
-
-            .trust-arms {
-                height: 22px;
-            }
-
-            .trust-label {
-                font-size: 10.5px;
-            }
-        }
-
-        /* === PRODUCT GRID (refined editorial) === */
-        .grid-section {
-            padding: 90px 0 !important;
-            min-height: auto;
-        }
-
-        .grid-section-header {
-            max-width: 760px;
-            margin: 0 auto 48px;
-            padding: 0 32px;
-            text-align: center;
-            display: block;
-        }
-
-        .grid-section-header .eyebrow {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.22em;
-            color: #0B1F24;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        body.dark-mode .grid-section-header .eyebrow {
-            color: #fff;
-        }
-
-        .grid-section-header h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            letter-spacing: -0.03em;
-            line-height: 1.05;
-            font-weight: 700;
-            max-width: 18ch;
-            margin: 0 auto 22px;
-        }
-
-        .grid-section-header p {
-            font-size: 1.05rem;
-            line-height: 1.65;
-            color: #5e6d8a;
-            max-width: 560px;
-            margin: 0 auto;
-        }
-
-        body.dark-mode .grid-section-header p {
-            color: #94a3b8;
-        }
-
-        @media (max-width: 640px) {
-            .grid-section-header {
-                padding: 0 24px;
-                margin-bottom: 40px;
-            }
-
-            .grid-section-header h2 {
-                font-size: clamp(1.7rem, 6.5vw, 2.2rem);
-                margin-bottom: 18px;
-            }
-
-            .grid-section-header p {
-                font-size: 0.98rem;
-            }
-        }
-
-        .grid-container {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 0 32px;
-            display: grid !important;
-            grid-template-columns: repeat(3, 1fr) !important;
-            gap: 0 !important;
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
-            border-left: 1px solid rgba(0, 0, 0, 0.08);
-        }
-
-        @media (max-width: 968px) {
-            .grid-container {
-                grid-template-columns: repeat(2, 1fr) !important;
-            }
-        }
-
-        /* Mobile carousel @media blocks moved to the bottom of this <style>
-           so they win the cascade against the desktop .grid-item rules below. */
-        .grid-item {
-            position: relative !important;
-            border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
-            padding: 36px 28px !important;
-            background-color: #0B1F24 !important;
-            background-size: cover !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
-            color: #fff !important;
-            text-decoration: none !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: space-between !important;
-            min-height: 260px !important;
-            transition: transform 0.3s ease !important;
-            border-radius: 0 !important;
-            transform: none !important;
-            grid-column: auto !important;
-            grid-row: auto !important;
-            box-shadow: none !important;
-            overflow: hidden !important;
-            isolation: isolate;
-        }
-
-        .grid-item::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(11, 31, 36, 0.45) 0%, rgba(11, 31, 36, 0.55) 45%, rgba(11, 31, 36, 0.92) 100%);
-            z-index: 0;
-            transition: background 0.3s ease;
-        }
-
-        .grid-item:hover::before {
-            background: linear-gradient(180deg, rgba(11, 31, 36, 0.55) 0%, rgba(11, 31, 36, 0.7) 45%, rgba(11, 31, 36, 0.97) 100%);
-        }
-
-        .grid-item>* {
-            position: relative;
-            z-index: 1;
-        }
-
-        .grid-item:hover {
-            transform: none !important;
-        }
-
-        body.dark-mode .grid-container {
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        body.dark-mode .grid-item {
-            border-color: rgba(255, 255, 255, 0.1) !important;
-        }
-
-        .grid-item .grid-id {
-            font-size: 11px !important;
-            font-weight: 600 !important;
-            color: rgba(255, 255, 255, 0.75) !important;
-            letter-spacing: 0.06em !important;
-            font-variant-numeric: tabular-nums;
-            background: none !important;
-            padding: 0 !important;
-            border-radius: 0 !important;
-            display: block !important;
-            margin-bottom: 24px !important;
-            position: relative !important;
-        }
-
-        .grid-item h3 {
-            font-size: 1.2rem !important;
-            font-weight: 500 !important;
-            line-height: 1.25 !important;
-            letter-spacing: -0.01em !important;
-            color: #fff !important;
-            margin-bottom: 20px !important;
-        }
-
-        .grid-item .grid-arrow {
-            position: relative !important;
-            width: 34px !important;
-            height: 34px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            border-radius: 999px !important;
-            background: transparent !important;
-            color: #fff !important;
-            font-size: 13px !important;
-            transition: all 0.2s ease !important;
-            margin-top: auto !important;
-            border: 1px solid rgba(255, 255, 255, 0.4) !important;
-            opacity: 1 !important;
-        }
-
-        .grid-item:hover .grid-arrow {
-            background: #fff !important;
-            color: #0B1F24 !important;
-            border-color: #fff !important;
-            transform: translateX(2px);
-        }
-
-        .grid-dots {
-            display: none !important;
-        }
-
-        /* === STATS — dark band === */
-        .stats-section {
-            padding: 100px 0 !important;
-            background: #0B1F24 !important;
-            color: #fff;
-            min-height: auto;
-        }
-
-        .stats-container {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 0 32px;
-            display: grid !important;
-            grid-template-columns: 1fr 1.3fr !important;
-            gap: 64px;
-            align-items: start;
-        }
-
-        @media (max-width: 968px) {
-            .stats-container {
-                grid-template-columns: 1fr !important;
-                gap: 64px;
-            }
-        }
-
-        .stats-left .stats-label {
-            font-size: 11px !important;
-            text-transform: uppercase;
-            letter-spacing: 0.22em;
-            font-weight: 600;
-            color: #A3E635 !important;
-            margin-bottom: 24px;
-            display: block;
-        }
-
-        .stats-left .stats-heading {
-            font-size: clamp(2rem, 3.6vw, 2.85rem) !important;
-            letter-spacing: -0.03em;
-            line-height: 1.05;
-            font-weight: 600;
-            color: #fff !important;
-            margin-bottom: 28px;
-        }
-
-        .stats-left .stats-desc {
-            font-size: 1rem !important;
-            line-height: 1.7 !important;
-            color: rgba(255, 255, 255, 0.65) !important;
-            max-width: 440px;
-        }
-
-        .stats-grid {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 0 !important;
-            border-top: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .stat-item {
-            padding: 36px 0 !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-            background: transparent !important;
-        }
-
-        .stat-item:nth-child(odd) {
-            padding-right: 28px !important;
-            border-right: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .stat-item:nth-child(even) {
-            padding-left: 28px !important;
-        }
-
-        .stat-item.stat-main {
-            grid-column: 1 / -1;
-            padding-right: 0 !important;
-            border-right: none !important;
-        }
-
-        .stat-main .stat-number {
-            font-size: clamp(3.25rem, 6.5vw, 5.25rem) !important;
-        }
-
-        .stat-number {
-            font-size: clamp(2rem, 3.6vw, 2.85rem) !important;
-            font-weight: 600 !important;
-            letter-spacing: -0.035em !important;
-            line-height: 1 !important;
-            color: #fff !important;
-            display: block !important;
-            margin-bottom: 12px !important;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .stat-label {
-            font-size: 12px !important;
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.55) !important;
-        }
-
-        /* === FEATURES === */
-        .features-section {
-            padding: 80px 32px !important;
-            max-width: 1240px;
-            margin: 0 auto;
-            display: flex !important;
-            flex-direction: column;
-            gap: 56px;
-            min-height: auto;
-        }
-
-        .feature-block {
-            display: grid !important;
-            grid-template-columns: 1fr 1.15fr !important;
-            gap: 80px !important;
-            align-items: center !important;
-        }
-
-        .feature-block.reverse {
-            direction: rtl;
-        }
-
-        .feature-block.reverse>* {
-            direction: ltr;
-        }
-
-        @media (max-width: 968px) {
-            .features-section {
-                gap: 64px;
-                padding: 72px 24px !important;
-            }
-
-            .feature-block {
-                grid-template-columns: 1fr !important;
-                gap: 28px !important;
-            }
-
-            .feature-block.reverse {
-                direction: ltr;
-            }
-        }
-
-        .feature-text h2 {
-            font-size: clamp(1.85rem, 3vw, 2.5rem) !important;
-            letter-spacing: -0.025em;
-            line-height: 1.1;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .feature-text p {
-            font-size: 1.05rem !important;
-            line-height: 1.65 !important;
-            color: #5e6d8a !important;
-            margin-bottom: 28px !important;
-            max-width: 480px;
-        }
-
-        body.dark-mode .feature-text p {
-            color: #94a3b8 !important;
-        }
-
-        .feature-text .btn {
-            padding: 12px 22px;
-            border-radius: 999px;
-            font-size: 14px;
-            font-weight: 500;
-            border: 1px solid rgba(11, 31, 36, 0.18);
-            background: transparent;
-            color: #0B1F24;
-            transition: all 0.18s ease;
-        }
-
-        .feature-text .btn:hover {
-            background: #0B1F24;
-            color: #fff;
-            border-color: #0B1F24;
-        }
-
-        body.dark-mode .feature-text .btn {
-            color: #fff;
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        body.dark-mode .feature-text .btn:hover {
-            background: #fff;
-            color: #0B1F24;
-            border-color: #fff;
-        }
-
-        .feature-image {
-            aspect-ratio: 4 / 3;
-            overflow: hidden;
-            border-radius: 16px;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-        }
-
-        .feature-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-            transition: transform 0.6s ease;
-        }
-
-        .feature-block:hover .feature-image img {
-            transform: scale(1.03);
-        }
-
-        body.dark-mode .feature-image {
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-
-        /* === CTA BAND === */
-        .cta-band {
-            padding: 80px 0 !important;
-            border-top: 1px solid rgba(0, 0, 0, 0.06);
-            min-height: auto;
-        }
-
-        .cta-inner {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 0 32px;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: end;
-            gap: 48px;
-        }
-
-        .cta-inner .eyebrow {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.22em;
-            color: #0B1F24;
-            margin-bottom: 18px;
-            display: block;
-        }
-
-        body.dark-mode .cta-inner .eyebrow {
-            color: #fff;
-        }
-
-        .cta-inner h2 {
-            font-size: clamp(2rem, 4vw, 3.25rem);
-            letter-spacing: -0.03em;
-            line-height: 1.05;
-            font-weight: 600;
-            max-width: 16ch;
-        }
-
-        .cta-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .cta-actions .btn {
-            padding: 14px 26px;
-            border-radius: 999px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.18s ease;
-        }
-
-        .cta-actions .btn-primary {
-            background: #0B1F24;
-            color: #fff;
-            border: 1px solid #0B1F24;
-        }
-
-        .cta-actions .btn-primary:hover {
-            background: #000;
-        }
-
-        .cta-actions .btn-secondary {
-            background: transparent;
-            color: #0B1F24;
-            border: 1px solid rgba(11, 31, 36, 0.18);
-        }
-
-        .cta-actions .btn-secondary:hover {
-            background: #0B1F24;
-            color: #fff;
-            border-color: #0B1F24;
-        }
-
-        body.dark-mode .cta-band {
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-
-        body.dark-mode .cta-actions .btn-primary {
-            background: #fff;
-            color: #0B1F24;
-            border-color: #fff;
-        }
-
-        body.dark-mode .cta-actions .btn-secondary {
-            color: #fff;
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        body.dark-mode .cta-actions .btn-secondary:hover {
-            background: #fff;
-            color: #0B1F24;
-        }
-
-        @media (max-width: 768px) {
-            .cta-inner {
-                grid-template-columns: 1fr;
-                gap: 32px;
-                align-items: start;
-            }
-        }
-
-        /* === FOOTER === */
-        .footer-grid {
-            grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr !important;
-            gap: 48px;
-        }
-
-        .footer-brand h4 {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            letter-spacing: -0.01em;
-        }
-
-        .footer-brand p {
-            font-size: 13px;
-            line-height: 1.6;
-            color: #5e6d8a;
-            max-width: 280px;
-        }
-
-        .footer-bottom {
-            margin-top: 56px;
-            padding-top: 24px;
-            border-top: 1px solid #e5e7eb;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .footer-bottom p {
-            font-size: 12px;
-            color: #9ca3af;
-            margin: 0;
-        }
-
-        .footer-legal {
-            display: flex;
-            gap: 24px;
-            font-size: 12px;
-        }
-
-        .footer-legal a {
-            color: #9ca3af;
-            text-decoration: none;
-        }
-
-        .footer-legal a:hover {
-            color: #0B1F24;
-        }
-
-        body.dark-mode .footer-bottom {
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-
-        body.dark-mode .footer-legal a:hover {
-            color: #ffffff;
-        }
-
-        @media (max-width: 968px) {
-            .footer-grid {
-                grid-template-columns: 1fr 1fr !important;
-                gap: 32px;
-            }
-
-            .footer-brand {
-                grid-column: 1 / -1;
-            }
-        }
-
-        /* === NAV CHEVRON (SVG, never depends on FontAwesome) === */
-        .nav-link.dropdown-toggle .nav-chevron {
-            margin-left: 6px;
-            transition: transform 0.2s ease;
-            opacity: 0.85;
-        }
-
-        .nav-item.dropdown:hover .nav-chevron {
-            transform: rotate(180deg);
-            opacity: 1;
-        }
-
-        /* === HEAVY MOBILE RESPONSIVE === */
-        @media (max-width: 968px) {
-            .features-section {
-                gap: 72px;
-                padding: 80px 24px !important;
-            }
-
-            .stats-section {
-                padding: 90px 0 !important;
-            }
-
-            .stats-container {
-                padding: 0 24px;
-                gap: 56px;
-            }
-
-            .stat-item:nth-child(odd),
-            .stat-item:nth-child(even) {
-                padding-left: 0 !important;
-                padding-right: 0 !important;
-                border-right: none !important;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr !important;
-            }
-
-            .grid-section {
-                padding: 90px 0 !important;
-            }
-
-            .grid-section-header {
-                padding: 0 24px;
-                margin-bottom: 48px;
-            }
-
-            .grid-container {
-                padding: 0 24px;
-            }
-
-            .cta-band {
-                padding: 80px 0 !important;
-            }
-
-            .cta-inner {
-                padding: 0 24px;
-            }
-
-            .footer {
-                padding-left: 24px !important;
-                padding-right: 24px !important;
-            }
-        }
-
-        @media (max-width: 640px) {
-
-            section,
-            header {
-                padding: 72px 0;
-            }
-
-            .hero {
-                padding: 96px 20px 56px !important;
-            }
-
-            .hero h1 {
-                font-size: clamp(2.1rem, 9vw, 3.4rem);
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .hero-eyebrow {
-                font-size: 10px;
-                letter-spacing: 0.18em;
-                margin-bottom: 22px;
-            }
-
-            .hero-actions {
-                gap: 10px;
-                margin-bottom: 56px;
-                width: 100%;
-            }
-
-            .hero-actions .btn {
-                flex: 1 1 auto;
-                text-align: center;
-                min-width: 140px;
-                padding: 13px 18px;
-            }
-
-            .hero-image-wrapper {
-                border-radius: 14px;
-            }
-
-            .trust-strip {
-                padding: 22px 0 !important;
-            }
-
-            .grid-section {
-                padding: 72px 0 !important;
-            }
-
-            .grid-section-header {
-                margin-bottom: 36px;
-                gap: 18px;
-            }
-
-            .grid-section-header h2 {
-                font-size: clamp(1.7rem, 6.5vw, 2.2rem);
-            }
-
-            /* grid-item mobile sizing handled by the 600px horizontal-card block above */
-            .stats-section {
-                padding: 72px 0 !important;
-            }
-
-            .stats-container {
-                padding: 0 20px;
-                gap: 40px;
-            }
-
-            .stats-left .stats-heading {
-                font-size: clamp(1.7rem, 6vw, 2.2rem);
-            }
-
-            .stat-item {
-                padding: 26px 0 !important;
-            }
-
-            .stat-main .stat-number {
-                font-size: clamp(2.6rem, 11vw, 3.5rem) !important;
-            }
-
-            .stat-number {
-                font-size: clamp(1.8rem, 7vw, 2.3rem) !important;
-            }
-
-            .features-section {
-                gap: 56px;
-                padding: 64px 20px !important;
-            }
-
-            .feature-block {
-                gap: 22px !important;
-            }
-
-            .feature-text h2 {
-                font-size: clamp(1.7rem, 6.5vw, 2.1rem) !important;
-            }
-
-            .feature-text p {
-                font-size: 0.98rem !important;
-                margin-bottom: 22px !important;
-            }
-
-            .feature-image {
-                border-radius: 12px;
-            }
-
-            .cta-band {
-                padding: 72px 0 !important;
-            }
-
-            .cta-inner {
-                padding: 0 20px;
-                gap: 28px;
-            }
-
-            .cta-inner h2 {
-                font-size: clamp(1.7rem, 6.5vw, 2.3rem);
-            }
-
-            .cta-actions {
-                width: 100%;
-            }
-
-            .cta-actions .btn {
-                flex: 1 1 auto;
-                text-align: center;
-                min-width: 140px;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-
-            .footer-legal {
-                gap: 18px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .hero {
-                padding: 88px 16px 48px !important;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-                line-height: 1.05;
-            }
-
-            .hero-actions {
-                flex-direction: column;
-            }
-
-            .hero-actions .btn {
-                width: 100%;
-            }
-
-            .trust-tags {
-                gap: 12px 18px;
-                font-size: 11px;
-            }
-
-            .stat-main .stat-number {
-                font-size: 2.4rem !important;
-            }
-
-            .stat-number {
-                font-size: 1.7rem !important;
-            }
-
-            .cta-actions {
-                flex-direction: column;
-            }
-
-            .cta-actions .btn {
-                width: 100%;
-            }
-        }
-
-        /* === MOBILE: vertical scannable list with left thumbnail (iOS Settings / gov.uk pattern) === */
-        @media (max-width: 640px) {
-            .grid-container {
-                display: block !important;
-                grid-template-columns: none !important;
-                grid-template-rows: none !important;
-                gap: 0 !important;
-                border: 1px solid rgba(255, 255, 255, 0.08) !important;
-                border-radius: 14px !important;
-                margin: 0 16px !important;
-                padding: 0 !important;
-                max-width: none !important;
-                overflow: hidden !important;
-                background: #0B1F24 !important;
-            }
-
-            .grid-item {
-                display: flex !important;
-                flex-direction: row !important;
-                align-items: center !important;
-                gap: 14px !important;
-                padding: 14px 14px !important;
-                min-height: 0 !important;
-                height: auto !important;
-                aspect-ratio: auto !important;
-                background-color: transparent !important;
-                background-image: none !important;
-                border: none !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.09) !important;
-                border-radius: 0 !important;
-                color: #ffffff !important;
-                position: relative !important;
-                overflow: visible !important;
-                isolation: auto;
-            }
-
-            .grid-item:last-child {
-                border-bottom: none !important;
-            }
-
-            .grid-item::before {
-                display: none !important;
-                content: none !important;
-            }
-
-            .grid-item::after {
-                content: '';
-                width: 52px;
-                height: 52px;
-                flex-shrink: 0;
-                border-radius: 8px;
-                background-image: var(--thumb);
-                background-size: cover;
-                background-position: center;
-                background-color: rgba(255, 255, 255, 0.04);
-                order: -1;
-            }
-
-            .grid-item .grid-id {
-                position: static !important;
-                order: 1;
-                flex-shrink: 0;
-                width: 24px;
-                font-size: 11px !important;
-                font-weight: 600 !important;
-                color: rgba(255, 255, 255, 0.45) !important;
-                letter-spacing: 0.04em !important;
-                background: transparent !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                font-variant-numeric: tabular-nums;
-                display: block !important;
-            }
-
-            .grid-item h3 {
-                position: static !important;
-                order: 2;
-                flex: 1;
-                margin: 0 !important;
-                font-size: 0.95rem !important;
-                line-height: 1.3 !important;
-                font-weight: 500 !important;
-                letter-spacing: -0.005em !important;
-                color: #ffffff !important;
-                display: block !important;
-                -webkit-line-clamp: unset;
-                line-clamp: unset;
-            }
-
-            .grid-item .grid-arrow {
-                position: static !important;
-                order: 3;
-                width: 14px !important;
-                height: 14px !important;
-                background-color: rgba(255, 255, 255, 0.55) !important;
-                background-image: none !important;
-                -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path d='M4 2l4 4-4 4' stroke='black' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat center / contain;
-                mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path d='M4 2l4 4-4 4' stroke='black' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat center / contain;
-                border: none !important;
-                color: transparent !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                flex-shrink: 0;
-                display: block !important;
-                opacity: 1 !important;
-            }
-
-            .grid-item .grid-arrow i {
-                display: none !important;
-            }
-
-            .grid-item:active {
-                background: rgba(255, 255, 255, 0.04) !important;
-            }
-
-            /* Per-module thumbnails — 8 modules, image follows module not slot */
-            /* 01 NEFUND */
-            .grid-1 {
-                --thumb: url("assets/images/nefund.jpeg");
-            }
-
-            /* 02 eVillage (e-Village logo) */
-            .grid-2 {
-                --thumb: url("assets/images/evillage.png");
-            }
-
-            /* 03 National Energy Data Bank */
-            .grid-3 {
-                --thumb: url("assets/images/databank.jpg");
-            }
-
-            /* 04 Deal Room */
-            .grid-4 {
-                --thumb: url("assets/images/deal-room.png");
-            }
-
-            /* 05 Energy Assets */
-            .grid-5 {
-                --thumb: url("assets/images/Energy-Assets.jpg");
-            }
-
-            /* 06 Apex AI */
-            .grid-6 {
-                --thumb: url("assets/images/apex-ai.webp");
-            }
-
-            /* 07 Risk & ESG */
-            .grid-7 {
-                --thumb: url("assets/images/esg.jpg");
-            }
-
-            /* 08 Reporting & LP */
-            .grid-8 {
-                --thumb: url("assets/images/reporting-lp.jpg");
-            }
-
-            /* 09 Administration & Governance */
-            .grid-9 {
-                --thumb: url("assets/images/enterprise_grc_dashboard_mockup_1770596060655.png");
-            }
-
-            .grid-section-header {
-                padding: 0 20px !important;
-            }
-        }
-
-        /* Login overlay polish */
-        .login-box {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 48px;
-            width: 90%;
-            max-width: 420px;
-            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 1;
-        }
-
-        .login-flag-strip {
-            display: flex;
-            height: 3px;
-            border-radius: 2px;
-            overflow: hidden;
-            margin-bottom: 32px;
-        }
-
-        .login-flag-strip span {
-            flex: 1;
-        }
-
-        .login-flag-strip span:nth-child(1),
-        .login-flag-strip span:nth-child(3) {
-            background: #008751;
-        }
-
-        .login-flag-strip span:nth-child(2) {
-            background: #ffffff;
-            border-top: 1px solid #e5e7eb;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .login-field {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: inherit;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            background: #ffffff;
-            color: #111827;
-        }
-
-        .login-field:focus {
-            outline: none;
-            border-color: #0B1F24;
-            box-shadow: 0 0 0 3px rgba(11, 31, 36, 0.08);
-        }
-
-        .login-submit {
-            width: 100%;
-            background: #0B1F24;
-            color: #ffffff;
-            border: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            font-family: inherit;
-        }
-
-        .login-submit:hover {
-            background: #000000;
-        }
-
-        .login-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .login-error {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #dc2626;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            font-size: 13px;
-            text-align: center;
-        }
-
-        .login-lockout {
-            background: #0B1F24;
-            border: 1px solid #0B1F24;
-            color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .login-lockout i {
-            font-size: 18px;
-            margin-bottom: 10px;
-            display: block;
-            color: #A3E635;
-        }
-
-        .login-lockout-title {
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            margin-bottom: 6px;
-        }
-
-        .login-lockout-timer {
-            font-size: 28px;
-            font-weight: 700;
-            font-variant-numeric: tabular-nums;
-            letter-spacing: -0.02em;
-        }
-    </style>
+    <link rel="icon" type="image/png" href="assets/images/neiia-arms.png">
+
+    <!-- Self-hosted typeface. No Google Fonts, no Font Awesome, no third-party
+         CDN calls anywhere on this page — required by the sovereign-data claim
+         in the trust strip and by NDPA 2023. -->
+    <link rel="preload" href="assets/font/public-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/neiia.css?v=8">
+
+    <!-- Applies the stored theme before first paint to avoid a flash. -->
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('neiia-theme');
+                var dark = stored
+                    ? stored === 'dark'
+                    : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                document.documentElement.classList.add('has-js');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
 </head>
 
 <body>
+    <!-- ==================================================================
+         ACCESS GATE
+         Sets sessionStorage['neiia_authenticated'], which every page carrying
+         auth-check.js requires. Without this, all internal navigation
+         redirects back here.
+         ================================================================== -->
+    <div class="gate" id="gate" hidden role="dialog" aria-modal="true" aria-labelledby="gate-title">
+        <div class="gate__card">
+            <div class="gate__flag" aria-hidden="true"><span></span><span></span><span></span></div>
 
-    <!-- Login Overlay -->
-    <div id="loginOverlay"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: 99999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px);">
-        <img src="assets/images/nigerian_coat_of_arms.png" alt=""
-            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 420px; opacity: 0.06; pointer-events: none;">
-
-        <div class="login-box">
-            <div class="login-flag-strip" aria-hidden="true"><span></span><span></span><span></span></div>
-
-            <div style="text-align: center; margin-bottom: 32px;">
-                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="height: 44px; margin-bottom: 18px;">
-                <h2
-                    style="font-size: 22px; font-weight: 700; color: #0B1F24; margin-bottom: 8px; letter-spacing: -0.015em;">
-                    Authorized access only</h2>
-                <p style="font-size: 13px; color: #6b7280;">Sign in with your NEIIA credentials.</p>
+            <div class="gate__head">
+                <picture>
+                    <source srcset="assets/images/neiia-arms.webp" type="image/webp">
+                    <img src="assets/images/neiia-arms.png"
+                        alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                </picture>
+                <h2 id="gate-title">Restricted access</h2>
+                <p>Sign in with your NEIIA credentials.</p>
             </div>
 
-            <form id="loginForm" onsubmit="return handleLogin(event)">
-                <div style="margin-bottom: 18px;">
-                    <label for="loginUsername"
-                        style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em;">Username</label>
-                    <input type="text" id="loginUsername" placeholder="Username" class="login-field"
-                        autocomplete="username">
+            <form id="gate-form">
+                <div class="gate__field">
+                    <label for="gate-user">Username</label>
+                    <input type="text" id="gate-user" autocomplete="username" required>
+                </div>
+                <div class="gate__field">
+                    <label for="gate-pass">Password</label>
+                    <input type="password" id="gate-pass" autocomplete="current-password" required>
                 </div>
 
-                <div style="margin-bottom: 22px;">
-                    <label for="loginPassword"
-                        style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em;">Password</label>
-                    <input type="password" id="loginPassword" placeholder="Password" class="login-field"
-                        autocomplete="current-password">
+                <div class="gate__msg" id="gate-msg" hidden role="alert"></div>
+
+                <div class="gate__lock" id="gate-lock" hidden>
+                    <div class="gate__lock-title">Temporarily locked</div>
+                    <div class="gate__lock-timer" id="gate-timer"></div>
                 </div>
 
-                <div id="loginError" class="login-error" style="display: none;"></div>
-
-                <div id="lockoutMessage" class="login-lockout" style="display: none;">
-                    <i class="fas fa-lock"></i>
-                    <div class="login-lockout-title">Temporarily locked</div>
-                    <div id="lockoutTimer" class="login-lockout-timer"></div>
-                </div>
-
-                <button type="submit" id="loginBtn" class="login-submit">Sign in</button>
+                <button class="btn btn--primary" type="submit" id="gate-submit">Sign in</button>
             </form>
 
-            <div style="text-align: center; margin-top: 28px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
-                <p
-                    style="font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600;">
-                    Federal Republic of Nigeria</p>
-                <p style="font-size: 11px; color: #9ca3af; margin-top: 6px;">National Energy Investment &amp;
-                    Intelligence Administration</p>
+            <div class="gate__foot">
+                <strong>Federal Republic of Nigeria</strong>
+                <span>National Energy Investment &amp; Intelligence Administration</span>
             </div>
         </div>
     </div>
 
-    <script>
-        (function () {
-            // Authentication System with Exponential Lockout
-            const AUTH_KEY = 'neiia_authenticated';
-            const LOCKOUT_KEY = 'neiia_lockout';
-            const ATTEMPTS_KEY = 'neiia_attempts';
-            const BASE_LOCKOUT_MS = 90 * 1000; // 1 minute 30 seconds
+    <a class="skip-link" href="#main">Skip to main content</a>
 
-            // Encoded credentials (fetched from .pass file conceptually)
-            const VALID_CREDS = 'bm9hY2Nlc3M6d2F0ZXJmYWxsMzY1'; // base64: noaccess:waterfall365
+    <!-- ==================================================================
+         MASTHEAD
+         ================================================================== -->
+    <header class="masthead">
+        <div class="shell masthead__inner">
+            <a class="brand" href="index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-light.png" alt="NEIIA" width="260"
+                        height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-dark.png" alt="NEIIA" width="260"
+                        height="173">
+                </picture>
+            </a>
 
-            function checkAuth() {
-                const isAuthenticated = sessionStorage.getItem(AUTH_KEY) === 'true';
-                const overlay = document.getElementById('loginOverlay');
-
-                if (isAuthenticated) {
-                    overlay.style.display = 'none';
-                } else {
-                    overlay.style.display = 'flex';
-                    checkLockout();
-                }
-            }
-
-            function checkLockout() {
-                const lockoutData = localStorage.getItem(LOCKOUT_KEY);
-                if (lockoutData) {
-                    const { until, multiplier } = JSON.parse(lockoutData);
-                    const now = Date.now();
-
-                    if (now < until) {
-                        showLockout(until);
-                        return true;
-                    } else {
-                        // Lockout expired, but keep multiplier for next failure
-                    }
-                }
-                hideLockout();
-                return false;
-            }
-
-            function showLockout(until) {
-                document.getElementById('loginForm').querySelector('button').disabled = true;
-                document.getElementById('loginUsername').disabled = true;
-                document.getElementById('loginPassword').disabled = true;
-                document.getElementById('lockoutMessage').style.display = 'block';
-                document.getElementById('loginError').style.display = 'none';
-
-                updateLockoutTimer(until);
-            }
-
-            function hideLockout() {
-                document.getElementById('loginForm').querySelector('button').disabled = false;
-                document.getElementById('loginUsername').disabled = false;
-                document.getElementById('loginPassword').disabled = false;
-                document.getElementById('lockoutMessage').style.display = 'none';
-            }
-
-            function updateLockoutTimer(until) {
-                const timerEl = document.getElementById('lockoutTimer');
-
-                function tick() {
-                    const remaining = until - Date.now();
-
-                    if (remaining <= 0) {
-                        hideLockout();
-                        return;
-                    }
-
-                    const minutes = Math.floor(remaining / 60000);
-                    const seconds = Math.floor((remaining % 60000) / 1000);
-                    timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-
-                    setTimeout(tick, 1000);
-                }
-
-                tick();
-            }
-
-            function getMultiplier() {
-                const lockoutData = localStorage.getItem(LOCKOUT_KEY);
-                if (lockoutData) {
-                    return JSON.parse(lockoutData).multiplier || 1;
-                }
-                return 1;
-            }
-
-            window.handleLogin = function (event) {
-                event.preventDefault();
-
-                if (checkLockout()) return false;
-
-                const username = document.getElementById('loginUsername').value.trim();
-                const password = document.getElementById('loginPassword').value;
-                const inputCreds = btoa(username + ':' + password);
-
-                if (inputCreds === VALID_CREDS) {
-                    // Success
-                    sessionStorage.setItem(AUTH_KEY, 'true');
-                    localStorage.removeItem(LOCKOUT_KEY); // Reset lockout on success
-                    document.getElementById('loginOverlay').style.display = 'none';
-                } else {
-                    // Failed - apply exponential lockout
-                    const currentMultiplier = getMultiplier();
-                    const lockoutDuration = BASE_LOCKOUT_MS * currentMultiplier;
-                    const until = Date.now() + lockoutDuration;
-
-                    localStorage.setItem(LOCKOUT_KEY, JSON.stringify({
-                        until: until,
-                        multiplier: currentMultiplier * 2 // Double for next time
-                    }));
-
-                    document.getElementById('loginError').style.display = 'block';
-                    document.getElementById('loginError').innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right:6px;"></i>Invalid credentials. Locked for ' + (lockoutDuration / 60000) + ' minute(s).';
-
-                    setTimeout(() => {
-                        showLockout(until);
-                    }, 1500);
-                }
-
-                return false;
-            };
-
-            // Check auth on page load
-            document.addEventListener('DOMContentLoaded', checkAuth);
-        })();
-    </script>
-
-    <!-- Dark Mode Toggle (Hanging Bulb) -->
-    <div class="bulb-container" id="theme-toggle-bulb">
-        <div class="bulb-wire"></div>
-        <div class="bulb-icon"></div>
-    </div>
-
-    <!-- Logo (Separate from Pill Navbar) -->
-    <a href="index.html" class="logo-fixed">
-        <div class="logo-wrapper">
-            <img src="assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
-                style="max-width: 120px;">
-            <img src="assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
-                style="max-width: 120px; display: none;">
-        </div>
-    </a>
-
-    <!-- Navigation (Pill Style - Links Only) -->
-    <nav class="navbar pill-nav">
-        <!-- Pill Links (No Logo Inside) -->
-        <div class="nav-links">
-            <div class="nav-item dropdown">
-                <span class="nav-link dropdown-toggle">NEFUND <svg class="nav-chevron" width="11" height="11"
-                        viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                        <path d="M2 4.5L6 8.5L10 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg></span>
-                <div class="mega-menu">
-                    <div class="mm-left-columns">
-                        <div class="mm-column">
-                            <ul class="mm-list">
-                                <li><a href="deal-room/index.html">National Energy Deal Room</a></li>
-                            </ul>
-                            <div style="margin-top: 24px;">
-                                <h4>Intelligence</h4>
-                                <ul class="mm-list">
-                                    <li><a href="https://apex-neiia.vercel.app/">Apex AI <span
-                                                style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a>
-                                    </li>
-                                    <li><a href="edu-center/educenter.html">Edu Center</a></li>
-                                </ul>
-                            </div>
-                        </div>
+            <nav class="nav" aria-label="Primary">
+                <div class="nav__item">
+                    <button class="nav__link" type="button" data-dropdown aria-expanded="false"
+                        aria-controls="panel-shine">
+                        SHINE
+                        <svg class="nav__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none"
+                            aria-hidden="true">
+                            <path d="M2 4.5 6 8.5 10 4.5" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="nav__panel" id="panel-shine">
+                        <span class="nav__panel-label">Capital</span>
+                        <a href="nefund.html">NEFUND</a>
+                        <a href="deal-room/index.html">National Energy Deal Room</a>
+                        <span class="nav__panel-label">Intelligence</span>
+                        <a href="https://apex-neiia.vercel.app/">Apex AI <span class="tag">Beta</span></a>
+                        <a href="edu-center/educenter.html">Edu Center</a>
                     </div>
                 </div>
-            </div>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-            <a href="help-center/index.html">Help center</a>
-        </div>
-    </nav>
+                <a class="nav__link" href="about.html">About</a>
+                <a class="nav__link" href="contact.html">Contact</a>
+                <a class="nav__link" href="help-center/index.html">Help centre</a>
+            </nav>
 
-    <!-- Auth Links (Separate from Pill) -->
-    <div class="auth-fixed">
-        <a href="newsletter.html" class="btn btn-black">Join</a>
-    </div>
-
-    <!-- Mobile Menu Button -->
-    <button class="mobile-menu-btn" aria-label="Menu">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-    </button>
-
-    <!-- Mobile Navigation Overlay -->
-    <div class="mobile-nav-overlay">
-        <div class="mobile-nav-header">
-            <a href="index.html">
-                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
-            </a>
-            <button class="mobile-close-btn">
-                <i class="fas fa-times"></i>
+            <button class="theme-toggle theme-toggle--desktop" type="button" data-theme-toggle aria-pressed="false"
+                aria-label="Switch to dark theme">
+                <svg class="theme-toggle__sun" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4.5" />
+                    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
+                </svg>
+                <svg class="theme-toggle__moon" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" />
+                </svg>
             </button>
-        </div>
-        <div class="mobile-nav-content">
-            <ul class="mobile-nav-list">
-                <li><a href="nefund.html" id="mobile-resources-link">NEFUND <i class="fas fa-chevron-right"></i></a>
-                </li>
-                <li><a href="about.html">About <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="contact.html">Contact <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="help-center/index.html">Help center <i class="fas fa-arrow-right"></i></a></li>
-            </ul>
-            <div class="mobile-nav-footer">
-                <a href="contact.html" class="btn btn-primary full-width">Contact Support</a>
-                <a href="newsletter.html" class="btn btn-secondary full-width">Join</a>
-            </div>
-        </div>
 
-        <!-- Resources Submenu -->
-        <div class="mobile-submenu" id="resources-submenu">
-            <div class="submenu-header">
-                <button class="submenu-back-btn" id="submenu-back-btn">
-                    <i class="fas fa-arrow-left"></i> Back
-                </button>
-                <button class="mobile-close-btn-sub">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="submenu-content">
+            <a class="btn btn--primary btn--sm" href="newsletter.html">Get updates</a>
 
-                <div class="submenu-section">
-                    <ul class="submenu-list">
-                        <li><a href="deal-room/index.html">National Energy Deal Room</a></li>
-                    </ul>
-                </div>
-
-                <div class="submenu-section">
-                    <span class="submenu-label">Intelligence</span>
-                    <ul class="submenu-list">
-                        <li><a href="https://apex-neiia.vercel.app/">Apex AI <span class="beta-badge">Beta</span></a></li>
-                        <li><a href="edu-center/educenter.html">Edu Center</a></li>
-                    </ul>
-                </div>
-
-                <div class="submenu-btn-group">
-                    <a href="contact.html" class="btn-lavender">Contact us</a>
-                    <a href="newsletter.html" class="btn-gray-light">Join</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Hero Section -->
-    <header class="hero">
-        <div class="hero-content">
-            <span class="hero-eyebrow">The Energy Operating System of Nigeria</span>
-            <h1>Powering Nigeria's energy investments with intelligence.</h1>
-            <p>A centralized platform delivering energy investment intelligence, data, and strategic insight for
-                Nigeria's energy sector.</p>
-            <div class="hero-actions">
-                <a href="dashboard.html" class="btn btn-primary">Explore the ecosystem</a>
-                <a href="#platform" class="btn btn-secondary">View all products</a>
-            </div>
-        </div>
-        <div class="hero-image-wrapper">
-            <img src="assets/images/hero.jpg" alt="NEIIA platform dashboard">
+            <button class="nav-toggle" type="button" data-drawer-open aria-expanded="false" aria-controls="nav-drawer"
+                aria-label="Open menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
+            </button>
         </div>
     </header>
 
-    <!-- Trust Strip -->
-    <section class="trust-strip">
-        <div class="trust-inner">
-            <div class="trust-brand">
-                <img src="assets/images/Coat_of_arms_of_Nigeria.svg" alt="Coat of Arms of Nigeria" class="trust-arms">
-                <span class="trust-label">Operated under the Federal Republic of Nigeria</span>
-            </div>
-            <div class="trust-tags">
-                <span>NEMiC Oversight</span>
-                <span>SEC Aligned</span>
-                <span>Sovereign Data</span>
-                <span>ISO 27001 Ready</span>
+    <!-- ==================================================================
+         MOBILE DRAWER
+         ================================================================== -->
+    <div class="drawer" id="nav-drawer">
+        <div class="drawer__head">
+            <a href="index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-light.png" alt="NEIIA" width="260"
+                        height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-dark.png" alt="NEIIA" width="260"
+                        height="173">
+                </picture>
+            </a>
+            <button class="icon-btn" type="button" data-drawer-close aria-label="Close menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+            </button>
+        </div>
+        <div class="drawer__body">
+            <a href="about.html">About <span aria-hidden="true">→</span></a>
+            <a href="contact.html">Contact <span aria-hidden="true">→</span></a>
+            <a href="help-center/index.html">Help centre <span aria-hidden="true">→</span></a>
+
+            <span class="drawer__label">Capital</span>
+            <a href="nefund.html">NEFUND <span aria-hidden="true">→</span></a>
+            <a href="deal-room/index.html">National Energy Deal Room <span aria-hidden="true">→</span></a>
+
+            <span class="drawer__label">Intelligence</span>
+            <a href="https://apex-neiia.vercel.app/">Apex AI <span aria-hidden="true">→</span></a>
+            <a href="edu-center/educenter.html">Edu Center <span aria-hidden="true">→</span></a>
+
+            <div class="drawer__actions">
+                <a class="btn btn--primary" href="newsletter.html">Get updates</a>
+                <a class="btn btn--secondary" href="contact.html">Contact the team</a>
+                <button class="btn btn--secondary" type="button" data-theme-toggle aria-pressed="false"
+                    aria-label="Switch to dark theme">Switch theme</button>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Product Grid -->
-    <section class="grid-section" id="platform">
-        <div class="grid-section-header">
-            <span class="eyebrow">The Platform</span>
-            <h2>Nine products. One coordinated system.</h2>
-            <p>Funds, vehicles, data, and oversight modules — built to move capital, intelligence, and accountability
-                across Nigeria's energy sector.</p>
-        </div>
-        <div class="grid-container">
-            <a href="nefund.html" class="grid-item grid-1">
-                <span class="grid-id">01</span>
-                <h3>NEFUND</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="https://evillage.norgroups.com" class="grid-item grid-2" target="_blank" rel="noopener noreferrer">
-    <span class="grid-id">02</span>
-    <h3>eVillage</h3>
-    <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-</a>
-            <a href="energy-databank/index.html" class="grid-item grid-3">
-                <span class="grid-id">03</span>
-                <h3>National Energy Data Bank</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="deal-room/index.html" class="grid-item grid-4">
-                <span class="grid-id">04</span>
-                <h3>National Energy Deal Room</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="https://assets-neiia.vercel.app/" class="grid-item grid-5">
-                <span class="grid-id">05</span>
-                <h3>National Energy Assets</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="https://apex-neiia.vercel.app/" class="grid-item grid-6">
-                <span class="grid-id">06</span>
-                <h3>Apex AI</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="risk-esg/index.html" class="grid-item grid-7">
-                <span class="grid-id">07</span>
-                <h3>Risk &amp; ESG Intelligence</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="https://lp-neiia.vercel.app/" class="grid-item grid-8">
-                <span class="grid-id">08</span>
-                <h3>Reporting &amp; LP Portals</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-            <a href="government-site/index.html" class="grid-item grid-9">
-                <span class="grid-id">09</span>
-                <h3>Administration &amp; Governance</h3>
-                <div class="grid-arrow"><i class="fas fa-arrow-right"></i></div>
-            </a>
-        </div>
-        <!-- Dots Container -->
-        <div class="grid-dots"></div>
-    </section>
-
-    <!-- Stats Section - Fueling Innovation -->
-    <section class="stats-section">
-        <div class="stats-container">
-            <div class="stats-left">
-                <span class="stats-label">Platform Overview</span>
-                <h2 class="stats-heading">The scale of Nigeria's<br>energy opportunity.</h2>
-
-                <p class="stats-desc">One platform aggregating funds, projects, SPVs, and assets — so government,
-                    investors, and stakeholders can identify gaps, manage risk, and move capital where it matters.</p>
+    <main id="main">
+        <!-- ==============================================================
+             HERO
+             ============================================================== -->
+        <section class="hero">
+            <div class="shell hero__inner">
+                <div>
+                    <span class="eyebrow">The energy operating system of Nigeria</span>
+                    <h1>Powering Nigeria's energy investments with intelligence.</h1>
+                    <p class="hero__lead">A centralised platform delivering energy investment intelligence, verified
+                        national data and strategic coordination across Nigeria's energy sector.</p>
+                    <div class="hero__actions">
+                        <a class="btn btn--primary" href="#platform">
+                            Explore the platform
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 12h14M13 6l6 6-6 6" />
+                            </svg>
+                        </a>
+                        <a class="btn btn--secondary" href="contact.html">Contact the team</a>
+                    </div>
+                </div>
+                <div class="hero__figure">
+                    <picture>
+                        <source srcset="assets/images/neiia-hero.webp" type="image/webp">
+                        <img src="assets/images/hero.jpg" alt="The NEIIA platform dashboard" width="1024" height="501"
+                            fetchpriority="high" decoding="async">
+                    </picture>
+                </div>
             </div>
-            <div class="stats-right">
-                <div class="stats-grid">
-                    <div class="stat-item stat-main">
-                        <span class="stat-number" data-target="100" data-prefix="$" data-suffix="B">$0B</span>
-                        <span class="stat-label">Target Assets on Platform</span>
+        </section>
+
+        <!-- ==============================================================
+             TRUST STRIP
+             ============================================================== -->
+        <section class="trust" aria-label="Mandate and compliance">
+            <div class="shell trust__inner">
+                <div class="trust__mandate">
+                    <picture>
+                        <source srcset="assets/images/neiia-arms.webp" type="image/webp">
+                        <img src="assets/images/neiia-arms.png" alt="Coat of Arms of the Federal Republic of Nigeria"
+                            width="160" height="136">
+                    </picture>
+                    <span>Operated under the Federal Republic of Nigeria</span>
+                </div>
+                <ul class="trust__marks">
+                    <li>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M4 12.5l5 5L20 6.5" />
+                        </svg>NEMiC oversight
+                    </li>
+                    <li>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M4 12.5l5 5L20 6.5" />
+                        </svg>SEC aligned
+                    </li>
+                    <li>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M4 12.5l5 5L20 6.5" />
+                        </svg>Sovereign data residency
+                    </li>
+                    <li>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M4 12.5l5 5L20 6.5" />
+                        </svg>ISO 27001 ready
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==============================================================
+             PLATFORM MODULES
+             Card marks are inline SVG on a shared 24-unit grid, 1.5 stroke.
+             Replaces ~2.5MB of mismatched stock photography with ~9KB.
+             ============================================================== -->
+        <section class="section" id="platform">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">The platform</span>
+                    <h2>Nine modules. One coordinated system.</h2>
+                    <p>Funds, vehicles, data and oversight — built to move capital, intelligence and accountability
+                        across Nigeria's energy sector.</p>
+                </div>
+
+                <div class="modules">
+                    <!-- 01 -->
+                    <a class="module" href="nefund.html">
+                        <div class="module__top">
+                            <span class="module__mark" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 7.5 12 3l9 4.5-9 4.5z" />
+                                    <path d="M3 12l9 4.5 9-4.5" />
+                                    <path d="M3 16.5 12 21l9-4.5" />
+                                </svg>
+                            </span>
+                            <span class="module__id">01</span>
+                        </div>
+                        <div class="module__body">
+                            <h3>NEFUND</h3>
+                            <p>Sovereign fund infrastructure for pooled energy capital and syndicated vehicles.</p>
+                            <span class="module__go">Open
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                                    aria-hidden="true">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- 02 -->
+                    <a class="module" href="https://evillage.norgroups.com" target="_blank" rel="noopener noreferrer">
+                        <div class="module__top">
+                            <span class="module__mark" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="2.6" />
+                                    <circle cx="5" cy="5.6" r="1.8" />
+                                    <circle cx="19" cy="5.6" r="1.8" />
+                                    <circle cx="5" cy="18.4" r="1.8" />
+                                    <circle cx="19" cy="18.4" r="1.8" />
+                                    <path d="M6.4 6.9 10.1 10.2M17.6 6.9 13.9 10.2M6.4 17.1 10.1 13.8M17.6 17.1 13.9 13.8" />
+                                </svg>
+                            </span>
+                            <span class="module__id">02</span>
+                        </div>
+                        <div class="module__body">
+                            <h3>eVillage</h3>
+                            <p>Last-mile electrification, vendor supply and cohort financing for rural communities.</p>
+                            <span class="module__go">Open
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                                    aria-hidden="true">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- 03 -->
+                    <a class="module" href="energy-databank/index.html">
+                        <div class="module__top">
+                            <span class="module__mark" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <ellipse cx="12" cy="6" rx="7.5" ry="3" />
+                                    <path d="M4.5 6v12c0 1.66 3.36 3 7.5 3s7.5-1.34 7.5-3V6" />
+                                    <path d="M4.5 12c0 1.66 3.36 3 7.5 3s7.5-1.34 7.5-3" />
+                                </svg>
+                            </span>
+                            <span class="module__id">03</span>
+                        </div>
+                        <div class="module__body">
+                            <h3>National Energy Data Bank</h3>
+                            <p>Verified national statistics across generation, consumption, fuels and export.</p>
+                            <span class="module__go">Open
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                                    aria-hidden="true">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- 04 -->
+                    <a class="module" href="deal-room/index.html">
+                        <div class="module__top">
+                            <span class="module__mark" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 8.5h13M13.5 5 17 8.5 13.5 12" />
+                                    <path d="M20 15.5H7M10.5 12 7 15.5 10.5 19" />
+                                </svg>
+                            </span>
+                            <span class="module__id">04</span>
+                        </div>
+                        <div class="module__body">
+                            <h3>National Energy Deal Room</h3>
+                            <p>Regulated marketplace for structured energy raises with escrow settlement.</p>
+                            <span class="module__go">Open
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                                    aria-hidden="true">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- 05 -->
+                    <a class="module" href="https://assets-neiia.vercel.app/" target="_blank" rel="noopener noreferrer">
+                        <div class="module__top">
+                            <span class="module__mark" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 3v18" />
+                                    <path d="M6 21 12 3l6 18" />
+                                    <path d="M7.7 15.4h8.6M9 10.8h6" />
+                                    <path d="M3 21h18" />
+                                </svg>
+                            </span>
+                            <span class="module__id">05</span>
+                        </div>
+                        <div class="module__body">
+                            <h3>National Energy Assets</h3>
+                            <p>Registry and marketplace for physical energy assets, SPVs and infrastructure.</p>
+                            <span class="module__go">Open
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                                    aria-hidden="true">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- 06 -->
+                    <a class="module" href="https://apex-neiia.vercel.app/" target="_blank" rel="noopener noreferrer">
+                        <div class="module__top">
+                            <span class="module__mark" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="3.6" />
+                                    <path d="M12 3v3.4M12 17.6V21M3 12h3.4M17.6 12H21" />
+                                    <path d="M6.3 6.3 8.7 8.7M15.3 15.3l2.4 2.4M17.7 6.3 15.3 8.7M8.7 15.3l-2.4 2.4" />
+                                </svg>
+                            </span>
+                            <span class="module__id">06</span>
+                        </div>
+                        <div class="module__body">
+                            <h3>Apex AI <span class="tag">Beta</span></h3>
+                            <p>Analytical assistant working across the national energy corpus.</p>
+                            <span class="module__go">Open
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                                    aria-hidden="true">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- 07 -->
+                    <a class="module" href="risk-esg/index.html">
+                        <div class="module__top">
+                            <span class="module__mark" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 21s7-3.6 7-9V5.8L12 3 5 5.8V12c0 5.4 7 9 7 9z" />
+                                    <path d="M9 12.3l2.2 2.2 3.9-4.4" />
+                                </svg>
+                            </span>
+                            <span class="module__id">07</span>
+                        </div>
+                        <div class="module__body">
+                            <h3>Risk &amp; ESG Intelligence</h3>
+                            <p>Portfolio risk scoring, ESG clearance and regulatory exposure monitoring.</p>
+                            <span class="module__go">Open
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                                    aria-hidden="true">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- 08 -->
+                    <a class="module" href="https://lp-neiia.vercel.app/" target="_blank" rel="noopener noreferrer">
+                        <div class="module__top">
+                            <span class="module__mark" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 3h8l4.5 4.5V21H6z" />
+                                    <path d="M14 3v4.5h4.5" />
+                                    <path d="M9 16.6l2.5-3 2 2.2 2.6-3.8" />
+                                </svg>
+                            </span>
+                            <span class="module__id">08</span>
+                        </div>
+                        <div class="module__body">
+                            <h3>Reporting &amp; LP Portals</h3>
+                            <p>Fund reporting, capital accounts and limited-partner disclosure.</p>
+                            <span class="module__go">Open
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                                    aria-hidden="true">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- 09 -->
+                    <a class="module" href="government-site/index.html">
+                        <div class="module__top">
+                            <span class="module__mark" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3.5 9.5 12 4l8.5 5.5" />
+                                    <path d="M6 9.8v8.4M10 9.8v8.4M14 9.8v8.4M18 9.8v8.4" />
+                                    <path d="M3 21h18" />
+                                </svg>
+                            </span>
+                            <span class="module__id">09</span>
+                        </div>
+                        <div class="module__body">
+                            <h3>Administration &amp; Governance</h3>
+                            <p>Mandate, oversight, entity directory and public accountability records.</p>
+                            <span class="module__go">Open
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                                    aria-hidden="true">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==============================================================
+             PLATFORM AT A GLANCE
+
+             IMPORTANT — the previous version of this section published
+             AngelList's figures (25k funds / 13k startups / 72k investors /
+             $10.7B raised) as NEIIA's own. Those have been removed.
+
+             Every figure below is verifiable from this platform, except the
+             headline figure, which is marked "pending confirmation" and MUST
+             be replaced with a mandated number before publication.
+             ============================================================== -->
+        <section class="stats" aria-label="Platform at a glance">
+            <div class="shell stats__inner">
+                <div>
+                    <span class="eyebrow">Platform overview</span>
+                    <h2>One system for Nigeria's energy sector.</h2>
+                    <p class="stats__lead">Funds, projects, SPVs and assets aggregated in a single place — so
+                        government, investors and stakeholders can identify gaps, manage risk and move capital where
+                        it matters.</p>
+                </div>
+
+                <div class="stats__grid">
+                    <div class="stat stat--wide">
+                        <!-- TODO: replace with the mandated target and cite its source. -->
+                        <span class="stat__value" data-count="100" data-prefix="$" data-suffix="B">$100B</span>
+                        <span class="stat__label">Target assets under coordination</span>
+                        <span class="stat__source">Source: pending confirmation</span>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-number" data-target="25" data-suffix="k+">0k+</span>
-                        <span class="stat-label">Funds and syndicates</span>
+                    <div class="stat">
+                        <span class="stat__value" data-count="9">9</span>
+                        <span class="stat__label">Platform modules</span>
+                        <span class="stat__source">Source: NEIIA platform, 2026</span>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-number" data-target="13" data-suffix="k+">0k+</span>
-                        <span class="stat-label">Active startups</span>
+                    <div class="stat">
+                        <span class="stat__value" data-count="17">17</span>
+                        <span class="stat__label">National energy data series published</span>
+                        <span class="stat__source">Source: National Energy Data Bank</span>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-number" data-target="72" data-suffix="k+">0k+</span>
-                        <span class="stat-label">Active investors</span>
+                    <div class="stat">
+                        <span class="stat__value" data-count="36" data-suffix=" + FCT">36 + FCT</span>
+                        <span class="stat__label">States within mandate scope</span>
+                        <span class="stat__source">Source: Federal Republic of Nigeria</span>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-number" data-target="10.7" data-prefix="$" data-suffix="B">$0B</span>
-                        <span class="stat-label">Raised by active startups</span>
+                    <div class="stat">
+                        <span class="stat__value" data-count="4">4</span>
+                        <span class="stat__label">Compliance frameworks aligned</span>
+                        <span class="stat__source">NEMiC · SEC · ISO 27001 · NDPA 2023</span>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
+        <!-- ==============================================================
+             CTA
+             ============================================================== -->
+        <section class="cta">
+            <div class="shell cta__inner">
+                <div>
+                    <span class="eyebrow">Get started</span>
+                    <h2>Stay across Nigeria&rsquo;s energy sector.</h2>
+                </div>
+                <div class="cta__actions">
+                    <a class="btn btn--primary" href="newsletter.html">
+                        Get updates
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                    </a>
+                    <a class="btn btn--secondary" href="contact.html">Contact the team</a>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    <!-- Footer -->
-    <style>
-        .site-footer {
-            background: #0A0A0A;
-            color: rgba(255, 255, 255, 0.7);
-            padding: 64px 0 28px;
-            margin-top: 80px;
-        }
-
-        .site-footer-inner {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .site-footer-top {
-            display: grid;
-            grid-template-columns: 1.4fr 0.9fr 0.9fr 0.9fr 1.3fr;
-            gap: 40px;
-            padding-bottom: 44px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .site-footer-brand img {
-            height: 32px;
-            margin-bottom: 14px;
-        }
-
-        .site-footer-brand h5 {
-            color: #FFFFFF;
-            font: 600 14px/1.4 "Inter", system-ui, sans-serif;
-            margin: 0 0 8px;
-            letter-spacing: -0.005em;
-        }
-
-        .site-footer-brand p {
-            font-size: 13px;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.6);
-            margin: 0 0 16px;
-            max-width: 34ch;
-        }
-
-        .site-footer-licence {
-            display: inline-flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            padding: 8px 12px;
-            border-radius: 999px;
-            background: rgba(14, 122, 60, 0.15);
-            border: 1px solid rgba(14, 122, 60, 0.35);
-            font-size: 11px;
-            color: #6ED892;
-            font-weight: 600;
-            letter-spacing: 0.04em;
-        }
-
-        .site-footer-licence::before {
-            content: "•";
-            color: #6ED892;
-        }
-
-        .site-footer-col h4 {
-            color: #FFFFFF;
-            font: 600 11px/1.3 "Inter", system-ui, sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            margin: 0 0 16px;
-        }
-
-        .site-footer-col ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .site-footer-col li {
-            margin-bottom: 10px;
-        }
-
-        .site-footer-col a {
-            color: rgba(255, 255, 255, 0.65);
-            font-size: 13.5px;
-            text-decoration: none;
-            transition: color 160ms ease;
-        }
-
-        .site-footer-col a:hover {
-            color: #6ED892;
-        }
-
-        .site-footer-col .pill-beta {
-            display: inline-block;
-            font-size: 9px;
-            background: rgba(14, 122, 60, 0.25);
-            color: #6ED892;
-            padding: 1px 6px;
-            border-radius: 999px;
-            margin-left: 4px;
-            letter-spacing: 0.08em;
-            font-weight: 700;
-            vertical-align: middle;
-        }
-
-        .site-footer-signup h4 {
-            color: #FFFFFF;
-            font: 600 11px/1.3 "Inter", system-ui, sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            margin: 0 0 12px;
-        }
-
-        .site-footer-signup p {
-            font-size: 12.5px;
-            color: rgba(255, 255, 255, 0.6);
-            margin: 0 0 12px;
-            line-height: 1.55;
-        }
-
-        .site-footer-signup form {
-            display: flex;
-            gap: 6px;
-        }
-
-        .site-footer-signup input {
-            flex: 1;
-            padding: 10px 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: rgba(255, 255, 255, 0.04);
-            color: #FFFFFF;
-            font: 400 13px "Inter", sans-serif;
-            outline: none;
-            transition: border-color 160ms ease, background 160ms ease;
-        }
-
-        .site-footer-signup input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        .site-footer-signup input:focus {
-            border-color: #0E7A3C;
-            background: rgba(14, 122, 60, 0.08);
-        }
-
-        .site-footer-signup button {
-            padding: 0 16px;
-            height: 40px;
-            border-radius: 8px;
-            border: 0;
-            background: #0E7A3C;
-            color: #FFFFFF;
-            font: 600 13px "Inter", sans-serif;
-            cursor: pointer;
-            transition: background 160ms ease;
-        }
-
-        .site-footer-signup button:hover {
-            background: #0A5C2D;
-        }
-
-        .site-footer-signup .note {
-            font-size: 10.5px;
-            color: rgba(255, 255, 255, 0.4);
-            margin-top: 8px;
-        }
-
-        .site-footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-            padding-top: 22px;
-            flex-wrap: wrap;
-        }
-
-        .site-footer-bottom .copyright {
-            font-size: 11.5px;
-            color: rgba(255, 255, 255, 0.5);
-            line-height: 1.55;
-        }
-
-        .site-footer-bottom .copyright strong {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .site-footer-meta {
-            display: flex;
-            gap: 18px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .site-footer-meta a {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 11.5px;
-            text-decoration: none;
-            transition: color 160ms ease;
-        }
-
-        .site-footer-meta a:hover {
-            color: #6ED892;
-        }
-
-        .site-footer-social {
-            display: flex;
-            gap: 10px;
-        }
-
-        .site-footer-social a {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.06);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.6);
-            transition: background 160ms ease, color 160ms ease;
-        }
-
-        .site-footer-social a:hover {
-            background: rgba(14, 122, 60, 0.25);
-            color: #6ED892;
-        }
-
-        @media (max-width: 980px) {
-            .site-footer-top {
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-
-            .site-footer-brand,
-            .site-footer-signup {
-                grid-column: 1 / -1;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .site-footer-top {
-                grid-template-columns: 1fr 1fr;
-                gap: 28px;
-            }
-
-            .site-footer {
-                padding: 48px 0 24px;
-            }
-
-            .site-footer-bottom {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-    </style>
-    <footer class="site-footer">
-        <div class="site-footer-inner">
-            <div class="site-footer-top">
-                <div class="site-footer-brand">
-                    <img src="assets/images/neiis-logo-green.png" alt="Deal Room">
-                    <h5>Nigeria's regulated equity marketplace.</h5>
-                    <p>Tokenised capital raises across Growth Capital and Private Placement lanes. CSAFE · Bonds · PPM ·
-                        NIBSS escrow · Data Vault.</p>
+    <!-- ==================================================================
+         FOOTER
+         ================================================================== -->
+    <footer class="footer">
+        <div class="shell">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <!-- Typographic lockup rather than the logo raster: the brand mark has no
+                         usable reversed version (its map half is ~2.5x denser than the wordmark,
+                         so knocked out to white it glares and the circuit traces read as noise).
+                         Arms + wordmark is also the standard institutional footer pattern. -->
+                    <div class="footer__lockup">
+                        <picture>
+                            <source srcset="assets/images/neiia-arms.webp" type="image/webp">
+                            <img src="assets/images/neiia-arms.png"
+                                alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                        </picture>
+                        <span class="footer__lockup-text">
+                            <strong>NEIIA</strong>
+                            <span>National Energy Investment &amp; Intelligence Administration</span>
+                        </span>
+                    </div>
+                    <p>Nigeria's centralised platform for energy investment intelligence, asset visibility and
+                        strategic coordination.</p>
+                    <span class="footer__mandate">Operated under the Federal Republic of Nigeria</span>
                 </div>
 
-                <div class="site-footer-col">
-                    <h4>Products</h4>
+                <div>
+                    <h3>Modules</h3>
                     <ul>
+                        <li><a href="nefund.html">NEFUND</a></li>
                         <li><a href="deal-room/index.html">National Energy Deal Room</a></li>
-                        <li><a href="https://apex-neiia.vercel.app/">Apex AI <span class="pill-beta">BETA</span></a></li>
-                        <li><a href="energy-databank/index.html">National Data Bank</a></li>
-                        <li><a href="evillage/evillage.html">eVillage</a></li>
-                        <li><a href="edu-center/educenter.html">Edu Center</a></li>
+                        <li><a href="energy-databank/index.html">National Energy Data Bank</a></li>
+                        <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
+                        <li><a href="risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
                     </ul>
                 </div>
 
-                <div class="site-footer-col">
-                    <h4>Platform</h4>
+                <div>
+                    <h3>Platform</h3>
                     <ul>
                         <li><a href="about.html">About</a></li>
                         <li><a href="contact.html">Contact</a></li>
-                        <li><a href="help-center/index.html">Help center</a></li>
-                        <li><a href="risk-esg/index.html">Risk &amp; ESG</a></li>
-                        <li><a href="governance.html">Mandate &amp; Governance</a></li>
+                        <li><a href="help-center/index.html">Help centre</a></li>
+                        <li><a href="edu-center/educenter.html">Edu Center</a></li>
+                        <li><a href="government-site/index.html">Mandate &amp; governance</a></li>
                     </ul>
                 </div>
 
-                <div class="site-footer-col">
-                    <h4>For users</h4>
+                <div>
+                    <h3>For users</h3>
                     <ul>
-                        <li><a href="newsletter.html">Request access</a></li>
-                        <li><a href="deal-room/HOW_TO.md">How to use</a></li>
+                        <li><a href="newsletter.html">Newsletter</a></li>
+                        <li><a href="help-center/dealroom.html">Deal Room guide</a></li>
+                        <li><a href="help-center/account.html">Account help</a></li>
+                        <li><a href="compliance/index.html">Compliance</a></li>
                     </ul>
                 </div>
 
-                <div class="site-footer-signup">
-                    <h4>Stay updated</h4>
-                    <p>Weekly digest of live raises, regulatory updates, and platform changes. No spam.</p>
-                    <form action="newsletter.html" method="get"
-                        onsubmit="this.querySelector('button').textContent='Subscribed ✓'; return false;">
-                        <input type="email" name="email" placeholder="you@email.com" required
-                            aria-label="Email address">
-                        <button type="submit">Subscribe</button>
+                <div class="footer__signup">
+                    <h3>Stay updated</h3>
+                    <p>Regulatory updates, live raises and platform changes. No spam.</p>
+                    <!-- TODO: replace REPLACE_WITH_WEB3FORMS_ACCESS_KEY to activate.
+                         Until then the form reports honestly instead of faking success. -->
+                    <form class="footer__form" id="signup-form" data-access-key="REPLACE_WITH_WEB3FORMS_ACCESS_KEY">
+                        <label class="visually-hidden" for="signup-email">Email address</label>
+                        <input type="email" id="signup-email" name="email" placeholder="you@email.com" required
+                            autocomplete="email">
+                        <button class="btn" type="submit">Subscribe</button>
                     </form>
-                    <div class="note">By subscribing you agree to our <a href="terms-service.html"
-                            style="color:rgba(255,255,255,0.55);text-decoration:underline">privacy policy</a>.</div>
+                    <p class="footer__note">By subscribing you agree to our <a
+                            href="risk-esg/privacy-policy.html">privacy policy</a>.</p>
                 </div>
             </div>
 
-            <div class="site-footer-bottom">
-                <div class="copyright">
-                    &copy; 2026 <strong>Federal Republic of Nigeria</strong> · National Energy Investment &amp;
-                    Intelligence Administration<br>
-                    Lagos &middot; Abuja
-                </div>
-                <div class="site-footer-meta">
-                    <a href="terms-service.html">Terms</a>
-                    <a href="terms-service.html">Privacy</a>
-                    <a href="terms-service.html">Compliance</a>
-                    <div class="site-footer-social" aria-label="Social media">
-                        <a href="#" aria-label="X / Twitter" title="X / Twitter">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                <path
-                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                            </svg>
-                        </a>
-                        <a href="#" aria-label="LinkedIn" title="LinkedIn">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                <path
-                                    d="M4.98 3.5C4.98 4.881 3.87 6 2.5 6S.02 4.881.02 3.5C.02 2.12 1.13 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8h4.56v14H.22V8zm7.85 0h4.37v1.91h.06c.61-1.15 2.1-2.36 4.32-2.36 4.62 0 5.48 3.04 5.48 7v7.45h-4.56v-6.6c0-1.57-.03-3.6-2.19-3.6-2.2 0-2.54 1.72-2.54 3.49V22H8.07V8z" />
-                            </svg>
-                        </a>
-                        <a href="https://github.com" aria-label="GitHub" title="GitHub">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                <path
-                                    d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.04-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.74.08-.74 1.21.09 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.05.14 3 .4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.25 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.28 0 .32.22.7.83.58A12.005 12.005 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z" />
-                            </svg>
-                        </a>
-                    </div>
+            <div class="footer__bottom">
+                <p class="footer__copy">
+                    &copy; 2026 <strong>Federal Republic of Nigeria</strong><br>
+                    Lagos · Abuja
+                </p>
+                <div class="footer__meta">
+                    <a href="risk-esg/terms-of-service.html">Terms</a>
+                    <a href="risk-esg/privacy-policy.html">Privacy</a>
+                    <a href="compliance/index.html">Compliance</a>
+                    <a href="contact.html">Contact</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="assets/js/neiia.js?v=8" defer></script>
 </body>
 
 </html>

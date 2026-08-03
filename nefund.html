@@ -3,959 +3,748 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>NEFUND — National Energy Fund | NEIIA</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="styles.css">
-    <!-- Tailwind utility classes used by nefund.html (flex/grid/spacing/etc.) -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="description" content="NEFUND is Nigeria's catalytic Fund of Funds, mobilising foreign and local institutional capital into the nation's energy transition under SEC Nigeria regulation.">
+    <meta name="theme-color" content="#0B1F24">
+    <meta property="og:title" content="NEFUND — National Energy Fund | NEIIA">
+    <meta property="og:description" content="NEFUND is Nigeria's catalytic Fund of Funds, mobilising foreign and local institutional capital into the nation's energy transition under SEC Nigeria regulation.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/png" href="assets/images/neiia-arms.png">
+    <link rel="preload" href="assets/font/public-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/neiia.css?v=8">
     <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              surface: {
-                DEFAULT: 'rgb(var(--surface-bg) / <alpha-value>)',
-                muted:   'rgb(var(--surface-bg-muted) / <alpha-value>)',
-                sunken:  'rgb(var(--surface-bg-sunken) / <alpha-value>)'
-              }
-            },
-            fontFamily: {
-              sans:    ['Mulish', 'system-ui', 'sans-serif'],
-              display: ['Mulish', 'system-ui', 'sans-serif']
+        (function () {
+            try {
+                var stored = localStorage.getItem('neiia-theme');
+                var dark = stored ? stored === 'dark'
+                    : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                document.documentElement.classList.add('has-js');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
             }
-          }
-        }
-      };
+        })();
     </script>
-    <!-- Editorial serif for hero/section headlines (paired with Mulish for UI/body) -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
-    <!-- NEFUND-specific styles (brand tokens, suite cards, mega menu polish) -->
-    <link rel="stylesheet" href="assets/css/nefund.css">
-    <!-- NEFUND fund-profile: elevated editorial layer -->
-    <link rel="stylesheet" href="assets/css/nefund-profile.css">
-    <script>
-      // Smooth fade-in once DOM is ready (no flash of unstyled content)
-      addEventListener('DOMContentLoaded', () => requestAnimationFrame(() =>
-        document.documentElement.classList.add('nf-ready')));
-      setTimeout(() => document.documentElement.classList.add('nf-ready'), 1500);
-    </script>
-    <link rel="icon" type="image/svg+xml" href="./assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
+    <!-- Gate check. This page previously had none while every sibling page did. -->
+    <script src="auth-check.js"></script>
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
 
-    <!-- Logo -->
-    <a href="index.html" class="logo-fixed">
-        <div class="logo-wrapper">
-            <img src="assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
-                style="max-width: 120px;">
-            <img src="assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
-                style="max-width: 120px; display: none;">
-            <div class="brand-text">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
-        </div>
-    </a>
+    <header class="masthead">
+        <div class="shell masthead__inner">
+            <a class="brand" href="index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
 
-    <!-- Navigation -->
-    <nav class="navbar pill-nav">
-        <div class="nav-links">
-            <div class="nav-item dropdown">
-                <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down"
-                        style="font-size: 12px; margin-left: 6px; transition: transform 0.2s;"></i></span>
-                <div class="mega-menu">
-                    <div class="mm-left-columns">
-                        <div class="mm-column">
-                            <ul class="mm-list">
-                                <li><a href="deal-room/index.html">Deal Room</a></li>
-                            </ul>
-                            <div style="margin-top: 24px;">
-                                <h4>Intelligence</h4>
-                                <ul class="mm-list">
-                                    <li><a href="https://apex-neiia.vercel.app/">Apex AI <span style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a></li>
-                                    <li><a href="edu-center/educenter.html">Edu Center</a></li>
-                                </ul>
-                            </div>
-                        </div>
+            <nav class="nav" aria-label="Primary">
+                <div class="nav__item">
+                    <button class="nav__link" type="button" data-dropdown aria-expanded="false"
+                        aria-controls="panel-shine">
+                        SHINE
+                        <svg class="nav__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none"
+                            aria-hidden="true">
+                            <path d="M2 4.5 6 8.5 10 4.5" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="nav__panel" id="panel-shine">
+                        <span class="nav__panel-label">Capital</span>
+                        <a href="nefund.html" aria-current="page">NEFUND</a>
+                        <a href="deal-room/index.html">National Energy Deal Room</a>
+                        <span class="nav__panel-label">Intelligence</span>
+                        <a href="https://apex-neiia.vercel.app/">Apex AI <span class="tag">Beta</span></a>
+                        <a href="edu-center/educenter.html">Edu Center</a>
                     </div>
                 </div>
-            </div>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-            <a href="help-center/index.html">Help center</a>
-        </div>
-    </nav>
+                <a class="nav__link" href="about.html">About</a>
+                <a class="nav__link" href="contact.html">Contact</a>
+                <a class="nav__link" href="help-center/index.html">Help centre</a>
+            </nav>
 
-    <!-- Auth Links -->
-    <div class="auth-fixed">
-        <a href="newsletter.html" class="btn btn-black">Join</a>
-    </div>
+            <button class="theme-toggle theme-toggle--desktop" type="button" data-theme-toggle aria-pressed="false"
+                aria-label="Switch to dark theme">
+                <svg class="theme-toggle__sun" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4.5" />
+                    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
+                </svg>
+                <svg class="theme-toggle__moon" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" />
+                </svg>
+            </button>
 
-    <!-- Mobile Menu Button -->
-    <button class="mobile-menu-btn" aria-label="Menu">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-    </button>
+            <a class="btn btn--primary btn--sm" href="newsletter.html">Get updates</a>
 
-    <!-- Mobile Navigation Overlay -->
-    <div class="mobile-nav-overlay">
-        <div class="mobile-nav-header">
-            <a href="index.html">
-                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
-            </a>
-            <button class="mobile-close-btn">
-                <i class="fas fa-times"></i>
+            <button class="nav-toggle" type="button" data-drawer-open aria-expanded="false" aria-controls="nav-drawer"
+                aria-label="Open menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
             </button>
         </div>
-        <div class="mobile-nav-content">
-            <ul class="mobile-nav-list">
-                <li><a href="nefund.html" id="mobile-resources-link">NEFUND <i class="fas fa-chevron-right"></i></a>
-                </li>
-                <li><a href="about.html">About <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="contact.html">Contact <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="help-center/index.html">Help center <i class="fas fa-arrow-right"></i></a></li>
-            </ul>
-            <div class="mobile-nav-footer">
-                <a href="contact.html" class="btn btn-primary full-width">Contact Support</a>
-            </div>
-        </div>
-        <!-- Resources Submenu -->
-        <div class="mobile-submenu" id="resources-submenu">
-            <div class="submenu-header">
-                <button class="submenu-back-btn" id="submenu-back-btn">
-                    <i class="fas fa-arrow-left"></i> Back
-                </button>
-                <button class="mobile-close-btn-sub">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="submenu-content">
-                <div class="submenu-section">
-                    <ul class="submenu-list">
-                        <li><a href="deal-room/index.html">Deal Room</a></li>
-                    </ul>
-                </div>
+    </header>
 
-                <div class="submenu-section">
-                    <span class="submenu-label">Intelligence</span>
-                    <ul class="submenu-list">
-                        <li><a href="https://apex-neiia.vercel.app/">Apex AI <span class="beta-badge">Beta</span></a></li>
-                        <li><a href="edu-center/educenter.html">Edu Center</a></li>
-                    </ul>
-                </div>
+    <div class="drawer" id="nav-drawer">
+        <div class="drawer__head">
+            <a href="index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
+            <button class="icon-btn" type="button" data-drawer-close aria-label="Close menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+            </button>
+        </div>
+        <div class="drawer__body">
+            <a href="about.html">About <span aria-hidden="true">&rarr;</span></a>
+            <a href="contact.html">Contact <span aria-hidden="true">&rarr;</span></a>
+            <a href="help-center/index.html">Help centre <span aria-hidden="true">&rarr;</span></a>
+
+            <span class="drawer__label">Capital</span>
+            <a href="nefund.html">NEFUND <span aria-hidden="true">&rarr;</span></a>
+            <a href="deal-room/index.html">National Energy Deal Room <span aria-hidden="true">&rarr;</span></a>
+
+            <span class="drawer__label">Intelligence</span>
+            <a href="https://apex-neiia.vercel.app/">Apex AI <span aria-hidden="true">&rarr;</span></a>
+            <a href="edu-center/educenter.html">Edu Center <span aria-hidden="true">&rarr;</span></a>
+
+            <div class="drawer__actions">
+                <a class="btn btn--primary" href="newsletter.html">Get updates</a>
+                <a class="btn btn--secondary" href="contact.html">Contact the team</a>
+                <button class="btn btn--secondary" type="button" data-theme-toggle aria-pressed="false"
+                    aria-label="Switch to dark theme">Switch theme</button>
             </div>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <main id="maincontent">
-        <!-- Hero Section -->
-        <div>
-            <section class="nfp-statement nf-hero scroll-m-header overflow-hidden">
-                <div class="nfp-bg" style="background-image:url('assets/images/nefund/datacenter.jpg')"></div>
-                <div class="nfp-glow"></div>
-                <div class="nfp-statement-inner">
-                    <div class="nf-hero-grid">
-                        <div class="nf-hero-left">
-                            <span class="nfp-eyebrow">NEFUND &middot; National Energy Fund</span>
-                            <h1 class="nfp-statement-head">The operating system for African capital.</h1>
-                            <p class="nf-hero-dek">One product — <strong>Deal Room</strong> — runs the full lifecycle, while NEFUND channels foreign &amp; local institutional capital into Nigeria&rsquo;s energy transition.</p>
-                            <div class="nf-greencard">
-                                <p>One record, two cameras &mdash; GPs raise, LPs invest.</p>
-                                <ul>
-                                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg>Source &rarr; Structure &rarr; Outreach &rarr; Diligence &rarr; Close &rarr; Administer</li>
-                                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg>Six vehicle wrappers in one wizard, with template defaults</li>
-                                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg>Native USD &amp; Naira display toggle</li>
-                                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg>Live LP portfolio with an on-demand AI performance read</li>
-                                </ul>
-                            </div>
-                            <div class="nf-hero-ctas">
-                                <a class="nf-hero-cta" href="deal-room/index.html">Open Deal Room <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a>
-                                <a class="nf-hero-cta nf-hero-cta-ghost" href="https://lp-neiia.vercel.app/">Open GP &amp; LP <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a>
-                            </div>
+    <main id="main">
+        <section class="nf-hero">
+            <div class="shell nf-hero__inner">
+                <div>
+                    <span class="eyebrow">NEFUND &middot; National Energy Fund</span>
+                    <h1>The operating system for African capital.</h1>
+                    <p class="nf-hero__lead">One product — the <strong>National Energy Deal Room</strong> — runs the
+                        full lifecycle, while NEFUND channels foreign and local institutional capital into Nigeria's
+                        energy transition. One record, two cameras: GPs raise, LPs invest.</p>
+                    <ul class="nf-hero__points">
+                        <li>Source &rarr; Structure &rarr; Outreach &rarr; Diligence &rarr; Close &rarr; Administer</li>
+                        <li>Six vehicle wrappers in one wizard, with template defaults</li>
+                        <li>Native USD and Naira display toggle</li>
+                        <li>Live LP portfolio with an on-demand AI performance read</li>
+                    </ul>
+                    <div class="hero__actions">
+                        <a class="btn btn--primary" href="deal-room/index.html">Open Deal Room <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                        <a class="btn btn--secondary" href="https://lp-neiia.vercel.app/" target="_blank"
+                            rel="noopener noreferrer">Open GP &amp; LP</a>
+                    </div>
+                </div>
+
+                <aside class="nf-target">
+                    <span class="nf-target__kicker">A catalytic Fund of Funds</span>
+                    <span class="nf-target__value">US$<span data-count="100">100</span><small>B</small></span>
+                    <!-- TODO: confirm this target figure and cite its source before publication.
+                         It is the same unverified number carried on the homepage. -->
+                    <p>Initial target fund size — established by the Federal Government of Nigeria to mobilise
+                        capital for the nation's energy sector under SEC Nigeria regulation.</p>
+                    <span class="nf-target__source">Source: pending confirmation</span>
+                    <div class="nf-chips">
+                        <div class="nf-chip"><strong>Fund of Funds</strong><span>Catalytic structure</span></div>
+                        <div class="nf-chip"><strong>GP / LP</strong><span>Hybrid platform</span></div>
+                        <div class="nf-chip"><strong>Blended</strong><span>Foreign &amp; local capital</span></div>
+                        <div class="nf-chip"><strong>SEC Nigeria</strong><span>Regulated vehicle</span></div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Mandate</span>
+                    <h2>What the Fund aims to do</h2>
+                    <p>NEFUND provides patient, long-term capital across the energy value chain — de-risking projects, crowding in institutional investors, and reducing the foreign-exchange exposure that has constrained Nigerian energy financing.</p>
+                </div>
+                <div class="tiles">
+                    <div class="tile">
+                        <span class="tile__id">01</span>
+                        <h3>Climate-aligned funding</h3>
+                        <p>Provide long-term funding to climate-aligned projects.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">02</span>
+                        <h3>Energy generation</h3>
+                        <p>Support small- and large-scale energy generation.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">03</span>
+                        <h3>Low-carbon infrastructure</h3>
+                        <p>Support low-carbon energy infrastructure.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">04</span>
+                        <h3>Alternative clean energy</h3>
+                        <p>Support alternative clean-energy infrastructure.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">05</span>
+                        <h3>Reduce FX exposure</h3>
+                        <p>Reduce foreign-exchange exposure by providing long-term financing.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">06</span>
+                        <h3>Diversified portfolio</h3>
+                        <p>Build a diversified portfolio of investments across multiple value chains.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--tint">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Impact</span>
+                    <h2>Measurable socio-economic &amp; environmental benefit</h2>
+                    <p>NEFUND is structured to deliver development impact alongside financial return, advancing national priorities in energy access, climate, industry and innovation.</p>
+                </div>
+                <div class="tiles">
+                    <div class="tile">
+                        <h3>Energy access expansion</h3>
+                        <p>Promoting rural electrification through cost-effective renewable solutions.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Climate alignment</h3>
+                        <p>Supporting projects that reduce carbon emissions and enhance energy efficiency.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Industrial growth</h3>
+                        <p>Financing brownfield and bankable projects that strengthen Nigeria's energy infrastructure.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Innovation &amp; R&amp;D</h3>
+                        <p>Funding research in nuclear energy, energy audits, and new technologies.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Oil &amp; Gas sector support</h3>
+                        <p>Enabling indigenous operators to develop upstream and midstream projects sustainably.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Capital</span>
+                    <h2>Built for institutional capital</h2>
+                    <p>NEFUND seeks participation from a diverse pool of institutional investors aligned with climate and infrastructure financing.</p>
+                </div>
+                <div class="tiles">
+                    <div class="tile">
+                        <h3>Climate-focused funds</h3>
+                        <p>Green investment vehicles with a climate mandate.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Development Finance Institutions</h3>
+                        <p>DFIs anchoring catalytic, concessional capital.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Venture Capital &amp; Private Equity</h3>
+                        <p>Firms investing across the energy value chain.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Insurance companies</h3>
+                        <p>Long-duration capital seeking infrastructure exposure.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Local pension funds</h3>
+                        <p>Domestic pension capital co-investing at home.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Global institutional investors</h3>
+                        <p>Investors aligned with climate and infrastructure financing.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--tint">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Structure</span>
+                    <h2>An indicative Fund-of-Funds structure</h2>
+                    <p>NEFUND pools capital from institutional investors and channels it into specialised sub-funds, each aligned with the National Energy Masterplan.</p>
+                </div>
+                <div class="tiles tiles--two">
+                    <div class="tile">
+                        <h3>General Partner (GP)</h3>
+                        <p>Oversees fund management and sets strategic direction.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Limited Partners (LP)</h3>
+                        <p>Institutional investors committing capital alongside the GP.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Specialised sub-funds</h3>
+                        <p>Capital channelled into sub-funds aligned with the National Energy Masterplan (NEMP).</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Fund size goal</h3>
+                        <p>Target capitalisation of US$100 billion, blended from foreign and local institutional capital.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Fund managers</span>
+                    <h2>Structured by global fund managers</h2>
+                </div>
+                <!-- NOTE: names J.P. Morgan and First Capital as lead fund managers.
+                     Confirm both appointments and your authority to display the marks. -->
+                <div class="nf-managers">
+                    <p>J.P. Morgan and First Capital (FirstCap) serve as the lead fund managers, providing
+                        structuring, global expertise in governance, and investment oversight.</p>
+                    <div class="nf-managers__logos">
+                        <span class="nf-managers__wordmark">J.P.Morgan</span>
+                        <img width="355" height="130" src="assets/images/nefund/logos/firstcap.png" alt="First Capital" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--tint">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Sub-funds</span>
+                    <h2>Six specialised sub-funds</h2>
+                    <p>Capital is deployed through specialised sub-funds, each targeting a distinct part of the energy transition. The Fund pursues a credit-guarantee partnership to crowd in additional institutional co-investment.</p>
+                </div>
+                <div class="tiles">
+                    <div class="tile">
+                        <span class="tile__id">01</span>
+                        <h3>Project Preparatory Fund</h3>
+                        <p>Early-stage preparation to bring projects to bankability.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">02</span>
+                        <h3>Nuclear Energy Fund</h3>
+                        <p>Financing for nuclear generation capacity and research.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">03</span>
+                        <h3>Energy Efficiency Fund</h3>
+                        <p>Demand-side efficiency and energy-audit programmes.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">04</span>
+                        <h3>Rural Electrification Fund</h3>
+                        <p>Off-grid and mini-grid access for underserved communities.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">05</span>
+                        <h3>Innovation Fund</h3>
+                        <p>New technologies advancing the energy transition.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">06</span>
+                        <h3>Special Fund for Oil &amp; Gas</h3>
+                        <p>Sustainable upstream and midstream development by indigenous operators.</p>
+                    </div>
+                </div>
+                <div class="notes">
+                    <div class="note">
+                        <strong>Investment location</strong>
+                        <p>Nigeria and Sub-Saharan Africa.</p>
+                    </div>
+                    <div class="note">
+                        <strong>Security</strong>
+                        <p>Credit-enhanced and guaranteed instruments via a credit-guarantee institution.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Governance</span>
+                    <h2>National Council</h2>
+                    <p>A high-level oversight and supervisory body responsible for shaping national policy and providing strategic direction to NEFUND and all of its programmes.</p>
+                </div>
+                <div class="people people--three">
+                    <figure class="person">
+                        <img src="assets/images/nefund/people/zainab-hayatuddeen.jpg" alt="Mrs. Zainab Hayatuddeen"
+                            width="400" height="400" loading="lazy" decoding="async">
+                        <figcaption class="person__body">
+                            <strong>Mrs. Zainab Hayatuddeen</strong>
+                            <span>Chief Executive Officer, NEFUND</span>
+                        </figcaption>
+                    </figure>
+                    <figure class="person">
+                        <img src="assets/images/nefund/people/mustapha-abdullahi.jpg" alt="Dr. Mustapha Abdullahi"
+                            width="400" height="400" loading="lazy" decoding="async">
+                        <figcaption class="person__body">
+                            <strong>Dr. Mustapha Abdullahi</strong>
+                            <span>Director-General, Energy Commission of Nigeria</span>
+                        </figcaption>
+                    </figure>
+                    <figure class="person">
+                        <img src="assets/images/nefund/people/olu-verhaijen.jpg" alt="Mrs. Olu Verhaijen"
+                            width="400" height="400" loading="lazy" decoding="async">
+                        <figcaption class="person__body">
+                            <strong>Mrs. Olu Verhaijen</strong>
+                            <span>Special Adviser to the President on Energy &middot; Chair Representative</span>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--tint">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Oversight</span>
+                    <h2>Fund Investment Committee</h2>
+                    <p>Senior, experienced investment professionals — including independent members with wide-ranging experience in energy investments, risk and fund management. The Committee's members collectively hold more than 100 years of investing and financing experience.</p>
+                </div>
+                <div class="people">
+                    <figure class="person">
+                        <img src="assets/images/nefund/people/kassim-gidado.jpg" alt="Dr. Kassim Gidado"
+                            width="400" height="400" loading="lazy" decoding="async">
+                        <figcaption class="person__body">
+                            <strong>Dr. Kassim Gidado</strong>
+                            <span>Chairman, National Energy Fund &middot; Board Chairman, Polaris Bank</span>
+                        </figcaption>
+                    </figure>
+                    <figure class="person">
+                        <img src="assets/images/nefund/people/dapo-olagunju.png" alt="Dapo Olagunju"
+                            width="400" height="400" loading="lazy" decoding="async">
+                        <figcaption class="person__body">
+                            <strong>Dapo Olagunju</strong>
+                            <span>Managing Director, J.P. Morgan Nigeria</span>
+                        </figcaption>
+                    </figure>
+                    <figure class="person">
+                        <img src="assets/images/nefund/people/mariam-bolakale.jpg" alt="Mariam Bolakale"
+                            width="400" height="400" loading="lazy" decoding="async">
+                        <figcaption class="person__body">
+                            <strong>Mariam Bolakale</strong>
+                            <span>Executive Director, CardinalStone Asset Management</span>
+                        </figcaption>
+                    </figure>
+                    <figure class="person">
+                        <img src="assets/images/nefund/people/oluseun-olatidoye.jpg" alt="Oluseun Olatidoye"
+                            width="400" height="400" loading="lazy" decoding="async">
+                        <figcaption class="person__body">
+                            <strong>Oluseun Olatidoye</strong>
+                            <span>Head of Capital Markets &middot; FirstCap</span>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Professional parties</span>
+                    <h2>Advisers &amp; professional parties</h2>
+                    <p>The Fund is supported by a full complement of independent professional advisers, appointed in line with SEC Nigeria requirements.</p>
+                </div>
+                <div class="advisers">
+                    <div class="adviser">
+                        <span class="adviser__role">Issuing House / Financial Adviser</span>
+                        <div class="adviser__logos">
+                            <img width="355" height="130" src="assets/images/nefund/logos/firstcap.png" alt="First Capital" loading="lazy">
                         </div>
-                        <div class="nf-hero-right">
-                            <span class="nfp-eyebrow">A catalytic Fund of Funds</span>
-                            <div class="nfp-bignum"><span class="u">US$</span>100<span class="b">B</span></div>
-                            <p class="nf-hero-cap">Initial target fund size &mdash; established by the Federal Government of Nigeria to mobilise capital for the nation&rsquo;s energy sector under SEC Nigeria regulation.</p>
-                            <ul class="nfp-factrow">
-                                <li><b>Fund of Funds</b><span>Catalytic structure</span></li>
-                                <li><b>GP / LP</b><span>Hybrid platform</span></li>
-                                <li><b>Blended</b><span>Foreign &amp; local capital</span></li>
-                                <li><b>SEC Nigeria</b><span>Regulated vehicle</span></li>
-                            </ul>
+                    </div>
+                    <div class="adviser">
+                        <span class="adviser__role">Valuation Adviser</span>
+                        <div class="adviser__logos">
+                            <img width="221" height="164" src="assets/images/nefund/logos/ey.png" alt="EY" loading="lazy">
+                            <img width="295" height="295" src="assets/images/nefund/logos/pwc.png" alt="PwC" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="adviser">
+                        <span class="adviser__role">Custodian</span>
+                        <div class="adviser__logos">
+                            <img width="295" height="192" src="assets/images/nefund/logos/uba.png" alt="UBA" loading="lazy">
+                            <img width="306" height="172" src="assets/images/nefund/logos/standard-chartered.png" alt="Standard Chartered" loading="lazy">
+                            <img width="368" height="126" src="assets/images/nefund/logos/firstbank.png" alt="First Bank" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="adviser">
+                        <span class="adviser__role">Trustee</span>
+                        <div class="adviser__logos">
+                            <img width="280" height="160" src="assets/images/nefund/logos/stanbic-ibtc.png" alt="Stanbic IBTC" loading="lazy">
+                            <img width="355" height="130" src="assets/images/nefund/logos/firstcap.png" alt="First Capital" loading="lazy">
+                            <img width="400" height="66" src="assets/images/nefund/logos/united-capital.png" alt="United Capital" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="adviser">
+                        <span class="adviser__role">Reporting Accountant</span>
+                        <div class="adviser__logos">
+                            <img width="295" height="295" src="assets/images/nefund/logos/kpmg.png" alt="KPMG" loading="lazy">
+                            <img width="295" height="295" src="assets/images/nefund/logos/deloitte.png" alt="Deloitte" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="adviser">
+                        <span class="adviser__role">Solicitor</span>
+                        <div class="adviser__logos">
+                            <img width="300" height="300" src="assets/images/nefund/logos/tnp.png" alt="TNP" loading="lazy">
+                            <img width="267" height="189" src="assets/images/nefund/logos/g-elias.png" alt="G. Elias" loading="lazy">
+                            <img width="168" height="148" src="assets/images/nefund/logos/udo-udoma.png" alt="Udo Udoma &amp; Belo-Osagie" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="adviser">
+                        <span class="adviser__role">Rating Agency</span>
+                        <div class="adviser__logos">
+                            <img width="400" height="86" src="assets/images/nefund/logos/agusto.png" alt="Agusto &amp; Co." loading="lazy">
+                            <img width="198" height="198" src="assets/images/nefund/logos/datapro.png" alt="DataPro" loading="lazy">
+                            <img width="320" height="122" src="assets/images/nefund/logos/gcr.png" alt="GCR Ratings" loading="lazy">
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
 
-        <!-- ============================================================== -->
-        <!-- FUND PROFILE (sourced from the NEFUND profile deck, 2026)       -->
-        <!-- ============================================================== -->
-        <div class="nf-profile">
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="white">
-                <div class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12 relative pt-12 md:pt-20 pb-24 md:pb-30">
-                    <div class="col-span-full lg:col-span-2">
-                        <h3 class="flex items-center gap-2.5 text-body-500 text-surface-text-section-label sticky top-header-spaced-8" data-reveal>
-                            <span class="block size-[0.66em] rounded-full" style="background:#10b981"></span>Mandate
-                        </h3>
+        <section class="section section--tint">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Deal Room</span>
+                    <h2>One product. Two cameras.</h2>
+                    <p>Deal Room is the whole product. GPs raise and run the full lifecycle; LPs see a live
+                        portfolio of their commitments on top of the same record — one camera for raising, one for
+                        investing.</p>
+                </div>
+                <div class="tiles tiles--two">
+                    <div class="tile">
+                        <h3>Deal Room</h3>
+                        <p>Source &rarr; Structure &rarr; Outreach &rarr; Diligence &rarr; Close &rarr; Administer.
+                            One record, two lenses.</p>
                     </div>
-                    <div class="col-span-full lg:col-[3/-1]">
-                        <div class="flex flex-col gap-0">
-                            <div class="flex flex-col gap-4 w-full" style="max-width:64ch">
-                                <h2 class="w-full text-headline-400" data-reveal>What the Fund aims to do</h2>
-                                <p class="text-body-400 text-surface-text-muted" data-reveal data-reveal-d="1">NEFUND provides patient, long-term capital across the energy value chain &mdash; de-risking projects, crowding in institutional investors, and reducing the foreign-exchange exposure that has constrained Nigerian energy financing.</p>
-                            </div>
-                            <div class="block w-full h-12"></div>
-                            <div class="nfp-cards c3">
-                                <div class="nfp-card" data-reveal data-reveal-d="1">
-                                    <div class="nfp-numcard-top">
-                                        <span class="nfp-numbadge">01</span>
-                                        <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 4 13c0-5 4-9 16-9 0 8-4 12-9 12Z"/><path d="M8 16c2-4 5-6 8-7"/></svg></span>
-                                    </div>
-                                    <h3>Climate-aligned funding</h3>
-                                    <p>Provide long-term funding to climate-aligned projects.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="2">
-                                    <div class="nfp-numcard-top">
-                                        <span class="nfp-numbadge">02</span>
-                                        <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg></span>
-                                    </div>
-                                    <h3>Energy generation</h3>
-                                    <p>Support small- and large-scale energy generation.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="3">
-                                    <div class="nfp-numcard-top">
-                                        <span class="nfp-numbadge">03</span>
-                                        <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20V9l-6 4V9l-6 4V4H4v16Z"/><path d="M6 20v-4M10 20v-4M14 20v-4M18 20v-4"/></svg></span>
-                                    </div>
-                                    <h3>Low-carbon infrastructure</h3>
-                                    <p>Support low-carbon energy infrastructure.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="1">
-                                    <div class="nfp-numcard-top">
-                                        <span class="nfp-numbadge">04</span>
-                                        <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg></span>
-                                    </div>
-                                    <h3>Alternative clean energy</h3>
-                                    <p>Support alternative clean-energy infrastructure.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="2">
-                                    <div class="nfp-numcard-top">
-                                        <span class="nfp-numbadge">05</span>
-                                        <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18V8M4 8l4 4M20 6v10M20 16l-4-4"/><circle cx="12" cy="12" r="1.5"/></svg></span>
-                                    </div>
-                                    <h3>Reduce FX exposure</h3>
-                                    <p>Reduce foreign-exchange exposure by providing long-term financing.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="3">
-                                    <div class="nfp-numcard-top">
-                                        <span class="nfp-numbadge">06</span>
-                                        <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
-                                    </div>
-                                    <h3>Diversified portfolio</h3>
-                                    <p>Build a diversified portfolio of investments across multiple value chains.</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="tile">
+                        <h3>GP &amp; LP</h3>
+                        <p>Two lenses on one record. GPs raise and run the full lifecycle; LPs see a live portfolio
+                            of their commitments — same data, opposite camera.</p>
                     </div>
                 </div>
-            </section>
-        </div>
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="ink">
-                <div class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12 relative pt-12 md:pt-20 pb-24 md:pb-30">
-                    <div class="col-span-full lg:col-span-2">
-                        <h3 class="flex items-center gap-2.5 text-body-500 text-surface-text-section-label sticky top-header-spaced-8" data-reveal>
-                            <span class="block size-[0.66em] rounded-full" style="background:#10b981"></span>Impact
-                        </h3>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Vehicle wrappers</span>
+                    <h2>Six wrappers, one wizard, inside Deal Room</h2>
+                    <p>SPV, Sub-Fund, Rolling, Venture, Co-Invest, Roll-Up. They used to be six product pages with overlapping marketing. They are now one dropdown in Step 2 of the new-deal wizard, with template defaults that pre-fill terms.</p>
+                </div>
+                <div class="tiles">
+                    <div class="tile">
+                        <h3>SPV</h3>
+                        <p>Single asset, single close. Flat ownership percentage. Defaults: 0% mgmt &middot; 20% carry &middot; min $25K.</p>
                     </div>
-                    <div class="col-span-full lg:col-[3/-1]">
-                        <div class="flex flex-col gap-0">
-                            <div class="flex flex-col gap-4 w-full" style="max-width:64ch">
-                                <h2 class="w-full text-headline-400" data-reveal>Measurable socio-economic &amp; environmental benefit</h2>
-                                <p class="text-body-400 text-surface-text-muted" data-reveal data-reveal-d="1">NEFUND is structured to deliver development impact alongside financial return, advancing national priorities in energy access, climate, industry, and innovation.</p>
-                            </div>
-                            <div class="block w-full h-12"></div>
-                            <div class="nfp-cards c3">
-                                <div class="nfp-card" data-reveal data-reveal-d="1">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg></span>
-                                    <h3>Energy access expansion</h3>
-                                    <p>Promoting rural electrification through cost-effective renewable solutions.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="2">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 4 13c0-5 4-9 16-9 0 8-4 12-9 12Z"/><path d="M8 16c2-4 5-6 8-7"/></svg></span>
-                                    <h3>Climate alignment</h3>
-                                    <p>Supporting projects that reduce carbon emissions and enhance energy efficiency.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="3">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20V9l-6 4V9l-6 4V4H4v16Z"/><path d="M6 20v-4M10 20v-4M14 20v-4M18 20v-4"/></svg></span>
-                                    <h3>Industrial growth</h3>
-                                    <p>Financing brownfield and bankable projects that strengthen Nigeria&rsquo;s energy infrastructure.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="4">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10c1 1 1 2 1 3h6c0-1 0-2 1-3a6 6 0 0 0-4-10Z"/></svg></span>
-                                    <h3>Innovation &amp; R&amp;D</h3>
-                                    <p>Funding research in nuclear energy, energy audits, and new technologies.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="1">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6 6 11a6 6 0 0 1-12 0c0-5 6-11 6-11Z"/></svg></span>
-                                    <h3>Oil &amp; Gas sector support</h3>
-                                    <p>Enabling indigenous operators to develop upstream and midstream projects sustainably.</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="tile">
+                        <h3>Sub-Fund</h3>
+                        <p>Multi-asset, multiple closes. Commitment + called + unfunded + NAV across the basket. Defaults: 2/20 &middot; min $50K.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Rolling Fund</h3>
+                        <p>Quarterly closes. Positions stacked by vintage. Each vintage carries its own NAV. Defaults: 2/20 &middot; min $10K.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Venture Fund</h3>
+                        <p>10-year LP. Classic commitment + capital calls + distributions + NAV. Defaults: 2/20 &middot; min $250K &middot; 1–3 closes.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Co-Invest</h3>
+                        <p>Piggyback alongside a parent deal. Direct allocation, no fund-level fees. Defaults: 0% mgmt &middot; 0% carry &middot; min $50K.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Roll-Up</h3>
+                        <p>Consolidate prior positions into a single new vehicle at agreed conversion ratios. Defaults: 1% mgmt &middot; 10% carry.</p>
                     </div>
                 </div>
-            </section>
-        </div>
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="white">
-                <div class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12 relative pt-12 md:pt-20 pb-24 md:pb-30">
-                    <div class="col-span-full lg:col-span-2">
-                        <h3 class="flex items-center gap-2.5 text-body-500 text-surface-text-section-label sticky top-header-spaced-8" data-reveal>
-                            <span class="block size-[0.66em] rounded-full" style="background:#10b981"></span>Capital
-                        </h3>
+            </div>
+        </section>
+
+        <section class="section section--tint">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Investor lens</span>
+                    <h2>Investment Management, folded into Deal Room</h2>
+                    <p>No separate IR product. The Portfolio page is the same Deal Room record with the camera flipped — every commitment you make as an LP shows up as a position with KPIs, multiples and an on-demand AI summary.</p>
+                </div>
+                <div class="tiles">
+                    <div class="tile">
+                        <h3>Live KPIs</h3>
+                        <p>Positions count, committed, called, distributed, NAV, TVPI, DPI. Per-position MOIC with status badges.</p>
                     </div>
-                    <div class="col-span-full lg:col-[3/-1]">
-                        <div class="flex flex-col gap-0">
-                            <div class="flex flex-col gap-4 w-full" style="max-width:64ch">
-                                <h2 class="w-full text-headline-400" data-reveal>Built for institutional capital</h2>
-                                <p class="text-body-400 text-surface-text-muted" data-reveal data-reveal-d="1">NEFUND seeks participation from a diverse pool of institutional investors aligned with climate and infrastructure financing.</p>
-                            </div>
-                            <div class="block w-full h-12"></div>
-                            <div class="nfp-cards c3">
-                                <div class="nfp-card" data-reveal data-reveal-d="1">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 4-6"/></svg></span>
-                                    <h3>Climate-focused funds</h3>
-                                    <p>Green investment vehicles with a climate mandate.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="2">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></span>
-                                    <h3>Development Finance Institutions</h3>
-                                    <p>DFIs anchoring catalytic, concessional capital.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="3">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v5h-5"/></svg></span>
-                                    <h3>Venture Capital &amp; Private Equity</h3>
-                                    <p>Firms investing across the energy value chain.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="4">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6l8-3Z"/></svg></span>
-                                    <h3>Insurance companies</h3>
-                                    <p>Long-duration capital seeking infrastructure exposure.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="1">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 14h2"/></svg></span>
-                                    <h3>Local pension funds</h3>
-                                    <p>Domestic pension capital co-investing at home.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="2">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></span>
-                                    <h3>Global institutional investors</h3>
-                                    <p>Investors aligned with climate and infrastructure financing.</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="tile">
+                        <h3>AI summary</h3>
+                        <p>Reads exposure, pacing, dispersion, vintage benchmarks. Writes an analyst-style note with a recommendation in seconds.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Soft &rarr; Hard &rarr; Signed</h3>
+                        <p>Every commitment carries a status. GPs see the live roster on the Outreach tab; LPs see the same position in their portfolio.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Real documents</h3>
+                        <p>File uploads per stage — deal letter, PPM, sub-doc, capital call notice, quarterly LP update. Aggregated in Reports.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>USD / &#8358; Naira toggle</h3>
+                        <p>Segmented switch in the workspace header flips every dollar figure to Naira on the fly. Storage stays USD-canonical.</p>
+                    </div>
+                    <div class="tile">
+                        <h3>Deal from any company</h3>
+                        <p>Every company row in the marketplace has a <strong>+ Deal</strong> button. Opens the wizard pre-filled.</p>
                     </div>
                 </div>
-            </section>
-        </div>
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="white">
-                <div class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12 relative pt-12 md:pt-20 pb-24 md:pb-30">
-                    <div class="col-span-full lg:col-span-2">
-                        <h3 class="flex items-center gap-2.5 text-body-500 text-surface-text-section-label sticky top-header-spaced-8" data-reveal>
-                            <span class="block size-[0.66em] rounded-full" style="background:#10b981"></span>Structure
-                        </h3>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Intelligence</span>
+                    <h2>Data-driven insights for smarter decisions</h2>
+                </div>
+                <div class="tiles tiles--two">
+                    <div class="tile">
+                        <h3>Apex AI <span class="tag">Beta</span></h3>
+                        <p>AI-powered financial intelligence that surfaces actionable insights from your portfolio
+                            data, market trends and investment patterns.</p>
                     </div>
-                    <div class="col-span-full lg:col-[3/-1]">
-                        <div class="flex flex-col gap-0">
-                            <div class="flex flex-col gap-4 w-full" style="max-width:64ch">
-                                <h2 class="w-full text-headline-400" data-reveal>An indicative Fund-of-Funds structure</h2>
-                                <p class="text-body-400 text-surface-text-muted" data-reveal data-reveal-d="1">NEFUND pools capital from institutional investors and channels it into specialised sub-funds, each aligned with the National Energy Masterplan.</p>
-                            </div>
-                            <div class="block w-full h-12"></div>
-                            <div class="nfp-cards">
-                                <div class="nfp-card" data-reveal data-reveal-d="1">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
-                                    <h3>General Partner (GP)</h3>
-                                    <p>Oversees fund management and sets strategic direction.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="2">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 14h2"/></svg></span>
-                                    <h3>Limited Partners (LP)</h3>
-                                    <p>Institutional investors committing capital alongside the GP.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="3">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="18" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></svg></span>
-                                    <h3>Specialised sub-funds</h3>
-                                    <p>Capital channelled into sub-funds aligned with the National Energy Masterplan (NEMP).</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="4">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 4-6"/></svg></span>
-                                    <h3>Fund size goal</h3>
-                                    <p>Target capitalisation of US$100&nbsp;billion, blended from foreign and local institutional capital.</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="tile">
+                        <h3>Edu Center</h3>
+                        <p>A resource hub for fund managers, investors and stakeholders. Guides, playbooks and best
+                            practices for the energy investment ecosystem.</p>
                     </div>
                 </div>
-            </section>
-        </div>
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="gray">
-                <div class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12 relative pt-12 md:pt-20 pb-24 md:pb-30">
-                    <div class="col-span-full lg:col-span-2">
-                        <h3 class="flex items-center gap-2.5 text-body-500 text-surface-text-section-label sticky top-header-spaced-8" data-reveal>
-                            <span class="block size-[0.66em] rounded-full" style="background:#10b981"></span>Fund managers
-                        </h3>
-                    </div>
-                    <div class="col-span-full lg:col-[3/-1]">
-                        <div class="flex flex-col gap-0">
-                            <div class="flex flex-col gap-4 w-full" style="max-width:64ch">
-                                <h2 class="w-full text-headline-400" data-reveal>Structured by global fund managers</h2>
-                                <p class="text-body-400 text-surface-text-muted" data-reveal data-reveal-d="1">JP Morgan and First Capital (FirstCap) serve as the lead fund managers, providing structuring, global expertise in governance, and investment oversight.</p>
-                            </div>
-                            <div class="block w-full h-10"></div>
-                            <div class="grid gap-5 sm:grid-cols-2">
-                                <div class="flex h-32 items-center justify-center rounded-2xl border border-surface-stroke-primary bg-white px-8" data-reveal data-reveal-d="1">
-                                    <span style="font-family:Georgia,'Times New Roman',serif;font-size:30px;font-weight:600;color:#0f1e3d;letter-spacing:-.5px">J.P.Morgan</span>
-                                </div>
-                                <div class="flex h-32 items-center justify-center rounded-2xl border border-surface-stroke-primary bg-white px-8" data-reveal data-reveal-d="2">
-                                    <img src="assets/images/nefund/logos/firstcap.png" alt="First Capital" class="max-h-12 max-w-full object-contain">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="shell cta__inner">
+                <div>
+                    <span class="eyebrow">Get started</span>
+                    <h2>Raise or invest through NEFUND.</h2>
                 </div>
-            </section>
-        </div>
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="ink">
-                <div class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12 relative pt-12 md:pt-20 pb-24 md:pb-30">
-                    <div class="col-span-full lg:col-span-2">
-                        <h3 class="flex items-center gap-2.5 text-body-500 text-surface-text-section-label sticky top-header-spaced-8" data-reveal>
-                            <span class="block size-[0.66em] rounded-full" style="background:#10b981"></span>Sub-funds
-                        </h3>
-                    </div>
-                    <div class="col-span-full lg:col-[3/-1]">
-                        <div class="flex flex-col gap-0">
-                            <div class="flex flex-col gap-4 w-full" style="max-width:64ch">
-                                <h2 class="w-full text-headline-400" data-reveal>Six specialised sub-funds</h2>
-                                <p class="text-body-400 text-surface-text-muted" data-reveal data-reveal-d="1">Capital is deployed through specialised sub-funds, each targeting a distinct part of the energy transition. The Fund pursues a credit-guarantee partnership to crowd in additional institutional co-investment.</p>
-                            </div>
-                            <div class="block w-full h-12"></div>
-                            <div class="nfp-cards c3">
-                                <div class="nfp-card" data-reveal data-reveal-d="1">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="18" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></svg></span>
-                                    <h3>Project Preparatory Fund</h3>
-                                    <p>Early-stage preparation to bring projects to bankability.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="2">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.5"/><ellipse cx="12" cy="12" rx="9" ry="4"/><ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(120 12 12)"/></svg></span>
-                                    <h3>Nuclear Energy Fund</h3>
-                                    <p>Financing for nuclear generation capacity and research.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="3">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a8 8 0 1 1 16 0"/><path d="M12 18l4-5"/></svg></span>
-                                    <h3>Energy Efficiency Fund</h3>
-                                    <p>Demand-side efficiency and energy-audit programmes.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="4">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/><path d="M10 20v-5h4v5"/></svg></span>
-                                    <h3>Rural Electrification Fund</h3>
-                                    <p>Off-grid and mini-grid access for underserved communities.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="1">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10c1 1 1 2 1 3h6c0-1 0-2 1-3a6 6 0 0 0-4-10Z"/></svg></span>
-                                    <h3>Innovation Fund</h3>
-                                    <p>New technologies advancing the energy transition.</p>
-                                </div>
-                                <div class="nfp-card" data-reveal data-reveal-d="2">
-                                    <span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6 6 11a6 6 0 0 1-12 0c0-5 6-11 6-11Z"/></svg></span>
-                                    <h3>Special Fund for Oil &amp; Gas</h3>
-                                    <p>Sustainable upstream and midstream development by indigenous operators.</p>
-                                </div>
-                            </div>
-                            <div class="nfp-meta">
-                                <div class="nfp-meta-item" data-reveal><span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></span><div><h4>Investment location</h4><p>Nigeria and Sub-Saharan Africa.</p></div></div>
-                                <div class="nfp-meta-item" data-reveal data-reveal-d="1"><span class="nfp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6l8-3Z"/></svg></span><div><h4>Security</h4><p>Credit-enhanced and guaranteed instruments via a credit-guarantee institution.</p></div></div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="cta__actions">
+                    <a class="btn btn--primary" href="deal-room/index.html">Open Deal Room <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    <a class="btn btn--secondary" href="contact.html">Contact the team</a>
                 </div>
-            </section>
-        </div>
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="white">
-                <div class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12 relative pt-12 md:pt-20 pb-24 md:pb-30">
-                    <div class="col-span-full lg:col-span-2">
-                        <h3 class="flex items-center gap-2.5 text-body-500 text-surface-text-section-label sticky top-header-spaced-8" data-reveal>
-                            <span class="block size-[0.66em] rounded-full" style="background:#10b981"></span>Governance
-                        </h3>
-                    </div>
-                    <div class="col-span-full lg:col-[3/-1]">
-                        <div class="flex flex-col gap-0">
-                            <div class="flex flex-col gap-4 w-full" style="max-width:64ch">
-                                <h2 class="w-full text-headline-400" data-reveal>National Council</h2>
-                                <p class="text-body-400 text-surface-text-muted" data-reveal data-reveal-d="1">A high-level oversight and supervisory body responsible for shaping national policy and providing strategic direction to NEFUND and all of its programs.</p>
-                            </div>
-                            <div class="block w-full h-12"></div>
-                            <div class="nfp-people c3">
-                                <figure class="nfp-person" data-reveal data-reveal-d="1">
-                                    <div class="nfp-photo"><img src="assets/images/nefund/people/zainab-hayatuddeen.jpg" alt="Mrs. Zainab Hayatuddeen" loading="lazy"></div>
-                                    <figcaption><div class="nfp-name">Mrs. Zainab Hayatuddeen</div><div class="nfp-role">Chief Executive Officer, NEFUND</div></figcaption>
-                                </figure>
-                                <figure class="nfp-person" data-reveal data-reveal-d="2">
-                                    <div class="nfp-photo"><img src="assets/images/nefund/people/mustapha-abdullahi.jpg" alt="Dr. Mustapha Abdullahi" loading="lazy"></div>
-                                    <figcaption><div class="nfp-name">Dr. Mustapha Abdullahi</div><div class="nfp-role">Director-General, Energy Commission of Nigeria</div></figcaption>
-                                </figure>
-                                <figure class="nfp-person" data-reveal data-reveal-d="3">
-                                    <div class="nfp-photo"><img src="assets/images/nefund/people/olu-verhaijen.jpg" alt="Mrs. Olu Verhaijen" loading="lazy"></div>
-                                    <figcaption><div class="nfp-name">Mrs. Olu Verhaijen</div><div class="nfp-role">Special Adviser to the President on Energy &middot; Chair Representative</div></figcaption>
-                                </figure>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="white">
-                <div class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12 relative pt-12 md:pt-20 pb-24 md:pb-30">
-                    <div class="col-span-full lg:col-span-2">
-                        <h3 class="flex items-center gap-2.5 text-body-500 text-surface-text-section-label sticky top-header-spaced-8" data-reveal>
-                            <span class="block size-[0.66em] rounded-full" style="background:#10b981"></span>Oversight
-                        </h3>
-                    </div>
-                    <div class="col-span-full lg:col-[3/-1]">
-                        <div class="flex flex-col gap-0">
-                            <div class="flex flex-col gap-4 w-full" style="max-width:64ch">
-                                <h2 class="w-full text-headline-400" data-reveal>Fund Investment Committee</h2>
-                                <p class="text-body-400 text-surface-text-muted" data-reveal data-reveal-d="1">Senior, experienced investment professionals &mdash; including independent members with wide-ranging experience in energy investments, risk, and fund management. The Committee&rsquo;s members collectively hold more than 100 years of investing and financing experience.</p>
-                            </div>
-                            <div class="block w-full h-12"></div>
-                            <div class="nfp-people c4">
-                                <figure class="nfp-person" data-reveal data-reveal-d="1">
-                                    <div class="nfp-photo"><img src="assets/images/nefund/people/kassim-gidado.jpg" alt="Dr. Kassim Gidado" loading="lazy"></div>
-                                    <figcaption><div class="nfp-name">Dr. Kassim Gidado</div><div class="nfp-role">Chairman, National Energy Fund &middot; Board Chairman, Polaris Bank</div></figcaption>
-                                </figure>
-                                <figure class="nfp-person" data-reveal data-reveal-d="2">
-                                    <div class="nfp-photo"><img src="assets/images/nefund/people/dapo-olagunju.png" alt="Dapo Olagunju" loading="lazy"></div>
-                                    <figcaption><div class="nfp-name">Dapo Olagunju</div><div class="nfp-role">Managing Director, J.P. Morgan Nigeria</div></figcaption>
-                                </figure>
-                                <figure class="nfp-person" data-reveal data-reveal-d="3">
-                                    <div class="nfp-photo"><img src="assets/images/nefund/people/mariam-bolakale.jpg" alt="Mariam Bolakale" loading="lazy"></div>
-                                    <figcaption><div class="nfp-name">Mariam Bolakale</div><div class="nfp-role">Executive Director, CardinalStone Asset Management</div></figcaption>
-                                </figure>
-                                <figure class="nfp-person" data-reveal data-reveal-d="4">
-                                    <div class="nfp-photo"><img src="assets/images/nefund/people/oluseun-olatidoye.jpg" alt="Oluseun Olatidoye" loading="lazy"></div>
-                                    <figcaption><div class="nfp-name">Oluseun Olatidoye</div><div class="nfp-role">Head of Capital Markets &middot; FirstCap</div></figcaption>
-                                </figure>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="gray">
-                <div class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12 relative pt-12 md:pt-20 pb-24 md:pb-30">
-                    <div class="col-span-full lg:col-span-2">
-                        <h3 class="flex items-center gap-2.5 text-body-500 text-surface-text-section-label sticky top-header-spaced-8" data-reveal>
-                            <span class="block size-[0.66em] rounded-full" style="background:#10b981"></span>Professional parties
-                        </h3>
-                    </div>
-                    <div class="col-span-full lg:col-[3/-1]">
-                        <div class="flex flex-col gap-0">
-                            <div class="flex flex-col gap-4 w-full" style="max-width:64ch">
-                                <h2 class="w-full text-headline-400" data-reveal>Advisers &amp; professional parties</h2>
-                                <p class="text-body-400 text-surface-text-muted" data-reveal data-reveal-d="1">The Fund is supported by a full complement of independent professional advisers, appointed in line with SEC Nigeria requirements.</p>
-                            </div>
-                            <div class="block w-full h-12"></div>
-                            <div class="nfp-party-grid">
-                                <div class="nfp-party" data-reveal data-reveal-d="1">
-                                    <div class="nfp-party-role">Issuing House / Financial Adviser</div>
-                                    <div class="nfp-logos">
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/firstcap.png" alt="First Capital" loading="lazy"></div>
-                                    </div>
-                                </div>
-                                <div class="nfp-party" data-reveal data-reveal-d="2">
-                                    <div class="nfp-party-role">Valuation Adviser</div>
-                                    <div class="nfp-logos">
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/ey.png" alt="EY" loading="lazy"></div>
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/pwc.png" alt="PwC" loading="lazy"></div>
-                                    </div>
-                                </div>
-                                <div class="nfp-party" data-reveal data-reveal-d="3">
-                                    <div class="nfp-party-role">Custodian</div>
-                                    <div class="nfp-logos">
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/uba.png" alt="UBA" loading="lazy"></div>
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/standard-chartered.png" alt="Standard Chartered" loading="lazy"></div>
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/firstbank.png" alt="FirstBank" loading="lazy"></div>
-                                    </div>
-                                </div>
-                                <div class="nfp-party" data-reveal data-reveal-d="1">
-                                    <div class="nfp-party-role">Trustee</div>
-                                    <div class="nfp-logos">
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/stanbic-ibtc.png" alt="Stanbic IBTC" loading="lazy"></div>
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/firstcap.png" alt="First Capital" loading="lazy"></div>
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/united-capital.png" alt="United Capital" loading="lazy"></div>
-                                    </div>
-                                </div>
-                                <div class="nfp-party" data-reveal data-reveal-d="2">
-                                    <div class="nfp-party-role">Reporting Accountant</div>
-                                    <div class="nfp-logos">
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/kpmg.png" alt="KPMG" loading="lazy"></div>
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/deloitte.png" alt="Deloitte" loading="lazy"></div>
-                                    </div>
-                                </div>
-                                <div class="nfp-party" data-reveal data-reveal-d="3">
-                                    <div class="nfp-party-role">Solicitor</div>
-                                    <div class="nfp-logos">
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/tnp.png" alt="TNP" loading="lazy"></div>
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/g-elias.png" alt="G. Elias" loading="lazy"></div>
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/udo-udoma.png" alt="Udo Udoma & Belo-Osagie" loading="lazy"></div>
-                                    </div>
-                                </div>
-                                <div class="nfp-party" data-reveal data-reveal-d="1">
-                                    <div class="nfp-party-role">Rating Agency</div>
-                                    <div class="nfp-logos">
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/agusto.png" alt="Agusto & Co." loading="lazy"></div>
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/datapro.png" alt="DataPro" loading="lazy"></div>
-                                        <div class="nfp-logo"><img src="assets/images/nefund/logos/gcr.png" alt="GCR Ratings" loading="lazy"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-        </div><!-- /.nf-profile -->
-        <!-- ============================================================== -->
-        <!-- END FUND PROFILE                                                -->
-        <!-- ============================================================== -->
-
-        <!-- One product / two cameras -->
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="white">
-                <div
-                    class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12 relative pt-12 md:pt-20 pb-12 md:pb-20">
-                    <div class="col-span-full">
-                        <div class="flex flex-col gap-10 md:gap-16 xl:gap-20">
-                            <div>
-                                <div class="flex flex-col gap-4 w-full" style="max-width:100%">
-                                    <h2 class="w-full text-headline-400">One product. Two cameras.</h2>
-                                    <p class="text-body-400 text-surface-text-muted" style="max-width:62ch">Deal Room is the whole product. GPs raise and run the full lifecycle; LPs see a live portfolio of their commitments on top of the same record &mdash; one camera for raising, one for investing.</p>
-                                </div>
-                            </div>
-                            <div class="grid gap-6 sm:gap-4 md:gap-8 items-stretch grid-cols-1 sm:grid-cols-2">
-                                <a class="group relative flex overflow-hidden rounded-lg bg-card-primary p-6 aspect-square xs:aspect-auto lg:aspect-[5/3]"
-                                    href="deal-room/index.html">
-                                    <div class="absolute left-0 top-0 opacity-0 transition-[background,opacity] duration-700"
-                                        style="background-image:radial-gradient(50% 50% at 50% 50%, rgba(189, 187, 255, 1) 0%, rgba(189, 187, 255, 0) 100%);width:0px;height:0px;transform:none">
-                                    </div>
-                                    <div class="relative flex w-full flex-col justify-between gap-8 sm:gap-20">
-                                        <div class="flex flex-col gap-4 [&_svg]:block [&_svg]:size-8">
-                                            <div><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M4 6h24M4 14h24M4 22h24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                                <path d="M4 6l4-2M4 14l8-2M4 22l16-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                            </svg></div>
-                                            <p class="max-w-[45ch] translate-y-2 text-surface-text-muted opacity-0 transition-all duration-300">Source &rarr; Structure &rarr; Outreach &rarr; Diligence &rarr; Close &rarr; Administer. One record, two lenses.</p>
-                                        </div>
-                                        <div class="flex w-full items-center justify-between">
-                                            <h3 class="text-headline-100">Deal Room</h3>
-                                            <div class="relative isolate flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-black/10 [&_svg]:block [&_svg]:size-5">
-                                                <div class="absolute inset-0 translate-y-full scale-50 rounded-full bg-cta-primary-hover-bg transition-transform duration-300 group-hover:translate-y-0 group-hover:scale-100"></div>
-                                                <div class="relative"><svg fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" shape-rendering="geometricPrecision" viewBox="0 0 20 20">
-                                                    <path d="m12 4 6 6-6 6M2 10h16" stroke="currentColor" vector-effect="non-scaling-stroke"></path>
-                                                </svg></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="group relative flex overflow-hidden rounded-lg bg-card-primary p-6 aspect-square xs:aspect-auto lg:aspect-[5/3]"
-                                    href="https://lp-neiia.vercel.app/">
-                                    <div class="absolute left-0 top-0 opacity-0 transition-[background,opacity] duration-700"
-                                        style="background-image:radial-gradient(50% 50% at 50% 50%, rgba(189, 187, 255, 1) 0%, rgba(189, 187, 255, 0) 100%);width:0px;height:0px;transform:none">
-                                    </div>
-                                    <div class="relative flex w-full flex-col justify-between gap-8 sm:gap-20">
-                                        <div class="flex flex-col gap-4 [&_svg]:block [&_svg]:size-8">
-                                            <div><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <circle cx="11" cy="13" r="4" stroke="currentColor" stroke-width="2"/>
-                                                <circle cx="22" cy="15" r="3" stroke="currentColor" stroke-width="2"/>
-                                                <path d="M3 27c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5M18.5 27c0-3 2.2-5 5.5-5s5 1.6 5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                            </svg></div>
-                                            <p class="max-w-[45ch] translate-y-2 text-surface-text-muted opacity-0 transition-all duration-300">Two lenses on one record. GPs raise and run the full lifecycle; LPs see a live portfolio of their commitments — same data, opposite camera.</p>
-                                        </div>
-                                        <div class="flex w-full items-center justify-between">
-                                            <h3 class="text-headline-100">GP &amp; LP</h3>
-                                            <div class="relative isolate flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-black/10 [&_svg]:block [&_svg]:size-5">
-                                                <div class="absolute inset-0 translate-y-full scale-50 rounded-full bg-cta-primary-hover-bg transition-transform duration-300 group-hover:translate-y-0 group-hover:scale-100"></div>
-                                                <div class="relative"><svg fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" shape-rendering="geometricPrecision" viewBox="0 0 20 20">
-                                                    <path d="m12 4 6 6-6 6M2 10h16" stroke="currentColor" vector-effect="non-scaling-stroke"></path>
-                                                </svg></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Six vehicle wrappers (inside Deal Room, not separate pages) -->
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="white">
-                <div
-                    class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12 relative pt-12 md:pt-20 pb-24 md:pb-30">
-                    <div class="col-span-full lg:col-span-2">
-                        <h3 class="flex items-center gap-2.5 text-body-500 text-surface-text-section-label sticky top-header-spaced-8">
-                            <span class="block size-[0.66em] rounded-full bg-current"></span>Vehicle wrappers
-                        </h3>
-                    </div>
-                    <div class="col-span-full lg:col-[3/-1]">
-                        <div class="flex flex-col gap-0">
-                            <div>
-                                <div class="flex flex-col gap-4 w-full" style="max-width:62ch">
-                                    <h2 class="w-full text-headline-400">Six wrappers, one wizard, inside Deal Room</h2>
-                                    <p class="text-body-400 text-surface-text-muted">SPV, Sub-Fund, Rolling, Venture, Co-Invest, Roll-Up. They used to be six product pages with overlapping marketing. They're now one dropdown in Step 2 of the new-deal wizard, with template defaults that pre-fill terms.</p>
-                                </div>
-                            </div>
-                            <div class="block w-full h-12"></div>
-                            <div class="grid w-full gap-y-8 sm:grid-cols-2 md:grid-cols-3">
-
-                                <a href="deal-room/index.html#vehicles" class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors" style="text-decoration:none;color:inherit">
-                                    <div class="mb-1 block text-subtitle-200">SPV</div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">Single asset, single close. Flat ownership percentage. Defaults: 0% mgmt · 20% carry · min $25K.</div>
-                                </a>
-
-                                <a href="deal-room/index.html#vehicles" class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors" style="text-decoration:none;color:inherit">
-                                    <div class="mb-1 block text-subtitle-200">Sub-Fund</div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">Multi-asset, multiple closes. Commitment + called + unfunded + NAV across the basket. Defaults: 2/20 · min $50K.</div>
-                                </a>
-
-                                <a href="deal-room/index.html#vehicles" class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors" style="text-decoration:none;color:inherit">
-                                    <div class="mb-1 block text-subtitle-200">Rolling Fund</div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">Quarterly closes. Positions stacked by vintage. Each vintage carries its own NAV. Defaults: 2/20 · min $10K.</div>
-                                </a>
-
-                                <a href="deal-room/index.html#vehicles" class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors" style="text-decoration:none;color:inherit">
-                                    <div class="mb-1 block text-subtitle-200">Venture Fund</div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">10-year LP. Classic commitment + capital calls + distributions + NAV. Defaults: 2/20 · min $250K · 1–3 closes.</div>
-                                </a>
-
-                                <a href="deal-room/index.html#vehicles" class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors" style="text-decoration:none;color:inherit">
-                                    <div class="mb-1 block text-subtitle-200">Co-Invest</div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">Piggyback alongside a parent deal. Direct allocation, no fund-level fees. Defaults: 0% mgmt · 0% carry · min $50K.</div>
-                                </a>
-
-                                <a href="deal-room/index.html#vehicles" class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors" style="text-decoration:none;color:inherit">
-                                    <div class="mb-1 block text-subtitle-200">Roll-Up</div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">Consolidate prior positions into a single new vehicle at agreed conversion ratios. Defaults: 1% mgmt · 10% carry.</div>
-                                </a>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Key Features: Investor Management -->
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="ink">
-                <div
-                    class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12 relative pt-12 md:pt-20 pb-24 md:pb-30">
-                    <div class="col-span-full lg:col-span-2">
-                        <h3 class="flex items-center gap-2.5 text-body-500 text-surface-text-section-label sticky top-header-spaced-8">
-                            <span class="block size-[0.66em] rounded-full bg-current"></span>Investor lens
-                        </h3>
-                    </div>
-                    <div class="col-span-full lg:col-[3/-1]">
-                        <div class="flex flex-col gap-0">
-                            <div>
-                                <div class="flex flex-col gap-4 w-full" style="max-width:62ch">
-                                    <h2 class="w-full text-headline-400">Investment Management, folded into Deal Room</h2>
-                                    <p class="text-body-400 text-surface-text-muted">No more separate IR product. The Portfolio page is the same Deal Room record with the camera flipped — every commit you make as an LP shows up as a position with KPIs, multiples, and an on-demand AI summary.</p>
-                                </div>
-                            </div>
-                            <div class="block w-full h-12"></div>
-                            <div class="grid w-full gap-y-8 sm:grid-cols-2 md:grid-cols-3">
-
-                                <a href="deal-room/index.html#portfolio" class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors" style="text-decoration:none;color:inherit">
-                                    <div class="mb-1 block text-subtitle-200">Live KPIs</div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">Positions count, committed, called, distributed, NAV, TVPI, DPI. Per-position MOIC with status badges (green / info / warn).</div>
-                                </a>
-
-                                <a href="deal-room/index.html#portfolio" class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors" style="text-decoration:none;color:inherit">
-                                    <div class="mb-1 block text-subtitle-200">AI summary</div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">Reads exposure, pacing, dispersion, vintage benchmarks. Writes a written analyst-style note with a recommendation in seconds.</div>
-                                </a>
-
-                                <a href="deal-room/index.html#outreach" class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors" style="text-decoration:none;color:inherit">
-                                    <div class="mb-1 block text-subtitle-200">Soft &rarr; Hard &rarr; Signed</div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">Every commitment carries a status. GPs see the live roster on the Outreach tab; LPs see the same position in their portfolio.</div>
-                                </a>
-
-                                <a href="deal-room/index.html#lifecycle" class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors" style="text-decoration:none;color:inherit">
-                                    <div class="mb-1 block text-subtitle-200">Real documents</div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">File uploads per stage — deal letter, PPM, sub-doc, capital call notice, quarterly LP update. Aggregated in Reports.</div>
-                                </a>
-
-                                <a href="deal-room/index.html" class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors" style="text-decoration:none;color:inherit">
-                                    <div class="mb-1 block text-subtitle-200">USD / ₦ Naira toggle</div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">Segmented switch in the workspace header flips every dollar figure to Naira on the fly. Storage stays USD-canonical.</div>
-                                </a>
-
-                                <a href="deal-room/index.html" class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors" style="text-decoration:none;color:inherit">
-                                    <div class="mb-1 block text-subtitle-200">Make a deal from any company</div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">Every company row in the marketplace has a <strong>+ Deal</strong> button. Opens the wizard pre-filled with that company as the target.</div>
-                                </a>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Intelligence Section -->
-        <div>
-            <section class="scroll-m-header text-surface-text-primary relative bg-surface" data-theme="white">
-                <div
-                    class="mx-auto w-full px-5 sm:px-9 md:px-10 xl:px-12 max-w-[1536px] grid gap-8 md:grid-cols-12 relative pt-12 md:pt-20 pb-12 md:pb-20">
-                    <div class="col-span-full lg:col-span-2">
-                        <h3
-                            class="flex items-center gap-2.5 text-body-500 text-surface-text-section-label sticky top-header-spaced-8">
-                            <span class="block size-[0.66em] rounded-full bg-current"></span>Intelligence
-                        </h3>
-                    </div>
-                    <div class="col-span-full lg:col-[3/-1]">
-                        <div class="flex flex-col gap-0">
-                            <div>
-                                <div class="flex flex-col gap-4 w-full" style="max-width:100%">
-                                    <h2 class="w-full text-headline-400">Data-driven insights for smarter decisions</h2>
-                                </div>
-                            </div>
-                            <div class="block w-full h-12"></div>
-                            <div class="grid w-full gap-y-8 sm:grid-cols-2">
-                                <a href="https://apex-neiia.vercel.app/"
-                                    class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors"
-                                    style="text-decoration: none; color: inherit;">
-                                    <div class="mb-4 text-surface-text-section-label [&_svg]:size-8 [&_svg]:shrink-0">
-                                        <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            width="32" height="32">
-                                            <path d="M12 2a10 10 0 110 20 10 10 0 010-20z" stroke="currentColor"
-                                                stroke-width="1.5" />
-                                            <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.5"
-                                                stroke-linecap="round" />
-                                        </svg>
-                                    </div>
-                                    <div class="mb-1 block text-subtitle-200">Apex AI <span
-                                            style="font-size: 10px; background: rgba(189,187,255,0.3); padding: 2px 8px; border-radius: 4px; margin-left: 6px; font-weight: 600; letter-spacing: 0.5px;">BETA</span>
-                                    </div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">AI-powered
-                                        financial intelligence tool that surfaces actionable insights from your
-                                        portfolio data, market trends, and investment patterns.</div>
-                                </a>
-                                <a href="edu-center/educenter.html"
-                                    class="block border-l border-surface-stroke-primary px-8 hover:bg-surface-stroke-primary/5 transition-colors"
-                                    style="text-decoration: none; color: inherit;">
-                                    <div class="mb-4 text-surface-text-section-label [&_svg]:size-8 [&_svg]:shrink-0">
-                                        <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            width="32" height="32">
-                                            <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" stroke="currentColor"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" stroke="currentColor"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </div>
-                                    <div class="mb-1 block text-subtitle-200">Edu Center</div>
-                                    <div class="block max-w-prose text-body-300 text-surface-text-muted">A comprehensive
-                                        resource hub for fund managers, investors, and stakeholders. Access guides,
-                                        playbooks, and best practices for the energy investment ecosystem.</div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
+            </div>
+        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer container"
-        style="margin-top: 0; padding: 60px 20px; background-color: var(--bg-primary); color: var(--text-primary); border-top: 1px solid var(--border-color);">
-        <div class="footer-grid"
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; text-align: left;">
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600; color: var(--text-primary);">Products</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="deal-room/index.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Deal Room</a></li>
-                    <li style="margin-bottom: 12px;"><a href="https://apex-neiia.vercel.app/"
-                            style="color: var(--text-secondary); text-decoration: none;">Apex AI <span style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px; color: var(--text-primary);">BETA</span></a></li>
-                    <li style="margin-bottom: 12px;"><a href="edu-center/educenter.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Edu Center</a></li>
-                </ul>
+    <footer class="footer">
+        <div class="shell">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__lockup">
+                        <picture>
+                            <source srcset="assets/images/neiia-arms.webp" type="image/webp">
+                            <img src="assets/images/neiia-arms.png"
+                                alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                        </picture>
+                        <span class="footer__lockup-text">
+                            <strong>NEIIA</strong>
+                            <span>National Energy Investment &amp; Intelligence Administration</span>
+                        </span>
+                    </div>
+                    <p>Nigeria's centralised platform for energy investment intelligence, asset visibility and
+                        strategic coordination.</p>
+                    <span class="footer__mandate">Operated under the Federal Republic of Nigeria</span>
+                </div>
+
+                <div>
+                    <h3>Modules</h3>
+                    <ul>
+                        <li><a href="nefund.html">NEFUND</a></li>
+                        <li><a href="deal-room/index.html">National Energy Deal Room</a></li>
+                        <li><a href="energy-databank/index.html">National Energy Data Bank</a></li>
+                        <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
+                        <li><a href="risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Platform</h3>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="help-center/index.html">Help centre</a></li>
+                        <li><a href="edu-center/educenter.html">Edu Center</a></li>
+                        <li><a href="government-site/index.html">Mandate &amp; governance</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>For users</h3>
+                    <ul>
+                        <li><a href="newsletter.html">Newsletter</a></li>
+                        <li><a href="help-center/nefund.html">NEFUND guide</a></li>
+                        <li><a href="help-center/account.html">Account help</a></li>
+                        <li><a href="compliance/index.html">Compliance</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__signup">
+                    <h3>Stay updated</h3>
+                    <p>Regulatory updates, live raises and platform changes. No spam.</p>
+                    <form class="footer__form" data-access-key="REPLACE_WITH_WEB3FORMS_ACCESS_KEY"
+                        data-subject="NEIIA — new newsletter subscriber"
+                        data-success="Confirmed. You are on the distribution list.">
+                        <label class="visually-hidden" for="footer-email">Email address</label>
+                        <input type="email" id="footer-email" name="email" placeholder="you@email.com" required
+                            autocomplete="email">
+                        <button class="btn" type="submit">Subscribe</button>
+                    </form>
+                    <p class="footer__note">By subscribing you agree to our <a
+                            href="risk-esg/privacy-policy.html">privacy policy</a>.</p>
+                </div>
             </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600; color: var(--text-primary);">Administration</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="about.html"
-                            style="color: var(--text-secondary); text-decoration: none;">About NEIIA</a></li>
-                    <li style="margin-bottom: 12px;"><a href="construction.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Mandate & Governance</a></li>
-                    <li style="margin-bottom: 12px;"><a href="construction.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Careers</a></li>
-                    <li style="margin-bottom: 12px;"><a href="newsletter.html"
-                            style="color: var(--text-secondary); text-decoration: none;">News & Updates</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600; color: var(--text-primary);">Engagement</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="help-center/index.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Support & Enquiries</a></li>
-                    <li style="margin-bottom: 12px;"><a href="contact.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Contact NEIIA</a></li>
-                </ul>
+
+            <div class="footer__bottom">
+                <p class="footer__copy">
+                    &copy; 2026 <strong>Federal Republic of Nigeria</strong><br>
+                    Operating across all 36 states and the Federal Capital Territory
+                </p>
+                <div class="footer__meta">
+                    <a href="risk-esg/terms-of-service.html">Terms</a>
+                    <a href="risk-esg/privacy-policy.html">Privacy</a>
+                    <a href="compliance/index.html">Compliance</a>
+                    <a href="contact.html">Contact</a>
+                </div>
             </div>
         </div>
-        <p
-            style="margin-top: 40px; color: var(--text-secondary); font-size: 0.9rem; max-width: 1200px; margin-left: auto; margin-right: auto;">
-            &copy; 2026 NEIIA</p>
     </footer>
 
-    <!-- Fund-profile scroll reveal -->
-    <script>
-      (function () {
-        var els = document.querySelectorAll('.nf-profile [data-reveal]');
-        if (!('IntersectionObserver' in window) || !els.length) {
-          els.forEach(function (el) { el.classList.add('nfp-in'); });
-          return;
-        }
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) {
-            if (e.isIntersecting) { e.target.classList.add('nfp-in'); io.unobserve(e.target); }
-          });
-        }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
-        els.forEach(function (el) { io.observe(el); });
-      })();
-    </script>
-    <script src="script.js"></script>
+    <script src="assets/js/neiia.js?v=8" defer></script>
 </body>
 
 </html>

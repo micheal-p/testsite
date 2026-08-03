@@ -3,294 +3,322 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Sales - NEAP</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Mulish:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        body, p, a, input, button, textarea { font-family: 'Mulish', sans-serif !important; }
-        h1, h2, h3, h4, h5, h6 { font-family: 'Instrument Serif', serif !important; font-weight: 400; }
-        
-        .contact-page {
-            padding: 140px 24px 80px;
-            background: linear-gradient(180deg, #021a1f 0%, #0a3a40 100%);
-            color: #ffffff;
-            min-height: 70vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact — NEIIA</title>
+    <meta name="description" content="Contact the National Energy Investment & Intelligence Administration for platform access, data requests and enquiries.">
+    <meta name="theme-color" content="#0B1F24">
+    <meta property="og:title" content="Contact — NEIIA">
+    <meta property="og:description" content="Contact the National Energy Investment & Intelligence Administration for platform access, data requests and enquiries.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/png" href="assets/images/neiia-arms.png">
 
-        .contact-card {
-            max-width: 500px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
+    <!-- Self-hosted typeface. No third-party CDN calls. -->
+    <link rel="preload" href="assets/font/public-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/neiia.css?v=8">
 
-        .contact-card h1 {
-            font-size: clamp(2rem, 4vw, 2.8rem);
-            margin-bottom: 12px;
-            color: #A3E635;
-            line-height: 1.1;
-        }
-
-        .contact-card p {
-            font-size: 0.95rem;
-            color: rgba(255,255,255,0.85);
-            margin-bottom: 32px;
-            line-height: 1.5;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .contact-card input, .contact-card textarea {
-            width: 100%;
-            padding: 14px 16px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.05);
-            color: white;
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-            margin-bottom: 12px;
-        }
-
-        .contact-card textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .contact-card input::placeholder, .contact-card textarea::placeholder {
-            color: rgba(255,255,255,0.5);
-        }
-
-        .contact-card input:focus, .contact-card textarea:focus {
-            border-color: #A3E635;
-            background: rgba(255,255,255,0.1);
-        }
-
-        .contact-card button {
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            background: #A3E635;
-            color: #021a1f;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-            font-size: 1.1rem;
-            margin-top: 8px;
-        }
-
-        .contact-card button:hover {
-            transform: translateY(-2px);
-            background: #b4f746;
-        }
-
-        @media (max-width: 600px) {
-            .form-row {
-                grid-template-columns: 1fr;
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('neiia-theme');
+                var dark = stored ? stored === 'dark'
+                    : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                document.documentElement.classList.add('has-js');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
             }
-            .contact-card {
-                padding: 32px 24px;
-            }
-        }
-    </style>
+        })();
+    </script>
+    <!-- Gate check. Redirects to index.html unless signed in. -->
     <script src="auth-check.js"></script>
-    <link rel="icon" type="image/svg+xml" href="./assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
 </head>
-
 <body>
-    <!-- Dark Mode Toggle (Hanging Bulb) -->
-    <div class="bulb-container" id="theme-toggle-bulb">
-        <div class="bulb-wire"></div>
-        <div class="bulb-icon"></div>
-    </div>
+    <a class="skip-link" href="#main">Skip to main content</a>
 
-    <!-- Logo (Separate from Pill Navbar) -->
-    <a href="index.html" class="logo-fixed">
-        <div class="logo-wrapper">
-            <img src="assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo"
-                style="max-width: 120px; display: block !important;">
-            <div class="brand-text" style="color: #ffffff !important;">NATIONAL ENERGY INVESTMENT & INTELLIGENCE ADMINISTRATION</div>
-        </div>
-    </a>
+    <header class="masthead">
+        <div class="shell masthead__inner">
+            <a class="brand" href="index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
 
-    <!-- Navigation (Pill Style - Links Only) -->
-    <nav class="navbar pill-nav">
-        <!-- Pill Links (No Logo Inside) -->
-        <div class="nav-links">
-            <div class="nav-item dropdown">
-                <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down"
-                        style="font-size: 12px; margin-left: 6px; transition: transform 0.2s;"></i></span>
-                <div class="mega-menu">
-                    <div class="mm-left-columns">
-                        <div class="mm-column">
-                            <ul class="mm-list">
-                                <li><a href="deal-room/index.html">Deal Room</a></li>
-                            </ul>
-                            <div style="margin-top: 24px;">
-                                <h4>Intelligence</h4>
-                                <ul class="mm-list">
-                                    <li><a href="https://apex-neiia.vercel.app/">Apex AI <span style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a></li>
-                                    <li><a href="edu-center/educenter.html">Edu Center</a></li>
-                                </ul>
-                            </div>
-                        </div>
+            <nav class="nav" aria-label="Primary">
+                <div class="nav__item">
+                    <button class="nav__link" type="button" data-dropdown aria-expanded="false"
+                        aria-controls="panel-shine">
+                        SHINE
+                        <svg class="nav__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none"
+                            aria-hidden="true">
+                            <path d="M2 4.5 6 8.5 10 4.5" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="nav__panel" id="panel-shine">
+                        <span class="nav__panel-label">Capital</span>
+                        <a href="nefund.html">NEFUND</a>
+                        <a href="deal-room/index.html">National Energy Deal Room</a>
+                        <span class="nav__panel-label">Intelligence</span>
+                        <a href="https://apex-neiia.vercel.app/">Apex AI <span class="tag">Beta</span></a>
+                        <a href="edu-center/educenter.html">Edu Center</a>
                     </div>
                 </div>
-            </div>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-            <a href="help-center/index.html">Help center</a>
-        </div>
-    </nav>
+                <a class="nav__link" href="about.html">About</a>
+                <a class="nav__link" href="contact.html" aria-current="page">Contact</a>
+                <a class="nav__link" href="help-center/index.html">Help centre</a>
+            </nav>
 
-    <!-- Auth Links (Separate from Pill) -->
-    <div class="auth-fixed">
-        <a href="newsletter.html" class="btn btn-black">Join</a>
-    </div>
+            <button class="theme-toggle theme-toggle--desktop" type="button" data-theme-toggle aria-pressed="false"
+                aria-label="Switch to dark theme">
+                <svg class="theme-toggle__sun" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4.5" />
+                    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
+                </svg>
+                <svg class="theme-toggle__moon" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" />
+                </svg>
+            </button>
 
-    <!-- Mobile Menu Button -->
-    <button class="mobile-menu-btn" aria-label="Menu">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-    </button>
+            <a class="btn btn--primary btn--sm" href="newsletter.html">Get updates</a>
 
-    <!-- Mobile Navigation Overlay -->
-    <div class="mobile-nav-overlay">
-        <div class="mobile-nav-header">
-            <a href="index.html">
-                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
-            </a>
-            <button class="mobile-close-btn">
-                <i class="fas fa-times"></i>
+            <button class="nav-toggle" type="button" data-drawer-open aria-expanded="false" aria-controls="nav-drawer"
+                aria-label="Open menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
             </button>
         </div>
-        <div class="mobile-nav-content">
-            <ul class="mobile-nav-list">
-                <li><a href="nefund.html" id="mobile-resources-link">NEFUND <i class="fas fa-chevron-right"></i></a>
-                </li>
-                <li><a href="about.html">About <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="contact.html">Contact <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="help-center/index.html">Help center <i class="fas fa-arrow-right"></i></a></li>
-            </ul>
-            <div class="mobile-nav-footer">
-                <a href="contact.html" class="btn btn-primary full-width">Contact Support</a>
-            </div>
+    </header>
+
+    <div class="drawer" id="nav-drawer">
+        <div class="drawer__head">
+            <a href="index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
+            <button class="icon-btn" type="button" data-drawer-close aria-label="Close menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+            </button>
         </div>
+        <div class="drawer__body">
+            <a href="about.html">About <span aria-hidden="true">&rarr;</span></a>
+            <a href="contact.html">Contact <span aria-hidden="true">&rarr;</span></a>
+            <a href="help-center/index.html">Help centre <span aria-hidden="true">&rarr;</span></a>
 
-        <!-- Resources Submenu -->
-        <div class="mobile-submenu" id="resources-submenu">
-            <div class="submenu-header">
-                <button class="submenu-back-btn" id="submenu-back-btn">
-                    <i class="fas fa-arrow-left"></i> Back
-                </button>
-                <button class="mobile-close-btn-sub">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="submenu-content">
+            <span class="drawer__label">Capital</span>
+            <a href="nefund.html">NEFUND <span aria-hidden="true">&rarr;</span></a>
+            <a href="deal-room/index.html">National Energy Deal Room <span aria-hidden="true">&rarr;</span></a>
 
-                <div class="submenu-section">
-                    <ul class="submenu-list">
-                        <li><a href="deal-room/index.html">Deal Room</a></li>
-                    </ul>
-                </div>
+            <span class="drawer__label">Intelligence</span>
+            <a href="https://apex-neiia.vercel.app/">Apex AI <span aria-hidden="true">&rarr;</span></a>
+            <a href="edu-center/educenter.html">Edu Center <span aria-hidden="true">&rarr;</span></a>
 
-                <div class="submenu-section">
-                    <span class="submenu-label">Intelligence</span>
-                    <ul class="submenu-list">
-                        <li><a href="https://apex-neiia.vercel.app/">Apex AI <span class="beta-badge">Beta</span></a></li>
-                        <li><a href="edu-center/educenter.html">Edu Center</a></li>
-                    </ul>
-                </div>
+            <div class="drawer__actions">
+                <a class="btn btn--primary" href="newsletter.html">Get updates</a>
+                <a class="btn btn--secondary" href="contact.html">Contact the team</a>
+                <button class="btn btn--secondary" type="button" data-theme-toggle aria-pressed="false"
+                    aria-label="Switch to dark theme">Switch theme</button>
             </div>
         </div>
     </div>
-    <!-- Contact Content -->
-    <main class="contact-page">
-        <div class="contact-card">
-            <h1>Contact Sales</h1>
-            <p>Interested in our products? Get in touch with our team.</p>
 
-            <form onsubmit="event.preventDefault(); alert('Message sent!'); window.location.href='index.html'">
-                <div class="form-row">
-                    <input type="text" placeholder="First Name" required>
-                    <input type="text" placeholder="Last Name" required>
+    <main id="main">
+        <section class="page-hero">
+            <div class="shell">
+                <span class="eyebrow">Contact</span>
+                <h1>Contact NEIIA.</h1>
+                <p class="page-hero__lead">For platform access, module enquiries, data requests, media and
+                    partnership matters. We respond to official correspondence within five working days.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell split split--narrow">
+                <div>
+                    <div class="section-head">
+                        <h2>Send an enquiry</h2>
+                        <p>All fields marked required must be completed for us to route your message correctly.</p>
+                    </div>
+                    <!-- TODO: replace REPLACE_WITH_WEB3FORMS_ACCESS_KEY to activate.
+                         Previously this form ran alert('Message sent!') and discarded the message. -->
+                    <form class="form" data-access-key="REPLACE_WITH_WEB3FORMS_ACCESS_KEY"
+                        data-subject="NEIIA — website enquiry"
+                        data-success="Received. Your enquiry has been logged and routed.">
+                        <div class="form__row">
+                            <div class="field">
+                                <label for="c-first">First name</label>
+                                <input type="text" id="c-first" name="first_name" required autocomplete="given-name">
+                            </div>
+                            <div class="field">
+                                <label for="c-last">Last name</label>
+                                <input type="text" id="c-last" name="last_name" required autocomplete="family-name">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="c-email">Official email</label>
+                            <input type="email" id="c-email" name="email" required autocomplete="email">
+                            <span class="field__hint">Use your organisation address where possible.</span>
+                        </div>
+                        <div class="field">
+                            <label for="c-org">Organisation</label>
+                            <input type="text" id="c-org" name="organisation" autocomplete="organization">
+                        </div>
+                        <div class="field">
+                            <label for="c-type">Nature of enquiry</label>
+                            <select id="c-type" name="enquiry_type" required>
+                                <option value="">Select one</option>
+                                <option>Platform access</option>
+                                <option>Data request — National Energy Data Bank</option>
+                                <option>Deal Room / NEFUND</option>
+                                <option>Risk &amp; ESG Intelligence</option>
+                                <option>Government or regulatory</option>
+                                <option>Media</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="c-msg">Message</label>
+                            <textarea id="c-msg" name="message" required></textarea>
+                        </div>
+                        <button class="btn btn--primary" type="submit">Send enquiry <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></button>
+                        <p class="form__note">Submissions are handled under our <a
+                                href="risk-esg/privacy-policy.html">privacy policy</a> and NDPA 2023.</p>
+                    </form>
                 </div>
-                <input type="email" placeholder="Work Email" required>
-                <input type="text" placeholder="Company">
-                <textarea placeholder="How can we help you?"></textarea>
-                <button type="submit" class="btn btn-primary">Send Message</button>
-            </form>
-        </div>
+
+                <div class="detail-card">
+                    <dl>
+                        <div class="detail">
+                            <dt>General enquiries</dt>
+                            <dd><a href="mailto:info@neiia.gov.ng">info@neiia.gov.ng</a></dd>
+                        </div>
+                        <div class="detail">
+                            <dt>Offices</dt>
+                            <dd>Abuja &middot; Lagos &middot; Port Harcourt</dd>
+                        </div>
+                        <div class="detail">
+                            <dt>Response time</dt>
+                            <dd>Five working days for official correspondence.</dd>
+                        </div>
+                        <div class="detail">
+                            <dt>Looking for a guide?</dt>
+                            <dd>Most platform questions are answered in the
+                                <a href="help-center/index.html">Help centre</a>.</dd>
+                        </div>
+                        <div class="detail">
+                            <dt>Oversight</dt>
+                            <dd>Operated under the Federal Republic of Nigeria, with NEMiC oversight.</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer container"
-        style="margin-top: 0; padding: 60px 20px; background-color: var(--bg-primary); color: var(--text-primary); border-top: 1px solid var(--border-color);">
-        <div class="footer-grid"
-            style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto; text-align: left;">
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600; color: var(--text-primary);">Products</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="deal-room/index.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Deal Room</a></li>
-                    <li style="margin-bottom: 12px;"><a href="https://apex-neiia.vercel.app/"
-                            style="color: var(--text-secondary); text-decoration: none;">Apex AI <span style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px; color: var(--text-primary);">BETA</span></a></li>
-                    <li style="margin-bottom: 12px;"><a href="edu-center/educenter.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Edu Center</a></li>
-                </ul>
+    <footer class="footer">
+        <div class="shell">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__lockup">
+                        <picture>
+                            <source srcset="assets/images/neiia-arms.webp" type="image/webp">
+                            <img src="assets/images/neiia-arms.png"
+                                alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                        </picture>
+                        <span class="footer__lockup-text">
+                            <strong>NEIIA</strong>
+                            <span>National Energy Investment &amp; Intelligence Administration</span>
+                        </span>
+                    </div>
+                    <p>Nigeria's centralised platform for energy investment intelligence, asset visibility and
+                        strategic coordination.</p>
+                    <span class="footer__mandate">Operated under the Federal Republic of Nigeria</span>
+                </div>
+
+                <div>
+                    <h3>Modules</h3>
+                    <ul>
+                        <li><a href="nefund.html">NEFUND</a></li>
+                        <li><a href="deal-room/index.html">National Energy Deal Room</a></li>
+                        <li><a href="energy-databank/index.html">National Energy Data Bank</a></li>
+                        <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
+                        <li><a href="risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Platform</h3>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="help-center/index.html">Help centre</a></li>
+                        <li><a href="edu-center/educenter.html">Edu Center</a></li>
+                        <li><a href="government-site/index.html">Mandate &amp; governance</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>For users</h3>
+                    <ul>
+                        <li><a href="newsletter.html">Newsletter</a></li>
+                        <li><a href="help-center/dealroom.html">Deal Room guide</a></li>
+                        <li><a href="help-center/account.html">Account help</a></li>
+                        <li><a href="compliance/index.html">Compliance</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__signup">
+                    <h3>Stay updated</h3>
+                    <p>Regulatory updates, live raises and platform changes. No spam.</p>
+                    <!-- TODO: replace REPLACE_WITH_WEB3FORMS_ACCESS_KEY to activate. -->
+                    <form class="footer__form" data-access-key="REPLACE_WITH_WEB3FORMS_ACCESS_KEY"
+                        data-subject="NEIIA — new newsletter subscriber"
+                        data-success="Confirmed. You are on the distribution list.">
+                        <label class="visually-hidden" for="footer-email">Email address</label>
+                        <input type="email" id="footer-email" name="email" placeholder="you@email.com" required
+                            autocomplete="email">
+                        <button class="btn" type="submit">Subscribe</button>
+                    </form>
+                    <p class="footer__note">By subscribing you agree to our <a
+                            href="risk-esg/privacy-policy.html">privacy policy</a>.</p>
+                </div>
             </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600; color: var(--text-primary);">Administration</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="about.html"
-                            style="color: var(--text-secondary); text-decoration: none;">About NEIIA</a></li>
-                    <li style="margin-bottom: 12px;"><a href="construction.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Mandate & Governance</a></li>
-                    <li style="margin-bottom: 12px;"><a href="construction.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Careers</a></li>
-                    <li style="margin-bottom: 12px;"><a href="newsletter.html"
-                            style="color: var(--text-secondary); text-decoration: none;">News & Updates</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600; color: var(--text-primary);">Engagement</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="help-center/index.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Support & Enquiries</a></li>
-                    <li style="margin-bottom: 12px;"><a href="contact.html"
-                            style="color: var(--text-secondary); text-decoration: none;">Contact NEIIA</a></li>
-                </ul>
+
+            <div class="footer__bottom">
+                <p class="footer__copy">
+                    &copy; 2026 <strong>Federal Republic of Nigeria</strong><br>
+                    Operating across all 36 states and the Federal Capital Territory
+                </p>
+                <div class="footer__meta">
+                    <a href="risk-esg/terms-of-service.html">Terms</a>
+                    <a href="risk-esg/privacy-policy.html">Privacy</a>
+                    <a href="compliance/index.html">Compliance</a>
+                    <a href="contact.html">Contact</a>
+                </div>
             </div>
         </div>
-        <p
-            style="margin-top: 40px; color: var(--text-secondary); font-size: 0.9rem; max-width: 1200px; margin-left: auto; margin-right: auto;">
-            &copy; 2026 NEIIA</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="assets/js/neiia.js?v=8" defer></script>
 </body>
 
 </html>

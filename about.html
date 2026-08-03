@@ -3,1642 +3,568 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About NEIIA</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <!-- About page — institutional gazette redesign -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
-    <style>
-        :root {
-            --ab-ink: #0B1F24;
-            --ab-paper: #F8F5EE;
-            /* warm cream — government document */
-            --ab-paper-2: #EFEAE0;
-            --ab-rule: #1F2A2E;
-            --ab-rule-soft: #D9D0BE;
-            --ab-text: #1F2A2E;
-            --ab-muted: #6B6256;
-            --ab-accent: #C03E2A;
-            /* official red */
-            --ab-green: #4D7C0F;
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>About — NEIIA</title>
+    <meta name="description" content="The National Energy Investment & Intelligence Administration: mandate, sector figures and history.">
+    <meta name="theme-color" content="#0B1F24">
+    <meta property="og:title" content="About — NEIIA">
+    <meta property="og:description" content="The National Energy Investment & Intelligence Administration: mandate, sector figures and history.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/png" href="assets/images/neiia-arms.png">
 
-        body {
-            background: var(--ab-paper);
-        }
+    <!-- Self-hosted typeface. No third-party CDN calls. -->
+    <link rel="preload" href="assets/font/public-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/neiia.css?v=8">
 
-        /* Force project font on most elements; the serif is opt-in via .ab-serif */
-        body,
-        p,
-        li,
-        a,
-        span:not(.ab-serif),
-        div,
-        button,
-        input,
-        label {
-            font-family: "Mulish", "Inter", system-ui, -apple-system, sans-serif;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            font-family: "Mulish", system-ui, sans-serif;
-            letter-spacing: -0.01em;
-        }
-
-        .ab-serif,
-        .ab-serif * {
-            font-family: "Instrument Serif", "GT Super", Georgia, serif !important;
-            font-weight: 400 !important;
-        }
-
-        /* ------- ANATOMY: SHARED ------- */
-        .ab-shell {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .ab-rule {
-            border: 0;
-            border-top: 1px solid var(--ab-rule-soft);
-            margin: 0;
-        }
-
-        .ab-rule-double {
-            height: 6px;
-            border: 0;
-            border-top: 1px solid var(--ab-rule);
-            border-bottom: 1px solid var(--ab-rule);
-            background: transparent;
-        }
-
-        .ab-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 11px;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--ab-accent);
-            font-weight: 700;
-        }
-
-        .ab-eyebrow .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--ab-accent);
-        }
-
-        .ab-mono {
-            font-family: "JetBrains Mono", "SF Mono", ui-monospace, monospace;
-            font-feature-settings: "tnum";
-        }
-
-        /* ------- HERO (asymmetric editorial) ------- */
-        .ab-hero {
-            position: relative;
-            background: var(--ab-paper);
-            padding: 96px 0 64px;
-            overflow: hidden;
-        }
-
-        .ab-hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url('assets/images/nigerian_coat_of_arms.png') right 5% center / 380px no-repeat;
-            opacity: 0.05;
-            pointer-events: none;
-        }
-
-        @media (max-width: 768px) {
-            .ab-hero::before {
-                background-size: 240px;
-                background-position: right -40px top 60px;
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('neiia-theme');
+                var dark = stored ? stored === 'dark'
+                    : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                document.documentElement.classList.add('has-js');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
             }
-        }
-
-        .ab-hero-inner {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 60px;
-            align-items: end;
-        }
-
-        @media (max-width: 900px) {
-            .ab-hero-inner {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-        }
-
-        .ab-hero h1 {
-            font-size: clamp(2.4rem, 5.5vw, 4.5rem);
-            line-height: 1.02;
-            letter-spacing: -0.03em;
-            color: var(--ab-ink);
-            margin: 24px 0 28px;
-            font-weight: 700;
-        }
-
-        .ab-hero h1 em {
-            font-style: italic;
-            color: var(--ab-accent);
-            font-weight: 400;
-            font-family: "Instrument Serif", Georgia, serif;
-        }
-
-        .ab-hero p.lede {
-            font-size: 1.05rem;
-            line-height: 1.6;
-            color: var(--ab-text);
-            max-width: 55ch;
-            margin-bottom: 36px;
-        }
-
-        .ab-hero-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .ab-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 22px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            border-radius: 6px;
-            text-decoration: none;
-            transition: transform 150ms ease, background 150ms ease;
-        }
-
-        .ab-btn-primary {
-            background: var(--ab-ink);
-            color: #fff;
-        }
-
-        .ab-btn-primary:hover {
-            background: #000;
-            transform: translateY(-1px);
-        }
-
-        .ab-btn-ghost {
-            background: transparent;
-            color: var(--ab-ink);
-            border: 1px solid var(--ab-rule);
-        }
-
-        .ab-btn-ghost:hover {
-            background: var(--ab-ink);
-            color: #fff;
-        }
-
-        /* Authority stamp — sits in the right column of the hero */
-        .ab-stamp {
-            border: 1px solid var(--ab-rule);
-            padding: 22px 22px 20px;
-            background: rgba(255, 255, 255, 0.4);
-            position: relative;
-        }
-
-        .ab-stamp .ab-stamp-head {
-            font-size: 10px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--ab-muted);
-            font-weight: 700;
-            border-bottom: 1px solid var(--ab-rule-soft);
-            padding-bottom: 10px;
-            margin-bottom: 14px;
-        }
-
-        .ab-stamp .ab-stamp-body {
-            font-size: 0.95rem;
-            color: var(--ab-text);
-            line-height: 1.55;
-        }
-
-        .ab-stamp .ab-stamp-meta {
-            margin-top: 18px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: var(--ab-muted);
-        }
-
-        .ab-stamp .ab-stamp-meta .ab-mono {
-            color: var(--ab-ink);
-            font-weight: 600;
-        }
-
-        .ab-stamp .ab-stamp-sig {
-            margin-top: 16px;
-            font-family: "Instrument Serif", Georgia, serif;
-            font-style: italic;
-            font-size: 1.25rem;
-            color: var(--ab-accent);
-            line-height: 1;
-        }
-
-        .ab-stamp::after {
-            content: '';
-            position: absolute;
-            right: -1px;
-            top: -1px;
-            width: 22px;
-            height: 22px;
-            background: var(--ab-accent);
-        }
-
-        /* ------- AUTHORITY BAR (federal partners — animated marquee) ------- */
-        .ab-authority {
-            border-top: 1px solid var(--ab-rule);
-            border-bottom: 1px solid var(--ab-rule);
-            background: var(--ab-paper-2);
-            padding: 22px 0;
-            margin-top: 32px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .ab-authority-inner {
-            display: flex;
-            align-items: center;
-            gap: 0;
-            flex-wrap: nowrap;
-        }
-
-        .ab-authority-label {
-            font-size: 10px;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--ab-muted);
-            font-weight: 700;
-            padding: 0 2rem 0 2rem;
-            flex-shrink: 0;
-            border-right: 1px solid var(--ab-rule-soft);
-            background: var(--ab-paper-2);
-            position: relative;
-            z-index: 2;
-        }
-
-        .ab-marquee {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-            -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
-            mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
-        }
-
-        .ab-marquee-track {
-            display: flex;
-            gap: 0;
-            animation: ab-marquee 45s linear infinite;
-            width: max-content;
-        }
-
-        .ab-marquee:hover .ab-marquee-track {
-            animation-play-state: paused;
-        }
-
-        @keyframes ab-marquee {
-            from {
-                transform: translateX(0);
-            }
-
-            to {
-                transform: translateX(-50%);
-            }
-        }
-
-        .ab-agency {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0 2rem;
-            border-right: 1px solid var(--ab-rule-soft);
-            color: var(--ab-text);
-            text-decoration: none;
-            flex-shrink: 0;
-            min-height: 44px;
-        }
-
-        .ab-agency-seal {
-            width: 36px;
-            height: 36px;
-            flex-shrink: 0;
-            border-radius: 6px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-family: "Instrument Serif", serif;
-            font-size: 11px;
-            font-weight: 600;
-            color: #fff;
-            letter-spacing: 0.02em;
-            position: relative;
-            object-fit: contain;
-            background: #fff;
-        }
-
-        img.ab-agency-seal {
-            object-fit: contain;
-            padding: 2px;
-        }
-
-        .ab-agency-seal::before {
-            content: '';
-            position: absolute;
-            inset: 3px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 4px;
-        }
-
-        img.ab-agency-seal::before {
-            display: none;
-        }
-
-        .ab-agency-name {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--ab-ink);
-            letter-spacing: 0.02em;
-            white-space: nowrap;
-        }
-
-        .ab-agency-sub {
-            display: block;
-            font-size: 9px;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--ab-muted);
-            font-weight: 700;
-            margin-top: 2px;
-        }
-
-        @media (max-width: 768px) {
-            .ab-authority-label {
-                display: none;
-            }
-        }
-
-        /* ------- MANDATE PULL-QUOTE ------- */
-        .ab-mandate {
-            padding: 100px 0;
-            background: var(--ab-paper);
-            border-bottom: 1px solid var(--ab-rule-soft);
-        }
-
-        .ab-mandate-inner {
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            gap: 60px;
-            align-items: start;
-        }
-
-        @media (max-width: 768px) {
-            .ab-mandate {
-                padding: 60px 0;
-            }
-
-            .ab-mandate-inner {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
-        }
-
-        .ab-mandate-label {
-            font-size: 11px;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--ab-accent);
-            font-weight: 700;
-            padding-top: 14px;
-            position: sticky;
-            top: 100px;
-        }
-
-        .ab-mandate-quote {
-            font-family: "Instrument Serif", Georgia, serif;
-            font-size: clamp(1.6rem, 3vw, 2.4rem);
-            line-height: 1.25;
-            color: var(--ab-ink);
-            letter-spacing: -0.01em;
-            margin: 0;
-        }
-
-        .ab-mandate-quote .pull {
-            color: var(--ab-accent);
-        }
-
-        .ab-mandate-attr {
-            margin-top: 32px;
-            padding-top: 20px;
-            border-top: 1px solid var(--ab-rule-soft);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-size: 13px;
-            color: var(--ab-muted);
-        }
-
-        .ab-mandate-attr strong {
-            color: var(--ab-ink);
-            font-weight: 600;
-        }
-
-        .ab-mandate-attr-sig {
-            font-family: "Instrument Serif", Georgia, serif;
-            font-style: italic;
-            color: var(--ab-accent);
-            font-size: 1.1rem;
-        }
-
-        /* ------- FEDERAL STACK DIAGRAM ------- */
-        .ab-stack {
-            padding: 100px 0;
-            background: var(--ab-paper-2);
-            border-bottom: 1px solid var(--ab-rule-soft);
-        }
-
-        .ab-stack h2 {
-            font-size: clamp(2rem, 3.5vw, 2.8rem);
-            line-height: 1.1;
-            color: var(--ab-ink);
-            max-width: 18ch;
-            margin: 16px 0 48px;
-        }
-
-        .ab-stack h2 em {
-            font-style: italic;
-            color: var(--ab-accent);
-            font-family: "Instrument Serif", Georgia, serif;
-            font-weight: 400;
-        }
-
-        .ab-stack-grid {
-            display: grid;
-            grid-template-rows: auto auto auto;
-            gap: 18px;
-        }
-
-        .ab-stack-row {
-            border: 1px solid var(--ab-rule);
-            border-radius: 0;
-            background: var(--ab-paper);
-            padding: 18px 22px;
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            align-items: center;
-            gap: 24px;
-        }
-
-        @media (max-width: 768px) {
-            .ab-stack-row {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-        }
-
-        .ab-stack-row.is-feature {
-            background: var(--ab-ink);
-            color: #fff;
-            border-color: var(--ab-ink);
-        }
-
-        .ab-stack-tier {
-            font-size: 11px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: var(--ab-muted);
-        }
-
-        .ab-stack-row.is-feature .ab-stack-tier {
-            color: rgba(255, 255, 255, 0.65);
-        }
-
-        .ab-stack-row.is-feature .ab-stack-tier::before {
-            content: '★ ';
-            color: #fcd34d;
-        }
-
-        .ab-stack-bodies {
-            display: flex;
-            gap: 12px 24px;
-            flex-wrap: wrap;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .ab-stack-body {
-            padding: 6px 12px;
-            background: rgba(11, 31, 36, 0.04);
-            border-radius: 4px;
-            font-family: "Mulish", sans-serif;
-        }
-
-        .ab-stack-row.is-feature .ab-stack-body {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* ------- LIVE KPI STRIP ------- */
-        .ab-kpi {
-            background: var(--ab-ink);
-            color: #fff;
-            padding: 64px 0;
-        }
-
-        .ab-kpi-inner {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 36px;
-        }
-
-        @media (max-width: 768px) {
-            .ab-kpi-inner {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 28px;
-            }
-        }
-
-        .ab-kpi-cell {
-            border-left: 1px solid rgba(255, 255, 255, 0.15);
-            padding-left: 22px;
-        }
-
-        .ab-kpi-num {
-            font-family: "Instrument Serif", Georgia, serif;
-            font-size: clamp(2.2rem, 4vw, 3rem);
-            font-weight: 400;
-            line-height: 1;
-            color: #fff;
-            font-feature-settings: "tnum";
-            letter-spacing: -0.02em;
-        }
-
-        .ab-kpi-unit {
-            font-size: 0.55em;
-            color: rgba(255, 255, 255, 0.55);
-            margin-left: 4px;
-            font-family: "Mulish", sans-serif;
-            font-weight: 500;
-        }
-
-        .ab-kpi-label {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.55);
-            margin-top: 14px;
-            line-height: 1.4;
-        }
-
-        .ab-kpi-source {
-            font-size: 10px;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.35);
-            margin-top: 6px;
-            font-weight: 600;
-        }
-
-        /* ------- ECOSYSTEM REGISTER (numbered list, not cards) ------- */
-        .ab-register {
-            padding: 100px 0;
-            background: var(--ab-paper);
-            border-bottom: 1px solid var(--ab-rule-soft);
-        }
-
-        .ab-register-head {
-            margin-bottom: 48px;
-            max-width: 720px;
-        }
-
-        .ab-register-head h2 {
-            font-size: clamp(2rem, 3.5vw, 2.8rem);
-            line-height: 1.1;
-            color: var(--ab-ink);
-            margin: 16px 0 16px;
-        }
-
-        .ab-register-head h2 em {
-            font-style: italic;
-            color: var(--ab-accent);
-            font-family: "Instrument Serif", Georgia, serif;
-            font-weight: 400;
-        }
-
-        .ab-register-head p {
-            font-size: 1rem;
-            color: var(--ab-text);
-            line-height: 1.55;
-            max-width: 60ch;
-        }
-
-        .ab-register-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            border-top: 1px solid var(--ab-rule);
-        }
-
-        .ab-register-item {
-            display: grid;
-            grid-template-columns: 80px 1fr auto;
-            gap: 24px;
-            padding: 32px 24px;
-            border-bottom: 1px solid var(--ab-rule-soft);
-            text-decoration: none;
-            color: inherit;
-            transition: background 200ms ease, transform 200ms ease;
-            align-items: baseline;
-        }
-
-        .ab-register-item:nth-child(odd) {
-            border-right: 1px solid var(--ab-rule-soft);
-        }
-
-        .ab-register-item:hover {
-            background: var(--ab-paper-2);
-            transform: translateX(6px);
-        }
-
-        .ab-register-num {
-            font-family: "Instrument Serif", Georgia, serif;
-            font-size: 2rem;
-            color: var(--ab-accent);
-            line-height: 1;
-            font-weight: 400;
-        }
-
-        .ab-register-body h3 {
-            font-size: 1.35rem;
-            color: var(--ab-ink);
-            margin: 0 0 6px;
-            font-weight: 700;
-            letter-spacing: -0.015em;
-        }
-
-        .ab-register-body h3 .beta-pill {
-            display: inline-block;
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            background: #fef3c7;
-            color: #92400e;
-            padding: 2px 6px;
-            border-radius: 2px;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-
-        .ab-register-body p {
-            font-size: 0.95rem;
-            color: var(--ab-text);
-            line-height: 1.55;
-            margin: 0;
-            max-width: 60ch;
-        }
-
-        .ab-register-arrow {
-            font-family: "Instrument Serif", Georgia, serif;
-            font-size: 1.4rem;
-            color: var(--ab-accent);
-            font-weight: 400;
-        }
-
-        @media (max-width: 900px) {
-            .ab-register-list {
-                grid-template-columns: 1fr;
-            }
-            .ab-register-item:nth-child(odd) {
-                border-right: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .ab-register-item {
-                grid-template-columns: 50px 1fr;
-                gap: 16px;
-                padding: 22px 12px;
-            }
-
-            .ab-register-num {
-                font-size: 1.5rem;
-            }
-
-            .ab-register-arrow {
-                display: none;
-            }
-        }
-
-        /* ------- TIMELINE ------- */
-        .ab-timeline {
-            padding: 100px 0;
-            background: var(--ab-paper-2);
-            border-bottom: 1px solid var(--ab-rule-soft);
-        }
-
-        .ab-timeline h2 {
-            font-size: clamp(2rem, 3.5vw, 2.8rem);
-            line-height: 1.1;
-            color: var(--ab-ink);
-            margin: 16px 0 48px;
-            max-width: 18ch;
-        }
-
-        .ab-timeline h2 em {
-            font-style: italic;
-            color: var(--ab-accent);
-            font-family: "Instrument Serif", Georgia, serif;
-            font-weight: 400;
-        }
-
-        .ab-tl-track {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 24px;
-            position: relative;
-            padding-top: 24px;
-        }
-
-        .ab-tl-track::before {
-            content: '';
-            position: absolute;
-            top: 28px;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: var(--ab-rule-soft);
-        }
-
-        @media (max-width: 768px) {
-            .ab-tl-track {
-                grid-template-columns: 1fr;
-                gap: 16px;
-                padding-top: 0;
-            }
-
-            .ab-tl-track::before {
-                display: none;
-            }
-        }
-
-        .ab-tl-item {
-            position: relative;
-            padding-top: 28px;
-            font-size: 0.95rem;
-        }
-
-        .ab-tl-item::before {
-            content: '';
-            position: absolute;
-            top: 22px;
-            left: 0;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--ab-paper-2);
-            border: 2px solid var(--ab-rule);
-        }
-
-        .ab-tl-item.is-now::before {
-            background: var(--ab-accent);
-            border-color: var(--ab-accent);
-        }
-
-        .ab-tl-year {
-            font-family: "Instrument Serif", Georgia, serif;
-            font-size: 1.6rem;
-            color: var(--ab-ink);
-            font-weight: 400;
-            margin-bottom: 6px;
-        }
-
-        .ab-tl-item.is-now .ab-tl-year {
-            color: var(--ab-accent);
-        }
-
-        .ab-tl-event {
-            font-size: 0.9rem;
-            color: var(--ab-text);
-            line-height: 1.45;
-        }
-
-        @media (max-width: 768px) {
-            .ab-tl-item {
-                padding-top: 0;
-                padding-left: 22px;
-                padding-bottom: 16px;
-                border-left: 1px solid var(--ab-rule-soft);
-            }
-
-            .ab-tl-item::before {
-                top: 6px;
-                left: -7px;
-            }
-        }
-
-        /* ------- CLOSING SEAL ------- */
-        .ab-seal {
-            padding: 80px 0;
-            background: var(--ab-paper);
-            text-align: center;
-            position: relative;
-        }
-
-        .ab-seal::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url('assets/images/Coat_of_arms_of_Nigeria.svg') center / 220px no-repeat;
-            opacity: 0.04;
-            pointer-events: none;
-        }
-
-        .ab-seal-eyebrow {
-            font-size: 11px;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--ab-accent);
-            font-weight: 700;
-            margin-bottom: 14px;
-        }
-
-        .ab-seal h2 {
-            font-family: "Instrument Serif", Georgia, serif;
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 400;
-            line-height: 1.15;
-            color: var(--ab-ink);
-            max-width: 22ch;
-            margin: 0 auto 14px;
-        }
-
-        .ab-seal p {
-            font-size: 1rem;
-            color: var(--ab-text);
-            max-width: 50ch;
-            margin: 0 auto 28px;
-            line-height: 1.55;
-        }
-
-        .ab-seal-meta {
-            font-size: 11px;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--ab-muted);
-            font-weight: 600;
-        }
-    </style>
+        })();
+    </script>
+    <!-- Gate check. Redirects to index.html unless signed in. -->
     <script src="auth-check.js"></script>
-    <link rel="icon" type="image/svg+xml" href="./assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50">
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
 
-    <!-- Logo (Separate from Pill Navbar) -->
-    <a href="index.html" class="logo-fixed" style="position: absolute; z-index: 50;">
-        <div class="logo-wrapper">
-            <img src="assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo"
-                style="max-width: 120px; height: auto; display: block !important;">
-        </div>
-    </a>
+    <header class="masthead">
+        <div class="shell masthead__inner">
+            <a class="brand" href="index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
 
-    <!-- Navigation (Pill Style - Links Only) -->
-    <nav class="navbar pill-nav">
-        <!-- Pill Links -->
-        <div class="nav-links">
-            <div class="nav-item dropdown">
-                <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down"
-                        style="font-size: 12px; margin-left: 6px; transition: transform 0.2s;"></i></span>
-                <div class="mega-menu">
-                    <div class="mm-left-columns">
-                        <div class="mm-column">
-                            <ul class="mm-list">
-                                <li><a href="deal-room/index.html">Deal Room</a></li>
-                            </ul>
-                            <div style="margin-top: 24px;">
-                                <h4>Intelligence</h4>
-                                <ul class="mm-list">
-                                    <li><a href="https://apex-neiia.vercel.app/">Apex AI <span
-                                                style="font-size: 10px; background: #eee; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BETA</span></a>
-                                    </li>
-                                    <li><a href="edu-center/educenter.html">Edu Center</a></li>
-                                </ul>
-                            </div>
-                        </div>
+            <nav class="nav" aria-label="Primary">
+                <div class="nav__item">
+                    <button class="nav__link" type="button" data-dropdown aria-expanded="false"
+                        aria-controls="panel-shine">
+                        SHINE
+                        <svg class="nav__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none"
+                            aria-hidden="true">
+                            <path d="M2 4.5 6 8.5 10 4.5" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="nav__panel" id="panel-shine">
+                        <span class="nav__panel-label">Capital</span>
+                        <a href="nefund.html">NEFUND</a>
+                        <a href="deal-room/index.html">National Energy Deal Room</a>
+                        <span class="nav__panel-label">Intelligence</span>
+                        <a href="https://apex-neiia.vercel.app/">Apex AI <span class="tag">Beta</span></a>
+                        <a href="edu-center/educenter.html">Edu Center</a>
                     </div>
                 </div>
-            </div>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-            <a href="help-center/index.html">Help center</a>
-        </div>
-    </nav>
+                <a class="nav__link" href="about.html" aria-current="page">About</a>
+                <a class="nav__link" href="contact.html">Contact</a>
+                <a class="nav__link" href="help-center/index.html">Help centre</a>
+            </nav>
 
-    <!-- Auth Links (Separate from Pill) -->
-    <div class="auth-fixed">
-        <a href="newsletter.html" class="btn btn-black">Join</a>
-    </div>
+            <button class="theme-toggle theme-toggle--desktop" type="button" data-theme-toggle aria-pressed="false"
+                aria-label="Switch to dark theme">
+                <svg class="theme-toggle__sun" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4.5" />
+                    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
+                </svg>
+                <svg class="theme-toggle__moon" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" />
+                </svg>
+            </button>
 
-    <!-- Mobile Navigation Overlay -->
-    <button class="mobile-menu-btn" aria-label="Menu">
-        <i class="fas fa-bars"></i>
-    </button>
-    <div class="mobile-nav-overlay">
-        <div class="mobile-nav-header">
-            <a href="index.html">
-                <img src="assets/images/neiis-logo-green.png" alt="NEIIA" style="max-height: 40px;">
-            </a>
-            <button class="mobile-close-btn">
-                <i class="fas fa-times"></i>
+            <a class="btn btn--primary btn--sm" href="newsletter.html">Get updates</a>
+
+            <button class="nav-toggle" type="button" data-drawer-open aria-expanded="false" aria-controls="nav-drawer"
+                aria-label="Open menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
             </button>
         </div>
-        <div class="mobile-nav-content">
-            <ul class="mobile-nav-list">
-                <li><a href="nefund.html" id="mobile-resources-link">NEFUND <i class="fas fa-chevron-right"></i></a>
-                </li>
-                <li><a href="about.html">About <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="contact.html">Contact <i class="fas fa-arrow-right"></i></a></li>
-                <li><a href="help-center/index.html">Help center <i class="fas fa-arrow-right"></i></a></li>
-            </ul>
-            <div class="mobile-nav-footer">
-                <a href="contact.html" class="btn btn-primary full-width">Contact Support</a>
-            </div>
+    </header>
+
+    <div class="drawer" id="nav-drawer">
+        <div class="drawer__head">
+            <a href="index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
+            <button class="icon-btn" type="button" data-drawer-close aria-label="Close menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+            </button>
         </div>
+        <div class="drawer__body">
+            <a href="about.html">About <span aria-hidden="true">&rarr;</span></a>
+            <a href="contact.html">Contact <span aria-hidden="true">&rarr;</span></a>
+            <a href="help-center/index.html">Help centre <span aria-hidden="true">&rarr;</span></a>
 
-        <!-- Resources Submenu -->
-        <div class="mobile-submenu" id="resources-submenu">
-            <div class="submenu-header">
-                <button class="submenu-back-btn" id="submenu-back-btn">
-                    <i class="fas fa-arrow-left"></i> Back
-                </button>
-                <button class="mobile-close-btn-sub">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="submenu-content">
+            <span class="drawer__label">Capital</span>
+            <a href="nefund.html">NEFUND <span aria-hidden="true">&rarr;</span></a>
+            <a href="deal-room/index.html">National Energy Deal Room <span aria-hidden="true">&rarr;</span></a>
 
-                <div class="submenu-section">
-                    <ul class="submenu-list">
-                        <li><a href="deal-room/index.html">Deal Room</a></li>
-                    </ul>
-                </div>
+            <span class="drawer__label">Intelligence</span>
+            <a href="https://apex-neiia.vercel.app/">Apex AI <span aria-hidden="true">&rarr;</span></a>
+            <a href="edu-center/educenter.html">Edu Center <span aria-hidden="true">&rarr;</span></a>
 
-                <div class="submenu-section">
-                    <span class="submenu-label">Intelligence</span>
-                    <ul class="submenu-list">
-                        <li><a href="https://apex-neiia.vercel.app/">Apex AI <span class="beta-badge">Beta</span></a></li>
-                        <li><a href="edu-center/educenter.html">Edu Center</a></li>
-                    </ul>
-                </div>
+            <div class="drawer__actions">
+                <a class="btn btn--primary" href="newsletter.html">Get updates</a>
+                <a class="btn btn--secondary" href="contact.html">Contact the team</a>
+                <button class="btn btn--secondary" type="button" data-theme-toggle aria-pressed="false"
+                    aria-label="Switch to dark theme">Switch theme</button>
             </div>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <main id="maincontent">
-
-        <!-- ============ HERO (asymmetric editorial) ============ -->
-        <section class="ab-hero">
-            <div class="ab-shell ab-hero-inner">
+    <main id="main">
+        <section class="page-hero">
+            <div class="shell hero-with-stamp">
                 <div>
-                    <div class="ab-eyebrow"><span class="dot"></span><span>About NEIIA</span></div>
-                    <h1>The energy intelligence layer for <em>Nigeria.</em></h1>
-                    <p class="lede">
-                        The National Energy Investment &amp; Intelligence Administration (NEIIA) consolidates capital,
-                        asset visibility, and strategic coordination for Nigeria's energy sector &mdash; bridging
-                        private capital and federal mandate under one operating system.
-                    </p>
-                    <div class="ab-hero-actions">
-                        <a href="deal-room/index.html" class="ab-btn ab-btn-primary">Open Deal Room <span
-                                aria-hidden="true">&rarr;</span></a>
-                        <a href="#register" class="ab-btn ab-btn-ghost">The 8 modules</a>
-                    </div>
+                <span class="eyebrow">About</span>
+                <h1>The energy intelligence layer for Nigeria.</h1>
+                <p class="page-hero__lead">The National Energy Investment &amp; Intelligence Administration
+                    consolidates capital, asset visibility and strategic coordination for Nigeria's energy sector —
+                    bridging private capital and federal mandate under one operating system.</p>
+                <p class="page-hero__body">The Administration operates as the coordination layer between federal
+                    policy and private capital. It maintains a single register of energy funds, vehicles, projects
+                    and physical assets, so that a decision taken at ministry level and a transaction closed in the
+                    market are reading from the same record.</p>
+                <p class="page-hero__body">Nine modules sit on that register: capital formation through NEFUND and
+                    the National Energy Deal Room; verified national statistics through the National Energy Data
+                    Bank; portfolio, risk and disclosure oversight through Risk &amp; ESG Intelligence and the
+                    Reporting &amp; LP Portals; and last-mile delivery through eVillage — from federal policy down
+                    to the last connected household.</p>
+                <div class="page-hero__actions">
+                    <a class="btn btn--primary" href="index.html#platform">View the platform <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    <a class="btn btn--secondary" href="contact.html">Contact the team</a>
+                </div>
                 </div>
 
-                <aside class="ab-stamp">
-                    <div class="ab-stamp-head">OFFICE OF THE PRESIDENT OF NIGERIA</div>
-                    <div class="ab-stamp-body">
-                        <img src="assets/images/leaders/president-tinubu.jpg" alt="President of Nigeria"
-                            style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 1rem;">
-                        Established by Executive Order under the Federal Ministry of Petroleum Resources, with
-                        concurrent mandate from the Federal Ministry of Power.
+                <aside class="stamp">
+                    <div class="stamp__head">Office of the President of Nigeria</div>
+                    <picture>
+                        <source srcset="assets/images/neiia-president.webp" type="image/webp">
+                        <img class="stamp__portrait" src="assets/images/neiia-president.jpg"
+                            alt="President of the Federal Republic of Nigeria" width="480" height="600"
+                            loading="lazy" decoding="async">
+                    </picture>
+                    <div class="stamp__body">Established by Executive Order under the Federal Ministry of
+                        Petroleum Resources, with concurrent mandate from the Federal Ministry of Power.</div>
+                    <div class="stamp__sig">
+                        <picture>
+                            <source srcset="assets/images/neiia-arms.webp" type="image/webp">
+                            <img src="assets/images/neiia-arms.png" alt="" width="160" height="136">
+                        </picture>
+                        Office of the President
                     </div>
-                    <div class="ab-stamp-sig">Office of the President</div>
                 </aside>
             </div>
+        </section>
 
-            <!-- Authority bar — animated agency marquee -->
-            <div class="ab-authority" aria-label="Federal coordinating agencies">
-                <div class="ab-authority-inner">
-                    <div class="ab-authority-label">In coordination with</div>
-                    <div class="ab-marquee">
-                        <div class="ab-marquee-track">
-                            <!-- Agency set 1 -->
-                            <span class="ab-agency"><img class="ab-agency-seal"
-                                    src="assets/images/Coat_of_arms_of_Nigeria.svg"
-                                    alt="Federal Ministry of Petroleum Resources"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">Federal Ministry of
-                                        Petroleum</span><span class="ab-agency-sub">Resources</span></span></span>
-                            <span class="ab-agency"><img class="ab-agency-seal"
-                                    src="assets/images/logos/federal-ministry-power.png" alt="Federal Ministry of Power"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">Federal Ministry of
-                                        Power</span><span class="ab-agency-sub">Federal Republic of
-                                        Nigeria</span></span></span>
-                            <span class="ab-agency"><img class="ab-agency-seal"
-                                    src="assets/images/logos/nuprc-official.png" alt="NUPRC"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">NUPRC</span><span
-                                        class="ab-agency-sub">Upstream Regulatory</span></span></span>
-                            <span class="ab-agency"><img class="ab-agency-seal"
-                                    src="assets/images/logos/nmdpra-official.png" alt="NMDPRA"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">NMDPRA</span><span
-                                        class="ab-agency-sub">Midstream &amp; Downstream</span></span></span>
-                            <span class="ab-agency"><img class="ab-agency-seal"
-                                    src="assets/images/logos/nnpc-official.svg" alt="NNPC Ltd."
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">NNPC Ltd.</span><span
-                                        class="ab-agency-sub">National Petroleum Co.</span></span></span>
-                            <span class="ab-agency"><img class="ab-agency-seal"
-                                    src="assets/images/logos/nerc-official.png" alt="NERC"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">NERC</span><span
-                                        class="ab-agency-sub">Electricity Regulator</span></span></span>
-                            <span class="ab-agency"><img class="ab-agency-seal"
-                                    src="assets/images/logos/energy-commission-nigeria.png" alt="ECN"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">ECN</span><span
-                                        class="ab-agency-sub">Energy Commission</span></span></span>
-                            <span class="ab-agency"><img class="ab-agency-seal"
-                                    src="assets/images/logos/firs-logo.png.webp" alt="FIRS"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">FIRS</span><span
-                                        class="ab-agency-sub">Inland Revenue Service</span></span></span>
-
-                            <!-- Agency set 2 (duplicate for seamless loop) -->
-                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal"
-                                    src="assets/images/Coat_of_arms_of_Nigeria.svg"
-                                    alt="Federal Ministry of Petroleum Resources"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">Federal Ministry of
-                                        Petroleum</span><span class="ab-agency-sub">Resources</span></span></span>
-                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal"
-                                    src="assets/images/logos/federal-ministry-power.png" alt="Federal Ministry of Power"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">Federal Ministry of
-                                        Power</span><span class="ab-agency-sub">Federal Republic of
-                                        Nigeria</span></span></span>
-                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal"
-                                    src="assets/images/logos/nuprc-official.png" alt="NUPRC"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">NUPRC</span><span
-                                        class="ab-agency-sub">Upstream Regulatory</span></span></span>
-                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal"
-                                    src="assets/images/logos/nmdpra-official.png" alt="NMDPRA"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">NMDPRA</span><span
-                                        class="ab-agency-sub">Midstream &amp; Downstream</span></span></span>
-                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal"
-                                    src="assets/images/logos/nnpc-official.svg" alt="NNPC Ltd."
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">NNPC Ltd.</span><span
-                                        class="ab-agency-sub">National Petroleum Co.</span></span></span>
-                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal"
-                                    src="assets/images/logos/nerc-official.png" alt="NERC"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">NERC</span><span
-                                        class="ab-agency-sub">Electricity Regulator</span></span></span>
-                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal"
-                                    src="assets/images/logos/energy-commission-nigeria.png" alt="ECN"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">ECN</span><span
-                                        class="ab-agency-sub">Energy Commission</span></span></span>
-                            <span class="ab-agency" aria-hidden="true"><img class="ab-agency-seal"
-                                    src="assets/images/logos/firs-logo.png.webp" alt="FIRS"
-                                    style="border-radius: 6px;"><span><span class="ab-agency-name">FIRS</span><span
-                                        class="ab-agency-sub">Inland Revenue Service</span></span></span>
-                        </div>
+        <!-- Coordinating agencies. Restored from the original page and widened
+             to the full federal set. Pauses on hover; static under
+             prefers-reduced-motion. -->
+        <section class="authority" aria-label="Coordinating agencies">
+            <div class="shell">
+                <span class="authority__label">In coordination with</span>
+            </div>
+            <div class="marquee">
+                <div class="marquee__track">
+                    <div class="marquee__group">
+                        <img width="200" height="100" src="assets/images/logos/fmp-petroleum-resources.svg" alt="Federal Ministry of Petroleum Resources" loading="lazy">
+                        <img width="292" height="80" src="assets/images/logos/federal-ministry-power.png" alt="Federal Ministry of Power" data-art="light" loading="lazy">
+                        <img width="1024" height="289" src="assets/images/logos/nuprc-official.png" alt="Nigerian Upstream Petroleum Regulatory Commission" loading="lazy">
+                        <img width="405" height="353" src="assets/images/logos/nmdpra-official.png" alt="Nigerian Midstream and Downstream Petroleum Regulatory Authority" loading="lazy">
+                        <img width="100" height="59" src="assets/images/logos/nnpc-official.svg" alt="NNPC Ltd." loading="lazy">
+                        <img width="216" height="71" src="assets/images/logos/nerc-official.png" alt="Nigerian Electricity Regulatory Commission" loading="lazy">
+                        <img width="280" height="132" src="assets/images/logos/energy-commission-nigeria.png" alt="Energy Commission of Nigeria" loading="lazy">
+                        <img width="570" height="354" src="assets/images/logos/rea.png" alt="Rural Electrification Agency" loading="lazy">
+                        <img width="400" height="111" src="assets/images/logos/federal-ministry-finance.png" alt="Federal Ministry of Finance" loading="lazy">
+                        <img width="300" height="80" src="assets/images/logos/federal-ministry-environment.png" alt="Federal Ministry of Environment" loading="lazy">
+                        <img width="500" height="500" src="assets/images/logos/nccc.png" alt="National Council on Climate Change" loading="lazy">
+                        <img width="696" height="293" src="assets/images/logos/firs-logo.png.webp" alt="Federal Inland Revenue Service" loading="lazy">
+                        <img width="600" height="149" src="assets/images/logos/boi.webp" alt="Bank of Industry" loading="lazy">
+                        <img width="398" height="97" src="assets/images/logos/oagf.png" alt="Office of the Accountant-General of the Federation" loading="lazy">
+                    </div>
+                    <div class="marquee__group" aria-hidden="true">
+                        <img width="200" height="100" src="assets/images/logos/fmp-petroleum-resources.svg" alt="" loading="lazy">
+                        <img width="292" height="80" src="assets/images/logos/federal-ministry-power.png" alt="" data-art="light" loading="lazy">
+                        <img width="1024" height="289" src="assets/images/logos/nuprc-official.png" alt="" loading="lazy">
+                        <img width="405" height="353" src="assets/images/logos/nmdpra-official.png" alt="" loading="lazy">
+                        <img width="100" height="59" src="assets/images/logos/nnpc-official.svg" alt="" loading="lazy">
+                        <img width="216" height="71" src="assets/images/logos/nerc-official.png" alt="" loading="lazy">
+                        <img width="280" height="132" src="assets/images/logos/energy-commission-nigeria.png" alt="" loading="lazy">
+                        <img width="570" height="354" src="assets/images/logos/rea.png" alt="" loading="lazy">
+                        <img width="400" height="111" src="assets/images/logos/federal-ministry-finance.png" alt="" loading="lazy">
+                        <img width="300" height="80" src="assets/images/logos/federal-ministry-environment.png" alt="" loading="lazy">
+                        <img width="500" height="500" src="assets/images/logos/nccc.png" alt="" loading="lazy">
+                        <img width="696" height="293" src="assets/images/logos/firs-logo.png.webp" alt="" loading="lazy">
+                        <img width="600" height="149" src="assets/images/logos/boi.webp" alt="" loading="lazy">
+                        <img width="398" height="97" src="assets/images/logos/oagf.png" alt="" loading="lazy">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ============ MANDATE ============ -->
-        <section class="ab-mandate">
-            <div class="ab-shell ab-mandate-inner">
-                <div class="ab-mandate-label">The mandate</div>
+        <section class="quote">
+            <div class="shell quote__inner">
                 <div>
-                    <blockquote class="ab-mandate-quote">
-                        &ldquo;To establish a single <span class="pull">source of truth</span> for Nigeria's energy
-                        investment landscape &mdash; aggregating capital, projects, vehicles and assets &mdash; and to
-                        lower the friction between sovereign priorities and the private capital that funds them.&rdquo;
-                    </blockquote>
-                    <div class="ab-mandate-attr">
-                        <span class="ab-mandate-attr-sig">Nurudeen Yakubu</span>
-                        <span><strong>Mr Nurudeen Yakubu</strong> &middot; Co-Chairman, NEMIC</span>
+                    <span class="eyebrow">The mandate</span>
+                    <blockquote>To establish a <em>single source of truth</em> for Nigeria's energy investment
+                        landscape — aggregating capital, projects, vehicles and assets — and to lower the friction
+                        between sovereign priorities and the private capital that funds them.</blockquote>
+                </div>
+                <figure class="quote__figure">
+                    <picture>
+                        <source srcset="assets/images/neiia-yakubu.webp" type="image/webp">
+                        <img src="assets/images/neiia-yakubu.jpg"
+                            alt="Mr Nurudeen Yakubu, Co-Chairman, NEMiC" width="480" height="600"
+                            loading="lazy" decoding="async">
+                    </picture>
+                    <figcaption class="quote__by">
+                        <strong>Mr Nurudeen Yakubu</strong>
+                        <span>Co-Chairman, NEMiC</span>
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- The register. Nine modules — matches index.html#platform. -->
+        <section class="section section--tint" id="register">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">The register &middot; nine modules</span>
+                    <h2>Nine modules. One mandate.</h2>
+                    <p>From the deal lifecycle to public energy data — the nine products that carry NEIIA's
+                        mandate. Select any entry to open the module directly.</p>
+                </div>
+                <div class="register">
+                    <a class="reg-row" href="nefund.html">
+                        <span class="reg-row__id">01</span>
+                        <span>
+                            <span class="reg-row__name">NEFUND</span>
+                            <p>The fund operating system. Compliance posture, multi-vehicle workspaces, and the platform underneath the Deal Room. ISO 27001 &middot; SOC 2 Type II &middot; SEC Nigeria.</p>
+                        </span>
+                        <span class="reg-row__go"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+                    </a>
+                    <a class="reg-row" href="https://evillage.norgroups.com" target="_blank" rel="noopener noreferrer">
+                        <span class="reg-row__id">02</span>
+                        <span>
+                            <span class="reg-row__name">eVillage</span>
+                            <p>Community energy ecosystem. Decentralised assets, smart meters, mini-grid connections, utility payments and SHINE subsidy administration &mdash; down to the household.</p>
+                        </span>
+                        <span class="reg-row__go"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+                    </a>
+                    <a class="reg-row" href="energy-databank/index.html">
+                        <span class="reg-row__id">03</span>
+                        <span>
+                            <span class="reg-row__name">National Energy Data Bank</span>
+                            <p>Nigeria's open public data across 17 published series: petroleum, electricity generation and consumption, coal, LPG, AGO, PMS, fuelwood and crude. Source-of-truth datasets for policy and capital decisions.</p>
+                        </span>
+                        <span class="reg-row__go"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+                    </a>
+                    <a class="reg-row" href="deal-room/index.html">
+                        <span class="reg-row__id">04</span>
+                        <span>
+                            <span class="reg-row__name">National Energy Deal Room</span>
+                            <p>The end-to-end deal lifecycle. Source &rarr; Structure &rarr; Outreach &rarr; Diligence &rarr; Close &rarr; Administer. Six vehicle wrappers in one wizard, two lenses &mdash; GP raising and LP investing &mdash; on a single record.</p>
+                        </span>
+                        <span class="reg-row__go"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+                    </a>
+                    <a class="reg-row" href="https://assets-neiia.vercel.app/" target="_blank" rel="noopener noreferrer">
+                        <span class="reg-row__id">05</span>
+                        <span>
+                            <span class="reg-row__name">National Energy Assets</span>
+                            <p>Registry and marketplace for physical energy assets, SPVs and infrastructure. Listing, bidding and settlement across electricity, gas and carbon credits.</p>
+                        </span>
+                        <span class="reg-row__go"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+                    </a>
+                    <a class="reg-row" href="https://apex-neiia.vercel.app/" target="_blank" rel="noopener noreferrer">
+                        <span class="reg-row__id">06</span>
+                        <span>
+                            <span class="reg-row__name">Apex AI <span class="tag">Beta</span></span>
+                            <p>Portfolio intelligence. Reads real position data and writes analyst-grade notes &mdash; exposure, pacing, dispersion, vintage benchmarks and recommendation. On demand.</p>
+                        </span>
+                        <span class="reg-row__go"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+                    </a>
+                    <a class="reg-row" href="risk-esg/index.html">
+                        <span class="reg-row__id">07</span>
+                        <span>
+                            <span class="reg-row__name">Risk &amp; ESG Intelligence</span>
+                            <p>Environmental, social and governance analysis for energy investments. Benchmark ESG performance, manage climate risk and track sustainability metrics across portfolios.</p>
+                        </span>
+                        <span class="reg-row__go"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+                    </a>
+                    <a class="reg-row" href="https://lp-neiia.vercel.app/" target="_blank" rel="noopener noreferrer">
+                        <span class="reg-row__id">08</span>
+                        <span>
+                            <span class="reg-row__name">Reporting &amp; LP Portals</span>
+                            <p>Investor reporting dashboards and LP portfolio management. Real-time performance tracking, fund documents, distributions and communications in one portal.</p>
+                        </span>
+                        <span class="reg-row__go"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+                    </a>
+                    <a class="reg-row" href="government-site/index.html">
+                        <span class="reg-row__id">09</span>
+                        <span>
+                            <span class="reg-row__name">Administration &amp; Governance</span>
+                            <p>Mandate, oversight, entity directory and public accountability records across the federal energy stack.</p>
+                        </span>
+                        <span class="reg-row__go"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">The sector, indexed</span>
+                    <h2>What the platform tracks.</h2>
+                    <p>Figures are drawn from the National Energy Data Bank and named federal sources. Each is
+                        attributed below.</p>
+                </div>
+                <div class="kpis">
+                    <div class="kpi">
+                        <span class="kpi__value">13.0<span>GW</span></span>
+                        <span class="kpi__label">Installed grid capacity tracked across federal and private generation.</span>
+                        <span class="kpi__source">Source: TCN / NERC</span>
+                    </div>
+                    <div class="kpi">
+                        <span class="kpi__value">1.65<span>M bpd</span></span>
+                        <span class="kpi__label">Average crude oil production indexed in-platform, rolling six months.</span>
+                        <span class="kpi__source">Source: NUPRC</span>
+                    </div>
+                    <div class="kpi">
+                        <span class="kpi__value">62<span>%</span></span>
+                        <span class="kpi__label">National electricity access rate, indexed in the National Energy Data Bank.</span>
+                        <span class="kpi__source">Source: FMP / World Bank</span>
+                    </div>
+                    <div class="kpi">
+                        <span class="kpi__value">$3.2B</span>
+                        <span class="kpi__label">Capital deployed in-platform via the Deal Room, cumulative 2026 YTD.</span>
+                        <span class="kpi__source">Source: NEIIA</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ============ FEDERAL STACK DIAGRAM ============ -->
-        <section class="ab-stack">
-            <div class="ab-shell">
-                <div class="ab-eyebrow"><span class="dot"></span><span>Where NEIIA sits</span></div>
-                <h2>One intelligence layer, <em>across the federal stack.</em></h2>
-
-                <div class="ab-stack-grid">
-                    <div class="ab-stack-row">
-                        <div class="ab-stack-tier">Policy &amp; oversight</div>
-                        <div class="ab-stack-bodies">
-                            <span class="ab-stack-body">Office of the President</span>
-                            <span class="ab-stack-body">FMP &middot; Petroleum</span>
-                            <span class="ab-stack-body">FMP &middot; Power</span>
-                        </div>
-                    </div>
-                    <div class="ab-stack-row is-feature">
-                        <div class="ab-stack-tier">Intelligence layer</div>
-                        <div class="ab-stack-bodies">
-                            <span class="ab-stack-body">NEIIA &middot; capital, vehicles, assets, intelligence</span>
-                        </div>
-                    </div>
-                <div class="ab-stack-row">
-                    <div class="ab-stack-tier">Sectoral regulators</div>
-                    <div class="ab-stack-bodies">
-                        <span class="ab-stack-body">NUPRC</span>
-                        <span class="ab-stack-body">NMDPRA</span>
-                        <span class="ab-stack-body">NERC</span>
-                        <span class="ab-stack-body">ECN</span>
-                        <span class="ab-stack-body">NNPC Ltd.</span>
-                    </div>
+        <section class="section">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Where NEIIA sits</span>
+                    <h2>One intelligence layer, across the federal stack.</h2>
                 </div>
-            </div>
-            </div>
-        </section>
-
-        <!-- ============ LIVE KPIs ============ -->
-        <section class="ab-kpi">
-            <div class="ab-shell ab-kpi-inner">
-                <div class="ab-kpi-cell">
-                    <div class="ab-kpi-num">13.0<span class="ab-kpi-unit">GW</span></div>
-                    <div class="ab-kpi-label">Installed grid capacity tracked across federal &amp; private generation.
+                <div class="stack">
+                    <div class="tier">
+                        <span class="tier__label">Policy &amp; oversight</span>
+                        <div class="tier__items">
+                            <span class="tier__item">Office of the President</span>
+                            <span class="tier__item">FMP &middot; Petroleum</span>
+                            <span class="tier__item">FMP &middot; Power</span>
+                        </div>
                     </div>
-                    <div class="ab-kpi-source">Source &middot; TCN / NERC</div>
-                </div>
-                <div class="ab-kpi-cell">
-                    <div class="ab-kpi-num">1.65<span class="ab-kpi-unit">M bpd</span></div>
-                    <div class="ab-kpi-label">Average crude oil production indexed in-platform (rolling 6 months).</div>
-                    <div class="ab-kpi-source">Source &middot; NUPRC</div>
-                </div>
-                <div class="ab-kpi-cell">
-                    <div class="ab-kpi-num">62<span class="ab-kpi-unit">%</span></div>
-                    <div class="ab-kpi-label">National electricity access rate &mdash; indexed in the National Energy
-                        Data Bank.</div>
-                    <div class="ab-kpi-source">Source &middot; FMP / World Bank</div>
-                </div>
-                <div class="ab-kpi-cell">
-                    <div class="ab-kpi-num">$3.2<span class="ab-kpi-unit">B</span></div>
-                    <div class="ab-kpi-label">Capital deployed in-platform via the Deal Room (cumulative, 2026 YTD).
+                    <div class="stack__arrow" aria-hidden="true">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14M6 13l6 6 6-6" />
+                        </svg>
                     </div>
-                    <div class="ab-kpi-source">Source &middot; NEIIA</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ============ ECOSYSTEM REGISTER ============ -->
-        <section class="ab-register" id="register">
-            <div class="ab-shell">
-                <div class="ab-register-head">
-                    <div class="ab-eyebrow"><span class="dot"></span><span>The register &middot; 8 modules</span></div>
-                    <h2>Eight modules. <em>One mandate.</em></h2>
-                    <p>From the deal lifecycle to public energy data &mdash; the eight products that carry NEIIA's
-                        mandate. Click any entry to open the module directly.</p>
-                </div>
-
-                <ol class="ab-register-list">
-
-                    <a href="deal-room/index.html" class="ab-register-item">
-                        <div class="ab-register-num">01</div>
-                        <div class="ab-register-body">
-                            <h3>Deal Room</h3>
-                            <p>The end-to-end deal lifecycle. Source &rarr; Structure &rarr; Outreach &rarr; Diligence
-                                &rarr; Close &rarr; Administer. Six vehicle wrappers in one wizard, two lenses (GP
-                                raising, LP investing) on one record.</p>
+                    <div class="tier tier--core">
+                        <span class="tier__label">Intelligence layer</span>
+                        <div class="tier__items">
+                            <span class="tier__item">NEIIA &middot; capital, vehicles, assets, intelligence</span>
                         </div>
-                        <div class="ab-register-arrow">&rarr;</div>
-                    </a>
-
-                    <a href="nefund.html" class="ab-register-item">
-                        <div class="ab-register-num">02</div>
-                        <div class="ab-register-body">
-                            <h3>NEFUND</h3>
-                            <p>The fund operating system. Compliance posture, multi-vehicle workspaces, and the platform
-                                underneath Deal Room. ISO 27001 &middot; SOC 2 Type II &middot; SEC Nigeria.</p>
-                        </div>
-                        <div class="ab-register-arrow">&rarr;</div>
-                    </a>
-
-                    <a href="https://apex-neiia.vercel.app/" class="ab-register-item">
-                        <div class="ab-register-num">03</div>
-                        <div class="ab-register-body">
-                            <h3>Apex AI <span class="beta-pill">BETA</span></h3>
-                            <p>Portfolio intelligence. Reads your real position data and writes analyst-grade notes
-                                &mdash; exposure, pacing, dispersion, vintage benchmarks, recommendation. On demand.</p>
-                        </div>
-                        <div class="ab-register-arrow">&rarr;</div>
-                    </a>
-
-                    <a href="reporting-lp/index.html" class="ab-register-item">
-                        <div class="ab-register-num">04</div>
-                        <div class="ab-register-body">
-                            <h3>Reporting &amp; LP Portals</h3>
-                            <p>Investor reporting dashboards and LP portfolio management. Real-time performance
-                                tracking, fund documents, distributions and communications in one portal.</p>
-                        </div>
-                        <div class="ab-register-arrow">&rarr;</div>
-                    </a>
-
-                    <a href="risk-esg/index.html" class="ab-register-item">
-                        <div class="ab-register-num">05</div>
-                        <div class="ab-register-body">
-                            <h3>Risk &amp; ESG Intelligence</h3>
-                            <p>Environmental, social and governance analysis for energy investments. Benchmark ESG
-                                performance, manage climate risk, and track sustainability metrics across portfolios.
-                            </p>
-                        </div>
-                        <div class="ab-register-arrow">&rarr;</div>
-                    </a>
-
-                    <a href="help-center/evillage.html" class="ab-register-item">
-                        <div class="ab-register-num">06</div>
-                        <div class="ab-register-body">
-                            <h3>EVillage</h3>
-                            <p>Community energy ecosystem. Manage decentralized assets, smart meters, and local energy
-                                sharing initiatives.</p>
-                        </div>
-                        <div class="ab-register-arrow">&rarr;</div>
-                    </a>
-
-
-                    <a href="edu-center/educenter.html" class="ab-register-item">
-                        <div class="ab-register-num">07</div>
-                        <div class="ab-register-body">
-                            <h3>Edu Center</h3>
-                            <p>Guides, playbooks and best practices for fund managers, investors and operators. Running
-                                a fund, energy investing, taxes, economics &amp; reporting.</p>
-                        </div>
-                        <div class="ab-register-arrow">&rarr;</div>
-                    </a>
-
-                    <a href="energy-databank/index.html" class="ab-register-item">
-                        <div class="ab-register-num">08</div>
-                        <div class="ab-register-body">
-                            <h3>National Energy Data Bank</h3>
-                            <p>Nigeria&rsquo;s open public data: petroleum, electricity, fuelwood, DPK and crude
-                                consumption. Source-of-truth datasets for policy and capital decisions.</p>
-                        </div>
-                        <div class="ab-register-arrow">&rarr;</div>
-                    </a>
-
-                </ol>
-            </div>
-        </section>
-
-        <!-- ============ TIMELINE ============ -->
-        <section class="ab-timeline">
-            <div class="ab-shell">
-                <div class="ab-eyebrow"><span class="dot"></span><span>How we got here</span></div>
-                <h2>Five decades, <em>one architecture.</em></h2>
-
-                <div class="ab-tl-track">
-                    <div class="ab-tl-item">
-                        <div class="ab-tl-year">1977</div>
-                        <div class="ab-tl-event">NNPC established &mdash; consolidated petroleum operations under
-                            federal mandate.</div>
                     </div>
-                    <div class="ab-tl-item">
-                        <div class="ab-tl-year">1989</div>
-                        <div class="ab-tl-event">Energy Commission of Nigeria (ECN) chartered to coordinate national
-                            energy policy.</div>
+                    <div class="stack__arrow" aria-hidden="true">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14M6 13l6 6 6-6" />
+                        </svg>
                     </div>
-                    <div class="ab-tl-item">
-                        <div class="ab-tl-year">2005</div>
-                        <div class="ab-tl-event">EPSRA enacted &mdash; unbundles power sector, creates NERC.</div>
-                    </div>
-                    <div class="ab-tl-item">
-                        <div class="ab-tl-year">2021</div>
-                        <div class="ab-tl-event">Petroleum Industry Act passes &mdash; NUPRC and NMDPRA replace DPR;
-                            NNPC becomes commercial entity.</div>
-                    </div>
-                    <div class="ab-tl-item is-now">
-                        <div class="ab-tl-year">2026</div>
-                        <div class="ab-tl-event">NEIIA established. One platform for capital, vehicles, assets and
-                            intelligence across the entire stack.</div>
+                    <div class="tier">
+                        <span class="tier__label">Sectoral regulators</span>
+                        <div class="tier__items">
+                            <span class="tier__item">NUPRC</span>
+                            <span class="tier__item">NMDPRA</span>
+                            <span class="tier__item">NERC</span>
+                            <span class="tier__item">ECN</span>
+                            <span class="tier__item">NNPC Ltd.</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ============ CLOSING SEAL ============ -->
-        <section class="ab-seal">
-            <div class="ab-shell">
-                <div class="ab-seal-eyebrow">Issued under the Federal Republic of Nigeria</div>
+        <section class="section">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">How we got here</span>
+                    <h2>Five decades, one architecture.</h2>
+                </div>
+                <div class="timeline">
+                    <div class="timeline__row">
+                        <span class="timeline__year">1977</span>
+                        <p>NNPC established — petroleum operations consolidated under federal mandate.</p>
+                    </div>
+                    <div class="timeline__row">
+                        <span class="timeline__year">1989</span>
+                        <p>Energy Commission of Nigeria chartered to coordinate national energy policy.</p>
+                    </div>
+                    <div class="timeline__row">
+                        <span class="timeline__year">2005</span>
+                        <p>EPSRA enacted — the power sector is unbundled and NERC created.</p>
+                    </div>
+                    <div class="timeline__row">
+                        <span class="timeline__year">2021</span>
+                        <p>Petroleum Industry Act passes — NUPRC and NMDPRA replace DPR; NNPC becomes a commercial entity.</p>
+                    </div>
+                    <div class="timeline__row">
+                        <span class="timeline__year">2026</span>
+                        <p>NEIIA established. One platform for capital, vehicles, assets and intelligence across the stack.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="shell cta__inner">
+                <div>
+                    <span class="eyebrow">Get started</span>
+                    <h2>Work with the Administration.</h2>
+                </div>
+                <div class="cta__actions">
+                    <a class="btn btn--primary" href="contact.html">Contact the team <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    <a class="btn btn--secondary" href="newsletter.html">Get updates</a>
+                </div>
+            </div>
+        </section>
+        <section class="seal">
+            <div class="shell">
+                <picture>
+                    <source srcset="assets/images/neiia-arms.webp" type="image/webp">
+                    <img src="assets/images/neiia-arms.png"
+                        alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                </picture>
+                <span class="seal__kicker">Issued under the Federal Republic of Nigeria</span>
                 <h2>One source of truth for the sector that powers everything else.</h2>
-                <p>Capital, vehicles, assets, intelligence. Across the entire federal energy stack &mdash; from policy
+                <p>Capital, vehicles, assets, intelligence. Across the entire federal energy stack — from policy
                     to the last connected household.</p>
-                <div class="ab-seal-meta">NEIIA &middot; Abuja &middot; Lagos &middot; Port Harcourt</div>
+                <span class="seal__where">NEIIA &middot; All 36 states and the Federal Capital Territory</span>
             </div>
         </section>
 
     </main>
 
-    <!-- Footer — institutional gazette -->
-    <style>
-        .ab-foot {
-            background: var(--ab-ink);
-            color: #DDD7C7;
-            padding: 72px 0 32px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ab-foot::before {
-            content: '';
-            position: absolute;
-            right: -80px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 360px;
-            height: 360px;
-            background: url('assets/images/Coat_of_arms_of_Nigeria.svg') center / contain no-repeat;
-            opacity: 0.04;
-            pointer-events: none;
-        }
-
-        .ab-foot-shell {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .ab-foot-top {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr 1fr 1fr;
-            gap: 48px;
-            padding-bottom: 56px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        @media (max-width: 900px) {
-            .ab-foot-top {
-                grid-template-columns: 1fr 1fr;
-                gap: 40px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .ab-foot-top {
-                grid-template-columns: 1fr;
-                gap: 32px;
-            }
-        }
-
-        .ab-foot-brand {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            max-width: 380px;
-        }
-
-        .ab-foot-mark {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .ab-foot-coat {
-            width: 36px;
-            height: 36px;
-        }
-
-        .ab-foot-wordmark {
-            font-family: "Instrument Serif", serif;
-            font-size: 1.5rem;
-            color: #fff;
-            letter-spacing: -0.01em;
-            line-height: 1;
-        }
-
-        .ab-foot-tag {
-            font-size: 11px;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #B5AC97;
-            font-weight: 600;
-            margin-top: 4px;
-            line-height: 1.4;
-        }
-
-        .ab-foot-blurb {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #B5AC97;
-        }
-
-        .ab-foot-col h5 {
-            font-size: 10px;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: #B5AC97;
-            font-weight: 700;
-            margin: 0 0 18px;
-        }
-
-        .ab-foot-col ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .ab-foot-col li {
-            margin-bottom: 10px;
-            font-size: 0.95rem;
-        }
-
-        .ab-foot-col a {
-            color: #DDD7C7;
-            text-decoration: none;
-            transition: color 150ms ease;
-        }
-
-        .ab-foot-col a:hover {
-            color: #fff;
-            text-decoration: underline;
-            text-underline-offset: 3px;
-        }
-
-        .ab-foot-col .beta {
-            display: inline-block;
-            font-size: 9px;
-            letter-spacing: 0.08em;
-            background: rgba(255, 255, 255, 0.1);
-            color: #DDD7C7;
-            padding: 2px 6px;
-            border-radius: 2px;
-            margin-left: 6px;
-            font-weight: 700;
-        }
-
-        .ab-foot-bottom {
-            padding-top: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 24px;
-            flex-wrap: wrap;
-            font-size: 11px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: #87806E;
-            font-weight: 600;
-        }
-
-        .ab-foot-bottom a {
-            color: #B5AC97;
-            text-decoration: none;
-        }
-
-        .ab-foot-bottom a:hover {
-            color: #fff;
-        }
-
-        .ab-foot-bottom .ab-foot-legal {
-            display: flex;
-            gap: 22px;
-            flex-wrap: wrap;
-        }
-    </style>
-    <footer class="ab-foot">
-        <div class="ab-foot-shell">
-
-            <div class="ab-foot-top">
-
-                <!-- Brand -->
-                <div class="ab-foot-brand">
-                    <div class="ab-foot-mark">
-                        <img class="ab-foot-coat" src="assets/images/Coat_of_arms_of_Nigeria.svg" alt="" />
-                        <div>
-                            <div class="ab-foot-wordmark">NEIIA</div>
-                            <div class="ab-foot-tag">Federal Republic of Nigeria</div>
-                        </div>
+    <footer class="footer">
+        <div class="shell">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__lockup">
+                        <picture>
+                            <source srcset="assets/images/neiia-arms.webp" type="image/webp">
+                            <img src="assets/images/neiia-arms.png"
+                                alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                        </picture>
+                        <span class="footer__lockup-text">
+                            <strong>NEIIA</strong>
+                            <span>National Energy Investment &amp; Intelligence Administration</span>
+                        </span>
                     </div>
-                    <p class="ab-foot-blurb">National Energy Investment &amp; Intelligence Administration &mdash; the
-                        operating system for Nigeria's energy capital, vehicles, assets and intelligence.</p>
-                    <div style="display: flex; gap: 18px; margin-top: 4px;">
-                        <a href="https://twitter.com" aria-label="X / Twitter" style="color:#B5AC97"><i
-                                class="fab fa-x-twitter"></i></a>
-                        <a href="https://linkedin.com" aria-label="LinkedIn" style="color:#B5AC97"><i
-                                class="fab fa-linkedin"></i></a>
-                        <a href="mailto:info@neiia.gov.ng" aria-label="Email" style="color:#B5AC97"><i
-                                class="fas fa-envelope"></i></a>
-                    </div>
+                    <p>Nigeria's centralised platform for energy investment intelligence, asset visibility and
+                        strategic coordination.</p>
+                    <span class="footer__mandate">Operated under the Federal Republic of Nigeria</span>
                 </div>
 
-                <!-- Products -->
-                <div class="ab-foot-col">
-                    <h5>Products</h5>
+                <div>
+                    <h3>Modules</h3>
                     <ul>
-                        <li><a href="deal-room/index.html">Deal Room</a></li>
-                        <li><a href="https://apex-neiia.vercel.app/">Apex AI <span class="beta">BETA</span></a></li>
-                        <li><a href="edu-center/educenter.html">Edu Center</a></li>
+                        <li><a href="nefund.html">NEFUND</a></li>
+                        <li><a href="deal-room/index.html">National Energy Deal Room</a></li>
                         <li><a href="energy-databank/index.html">National Energy Data Bank</a></li>
+                        <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
+                        <li><a href="risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
                     </ul>
                 </div>
 
-                <!-- Administration -->
-                <div class="ab-foot-col">
-                    <h5>Administration</h5>
+                <div>
+                    <h3>Platform</h3>
                     <ul>
-                        <li><a href="about.html">About NEIIA</a></li>
-                        <li><a href="governance.html">Mandate &amp; Governance</a></li>
-                        <li><a href="nefund.html">NEFUND platform</a></li>
-                        <li><a href="newsletter.html">News &amp; Updates</a></li>
-                        <li><a href="construction.html">Careers</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="help-center/index.html">Help centre</a></li>
+                        <li><a href="edu-center/educenter.html">Edu Center</a></li>
+                        <li><a href="government-site/index.html">Mandate &amp; governance</a></li>
                     </ul>
                 </div>
 
-                <!-- Engagement -->
-                <div class="ab-foot-col">
-                    <h5>Engagement</h5>
+                <div>
+                    <h3>For users</h3>
                     <ul>
-                        <li><a href="contact.html">Contact NEIIA</a></li>
-                        <li><a href="help-center/index.html">Support &amp; Enquiries</a></li>
-                        <li><a href="newsletter.html">Subscribe</a></li>
+                        <li><a href="newsletter.html">Newsletter</a></li>
+                        <li><a href="help-center/dealroom.html">Deal Room guide</a></li>
+                        <li><a href="help-center/account.html">Account help</a></li>
+                        <li><a href="compliance/index.html">Compliance</a></li>
                     </ul>
                 </div>
 
+                <div class="footer__signup">
+                    <h3>Stay updated</h3>
+                    <p>Regulatory updates, live raises and platform changes. No spam.</p>
+                    <!-- TODO: replace REPLACE_WITH_WEB3FORMS_ACCESS_KEY to activate. -->
+                    <form class="footer__form" data-access-key="REPLACE_WITH_WEB3FORMS_ACCESS_KEY"
+                        data-subject="NEIIA — new newsletter subscriber"
+                        data-success="Confirmed. You are on the distribution list.">
+                        <label class="visually-hidden" for="footer-email">Email address</label>
+                        <input type="email" id="footer-email" name="email" placeholder="you@email.com" required
+                            autocomplete="email">
+                        <button class="btn" type="submit">Subscribe</button>
+                    </form>
+                    <p class="footer__note">By subscribing you agree to our <a
+                            href="risk-esg/privacy-policy.html">privacy policy</a>.</p>
+                </div>
             </div>
 
-            <div class="ab-foot-bottom">
-                <span>&copy; 2026 NEIIA &middot; Federal Republic of Nigeria</span>
-                <span class="ab-foot-legal">
-                    <a href="#">Privacy</a>
-                    <a href="#">Terms</a>
-                    <a href="#">Security</a>
-                    <a href="#">Accessibility</a>
-                </span>
-                <span>Abuja &middot; Lagos &middot; Port Harcourt</span>
+            <div class="footer__bottom">
+                <p class="footer__copy">
+                    &copy; 2026 <strong>Federal Republic of Nigeria</strong><br>
+                    Operating across all 36 states and the Federal Capital Territory
+                </p>
+                <div class="footer__meta">
+                    <a href="risk-esg/terms-of-service.html">Terms</a>
+                    <a href="risk-esg/privacy-policy.html">Privacy</a>
+                    <a href="compliance/index.html">Compliance</a>
+                    <a href="contact.html">Contact</a>
+                </div>
             </div>
-
-            <div
-                style="text-align: center; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 28px;">
-                <p
-                    style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #87806E; margin: 0;">
-                    Powered by <strong style="color: #B5AC97;">Norgroup</strong></p>
-            </div>
-
         </div>
     </footer>
 
-    <!-- Cursor Follower Script (from Databank) -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const container = document.getElementById('cursor-gradient-container');
-            const heroSection = document.querySelector('.pt-header');
-
-            if (container && heroSection) {
-                heroSection.addEventListener('mousemove', (e) => {
-                    const rect = heroSection.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-
-                    container.style.transform = `translate(${x}px, ${y}px)`;
-                });
-            }
-
-            // Mobile Menu Toggle
-            const mobileBtn = document.querySelector('.mobile-menu-btn');
-            const mobileNav = document.querySelector('.mobile-nav-overlay');
-            const mobileCloseBtn = document.querySelector('.mobile-close-btn');
-
-            if (mobileBtn && mobileNav) {
-                mobileBtn.addEventListener('click', () => {
-                    mobileNav.classList.add('open');
-                    document.body.style.overflow = 'hidden';
-                });
-            }
-
-            if (mobileCloseBtn && mobileNav) {
-                mobileCloseBtn.addEventListener('click', () => {
-                    mobileNav.classList.remove('open');
-                    document.body.style.overflow = '';
-                });
-            }
-
-        });
-    </script>
+    <script src="assets/js/neiia.js?v=8" defer></script>
 </body>
 
 </html>
