@@ -339,7 +339,7 @@ def about():
             <div class="shell cta__inner">
                 <div>
                     <span class="eyebrow">The platform</span>
-                    <h2>Nine modules. One coordinated system.</h2>
+                    <h2>One coordinated ecosystem. Data-to-Deal (D2D).</h2>
                 </div>
                 <div class="cta__actions">
                     <a class="btn btn--primary" href="index.html#platform">Explore the modules {ARROW}</a>
