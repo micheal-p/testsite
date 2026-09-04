@@ -23,7 +23,7 @@
          CDN calls anywhere on this page — required by the sovereign-data claim
          in the trust strip and by NDPA 2023. -->
     <link rel="preload" href="assets/font/public-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="assets/css/neiia.css?v=8">
+    <link rel="stylesheet" href="assets/css/neiia.css?v=13">
 
     <!-- Applies the stored theme before first paint to avoid a flash. -->
     <script>
@@ -229,12 +229,17 @@
                         <a class="btn btn--secondary" href="contact.html">Contact the team</a>
                     </div>
                 </div>
-                <div class="hero__figure">
-                    <picture>
-                        <source srcset="assets/images/neiia-hero.webp" type="image/webp">
-                        <img src="assets/images/hero.jpg" alt="The NEIIA platform dashboard" width="1024" height="501"
-                            fetchpriority="high" decoding="async">
-                    </picture>
+                <div class="hero__aside">
+                    <div class="hero__figure">
+                        <picture>
+                            <source srcset="assets/images/neiia-hero.webp" type="image/webp">
+                            <img src="assets/images/hero.jpg" alt="Implementing the National Energy Master Plan — investment pathways, strategic programs and delivery frameworks" width="1024" height="501"
+                                fetchpriority="high" decoding="async">
+                        </picture>
+                    </div>
+                    <div class="hero__figure-cta">
+                        <a class="btn btn--glow" href="nemic.html">Read about NEMiC <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -542,9 +547,9 @@
              AngelList's figures (25k funds / 13k startups / 72k investors /
              $10.7B raised) as NEIIA's own. Those have been removed.
 
-             Every figure below is verifiable from this platform, except the
-             headline figure, which is marked "pending confirmation" and MUST
-             be replaced with a mandated number before publication.
+             Every figure below is verifiable from this platform. The headline
+             figure is the NEMP investment requirement and is sourced to the
+             NEMiC 25-Year Strategic Plan, NEMiC/SPR/2026/01, March 2026.
              ============================================================== -->
         <section class="stats" aria-label="Platform at a glance">
             <div class="shell stats__inner">
@@ -558,10 +563,9 @@
 
                 <div class="stats__grid">
                     <div class="stat stat--wide">
-                        <!-- TODO: replace with the mandated target and cite its source. -->
                         <span class="stat__value" data-count="100" data-prefix="$" data-suffix="B">$100B</span>
-                        <span class="stat__label">Target assets under coordination</span>
-                        <span class="stat__source">Source: pending confirmation</span>
+                        <span class="stat__label">Total NEMP investment need, 2023 to 2048</span>
+                        <span class="stat__source">Source: NEMiC 25-Year Strategic Plan, NEMiC/SPR/2026/01, March 2026</span>
                     </div>
                     <div class="stat">
                         <span class="stat__value" data-count="9">9</span>
@@ -700,7 +704,7 @@
         </div>
     </footer>
 
-    <script src="assets/js/neiia.js?v=8" defer></script>
+    <script src="assets/js/neiia.js?v=13" defer></script>
 </body>
 
 </html>

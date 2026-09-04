@@ -390,6 +390,79 @@ ul {
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* Glow variant. Used once per page at most, for the single link we want a
+   reader to leave with. Restrained on purpose: a green halo that breathes
+   rather than flashes, and it stops moving entirely for anyone who has asked
+   the system to reduce motion. Text is #fff on --green-600, 4.5:1, AA. */
+.btn--glow {
+  position: relative;
+  background: var(--green-600);
+  border-color: var(--green-600);
+  color: #fff;
+  box-shadow: 0 0 0 0 rgba(0, 135, 81, 0.42), 0 6px 20px -8px rgba(0, 135, 81, 0.55);
+  animation: btn-glow 3.2s var(--ease) infinite;
+  transition: background-color var(--t) var(--ease), border-color var(--t) var(--ease),
+    box-shadow var(--t) var(--ease);
+}
+
+@keyframes btn-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 135, 81, 0.42), 0 6px 20px -8px rgba(0, 135, 81, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 0 7px rgba(0, 135, 81, 0), 0 10px 30px -6px rgba(0, 135, 81, 0.8);
+  }
+}
+
+.btn--glow:hover {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  animation: none;
+  box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.22), 0 12px 34px -8px rgba(0, 135, 81, 0.85);
+}
+
+.btn--glow:active {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  animation: none;
+  box-shadow: 0 0 0 2px rgba(0, 135, 81, 0.28);
+}
+
+[data-theme="dark"] .btn--glow {
+  background: var(--green-600);
+  border-color: var(--green-500);
+  box-shadow: 0 0 0 0 rgba(0, 163, 98, 0.5), 0 6px 24px -6px rgba(0, 163, 98, 0.6);
+  animation-name: btn-glow-dark;
+}
+
+@keyframes btn-glow-dark {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 163, 98, 0.5), 0 6px 24px -8px rgba(0, 163, 98, 0.55);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px rgba(0, 163, 98, 0), 0 12px 38px -6px rgba(0, 163, 98, 0.9);
+  }
+}
+
+[data-theme="dark"] .btn--glow:hover {
+  background: var(--green-500);
+  border-color: var(--green-500);
+  animation: none;
+  box-shadow: 0 0 0 3px rgba(0, 163, 98, 0.26), 0 14px 40px -8px rgba(0, 163, 98, 0.95);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .btn--glow,
+  [data-theme="dark"] .btn--glow {
+    animation: none;
+  }
+}
+
 /* --------------------------------------------------------------------------
    6. HEADER / NAV
    -------------------------------------------------------------------------- */
@@ -722,6 +795,20 @@ ul {
   width: 100%;
   aspect-ratio: 1024 / 501;
   object-fit: cover;
+}
+
+/* The hero card and the one link that follows from it, stacked. The button
+   sits outside .hero__figure because that box clips to its own rounded corners
+   and would swallow the glow. */
+.hero__aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+  align-items: flex-start;
+}
+
+.hero__aside .hero__figure {
+  width: 100%;
 }
 
 /* --------------------------------------------------------------------------
@@ -3146,6 +3233,332 @@ ul {
 
   .card {
     min-height: 0;
+  }
+}
+
+/* --- Governance architecture (nemic) -------------------------------------- */
+.gov {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: var(--s-8);
+  align-items: start;
+}
+
+.gov__levels {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+/* The spine. It runs behind the rank markers and stops at the last one. */
+.gov__levels::before {
+  content: "";
+  position: absolute;
+  left: 21px;
+  top: 22px;
+  bottom: 22px;
+  width: 1px;
+  background: var(--border-strong);
+}
+
+.gov__level {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: var(--s-5);
+  align-items: start;
+  padding-bottom: var(--s-6);
+}
+
+.gov__level:last-child {
+  padding-bottom: 0;
+}
+
+.gov__rank {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-subtle);
+}
+
+.gov__level--core .gov__rank {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.gov__body {
+  padding: var(--s-5) var(--s-6);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  background: var(--surface);
+}
+
+.gov__level--core .gov__body {
+  border-color: var(--accent);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.gov__body h3 {
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  margin-bottom: var(--s-2);
+}
+
+.gov__body p {
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.gov__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-4);
+}
+
+.gov__chips span {
+  padding: 5px var(--s-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface-sunken);
+  font-size: var(--fs-xs);
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.gov__rail {
+  padding: var(--s-6);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  background: var(--surface);
+}
+
+.gov__rail-title {
+  font-size: var(--fs-eyebrow);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-subtle);
+  margin-bottom: var(--s-5);
+}
+
+.gov__facts {
+  margin: 0;
+}
+
+.gov__facts > div + div {
+  margin-top: var(--s-5);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--border);
+}
+
+.gov__facts dt {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--accent-text);
+  margin-bottom: var(--s-2);
+}
+
+.gov__facts dd {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+@media (max-width: 900px) {
+  .gov {
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+  }
+}
+
+/* --- Side media, text one half and a photograph the other ----------------- */
+.split-media {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-8);
+  align-items: center;
+  margin-bottom: var(--s-7);
+}
+
+/* The report's state and field photographs are only 432px wide at source, so
+   they get the narrower column and are never asked to fill more than they
+   have. Nothing on these pages is displayed above its native width. */
+.split-media--tight {
+  grid-template-columns: 1.15fr 0.85fr;
+}
+
+.page-hero--split .split-media {
+  margin-bottom: 0;
+}
+
+.page-hero--split .page-hero__lead {
+  max-width: 52ch;
+}
+
+.section-head--flush {
+  max-width: none;
+  margin-bottom: 0;
+}
+
+.section-head--flush h2 {
+  max-width: 16ch;
+}
+
+.media {
+  margin: 0;
+}
+
+.media img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background: var(--surface-sunken);
+}
+
+.media figcaption {
+  margin-top: var(--s-3);
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--text-subtle);
+}
+
+/* Inside the inverted stats band the border and caption need the light ramp. */
+.media--inverse {
+  margin-top: var(--s-6);
+}
+
+.media--inverse img {
+  border-color: var(--border-inverse);
+}
+
+.media--inverse figcaption {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* --- Link card to the full record ----------------------------------------- */
+.record-card {
+  display: block;
+  padding: var(--s-8);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  transition: border-color var(--t) var(--ease), background-color var(--t) var(--ease);
+}
+
+.record-card:hover {
+  border-color: var(--accent);
+}
+
+.record-card__body {
+  display: block;
+  max-width: 68ch;
+}
+
+.record-card__title {
+  display: block;
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.12;
+  max-width: 20ch;
+  margin: var(--s-3) 0 var(--s-4);
+}
+
+.record-card__lead {
+  display: block;
+  font-size: var(--fs-lead);
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: var(--s-6);
+}
+
+.record-card__btn {
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .split-media {
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+  }
+
+  .section-head--flush h2 {
+    max-width: 20ch;
+  }
+}
+
+/* --- Report gallery (nemic) ----------------------------------------------- */
+.gal {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-5);
+}
+
+.gal__item {
+  margin: 0;
+}
+
+.gal__item img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  background: var(--surface-sunken);
+}
+
+.gal__item figcaption {
+  margin-top: var(--s-3);
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--text-subtle);
+}
+
+/* --- Standalone callout / steps spacing outside the guide article ---------- */
+.callout--loose {
+  margin-top: var(--s-6);
+  margin-bottom: 0;
+}
+
+.steps--inline {
+  margin-top: var(--s-6);
+  margin-bottom: 0;
+}
+
+.article__note {
+  margin: calc(var(--s-5) * -1 + var(--s-2)) 0 var(--s-5);
+  font-size: var(--fs-xs);
+  line-height: 1.6;
+  color: var(--text-subtle);
+}
+
+@media (max-width: 900px) {
+  .gal {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .gal {
+    grid-template-columns: 1fr;
   }
 }
 

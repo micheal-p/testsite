@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NEMiC, the full record | NEIIA</title>
+    <meta name="description" content="The complete NEMiC reference: the Data-to-Deal framework and its nine readiness gates, the seven strategic pillars, NEFUND's eight sub-funds, the Q1 2026 status, the 25-year KPI grid and the risk register.">
+    <meta name="theme-color" content="#0B1F24">
+    <meta property="og:title" content="NEMiC, the full record | NEIIA">
+    <meta property="og:description" content="The complete NEMiC reference: the Data-to-Deal framework and its nine readiness gates, the seven strategic pillars, NEFUND's eight sub-funds, the Q1 2026 status, the 25-year KPI grid and the risk register.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/png" href="assets/images/neiia-arms.png">
+    <link rel="preload" href="assets/font/public-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/neiia.css?v=13">
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('neiia-theme');
+                var dark = stored ? stored === 'dark'
+                    : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                document.documentElement.classList.add('has-js');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+    <script src="auth-check.js"></script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="masthead">
+        <div class="shell masthead__inner">
+            <a class="brand" href="index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
+
+            <nav class="nav" aria-label="Primary">
+                <div class="nav__item">
+                    <button class="nav__link" type="button" data-dropdown aria-expanded="false"
+                        aria-controls="panel-shine">
+                        SHINE
+                        <svg class="nav__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none"
+                            aria-hidden="true">
+                            <path d="M2 4.5 6 8.5 10 4.5" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="nav__panel" id="panel-shine">
+                        <span class="nav__panel-label">Capital</span>
+                        <a href="nefund.html">NEFUND</a>
+                        <a href="deal-room/index.html">National Energy Deal Room</a>
+                        <span class="nav__panel-label">Intelligence</span>
+                        <a href="https://apex-neiia.vercel.app/">Apex AI <span class="tag">Beta</span></a>
+                        <a href="edu-center/educenter.html">Edu Center</a>
+                    </div>
+                </div>
+                <a class="nav__link" href="about.html">About</a>
+                <a class="nav__link" href="contact.html">Contact</a>
+                <a class="nav__link" href="help-center/index.html">Help centre</a>
+            </nav>
+
+            <button class="theme-toggle theme-toggle--desktop" type="button" data-theme-toggle aria-pressed="false"
+                aria-label="Switch to dark theme">
+                <svg class="theme-toggle__sun" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4.5" />
+                    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
+                </svg>
+                <svg class="theme-toggle__moon" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" />
+                </svg>
+            </button>
+
+            <a class="btn btn--primary btn--sm" href="newsletter.html">Get updates</a>
+
+            <button class="nav-toggle" type="button" data-drawer-open aria-expanded="false" aria-controls="nav-drawer"
+                aria-label="Open menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="drawer" id="nav-drawer">
+        <div class="drawer__head">
+            <a href="index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
+            <button class="icon-btn" type="button" data-drawer-close aria-label="Close menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+            </button>
+        </div>
+        <div class="drawer__body">
+            <a href="about.html">About <span aria-hidden="true">&rarr;</span></a>
+            <a href="contact.html">Contact <span aria-hidden="true">&rarr;</span></a>
+            <a href="help-center/index.html">Help centre <span aria-hidden="true">&rarr;</span></a>
+
+            <span class="drawer__label">Capital</span>
+            <a href="nefund.html">NEFUND <span aria-hidden="true">&rarr;</span></a>
+            <a href="deal-room/index.html">National Energy Deal Room <span aria-hidden="true">&rarr;</span></a>
+
+            <span class="drawer__label">Intelligence</span>
+            <a href="https://apex-neiia.vercel.app/">Apex AI <span aria-hidden="true">&rarr;</span></a>
+            <a href="edu-center/educenter.html">Edu Center <span aria-hidden="true">&rarr;</span></a>
+
+            <div class="drawer__actions">
+                <a class="btn btn--primary" href="newsletter.html">Get updates</a>
+                <a class="btn btn--secondary" href="contact.html">Contact the team</a>
+                <button class="btn btn--secondary" type="button" data-theme-toggle aria-pressed="false"
+                    aria-label="Switch to dark theme">Switch theme</button>
+            </div>
+        </div>
+    </div>
+
+
+    <main id="main">
+        <section class="page-hero">
+            <div class="shell">
+                <nav class="crumbs" aria-label="Breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span aria-hidden="true">/</span>
+                    <a href="nemic.html">NEMiC</a>
+                    <span aria-hidden="true">/</span>
+                    <span>The full record</span>
+                </nav>
+                <span class="eyebrow">Reference</span>
+                <h1>NEMiC, the full record</h1>
+                <p class="page-hero__lead">The frameworks, tables and reported status from the committee's
+                    25-year strategic plan and its H1 2026 progress report. The summary is on the
+                    <a href="nemic.html">NEMiC page</a>.</p>
+            </div>
+        </section>
+
+        <section class="section" id="detail">
+            <div class="shell guide">
+                <nav class="guide__nav" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <a href="#d2d">Data-to-Deal</a>
+                    <a href="#gates">The nine readiness gates</a>
+                    <a href="#pillars">The seven strategic pillars</a>
+                    <a href="#nefund">Where the money stands</a>
+                    <a href="#shine">How SHINE works</a>
+                    <a href="#data">The data layer</a>
+                    <a href="#q1">Q1 2026, initiative by initiative</a>
+                    <a href="#kpi">The 25-year KPI grid</a>
+                    <a href="#risk">Risk register</a>
+                    <a href="#next">What happens next</a>
+                    <a href="#accountability">Public accountability</a>
+                    <a href="#sourcing">Sourcing</a>
+                    <a href="#questions">Questions</a>
+                </nav>
+                <article class="article">
+                    <h2>The full record</h2>
+                    <p>The frameworks, tables and status reporting from the committee's 25-year strategic plan
+                        and its H1 2026 progress report. Approved, signed and released are reported as three
+                        different things throughout, because in the plan they are.</p>
+
+                    <h3 id="d2d">Data-to-Deal, the operating mechanism</h3>
+                    <p>Data-to-Deal is the framework NEMiC adopted for turning the master plan into
+                        transactions. It runs fifteen stages, under which the pipeline, the fund, the data
+                        platform, the marketplaces, the industrial zones and climate finance stop operating as
+                        standalone initiatives and become stages of one process.</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Stage</th>
+                                    <th>Core function</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1 &middot; National mandate and NEMP priorities</td>
+                                    <td>Establish national energy goals, strategic objectives and high level ownership.</td>
+                                </tr>
+                                <tr>
+                                    <td>2 &middot; National energy data and intelligence</td>
+                                    <td>Provide validated demand, resource, infrastructure, investment, risk and ESG data through NEIIA and the NEDB.</td>
+                                </tr>
+                                <tr>
+                                    <td>3 &middot; Analysis, modelling and prioritisation</td>
+                                    <td>Assess scenarios, economic impact, financial viability and risk, then rank the priority interventions.</td>
+                                </tr>
+                                <tr>
+                                    <td>4 &middot; Stakeholder consultation and validation</td>
+                                    <td>Validate assumptions and priorities with governments, MDAs, regulators, investors, DFIs, academia and civil society.</td>
+                                </tr>
+                                <tr>
+                                    <td>5 &middot; Policy and regulatory enablement</td>
+                                    <td>Identify and resolve the policy, legal, market and institutional actions implementation requires.</td>
+                                </tr>
+                                <tr>
+                                    <td>6 &middot; Programme and project development</td>
+                                    <td>Define sponsors, scope, beneficiaries, delivery models, costs, timelines and financing pathways.</td>
+                                </tr>
+                                <tr>
+                                    <td>7 &middot; Project preparation</td>
+                                    <td>Fund feasibility, technical, environmental, social, legal and financial preparation through the Project Preparation Fund.</td>
+                                </tr>
+                                <tr>
+                                    <td>8 &middot; Bankability and readiness gates</td>
+                                    <td>Test the project against defined readiness criteria before it may be called investment ready.</td>
+                                </tr>
+                                <tr>
+                                    <td>9 &middot; National Energy Project Deal Room</td>
+                                    <td>Hold the qualified project registry, readiness status, data room, investor matching and transaction pipeline.</td>
+                                </tr>
+                                <tr>
+                                    <td>10 &middot; Investment structuring and mobilisation</td>
+                                    <td>Build financing strategies and capital stacks, match investors and coordinate transactions.</td>
+                                </tr>
+                                <tr>
+                                    <td>11 &middot; Capital sources</td>
+                                    <td>Match the project to federal and state funding, NEFUND, DFIs, MDBs, banks, institutional and private capital, guarantees and PPP structures.</td>
+                                </tr>
+                                <tr>
+                                    <td>12 &middot; Financial close</td>
+                                    <td>Execute financing documents and satisfy conditions precedent.</td>
+                                </tr>
+                                <tr>
+                                    <td>13 &middot; Implementation and delivery</td>
+                                    <td>The responsible MDA, state, sponsor or SPV executes against approved milestones.</td>
+                                </tr>
+                                <tr>
+                                    <td>14 &middot; Monitoring, evaluation and reporting</td>
+                                    <td>Track implementation, capital mobilisation, disbursement, operational performance and NEMP KPIs through NEIIA.</td>
+                                </tr>
+                                <tr>
+                                    <td>15 &middot; Data, performance and lessons feedback</td>
+                                    <td>Return verified results to planning, so the next round of prioritisation is better informed than the last.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="article__note">The plan compresses the same sequence into one line: plan, inform, prioritise, validate, enable, prepare, bank, package, finance, deliver, measure, learn, reprioritise.</p>
+
+                    <h3 id="gates">The nine readiness gates</h3>
+                    <p>The plan's position is that global capital avoids unvetted, conceptual proposals.
+                        The gates set the evidence a project must carry before it is put in front of a
+                        financier.</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Gate</th>
+                                    <th>Readiness requirement</th>
+                                    <th>Minimum evidence</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1 &middot; Strategic alignment</td>
+                                    <td>Aligned with an NEMP priority and a defined national outcome.</td>
+                                    <td>NEMP linkage, sponsor, strategic rationale and expected outcome.</td>
+                                </tr>
+                                <tr>
+                                    <td>2 &middot; Data and evidence</td>
+                                    <td>Demand, resource, market and baseline information validated.</td>
+                                    <td>NEIIA and NEDB evidence, demand and resource assessment, baseline.</td>
+                                </tr>
+                                <tr>
+                                    <td>3 &middot; Project definition</td>
+                                    <td>Scope, sponsor, location, beneficiaries and delivery model defined.</td>
+                                    <td>Concept note, site and location, sponsor, delivery model.</td>
+                                </tr>
+                                <tr>
+                                    <td>4 &middot; Project preparation</td>
+                                    <td>Technical, environmental, social, legal and financial studies sufficiently advanced.</td>
+                                    <td>Feasibility and preparation studies.</td>
+                                </tr>
+                                <tr>
+                                    <td>5 &middot; Bankability</td>
+                                    <td>Revenue, costs, risks, returns, offtake and support requirements established.</td>
+                                    <td>Financial model, commercial structure, risk allocation, support requirements.</td>
+                                </tr>
+                                <tr>
+                                    <td>6 &middot; Investment readiness</td>
+                                    <td>Financing structure and target investor classes identified.</td>
+                                    <td>Capital stack, financing strategy, transaction plan.</td>
+                                </tr>
+                                <tr>
+                                    <td>7 &middot; Financial close</td>
+                                    <td>Financing legally committed.</td>
+                                    <td>Executed financing documents and conditions precedent.</td>
+                                </tr>
+                                <tr>
+                                    <td>8 &middot; Implementation</td>
+                                    <td>Project under implementation and progressing against approved milestones.</td>
+                                    <td>Procurement, construction and disbursement evidence.</td>
+                                </tr>
+                                <tr>
+                                    <td>9 &middot; Operational performance</td>
+                                    <td>Project operational and delivering approved NEMP outcomes.</td>
+                                    <td>Operational KPIs, impact data, revenue and compliance.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="article__note">The rule attached to the gates is a single sentence: no project shall be represented as an investment ready project until it has satisfied the applicable readiness requirements.</p>
+
+                    <h3 id="pillars">The seven strategic pillars</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Strategic pillar</th>
+                                    <th>Core objective and mandate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Bankable energy project pipeline</td>
+                                    <td>Develop a diversified, investment ready US$3 billion project pipeline over five years, spanning utility scale renewables, storage, grid infrastructure and manufacturing.</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>National energy investment platform, NEFUND</td>
+                                    <td>Establish the fund under an internationally recognised general partner and limited partner framework, aggregating capital from sovereign wealth funds, DFIs, domestic pension funds and private equity.</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>National energy data platform, NEIIA</td>
+                                    <td>Deploy a digital management and intelligence framework providing granular market analytics, real time infrastructure monitoring and investor matching.</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Energy investment marketplace</td>
+                                    <td>Institutionalise investment matching through the annual Nigeria Energy Investment Forum and the Africa Energy Investment Summit.</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>Energy industrial zones</td>
+                                    <td>Develop energy anchored industrial clusters, special economic zones and an integrated New Energy City for local assembly and technology manufacturing.</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>Climate and carbon finance mobilisation</td>
+                                    <td>Tap global climate flows through carbon credit markets, green bonds, renewable energy certificates and multilateral transition funds.</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>Strategic investment facilitation</td>
+                                    <td>Position NEMiC as the intermediary between state regulators, international financiers and project consortiums, to accelerate transaction closure.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 id="nefund">Where the money stands</h3>
+                    <p>NEFUND is the plan's financing instrument, structured as an umbrella platform under a
+                        general partner and limited partner framework compliant with Securities and Exchange
+                        Commission regulation. Proposed total size is US$100 billion (one hundred billion United
+                        States dollars), with a first phase target of US$10 billion (ten billion United States
+                        dollars) allocated across eight specialised sub-funds.</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sub-fund</th>
+                                    <th>Phase 1 target</th>
+                                    <th>Primary investment focus</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Power Generation Fund</td>
+                                    <td>$2.0B</td>
+                                    <td>Large gas fired thermal plants, large scale hydro and hybrid baseline generation.</td>
+                                </tr>
+                                <tr>
+                                    <td>Renewable Energy Fund</td>
+                                    <td>$2.5B</td>
+                                    <td>Utility scale solar, commercial wind, biomass and distributed mini grids.</td>
+                                </tr>
+                                <tr>
+                                    <td>Transmission Infrastructure Fund</td>
+                                    <td>$1.5B</td>
+                                    <td>Grid modernisation, radial line expansion and regional interconnection.</td>
+                                </tr>
+                                <tr>
+                                    <td>Distribution Efficiency Fund</td>
+                                    <td>$1.0B</td>
+                                    <td>Advanced distribution technology, smart metering and last mile loss reduction.</td>
+                                </tr>
+                                <tr>
+                                    <td>Gas Infrastructure Fund</td>
+                                    <td>$1.0B</td>
+                                    <td>Midstream processing, regional virtual pipelines and industrial distribution lines.</td>
+                                </tr>
+                                <tr>
+                                    <td>Energy Transition Technology Fund</td>
+                                    <td>$0.8B</td>
+                                    <td>Grid scale battery storage, smart grid software, hydrogen pilots and clean technology.</td>
+                                </tr>
+                                <tr>
+                                    <td>Rural Electrification and Mini-Grid Fund</td>
+                                    <td>$0.7B</td>
+                                    <td>Isolated off grid communities, agricultural mini grids and hybrid rural solutions.</td>
+                                </tr>
+                                <tr>
+                                    <td>Energy Industrialization Fund</td>
+                                    <td>$0.5B</td>
+                                    <td>Localised equipment manufacturing hubs, special economic zones and New Energy City clusters.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total phase 1</strong></td>
+                                    <td><strong>$10.0B</strong></td>
+                                    <td><strong>Scaling to $50B in phase 2 and $100B in phase 3.</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <h4>The seed capital, stated exactly</h4>
+                        <p>A domestic seed pool of &#8358;50 billion (fifty billion naira) has been structured,
+                            drawing on Ministry of Finance Incorporated allocations, sovereign green bonds, the
+                            NCDMB Nigerian Content Fund, the NMDPRA midstream and downstream gas infrastructure
+                            fund, and project preparation funds. As at March 2026 it remains pending formal
+                            Treasury approval, and the plan names it as the single most critical near term
+                            constraint on the committee's ability to operationalise the fund. It is not money in
+                            an account today.</p>
+                    </div>
+                    <div class="callout">
+                        <h4>The Afreximbank arrangement, stated exactly</h4>
+                        <p>A memorandum of understanding has been executed covering a US$3 billion (three
+                            billion United States dollars) country risk guarantee and up to US$2 billion (two
+                            billion United States dollars) in direct financing. A memorandum of understanding is
+                            not drawn funding, and the combined figure should never be described as secured.</p>
+                    </div>
+
+                    <h3 id="shine">How SHINE works, step by step</h3>
+                    <p>SHINE runs as a five node process. The bank onboards and underwrites the customer,
+                        the solar firm installs, the insurer covers the asset, and the repayments refill the
+                        fund for the next household.</p>
+                    <div class="steps">
+                        <div class="step">
+                            <div>
+                                <h4>Apply</h4>
+                                <p>The prospective subscriber applies through a commercial banking portal
+                                    connected to the central eVillage application.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div>
+                                <h4>Profile</h4>
+                                <p>The bank runs automated customer profiling against energy usage patterns and
+                                    repayment capacity.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div>
+                                <h4>Match and mandate</h4>
+                                <p>The system matches the subscriber to a solar loan product and issues a
+                                    formal deployment mandate to a certified technical partner.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div>
+                                <h4>Deploy</h4>
+                                <p>The solar company delivers, assembles and commissions the system at the
+                                    subscriber's own location.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div>
+                                <h4>Repay</h4>
+                                <p>After a one month moratorium the subscriber begins pay as you go
+                                    repayments, which replenish the revolving fund for the next household.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Loan products are sized to the subscriber: rural off grid households on standalone
+                        systems of half a kilowatt to one and a half, urban grid connected homes on hybrid
+                        storage backup of one and a half to five kilowatts, micro, small and medium enterprises
+                        on one to sixteen kilowatts or a cluster mini grid, agricultural communities on
+                        financing for irrigation pumps and cold storage, and internally displaced and
+                        vulnerable populations on fully subsidised deployment.</p>
+
+                    <h3 id="data">The data layer</h3>
+                    <p>Under the Energy Commission Act the National Energy Data Bank is the statutory custodian
+                        responsible for producing and managing Nigeria's official energy statistics, and the
+                        National Energy Data Fund is to be established through voluntary contributions from
+                        international development partners. The plan is direct about why this is sequenced
+                        early: every quantitative claim it makes is only as credible as the infrastructure that
+                        produces it, and no financier commits capital against numbers it cannot independently
+                        verify.</p>
+                    <p>The plan also records the data problems as they are. Reporting delays across ministries
+                        and state agencies, no inter-agency standardisation, technical and human capacity
+                        constraints, connectivity and hardware deficiencies, and the loss of trained data
+                        professionals to the private sector. Integration with the West African ECOWAS Energy
+                        Information System, launched in March 2023, harmonises statistics across all fifteen
+                        member states and tracks progress toward Sustainable Development Goal 7.</p>
+
+                    <h3 id="q1">Q1 2026, initiative by initiative</h3>
+                    <p>The first operating quarter, January to March 2026, went on institutional foundations,
+                        anchor financing commitments and subnational structures. This is the completion status
+                        the committee reported on itself.</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Initiative</th>
+                                    <th>Status as at March 2026</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>NEIIA platform, conceptual design</td>
+                                    <td>Done</td>
+                                </tr>
+                                <tr>
+                                    <td>NEFUND general partner and limited partner structure, sub-fund architecture and the En-Co framework</td>
+                                    <td>Done</td>
+                                </tr>
+                                <tr>
+                                    <td>SEPI pilot units in Lagos, Kogi, Kwara and Kano</td>
+                                    <td>Done</td>
+                                </tr>
+                                <tr>
+                                    <td>Technical collaboration with the Nigeria China Renewable Energy Research Centre</td>
+                                    <td>Done</td>
+                                </tr>
+                                <tr>
+                                    <td>MDA coordination protocols and reporting templates</td>
+                                    <td>Done</td>
+                                </tr>
+                                <tr>
+                                    <td>Communication frameworks for stakeholder mobilisation</td>
+                                    <td>Done</td>
+                                </tr>
+                                <tr>
+                                    <td>Afreximbank memorandum of understanding, $3B guarantee and up to $2B financing</td>
+                                    <td>In progress, 55 per cent</td>
+                                </tr>
+                                <tr>
+                                    <td>Bilateral investor engagement, term sheet consultations</td>
+                                    <td>In progress, 60 per cent</td>
+                                </tr>
+                                <tr>
+                                    <td>NEDB infrastructure setup</td>
+                                    <td>Pending, 35 per cent</td>
+                                </tr>
+                                <tr>
+                                    <td>&#8358;50 billion NEFUND seed approval</td>
+                                    <td>Pending, 25 per cent</td>
+                                </tr>
+                                <tr>
+                                    <td>National Energy Project Deal Room</td>
+                                    <td>Pending, 20 per cent</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="article__note">The progress report names the counterparties in the bilateral investor conversations. They are withheld here: those discussions are not concluded, and none of the institutions has made a public commitment.</p>
+
+                    <h3 id="kpi">The 25-year KPI grid</h3>
+                    <p>Eleven measures, each with a 2024 baseline and two dated targets. The plan ties every
+                        measure to an accountable entity, so a stalled indicator is attributable rather than
+                        diffused across agencies.</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Measure</th>
+                                    <th>Baseline 2024</th>
+                                    <th>Target 2030</th>
+                                    <th>Target 2048</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Renewable electricity mix share</td>
+                                    <td>&lt; 5%</td>
+                                    <td>36%</td>
+                                    <td>60%+</td>
+                                </tr>
+                                <tr>
+                                    <td>Annual electricity access growth rate</td>
+                                    <td>~2%</td>
+                                    <td>9% p.a.</td>
+                                    <td>Universal access</td>
+                                </tr>
+                                <tr>
+                                    <td>Smart revenue meters installed</td>
+                                    <td>~200,000</td>
+                                    <td>1.5 million</td>
+                                    <td>Universal</td>
+                                </tr>
+                                <tr>
+                                    <td>NEFUND cumulative capital mobilised</td>
+                                    <td>&mdash;</td>
+                                    <td>$10B</td>
+                                    <td>$50&ndash;100B</td>
+                                </tr>
+                                <tr>
+                                    <td>Bankable project pipeline value</td>
+                                    <td>&mdash;</td>
+                                    <td>$3B</td>
+                                    <td>$30B</td>
+                                </tr>
+                                <tr>
+                                    <td>Operational state SEPI units</td>
+                                    <td>4 pilot</td>
+                                    <td>All 36 states</td>
+                                    <td>Enhanced capacity</td>
+                                </tr>
+                                <tr>
+                                    <td>ATC&amp;C distribution losses</td>
+                                    <td>40&ndash;50%</td>
+                                    <td>&lt; 25%</td>
+                                    <td>&lt; 10%</td>
+                                </tr>
+                                <tr>
+                                    <td>Energy related FDI per annum</td>
+                                    <td>Minimal</td>
+                                    <td>$2B+</td>
+                                    <td>$5B+</td>
+                                </tr>
+                                <tr>
+                                    <td>Projects tracked via NEIIA and GPS mapping</td>
+                                    <td>0%</td>
+                                    <td>60%</td>
+                                    <td>100%</td>
+                                </tr>
+                                <tr>
+                                    <td>Certified monitoring and evaluation professionals in MDAs</td>
+                                    <td>Low</td>
+                                    <td>50%</td>
+                                    <td>90%</td>
+                                </tr>
+                                <tr>
+                                    <td>NEDB general data quality score</td>
+                                    <td>Poor</td>
+                                    <td>Good</td>
+                                    <td>Excellent</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 id="risk">Risk register</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Risk</th>
+                                    <th>Level</th>
+                                    <th>Mitigation</th>
+                                    <th>Accountable</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Political and policy reversal across administrations</td>
+                                    <td>High</td>
+                                    <td>Executive buffering through the Presidential Steering Committee, and enshrining NEMP infrastructure targets in law for continuity.</td>
+                                    <td>ECN, Federal Government, National Assembly</td>
+                                </tr>
+                                <tr>
+                                    <td>Foreign exchange and macroeconomic volatility</td>
+                                    <td>High</td>
+                                    <td>FX indexed contract structures, central bank hedging facilities and DFI backed currency guarantees.</td>
+                                    <td>CBN, NEFUND, Ministry of Finance</td>
+                                </tr>
+                                <tr>
+                                    <td>Seed funding non activation</td>
+                                    <td>High</td>
+                                    <td>A direct Presidential directive, short term DFI bridge financing, and emergency releases from NCDMB and the MDGIF.</td>
+                                    <td>NEMiC, Ministry of Finance</td>
+                                </tr>
+                                <tr>
+                                    <td>Infrastructure financing gap against the $100B requirement</td>
+                                    <td>High</td>
+                                    <td>Operationalise NEFUND, use blended finance and co-financing structures, deploy VOARS assets through the contingent liability framework.</td>
+                                    <td>NEFUND, DFIs, private sector</td>
+                                </tr>
+                                <tr>
+                                    <td>Regulatory coordination friction</td>
+                                    <td>Medium</td>
+                                    <td>A permanent multi-agency working group and definitive legal clearance on NEFUND's regulatory classification.</td>
+                                    <td>NERC, SEC, Ministry of Power</td>
+                                </tr>
+                                <tr>
+                                    <td>Monitoring and data capacity gap</td>
+                                    <td>Medium</td>
+                                    <td>Accelerate uniform NEIIA deployment and establish the National Institute of Data and Performance Management.</td>
+                                    <td>ECN-NEMiC, NEDB</td>
+                                </tr>
+                                <tr>
+                                    <td>Market and investor risk, country risk premium</td>
+                                    <td>Low</td>
+                                    <td>Leverage the Afreximbank risk guarantee, diversify investor networks and use partial risk guarantees.</td>
+                                    <td>NEFUND, NEMiC</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 id="next">What happens next</h3>
+                    <p>The plan sets out the second quarter actions, and names three of them as the leading
+                        indicators of whether the first phase is on track: whether the seed capitalisation
+                        clears Treasury approval, whether the bilateral investor conversations convert into
+                        formal term sheets, and whether SEPI expands credibly beyond its four pilot states.</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Priority action, April to June 2026</th>
+                                    <th>What it unlocks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Secure formal Treasury approval for the &#8358;50 billion seed fund.</td>
+                                    <td>Operationalises NEFUND and triggers fund manager requests for proposals.</td>
+                                </tr>
+                                <tr>
+                                    <td>Convene the plenary Energy Commission Board meeting.</td>
+                                    <td>High level institutional alignment and policy approval.</td>
+                                </tr>
+                                <tr>
+                                    <td>Constitute the Presidential National Steering Committee.</td>
+                                    <td>Activates formal inter-ministerial coordination protocols.</td>
+                                </tr>
+                                <tr>
+                                    <td>Advance bilateral term sheet consultations.</td>
+                                    <td>Converts early expressions of interest into binding capital commitments.</td>
+                                </tr>
+                                <tr>
+                                    <td>Finalise NEIIA technical designs and procure development partners.</td>
+                                    <td>Begins automation of policy implementation and monitoring.</td>
+                                </tr>
+                                <tr>
+                                    <td>Expand SEPI operational units to ten additional states.</td>
+                                    <td>Scales subnational planning and data alignment.</td>
+                                </tr>
+                                <tr>
+                                    <td>Publish the first edition of the National Energy Project Deal Book.</td>
+                                    <td>Shows structured, investment ready pipelines to global markets.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 id="accountability">Public accountability</h3>
+                    <p>Four channels carry the reporting, and the plan commits to citizens and civil society
+                        being able to verify the same progress data that is reported to investors and to the
+                        National Assembly.</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Channel</th>
+                                    <th>Audience</th>
+                                    <th>Cadence</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Quarterly stakeholder bulletins</td>
+                                    <td>Public agencies, private energy consortia, civil society organisations</td>
+                                    <td>Quarterly</td>
+                                </tr>
+                                <tr>
+                                    <td>NEIIA public dashboard</td>
+                                    <td>Citizens, investors and development partners</td>
+                                    <td>Real time</td>
+                                </tr>
+                                <tr>
+                                    <td>Annual Energy Investment Forum</td>
+                                    <td>Global asset managers and the active project pipeline</td>
+                                    <td>Annual</td>
+                                </tr>
+                                <tr>
+                                    <td>Legislative oversight reporting</td>
+                                    <td>National Assembly energy committees</td>
+                                    <td>Annual</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="article__note">The primary instrument for assessing implementation progress is the annual Nigeria Development Report, supported by a National Institute of Data and Performance Management to professionalise monitoring nationwide.</p>
+
+                    <h3 id="sourcing">Sourcing</h3>
+                    <div class="callout">
+                        <h4>How to read this page</h4>
+                        <p>Every figure, date, table and status above is taken from the 25-year strategic plan
+                            and H1 2026 progress report of the National Energy Masterplan Implementation
+                            Committee, reference NEMiC/SPR/2026/01, issued March 2026 by the Energy Commission
+                            of Nigeria. The report states its position as at March 2026, so anything later is
+                            not reflected here. Where the report names private financial institutions as being
+                            in bilateral discussion, those names are withheld on this page by choice.</p>
+                    </div>
+
+                    <h3 id="questions">Questions</h3>
+                    <div class="faq">
+                        <details>
+                            <summary>Is NEMiC a new agency or a regulator?</summary>
+                            <p>Neither. It is the implementation committee constituted in October 2024, operating as the central secretariat under the Energy Commission of Nigeria. It coordinates existing institutions rather than replacing them. Upstream petroleum stays with NUPRC, midstream and downstream with NMDPRA, electricity with NERC, and energy policy coordination with the Energy Commission.</p>
+                        </details>
+                        <details>
+                            <summary>Has the fifty billion naira seed capital been released?</summary>
+                            <p>No. It is structured but pending formal Treasury approval as at March 2026, under active coordination with the Ministry of Finance, and the plan identifies it as the single most critical near term constraint on the whole programme.</p>
+                        </details>
+                        <details>
+                            <summary>Has Afreximbank committed five billion dollars?</summary>
+                            <p>No. The arrangement is an executed memorandum of understanding covering a three billion dollar country risk guarantee and up to two billion dollars in direct financing. It is not drawn, and it should not be described as secured funding.</p>
+                        </details>
+                        <details>
+                            <summary>Where does the one hundred billion dollar figure come from?</summary>
+                            <p>It is the total investment the National Energy Master Plan requires across 2023 to 2048 to close Nigeria's infrastructure gap, not a sum that has been raised. NEFUND's own proposed total size is the same figure, reached in a third phase after ten billion and fifty billion.</p>
+                        </details>
+                        <details>
+                            <summary>How does a state get a SEPI unit?</summary>
+                            <p>Through the state government working with the Energy Commission and the committee secretariat. Four units are operational, ten more are planned for the second quarter of 2026, and all thirty six states are targeted by 2027.</p>
+                        </details>
+                        <details>
+                            <summary>Where does NEIIA fit?</summary>
+                            <p>NEIIA is the data and intelligence layer for the whole pipeline, with the National Energy Data Bank as its core data hub. The plan's own second quarter 2026 action is to finalise the NEIIA technical designs and procure development partners.</p>
+                        </details>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="shell cta__inner">
+                <div>
+                    <span class="eyebrow">Get started</span>
+                    <h2>Work with the Administration.</h2>
+                </div>
+                <div class="cta__actions">
+                    <a class="btn btn--primary" href="contact.html">Contact the team <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    <a class="btn btn--secondary" href="newsletter.html">Get updates</a>
+                </div>
+            </div>
+        </section>
+        <section class="seal">
+            <div class="shell">
+                <picture>
+                    <source srcset="assets/images/neiia-arms.webp" type="image/webp">
+                    <img src="assets/images/neiia-arms.png"
+                        alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                </picture>
+                <span class="seal__kicker">Issued under the Federal Republic of Nigeria</span>
+                <h2>The National Energy Master Plan, 2023 to 2048.</h2>
+                <p>Coordinated by NEMiC under the Energy Commission of Nigeria, and reported against a single
+                    set of dates and measures through to 2048.</p>
+                <span class="seal__where">NEMiC &middot; Energy Commission of Nigeria &middot; All 36 states and the Federal Capital Territory</span>
+            </div>
+        </section>
+
+    </main>
+    <footer class="footer">
+        <div class="shell">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__lockup">
+                        <picture>
+                            <source srcset="assets/images/neiia-arms.webp" type="image/webp">
+                            <img src="assets/images/neiia-arms.png"
+                                alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                        </picture>
+                        <span class="footer__lockup-text">
+                            <strong>NEIIA</strong>
+                            <span>National Energy Investment &amp; Intelligence Administration</span>
+                        </span>
+                    </div>
+                    <p>Nigeria's centralised platform for energy investment intelligence, asset visibility and
+                        strategic coordination.</p>
+                    <span class="footer__mandate">Operated under the Federal Republic of Nigeria</span>
+                </div>
+
+                <div>
+                    <h3>Modules</h3>
+                    <ul>
+                        <li><a href="nefund.html">NEFUND</a></li>
+                        <li><a href="deal-room/index.html">National Energy Deal Room</a></li>
+                        <li><a href="energy-databank/index.html">National Energy Data Bank</a></li>
+                        <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
+                        <li><a href="risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Platform</h3>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="help-center/index.html">Help centre</a></li>
+                        <li><a href="edu-center/educenter.html">Edu Center</a></li>
+                        <li><a href="government-site/index.html">Mandate &amp; governance</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>For users</h3>
+                    <ul>
+                        <li><a href="newsletter.html">Newsletter</a></li>
+                        <li><a href="help-center/nefund.html">NEFUND guide</a></li>
+                        <li><a href="help-center/account.html">Account help</a></li>
+                        <li><a href="compliance/index.html">Compliance</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__signup">
+                    <h3>Stay updated</h3>
+                    <p>Regulatory updates, live raises and platform changes. No spam.</p>
+                    <form class="footer__form" data-access-key="REPLACE_WITH_WEB3FORMS_ACCESS_KEY"
+                        data-subject="NEIIA — new newsletter subscriber"
+                        data-success="Confirmed. You are on the distribution list.">
+                        <label class="visually-hidden" for="footer-email">Email address</label>
+                        <input type="email" id="footer-email" name="email" placeholder="you@email.com" required
+                            autocomplete="email">
+                        <button class="btn" type="submit">Subscribe</button>
+                    </form>
+                    <p class="footer__note">By subscribing you agree to our <a
+                            href="risk-esg/privacy-policy.html">privacy policy</a>.</p>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <p class="footer__copy">
+                    &copy; 2026 <strong>Federal Republic of Nigeria</strong><br>
+                    Operating across all 36 states and the Federal Capital Territory
+                </p>
+                <div class="footer__meta">
+                    <a href="risk-esg/terms-of-service.html">Terms</a>
+                    <a href="risk-esg/privacy-policy.html">Privacy</a>
+                    <a href="compliance/index.html">Compliance</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/neiia.js?v=13" defer></script>
+</body>
+
+</html>

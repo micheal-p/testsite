@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NEMiC — National Energy Masterplan Implementation Committee | NEIIA</title>
+    <meta name="description" content="NEMiC is the federal committee executing Nigeria's National Energy Master Plan, 2023 to 2048. Mandate, governance, the Data-to-Deal framework, NEFUND, SEPI, SHINE, NEDB, the Q1 2026 progress record and the 25-year KPI grid.">
+    <meta name="theme-color" content="#0B1F24">
+    <meta property="og:title" content="NEMiC — National Energy Masterplan Implementation Committee | NEIIA">
+    <meta property="og:description" content="NEMiC is the federal committee executing Nigeria's National Energy Master Plan, 2023 to 2048. Mandate, governance, the Data-to-Deal framework, NEFUND, SEPI, SHINE, NEDB, the Q1 2026 progress record and the 25-year KPI grid.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/png" href="assets/images/neiia-arms.png">
+    <link rel="preload" href="assets/font/public-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/neiia.css?v=13">
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('neiia-theme');
+                var dark = stored ? stored === 'dark'
+                    : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                document.documentElement.classList.add('has-js');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+    <script src="auth-check.js"></script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="masthead">
+        <div class="shell masthead__inner">
+            <a class="brand" href="index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
+
+            <nav class="nav" aria-label="Primary">
+                <div class="nav__item">
+                    <button class="nav__link" type="button" data-dropdown aria-expanded="false"
+                        aria-controls="panel-shine">
+                        SHINE
+                        <svg class="nav__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none"
+                            aria-hidden="true">
+                            <path d="M2 4.5 6 8.5 10 4.5" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="nav__panel" id="panel-shine">
+                        <span class="nav__panel-label">Capital</span>
+                        <a href="nefund.html">NEFUND</a>
+                        <a href="deal-room/index.html">National Energy Deal Room</a>
+                        <span class="nav__panel-label">Intelligence</span>
+                        <a href="https://apex-neiia.vercel.app/">Apex AI <span class="tag">Beta</span></a>
+                        <a href="edu-center/educenter.html">Edu Center</a>
+                    </div>
+                </div>
+                <a class="nav__link" href="about.html">About</a>
+                <a class="nav__link" href="contact.html">Contact</a>
+                <a class="nav__link" href="help-center/index.html">Help centre</a>
+            </nav>
+
+            <button class="theme-toggle theme-toggle--desktop" type="button" data-theme-toggle aria-pressed="false"
+                aria-label="Switch to dark theme">
+                <svg class="theme-toggle__sun" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4.5" />
+                    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
+                </svg>
+                <svg class="theme-toggle__moon" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" />
+                </svg>
+            </button>
+
+            <a class="btn btn--primary btn--sm" href="newsletter.html">Get updates</a>
+
+            <button class="nav-toggle" type="button" data-drawer-open aria-expanded="false" aria-controls="nav-drawer"
+                aria-label="Open menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="drawer" id="nav-drawer">
+        <div class="drawer__head">
+            <a href="index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
+            <button class="icon-btn" type="button" data-drawer-close aria-label="Close menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+            </button>
+        </div>
+        <div class="drawer__body">
+            <a href="about.html">About <span aria-hidden="true">&rarr;</span></a>
+            <a href="contact.html">Contact <span aria-hidden="true">&rarr;</span></a>
+            <a href="help-center/index.html">Help centre <span aria-hidden="true">&rarr;</span></a>
+
+            <span class="drawer__label">Capital</span>
+            <a href="nefund.html">NEFUND <span aria-hidden="true">&rarr;</span></a>
+            <a href="deal-room/index.html">National Energy Deal Room <span aria-hidden="true">&rarr;</span></a>
+
+            <span class="drawer__label">Intelligence</span>
+            <a href="https://apex-neiia.vercel.app/">Apex AI <span aria-hidden="true">&rarr;</span></a>
+            <a href="edu-center/educenter.html">Edu Center <span aria-hidden="true">&rarr;</span></a>
+
+            <div class="drawer__actions">
+                <a class="btn btn--primary" href="newsletter.html">Get updates</a>
+                <a class="btn btn--secondary" href="contact.html">Contact the team</a>
+                <button class="btn btn--secondary" type="button" data-theme-toggle aria-pressed="false"
+                    aria-label="Switch to dark theme">Switch theme</button>
+            </div>
+        </div>
+    </div>
+
+
+    <main id="main">
+        <section class="page-hero page-hero--split">
+            <div class="shell split-media">
+                <div>
+                    <nav class="crumbs" aria-label="Breadcrumb">
+                        <a href="index.html">Home</a>
+                        <span aria-hidden="true">/</span>
+                        <span>NEMiC</span>
+                    </nav>
+                    <span class="eyebrow">Federal oversight</span>
+                    <h1>The National Energy Masterplan Implementation Committee</h1>
+                    <p class="page-hero__lead">NEMiC is the central secretariat under the Energy Commission
+                        of Nigeria, charged with executing the National Energy Master Plan, 2023 to 2048. It
+                        was constituted in October 2024. This page sets out its mandate, the instruments it
+                        operates and its progress, as recorded in the committee's own strategic plan.</p>
+                    <div class="page-hero__actions">
+                        <a class="btn btn--primary" href="#instruments">What NEMiC operates <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                        <a class="btn btn--secondary" href="nemic-record.html">The full record</a>
+                    </div>
+                </div>
+                <figure class="media">
+                        <picture>
+                            <source srcset="assets/images/nemic/hero-principals.webp" type="image/webp">
+                            <img src="assets/images/nemic/hero-principals.jpg" alt="Energy Commission and NEMiC principals assembled after an engagement" width="864" height="575"
+                                loading="lazy" decoding="async">
+                        </picture>
+                        <figcaption>Engagement with the Secretary to the Government of the Federation, March 2025</figcaption>
+                    </figure>
+            </div>
+        </section>
+
+        <section class="stats" aria-label="The plan at a glance">
+            <div class="shell stats__inner">
+                <div>
+                    <span class="eyebrow">The plan at a glance</span>
+                    <h2>The plan in six figures.</h2>
+                    <p class="stats__lead">The investment requirement, the fund target, the 2030 renewable
+                        target, the Afreximbank arrangement, the access gap, and the annual cost to the economy
+                        of unreliable power.</p>
+                    <figure class="media media--inverse">
+                        <picture>
+                            <source srcset="assets/images/nemic/plan-session.webp" type="image/webp">
+                            <img src="assets/images/nemic/plan-session.jpg" alt="A delegate watching a screen that reads The National Energy Masterplan, a vision for energy security" width="648" height="432"
+                                loading="lazy" decoding="async">
+                        </picture>
+                        <figcaption>A working session on the National Energy Master Plan</figcaption>
+                    </figure>
+                </div>
+
+                <div class="stats__grid">
+                    <div class="stat stat--wide">
+                        <span class="stat__value">$100B</span>
+                        <span class="stat__label">Total NEMP investment need, 2023 to 2048</span>
+                        <span class="stat__source">Source: NEMiC 25-Year Strategic Plan and H1 2026 Progress Report, reference NEMiC/SPR/2026/01, March 2026</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat__value">$10&ndash;50B</span>
+                        <span class="stat__label">NEFUND capital target, initial phase to scale</span>
+                        <span class="stat__source">Source: NEMiC/SPR/2026/01 &middot; March 2026</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat__value">36%</span>
+                        <span class="stat__label">Renewable share of the electricity mix, target by 2030</span>
+                        <span class="stat__source">Source: NEMiC/SPR/2026/01 &middot; March 2026</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat__value">$3B + $2B</span>
+                        <span class="stat__label">Afreximbank guarantee and financing, MOU signed Q1 2026</span>
+                        <span class="stat__source">Source: NEMiC/SPR/2026/01 &middot; March 2026</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat__value">86M</span>
+                        <span class="stat__label">Nigerians without reliable power access</span>
+                        <span class="stat__source">Source: NEMiC/SPR/2026/01 &middot; March 2026</span>
+                    </div>
+                    <div class="stat stat--wide">
+                        <span class="stat__value">$28B</span>
+                        <span class="stat__label">Annual economic cost of power unreliability</span>
+                        <span class="stat__source">Source: NEMiC/SPR/2026/01 &middot; March 2026</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell">
+                <div class="split-media">
+                    <div class="section-head section-head--flush">
+                        <span class="eyebrow">Why the committee exists</span>
+                        <h2>Nigeria's frameworks have failed at delivery, not at design.</h2>
+                        <p>The plan is blunt about this. National development frameworks in Nigeria have failed
+                            because of weak implementation mechanisms rather than weak policy. NEMiC was created
+                            to close that specific gap, not as another policy writing body but as the
+                            coordinating body the plan calls the Energy Ecosystem Architect, connecting federal
+                            agencies, state governments, private investors and development finance institutions
+                            around one accountable delivery system.</p>
+                        <p>The structural gaps it was created against are set out below.</p>
+                    </div>
+                    <figure class="media">
+                        <picture>
+                            <source srcset="assets/images/nemic/ecn-session.webp" type="image/webp">
+                            <img src="assets/images/nemic/ecn-session.jpg" alt="Delegates and international partners seated at a session in the Energy Commission boardroom" width="864" height="576"
+                                loading="lazy" decoding="async">
+                        </picture>
+                        <figcaption>A session at the Energy Commission of Nigeria</figcaption>
+                    </figure>
+                </div>
+                <div class="tiles">
+                    <div class="tile">
+                        <span class="tile__id">01 &middot; Generation</span>
+                        <h3>13,000 MW installed, under 5,000 MW available</h3>
+                        <p>Effective available capacity rarely exceeds five thousand megawatts, because of gas supply disruptions, credit instability and unexecuted fuel supply contracts, against demand already above thirty thousand megawatts and projected to pass one hundred thousand by 2040.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">02 &middot; Transmission</span>
+                        <h3>One grid, under half its technical capacity</h3>
+                        <p>The single national grid runs below fifty per cent of technical capacity, on outdated infrastructure, with frequent system collapses and no radial redundancy.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">03 &middot; Distribution</span>
+                        <h3>Losses of 40 to 50 per cent</h3>
+                        <p>Aggregate technical, commercial and collection losses average forty to fifty per cent across the distribution companies. The plan records this as severe commercial non viability.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">04 &middot; Renewables</span>
+                        <h3>Under 500 MW deployed against 427 GW of potential</h3>
+                        <p>Theoretical solar potential exceeds four hundred and twenty seven gigawatts. Deployed grid tied renewable capacity sits under five hundred megawatts, barely one per cent of the resource.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">05 &middot; Infrastructure stock</span>
+                        <h3>25 per cent of GDP against a 75 per cent benchmark</h3>
+                        <p>Nigeria's infrastructure stock is roughly a quarter of gross domestic product, against a benchmark closer to three quarters for economies at a comparable stage.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">06 &middot; Financing</span>
+                        <h3>Budget allocations that cannot reach US$100 billion</h3>
+                        <p>Federal allocations are insufficient against the requirement, domestic capital is expensive and short tenor, project preparation is weak, and a country risk premium deters long term foreign direct investment.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--tint">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">Governance architecture</span>
+                    <h2>Who delivers what.</h2>
+                    <p>NEMiC sits under the Energy Commission of Nigeria as the plan's secretariat. It does not
+                        replace a regulator and it does not supersede a ministry. Its leverage is the link
+                        between reporting and money: quarterly capital releases to ministries, departments and
+                        agencies are tied to their reported progress against shared targets.</p>
+                </div>
+                <div class="gov">
+                    <ol class="gov__levels">
+                        <li class="gov__level">
+                            <span class="gov__rank">01</span>
+                            <div class="gov__body">
+                                <h3>National Steering Committee</h3>
+                                <p>Strategic direction, policy alignment and the resolution of implementation
+                                    bottlenecks.</p>
+                                <div class="gov__chips">
+                                    <span>Headed by the President</span>
+                                    <span>Special Adviser on Energy as chair representative</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gov__level gov__level--core">
+                            <span class="gov__rank">02</span>
+                            <div class="gov__body">
+                                <h3>NEMiC, the plan secretariat</h3>
+                                <p>Coordination, prioritisation, pipeline governance, investment facilitation
+                                    and implementation oversight, through the Plan Implementation Unit inside
+                                    the Energy Commission.</p>
+                                <div class="gov__chips">
+                                    <span>Plan Implementation Unit</span>
+                                    <span>Monitoring and evaluation</span>
+                                    <span>NEIIA and the NEDB</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gov__level">
+                            <span class="gov__rank">03</span>
+                            <div class="gov__body">
+                                <h3>Delivery layer</h3>
+                                <p>Sector policy, project sponsorship and programme implementation, federal and
+                                    subnational.</p>
+                                <div class="gov__chips">
+                                    <span>SEPI units in the states</span>
+                                    <span>Plan Implementation Units in MDAs</span>
+                                    <span>DEPPA</span>
+                                    <span>Project sponsors and SPVs</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+
+                    <aside class="gov__rail">
+                        <h3 class="gov__rail-title">On the record</h3>
+                        <dl class="gov__facts">
+                            <div>
+                                <dt>Chairman</dt>
+                                <dd>Dr Mustapha Abdullahi, Director General of the Energy Commission of
+                                    Nigeria.</dd>
+                            </div>
+                            <div>
+                                <dt>Co-Chair, portfolio management</dt>
+                                <dd>Mr Nurudeen Yakubu. Arc. Fatima Abdullahi Yakubu is Secretary to the
+                                    committee.</dd>
+                            </div>
+                            <div>
+                                <dt>Reporting and money</dt>
+                                <dd>Quarterly capital releases to MDAs are tied to monitoring and evaluation
+                                    report outcomes.</dd>
+                            </div>
+                            <div>
+                                <dt>ESG condition</dt>
+                                <dd>Investments through NEMiC and NEFUND must comply with the IFC Performance
+                                    Standards and the Equator Principles. Compliance conditions fund manager
+                                    selection, project approval and continued disbursement.</dd>
+                            </div>
+                        </dl>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="record">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">The record so far</span>
+                    <h2>The dated record.</h2>
+                    <p>Every row below is a dated act of government or a signed instrument recorded in the
+                        strategic plan, except the last, which is where the platform stands today.</p>
+                </div>
+                <div class="timeline">
+                    <div class="timeline__row">
+                        <span class="timeline__year">Apr 2022</span>
+                        <p>The Federal Executive Council approves the National Energy Policy and the National Energy Master Plan, establishing Nigeria's long term energy transition framework.</p>
+                    </div>
+                    <div class="timeline__row">
+                        <span class="timeline__year">Mar 2023</span>
+                        <p>The West African ECOWAS Energy Information System launches, the regional data bridge linking the West African Power Pool, the ECOWAS Regional Electricity Regulatory Authority and the ECOWAS Centre for Renewable Energy and Energy Efficiency. Integrating the National Energy Data Bank with it becomes a key data governance milestone.</p>
+                    </div>
+                    <div class="timeline__row">
+                        <span class="timeline__year">May 2024</span>
+                        <p>President Bola Ahmed Tinubu formally unveils the National Energy Master Plan, signalling national commitment to implementation.</p>
+                    </div>
+                    <div class="timeline__row">
+                        <span class="timeline__year">Oct 2024</span>
+                        <p>NEMiC is constituted, to move the master plan from policy to execution.</p>
+                    </div>
+                    <div class="timeline__row">
+                        <span class="timeline__year">Apr 2025</span>
+                        <p>Tripartite agreement signed with the Nigeria Governors' Forum, the Energy Commission and the Nigeria China Renewable Energy Research Centre, the technical collaboration that later supports the SEPI units.</p>
+                    </div>
+                    <div class="timeline__row">
+                        <span class="timeline__year">Sept 2025</span>
+                        <p>The National Energy Fund is inaugurated and operationalised to unlock sustainable financing for priority energy projects, alongside the inauguration of the committee itself.</p>
+                    </div>
+                    <div class="timeline__row">
+                        <span class="timeline__year">Q1 2026</span>
+                        <p>Five milestones in the first operating quarter: the Afreximbank memorandum of understanding is executed, the NEFUND general partner and limited partner architecture is defined and regulatory consultations open with the Securities and Exchange Commission, SEPI pilot units launch in Lagos, Kogi, Kwara and Kano, MDA coordination protocols are established, and design of the NEIIA platform begins.</p>
+                    </div>
+                    <div class="timeline__row">
+                        <span class="timeline__year">Mar 2026</span>
+                        <p>The 25-year strategic plan and first progress report are issued under reference NEMiC/SPR/2026/01. Every figure on this page is read against that document.</p>
+                    </div>
+                    <div class="timeline__row">
+                        <span class="timeline__year">Sept 2026</span>
+                        <p>The NEIIA platform and the module briefs behind it are built and in final review, awaiting launch. This row is the platform's own status and is not in the March 2026 report.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--tint" id="instruments">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">The instruments</span>
+                    <h2>The six instruments.</h2>
+                    <p>The master plan sets the intent. These are the vehicles that carry it, each with its own
+                        legal basis, its own owner and its own state of readiness.</p>
+                </div>
+                <div class="tiles">
+                    <div class="tile">
+                        <span class="tile__id">01</span>
+                        <h3>NEMP &middot; National Energy Master Plan</h3>
+                        <p>The plan itself, running 2023 to 2048, approved by the Federal Executive Council in April 2022 and publicly unveiled in May 2024. It carries a total investment requirement of US$100 billion (one hundred billion United States dollars).</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">02</span>
+                        <h3>NEFUND &middot; National Energy Fund</h3>
+                        <p>The capital aggregation vehicle, an umbrella platform under a general partner and limited partner framework compliant with Securities and Exchange Commission regulation. Proposed total size US$100 billion, with a first phase target of US$10 billion (ten billion United States dollars) scaling to US$50 billion. <a href="nefund.html">Read the NEFUND page</a>.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">03</span>
+                        <h3>NEIIA &middot; the data and intelligence layer</h3>
+                        <p>The common information layer for the whole pipeline, covering demand and resource data, asset mapping, project readiness, risk and ESG information, and monitoring and evaluation. Nine products sit on it. <a href="index.html#platform">See the nine modules</a>.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">04</span>
+                        <h3>SEPI &middot; State Energy Planning and Implementation</h3>
+                        <p>The subnational entry point. A SEPI unit gives a state its own energy plan and its own project pipeline, and it is the only door into the national pipeline. Piloted in four states, with ten more planned for the second quarter of 2026 and all thirty six targeted by 2027.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">05</span>
+                        <h3>SHINE &middot; Sustainable Housing and Infrastructure for New Energy</h3>
+                        <p>The flagship delivery programme for universal access, financing solar home systems through banks, solar firms and insurers against a revolving NEFUND facility, repaid pay as you go.</p>
+                    </div>
+                    <div class="tile">
+                        <span class="tile__id">06</span>
+                        <h3>NEDB and NEDF &middot; the data bank</h3>
+                        <p>Statutory custodian of Nigeria&rsquo;s official energy statistics under the Energy Commission Act, with a National Energy Data Fund to be established through voluntary contributions from international development partners. <a href="energy-databank/index.html">Open the data bank</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell">
+                <div class="split-media split-media--tight">
+                    <div class="section-head section-head--flush">
+                        <span class="eyebrow">SEPI &middot; the subnational layer</span>
+                        <h2>How the plan reaches the states.</h2>
+                        <p>Electricity distribution, land allocation for generation assets and last mile
+                            delivery all depend on state cooperation, so the plan puts a planning and
+                            implementation unit inside the state government itself. SEPI identifies,
+                            validates, prioritises and prepares state level opportunities, then submits
+                            qualified projects into the national deal room. As at March 2026 four units are
+                            operational, supported by technical collaboration with the Nigeria China Renewable
+                            Energy Research Centre.</p>
+                    </div>
+                    <figure class="media">
+                        <picture>
+                            <source srcset="assets/images/nemic/lagos-sepi.webp" type="image/webp">
+                            <img src="assets/images/nemic/lagos-sepi.jpg" alt="The delegation received at the Lagos State Ministry of Energy and Mineral Resources" width="432" height="271"
+                                loading="lazy" decoding="async">
+                        </picture>
+                        <figcaption>Lagos State energy needs assessment</figcaption>
+                    </figure>
+                </div>
+                <div class="notes">
+                    <div class="note">
+                        <strong>Lagos</strong>
+                        <p>Operational, with a ten megawatt generation project pipeline recorded as an early milestone.</p>
+                    </div>
+                    <div class="note">
+                        <strong>Kwara</strong>
+                        <p>Operational, with localised off grid mapping recorded as an early milestone.</p>
+                    </div>
+                    <div class="note">
+                        <strong>Kano</strong>
+                        <p>Operational as one of the four pilot units.</p>
+                    </div>
+                    <div class="note">
+                        <strong>Kogi</strong>
+                        <p>Operational as one of the four pilot units.</p>
+                    </div>
+                </div>
+                <div class="callout callout--loose">
+                    <h4>What happens next</h4>
+                    <p>The Energy Commission has announced expansion to ten additional states in the second
+                        quarter of 2026, with full coverage across all thirty six states targeted by 2027. The
+                        plan itself names this as one of the clearest tests of whether the coordination
+                        architecture scales beyond a handful of relatively well resourced early states.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--tint">
+            <div class="shell">
+                <div class="split-media split-media--tight">
+                    <div class="section-head section-head--flush">
+                        <span class="eyebrow">SHINE &middot; the flagship programme</span>
+                        <h2>Four actors, one revolving fund.</h2>
+                        <p>SHINE is the delivery vehicle for the commitment that no individual, village or
+                            community is left without power. It avoids bureaucratic distribution delays by
+                            running through four institutions that already exist, each doing the thing it is
+                            already good at, against a central fund that refills as subscribers repay.</p>
+                    </div>
+                    <figure class="media">
+                        <picture>
+                            <source srcset="assets/images/nemic/community.webp" type="image/webp">
+                            <img src="assets/images/nemic/community.jpg" alt="Officials and community members gathered outdoors during a state energy needs assessment" width="432" height="288"
+                                loading="lazy" decoding="async">
+                        </picture>
+                        <figcaption>Community engagement during a state energy needs assessment</figcaption>
+                    </figure>
+                </div>
+                <div class="notes">
+                    <div class="note">
+                        <strong>NEFUND</strong>
+                        <p>Manages the central revolving fund and channels public and multilateral seed capital into it.</p>
+                    </div>
+                    <div class="note">
+                        <strong>Commercial banks</strong>
+                        <p>Onboard subscribers through the banking portal, run customer profiling and affordability checks, and originate the solar loan.</p>
+                    </div>
+                    <div class="note">
+                        <strong>Technical partners</strong>
+                        <p>Certified solar firms receive a verified deployment mandate from the bank, then install and maintain the hardware.</p>
+                    </div>
+                    <div class="note">
+                        <strong>Insurance companies</strong>
+                        <p>Underwrite the physical asset and guarantee long term system performance, so a failed installation is not the subscriber's loss.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell">
+                <div class="section-head">
+                    <span class="eyebrow">On the record</span>
+                    <h2>From the progress report.</h2>
+                    <p>Photographs published in the committee's own progress report, reproduced here with the
+                        captions the report gives them.</p>
+                </div>
+                <div class="gal">
+                    <figure class="gal__item">
+                        <picture>
+                            <source srcset="assets/images/nemic/inauguration.webp" type="image/webp">
+                            <img src="assets/images/nemic/inauguration.jpg" alt="Members and partners of NEMiC assembled at the committee's inauguration" width="432" height="288"
+                                loading="lazy" decoding="async">
+                        </picture>
+                        <figcaption>NEMiC inauguration, September 2025</figcaption>
+                    </figure>
+                    <figure class="gal__item">
+                        <picture>
+                            <source srcset="assets/images/nemic/plan-handover.webp" type="image/webp">
+                            <img src="assets/images/nemic/plan-handover.jpg" alt="Officials presenting bound copies of the plan under the Energy Commission crest" width="864" height="575"
+                                loading="lazy" decoding="async">
+                        </picture>
+                        <figcaption>Presentation of the plan documents, Energy Commission of Nigeria</figcaption>
+                    </figure>
+                    <figure class="gal__item">
+                        <picture>
+                            <source srcset="assets/images/nemic/tripartite-signing.webp" type="image/webp">
+                            <img src="assets/images/nemic/tripartite-signing.jpg" alt="Signing ceremony with Nigeria Governors' Forum and Energy Commission placards" width="432" height="288"
+                                loading="lazy" decoding="async">
+                        </picture>
+                        <figcaption>Tripartite agreement signing, April 2025</figcaption>
+                    </figure>
+                    <figure class="gal__item">
+                        <picture>
+                            <source srcset="assets/images/nemic/sgf-session.webp" type="image/webp">
+                            <img src="assets/images/nemic/sgf-session.jpg" alt="A delegate addressing a session at the Energy Commission of Nigeria" width="836" height="557"
+                                loading="lazy" decoding="async">
+                        </picture>
+                        <figcaption>In session at the Energy Commission of Nigeria</figcaption>
+                    </figure>
+                    <figure class="gal__item">
+                        <picture>
+                            <source srcset="assets/images/nemic/state-assessment.webp" type="image/webp">
+                            <img src="assets/images/nemic/state-assessment.jpg" alt="Delegation assembled outside a state ministry building" width="432" height="288"
+                                loading="lazy" decoding="async">
+                        </picture>
+                        <figcaption>State energy needs assessment, SEPI pilot states</figcaption>
+                    </figure>
+                    <figure class="gal__item">
+                        <picture>
+                            <source srcset="assets/images/nemic/field-assessment.webp" type="image/webp">
+                            <img src="assets/images/nemic/field-assessment.jpg" alt="Officials walking a field site during a state assessment visit" width="432" height="288"
+                                loading="lazy" decoding="async">
+                        </picture>
+                        <figcaption>Field assessment during the state visits</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--tint">
+            <div class="shell">
+                <a class="record-card" href="nemic-record.html">
+                    <span class="record-card__body">
+                        <span class="eyebrow">The full record</span>
+                        <span class="record-card__title">Every table in the plan, on one page.</span>
+                        <span class="record-card__lead">The Data-to-Deal framework and its nine readiness
+                            gates, the seven strategic pillars, NEFUND's eight sub-funds and the seed capital
+                            position, the Q1 2026 status initiative by initiative, the 25-year KPI grid, the
+                            risk register, the second quarter actions and the accountability channels.</span>
+                        <span class="btn btn--glow record-card__btn">Open the full record <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+                    </span>
+                </a>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="shell cta__inner">
+                <div>
+                    <span class="eyebrow">Get started</span>
+                    <h2>Work with the Administration.</h2>
+                </div>
+                <div class="cta__actions">
+                    <a class="btn btn--primary" href="contact.html">Contact the team <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    <a class="btn btn--secondary" href="newsletter.html">Get updates</a>
+                </div>
+            </div>
+        </section>
+        <section class="seal">
+            <div class="shell">
+                <picture>
+                    <source srcset="assets/images/neiia-arms.webp" type="image/webp">
+                    <img src="assets/images/neiia-arms.png"
+                        alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                </picture>
+                <span class="seal__kicker">Issued under the Federal Republic of Nigeria</span>
+                <h2>The National Energy Master Plan, 2023 to 2048.</h2>
+                <p>Coordinated by NEMiC under the Energy Commission of Nigeria, and reported against a single
+                    set of dates and measures through to 2048.</p>
+                <span class="seal__where">NEMiC &middot; Energy Commission of Nigeria &middot; All 36 states and the Federal Capital Territory</span>
+            </div>
+        </section>
+
+    </main>
+    <footer class="footer">
+        <div class="shell">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__lockup">
+                        <picture>
+                            <source srcset="assets/images/neiia-arms.webp" type="image/webp">
+                            <img src="assets/images/neiia-arms.png"
+                                alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                        </picture>
+                        <span class="footer__lockup-text">
+                            <strong>NEIIA</strong>
+                            <span>National Energy Investment &amp; Intelligence Administration</span>
+                        </span>
+                    </div>
+                    <p>Nigeria's centralised platform for energy investment intelligence, asset visibility and
+                        strategic coordination.</p>
+                    <span class="footer__mandate">Operated under the Federal Republic of Nigeria</span>
+                </div>
+
+                <div>
+                    <h3>Modules</h3>
+                    <ul>
+                        <li><a href="nefund.html">NEFUND</a></li>
+                        <li><a href="deal-room/index.html">National Energy Deal Room</a></li>
+                        <li><a href="energy-databank/index.html">National Energy Data Bank</a></li>
+                        <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
+                        <li><a href="risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Platform</h3>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="help-center/index.html">Help centre</a></li>
+                        <li><a href="edu-center/educenter.html">Edu Center</a></li>
+                        <li><a href="government-site/index.html">Mandate &amp; governance</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>For users</h3>
+                    <ul>
+                        <li><a href="newsletter.html">Newsletter</a></li>
+                        <li><a href="help-center/nefund.html">NEFUND guide</a></li>
+                        <li><a href="help-center/account.html">Account help</a></li>
+                        <li><a href="compliance/index.html">Compliance</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__signup">
+                    <h3>Stay updated</h3>
+                    <p>Regulatory updates, live raises and platform changes. No spam.</p>
+                    <form class="footer__form" data-access-key="REPLACE_WITH_WEB3FORMS_ACCESS_KEY"
+                        data-subject="NEIIA — new newsletter subscriber"
+                        data-success="Confirmed. You are on the distribution list.">
+                        <label class="visually-hidden" for="footer-email">Email address</label>
+                        <input type="email" id="footer-email" name="email" placeholder="you@email.com" required
+                            autocomplete="email">
+                        <button class="btn" type="submit">Subscribe</button>
+                    </form>
+                    <p class="footer__note">By subscribing you agree to our <a
+                            href="risk-esg/privacy-policy.html">privacy policy</a>.</p>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <p class="footer__copy">
+                    &copy; 2026 <strong>Federal Republic of Nigeria</strong><br>
+                    Operating across all 36 states and the Federal Capital Territory
+                </p>
+                <div class="footer__meta">
+                    <a href="risk-esg/terms-of-service.html">Terms</a>
+                    <a href="risk-esg/privacy-policy.html">Privacy</a>
+                    <a href="compliance/index.html">Compliance</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/neiia.js?v=13" defer></script>
+</body>
+
+</html>
