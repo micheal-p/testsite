@@ -255,6 +255,8 @@ def footer(p):
 
 # ---------------------------------------------------------------- ABOUT
 def about():
+    """Superseded 2026-09-04 by tools/build_about.py. Kept only for reference;
+    it is no longer written out, and it does not reflect the live page."""
     p = ""
     KPI = [
         ("13.0", "GW", "Installed grid capacity tracked across federal and private generation.", "Source: TCN / NERC"),
@@ -356,6 +358,8 @@ def about():
 
 # -------------------------------------------------------------- CONTACT
 def contact():
+    """Superseded 2026-09-04 by tools/build_contact.py. Reference only; it is no
+    longer written out and does not reflect the live page."""
     p = ""
     body = f'''        <section class="page-hero">
             <div class="shell">
@@ -598,8 +602,11 @@ def helpcentre():
         + masthead(p, "help") + body + footer(p)
 
 
-for path, fn in [("about.html", about), ("contact.html", contact),
-                 ("newsletter.html", newsletter), ("help-center/index.html", helpcentre)]:
+# about.html is NOT written here any more. Its about() below had already drifted
+# from the committed page, and the rebuilt version lives in build_about.py, which
+# slices its chrome out of nefund.html instead of re-typing it. Running this file
+# must not silently revert that page.
+for path, fn in [("newsletter.html", newsletter), ("help-center/index.html", helpcentre)]:
     full = os.path.join(ROOT, path)
     if not os.path.exists(full + ".bak"):
         os.rename(full, full + ".bak")

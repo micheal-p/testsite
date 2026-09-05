@@ -213,6 +213,14 @@
      Set data-endpoint on the form to your Web3Forms access key to go live.
      Until then the form reports honestly instead of faking success.
      ------------------------------------------------------------------------ */
+  /* ONE EDIT ACTIVATES EVERY FORM ON THE SITE.
+     Paste the Web3Forms access key between the quotes below. The key is a
+     public identifier, not a secret, and it is what every form on all 18 pages
+     falls back to. Without it, forms report honestly instead of faking success.
+     Get one at web3forms.com by entering the mailbox the messages should go to;
+     the key arrives by email. */
+  var FORM_KEY = "";
+
   function initSignup() {
     var forms = document.querySelectorAll("form[data-access-key]");
     Array.prototype.forEach.call(forms, wireForm);
@@ -238,9 +246,10 @@
       e.preventDefault();
 
       var key = form.getAttribute("data-access-key");
-      if (!key || key.indexOf("REPLACE") === 0) {
+      if (!key || key.indexOf("REPLACE") === 0) key = FORM_KEY;
+      if (!key) {
         say(
-          "This form is not connected yet — add your Web3Forms access key to enable it.",
+          "This form is not connected yet. Set FORM_KEY in assets/js/neiia.js to enable it.",
           "error"
         );
         return;

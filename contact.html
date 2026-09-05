@@ -4,19 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contact — NEIIA</title>
-    <meta name="description" content="Contact the National Energy Investment & Intelligence Administration for platform access, data requests and enquiries.">
+    <title>Contact &mdash; NEIIA</title>
+    <meta name="description" content="Contact the National Energy Investment and Intelligence Administration: platform access, data requests, Deal Room and NEFUND, regulatory and media enquiries. Official correspondence answered within five working days.">
     <meta name="theme-color" content="#0B1F24">
-    <meta property="og:title" content="Contact — NEIIA">
-    <meta property="og:description" content="Contact the National Energy Investment & Intelligence Administration for platform access, data requests and enquiries.">
+    <meta property="og:title" content="Contact &mdash; NEIIA">
+    <meta property="og:description" content="Contact the National Energy Investment and Intelligence Administration: platform access, data requests, Deal Room and NEFUND, regulatory and media enquiries. Official correspondence answered within five working days.">
     <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/png" href="assets/images/neiia-arms.png">
-
-    <!-- Self-hosted typeface. No third-party CDN calls. -->
     <link rel="preload" href="assets/font/public-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="assets/css/neiia.css?v=13">
-
+    <link rel="stylesheet" href="assets/css/neiia.css?v=19">
     <script>
         (function () {
             try {
@@ -30,7 +26,6 @@
             }
         })();
     </script>
-    <!-- Gate check. Redirects to index.html unless signed in. -->
     <script src="auth-check.js"></script>
 </head>
 <body>
@@ -141,25 +136,20 @@
         </div>
     </div>
 
-    <main id="main">
-        <section class="page-hero">
-            <div class="shell">
-                <span class="eyebrow">Contact</span>
-                <h1>Contact NEIIA.</h1>
-                <p class="page-hero__lead">For platform access, module enquiries, data requests, media and
-                    partnership matters. We respond to official correspondence within five working days.</p>
-            </div>
-        </section>
 
-        <section class="section">
-            <div class="shell split split--narrow">
-                <div>
-                    <div class="section-head">
-                        <h2>Send an enquiry</h2>
-                        <p>All fields marked required must be completed for us to route your message correctly.</p>
-                    </div>
-                    <!-- TODO: replace REPLACE_WITH_WEB3FORMS_ACCESS_KEY to activate.
-                         Previously this form ran alert('Message sent!') and discarded the message. -->
+    <main id="main">
+        <section class="section contact-screen" id="enquiry">
+            <div class="shell">
+                <div class="section-head contact-screen__head">
+                    <span class="eyebrow">Contact</span>
+                    <h1>Contact NEIIA.</h1>
+                    <p>Platform access, data requests, regulatory correspondence, media and partnerships.
+                        Official correspondence is answered within five working days.</p>
+                </div>
+
+                <div class="split split--narrow">
+                    <div>
+
                     <form class="form" data-access-key="REPLACE_WITH_WEB3FORMS_ACCESS_KEY"
                         data-subject="NEIIA — website enquiry"
                         data-success="Received. Your enquiry has been logged and routed.">
@@ -197,43 +187,49 @@
                         </div>
                         <div class="field">
                             <label for="c-msg">Message</label>
-                            <textarea id="c-msg" name="message" required></textarea>
+                            <textarea id="c-msg" name="message" rows="3" required></textarea>
                         </div>
                         <button class="btn btn--primary" type="submit">Send enquiry <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></button>
                         <p class="form__note">Submissions are handled under our <a
                                 href="risk-esg/privacy-policy.html">privacy policy</a> and NDPA 2023.</p>
                     </form>
-                </div>
 
-                <div class="detail-card">
-                    <dl>
-                        <div class="detail">
-                            <dt>General enquiries</dt>
-                            <dd><a href="mailto:info@neiia.gov.ng">info@neiia.gov.ng</a></dd>
-                        </div>
-                        <div class="detail">
-                            <dt>Offices</dt>
-                            <dd>Abuja &middot; Lagos &middot; Port Harcourt</dd>
-                        </div>
-                        <div class="detail">
-                            <dt>Response time</dt>
-                            <dd>Five working days for official correspondence.</dd>
-                        </div>
-                        <div class="detail">
-                            <dt>Looking for a guide?</dt>
-                            <dd>Most platform questions are answered in the
-                                <a href="help-center/index.html">Help centre</a>.</dd>
-                        </div>
-                        <div class="detail">
-                            <dt>Oversight</dt>
-                            <dd>Operated under the Federal Republic of Nigeria, with NEMiC oversight.</dd>
-                        </div>
-                    </dl>
+                    </div>
+
+                    <aside class="gov__rail">
+                        <h3 class="gov__rail-title">Direct details</h3>
+                        <dl class="gov__facts">
+                            <div>
+                                <dt>General enquiries</dt>
+                                <dd><a href="mailto:info@neiia.gov.ng">info@neiia.gov.ng</a></dd>
+                            </div>
+                            <div>
+                                <dt>Offices</dt>
+                                <dd>Abuja for policy and regulatory correspondence, Lagos for capital markets
+                                    and the Deal Room, Port Harcourt for upstream and physical assets.</dd>
+                            </div>
+                            <div>
+                                <dt>Looking for a guide?</dt>
+                                <dd>Most platform questions are already answered in the
+                                    <a href="help-center/index.html">help centre</a>.</dd>
+                            </div>
+                            <div>
+                                <dt>Oversight</dt>
+                                <dd>Operated under the Federal Republic of Nigeria, with
+                                    <a href="nemic.html">NEMiC oversight</a>.</dd>
+                            </div>
+                            <div>
+                                <dt>Data protection</dt>
+                                <dd>Handled under the <a href="risk-esg/privacy-policy.html">privacy
+                                    policy</a> and the NDPA 2023.</dd>
+                            </div>
+                        </dl>
+                    </aside>
                 </div>
             </div>
         </section>
-    </main>
 
+    </main>
     <footer class="footer">
         <div class="shell">
             <div class="footer__top">
@@ -280,7 +276,7 @@
                     <h3>For users</h3>
                     <ul>
                         <li><a href="newsletter.html">Newsletter</a></li>
-                        <li><a href="help-center/dealroom.html">Deal Room guide</a></li>
+                        <li><a href="help-center/nefund.html">NEFUND guide</a></li>
                         <li><a href="help-center/account.html">Account help</a></li>
                         <li><a href="compliance/index.html">Compliance</a></li>
                     </ul>
@@ -289,7 +285,6 @@
                 <div class="footer__signup">
                     <h3>Stay updated</h3>
                     <p>Regulatory updates, live raises and platform changes. No spam.</p>
-                    <!-- TODO: replace REPLACE_WITH_WEB3FORMS_ACCESS_KEY to activate. -->
                     <form class="footer__form" data-access-key="REPLACE_WITH_WEB3FORMS_ACCESS_KEY"
                         data-subject="NEIIA — new newsletter subscriber"
                         data-success="Confirmed. You are on the distribution list.">
@@ -318,7 +313,7 @@
         </div>
     </footer>
 
-    <script src="assets/js/neiia.js?v=13" defer></script>
+    <script src="assets/js/neiia.js?v=19" defer></script>
 </body>
 
 </html>

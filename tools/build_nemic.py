@@ -30,7 +30,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SOURCE = os.path.join(ROOT, "nefund.html")
 TARGET = os.path.join(ROOT, "nemic.html")
 TARGET_RECORD = os.path.join(ROOT, "nemic-record.html")
-V = 13  # cache-bust for assets/css/neiia.css + assets/js/neiia.js
+V = 19  # cache-bust for assets/css/neiia.css + assets/js/neiia.js
 
 TITLE = "NEMiC — National Energy Masterplan Implementation Committee | NEIIA"
 DESC = ("NEMiC is the federal committee executing Nigeria's National Energy Master Plan, 2023 to 2048. "
@@ -147,11 +147,15 @@ def arrow():
 
 
 def media(slug, alt, caption, w, h, cls="media"):
+    """A photograph with a caption. The @2x candidate is the restored upscale
+    (see the note in tools/README.md); ordinary displays never download it."""
     return f'''<figure class="{cls}">
                         <picture>
-                            <source srcset="assets/images/nemic/{slug}.webp" type="image/webp">
-                            <img src="assets/images/nemic/{slug}.jpg" alt="{alt}" width="{w}" height="{h}"
-                                loading="lazy" decoding="async">
+                            <source type="image/webp"
+                                srcset="assets/images/nemic/{slug}.webp 1x, assets/images/nemic/{slug}@2x.webp 2x">
+                            <img src="assets/images/nemic/{slug}.jpg"
+                                srcset="assets/images/nemic/{slug}.jpg 1x, assets/images/nemic/{slug}@2x.jpg 2x"
+                                alt="{alt}" width="{w}" height="{h}" loading="lazy" decoding="async">
                         </picture>
                         <figcaption>{caption}</figcaption>
                     </figure>'''
@@ -160,9 +164,11 @@ def media(slug, alt, caption, w, h, cls="media"):
 def photo(slug, alt, caption, w=432, h=288):
     return f'''                    <figure class="gal__item">
                         <picture>
-                            <source srcset="assets/images/nemic/{slug}.webp" type="image/webp">
-                            <img src="assets/images/nemic/{slug}.jpg" alt="{alt}" width="{w}" height="{h}"
-                                loading="lazy" decoding="async">
+                            <source type="image/webp"
+                                srcset="assets/images/nemic/{slug}.webp 1x, assets/images/nemic/{slug}@2x.webp 2x">
+                            <img src="assets/images/nemic/{slug}.jpg"
+                                srcset="assets/images/nemic/{slug}.jpg 1x, assets/images/nemic/{slug}@2x.jpg 2x"
+                                alt="{alt}" width="{w}" height="{h}" loading="lazy" decoding="async">
                         </picture>
                         <figcaption>{caption}</figcaption>
                     </figure>
@@ -221,7 +227,7 @@ HERO = f'''
                 {media("hero-principals",
                        "Energy Commission and NEMiC principals assembled after an engagement",
                        "Engagement with the Secretary to the Government of the Federation, March 2025",
-                       864, 575)}
+                       864, 575).replace('loading="lazy"', 'fetchpriority="high"')}
             </div>
         </section>
 '''

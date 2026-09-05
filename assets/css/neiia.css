@@ -3236,6 +3236,115 @@ ul {
   }
 }
 
+/* Inline links inside the card components. Without this they inherit body
+   colour and read as plain text. */
+.tile p a,
+.note p a,
+.gov__facts dd a,
+.gov__body p a {
+  color: var(--accent-text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.tile p a:hover,
+.note p a:hover,
+.gov__facts dd a:hover,
+.gov__body p a:hover {
+  color: var(--text);
+}
+
+/* --- Contact: one screen -------------------------------------------------- */
+/* The whole page is meant to sit inside the first viewport, so the section
+   claims the height the masthead leaves and centres its content in it. svh, not
+   vh, because mobile browser chrome makes vh overshoot. */
+.contact-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100svh - 68px);
+  padding-block: var(--s-6);
+}
+
+.contact-screen__head {
+  max-width: 66ch;
+  margin-bottom: var(--s-5);
+}
+
+.contact-screen__head h1 {
+  font-size: clamp(1.875rem, 3.2vw, 2.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin-bottom: var(--s-3);
+}
+
+.contact-screen__head p {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 62ch;
+}
+
+/* Tighten the field rhythm just on this page so the button clears the fold.
+   .form is a grid, so the gap is what controls the rhythm, not field margins. */
+.contact-screen .form {
+  gap: var(--s-3);
+}
+
+.contact-screen .field textarea {
+  min-height: 76px;
+}
+
+/* Shorter laptops: tighten the paddings rather than losing the button. */
+@media (max-height: 880px) {
+  .contact-screen {
+    padding-block: var(--s-5);
+  }
+
+  .contact-screen__head {
+    margin-bottom: var(--s-4);
+  }
+
+  .contact-screen .field textarea {
+    min-height: 64px;
+  }
+
+  /* The label already says "Official email"; the hint is the first thing to go
+     when the fold is tight. */
+  .contact-screen .field__hint {
+    display: none;
+  }
+}
+
+/* Below this height there is no honest way to fit a six-field form on one
+   screen, so it simply scrolls. */
+@media (max-height: 720px), (max-width: 900px) {
+  .contact-screen {
+    min-height: 0;
+  }
+}
+
+/* --- Three-up notes (contact offices) ------------------------------------- */
+.notes--three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.note__role {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+@media (max-width: 900px) {
+  .notes--three {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* --- Governance architecture (nemic) -------------------------------------- */
 .gov {
   display: grid;
