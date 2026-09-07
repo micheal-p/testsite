@@ -39,7 +39,7 @@ EDU = os.path.join(ROOT, "edu-center")
 # The originals are the source of record for the prose. They are copied here so
 # the generator never reads its own output on a second run.
 SRC_DIR = os.path.join(ROOT, "tools", "edu-source")
-V = 20  # cache-bust for assets/css/neiia.css + assets/js/neiia.js
+V = 21  # cache-bust for assets/css/neiia.css + assets/js/neiia.js
 
 ARROW = ('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
          'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
@@ -504,7 +504,7 @@ def hub(counts):
                     <div class="steps">
                         <div class="step">
                             <div>
-                                <h4>If you want to subscribe to a live raise</h4>
+                                <h3>If you want to subscribe to a live raise</h3>
                                 <p>Start with the <a href="guide-deal-room.html">Deal Room</a> walkthrough. It
                                     covers onboarding, the KYC tiers, what each tier lets you subscribe, and what
                                     happens to your money between reservation and close.</p>
@@ -512,14 +512,14 @@ def hub(counts):
                         </div>
                         <div class="step">
                             <div>
-                                <h4>If you want to trade energy commodities</h4>
+                                <h3>If you want to trade energy commodities</h3>
                                 <p><a href="guide-energy-assets.html">Energy Assets</a> is the marketplace for
                                     electricity, gas and carbon. It is separate from the equity side.</p>
                             </div>
                         </div>
                         <div class="step">
                             <div>
-                                <h4>If you are raising or running a fund</h4>
+                                <h3>If you are raising or running a fund</h3>
                                 <p>Read <a href="guide-nefund.html">NEFUND</a> for the framework, then the
                                     <a href="guide-deal-room.html">Deal Room</a> for lifecycle mechanics, then
                                     <a href="guide-lp-portal.html">LP Portal</a> for how you report to investors
@@ -528,7 +528,7 @@ def hub(counts):
                         </div>
                         <div class="step">
                             <div>
-                                <h4>If you already have a portfolio to read</h4>
+                                <h3>If you already have a portfolio to read</h3>
                                 <p><a href="guide-apex-ai.html">Apex AI</a> sits on top of everything else and
                                     answers questions against your own positions.</p>
                             </div>

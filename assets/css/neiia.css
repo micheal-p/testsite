@@ -80,6 +80,9 @@
   --accent-hover: var(--green-700);
   --accent-text: var(--green-700);
   --focus: var(--green-600);
+  /* Text sitting ON an --accent fill. Dark theme brightens --accent to
+     green-500, where white drops to 3.27:1, so it flips to dark ink there. */
+  --on-accent: #fff;
 
   /* Type scale */
   --font: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -112,6 +115,12 @@
   --shell: 1200px;
   --gutter: 32px;
 
+  /* Vertical rhythm. One pair of values drives every section band, so the
+     whole page breathes down together at narrow widths rather than carrying
+     96px of desktop air on a 390px screen. */
+  --section-y: var(--s-9);
+  --section-y-tight: var(--s-8);
+
   /* Motion */
   --t-fast: 120ms;
   --t: 180ms;
@@ -134,6 +143,7 @@
   --accent-hover: #14bd76;
   --accent-text: var(--green-500);
   --focus: var(--green-500);
+  --on-accent: var(--ink-900);
 }
 
 /* --------------------------------------------------------------------------
@@ -229,11 +239,11 @@ ul {
 }
 
 .section {
-  padding-block: var(--s-9);
+  padding-block: var(--section-y);
 }
 
 .section--tight {
-  padding-block: var(--s-8);
+  padding-block: var(--section-y-tight);
 }
 
 .eyebrow {
@@ -362,6 +372,16 @@ ul {
   font-size: var(--fs-xs);
 }
 
+/* On a touch screen there is no such thing as a small button. */
+@media (pointer: coarse) {
+  .btn--sm,
+  .icon-btn,
+  .theme-toggle {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
 .btn:hover svg {
   transform: translateX(2px);
 }
@@ -486,6 +506,7 @@ ul {
 .brand {
   display: flex;
   align-items: center;
+  min-height: 44px; /* touch target; the mark itself is 38px */
   flex-shrink: 0;
   border-radius: var(--r-sm);
 }
@@ -616,7 +637,7 @@ ul {
   border-radius: var(--r-sm);
   background: color-mix(in srgb, var(--accent) 14%, transparent);
   color: var(--accent-text);
-  font-size: 0.625rem;
+  font-size: var(--fs-eyebrow);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -751,7 +772,7 @@ ul {
    8. HERO
    -------------------------------------------------------------------------- */
 .hero {
-  padding-block: var(--s-9) var(--s-8);
+  padding-block: var(--section-y) var(--section-y-tight);
 }
 
 .hero__inner {
@@ -1247,7 +1268,7 @@ ul {
   background: rgba(255, 255, 255, 0.05);
   color: #fff;
   font-family: inherit;
-  font-size: var(--fs-sm);
+  font-size: var(--fs-body); /* 16px: see .field input */
   transition: border-color var(--t) var(--ease),
     background-color var(--t) var(--ease);
 }
@@ -1304,9 +1325,9 @@ ul {
 }
 
 .footer__copy {
-  font-size: 0.6875rem;
+  font-size: var(--fs-xs);
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.62);
 }
 
 .footer__copy strong {
@@ -1322,8 +1343,11 @@ ul {
 }
 
 .footer__meta a {
-  font-size: 0.6875rem;
-  color: rgba(255, 255, 255, 0.5);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px; /* these sat at 18px, the hardest targets on the site */
+  font-size: var(--fs-xs);
+  color: rgba(255, 255, 255, 0.62);
   border-radius: var(--r-sm);
 }
 
@@ -1388,8 +1412,13 @@ ul {
   max-width: 400px;
   padding: var(--s-7);
   background: var(--n-0);
+  color: var(--ink-900); /* the card stays light in dark theme, so must its text */
   border-radius: var(--r-lg);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+.gate__card h2 {
+  color: var(--ink-900);
 }
 
 .gate__flag {
@@ -1459,7 +1488,7 @@ ul {
   background: var(--n-0);
   color: var(--ink-900);
   font-family: inherit;
-  font-size: var(--fs-sm);
+  font-size: var(--fs-body); /* 16px: see .field input */
   transition: border-color var(--t) var(--ease), box-shadow var(--t) var(--ease);
 }
 
@@ -1545,7 +1574,7 @@ ul {
 
 /* --- Page header ---------------------------------------------------------- */
 .page-hero {
-  padding-block: var(--s-8) var(--s-7);
+  padding-block: var(--section-y-tight) calc(var(--section-y-tight) * 0.75);
   border-bottom: 1px solid var(--border);
   background: var(--surface-sunken);
 }
@@ -1591,6 +1620,11 @@ ul {
 }
 
 .crumbs a {
+  display: inline-flex;
+  align-items: center;
+  /* the link text is 21px tall; the padding takes the hit area to 43px */
+  padding-block: 11px;
+  margin-block: -11px;
   color: var(--text-muted);
   border-radius: var(--r-sm);
 }
@@ -2066,7 +2100,7 @@ ul {
   background: var(--surface);
   color: var(--text);
   font-family: inherit;
-  font-size: var(--fs-sm);
+  font-size: var(--fs-body); /* 16px: anything smaller makes iOS zoom on focus */
   transition: border-color var(--t) var(--ease), box-shadow var(--t) var(--ease);
 }
 
@@ -2880,7 +2914,9 @@ ul {
 }
 
 .guide__nav a {
-  display: block;
+  display: flex;
+  align-items: center;
+  min-height: 44px; /* these are the main navigation on every guide */
   padding: var(--s-2) 0;
   font-size: var(--fs-sm);
   line-height: 1.45;
@@ -2961,6 +2997,16 @@ ul {
   font-size: var(--fs-body);
   line-height: 1.7;
   color: var(--text-muted);
+}
+
+/* The guides quote file paths like /deal-room/room/deal.html?id=<id>, which are
+   single unbreakable tokens wider than a phone column. */
+.article code,
+.article p,
+.article li,
+.article dd,
+.article figcaption {
+  overflow-wrap: anywhere;
 }
 
 .article ul li::before {
@@ -3054,7 +3100,7 @@ ul {
   height: 32px;
   border-radius: 50%;
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   font-size: var(--fs-sm);
   font-weight: 700;
   display: flex;
@@ -3062,6 +3108,7 @@ ul {
   justify-content: center;
 }
 
+.step h3,
 .step h4 {
   margin: 4px 0 var(--s-2);
 }
@@ -3069,6 +3116,43 @@ ul {
 .step p:last-child,
 .step ul:last-child {
   margin-bottom: 0;
+}
+
+/* --- Help centre feedback row --------------------------------------------- */
+.hc-feedback {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+  margin-top: var(--s-6);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--border);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.hc-feedback > div {
+  display: flex;
+  gap: var(--s-2);
+}
+
+.hc-feedback-btn {
+  min-height: 40px;
+  padding-inline: var(--s-5);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--t) var(--ease), color var(--t) var(--ease);
+}
+
+.hc-feedback-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent-text);
 }
 
 /* --- Glossary terms (in-article definition list) --------------------------- */
@@ -3203,6 +3287,7 @@ ul {
   background: var(--surface-sunken);
 }
 
+.callout h3,
 .callout h4 {
   margin-top: 0;
   color: var(--accent-text);
@@ -3361,6 +3446,11 @@ ul {
 }
 
 @media (max-width: 640px) {
+  :root {
+    --section-y: 56px;
+    --section-y-tight: 40px;
+  }
+
   .cards {
     grid-template-columns: 1fr;
   }
@@ -3551,7 +3641,7 @@ ul {
 .gov__level--core .gov__rank {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .gov__body {
@@ -3840,6 +3930,8 @@ ul {
 @media (max-width: 960px) {
   :root {
     --gutter: 24px;
+    --section-y: 72px;
+    --section-y-tight: 52px;
   }
 
   .hero__inner,
@@ -3911,6 +4003,12 @@ ul {
 @media (max-width: 480px) {
   :root {
     --gutter: 20px;
+  }
+
+  /* A phone shows one band at a time, so the gap between bands only has to
+     read as a break, not as a page turn. */
+  .footer__meta {
+    gap: var(--s-4);
   }
 
   .hero__actions .btn,

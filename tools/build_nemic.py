@@ -30,7 +30,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SOURCE = os.path.join(ROOT, "nefund.html")
 TARGET = os.path.join(ROOT, "nemic.html")
 TARGET_RECORD = os.path.join(ROOT, "nemic-record.html")
-V = 20  # cache-bust for assets/css/neiia.css + assets/js/neiia.js
+V = 21  # cache-bust for assets/css/neiia.css + assets/js/neiia.js
 
 TITLE = "NEMiC — National Energy Masterplan Implementation Committee | NEIIA"
 DESC = ("NEMiC is the federal committee executing Nigeria's National Energy Master Plan, 2023 to 2048. "
@@ -510,7 +510,7 @@ SEPI = '''
     note("Kogi", "Operational as one of the four pilot units.") + \
     '''                </div>
                 <div class="callout callout--loose">
-                    <h4>What happens next</h4>
+                    <h3>What happens next</h3>
                     <p>The Energy Commission has announced expansion to ten additional states in the second
                         quarter of 2026, with full coverage across all thirty six states targeted by 2027. The
                         plan itself names this as one of the clearest tests of whether the coordination

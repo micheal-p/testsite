@@ -17,7 +17,7 @@ import os, re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SOURCE = os.path.join(ROOT, "nefund.html")
 TARGET = os.path.join(ROOT, "contact.html")
-V = 20
+V = 21
 
 TITLE = "Contact &mdash; NEIIA"
 DESC = ("Contact the National Energy Investment and Intelligence Administration: platform access, data "
@@ -152,7 +152,7 @@ CONTACT = '''
                     </div>
 
                     <aside class="gov__rail">
-                        <h3 class="gov__rail-title">Direct details</h3>
+                        <h2 class="gov__rail-title">Direct details</h2>
                         <dl class="gov__facts">
                             <div>
                                 <dt>Looking for a guide?</dt>

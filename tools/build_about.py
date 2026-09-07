@@ -14,7 +14,7 @@ import os, re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SOURCE = os.path.join(ROOT, "nefund.html")
 TARGET = os.path.join(ROOT, "about.html")
-V = 20  # cache-bust for assets/css/neiia.css + assets/js/neiia.js
+V = 21  # cache-bust for assets/css/neiia.css + assets/js/neiia.js
 
 TITLE = "About &mdash; NEIIA"
 DESC = ("The National Energy Investment and Intelligence Administration: mandate, the nine-module register, "
