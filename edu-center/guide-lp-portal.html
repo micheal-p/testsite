@@ -1,111 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>How to use LP Portal | NEIIA Edu Center</title>
-    <meta name="description" content="Practical guide to NEIIA LP Portal — capital calls, distributions, document vault, GP and LP views." />
-    <link rel="stylesheet" href="../styles.css" />
-    <link rel="stylesheet" href="educenter.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50" />
-    <script src="educenter.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>How to use LP Portal | NEIIA Edu Center &mdash; NEIIA Edu Center</title>
+    <meta name="description" content="Practical guide to NEIIA LP Portal — capital calls, distributions, document vault, GP and LP views.">
+    <meta name="theme-color" content="#0B1F24">
+    <meta property="og:title" content="How to use LP Portal | NEIIA Edu Center &mdash; NEIIA Edu Center">
+    <meta property="og:description" content="Practical guide to NEIIA LP Portal — capital calls, distributions, document vault, GP and LP views.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/png" href="../assets/images/neiia-arms.png">
+    <link rel="preload" href="../assets/font/public-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="../assets/css/neiia.css?v=20">
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('neiia-theme');
+                var dark = stored ? stored === 'dark'
+                    : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                document.documentElement.classList.add('has-js');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+    <script src="../auth-check.js"></script>
 </head>
-<body class="gd-body">
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
 
-    <a href="../index.html" class="logo-fixed">
-        <div class="logo-wrapper">
-            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo" style="max-width: 120px; display: none !important;">
-            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo" style="max-width: 120px; display: block !important;">
-            <div class="brand-text" style="color: #ffffff !important;">NATIONAL ENERGY INVESTMENT &amp; INTELLIGENCE ADMINISTRATION</div>
-        </div>
-    </a>
-
-    <nav class="navbar pill-nav">
-        <div class="nav-links">
-            <div class="nav-item dropdown">
-                <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down" style="font-size:12px;margin-left:6px;"></i></span>
-                <div class="mega-menu"><div class="mm-left-columns"><div class="mm-column">
-                    <ul class="mm-list"><li><a href="../deal-room/index.html">Deal Room</a></li></ul>
-                    <div style="margin-top: 24px;"><h4>Intelligence</h4>
-                        <ul class="mm-list">
-                            <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
-                            <li><a href="educenter.html">Edu Center</a></li>
-                        </ul>
-                    </div>
-                </div></div></div>
-            </div>
-            <a href="../about.html">About</a>
-            <a href="../contact.html">Contact</a>
-            <a href="../help-center/index.html">Help center</a>
-        </div>
-    </nav>
-
-    <div class="auth-fixed"><a href="../newsletter.html" class="btn btn-black">Join</a></div>
-    <button class="mobile-menu-btn" aria-label="Menu">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
-
-    <header class="gd-header">
-        <div class="gd-header-inner">
-            <a href="educenter.html" class="gd-back">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-                Back to Edu Center
+    <header class="masthead">
+        <div class="shell masthead__inner">
+            <a class="brand" href="../index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="../assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="../assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
             </a>
-            <span class="gd-eyebrow">Module 03 · Guide</span>
-            <h1 class="gd-title">How to use the <em>LP Portal</em></h1>
-            <p class="gd-lede">Investor relations and reporting for fund managers. Send capital calls, push distributions, surface a live portfolio to every LP, and keep the document vault audit-tight.</p>
-            <div class="gd-meta">
-                <span><strong>~12 min</strong> read</span>
-                <span>Last updated <strong>23 May 2026</strong></span>
-                <span>Audience <strong>GPs · LPs · Fund admins</strong></span>
-            </div>
+
+            <nav class="nav" aria-label="Primary">
+                <div class="nav__item">
+                    <button class="nav__link" type="button" data-dropdown aria-expanded="false"
+                        aria-controls="panel-shine">
+                        SHINE
+                        <svg class="nav__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none"
+                            aria-hidden="true">
+                            <path d="M2 4.5 6 8.5 10 4.5" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="nav__panel" id="panel-shine">
+                        <span class="nav__panel-label">Capital</span>
+                        <a href="../nefund.html">NEFUND</a>
+                        <a href="../deal-room/index.html">National Energy Deal Room</a>
+                        <span class="nav__panel-label">Intelligence</span>
+                        <a href="https://apex-neiia.vercel.app/">Apex AI <span class="tag">Beta</span></a>
+                        <a href="../edu-center/educenter.html">Edu Center</a>
+                    </div>
+                </div>
+                <a class="nav__link" href="../about.html">About</a>
+                <a class="nav__link" href="../contact.html">Contact</a>
+                <a class="nav__link" href="../help-center/index.html">Help centre</a>
+            </nav>
+
+            <button class="theme-toggle theme-toggle--desktop" type="button" data-theme-toggle aria-pressed="false"
+                aria-label="Switch to dark theme">
+                <svg class="theme-toggle__sun" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4.5" />
+                    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
+                </svg>
+                <svg class="theme-toggle__moon" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" />
+                </svg>
+            </button>
+
+            <a class="btn btn--primary btn--sm" href="../newsletter.html">Get updates</a>
+
+            <button class="nav-toggle" type="button" data-drawer-open aria-expanded="false" aria-controls="nav-drawer"
+                aria-label="Open menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
+            </button>
         </div>
     </header>
 
-    <div class="gd-shell">
-        <aside class="gd-toc">
-            <div class="gd-toc-label">On this page</div>
-            <ul>
-                <li><a href="#what">What it is</a></li>
-                <li><a href="#who">Who it's for</a></li>
-                <li><a href="#start">GP setup</a></li>
-                <li><a href="#calls">Capital calls</a></li>
-                <li><a href="#dist">Distributions</a></li>
-                <li><a href="#vault">Document vault</a></li>
-                <li><a href="#lp-view">LP-side view</a></li>
-                <li><a href="#glossary">Glossary</a></li>
-                <li><a href="#faq">FAQ</a></li>
-            </ul>
-        </aside>
+    <div class="drawer" id="nav-drawer">
+        <div class="drawer__head">
+            <a href="../index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="../assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="../assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
+            <button class="icon-btn" type="button" data-drawer-close aria-label="Close menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+            </button>
+        </div>
+        <div class="drawer__body">
+            <a href="../about.html">About <span aria-hidden="true">&rarr;</span></a>
+            <a href="../contact.html">Contact <span aria-hidden="true">&rarr;</span></a>
+            <a href="../help-center/index.html">Help centre <span aria-hidden="true">&rarr;</span></a>
 
-        <main class="gd-main">
+            <span class="drawer__label">Capital</span>
+            <a href="../nefund.html">NEFUND <span aria-hidden="true">&rarr;</span></a>
+            <a href="../deal-room/index.html">National Energy Deal Room <span aria-hidden="true">&rarr;</span></a>
 
-            <section id="what">
-                <h2>What it is</h2>
+            <span class="drawer__label">Intelligence</span>
+            <a href="https://apex-neiia.vercel.app/">Apex AI <span aria-hidden="true">&rarr;</span></a>
+            <a href="../edu-center/educenter.html">Edu Center <span aria-hidden="true">&rarr;</span></a>
+
+            <div class="drawer__actions">
+                <a class="btn btn--primary" href="../newsletter.html">Get updates</a>
+                <a class="btn btn--secondary" href="../contact.html">Contact the team</a>
+                <button class="btn btn--secondary" type="button" data-theme-toggle aria-pressed="false"
+                    aria-label="Switch to dark theme">Switch theme</button>
+            </div>
+        </div>
+    </div>
+
+    <main id="main">
+        <section class="page-hero">
+            <div class="shell">
+                <nav class="crumbs" aria-label="Breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <span aria-hidden="true">/</span>
+                    <a href="educenter.html">Edu Center</a>
+                    <span aria-hidden="true">/</span>
+                    <span>LP Portal</span>
+                </nav>
+                <span class="eyebrow">Module 03 &middot; Walkthrough</span>
+                <h1>LP Portal</h1>
+                <p class="page-hero__lead">Investor relations and reporting for fund managers. Send capital calls, push distributions, surface a live portfolio to every LP, and keep the document vault audit-tight.</p>
+                <div class="page-hero__actions">
+                    <a class="btn btn--primary" href="../reporting-lp/index.html">Open the LP Portal <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    <a class="btn btn--secondary" href="../help-center/lp.html">Written reference</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell guide">
+                <nav class="guide__nav" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <a href="#who-it-s-for">Who it's for</a>
+                    <a href="#gp-setup">GP setup</a>
+                    <a href="#capital-calls">Capital calls</a>
+                    <a href="#distributions">Distributions</a>
+                    <a href="#document-vault">Document vault</a>
+                    <a href="#the-lp-side-view">The LP-side view</a>
+                    <a href="#glossary">Glossary</a>
+                    <a href="#frequently-asked">Frequently asked</a>
+                </nav>
+                <article class="article">
+                    <p class="article__note">This walkthrough shows the product screens in the order you meet
+                        them. For the short written reference, see the
+                        <a href="../help-center/lp.html">help centre guide</a>.</p>
+
+                    <h2>What it is</h2>
+
                 <p>The LP Portal is the post-raise relationship layer. Once your fund has investors committed in Deal Room, the LP Portal becomes the system of record for the ongoing GP-LP relationship — quarterly reads, capital calls, distributions, K-1s, audited statements, ESG attestations, and the document vault that holds all of it.</p>
                 <p>It runs in two synchronised camera angles: a GP console where you operate the fund, and a read-only LP view where each investor sees their slice — their commitment, called, NAV, distributions, IRR, and every document filed against their account. Both views read from the same record, so what the GP sees and what the LP sees can never drift.</p>
 
-                <figure class="gd-figure">
-                    <img src="screenshots/lp-portal-landing.png" alt="LP Portal public landing — institutional-grade investor relations infrastructure for African fund managers." class="guide-screenshot" loading="lazy" />
-                    <figcaption>Public landing — positioned for African fund managers running Series A+ vehicles.</figcaption>
-                </figure>
-            </section>
+                                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/lp-portal-landing.webp 1x, ../assets/images/edu/lp-portal-landing@2x.webp 2x">
+                            <img src="../assets/images/edu/lp-portal-landing.jpg" srcset="../assets/images/edu/lp-portal-landing.jpg 1x, ../assets/images/edu/lp-portal-landing@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="Public landing — positioned for African fund managers running Series A+ vehicles.">
+                        </picture>
+                        <figcaption>Public landing — positioned for African fund managers running Series A+ vehicles.</figcaption>
+                    </figure>
+                    <h3 id="who-it-s-for">Who it's for</h3>
 
-            <section id="who">
-                <h2>Who it's for</h2>
                 <ul>
                     <li><strong>GPs / fund managers</strong> running one or more vehicles (SPV, Sub-Fund, Rolling, Venture, Co-Invest, Roll-Up) with multiple LPs to serve. The GP console is the operator surface.</li>
                     <li><strong>LPs</strong> — individuals or institutions holding commitments in one or more funds. LPs get a read-only dashboard with their portfolio across every GP they're committed to.</li>
                     <li><strong>Fund administrators</strong> — third-party admin shops who run a fund's books on behalf of the GP. Admins get a delegated role that can post calls, file documents, and reconcile NAV, but can't change waterfall logic.</li>
                 </ul>
                 <p>If you're an individual subscribing to one-off deals (not yet committed to a fund), you're in Deal Room, not LP Portal. The LP Portal lights up once a deal you've subscribed to closes inside a fund vehicle, or once a GP invites you as a committed LP.</p>
-            </section>
+                    <h3 id="gp-setup">GP setup</h3>
 
-            <section id="start">
-                <h2>GP setup</h2>
                 <p>Getting a fund into the LP Portal is a one-time configuration:</p>
                 <ol>
                     <li><strong>Create the vehicle.</strong> From <code>/reporting-lp/gp/setup</code>, pick the wrapper (SPV, Sub-Fund, Rolling, Venture, Co-Invest, Roll-Up). Each wrapper has a different waterfall template the platform pre-loads.</li>
@@ -115,18 +206,20 @@
                     <li><strong>Configure cadence.</strong> Quarterly is default. Choose whether calls are scheduled (fixed dates) or just-in-time (issued when needed). Set the distribution waterfall to auto-calculate at every realisation or to require GP approval each time.</li>
                 </ol>
 
-                <div class="gd-callout gd-callout-info">
+                <div class="callout">
                     <strong>One fund, multiple closes.</strong> If your fund has rolling closes (typical for Venture wrapper), the platform tracks each close as a separate commitment cohort. LPs admitted in close #2 don't bear capital called before they were committed.
                 </div>
             
-                <figure class="gd-figure">
-                    <img src="screenshots/lp-portal-gp-dashboard.png" alt="GP dashboard — AUM, active LPs, pending capital calls, recent LP activity feed." class="guide-screenshot" loading="lazy" />
-                    <figcaption>GP dashboard — AUM, active LPs, pending capital calls, recent LP activity feed.</figcaption>
-                </figure>
-            </section>
+                                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/lp-portal-gp-dashboard.webp 1x, ../assets/images/edu/lp-portal-gp-dashboard@2x.webp 2x">
+                            <img src="../assets/images/edu/lp-portal-gp-dashboard.jpg" srcset="../assets/images/edu/lp-portal-gp-dashboard.jpg 1x, ../assets/images/edu/lp-portal-gp-dashboard@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="GP dashboard — AUM, active LPs, pending capital calls, recent LP activity feed.">
+                        </picture>
+                        <figcaption>GP dashboard — AUM, active LPs, pending capital calls, recent LP activity feed.</figcaption>
+                    </figure>
+                    <h3 id="capital-calls">Capital calls</h3>
 
-            <section id="calls">
-                <h2>Capital calls</h2>
                 <p>The capital call is the workhorse flow. A GP issues a call, every LP receives it, each LP wires within the call window, and the platform reconciles receipts against expected amounts.</p>
                 <ol>
                     <li><strong>Draft the call.</strong> From the GP dashboard, click "New capital call". Enter the total amount, the percentage of remaining commitment it represents, and the reason (deal investment, fund expense, etc.).</li>
@@ -136,18 +229,20 @@
                     <li><strong>Close the call.</strong> Once all LPs have funded (or you've decided to proceed with partial), click "Close call". The platform writes the call to the fund's history and updates each LP's called-to-date balance.</li>
                 </ol>
 
-                <div class="gd-callout gd-callout-warning">
+                <div class="callout">
                     <strong>Defaulting LPs.</strong> If an LP misses the due date, the platform flags them but doesn't auto-default — defaults are a legal action you trigger manually from the LP's profile, following the LPA's default clause. The system tracks the missed days and generates the notice template.
                 </div>
             
-                <figure class="gd-figure">
-                    <img src="screenshots/lp-portal-capital-call.png" alt="Capital call detail (LP view) — wire instructions, pro-rata calc, acknowledge button." class="guide-screenshot" loading="lazy" />
-                    <figcaption>Capital call detail (LP view) — wire instructions, pro-rata calc, acknowledge button.</figcaption>
-                </figure>
-            </section>
+                                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/lp-portal-capital-call.webp 1x, ../assets/images/edu/lp-portal-capital-call@2x.webp 2x">
+                            <img src="../assets/images/edu/lp-portal-capital-call.jpg" srcset="../assets/images/edu/lp-portal-capital-call.jpg 1x, ../assets/images/edu/lp-portal-capital-call@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="Capital call detail (LP view) — wire instructions, pro-rata calc, acknowledge button.">
+                        </picture>
+                        <figcaption>Capital call detail (LP view) — wire instructions, pro-rata calc, acknowledge button.</figcaption>
+                    </figure>
+                    <h3 id="distributions">Distributions</h3>
 
-            <section id="dist">
-                <h2>Distributions</h2>
                 <p>Distributions run the call mechanics in reverse. A realisation event credits the fund; the platform applies the waterfall; per-LP amounts are calculated; wires go out; receipts confirm.</p>
                 <ol>
                     <li><strong>Log the realisation.</strong> Sale, dividend, coupon, or interest payment — book the gross amount into the fund.</li>
@@ -157,14 +252,16 @@
                     <li><strong>LP acknowledgment.</strong> LPs acknowledge receipt inside the portal. Acks file to the audit trail.</li>
                 </ol>
             
-                <figure class="gd-figure">
-                    <img src="screenshots/lp-portal-gp-billing.png" alt="GP billing surface — plan, usage meters, add-ons, invoice history." class="guide-screenshot" loading="lazy" />
-                    <figcaption>GP billing surface — plan, usage meters, add-ons, invoice history.</figcaption>
-                </figure>
-            </section>
+                                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/lp-portal-gp-billing.webp 1x, ../assets/images/edu/lp-portal-gp-billing@2x.webp 2x">
+                            <img src="../assets/images/edu/lp-portal-gp-billing.jpg" srcset="../assets/images/edu/lp-portal-gp-billing.jpg 1x, ../assets/images/edu/lp-portal-gp-billing@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="GP billing surface — plan, usage meters, add-ons, invoice history.">
+                        </picture>
+                        <figcaption>GP billing surface — plan, usage meters, add-ons, invoice history.</figcaption>
+                    </figure>
+                    <h3 id="document-vault">Document vault</h3>
 
-            <section id="vault">
-                <h2>Document vault</h2>
                 <p>The vault holds everything that constitutes the LP relationship — LPA, side letters, subscription agreements, call notices, distribution notices, audited statements, K-1s / tax slips, valuation reports, ESG attestations.</p>
                 <p>Documents file automatically when generated (call notices, dist notices) or manually when uploaded (audited statements, side letters). Every document has:</p>
                 <ul>
@@ -173,18 +270,20 @@
                     <li><strong>Version history</strong> — superseded documents are kept; you can always trace back to what an LP signed.</li>
                     <li><strong>Tax tags</strong> — Nigerian tax year, Form 941, K-1, or whatever applies. Drives the year-end tax export.</li>
                 </ul>
-                <div class="gd-callout gd-callout-tip">
+                <div class="callout">
                     <strong>Tip.</strong> Use document templates for the recurring items (call notice, dist notice, quarterly letter). The platform ships defaults but you can customise headers, signatures, and footers per fund.
                 </div>
             
-                <figure class="gd-figure">
-                    <img src="screenshots/lp-portal-documents.png" alt="Document vault (LP view) — folder tree, file list, preview, download." class="guide-screenshot" loading="lazy" />
-                    <figcaption>Document vault (LP view) — folder tree, file list, preview, download.</figcaption>
-                </figure>
-            </section>
+                                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/lp-portal-documents.webp 1x, ../assets/images/edu/lp-portal-documents@2x.webp 2x">
+                            <img src="../assets/images/edu/lp-portal-documents.jpg" srcset="../assets/images/edu/lp-portal-documents.jpg 1x, ../assets/images/edu/lp-portal-documents@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="Document vault (LP view) — folder tree, file list, preview, download.">
+                        </picture>
+                        <figcaption>Document vault (LP view) — folder tree, file list, preview, download.</figcaption>
+                    </figure>
+                    <h3 id="the-lp-side-view">The LP-side view</h3>
 
-            <section id="lp-view">
-                <h2>The LP-side view</h2>
                 <p>LPs land on a single-page portfolio at <code>/reporting-lp/lp/dashboard.html</code>. The page is short and intentional:</p>
                 <ul>
                     <li><strong>Header KPIs</strong> — total committed, called, distributed, NAV, net IRR.</li>
@@ -194,20 +293,21 @@
                 </ul>
                 <p>LPs can't change anything that affects fund accounting. The view is read-only for portfolio data and write-only for acknowledgments, signature requests, and message threads with the GP.</p>
 
-                <div class="gd-callout gd-callout-info">
+                <div class="callout">
                     <strong>Apex AI on the LP side.</strong> LPs see an "Ask Apex" prompt on their dashboard. Apex reads only their own portfolio and answers questions like "what's my best vintage?" or "summarise Q1 across my commitments". GP-confidential data stays GP-confidential.
                 </div>
             
-                <figure class="gd-figure">
-                    <img src="screenshots/lp-portal-lp-dashboard.png" alt="LP dashboard — commitment, called, distributions, NAV, IRR plus pending action banner." class="guide-screenshot" loading="lazy" />
-                    <figcaption>LP dashboard — commitment, called, distributions, NAV, IRR plus pending action banner.</figcaption>
-                </figure>
-            </section>
+                                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/lp-portal-lp-dashboard.webp 1x, ../assets/images/edu/lp-portal-lp-dashboard@2x.webp 2x">
+                            <img src="../assets/images/edu/lp-portal-lp-dashboard.jpg" srcset="../assets/images/edu/lp-portal-lp-dashboard.jpg 1x, ../assets/images/edu/lp-portal-lp-dashboard@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="LP dashboard — commitment, called, distributions, NAV, IRR plus pending action banner.">
+                        </picture>
+                        <figcaption>LP dashboard — commitment, called, distributions, NAV, IRR plus pending action banner.</figcaption>
+                    </figure>
+                    <h3 id="glossary">Glossary</h3>
 
-            <section id="glossary">
-                <h2>Glossary</h2>
-                <div class="gd-glossary">
-                    <dl>
+                <dl class="terms">
                         <div><dt>Capital call</dt><dd>A GP request for committed-but-uncalled capital. Each call has a due date and a per-LP allocation.</dd></div>
                         <div><dt>Commitment</dt><dd>The total amount an LP agrees to fund over the fund's life. Drawn down in calls.</dd></div>
                         <div><dt>Distribution</dt><dd>Capital returned to LPs after a realisation. May be return of capital, profit share, or both.</dd></div>
@@ -219,12 +319,9 @@
                         <div><dt>RVPI</dt><dd>Residual-Value-to-paid-in. Unrealised return ratio — current NAV divided by paid-in capital.</dd></div>
                         <div><dt>Waterfall</dt><dd>The set of rules deciding how realised proceeds are split between LPs and the GP. American (deal-by-deal) or European (fund-as-a-whole).</dd></div>
                     </dl>
-                </div>
-            </section>
+                    <h3 id="frequently-asked">Frequently asked</h3>
 
-            <section id="faq">
-                <h2>Frequently asked</h2>
-                <div class="gd-faq">
+                <div class="faq">
                     <details>
                         <summary>Can I bring an existing fund onto the platform?</summary>
                         <p>Yes — the GP setup wizard includes a "Migrate existing fund" path. Upload your historical capital calls, distributions, NAVs, and current cap table. The platform reconstructs the per-LP balances and IRRs from history.</p>
@@ -246,58 +343,113 @@
                         <p>No, by default. LPs see only their own commitment, balances, and documents. Other LPs are anonymized as "LP #14" etc. The GP can opt to share an LP roster if all LPs consent (rare; typically only for syndicate / co-invest vehicles).</p>
                     </details>
                 </div>
-            </section>
 
-            <div class="gd-cta">
-                <div class="gd-cta-text">
-                    <h3>Open the LP Portal</h3>
-                    <p>Currently in private beta — request access from the contact desk.</p>
+                    <div class="guide-more">
+                        <a href="guide-energy-assets.html"><span>Guide</span>Energy Assets</a>
+                        <a href="guide-deal-room.html"><span>Guide</span>Deal Room</a>
+                        <a href="guide-apex-ai.html"><span>Guide</span>Apex AI</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="shell cta__inner">
+                <div>
+                    <span class="eyebrow">Next step</span>
+                    <h2>Open the LP Portal</h2>
                 </div>
-                <a href="../contact.html" class="gd-cta-btn">
-                    Request access
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </a>
+                <div class="cta__actions">
+                    <a class="btn btn--primary" href="../reporting-lp/index.html">Open the LP Portal <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    <a class="btn btn--secondary" href="educenter.html">All walkthroughs</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="shell">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__lockup">
+                        <picture>
+                            <source srcset="../assets/images/neiia-arms.webp" type="image/webp">
+                            <img src="../assets/images/neiia-arms.png"
+                                alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                        </picture>
+                        <span class="footer__lockup-text">
+                            <strong>NEIIA</strong>
+                            <span>National Energy Investment &amp; Intelligence Administration</span>
+                        </span>
+                    </div>
+                    <p>Nigeria's centralised platform for energy investment intelligence, asset visibility and
+                        strategic coordination.</p>
+                    <span class="footer__mandate">Operated under the Federal Republic of Nigeria</span>
+                </div>
+
+                <div>
+                    <h3>Modules</h3>
+                    <ul>
+                        <li><a href="../nefund.html">NEFUND</a></li>
+                        <li><a href="../deal-room/index.html">National Energy Deal Room</a></li>
+                        <li><a href="../energy-databank/index.html">National Energy Data Bank</a></li>
+                        <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
+                        <li><a href="../risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Platform</h3>
+                    <ul>
+                        <li><a href="../about.html">About</a></li>
+                        <li><a href="../contact.html">Contact</a></li>
+                        <li><a href="../help-center/index.html">Help centre</a></li>
+                        <li><a href="../edu-center/educenter.html">Edu Center</a></li>
+                        <li><a href="../government-site/index.html">Mandate &amp; governance</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>For users</h3>
+                    <ul>
+                        <li><a href="../newsletter.html">Newsletter</a></li>
+                        <li><a href="../help-center/dealroom.html">Deal Room guide</a></li>
+                        <li><a href="../help-center/account.html">Account help</a></li>
+                        <li><a href="../compliance/index.html">Compliance</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__signup">
+                    <h3>Stay updated</h3>
+                    <p>Regulatory updates, live raises and platform changes. No spam.</p>
+                    <form class="footer__form" data-access-key="REPLACE_WITH_WEB3FORMS_ACCESS_KEY"
+                        data-subject="NEIIA — new newsletter subscriber"
+                        data-success="Confirmed. You are on the distribution list.">
+                        <label class="visually-hidden" for="footer-email">Email address</label>
+                        <input type="email" id="footer-email" name="email" placeholder="you@email.com" required
+                            autocomplete="email">
+                        <button class="btn" type="submit">Subscribe</button>
+                    </form>
+                    <p class="footer__note">By subscribing you agree to our <a
+                            href="../risk-esg/privacy-policy.html">privacy policy</a>.</p>
+                </div>
             </div>
 
-            <div class="gd-footnav">
-                <a class="gd-footnav-card" href="guide-deal-room.html">
-                    <div class="gd-footnav-label">← Previous</div>
-                    <div class="gd-footnav-title">Deal Room</div>
-                </a>
-                <a class="gd-footnav-card is-next" href="guide-apex-ai.html">
-                    <div class="gd-footnav-label">Next module →</div>
-                    <div class="gd-footnav-title">Apex AI</div>
-                </a>
-            </div>
-        </main>
-    </div>
-
-    <footer class="footer container" style="margin-top: 0; padding: 60px 20px; background-color: var(--bg-primary); color: var(--text-primary); border-top: 1px solid var(--border-color);">
-        <div class="footer-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto;">
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600;">Products</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../deal-room/index.html" style="color: var(--text-secondary); text-decoration: none;">Deal Room</a></li>
-                    <li style="margin-bottom: 12px;"><a href="https://apex-neiia.vercel.app/" style="color: var(--text-secondary); text-decoration: none;">Apex AI</a></li>
-                    <li style="margin-bottom: 12px;"><a href="educenter.html" style="color: var(--text-secondary); text-decoration: none;">Edu Center</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600;">Administration</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../about.html" style="color: var(--text-secondary); text-decoration: none;">About NEIIA</a></li>
-                    <li style="margin-bottom: 12px;"><a href="../contact.html" style="color: var(--text-secondary); text-decoration: none;">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600;">Engagement</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../help-center/index.html" style="color: var(--text-secondary); text-decoration: none;">Help center</a></li>
-                </ul>
+            <div class="footer__bottom">
+                <p class="footer__copy">
+                    &copy; 2026 <strong>Federal Republic of Nigeria</strong><br>
+                    Operating across all 36 states and the Federal Capital Territory
+                </p>
+                <div class="footer__meta">
+                    <a href="../risk-esg/terms-of-service.html">Terms</a>
+                    <a href="../risk-esg/privacy-policy.html">Privacy</a>
+                    <a href="../compliance/index.html">Compliance</a>
+                    <a href="../contact.html">Contact</a>
+                </div>
             </div>
         </div>
-        <p style="margin-top: 40px; color: var(--text-secondary); font-size: 0.9rem; max-width: 1200px; margin-left: auto; margin-right: auto;">&copy; 2026 NEIIA</p>
     </footer>
 
+    <script src="../assets/js/neiia.js?v=20" defer></script>
 </body>
+
 </html>

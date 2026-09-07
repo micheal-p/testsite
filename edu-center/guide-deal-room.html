@@ -1,99 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>How to use Deal Room | NEIIA Edu Center</title>
-    <meta name="description" content="Practical guide to NEIIA Deal Room — KYC tiers, listing a deal, subscribing, countersigning, and post-close reporting." />
-    <link rel="stylesheet" href="../styles.css" />
-    <link rel="stylesheet" href="educenter.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50" />
-    <script src="educenter.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>How to use Deal Room | NEIIA Edu Center &mdash; NEIIA Edu Center</title>
+    <meta name="description" content="Practical guide to NEIIA Deal Room — KYC tiers, listing a deal, subscribing, countersigning, and post-close reporting.">
+    <meta name="theme-color" content="#0B1F24">
+    <meta property="og:title" content="How to use Deal Room | NEIIA Edu Center &mdash; NEIIA Edu Center">
+    <meta property="og:description" content="Practical guide to NEIIA Deal Room — KYC tiers, listing a deal, subscribing, countersigning, and post-close reporting.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/png" href="../assets/images/neiia-arms.png">
+    <link rel="preload" href="../assets/font/public-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="../assets/css/neiia.css?v=20">
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('neiia-theme');
+                var dark = stored ? stored === 'dark'
+                    : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                document.documentElement.classList.add('has-js');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+    <script src="../auth-check.js"></script>
 </head>
-<body class="gd-body">
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
 
-    <a href="../index.html" class="logo-fixed">
-        <div class="logo-wrapper">
-            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo" style="max-width: 120px; display: none !important;">
-            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo" style="max-width: 120px; display: block !important;">
-            <div class="brand-text" style="color: #ffffff !important;">NATIONAL ENERGY INVESTMENT &amp; INTELLIGENCE ADMINISTRATION</div>
-        </div>
-    </a>
-
-    <nav class="navbar pill-nav">
-        <div class="nav-links">
-            <div class="nav-item dropdown">
-                <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down" style="font-size:12px;margin-left:6px;"></i></span>
-                <div class="mega-menu"><div class="mm-left-columns"><div class="mm-column">
-                    <ul class="mm-list"><li><a href="../deal-room/index.html">Deal Room</a></li></ul>
-                    <div style="margin-top: 24px;"><h4>Intelligence</h4>
-                        <ul class="mm-list">
-                            <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
-                            <li><a href="educenter.html">Edu Center</a></li>
-                        </ul>
-                    </div>
-                </div></div></div>
-            </div>
-            <a href="../about.html">About</a>
-            <a href="../contact.html">Contact</a>
-            <a href="../help-center/index.html">Help center</a>
-        </div>
-    </nav>
-
-    <div class="auth-fixed"><a href="../newsletter.html" class="btn btn-black">Join</a></div>
-    <button class="mobile-menu-btn" aria-label="Menu">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
-
-    <header class="gd-header">
-        <div class="gd-header-inner">
-            <a href="educenter.html" class="gd-back">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-                Back to Edu Center
+    <header class="masthead">
+        <div class="shell masthead__inner">
+            <a class="brand" href="../index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="../assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="../assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
             </a>
-            <span class="gd-eyebrow">Module 02 · Guide</span>
-            <h1 class="gd-title">How to use <em>Deal Room</em></h1>
-            <p class="gd-lede">SEC Nigeria-licensed marketplace for tokenised capital raises. Issuers list CSAFE, Bond, and Equity Subscription deals; verified investors subscribe in NGN with full KYC, bilateral agreements, and PIN-gated Data Vault custody.</p>
-            <div class="gd-meta">
-                <span><strong>~14 min</strong> read</span>
-                <span>Last updated <strong>23 May 2026</strong></span>
-                <span>Audience <strong>Issuers · Investors · Fund managers</strong></span>
-            </div>
+
+            <nav class="nav" aria-label="Primary">
+                <div class="nav__item">
+                    <button class="nav__link" type="button" data-dropdown aria-expanded="false"
+                        aria-controls="panel-shine">
+                        SHINE
+                        <svg class="nav__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none"
+                            aria-hidden="true">
+                            <path d="M2 4.5 6 8.5 10 4.5" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="nav__panel" id="panel-shine">
+                        <span class="nav__panel-label">Capital</span>
+                        <a href="../nefund.html">NEFUND</a>
+                        <a href="../deal-room/index.html">National Energy Deal Room</a>
+                        <span class="nav__panel-label">Intelligence</span>
+                        <a href="https://apex-neiia.vercel.app/">Apex AI <span class="tag">Beta</span></a>
+                        <a href="../edu-center/educenter.html">Edu Center</a>
+                    </div>
+                </div>
+                <a class="nav__link" href="../about.html">About</a>
+                <a class="nav__link" href="../contact.html">Contact</a>
+                <a class="nav__link" href="../help-center/index.html">Help centre</a>
+            </nav>
+
+            <button class="theme-toggle theme-toggle--desktop" type="button" data-theme-toggle aria-pressed="false"
+                aria-label="Switch to dark theme">
+                <svg class="theme-toggle__sun" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4.5" />
+                    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
+                </svg>
+                <svg class="theme-toggle__moon" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" />
+                </svg>
+            </button>
+
+            <a class="btn btn--primary btn--sm" href="../newsletter.html">Get updates</a>
+
+            <button class="nav-toggle" type="button" data-drawer-open aria-expanded="false" aria-controls="nav-drawer"
+                aria-label="Open menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
+            </button>
         </div>
     </header>
 
-    <div class="gd-shell">
-        <aside class="gd-toc">
-            <div class="gd-toc-label">On this page</div>
-            <ul>
-                <li><a href="#what">What it is</a></li>
-                <li><a href="#who">Who it's for</a></li>
-                <li><a href="#start">Investor onboarding</a></li>
-                <li><a href="#tiers">KYC tiers explained</a></li>
-                <li><a href="#list">Listing a deal</a></li>
-                <li><a href="#invest">Subscribing to a deal</a></li>
-                <li><a href="#countersign">Countersigning</a></li>
-                <li><a href="#reporting">Post-close reporting</a></li>
-                <li><a href="#glossary">Glossary</a></li>
-                <li><a href="#faq">FAQ</a></li>
-            </ul>
-        </aside>
+    <div class="drawer" id="nav-drawer">
+        <div class="drawer__head">
+            <a href="../index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="../assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="../assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
+            <button class="icon-btn" type="button" data-drawer-close aria-label="Close menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+            </button>
+        </div>
+        <div class="drawer__body">
+            <a href="../about.html">About <span aria-hidden="true">&rarr;</span></a>
+            <a href="../contact.html">Contact <span aria-hidden="true">&rarr;</span></a>
+            <a href="../help-center/index.html">Help centre <span aria-hidden="true">&rarr;</span></a>
 
-        <main class="gd-main">
+            <span class="drawer__label">Capital</span>
+            <a href="../nefund.html">NEFUND <span aria-hidden="true">&rarr;</span></a>
+            <a href="../deal-room/index.html">National Energy Deal Room <span aria-hidden="true">&rarr;</span></a>
 
-            <section id="what">
-                <h2>What it is</h2>
+            <span class="drawer__label">Intelligence</span>
+            <a href="https://apex-neiia.vercel.app/">Apex AI <span aria-hidden="true">&rarr;</span></a>
+            <a href="../edu-center/educenter.html">Edu Center <span aria-hidden="true">&rarr;</span></a>
+
+            <div class="drawer__actions">
+                <a class="btn btn--primary" href="../newsletter.html">Get updates</a>
+                <a class="btn btn--secondary" href="../contact.html">Contact the team</a>
+                <button class="btn btn--secondary" type="button" data-theme-toggle aria-pressed="false"
+                    aria-label="Switch to dark theme">Switch theme</button>
+            </div>
+        </div>
+    </div>
+
+    <main id="main">
+        <section class="page-hero">
+            <div class="shell">
+                <nav class="crumbs" aria-label="Breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <span aria-hidden="true">/</span>
+                    <a href="educenter.html">Edu Center</a>
+                    <span aria-hidden="true">/</span>
+                    <span>Deal Room</span>
+                </nav>
+                <span class="eyebrow">Module 02 &middot; Walkthrough</span>
+                <h1>Deal Room</h1>
+                <p class="page-hero__lead">SEC Nigeria-licensed marketplace for tokenised capital raises. Issuers list CSAFE, Bond, and Equity Subscription deals; verified investors subscribe in NGN with full KYC, bilateral agreements, and PIN-gated Data Vault custody.</p>
+                <div class="page-hero__actions">
+                    <a class="btn btn--primary" href="../deal-room/index.html">Open Deal Room <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    <a class="btn btn--secondary" href="../help-center/dealroom.html">Written reference</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell guide">
+                <nav class="guide__nav" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <a href="#who-it-s-for">Who it's for</a>
+                    <a href="#investor-onboarding">Investor onboarding</a>
+                    <a href="#kyc-tiers-explained">KYC tiers explained</a>
+                    <a href="#listing-a-deal-issuer-flow">Listing a deal (issuer flow)</a>
+                    <a href="#subscribing-to-a-deal">Subscribing to a deal</a>
+                    <a href="#issuer-countersigns-at-close">Issuer countersigns at close</a>
+                    <a href="#post-close-reporting">Post-close reporting</a>
+                    <a href="#glossary">Glossary</a>
+                    <a href="#frequently-asked">Frequently asked</a>
+                </nav>
+                <article class="article">
+                    <p class="article__note">This walkthrough shows the product screens in the order you meet
+                        them. For the short written reference, see the
+                        <a href="../help-center/dealroom.html">help centre guide</a>.</p>
+
+                    <h2>What it is</h2>
+
                 <p>Deal Room is the regulated equity marketplace at <code>/deal-room/</code>. It runs under two SEC Nigeria licences in parallel — Crowdfunding Rules 2021 (Lane A, retail-open MSME raises) and Digital Assets Offering Platform Rules 2022 (Lane B, qualified-only private placements) — and routes every deal automatically into the correct lane based on the issuer's SMEDAN caliber.</p>
                 <p>Mechanically: an issuer creates a deal, the platform routes it into Lane A or B, structures it inside one of seven legal wrappers (CSAFE, Convertible Note, Equity Subscription, PPM, Commercial Paper, Bond, Revenue Share), and opens subscription. Investors verified at the right KYC tier subscribe in NGN; cash holds in a bank-escrow account (Stanbic IBTC, UBA, Access, Zenith); on close, agreements file to the Data Vault and money releases to the issuer.</p>
 
-                <figure class="gd-figure"><img src="screenshots/deal-room-landing.png" alt="Deal Room public landing — Nigeria's regulated equity marketplace under SEC CFI + DAOP." class="guide-screenshot" loading="lazy" /><figcaption>Deal Room public landing — Nigeria's regulated equity marketplace under SEC CFI + DAOP.</figcaption></figure>
-            </section>
+                                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/deal-room-landing.webp 1x, ../assets/images/edu/deal-room-landing@2x.webp 2x">
+                            <img src="../assets/images/edu/deal-room-landing.jpg" srcset="../assets/images/edu/deal-room-landing.jpg 1x, ../assets/images/edu/deal-room-landing@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="Deal Room public landing — Nigeria&#x27;s regulated equity marketplace under SEC CFI + DAOP.">
+                        </picture>
+                        <figcaption>Deal Room public landing — Nigeria's regulated equity marketplace under SEC CFI + DAOP.</figcaption>
+                    </figure>
+                    <h3 id="who-it-s-for">Who it's for</h3>
 
-            <section id="who">
-                <h2>Who it's for</h2>
                 <p>Deal Room serves three personas with different default screens:</p>
                 <ul>
                     <li><strong>Issuers</strong> — SMEs raising under ₦100M (Lane A), or listed corporates raising via private placement (Lane B). Issuers see a deal-management workspace centred on the lifecycle strip.</li>
@@ -101,10 +197,8 @@
                     <li><strong>Fund managers (GPs)</strong> — running multi-asset positions, raising follow-on capital, or syndicating deals. GPs operate in the same product, but typically across multiple linked vehicles.</li>
                 </ul>
                 <p>If your goal is to manage an existing portfolio and serve LP reporting, that's the <a href="guide-lp-portal.html">LP Portal</a> — Deal Room handles the raise, LP Portal handles the relationship that comes after.</p>
-            </section>
+                    <h3 id="investor-onboarding">Investor onboarding</h3>
 
-            <section id="start">
-                <h2>Investor onboarding</h2>
                 <p>The onboarding flow at <code>/deal-room/onboarding.html</code> takes about four minutes for individuals and longer for corporates (manual review by the compliance desk). Steps:</p>
                 <ol>
                     <li><strong>Identity capture</strong> — NIN + BVN + a selfie. The platform pings NIMC and NIBSS live; you'll see a green check or a remediation reason within seconds.</li>
@@ -114,26 +208,28 @@
                     <li><strong>Trading PIN</strong> — set a 6-digit PIN distinct from your password. The PIN gates every subscription, Vault access, and corporate action.</li>
                 </ol>
 
-                <div class="gd-callout gd-callout-warning">
+                <div class="callout">
                     <strong>No free browse-and-subscribe.</strong> Per SEC rules, deal data (issuer names, terms) is hidden until you verify. Public visitors see anonymized lane / sector / size only.
                 </div>
-            </section>
+                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/deal-room-signin.webp 1x, ../assets/images/edu/deal-room-signin@2x.webp 2x">
+                            <img src="../assets/images/edu/deal-room-signin.jpg" srcset="../assets/images/edu/deal-room-signin.jpg 1x, ../assets/images/edu/deal-room-signin@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="Sign-in and onboarding. Identity capture runs before any deal data appears.">
+                        </picture>
+                        <figcaption><span class="shot__label">Investor onboarding</span> Sign-in and onboarding. Identity capture runs before any deal data appears.</figcaption>
+                    </figure>
+                    <h3 id="kyc-tiers-explained">KYC tiers explained</h3>
 
-            <section id="tiers">
-                <h2>KYC tiers explained</h2>
                 <p>Tiers gate how much you can subscribe per deal and per year. The platform enforces caps at submission — you literally can't input a number above your tier's max.</p>
-                <div class="gd-glossary">
-                    <dl>
+                <dl class="terms">
                         <div><dt>Tier 1 · Retail</dt><dd>NIN + BVN only. <strong>Per-deal:</strong> ₦100k - ₦5M. <strong>Annual:</strong> ₦20M. Lane A only.</dd></div>
                         <div><dt>Tier 2 · Sophisticated</dt><dd>Tier 1 + 6-month bank statement + employment proof. <strong>Per-deal:</strong> ₦5M - ₦50M. <strong>Annual:</strong> ₦200M. Lane A + selected Lane B.</dd></div>
                         <div><dt>Tier 3 · Qualified</dt><dd>Auditor-attested net worth ₦100M+ OR income ₦20M+ p.a. OR SEC-institutional licence. <strong>No caps.</strong> Lane A + Lane B.</dd></div>
                     </dl>
-                </div>
                 <p>Upgrades happen inside the product — go to <code>Settings → KYC</code>, upload the additional documents, and a compliance officer reviews within 48 hours. You stay live at your current tier during review.</p>
-            </section>
+                    <h3 id="listing-a-deal-issuer-flow">Listing a deal (issuer flow)</h3>
 
-            <section id="list">
-                <h2>Listing a deal (issuer flow)</h2>
                 <p>Issuers create deals through a wizard that auto-routes the deal into the correct lane and wrapper based on SMEDAN caliber. Open <code>/deal-room/setup.html</code> and follow:</p>
                 <ol>
                     <li><strong>Issuer caliber</strong> — headcount, total assets, years in operation, listing status. The platform classifies you as Nano / Micro / Small / Medium / Large / Corporate.</li>
@@ -144,11 +240,16 @@
                     <li><strong>Compliance review</strong> — the deal enters status <em>Under Review</em>. A compliance officer scores it on completeness and either approves to <em>Live</em> or returns it to <em>Compliance Hold</em> with reasons.</li>
                 </ol>
 
-                <figure class="gd-figure"><img src="screenshots/deal-room-deals.png" alt="Deals board — live listings grouped by lane (Growth Capital, Lane B institutional, Fund vehicles)." class="guide-screenshot" loading="lazy" /><figcaption>Deals board — live listings grouped by lane (Growth Capital, Lane B institutional, Fund vehicles).</figcaption></figure>
-            </section>
+                                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/deal-room-deals.webp 1x, ../assets/images/edu/deal-room-deals@2x.webp 2x">
+                            <img src="../assets/images/edu/deal-room-deals.jpg" srcset="../assets/images/edu/deal-room-deals.jpg 1x, ../assets/images/edu/deal-room-deals@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="Deals board — live listings grouped by lane (Growth Capital, Lane B institutional, Fund vehicles).">
+                        </picture>
+                        <figcaption>Deals board — live listings grouped by lane (Growth Capital, Lane B institutional, Fund vehicles).</figcaption>
+                    </figure>
+                    <h3 id="subscribing-to-a-deal">Subscribing to a deal</h3>
 
-            <section id="invest">
-                <h2>Subscribing to a deal</h2>
                 <p>From the deals board, click any Live card to open the deal detail at <code>/deal-room/room/deal.html?id=&lt;id&gt;</code>. The detail page shows:</p>
                 <ul>
                     <li><strong>Snapshot strip</strong> — committed / target, % subscribed, allocation tier, days to close.</li>
@@ -162,13 +263,19 @@
                     <li><strong>Pay into escrow.</strong> Choose bank transfer or card (Paystack). The funds land in the deal's escrow account (Stanbic IBTC, UBA, Access, or Zenith) — never on platform balance sheet.</li>
                     <li><strong>Sign with PIN.</strong> Your 6-digit trading PIN signs the agreement digitally. A signed copy files immediately to your Data Vault.</li>
                 </ol>
-                <div class="gd-callout gd-callout-info">
+                <div class="callout">
                     <strong>Reservations expire.</strong> If you don't confirm within 30 minutes, your spot returns to the queue. The system shows a live countdown on the Reserve modal.
                 </div>
-            </section>
+                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/deal-room-detail.webp 1x, ../assets/images/edu/deal-room-detail@2x.webp 2x">
+                            <img src="../assets/images/edu/deal-room-detail.jpg" srcset="../assets/images/edu/deal-room-detail.jpg 1x, ../assets/images/edu/deal-room-detail@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="A deal detail page, with the subscribe panel and your tier cap.">
+                        </picture>
+                        <figcaption><span class="shot__label">Subscribing to a deal</span> A deal detail page, with the subscribe panel and your tier cap.</figcaption>
+                    </figure>
+                    <h3 id="issuer-countersigns-at-close">Issuer countersigns at close</h3>
 
-            <section id="countersign">
-                <h2>Issuer countersigns at close</h2>
                 <p>When the deal hits its allocation target (or scheduled close date, whichever first), it moves to <em>Closing</em>. The issuer now has 72 hours to countersign:</p>
                 <ol>
                     <li><strong>Review final cap table.</strong> The platform produces the post-money cap table reflecting every accepted subscription. Issuers can reject specific subs (rare; only for compliance reasons) — rejected investors are refunded automatically.</li>
@@ -176,30 +283,31 @@
                     <li><strong>Escrow release.</strong> NIBSS releases cash from escrow to the issuer's nominated account in T+1. The platform takes its 2.5% (Lane A) or 1.5% (Lane B) facilitation fee from the escrow before release.</li>
                     <li><strong>Status flips to Active.</strong> The deal moves to Post-Close and the issuer now has post-close reporting obligations.</li>
                 </ol>
-                <div class="gd-callout gd-callout-warning">
+                <div class="callout">
                     <strong>Miss the countersign window.</strong> If 72 hours elapse without issuer signature, the deal auto-cancels and every subscriber is refunded. The issuer's compliance score takes a hit; serial offenders are suspended from re-listing.
                 </div>
-            </section>
+                    <h3 id="post-close-reporting">Post-close reporting</h3>
 
-            <section id="reporting">
-                <h2>Post-close reporting</h2>
                 <p>Once Active, the issuer files quarterly updates inside Deal Room's workspace. The platform sets the cadence based on wrapper:</p>
-                <div class="gd-glossary">
-                    <dl>
+                <dl class="terms">
                         <div><dt>CSAFE / Note</dt><dd>Quarterly narrative + financial snapshot. Annual audited statement at year-end.</dd></div>
                         <div><dt>Equity Subscription</dt><dd>Monthly KPI dashboard. Quarterly board pack. Annual audited statement + valuation refresh.</dd></div>
                         <div><dt>Bonds / Commercial Paper</dt><dd>Monthly coupon receipt confirmation. Quarterly covenant compliance certificate. Annual audited statement.</dd></div>
                         <div><dt>Revenue Share</dt><dd>Monthly gross revenue declaration. Quarterly distribution. Annual reconciliation.</dd></div>
                     </dl>
-                </div>
                 <p>For investors, post-close reporting appears in your <code>Portfolio</code> tab. The platform notifies you when the issuer files; your share of distributions auto-credits to your linked bank account. Tax receipts (FIRS-format) file to your Vault each January.</p>
                 <p>If you're a fund manager serving LPs of your own, this same data feeds the <a href="guide-lp-portal.html">LP Portal</a> — each subscription becomes a position in your fund vehicle, which is then surfaced to your LPs via the LP-side view.</p>
-            </section>
+                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/deal-room-portfolio.webp 1x, ../assets/images/edu/deal-room-portfolio@2x.webp 2x">
+                            <img src="../assets/images/edu/deal-room-portfolio.jpg" srcset="../assets/images/edu/deal-room-portfolio.jpg 1x, ../assets/images/edu/deal-room-portfolio@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="Post-close, subscriptions appear as positions in your portfolio.">
+                        </picture>
+                        <figcaption><span class="shot__label">Post-close reporting</span> Post-close, subscriptions appear as positions in your portfolio.</figcaption>
+                    </figure>
+                    <h3 id="glossary">Glossary</h3>
 
-            <section id="glossary">
-                <h2>Glossary</h2>
-                <div class="gd-glossary">
-                    <dl>
+                <dl class="terms">
                         <div><dt>CSAFE</dt><dd>Crowdfunding Simple Agreement for Future Equity. The Nigerian adaptation of the YC-style SAFE, with SEC-mandated investor protections.</dd></div>
                         <div><dt>Crowdfunding (Lane A)</dt><dd>SEC Nigeria's regulated retail-open raise for MSMEs incorporated 2+ years. Annual cap ₦100M.</dd></div>
                         <div><dt>DAOP</dt><dd>Digital Assets Offering Platform Rules 2022. Governs Lane B private placements and tokenised securities.</dd></div>
@@ -212,12 +320,9 @@
                         <div><dt>Tier 1 / 2 / 3</dt><dd>Three KYC tiers gating subscription caps. T1 retail, T2 sophisticated, T3 qualified.</dd></div>
                         <div><dt>Wrapper</dt><dd>The legal vehicle a deal uses. Seven on the platform: CSAFE, Convertible Note, Equity Subscription, PPM, Commercial Paper, Bond, Revenue Share.</dd></div>
                     </dl>
-                </div>
-            </section>
+                    <h3 id="frequently-asked">Frequently asked</h3>
 
-            <section id="faq">
-                <h2>Frequently asked</h2>
-                <div class="gd-faq">
+                <div class="faq">
                     <details>
                         <summary>Can I withdraw a subscription after I've paid into escrow?</summary>
                         <p>Yes — but only before the deal moves to <em>Closing</em>. Once Closing fires, your money is locked pending issuer countersign or auto-cancellation. If the deal cancels, you get a full refund automatically.</p>
@@ -243,58 +348,113 @@
                         <p>Yes, post-close. While the deal is Live, the subscriber list is anonymized for both sides. At Closing, identities are revealed to the issuer alongside the cap table. Investors always see each other only as anonymized handles.</p>
                     </details>
                 </div>
-            </section>
 
-            <div class="gd-cta">
-                <div class="gd-cta-text">
-                    <h3>Open Deal Room</h3>
-                    <p>Verify in under 4 minutes and start browsing live deals.</p>
+                    <div class="guide-more">
+                        <a href="guide-energy-assets.html"><span>Guide</span>Energy Assets</a>
+                        <a href="guide-lp-portal.html"><span>Guide</span>LP Portal</a>
+                        <a href="guide-apex-ai.html"><span>Guide</span>Apex AI</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="shell cta__inner">
+                <div>
+                    <span class="eyebrow">Next step</span>
+                    <h2>Open Deal Room</h2>
                 </div>
-                <a href="../deal-room/index.html" class="gd-cta-btn">
-                    Go to Deal Room
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </a>
+                <div class="cta__actions">
+                    <a class="btn btn--primary" href="../deal-room/index.html">Open Deal Room <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    <a class="btn btn--secondary" href="educenter.html">All walkthroughs</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="shell">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__lockup">
+                        <picture>
+                            <source srcset="../assets/images/neiia-arms.webp" type="image/webp">
+                            <img src="../assets/images/neiia-arms.png"
+                                alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                        </picture>
+                        <span class="footer__lockup-text">
+                            <strong>NEIIA</strong>
+                            <span>National Energy Investment &amp; Intelligence Administration</span>
+                        </span>
+                    </div>
+                    <p>Nigeria's centralised platform for energy investment intelligence, asset visibility and
+                        strategic coordination.</p>
+                    <span class="footer__mandate">Operated under the Federal Republic of Nigeria</span>
+                </div>
+
+                <div>
+                    <h3>Modules</h3>
+                    <ul>
+                        <li><a href="../nefund.html">NEFUND</a></li>
+                        <li><a href="../deal-room/index.html">National Energy Deal Room</a></li>
+                        <li><a href="../energy-databank/index.html">National Energy Data Bank</a></li>
+                        <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
+                        <li><a href="../risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Platform</h3>
+                    <ul>
+                        <li><a href="../about.html">About</a></li>
+                        <li><a href="../contact.html">Contact</a></li>
+                        <li><a href="../help-center/index.html">Help centre</a></li>
+                        <li><a href="../edu-center/educenter.html">Edu Center</a></li>
+                        <li><a href="../government-site/index.html">Mandate &amp; governance</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>For users</h3>
+                    <ul>
+                        <li><a href="../newsletter.html">Newsletter</a></li>
+                        <li><a href="../help-center/dealroom.html">Deal Room guide</a></li>
+                        <li><a href="../help-center/account.html">Account help</a></li>
+                        <li><a href="../compliance/index.html">Compliance</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__signup">
+                    <h3>Stay updated</h3>
+                    <p>Regulatory updates, live raises and platform changes. No spam.</p>
+                    <form class="footer__form" data-access-key="REPLACE_WITH_WEB3FORMS_ACCESS_KEY"
+                        data-subject="NEIIA — new newsletter subscriber"
+                        data-success="Confirmed. You are on the distribution list.">
+                        <label class="visually-hidden" for="footer-email">Email address</label>
+                        <input type="email" id="footer-email" name="email" placeholder="you@email.com" required
+                            autocomplete="email">
+                        <button class="btn" type="submit">Subscribe</button>
+                    </form>
+                    <p class="footer__note">By subscribing you agree to our <a
+                            href="../risk-esg/privacy-policy.html">privacy policy</a>.</p>
+                </div>
             </div>
 
-            <div class="gd-footnav">
-                <a class="gd-footnav-card" href="guide-energy-assets.html">
-                    <div class="gd-footnav-label">← Previous</div>
-                    <div class="gd-footnav-title">Energy Assets</div>
-                </a>
-                <a class="gd-footnav-card is-next" href="guide-lp-portal.html">
-                    <div class="gd-footnav-label">Next module →</div>
-                    <div class="gd-footnav-title">LP Portal</div>
-                </a>
-            </div>
-        </main>
-    </div>
-
-    <footer class="footer container" style="margin-top: 0; padding: 60px 20px; background-color: var(--bg-primary); color: var(--text-primary); border-top: 1px solid var(--border-color);">
-        <div class="footer-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto;">
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600;">Products</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../deal-room/index.html" style="color: var(--text-secondary); text-decoration: none;">Deal Room</a></li>
-                    <li style="margin-bottom: 12px;"><a href="https://apex-neiia.vercel.app/" style="color: var(--text-secondary); text-decoration: none;">Apex AI</a></li>
-                    <li style="margin-bottom: 12px;"><a href="educenter.html" style="color: var(--text-secondary); text-decoration: none;">Edu Center</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600;">Administration</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../about.html" style="color: var(--text-secondary); text-decoration: none;">About NEIIA</a></li>
-                    <li style="margin-bottom: 12px;"><a href="../contact.html" style="color: var(--text-secondary); text-decoration: none;">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600;">Engagement</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../help-center/index.html" style="color: var(--text-secondary); text-decoration: none;">Help center</a></li>
-                </ul>
+            <div class="footer__bottom">
+                <p class="footer__copy">
+                    &copy; 2026 <strong>Federal Republic of Nigeria</strong><br>
+                    Operating across all 36 states and the Federal Capital Territory
+                </p>
+                <div class="footer__meta">
+                    <a href="../risk-esg/terms-of-service.html">Terms</a>
+                    <a href="../risk-esg/privacy-policy.html">Privacy</a>
+                    <a href="../compliance/index.html">Compliance</a>
+                    <a href="../contact.html">Contact</a>
+                </div>
             </div>
         </div>
-        <p style="margin-top: 40px; color: var(--text-secondary); font-size: 0.9rem; max-width: 1200px; margin-left: auto; margin-right: auto;">&copy; 2026 NEIIA</p>
     </footer>
 
+    <script src="../assets/js/neiia.js?v=20" defer></script>
 </body>
+
 </html>

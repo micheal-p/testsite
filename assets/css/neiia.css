@@ -2853,6 +2853,16 @@ ul {
   align-items: start;
 }
 
+/* Grid items default to min-width:auto, so a wide table inside .article stretched
+   the whole track instead of letting .table-wrap scroll. */
+.guide > * {
+  min-width: 0;
+}
+
+.table-wrap {
+  max-width: 100%;
+}
+
 .guide__nav {
   position: sticky;
   top: 92px;
@@ -3061,6 +3071,125 @@ ul {
   margin-bottom: 0;
 }
 
+/* --- Glossary terms (in-article definition list) --------------------------- */
+.terms {
+  margin: var(--s-5) 0;
+  padding: var(--s-5);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  background: var(--surface-sunken);
+}
+
+.terms > div + div {
+  margin-top: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--border);
+}
+
+.terms dt {
+  font-weight: 700;
+  color: var(--accent-text);
+  margin-bottom: 4px;
+}
+
+.terms dd {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* --- Product screenshots (Edu Center) ------------------------------------- */
+.shot {
+  margin: var(--s-5) 0;
+}
+
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r);
+  background: var(--surface-sunken);
+}
+
+.shot figcaption {
+  display: flex;
+  gap: var(--s-3);
+  margin-top: var(--s-3);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* The screen label, e.g. "Deals board". Keeps the caption scannable when a
+   guide carries six screenshots in a row. */
+.shot__label {
+  flex: 0 0 auto;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* A screenshot that belongs to a numbered .step sits flush with the step body. */
+.step .shot {
+  margin-bottom: 0;
+}
+
+/* --- Screen index (Edu Center hub) ---------------------------------------- */
+.screens {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-6);
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  background: var(--surface-raised);
+  overflow: hidden;
+  transition: border-color var(--t) var(--ease), transform var(--t) var(--ease);
+}
+
+.screen:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.screen img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid var(--border);
+}
+
+.screen__body {
+  padding: var(--s-4) var(--s-5) var(--s-5);
+}
+
+.screen__id {
+  font-size: var(--fs-eyebrow);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-subtle);
+}
+
+.screen h3 {
+  margin: var(--s-2) 0;
+}
+
+.screen p {
+  margin-bottom: var(--s-3);
+  color: var(--text-muted);
+}
+
+.screen__meta {
+  font-size: var(--fs-sm);
+  color: var(--text-subtle);
+}
+
 /* --- Callout -------------------------------------------------------------- */
 .callout {
   padding: var(--s-4) var(--s-5);
@@ -3184,7 +3313,22 @@ ul {
   }
 }
 
+@media (max-width: 860px) {
+  .screens {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 640px) {
+  .shot figcaption {
+    display: block;
+  }
+
+  .shot__label {
+    display: block;
+    margin-bottom: 2px;
+  }
+
   .guide-more {
     grid-template-columns: 1fr;
   }

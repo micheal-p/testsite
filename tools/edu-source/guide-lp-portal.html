@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How to use LP Portal | NEIIA Edu Center</title>
+    <meta name="description" content="Practical guide to NEIIA LP Portal — capital calls, distributions, document vault, GP and LP views." />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="educenter.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50" />
+    <script src="educenter.js" defer></script>
+</head>
+<body class="gd-body">
+
+    <a href="../index.html" class="logo-fixed">
+        <div class="logo-wrapper">
+            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo" style="max-width: 120px; display: none !important;">
+            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo" style="max-width: 120px; display: block !important;">
+            <div class="brand-text" style="color: #ffffff !important;">NATIONAL ENERGY INVESTMENT &amp; INTELLIGENCE ADMINISTRATION</div>
+        </div>
+    </a>
+
+    <nav class="navbar pill-nav">
+        <div class="nav-links">
+            <div class="nav-item dropdown">
+                <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down" style="font-size:12px;margin-left:6px;"></i></span>
+                <div class="mega-menu"><div class="mm-left-columns"><div class="mm-column">
+                    <ul class="mm-list"><li><a href="../deal-room/index.html">Deal Room</a></li></ul>
+                    <div style="margin-top: 24px;"><h4>Intelligence</h4>
+                        <ul class="mm-list">
+                            <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
+                            <li><a href="educenter.html">Edu Center</a></li>
+                        </ul>
+                    </div>
+                </div></div></div>
+            </div>
+            <a href="../about.html">About</a>
+            <a href="../contact.html">Contact</a>
+            <a href="../help-center/index.html">Help center</a>
+        </div>
+    </nav>
+
+    <div class="auth-fixed"><a href="../newsletter.html" class="btn btn-black">Join</a></div>
+    <button class="mobile-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+
+    <header class="gd-header">
+        <div class="gd-header-inner">
+            <a href="educenter.html" class="gd-back">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                Back to Edu Center
+            </a>
+            <span class="gd-eyebrow">Module 03 · Guide</span>
+            <h1 class="gd-title">How to use the <em>LP Portal</em></h1>
+            <p class="gd-lede">Investor relations and reporting for fund managers. Send capital calls, push distributions, surface a live portfolio to every LP, and keep the document vault audit-tight.</p>
+            <div class="gd-meta">
+                <span><strong>~12 min</strong> read</span>
+                <span>Last updated <strong>23 May 2026</strong></span>
+                <span>Audience <strong>GPs · LPs · Fund admins</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="gd-shell">
+        <aside class="gd-toc">
+            <div class="gd-toc-label">On this page</div>
+            <ul>
+                <li><a href="#what">What it is</a></li>
+                <li><a href="#who">Who it's for</a></li>
+                <li><a href="#start">GP setup</a></li>
+                <li><a href="#calls">Capital calls</a></li>
+                <li><a href="#dist">Distributions</a></li>
+                <li><a href="#vault">Document vault</a></li>
+                <li><a href="#lp-view">LP-side view</a></li>
+                <li><a href="#glossary">Glossary</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </aside>
+
+        <main class="gd-main">
+
+            <section id="what">
+                <h2>What it is</h2>
+                <p>The LP Portal is the post-raise relationship layer. Once your fund has investors committed in Deal Room, the LP Portal becomes the system of record for the ongoing GP-LP relationship — quarterly reads, capital calls, distributions, K-1s, audited statements, ESG attestations, and the document vault that holds all of it.</p>
+                <p>It runs in two synchronised camera angles: a GP console where you operate the fund, and a read-only LP view where each investor sees their slice — their commitment, called, NAV, distributions, IRR, and every document filed against their account. Both views read from the same record, so what the GP sees and what the LP sees can never drift.</p>
+
+                <figure class="gd-figure">
+                    <img src="screenshots/lp-portal-landing.png" alt="LP Portal public landing — institutional-grade investor relations infrastructure for African fund managers." class="guide-screenshot" loading="lazy" />
+                    <figcaption>Public landing — positioned for African fund managers running Series A+ vehicles.</figcaption>
+                </figure>
+            </section>
+
+            <section id="who">
+                <h2>Who it's for</h2>
+                <ul>
+                    <li><strong>GPs / fund managers</strong> running one or more vehicles (SPV, Sub-Fund, Rolling, Venture, Co-Invest, Roll-Up) with multiple LPs to serve. The GP console is the operator surface.</li>
+                    <li><strong>LPs</strong> — individuals or institutions holding commitments in one or more funds. LPs get a read-only dashboard with their portfolio across every GP they're committed to.</li>
+                    <li><strong>Fund administrators</strong> — third-party admin shops who run a fund's books on behalf of the GP. Admins get a delegated role that can post calls, file documents, and reconcile NAV, but can't change waterfall logic.</li>
+                </ul>
+                <p>If you're an individual subscribing to one-off deals (not yet committed to a fund), you're in Deal Room, not LP Portal. The LP Portal lights up once a deal you've subscribed to closes inside a fund vehicle, or once a GP invites you as a committed LP.</p>
+            </section>
+
+            <section id="start">
+                <h2>GP setup</h2>
+                <p>Getting a fund into the LP Portal is a one-time configuration:</p>
+                <ol>
+                    <li><strong>Create the vehicle.</strong> From <code>/reporting-lp/gp/setup</code>, pick the wrapper (SPV, Sub-Fund, Rolling, Venture, Co-Invest, Roll-Up). Each wrapper has a different waterfall template the platform pre-loads.</li>
+                    <li><strong>Define the waterfall.</strong> Hurdle, catch-up, carry, GP commitment %. The platform validates against your jurisdiction's standard fund formation framework and flags non-standard provisions.</li>
+                    <li><strong>Invite LPs.</strong> Bulk-upload a CSV of LP emails and commitment sizes, or invite one by one. Each LP gets an email with a sign-up link that pre-fills their commitment.</li>
+                    <li><strong>LPs accept and sign.</strong> Each LP signs the LPA digitally inside the portal. The countersigned LPA files automatically to both the GP's vault and the LP's vault.</li>
+                    <li><strong>Configure cadence.</strong> Quarterly is default. Choose whether calls are scheduled (fixed dates) or just-in-time (issued when needed). Set the distribution waterfall to auto-calculate at every realisation or to require GP approval each time.</li>
+                </ol>
+
+                <div class="gd-callout gd-callout-info">
+                    <strong>One fund, multiple closes.</strong> If your fund has rolling closes (typical for Venture wrapper), the platform tracks each close as a separate commitment cohort. LPs admitted in close #2 don't bear capital called before they were committed.
+                </div>
+            
+                <figure class="gd-figure">
+                    <img src="screenshots/lp-portal-gp-dashboard.png" alt="GP dashboard — AUM, active LPs, pending capital calls, recent LP activity feed." class="guide-screenshot" loading="lazy" />
+                    <figcaption>GP dashboard — AUM, active LPs, pending capital calls, recent LP activity feed.</figcaption>
+                </figure>
+            </section>
+
+            <section id="calls">
+                <h2>Capital calls</h2>
+                <p>The capital call is the workhorse flow. A GP issues a call, every LP receives it, each LP wires within the call window, and the platform reconciles receipts against expected amounts.</p>
+                <ol>
+                    <li><strong>Draft the call.</strong> From the GP dashboard, click "New capital call". Enter the total amount, the percentage of remaining commitment it represents, and the reason (deal investment, fund expense, etc.).</li>
+                    <li><strong>Per-LP allocation.</strong> The platform auto-allocates pro rata to each LP's commitment. You can override individual amounts for excused investors (typical for LPs with ESG carve-outs or jurisdiction restrictions).</li>
+                    <li><strong>Generate notices.</strong> The platform produces a personalised PDF notice per LP — their amount, wire instructions to the fund's bank, due date. Notices file to each LP's vault and email.</li>
+                    <li><strong>Track receipts.</strong> As wires land, the platform matches by reference and marks each LP "Funded". Outstanding LPs show on a watchlist with days-until-due and a one-click reminder button.</li>
+                    <li><strong>Close the call.</strong> Once all LPs have funded (or you've decided to proceed with partial), click "Close call". The platform writes the call to the fund's history and updates each LP's called-to-date balance.</li>
+                </ol>
+
+                <div class="gd-callout gd-callout-warning">
+                    <strong>Defaulting LPs.</strong> If an LP misses the due date, the platform flags them but doesn't auto-default — defaults are a legal action you trigger manually from the LP's profile, following the LPA's default clause. The system tracks the missed days and generates the notice template.
+                </div>
+            
+                <figure class="gd-figure">
+                    <img src="screenshots/lp-portal-capital-call.png" alt="Capital call detail (LP view) — wire instructions, pro-rata calc, acknowledge button." class="guide-screenshot" loading="lazy" />
+                    <figcaption>Capital call detail (LP view) — wire instructions, pro-rata calc, acknowledge button.</figcaption>
+                </figure>
+            </section>
+
+            <section id="dist">
+                <h2>Distributions</h2>
+                <p>Distributions run the call mechanics in reverse. A realisation event credits the fund; the platform applies the waterfall; per-LP amounts are calculated; wires go out; receipts confirm.</p>
+                <ol>
+                    <li><strong>Log the realisation.</strong> Sale, dividend, coupon, or interest payment — book the gross amount into the fund.</li>
+                    <li><strong>Apply waterfall.</strong> The platform runs the waterfall you set at fund creation. Return of capital first, then hurdle, then catch-up, then carry split. Every step is shown so you can audit.</li>
+                    <li><strong>Per-LP calculation.</strong> Net amounts per LP after waterfall, tax withholding, and any expense recovery. The breakdown is per-LP visible.</li>
+                    <li><strong>Approve and send.</strong> One-click approval pushes wires through your fund's bank. Each LP receives a distribution notice with the breakdown and tax slip.</li>
+                    <li><strong>LP acknowledgment.</strong> LPs acknowledge receipt inside the portal. Acks file to the audit trail.</li>
+                </ol>
+            
+                <figure class="gd-figure">
+                    <img src="screenshots/lp-portal-gp-billing.png" alt="GP billing surface — plan, usage meters, add-ons, invoice history." class="guide-screenshot" loading="lazy" />
+                    <figcaption>GP billing surface — plan, usage meters, add-ons, invoice history.</figcaption>
+                </figure>
+            </section>
+
+            <section id="vault">
+                <h2>Document vault</h2>
+                <p>The vault holds everything that constitutes the LP relationship — LPA, side letters, subscription agreements, call notices, distribution notices, audited statements, K-1s / tax slips, valuation reports, ESG attestations.</p>
+                <p>Documents file automatically when generated (call notices, dist notices) or manually when uploaded (audited statements, side letters). Every document has:</p>
+                <ul>
+                    <li><strong>Visibility scope</strong> — fund-wide, LP-specific, or GP-only.</li>
+                    <li><strong>Audit log</strong> — who created, who viewed, when, from what IP.</li>
+                    <li><strong>Version history</strong> — superseded documents are kept; you can always trace back to what an LP signed.</li>
+                    <li><strong>Tax tags</strong> — Nigerian tax year, Form 941, K-1, or whatever applies. Drives the year-end tax export.</li>
+                </ul>
+                <div class="gd-callout gd-callout-tip">
+                    <strong>Tip.</strong> Use document templates for the recurring items (call notice, dist notice, quarterly letter). The platform ships defaults but you can customise headers, signatures, and footers per fund.
+                </div>
+            
+                <figure class="gd-figure">
+                    <img src="screenshots/lp-portal-documents.png" alt="Document vault (LP view) — folder tree, file list, preview, download." class="guide-screenshot" loading="lazy" />
+                    <figcaption>Document vault (LP view) — folder tree, file list, preview, download.</figcaption>
+                </figure>
+            </section>
+
+            <section id="lp-view">
+                <h2>The LP-side view</h2>
+                <p>LPs land on a single-page portfolio at <code>/reporting-lp/lp/dashboard.html</code>. The page is short and intentional:</p>
+                <ul>
+                    <li><strong>Header KPIs</strong> — total committed, called, distributed, NAV, net IRR.</li>
+                    <li><strong>Fund cards</strong> — one card per fund you're committed to. Each shows commitment, called, NAV, your IRR, and a button to drill into that fund.</li>
+                    <li><strong>Activity feed</strong> — chronological list of every call, distribution, document filed, ack required.</li>
+                    <li><strong>Vault link</strong> — direct to your slice of the document vault, scoped to documents visible to you.</li>
+                </ul>
+                <p>LPs can't change anything that affects fund accounting. The view is read-only for portfolio data and write-only for acknowledgments, signature requests, and message threads with the GP.</p>
+
+                <div class="gd-callout gd-callout-info">
+                    <strong>Apex AI on the LP side.</strong> LPs see an "Ask Apex" prompt on their dashboard. Apex reads only their own portfolio and answers questions like "what's my best vintage?" or "summarise Q1 across my commitments". GP-confidential data stays GP-confidential.
+                </div>
+            
+                <figure class="gd-figure">
+                    <img src="screenshots/lp-portal-lp-dashboard.png" alt="LP dashboard — commitment, called, distributions, NAV, IRR plus pending action banner." class="guide-screenshot" loading="lazy" />
+                    <figcaption>LP dashboard — commitment, called, distributions, NAV, IRR plus pending action banner.</figcaption>
+                </figure>
+            </section>
+
+            <section id="glossary">
+                <h2>Glossary</h2>
+                <div class="gd-glossary">
+                    <dl>
+                        <div><dt>Capital call</dt><dd>A GP request for committed-but-uncalled capital. Each call has a due date and a per-LP allocation.</dd></div>
+                        <div><dt>Commitment</dt><dd>The total amount an LP agrees to fund over the fund's life. Drawn down in calls.</dd></div>
+                        <div><dt>Distribution</dt><dd>Capital returned to LPs after a realisation. May be return of capital, profit share, or both.</dd></div>
+                        <div><dt>DPI</dt><dd>Distributed-to-paid-in. Realised return ratio — distributions divided by paid-in capital.</dd></div>
+                        <div><dt>Hurdle</dt><dd>The minimum IRR LPs receive before the GP's carry kicks in. Typically 8%.</dd></div>
+                        <div><dt>K-1 / Tax slip</dt><dd>Annual tax document each LP receives, summarising their share of fund income, gains, and expenses.</dd></div>
+                        <div><dt>LPA</dt><dd>Limited Partnership Agreement — the master document governing the fund. Each LP signs it (or the equivalent for non-LP vehicles) on admission.</dd></div>
+                        <div><dt>NAV</dt><dd>Net Asset Value. The fund's current valuation, computed at each reporting period.</dd></div>
+                        <div><dt>RVPI</dt><dd>Residual-Value-to-paid-in. Unrealised return ratio — current NAV divided by paid-in capital.</dd></div>
+                        <div><dt>Waterfall</dt><dd>The set of rules deciding how realised proceeds are split between LPs and the GP. American (deal-by-deal) or European (fund-as-a-whole).</dd></div>
+                    </dl>
+                </div>
+            </section>
+
+            <section id="faq">
+                <h2>Frequently asked</h2>
+                <div class="gd-faq">
+                    <details>
+                        <summary>Can I bring an existing fund onto the platform?</summary>
+                        <p>Yes — the GP setup wizard includes a "Migrate existing fund" path. Upload your historical capital calls, distributions, NAVs, and current cap table. The platform reconstructs the per-LP balances and IRRs from history.</p>
+                    </details>
+                    <details>
+                        <summary>How are valuations done?</summary>
+                        <p>The GP marks NAV each reporting period. The platform tracks the methodology (mark-to-market, mark-to-model, cost) and the audit trail. For Lane B funds, an FRCN-registered auditor reviews annually; the audit ties the GP's marks to evidence.</p>
+                    </details>
+                    <details>
+                        <summary>What if my LP wants to transfer their commitment to a third party?</summary>
+                        <p>LPA-permitting, the platform supports an in-place transfer. The outgoing LP and incoming LP both sign; the GP approves; the platform updates the cap table without re-papering the LPA.</p>
+                    </details>
+                    <details>
+                        <summary>Does the LP Portal integrate with Deal Room?</summary>
+                        <p>Yes, natively. If your fund subscribes to deals in Deal Room, each closed subscription becomes a position in your LP Portal fund automatically. Distributions from those underlying deals flow into the fund's cash account and then through your waterfall.</p>
+                    </details>
+                    <details>
+                        <summary>Can LPs see each other?</summary>
+                        <p>No, by default. LPs see only their own commitment, balances, and documents. Other LPs are anonymized as "LP #14" etc. The GP can opt to share an LP roster if all LPs consent (rare; typically only for syndicate / co-invest vehicles).</p>
+                    </details>
+                </div>
+            </section>
+
+            <div class="gd-cta">
+                <div class="gd-cta-text">
+                    <h3>Open the LP Portal</h3>
+                    <p>Currently in private beta — request access from the contact desk.</p>
+                </div>
+                <a href="../contact.html" class="gd-cta-btn">
+                    Request access
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
+
+            <div class="gd-footnav">
+                <a class="gd-footnav-card" href="guide-deal-room.html">
+                    <div class="gd-footnav-label">← Previous</div>
+                    <div class="gd-footnav-title">Deal Room</div>
+                </a>
+                <a class="gd-footnav-card is-next" href="guide-apex-ai.html">
+                    <div class="gd-footnav-label">Next module →</div>
+                    <div class="gd-footnav-title">Apex AI</div>
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer container" style="margin-top: 0; padding: 60px 20px; background-color: var(--bg-primary); color: var(--text-primary); border-top: 1px solid var(--border-color);">
+        <div class="footer-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto;">
+            <div class="footer-col">
+                <h4 style="margin-bottom: 20px; font-weight: 600;">Products</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 12px;"><a href="../deal-room/index.html" style="color: var(--text-secondary); text-decoration: none;">Deal Room</a></li>
+                    <li style="margin-bottom: 12px;"><a href="https://apex-neiia.vercel.app/" style="color: var(--text-secondary); text-decoration: none;">Apex AI</a></li>
+                    <li style="margin-bottom: 12px;"><a href="educenter.html" style="color: var(--text-secondary); text-decoration: none;">Edu Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 style="margin-bottom: 20px; font-weight: 600;">Administration</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 12px;"><a href="../about.html" style="color: var(--text-secondary); text-decoration: none;">About NEIIA</a></li>
+                    <li style="margin-bottom: 12px;"><a href="../contact.html" style="color: var(--text-secondary); text-decoration: none;">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 style="margin-bottom: 20px; font-weight: 600;">Engagement</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 12px;"><a href="../help-center/index.html" style="color: var(--text-secondary); text-decoration: none;">Help center</a></li>
+                </ul>
+            </div>
+        </div>
+        <p style="margin-top: 40px; color: var(--text-secondary); font-size: 0.9rem; max-width: 1200px; margin-left: auto; margin-right: auto;">&copy; 2026 NEIIA</p>
+    </footer>
+
+</body>
+</html>

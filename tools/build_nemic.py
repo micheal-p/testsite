@@ -30,7 +30,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SOURCE = os.path.join(ROOT, "nefund.html")
 TARGET = os.path.join(ROOT, "nemic.html")
 TARGET_RECORD = os.path.join(ROOT, "nemic-record.html")
-V = 19  # cache-bust for assets/css/neiia.css + assets/js/neiia.js
+V = 20  # cache-bust for assets/css/neiia.css + assets/js/neiia.js
 
 TITLE = "NEMiC — National Energy Masterplan Implementation Committee | NEIIA"
 DESC = ("NEMiC is the federal committee executing Nigeria's National Energy Master Plan, 2023 to 2048. "

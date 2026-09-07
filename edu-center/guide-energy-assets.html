@@ -1,112 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>How to use Energy Assets | NEIIA Edu Center</title>
-    <meta name="description" content="Practical guide to NEIIA Energy Assets — browse listings, place bids, settle through the energy databank, and list your own asset." />
-    <link rel="stylesheet" href="../styles.css" />
-    <link rel="stylesheet" href="educenter.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50" />
-    <script src="educenter.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>How to use Energy Assets | NEIIA Edu Center &mdash; NEIIA Edu Center</title>
+    <meta name="description" content="Practical guide to NEIIA Energy Assets — browse listings, place bids, settle through the energy databank, and list your own asset.">
+    <meta name="theme-color" content="#0B1F24">
+    <meta property="og:title" content="How to use Energy Assets | NEIIA Edu Center &mdash; NEIIA Edu Center">
+    <meta property="og:description" content="Practical guide to NEIIA Energy Assets — browse listings, place bids, settle through the energy databank, and list your own asset.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/png" href="../assets/images/neiia-arms.png">
+    <link rel="preload" href="../assets/font/public-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="../assets/css/neiia.css?v=20">
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('neiia-theme');
+                var dark = stored ? stored === 'dark'
+                    : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                document.documentElement.classList.add('has-js');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+    <script src="../auth-check.js"></script>
 </head>
-<body class="gd-body">
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
 
-    <!-- Logo -->
-    <a href="../index.html" class="logo-fixed">
-        <div class="logo-wrapper">
-            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo" style="max-width: 120px; display: none !important;">
-            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo" style="max-width: 120px; display: block !important;">
-            <div class="brand-text" style="color: #ffffff !important;">NATIONAL ENERGY INVESTMENT &amp; INTELLIGENCE ADMINISTRATION</div>
-        </div>
-    </a>
+    <header class="masthead">
+        <div class="shell masthead__inner">
+            <a class="brand" href="../index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="../assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="../assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
 
-    <nav class="navbar pill-nav">
-        <div class="nav-links">
-            <div class="nav-item dropdown">
-                <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down" style="font-size:12px;margin-left:6px;"></i></span>
-                <div class="mega-menu">
-                    <div class="mm-left-columns">
-                        <div class="mm-column">
-                            <ul class="mm-list"><li><a href="../deal-room/index.html">Deal Room</a></li></ul>
-                            <div style="margin-top: 24px;">
-                                <h4>Intelligence</h4>
-                                <ul class="mm-list">
-                                    <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
-                                    <li><a href="educenter.html">Edu Center</a></li>
-                                </ul>
-                            </div>
-                        </div>
+            <nav class="nav" aria-label="Primary">
+                <div class="nav__item">
+                    <button class="nav__link" type="button" data-dropdown aria-expanded="false"
+                        aria-controls="panel-shine">
+                        SHINE
+                        <svg class="nav__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none"
+                            aria-hidden="true">
+                            <path d="M2 4.5 6 8.5 10 4.5" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="nav__panel" id="panel-shine">
+                        <span class="nav__panel-label">Capital</span>
+                        <a href="../nefund.html">NEFUND</a>
+                        <a href="../deal-room/index.html">National Energy Deal Room</a>
+                        <span class="nav__panel-label">Intelligence</span>
+                        <a href="https://apex-neiia.vercel.app/">Apex AI <span class="tag">Beta</span></a>
+                        <a href="../edu-center/educenter.html">Edu Center</a>
                     </div>
                 </div>
-            </div>
-            <a href="../about.html">About</a>
-            <a href="../contact.html">Contact</a>
-            <a href="../help-center/index.html">Help center</a>
-        </div>
-    </nav>
+                <a class="nav__link" href="../about.html">About</a>
+                <a class="nav__link" href="../contact.html">Contact</a>
+                <a class="nav__link" href="../help-center/index.html">Help centre</a>
+            </nav>
 
-    <div class="auth-fixed">
-        <a href="../newsletter.html" class="btn btn-black">Join</a>
-    </div>
+            <button class="theme-toggle theme-toggle--desktop" type="button" data-theme-toggle aria-pressed="false"
+                aria-label="Switch to dark theme">
+                <svg class="theme-toggle__sun" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4.5" />
+                    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
+                </svg>
+                <svg class="theme-toggle__moon" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" />
+                </svg>
+            </button>
 
-    <button class="mobile-menu-btn" aria-label="Menu">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-    </button>
+            <a class="btn btn--primary btn--sm" href="../newsletter.html">Get updates</a>
 
-    <!-- Header -->
-    <header class="gd-header">
-        <div class="gd-header-inner">
-            <a href="educenter.html" class="gd-back">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-                Back to Edu Center
-            </a>
-            <span class="gd-eyebrow">Module 01 · Guide</span>
-            <h1 class="gd-title">How to use <em>Energy Assets</em></h1>
-            <p class="gd-lede">The on-platform marketplace for electricity, gas, and renewable carbon credits. Anonymous order books, standardized contracts, settlement routed through the energy databank.</p>
-            <div class="gd-meta">
-                <span><strong>~11 min</strong> read</span>
-                <span>Last updated <strong>23 May 2026</strong></span>
-                <span>Audience <strong>Buyers · Sellers · Offtakers</strong></span>
-            </div>
+            <button class="nav-toggle" type="button" data-drawer-open aria-expanded="false" aria-controls="nav-drawer"
+                aria-label="Open menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
+            </button>
         </div>
     </header>
 
-    <div class="gd-shell">
-        <!-- TOC -->
-        <aside class="gd-toc">
-            <div class="gd-toc-label">On this page</div>
-            <ul>
-                <li><a href="#what">What it is</a></li>
-                <li><a href="#who">Who it's for</a></li>
-                <li><a href="#start">Getting started</a></li>
-                <li><a href="#browse">Browsing listings</a></li>
-                <li><a href="#bid">Placing a bid</a></li>
-                <li><a href="#list">Listing an asset</a></li>
-                <li><a href="#settle">Settlement</a></li>
-                <li><a href="#glossary">Glossary</a></li>
-                <li><a href="#faq">FAQ</a></li>
-            </ul>
-        </aside>
+    <div class="drawer" id="nav-drawer">
+        <div class="drawer__head">
+            <a href="../index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="../assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="../assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
+            <button class="icon-btn" type="button" data-drawer-close aria-label="Close menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+            </button>
+        </div>
+        <div class="drawer__body">
+            <a href="../about.html">About <span aria-hidden="true">&rarr;</span></a>
+            <a href="../contact.html">Contact <span aria-hidden="true">&rarr;</span></a>
+            <a href="../help-center/index.html">Help centre <span aria-hidden="true">&rarr;</span></a>
 
-        <!-- Main content -->
-        <main class="gd-main">
+            <span class="drawer__label">Capital</span>
+            <a href="../nefund.html">NEFUND <span aria-hidden="true">&rarr;</span></a>
+            <a href="../deal-room/index.html">National Energy Deal Room <span aria-hidden="true">&rarr;</span></a>
 
-            <section id="what">
-                <h2>What it is</h2>
+            <span class="drawer__label">Intelligence</span>
+            <a href="https://apex-neiia.vercel.app/">Apex AI <span aria-hidden="true">&rarr;</span></a>
+            <a href="../edu-center/educenter.html">Edu Center <span aria-hidden="true">&rarr;</span></a>
+
+            <div class="drawer__actions">
+                <a class="btn btn--primary" href="../newsletter.html">Get updates</a>
+                <a class="btn btn--secondary" href="../contact.html">Contact the team</a>
+                <button class="btn btn--secondary" type="button" data-theme-toggle aria-pressed="false"
+                    aria-label="Switch to dark theme">Switch theme</button>
+            </div>
+        </div>
+    </div>
+
+    <main id="main">
+        <section class="page-hero">
+            <div class="shell">
+                <nav class="crumbs" aria-label="Breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <span aria-hidden="true">/</span>
+                    <a href="educenter.html">Edu Center</a>
+                    <span aria-hidden="true">/</span>
+                    <span>Energy Assets</span>
+                </nav>
+                <span class="eyebrow">Module 01 &middot; Walkthrough</span>
+                <h1>Energy Assets</h1>
+                <p class="page-hero__lead">The on-platform marketplace for electricity, gas, and renewable carbon credits. Anonymous order books, standardized contracts, settlement routed through the energy databank.</p>
+                <div class="page-hero__actions">
+                    <a class="btn btn--primary" href="../energy-assets/index.html">Open Energy Assets <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    <a class="btn btn--secondary" href="../help-center/energy-assets.html">Written reference</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell guide">
+                <nav class="guide__nav" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <a href="#who-it-s-for">Who it's for</a>
+                    <a href="#getting-started">Getting started</a>
+                    <a href="#browsing-listings">Browsing listings</a>
+                    <a href="#placing-a-bid">Placing a bid</a>
+                    <a href="#listing-your-own-asset">Listing your own asset</a>
+                    <a href="#settlement">Settlement</a>
+                    <a href="#glossary">Glossary</a>
+                    <a href="#frequently-asked">Frequently asked</a>
+                </nav>
+                <article class="article">
+                    <p class="article__note">This walkthrough shows the product screens in the order you meet
+                        them. For the short written reference, see the
+                        <a href="../help-center/energy-assets.html">help centre guide</a>.</p>
+
+                    <h2>What it is</h2>
+
                 <p>Energy Assets is the trading layer on top of Nigeria's energy ecosystem. It lets verified counterparties post electricity contracts, gas forwards, and carbon credit certificates as listings; lets buyers place anonymous bids; and lets the platform settle and record the trades. Think of it as a regulated, opinionated marketplace for the energy assets the country actually moves — with the order book, listing forms, and compliance hooks in one place.</p>
-                <p>The product sits inside the broader <a href="../dashboard.html">Energy Ecosystem dashboard</a>, which shows the macro view (total volume, mover-of-the-day, active listings). The marketplace itself lives at <code>/energy-assets/marketplace.html</code>.</p>
+                <p>The product sits inside the broader <a href="../energy-assets/dashboard.html">Energy Ecosystem dashboard</a>, which shows the macro view (total volume, mover-of-the-day, active listings). The marketplace itself lives at <code>/energy-assets/marketplace.html</code>.</p>
 
-                <figure class="gd-figure"><img src="screenshots/energy-ecosystem-dashboard.png" alt="Energy Ecosystem dashboard — KPI cards and pipeline status across all listed assets." class="guide-screenshot" loading="lazy" /><figcaption>Energy Ecosystem dashboard — KPI cards and pipeline status across all listed assets.</figcaption></figure>
-            </section>
+                                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/energy-ecosystem-dashboard.webp 1x, ../assets/images/edu/energy-ecosystem-dashboard@2x.webp 2x">
+                            <img src="../assets/images/edu/energy-ecosystem-dashboard.jpg" srcset="../assets/images/edu/energy-ecosystem-dashboard.jpg 1x, ../assets/images/edu/energy-ecosystem-dashboard@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="Energy Ecosystem dashboard — KPI cards and pipeline status across all listed assets.">
+                        </picture>
+                        <figcaption>Energy Ecosystem dashboard — KPI cards and pipeline status across all listed assets.</figcaption>
+                    </figure>
+                    <h3 id="who-it-s-for">Who it's for</h3>
 
-            <section id="who">
-                <h2>Who it's for</h2>
                 <p>Three groups use Energy Assets, in different lanes:</p>
                 <ul>
                     <li><strong>Generators &amp; IPPs</strong> — list electricity blocks for the upcoming tenor (Q3, full-year, etc.), find creditworthy offtakers, and lock in price floors.</li>
@@ -114,10 +196,8 @@
                     <li><strong>Carbon project developers</strong> — list verified emission reductions (VERs) from afforestation, REDD+, or cookstove projects, with vintage and registry metadata attached.</li>
                 </ul>
                 <p>If you only want to <em>invest</em> in an energy asset (rather than buy or sell the offtake), that activity sits in Deal Room — Energy Assets handles commodity flow, not equity. See the <a href="guide-deal-room.html">Deal Room guide</a>.</p>
-            </section>
+                    <h3 id="getting-started">Getting started</h3>
 
-            <section id="start">
-                <h2>Getting started</h2>
                 <p>You need a verified counterparty account to bid or list. Public visitors can browse anonymized listings but can't execute. To activate an account:</p>
                 <ol>
                     <li>Sign up at <code>/energy-assets/signup.html</code> with your company CAC number.</li>
@@ -126,22 +206,26 @@
                     <li>Set your 6-digit trading PIN. The PIN is distinct from your password and required to confirm every bid.</li>
                 </ol>
 
-                <div class="gd-callout gd-callout-info">
+                <div class="callout">
                     <strong>Heads up.</strong> Energy Assets is a counterparty platform — you onboard as an organisation, not an individual. Personal investor accounts (for Deal Room or LP Portal) won't unlock the marketplace.
                 </div>
-            </section>
+                    <h3 id="browsing-listings">Browsing listings</h3>
 
-            <section id="browse">
-                <h2>Browsing listings</h2>
                 <p>The marketplace at <code>/energy-assets/marketplace.html</code> opens to the full active board. Use the type tabs across the top to filter by Electricity / Gas / Carbon. The filter bar below adds tenor, geography, and price range. The currency toggle on the right flips every figure between NGN and USD at the live CBN rate.</p>
 
-                <figure class="gd-figure"><img src="screenshots/energy-assets-marketplace.png" alt="Marketplace board — browseable listings of energy projects with filter controls." class="guide-screenshot" loading="lazy" /><figcaption>Marketplace board — browseable listings of energy projects with filter controls.</figcaption></figure>
+                                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/energy-assets-marketplace.webp 1x, ../assets/images/edu/energy-assets-marketplace@2x.webp 2x">
+                            <img src="../assets/images/edu/energy-assets-marketplace.jpg" srcset="../assets/images/edu/energy-assets-marketplace.jpg 1x, ../assets/images/edu/energy-assets-marketplace@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="Marketplace board — browseable listings of energy projects with filter controls.">
+                        </picture>
+                        <figcaption>Marketplace board — browseable listings of energy projects with filter controls.</figcaption>
+                    </figure>
+
 
                 <p>Click any row to open the listing detail. The detail page shows the order book, anonymized bid stack, settlement bank, and the standardized contract terms — these are non-negotiable by design, so every trade clears against the same template.</p>
-            </section>
+                    <h3 id="placing-a-bid">Placing a bid</h3>
 
-            <section id="bid">
-                <h2>Placing a bid</h2>
                 <p>Bidding is a four-step flow with the PIN check at the end:</p>
                 <ol>
                     <li><strong>Open the listing detail.</strong> Read the contract terms. Pay particular attention to delivery point (busbar for electricity, custody transfer point for gas), force-majeure clauses, and tariff escalator if any.</li>
@@ -150,13 +234,11 @@
                     <li><strong>Confirm with PIN.</strong> Type your 6-digit trading PIN. The bid is locked. You can cancel before allocation closes but not after.</li>
                 </ol>
 
-                <div class="gd-callout gd-callout-warning">
+                <div class="callout">
                     <strong>Anonymous until allocation.</strong> Listing detail pages never show counterparty identities while bidding is open. Identities are revealed at allocation, alongside the executed contract. If you need to discuss terms beforehand, use the platform's structured Q&amp;A — direct contact bypasses the audit trail and is blocked.
                 </div>
-            </section>
+                    <h3 id="listing-your-own-asset">Listing your own asset</h3>
 
-            <section id="list">
-                <h2>Listing your own asset</h2>
                 <p>From <code>/energy-assets/dashboard.html</code>, click "List an asset" and choose the type. The wizard walks you through:</p>
                 <ol>
                     <li><strong>Asset profile</strong> — site / plant / project name, location, regulatory registry references (NERC licence for electricity, VCS / Gold Standard / Plan Vivo number for carbon).</li>
@@ -166,22 +248,32 @@
                     <li><strong>Compliance review</strong> — manual review by the listings desk. Typically 24-48 hours for electricity, 48-72 hours for carbon (which needs registry verification).</li>
                 </ol>
 
-                <figure class="gd-figure"><img src="screenshots/energy-assets-listing-detail.png" alt="Listing detail — financials, technical specs, and offering terms on a single page." class="guide-screenshot" loading="lazy" /><figcaption>Listing detail — financials, technical specs, and offering terms on a single page.</figcaption></figure>
-            </section>
+                                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/energy-assets-listing-detail.webp 1x, ../assets/images/edu/energy-assets-listing-detail@2x.webp 2x">
+                            <img src="../assets/images/edu/energy-assets-listing-detail.jpg" srcset="../assets/images/edu/energy-assets-listing-detail.jpg 1x, ../assets/images/edu/energy-assets-listing-detail@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="Listing detail — financials, technical specs, and offering terms on a single page.">
+                        </picture>
+                        <figcaption>Listing detail — financials, technical specs, and offering terms on a single page.</figcaption>
+                    </figure>
+                    <h3 id="settlement">Settlement</h3>
 
-            <section id="settle">
-                <h2>Settlement</h2>
                 <p>When allocation closes, the platform matches bids against the cleared price and produces three artefacts simultaneously: the executed contract (PDF, both signatures), the NIBSS settlement instruction, and the entry in your databank. For electricity and gas, settlement is T+2 from contract execution; for carbon, the credits transfer in the registry within 24 hours and cash settles T+2.</p>
                 <p>You can find every completed trade in your dashboard under "Closed positions". The signed contract and settlement receipt are accessible there indefinitely. They also file automatically to your <a href="../deal-room/room/vault.html">Data Vault</a> in Deal Room if you have a linked account.</p>
-                <div class="gd-callout gd-callout-tip">
+                <div class="callout">
                     <strong>Tip.</strong> If you trade frequently, set up a settlement bank with a 24/7 SWIFT desk (Stanbic IBTC, UBA premier corporate, or Access Premier) — clears outside business hours move faster and reduce T+2 stress.
                 </div>
-            </section>
+                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/energy-ecosystem-dashboard.webp 1x, ../assets/images/edu/energy-ecosystem-dashboard@2x.webp 2x">
+                            <img src="../assets/images/edu/energy-ecosystem-dashboard.jpg" srcset="../assets/images/edu/energy-ecosystem-dashboard.jpg 1x, ../assets/images/edu/energy-ecosystem-dashboard@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="Settlement reconciles against the energy databank.">
+                        </picture>
+                        <figcaption><span class="shot__label">Settlement</span> Settlement reconciles against the energy databank.</figcaption>
+                    </figure>
+                    <h3 id="glossary">Glossary</h3>
 
-            <section id="glossary">
-                <h2>Glossary</h2>
-                <div class="gd-glossary">
-                    <dl>
+                <dl class="terms">
                         <div><dt>Anonymized bid</dt><dd>A bid where your identity is hidden from the listing counterparty until allocation closes. The order book shows your rank but not your firm name.</dd></div>
                         <div><dt>Block</dt><dd>A unit of electricity capacity offered for a fixed tenor — typically expressed in MW + hours / months.</dd></div>
                         <div><dt>Busbar</dt><dd>The delivery point at a power station's outgoing terminals. Most NERC standard PPAs use busbar delivery for the offtaker's account.</dd></div>
@@ -191,12 +283,9 @@
                         <div><dt>VER</dt><dd>Verified Emission Reduction — one tonne of CO₂e avoided or sequestered, certified by VCS, Gold Standard, or Plan Vivo and assigned a serial number.</dd></div>
                         <div><dt>Vintage</dt><dd>The calendar year in which a carbon credit was generated. Older vintages typically trade at a discount.</dd></div>
                     </dl>
-                </div>
-            </section>
+                    <h3 id="frequently-asked">Frequently asked</h3>
 
-            <section id="faq">
-                <h2>Frequently asked</h2>
-                <div class="gd-faq">
+                <div class="faq">
                     <details>
                         <summary>Can individuals buy carbon credits on the platform?</summary>
                         <p>Not yet. Energy Assets is currently counterparty-only — you onboard as a registered organisation. A retail VER product is on the 2026 H2 roadmap.</p>
@@ -218,59 +307,113 @@
                         <p>No. Every listing uses the NERC Standard PPA (electricity), NGA Master Sales Agreement (gas), or VCS Standard Transfer Agreement (carbon) as-is. If you need bespoke terms, take the trade off-platform — but you lose the settlement, audit, and clearing guarantees.</p>
                     </details>
                 </div>
-            </section>
 
-            <div class="gd-cta">
-                <div class="gd-cta-text">
-                    <h3>Open Energy Assets</h3>
-                    <p>Sign in or onboard your organisation in under 24 hours.</p>
+                    <div class="guide-more">
+                        <a href="guide-deal-room.html"><span>Guide</span>Deal Room</a>
+                        <a href="guide-lp-portal.html"><span>Guide</span>LP Portal</a>
+                        <a href="guide-apex-ai.html"><span>Guide</span>Apex AI</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="shell cta__inner">
+                <div>
+                    <span class="eyebrow">Next step</span>
+                    <h2>Open Energy Assets</h2>
                 </div>
-                <a href="../energy-assets/marketplace.html" class="gd-cta-btn">
-                    Go to marketplace
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </a>
+                <div class="cta__actions">
+                    <a class="btn btn--primary" href="../energy-assets/index.html">Open Energy Assets <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    <a class="btn btn--secondary" href="educenter.html">All walkthroughs</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="shell">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__lockup">
+                        <picture>
+                            <source srcset="../assets/images/neiia-arms.webp" type="image/webp">
+                            <img src="../assets/images/neiia-arms.png"
+                                alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                        </picture>
+                        <span class="footer__lockup-text">
+                            <strong>NEIIA</strong>
+                            <span>National Energy Investment &amp; Intelligence Administration</span>
+                        </span>
+                    </div>
+                    <p>Nigeria's centralised platform for energy investment intelligence, asset visibility and
+                        strategic coordination.</p>
+                    <span class="footer__mandate">Operated under the Federal Republic of Nigeria</span>
+                </div>
+
+                <div>
+                    <h3>Modules</h3>
+                    <ul>
+                        <li><a href="../nefund.html">NEFUND</a></li>
+                        <li><a href="../deal-room/index.html">National Energy Deal Room</a></li>
+                        <li><a href="../energy-databank/index.html">National Energy Data Bank</a></li>
+                        <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
+                        <li><a href="../risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Platform</h3>
+                    <ul>
+                        <li><a href="../about.html">About</a></li>
+                        <li><a href="../contact.html">Contact</a></li>
+                        <li><a href="../help-center/index.html">Help centre</a></li>
+                        <li><a href="../edu-center/educenter.html">Edu Center</a></li>
+                        <li><a href="../government-site/index.html">Mandate &amp; governance</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>For users</h3>
+                    <ul>
+                        <li><a href="../newsletter.html">Newsletter</a></li>
+                        <li><a href="../help-center/dealroom.html">Deal Room guide</a></li>
+                        <li><a href="../help-center/account.html">Account help</a></li>
+                        <li><a href="../compliance/index.html">Compliance</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__signup">
+                    <h3>Stay updated</h3>
+                    <p>Regulatory updates, live raises and platform changes. No spam.</p>
+                    <form class="footer__form" data-access-key="REPLACE_WITH_WEB3FORMS_ACCESS_KEY"
+                        data-subject="NEIIA — new newsletter subscriber"
+                        data-success="Confirmed. You are on the distribution list.">
+                        <label class="visually-hidden" for="footer-email">Email address</label>
+                        <input type="email" id="footer-email" name="email" placeholder="you@email.com" required
+                            autocomplete="email">
+                        <button class="btn" type="submit">Subscribe</button>
+                    </form>
+                    <p class="footer__note">By subscribing you agree to our <a
+                            href="../risk-esg/privacy-policy.html">privacy policy</a>.</p>
+                </div>
             </div>
 
-            <!-- prev/next -->
-            <div class="gd-footnav">
-                <a class="gd-footnav-card" href="educenter.html">
-                    <div class="gd-footnav-label">← Back</div>
-                    <div class="gd-footnav-title">All modules</div>
-                </a>
-                <a class="gd-footnav-card is-next" href="guide-deal-room.html">
-                    <div class="gd-footnav-label">Next module →</div>
-                    <div class="gd-footnav-title">Deal Room</div>
-                </a>
-            </div>
-        </main>
-    </div>
-
-    <footer class="footer container" style="margin-top: 0; padding: 60px 20px; background-color: var(--bg-primary); color: var(--text-primary); border-top: 1px solid var(--border-color);">
-        <div class="footer-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto;">
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600;">Products</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../deal-room/index.html" style="color: var(--text-secondary); text-decoration: none;">Deal Room</a></li>
-                    <li style="margin-bottom: 12px;"><a href="https://apex-neiia.vercel.app/" style="color: var(--text-secondary); text-decoration: none;">Apex AI</a></li>
-                    <li style="margin-bottom: 12px;"><a href="educenter.html" style="color: var(--text-secondary); text-decoration: none;">Edu Center</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600;">Administration</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../about.html" style="color: var(--text-secondary); text-decoration: none;">About NEIIA</a></li>
-                    <li style="margin-bottom: 12px;"><a href="../contact.html" style="color: var(--text-secondary); text-decoration: none;">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600;">Engagement</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../help-center/index.html" style="color: var(--text-secondary); text-decoration: none;">Help center</a></li>
-                </ul>
+            <div class="footer__bottom">
+                <p class="footer__copy">
+                    &copy; 2026 <strong>Federal Republic of Nigeria</strong><br>
+                    Operating across all 36 states and the Federal Capital Territory
+                </p>
+                <div class="footer__meta">
+                    <a href="../risk-esg/terms-of-service.html">Terms</a>
+                    <a href="../risk-esg/privacy-policy.html">Privacy</a>
+                    <a href="../compliance/index.html">Compliance</a>
+                    <a href="../contact.html">Contact</a>
+                </div>
             </div>
         </div>
-        <p style="margin-top: 40px; color: var(--text-secondary); font-size: 0.9rem; max-width: 1200px; margin-left: auto; margin-right: auto;">&copy; 2026 NEIIA</p>
     </footer>
 
+    <script src="../assets/js/neiia.js?v=20" defer></script>
 </body>
+
 </html>

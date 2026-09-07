@@ -1,107 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>How to use Apex AI | NEIIA Edu Center</title>
-    <meta name="description" content="Practical guide to Apex AI — the corpus-bound assistant that reads your live portfolio across seven signals and acts inside Deal Room." />
-    <link rel="stylesheet" href="../styles.css" />
-    <link rel="stylesheet" href="educenter.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/svg+xml" href="../assets/images/Coat_of_arms_of_Nigeria.svg" sizes="50x50" />
-    <script src="educenter.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>How to use Apex AI | NEIIA Edu Center &mdash; NEIIA Edu Center</title>
+    <meta name="description" content="Practical guide to Apex AI — the corpus-bound assistant that reads your live portfolio across seven signals and acts inside Deal Room.">
+    <meta name="theme-color" content="#0B1F24">
+    <meta property="og:title" content="How to use Apex AI | NEIIA Edu Center &mdash; NEIIA Edu Center">
+    <meta property="og:description" content="Practical guide to Apex AI — the corpus-bound assistant that reads your live portfolio across seven signals and acts inside Deal Room.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/png" href="../assets/images/neiia-arms.png">
+    <link rel="preload" href="../assets/font/public-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="../assets/css/neiia.css?v=20">
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('neiia-theme');
+                var dark = stored ? stored === 'dark'
+                    : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                document.documentElement.classList.add('has-js');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+    <script src="../auth-check.js"></script>
 </head>
-<body class="gd-body">
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
 
-    <a href="../index.html" class="logo-fixed">
-        <div class="logo-wrapper">
-            <img src="../assets/images/neiis-logo-green.png" alt="NEIIA Logo" class="brand-logo light-mode-logo" style="max-width: 120px; display: none !important;">
-            <img src="../assets/images/neiih_logo_white.png" alt="NEIIA Logo" class="brand-logo dark-mode-logo" style="max-width: 120px; display: block !important;">
-            <div class="brand-text" style="color: #ffffff !important;">NATIONAL ENERGY INVESTMENT &amp; INTELLIGENCE ADMINISTRATION</div>
-        </div>
-    </a>
-
-    <nav class="navbar pill-nav">
-        <div class="nav-links">
-            <div class="nav-item dropdown">
-                <span class="nav-link dropdown-toggle">NEFUND <i class="fas fa-chevron-down" style="font-size:12px;margin-left:6px;"></i></span>
-                <div class="mega-menu"><div class="mm-left-columns"><div class="mm-column">
-                    <ul class="mm-list"><li><a href="../deal-room/index.html">Deal Room</a></li></ul>
-                    <div style="margin-top: 24px;"><h4>Intelligence</h4>
-                        <ul class="mm-list">
-                            <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
-                            <li><a href="educenter.html">Edu Center</a></li>
-                        </ul>
-                    </div>
-                </div></div></div>
-            </div>
-            <a href="../about.html">About</a>
-            <a href="../contact.html">Contact</a>
-            <a href="../help-center/index.html">Help center</a>
-        </div>
-    </nav>
-
-    <div class="auth-fixed"><a href="../newsletter.html" class="btn btn-black">Join</a></div>
-    <button class="mobile-menu-btn" aria-label="Menu">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
-
-    <header class="gd-header">
-        <div class="gd-header-inner">
-            <a href="educenter.html" class="gd-back">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-                Back to Edu Center
+    <header class="masthead">
+        <div class="shell masthead__inner">
+            <a class="brand" href="../index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="../assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="../assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
             </a>
-            <span class="gd-eyebrow">Module 04 · Guide</span>
-            <h1 class="gd-title">How to use <em>Apex AI</em></h1>
-            <p class="gd-lede">The platform's intelligence layer. A corpus-bound assistant that reads your live portfolio across seven signals — and can act inside Deal Room without you leaving the chat.</p>
-            <div class="gd-meta">
-                <span><strong>~9 min</strong> read</span>
-                <span>Last updated <strong>23 May 2026</strong></span>
-                <span>Audience <strong>GPs · LPs · Analysts</strong></span>
-            </div>
+
+            <nav class="nav" aria-label="Primary">
+                <div class="nav__item">
+                    <button class="nav__link" type="button" data-dropdown aria-expanded="false"
+                        aria-controls="panel-shine">
+                        SHINE
+                        <svg class="nav__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none"
+                            aria-hidden="true">
+                            <path d="M2 4.5 6 8.5 10 4.5" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="nav__panel" id="panel-shine">
+                        <span class="nav__panel-label">Capital</span>
+                        <a href="../nefund.html">NEFUND</a>
+                        <a href="../deal-room/index.html">National Energy Deal Room</a>
+                        <span class="nav__panel-label">Intelligence</span>
+                        <a href="https://apex-neiia.vercel.app/">Apex AI <span class="tag">Beta</span></a>
+                        <a href="../edu-center/educenter.html">Edu Center</a>
+                    </div>
+                </div>
+                <a class="nav__link" href="../about.html">About</a>
+                <a class="nav__link" href="../contact.html">Contact</a>
+                <a class="nav__link" href="../help-center/index.html">Help centre</a>
+            </nav>
+
+            <button class="theme-toggle theme-toggle--desktop" type="button" data-theme-toggle aria-pressed="false"
+                aria-label="Switch to dark theme">
+                <svg class="theme-toggle__sun" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4.5" />
+                    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
+                </svg>
+                <svg class="theme-toggle__moon" width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true">
+                    <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" />
+                </svg>
+            </button>
+
+            <a class="btn btn--primary btn--sm" href="../newsletter.html">Get updates</a>
+
+            <button class="nav-toggle" type="button" data-drawer-open aria-expanded="false" aria-controls="nav-drawer"
+                aria-label="Open menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
+            </button>
         </div>
     </header>
 
-    <div class="gd-shell">
-        <aside class="gd-toc">
-            <div class="gd-toc-label">On this page</div>
-            <ul>
-                <li><a href="#what">What it is</a></li>
-                <li><a href="#who">Who it's for</a></li>
-                <li><a href="#start">Getting started</a></li>
-                <li><a href="#signals">The seven signals</a></li>
-                <li><a href="#deal-bound">Deal-bound mode</a></li>
-                <li><a href="#actions">Acting in Deal Room</a></li>
-                <li><a href="#privacy">Privacy model</a></li>
-                <li><a href="#glossary">Glossary</a></li>
-                <li><a href="#faq">FAQ</a></li>
-            </ul>
-        </aside>
+    <div class="drawer" id="nav-drawer">
+        <div class="drawer__head">
+            <a href="../index.html" aria-label="NEIIA — home">
+                <picture class="brand__light">
+                    <source srcset="../assets/images/neiia-logo-light.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-light.png" alt="NEIIA" width="260" height="139">
+                </picture>
+                <picture class="brand__dark">
+                    <source srcset="../assets/images/neiia-logo-dark.webp" type="image/webp">
+                    <img src="../assets/images/neiia-logo-dark.png" alt="NEIIA" width="260" height="140">
+                </picture>
+            </a>
+            <button class="icon-btn" type="button" data-drawer-close aria-label="Close menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+            </button>
+        </div>
+        <div class="drawer__body">
+            <a href="../about.html">About <span aria-hidden="true">&rarr;</span></a>
+            <a href="../contact.html">Contact <span aria-hidden="true">&rarr;</span></a>
+            <a href="../help-center/index.html">Help centre <span aria-hidden="true">&rarr;</span></a>
 
-        <main class="gd-main">
+            <span class="drawer__label">Capital</span>
+            <a href="../nefund.html">NEFUND <span aria-hidden="true">&rarr;</span></a>
+            <a href="../deal-room/index.html">National Energy Deal Room <span aria-hidden="true">&rarr;</span></a>
 
-            <section id="what">
-                <h2>What it is</h2>
+            <span class="drawer__label">Intelligence</span>
+            <a href="https://apex-neiia.vercel.app/">Apex AI <span aria-hidden="true">&rarr;</span></a>
+            <a href="../edu-center/educenter.html">Edu Center <span aria-hidden="true">&rarr;</span></a>
+
+            <div class="drawer__actions">
+                <a class="btn btn--primary" href="../newsletter.html">Get updates</a>
+                <a class="btn btn--secondary" href="../contact.html">Contact the team</a>
+                <button class="btn btn--secondary" type="button" data-theme-toggle aria-pressed="false"
+                    aria-label="Switch to dark theme">Switch theme</button>
+            </div>
+        </div>
+    </div>
+
+    <main id="main">
+        <section class="page-hero">
+            <div class="shell">
+                <nav class="crumbs" aria-label="Breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <span aria-hidden="true">/</span>
+                    <a href="educenter.html">Edu Center</a>
+                    <span aria-hidden="true">/</span>
+                    <span>Apex AI</span>
+                </nav>
+                <span class="eyebrow">Module 04 &middot; Walkthrough</span>
+                <h1>Apex AI</h1>
+                <p class="page-hero__lead">The platform's intelligence layer. A corpus-bound assistant that reads your live portfolio across seven signals — and can act inside Deal Room without you leaving the chat.</p>
+                <div class="page-hero__actions">
+                    <a class="btn btn--primary" href="../apex/apex.html">Open Apex AI <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    <a class="btn btn--secondary" href="../help-center/apex.html">Written reference</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="shell guide">
+                <nav class="guide__nav" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <a href="#who-it-s-for">Who it's for</a>
+                    <a href="#getting-started">Getting started</a>
+                    <a href="#the-seven-signals">The seven signals</a>
+                    <a href="#deal-bound-mode">Deal-bound mode</a>
+                    <a href="#acting-inside-deal-room">Acting inside Deal Room</a>
+                    <a href="#privacy-model">Privacy model</a>
+                    <a href="#glossary">Glossary</a>
+                    <a href="#frequently-asked">Frequently asked</a>
+                </nav>
+                <article class="article">
+                    <p class="article__note">This walkthrough shows the product screens in the order you meet
+                        them. For the short written reference, see the
+                        <a href="../help-center/apex.html">help centre guide</a>.</p>
+
+                    <h2>What it is</h2>
+
                 <p>Apex AI is the chat-driven intelligence layer that sits on top of Deal Room and the LP Portal. It reads <em>your</em> portfolio — your positions, your fund's books, your subscriptions, your watchlist — and answers questions in plain language. It can also act on the same data: share a diligence pack, send a quarterly LP letter, advance a deal stage, or DM an investor.</p>
                 <p>What makes it different from a generic LLM chat is the corpus: Apex's context is exclusively your tenancy. Position data never leaves your workspace and never enters a shared training set. The model is gated by your authentication and your KYC tier — if you can't see something in the UI, Apex can't see it either.</p>
 
-                <figure class="gd-figure"><img src="screenshots/apex-ai-main.png" alt="Apex AI — corpus-bound assistant trained on NEIIA's deal, asset, and regulatory documents." class="guide-screenshot" loading="lazy" /><figcaption>Apex AI — corpus-bound assistant trained on NEIIA's deal, asset, and regulatory documents.</figcaption></figure>
-            </section>
+                                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/apex-ai-main.webp 1x, ../assets/images/edu/apex-ai-main@2x.webp 2x">
+                            <img src="../assets/images/edu/apex-ai-main.jpg" srcset="../assets/images/edu/apex-ai-main.jpg 1x, ../assets/images/edu/apex-ai-main@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="Apex AI — corpus-bound assistant trained on NEIIA&#x27;s deal, asset, and regulatory documents.">
+                        </picture>
+                        <figcaption>Apex AI — corpus-bound assistant trained on NEIIA's deal, asset, and regulatory documents.</figcaption>
+                    </figure>
+                    <h3 id="who-it-s-for">Who it's for</h3>
 
-            <section id="who">
-                <h2>Who it's for</h2>
                 <ul>
                     <li><strong>Fund managers</strong> running active books who want to ask portfolio-level questions without building a spreadsheet — exposure, concentration, vintage performance, pacing.</li>
                     <li><strong>LPs</strong> who want their own slice of the picture — your IRR, your DPI/RVPI, your concentration across the GPs you commit to. The LP view of Apex is read-only and scoped to your portfolio.</li>
                     <li><strong>Analysts</strong> who need to produce a quarterly note or board pack — Apex drafts the narrative against the live data and links every claim back to the underlying record.</li>
                 </ul>
-            </section>
+                    <h3 id="getting-started">Getting started</h3>
 
-            <section id="start">
-                <h2>Getting started</h2>
                 <p>Apex is accessible from the global nav (<em>Intelligence → Apex AI</em>) and from a floating prompt on every Deal Room and Portfolio page. There's no separate setup — once you have a verified Deal Room account, Apex inherits your tenancy.</p>
                 <ol>
                     <li><strong>Open Apex.</strong> From the nav or the floating prompt. The first prompt clears the context to your live portfolio.</li>
@@ -109,13 +203,18 @@
                     <li><strong>Read the answer.</strong> Every answer is two sentences plus a deep-link to the underlying view (Portfolio, a specific deal, the vault).</li>
                     <li><strong>Refine or act.</strong> Ask a follow-up to narrow, or click a chip below the answer to perform an action (share, send, advance, DM).</li>
                 </ol>
-            </section>
+                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/apex-ai-main.webp 1x, ../assets/images/edu/apex-ai-main@2x.webp 2x">
+                            <img src="../assets/images/edu/apex-ai-main.jpg" srcset="../assets/images/edu/apex-ai-main.jpg 1x, ../assets/images/edu/apex-ai-main@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="The Apex AI workspace on first open.">
+                        </picture>
+                        <figcaption><span class="shot__label">Getting started</span> The Apex AI workspace on first open.</figcaption>
+                    </figure>
+                    <h3 id="the-seven-signals">The seven signals</h3>
 
-            <section id="signals">
-                <h2>The seven signals</h2>
                 <p>Apex reads your book across seven defined signals. Each has a primer page inside Apex (click the signal name in any answer). The signals:</p>
-                <div class="gd-glossary">
-                    <dl>
+                <dl class="terms">
                         <div><dt>Exposure &amp; concentration</dt><dd>Sector and stage mix. Apex flags concentrations above 35% and benchmarks against vintage peers.</dd></div>
                         <div><dt>Vintage benchmarks</dt><dd>Net TVPI ranked against vintage-equivalent positions in your asset class.</dd></div>
                         <div><dt>Pacing</dt><dd>Called-to-commitment ratio. Apex flags pacing risk before the next vintage closes.</dd></div>
@@ -124,12 +223,17 @@
                         <div><dt>Conviction</dt><dd>How concentrated your top-decile positions are vs the long tail.</dd></div>
                         <div><dt>Risk flags</dt><dd>Defaults, write-offs, covenant breaches, NAV deteriorations &gt; 15%, calls overdue.</dd></div>
                     </dl>
-                </div>
                 <p>Each signal can also be asked about for a single position. "How is Sunray pacing?" returns the called-to-commitment ratio for that one deal.</p>
-            </section>
+                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/apex-ai-features.webp 1x, ../assets/images/edu/apex-ai-features@2x.webp 2x">
+                            <img src="../assets/images/edu/apex-ai-features.jpg" srcset="../assets/images/edu/apex-ai-features.jpg 1x, ../assets/images/edu/apex-ai-features@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="The seven signals Apex reads across a live portfolio.">
+                        </picture>
+                        <figcaption><span class="shot__label">The seven signals</span> The seven signals Apex reads across a live portfolio.</figcaption>
+                    </figure>
+                    <h3 id="deal-bound-mode">Deal-bound mode</h3>
 
-            <section id="deal-bound">
-                <h2>Deal-bound mode</h2>
                 <p>Inside any Deal Room deal detail page, the Apex prompt is <em>deal-bound</em> — it answers only about that deal. This is the mode most users hit first.</p>
                 <p>What you can ask in deal-bound mode:</p>
                 <ul>
@@ -138,13 +242,19 @@
                     <li>"Who's signed up so far?" — Subscriber composition (anonymized handles, tier breakdown).</li>
                     <li>"Compare this to Geregu Bond." — Side-by-side of two deals on standardized fields.</li>
                 </ul>
-                <div class="gd-callout gd-callout-info">
+                <div class="callout">
                     <strong>What deal-bound mode can't do.</strong> It can't share information you don't have permission to see. If you're Tier 1 and the deal is Tier 3-only, Apex won't pierce that — it'll tell you the deal is gated and offer to start the tier upgrade flow.
                 </div>
-            </section>
+                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/apex-ai-chat.webp 1x, ../assets/images/edu/apex-ai-chat@2x.webp 2x">
+                            <img src="../assets/images/edu/apex-ai-chat.jpg" srcset="../assets/images/edu/apex-ai-chat.jpg 1x, ../assets/images/edu/apex-ai-chat@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="Deal-bound mode, answering against one deal&#x27;s corpus.">
+                        </picture>
+                        <figcaption><span class="shot__label">Deal-bound mode</span> Deal-bound mode, answering against one deal's corpus.</figcaption>
+                    </figure>
+                    <h3 id="acting-inside-deal-room">Acting inside Deal Room</h3>
 
-            <section id="actions">
-                <h2>Acting inside Deal Room</h2>
                 <p>Apex is unusual among AI assistants because it can execute. Every answer comes with action chips for the obvious next moves. Examples:</p>
                 <ul>
                     <li><strong>"Send the Geregu diligence pack to my partner"</strong> — Apex shares the pack with the named user inside Deal Room. The action is logged on the deal's activity feed.</li>
@@ -153,10 +263,8 @@
                     <li><strong>"Draft the quarterly LP letter"</strong> — Pulls the last 90 days of activity, drafts a 600-word narrative, and opens it in the document editor for you to review before send.</li>
                 </ul>
                 <p>Actions always require a confirm click. Apex never executes silently.</p>
-            </section>
+                    <h3 id="privacy-model">Privacy model</h3>
 
-            <section id="privacy">
-                <h2>Privacy model</h2>
                 <p>This is the part most people want clarified, so it gets its own section.</p>
                 <ul>
                     <li><strong>Single-tenant context.</strong> Each Apex session is bound to one user's tenancy. Apex cannot read across tenancies, even within the same firm — if a GP wants Apex to see two funds at once, both funds must share the tenancy explicitly.</li>
@@ -164,12 +272,9 @@
                     <li><strong>Audit log.</strong> Every Apex query and every action it executes is in your audit log, queryable from <code>Settings → Audit</code>. Compliance officers can subpoena it.</li>
                     <li><strong>Inheritance.</strong> Apex inherits your KYC tier. If you can't see a deal in the UI, Apex can't see it either.</li>
                 </ul>
-            </section>
+                    <h3 id="glossary">Glossary</h3>
 
-            <section id="glossary">
-                <h2>Glossary</h2>
-                <div class="gd-glossary">
-                    <dl>
+                <dl class="terms">
                         <div><dt>Corpus-bound</dt><dd>The model only reads inside a defined corpus (your tenancy). It does not query the public internet or other customers' data.</dd></div>
                         <div><dt>Deal-bound mode</dt><dd>Apex prompt scoped to a single deal. Auto-engaged on any deal detail page.</dd></div>
                         <div><dt>Signal</dt><dd>One of the seven analytical lenses Apex reads through (exposure, vintage, pacing, dispersion, DPI/RVPI, conviction, risk).</dd></div>
@@ -177,12 +282,9 @@
                         <div><dt>Action chip</dt><dd>A one-click button below an Apex answer that executes a real platform action (share, send, advance, DM).</dd></div>
                         <div><dt>Vintage</dt><dd>The year a deal was originated. Used as the comparison cohort for benchmarking.</dd></div>
                     </dl>
-                </div>
-            </section>
+                    <h3 id="frequently-asked">Frequently asked</h3>
 
-            <section id="faq">
-                <h2>Frequently asked</h2>
-                <div class="gd-faq">
+                <div class="faq">
                     <details>
                         <summary>Is Apex actually doing analysis or just retrieving?</summary>
                         <p>Both. Retrieval first — Apex queries the data layer for the relevant positions, prices, and activity. Then analysis — it runs the math (concentrations, IRRs, ratios) and writes the narrative. Every claim links back to the source.</p>
@@ -204,58 +306,113 @@
                         <p>No — LPs always get the LP-side Apex on their own portfolio. You can disable Apex for a fund-administrator role if you don't want them seeing AI-generated narratives, but you can't disable it for end investors.</p>
                     </details>
                 </div>
-            </section>
 
-            <div class="gd-cta">
-                <div class="gd-cta-text">
-                    <h3>Open Apex AI</h3>
-                    <p>Ask your first question — it takes 5 seconds.</p>
+                    <div class="guide-more">
+                        <a href="guide-energy-assets.html"><span>Guide</span>Energy Assets</a>
+                        <a href="guide-deal-room.html"><span>Guide</span>Deal Room</a>
+                        <a href="guide-lp-portal.html"><span>Guide</span>LP Portal</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="shell cta__inner">
+                <div>
+                    <span class="eyebrow">Next step</span>
+                    <h2>Open Apex AI</h2>
                 </div>
-                <a href="https://apex-neiia.vercel.app/" class="gd-cta-btn">
-                    Go to Apex
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </a>
+                <div class="cta__actions">
+                    <a class="btn btn--primary" href="../apex/apex.html">Open Apex AI <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                    <a class="btn btn--secondary" href="educenter.html">All walkthroughs</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="shell">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__lockup">
+                        <picture>
+                            <source srcset="../assets/images/neiia-arms.webp" type="image/webp">
+                            <img src="../assets/images/neiia-arms.png"
+                                alt="Coat of Arms of the Federal Republic of Nigeria" width="160" height="136">
+                        </picture>
+                        <span class="footer__lockup-text">
+                            <strong>NEIIA</strong>
+                            <span>National Energy Investment &amp; Intelligence Administration</span>
+                        </span>
+                    </div>
+                    <p>Nigeria's centralised platform for energy investment intelligence, asset visibility and
+                        strategic coordination.</p>
+                    <span class="footer__mandate">Operated under the Federal Republic of Nigeria</span>
+                </div>
+
+                <div>
+                    <h3>Modules</h3>
+                    <ul>
+                        <li><a href="../nefund.html">NEFUND</a></li>
+                        <li><a href="../deal-room/index.html">National Energy Deal Room</a></li>
+                        <li><a href="../energy-databank/index.html">National Energy Data Bank</a></li>
+                        <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
+                        <li><a href="../risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Platform</h3>
+                    <ul>
+                        <li><a href="../about.html">About</a></li>
+                        <li><a href="../contact.html">Contact</a></li>
+                        <li><a href="../help-center/index.html">Help centre</a></li>
+                        <li><a href="../edu-center/educenter.html">Edu Center</a></li>
+                        <li><a href="../government-site/index.html">Mandate &amp; governance</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>For users</h3>
+                    <ul>
+                        <li><a href="../newsletter.html">Newsletter</a></li>
+                        <li><a href="../help-center/dealroom.html">Deal Room guide</a></li>
+                        <li><a href="../help-center/account.html">Account help</a></li>
+                        <li><a href="../compliance/index.html">Compliance</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__signup">
+                    <h3>Stay updated</h3>
+                    <p>Regulatory updates, live raises and platform changes. No spam.</p>
+                    <form class="footer__form" data-access-key="REPLACE_WITH_WEB3FORMS_ACCESS_KEY"
+                        data-subject="NEIIA — new newsletter subscriber"
+                        data-success="Confirmed. You are on the distribution list.">
+                        <label class="visually-hidden" for="footer-email">Email address</label>
+                        <input type="email" id="footer-email" name="email" placeholder="you@email.com" required
+                            autocomplete="email">
+                        <button class="btn" type="submit">Subscribe</button>
+                    </form>
+                    <p class="footer__note">By subscribing you agree to our <a
+                            href="../risk-esg/privacy-policy.html">privacy policy</a>.</p>
+                </div>
             </div>
 
-            <div class="gd-footnav">
-                <a class="gd-footnav-card" href="guide-lp-portal.html">
-                    <div class="gd-footnav-label">← Previous</div>
-                    <div class="gd-footnav-title">LP Portal</div>
-                </a>
-                <a class="gd-footnav-card is-next" href="guide-nefund.html">
-                    <div class="gd-footnav-label">Next module →</div>
-                    <div class="gd-footnav-title">NEFUND</div>
-                </a>
-            </div>
-        </main>
-    </div>
-
-    <footer class="footer container" style="margin-top: 0; padding: 60px 20px; background-color: var(--bg-primary); color: var(--text-primary); border-top: 1px solid var(--border-color);">
-        <div class="footer-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto;">
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600;">Products</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../deal-room/index.html" style="color: var(--text-secondary); text-decoration: none;">Deal Room</a></li>
-                    <li style="margin-bottom: 12px;"><a href="https://apex-neiia.vercel.app/" style="color: var(--text-secondary); text-decoration: none;">Apex AI</a></li>
-                    <li style="margin-bottom: 12px;"><a href="educenter.html" style="color: var(--text-secondary); text-decoration: none;">Edu Center</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600;">Administration</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../about.html" style="color: var(--text-secondary); text-decoration: none;">About NEIIA</a></li>
-                    <li style="margin-bottom: 12px;"><a href="../contact.html" style="color: var(--text-secondary); text-decoration: none;">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 style="margin-bottom: 20px; font-weight: 600;">Engagement</h4>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="../help-center/index.html" style="color: var(--text-secondary); text-decoration: none;">Help center</a></li>
-                </ul>
+            <div class="footer__bottom">
+                <p class="footer__copy">
+                    &copy; 2026 <strong>Federal Republic of Nigeria</strong><br>
+                    Operating across all 36 states and the Federal Capital Territory
+                </p>
+                <div class="footer__meta">
+                    <a href="../risk-esg/terms-of-service.html">Terms</a>
+                    <a href="../risk-esg/privacy-policy.html">Privacy</a>
+                    <a href="../compliance/index.html">Compliance</a>
+                    <a href="../contact.html">Contact</a>
+                </div>
             </div>
         </div>
-        <p style="margin-top: 40px; color: var(--text-secondary); font-size: 0.9rem; max-width: 1200px; margin-left: auto; margin-right: auto;">&copy; 2026 NEIIA</p>
     </footer>
 
+    <script src="../assets/js/neiia.js?v=20" defer></script>
 </body>
+
 </html>
