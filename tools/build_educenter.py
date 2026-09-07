@@ -45,6 +45,24 @@ ARROW = ('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="cu
          'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
          '<path d="M5 12h14M13 6l6 6-6 6" /></svg>')
 
+
+# Captures that must never be published. All 28 screenshots were reviewed frame
+# by frame on 2026-09-07; these show a login gate or an error/empty state, not
+# the product, and the prose around them claims otherwise. A blocked stem is
+# dropped wherever it appears, with a warning, so a bad capture cannot come back
+# by way of a config edit. Re-shoot them signed in, then remove from this list.
+BLOCKED = {
+    "apex-ai-main": "login gate, not the product",
+    "apex-ai-features": "login gate, not the product",
+    "apex-ai-chat": "login gate, not the product",
+    "energy-ecosystem-dashboard": "login gate (byte-identical to apex-ai-main)",
+    "energy-ecosystem-chart": "login gate, not the product",
+    "deal-room-detail": "empty state reading DEAL NOT FOUND",
+    "energy-assets-listing-detail": "empty state reading Listing not found",
+    "deal-room-portfolio": "empty portfolio, every figure zero",
+    "deal-room-publisher": "empty state, you haven't listed any deals yet",
+}
+
 # --- The five guides -------------------------------------------------------
 # `extra` places screenshots the old pages never used. The captures exist in the
 # repo for all five products but only 13 of 28 were ever shown, and the Edu
@@ -60,10 +78,10 @@ GUIDES = [
         "helpcentre": "energy-assets.html",
         "open": ("../energy-assets/index.html", "Open Energy Assets"),
         "extra": {
+            "getting-started": ("energy-assets-hub",
+                                "The Energy Assets home, with live prices across electricity, gas and carbon."),
             "browsing-listings": ("energy-assets-marketplace",
                                   "The marketplace board, filtered by asset type and tenor."),
-            "settlement": ("energy-ecosystem-dashboard",
-                           "Settlement reconciles against the energy databank."),
         },
     },
     {
@@ -172,7 +190,11 @@ def chrome(current=None):
     return top, foot
 
 
-def head(title, desc):
+def head(title, desc, gated=True):
+    """`gated` mirrors what the page did before the rebuild: the hub was behind
+    auth-check.js, the five guides were not. Adding it to the guides would bounce
+    every shared or indexed deep link back to the homepage."""
+    gate = '    <script src="../auth-check.js"></script>\n' if gated else ""
     return f"""<!DOCTYPE html>
 <html lang="en">
 
@@ -201,12 +223,19 @@ def head(title, desc):
             }}
         }})();
     </script>
-    <script src="../auth-check.js"></script>
-</head>
+{gate}</head>
 """
 
 
 # --- Helpers ---------------------------------------------------------------
+WARNINGS = []
+
+
+def warn(message):
+    WARNINGS.append(message)
+    print(f"  ! {message}")
+
+
 def slug(text):
     text = re.sub(r"<[^>]+>", "", text)
     text = html.unescape(text).lower()
@@ -237,7 +266,7 @@ def shot(stem, caption, label=None, indent=" " * 20):
 
 
 # --- Porting the old guide markup -----------------------------------------
-def port_body(raw, extra):
+def port_body(raw, used):
     """Map one old <section> block onto design-system markup."""
     out = raw
 
@@ -247,18 +276,27 @@ def port_body(raw, extra):
         src = re.search(r'src="screenshots/([a-z0-9-]+)\.png"', block)
         cap = re.search(r"<figcaption>(.*?)</figcaption>", block, re.S)
         if not src:
+            warn(f"figure dropped, unrecognised image path: {block[:80]}")
             return ""
+        stem = src.group(1)
+        if stem in BLOCKED:
+            warn(f"figure dropped, {stem}: {BLOCKED[stem]}")
+            return ""
+        if stem in used:
+            return ""
+        used.add(stem)
         caption = cap.group(1).strip() if cap else ""
-        return shot(src.group(1), caption)
+        return shot(stem, caption)
 
     out = re.sub(r"<figure class=\"gd-figure\">.*?</figure>", figure, out, flags=re.S)
 
     # callouts
     out = re.sub(r'<div class="gd-callout[^"]*">', '<div class="callout">', out)
 
-    # glossary -> dl.terms
-    out = re.sub(r'<div class="gd-glossary">\s*<dl>', '<dl class="terms">', out)
-    out = re.sub(r"</dl>\s*</div>", "</dl>", out)
+    # glossary -> dl.terms. Matched as one block so the closing </div> is only
+    # removed together with the opening one it belongs to.
+    out = re.sub(r'<div class="gd-glossary">\s*<dl>(.*?)</dl>\s*</div>',
+                 lambda m: '<dl class="terms">' + m.group(1) + "</dl>", out, flags=re.S)
 
     # faq
     out = out.replace('<div class="gd-faq">', '<div class="faq">')
@@ -280,6 +318,7 @@ def port_guide(cfg):
 
     sections = re.findall(r"<section[^>]*>(.*?)</section>", main, re.S)
     nav, body = [], []
+    used = set()  # stems already placed on this page, so none appears twice
     for i, sec in enumerate(sections):
         m = re.search(r"<h2[^>]*>(.*?)</h2>", sec, re.S)
         if not m:
@@ -287,7 +326,7 @@ def port_guide(cfg):
         heading = m.group(1).strip()
         sid = slug(heading)
         rest = sec[m.end():]
-        rest = port_body(rest, cfg["extra"])
+        rest = port_body(rest, used)
         # the opening section carries the page's own h2, the rest are h3 anchors
         if i == 0:
             body.append(f"                    <h2>{heading}</h2>\n{rest.rstrip()}\n")
@@ -297,7 +336,13 @@ def port_guide(cfg):
         # a curated screenshot for this section, if the old page had none
         if sid in cfg["extra"] and 'class="shot"' not in rest:
             stem, caption = cfg["extra"][sid]
-            body.append(shot(stem, caption, label=strip_tags(heading)))
+            if stem in BLOCKED:
+                warn(f"{cfg['out']} / {sid}: dropped {stem}, {BLOCKED[stem]}")
+            elif stem in used:
+                warn(f"{cfg['out']} / {sid}: {stem} already shown on this page, skipped")
+            else:
+                used.add(stem)
+                body.append(shot(stem, caption, label=strip_tags(heading)))
 
     # cross-link to the written reference, then the sibling guides
     more = [g for g in GUIDES if g["out"] != cfg["out"]][:3]
@@ -306,8 +351,19 @@ def port_guide(cfg):
         for g in more)
 
     url, label = cfg["open"]
+    # A module whose captures were all blocked has no screens to promise.
+    if "".join(body).count('class="shot"'):
+        note = (f'This walkthrough shows the product screens in the order you meet\n'
+                f'                        them. For the short written reference, see the\n'
+                f'                        <a href="../help-center/{cfg["helpcentre"]}">help centre guide</a>.')
+    else:
+        note = (f'Screens for this module have not been captured yet, so this is the written\n'
+                f'                        walkthrough. For the short reference, see the\n'
+                f'                        <a href="../help-center/{cfg["helpcentre"]}">help centre guide</a>.')
     top, foot = chrome()
-    page = head(html.escape(title_full, quote=True) + " &mdash; NEIIA Edu Center", html.escape(desc, quote=True))
+    # the source titles already end in "| NEIIA Edu Center"; do not append it twice
+    title = re.sub(r"\s*\|\s*NEIIA Edu Center\s*$", "", title_full)
+    page = head(f"{title} &mdash; NEIIA Edu Center", desc, gated=False)
     page += top
     page += f"""    <main id="main">
         <section class="page-hero">
@@ -336,9 +392,7 @@ def port_guide(cfg):
 {chr(10).join(nav)}
                 </nav>
                 <article class="article">
-                    <p class="article__note">This walkthrough shows the product screens in the order you meet
-                        them. For the short written reference, see the
-                        <a href="../help-center/{cfg["helpcentre"]}">help centre guide</a>.</p>
+                    <p class="article__note">{note}</p>
 
 {"".join(body)}
                     <div class="guide-more">
@@ -375,19 +429,32 @@ def hub(counts):
         src = open(os.path.join(SRC_DIR, cfg["src"]), encoding="utf-8").read()
         lede = strip_tags(re.search(r'<p class="gd-lede">(.*?)</p>', src, re.S).group(1))
         shots = counts[cfg["out"]]
-        base = f"../assets/images/edu/{stem}"
-        cards.append(f"""                    <a class="screen" href="{cfg["out"]}">
-                        <picture>
+        # A module whose only captures are blocked gets a card with no picture
+        # rather than somebody else's screen.
+        if stem in BLOCKED:
+            warn(f"hub card for {cfg['name']}: no usable capture ({BLOCKED[stem]})")
+            picture = ""
+        else:
+            base = f"../assets/images/edu/{stem}"
+            picture = f"""                        <picture>
                             <source type="image/webp" srcset="{base}.webp 1x, {base}@2x.webp 2x">
                             <img src="{base}.jpg" srcset="{base}.jpg 1x, {base}@2x.jpg 2x" width="920"
                                 height="575" loading="lazy" decoding="async"
                                 alt="{html.escape(cfg["name"], quote=True)} product screen">
                         </picture>
-                        <div class="screen__body">
+"""
+        if shots == 0:
+            meta = "Written walkthrough &middot; screens to come"
+        elif shots == 1:
+            meta = "1 screen &middot; walkthrough"
+        else:
+            meta = f"{shots} screens &middot; walkthrough"
+        cards.append(f"""                    <a class="screen" href="{cfg["out"]}">
+{picture}                        <div class="screen__body">
                             <span class="screen__id">{cfg["module"]}</span>
                             <h3>{cfg["name"]}</h3>
                             <p>{lede}</p>
-                            <span class="screen__meta">{shots} screens &middot; walkthrough</span>
+                            <span class="screen__meta">{meta}</span>
                         </div>
                     </a>""")
 
@@ -406,9 +473,9 @@ def hub(counts):
                 </nav>
                 <span class="eyebrow">Edu Center</span>
                 <h1>See the platform, screen by screen</h1>
-                <p class="page-hero__lead">Five of the nine modules have interfaces you can walk through today.
-                    Each walkthrough follows the product in the order you actually meet it, with the real screens
-                    at every step. For the short written reference on any module, use the help centre.</p>
+                <p class="page-hero__lead">Five of the nine modules have walkthroughs today. Each one follows the
+                    product in the order you actually meet it, with the real screens at every step where a screen
+                    has been captured. For the short written reference on any module, use the help centre.</p>
                 <div class="page-hero__actions">
                     <a class="btn btn--primary" href="guide-deal-room.html">Start with Deal Room {ARROW}</a>
                     <a class="btn btn--secondary" href="../help-center/index.html">Help centre</a>

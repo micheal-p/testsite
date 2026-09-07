@@ -59,6 +59,25 @@ in order, the help centre is the short written reference, and every page cross-l
 through `srcset`. The whole set is 557KB of webp at 1x. Run it on the original PNG, never on its own
 output.
 
+### Blocked screenshots
+
+All 28 captures were reviewed frame by frame on 2026-09-07. **Nine are unpublishable** and sit in
+`BLOCKED` in `build_educenter.py`: five are the "Authorized access only" login modal rather than the
+product (`apex-ai-main`, `apex-ai-features`, `apex-ai-chat`, `energy-ecosystem-chart`, and
+`energy-ecosystem-dashboard`, which is byte-identical to `apex-ai-main`), two are error states
+(`deal-room-detail` reads DEAL NOT FOUND, `energy-assets-listing-detail` reads Listing not found), and
+two are empty states (`deal-room-portfolio` is all zeros, `deal-room-publisher` says you haven't listed
+any deals yet). Every one of them had been placed under a caption claiming it showed a working feature.
+
+The generator drops a blocked stem wherever it appears and prints a warning, so a bad capture cannot
+return through a config edit. **Apex AI therefore has no screens at all**: its hub card renders without
+a picture and its page opens by saying the screens have not been captured yet. To fix it, re-shoot the
+Apex AI, energy ecosystem, deal detail, listing detail, portfolio and publisher screens **signed in and
+with data on screen**, re-run `build_edu_shots.py`, and delete those entries from `BLOCKED`.
+
+`auth-check.js` is emitted on the hub only, which is what these pages did before the rebuild. Adding it
+to the five guides would bounce every shared or indexed deep link back to the homepage.
+
 `edu-center/educenter.css` and `educenter.js` are now dead: no served page references them. They are
 left in place rather than deleted.
 

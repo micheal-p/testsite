@@ -3139,6 +3139,9 @@ ul {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--s-6);
+  /* a card with no screenshot yet sizes to its own content rather than
+     stretching to match the tallest card in its row */
+  align-items: start;
 }
 
 .screen {

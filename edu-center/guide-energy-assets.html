@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>How to use Energy Assets | NEIIA Edu Center &mdash; NEIIA Edu Center</title>
+    <title>How to use Energy Assets &mdash; NEIIA Edu Center</title>
     <meta name="description" content="Practical guide to NEIIA Energy Assets — browse listings, place bids, settle through the energy databank, and list your own asset.">
     <meta name="theme-color" content="#0B1F24">
-    <meta property="og:title" content="How to use Energy Assets | NEIIA Edu Center &mdash; NEIIA Edu Center">
+    <meta property="og:title" content="How to use Energy Assets &mdash; NEIIA Edu Center">
     <meta property="og:description" content="Practical guide to NEIIA Energy Assets — browse listings, place bids, settle through the energy databank, and list your own asset.">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="../assets/images/neiia-arms.png">
@@ -26,7 +26,6 @@
             }
         })();
     </script>
-    <script src="../auth-check.js"></script>
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to main content</a>
@@ -178,15 +177,6 @@
 
                 <p>Energy Assets is the trading layer on top of Nigeria's energy ecosystem. It lets verified counterparties post electricity contracts, gas forwards, and carbon credit certificates as listings; lets buyers place anonymous bids; and lets the platform settle and record the trades. Think of it as a regulated, opinionated marketplace for the energy assets the country actually moves — with the order book, listing forms, and compliance hooks in one place.</p>
                 <p>The product sits inside the broader <a href="../energy-assets/dashboard.html">Energy Ecosystem dashboard</a>, which shows the macro view (total volume, mover-of-the-day, active listings). The marketplace itself lives at <code>/energy-assets/marketplace.html</code>.</p>
-
-                                    <figure class="shot">
-                        <picture>
-                            <source type="image/webp" srcset="../assets/images/edu/energy-ecosystem-dashboard.webp 1x, ../assets/images/edu/energy-ecosystem-dashboard@2x.webp 2x">
-                            <img src="../assets/images/edu/energy-ecosystem-dashboard.jpg" srcset="../assets/images/edu/energy-ecosystem-dashboard.jpg 1x, ../assets/images/edu/energy-ecosystem-dashboard@2x.jpg 2x"
-                                width="920" height="575" loading="lazy" decoding="async" alt="Energy Ecosystem dashboard — KPI cards and pipeline status across all listed assets.">
-                        </picture>
-                        <figcaption>Energy Ecosystem dashboard — KPI cards and pipeline status across all listed assets.</figcaption>
-                    </figure>
                     <h3 id="who-it-s-for">Who it's for</h3>
 
                 <p>Three groups use Energy Assets, in different lanes:</p>
@@ -209,6 +199,14 @@
                 <div class="callout">
                     <strong>Heads up.</strong> Energy Assets is a counterparty platform — you onboard as an organisation, not an individual. Personal investor accounts (for Deal Room or LP Portal) won't unlock the marketplace.
                 </div>
+                    <figure class="shot">
+                        <picture>
+                            <source type="image/webp" srcset="../assets/images/edu/energy-assets-hub.webp 1x, ../assets/images/edu/energy-assets-hub@2x.webp 2x">
+                            <img src="../assets/images/edu/energy-assets-hub.jpg" srcset="../assets/images/edu/energy-assets-hub.jpg 1x, ../assets/images/edu/energy-assets-hub@2x.jpg 2x"
+                                width="920" height="575" loading="lazy" decoding="async" alt="The Energy Assets home, with live prices across electricity, gas and carbon.">
+                        </picture>
+                        <figcaption><span class="shot__label">Getting started</span> The Energy Assets home, with live prices across electricity, gas and carbon.</figcaption>
+                    </figure>
                     <h3 id="browsing-listings">Browsing listings</h3>
 
                 <p>The marketplace at <code>/energy-assets/marketplace.html</code> opens to the full active board. Use the type tabs across the top to filter by Electricity / Gas / Carbon. The filter bar below adds tenor, geography, and price range. The currency toggle on the right flips every figure between NGN and USD at the live CBN rate.</p>
@@ -247,15 +245,6 @@
                     <li><strong>Documentation</strong> — upload the offering memorandum, technical due diligence pack, and any third-party verification. These go to the listing's data room and are released to bidders on request, with all access logged.</li>
                     <li><strong>Compliance review</strong> — manual review by the listings desk. Typically 24-48 hours for electricity, 48-72 hours for carbon (which needs registry verification).</li>
                 </ol>
-
-                                    <figure class="shot">
-                        <picture>
-                            <source type="image/webp" srcset="../assets/images/edu/energy-assets-listing-detail.webp 1x, ../assets/images/edu/energy-assets-listing-detail@2x.webp 2x">
-                            <img src="../assets/images/edu/energy-assets-listing-detail.jpg" srcset="../assets/images/edu/energy-assets-listing-detail.jpg 1x, ../assets/images/edu/energy-assets-listing-detail@2x.jpg 2x"
-                                width="920" height="575" loading="lazy" decoding="async" alt="Listing detail — financials, technical specs, and offering terms on a single page.">
-                        </picture>
-                        <figcaption>Listing detail — financials, technical specs, and offering terms on a single page.</figcaption>
-                    </figure>
                     <h3 id="settlement">Settlement</h3>
 
                 <p>When allocation closes, the platform matches bids against the cleared price and produces three artefacts simultaneously: the executed contract (PDF, both signatures), the NIBSS settlement instruction, and the entry in your databank. For electricity and gas, settlement is T+2 from contract execution; for carbon, the credits transfer in the registry within 24 hours and cash settles T+2.</p>
@@ -263,14 +252,6 @@
                 <div class="callout">
                     <strong>Tip.</strong> If you trade frequently, set up a settlement bank with a 24/7 SWIFT desk (Stanbic IBTC, UBA premier corporate, or Access Premier) — clears outside business hours move faster and reduce T+2 stress.
                 </div>
-                    <figure class="shot">
-                        <picture>
-                            <source type="image/webp" srcset="../assets/images/edu/energy-ecosystem-dashboard.webp 1x, ../assets/images/edu/energy-ecosystem-dashboard@2x.webp 2x">
-                            <img src="../assets/images/edu/energy-ecosystem-dashboard.jpg" srcset="../assets/images/edu/energy-ecosystem-dashboard.jpg 1x, ../assets/images/edu/energy-ecosystem-dashboard@2x.jpg 2x"
-                                width="920" height="575" loading="lazy" decoding="async" alt="Settlement reconciles against the energy databank.">
-                        </picture>
-                        <figcaption><span class="shot__label">Settlement</span> Settlement reconciles against the energy databank.</figcaption>
-                    </figure>
                     <h3 id="glossary">Glossary</h3>
 
                 <dl class="terms">
