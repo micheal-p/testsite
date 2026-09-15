@@ -329,7 +329,7 @@
     var AUTH_KEY = "neiia_authenticated";
     var LOCKOUT_KEY = "neiia_lockout";
     var BASE_LOCKOUT_MS = 90 * 1000;
-    var VALID = "bm9hY2Nlc3M6d2F0ZXJmYWxsMzY1";
+    var VALID = "bmVpaWFAZWNuOk5FTWlDMjAyNg==";
 
     var form = document.getElementById("gate-form");
     var user = document.getElementById("gate-user");
