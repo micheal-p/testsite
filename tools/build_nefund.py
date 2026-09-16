@@ -78,7 +78,7 @@ MASTHEAD = f'''<body>
                     <div class="nav__panel" id="panel-shine">
                         <span class="nav__panel-label">Capital</span>
                         <a href="nefund.html" aria-current="page">NEFUND</a>
-                        <a href="deal-room/index.html">National Energy Deal Room</a>
+                        <a href="https://dealroom-neiia.vercel.app/">National Energy Deal Room</a>
                         <span class="nav__panel-label">Intelligence</span>
                         <a href="https://apex-neiia.vercel.app/">Apex AI <span class="tag">Beta</span></a>
                         <a href="edu-center/educenter.html">Edu Center</a>
@@ -134,7 +134,7 @@ MASTHEAD = f'''<body>
 
             <span class="drawer__label">Capital</span>
             <a href="nefund.html">NEFUND <span aria-hidden="true">&rarr;</span></a>
-            <a href="deal-room/index.html">National Energy Deal Room <span aria-hidden="true">&rarr;</span></a>
+            <a href="https://dealroom-neiia.vercel.app/">National Energy Deal Room <span aria-hidden="true">&rarr;</span></a>
 
             <span class="drawer__label">Intelligence</span>
             <a href="https://apex-neiia.vercel.app/">Apex AI <span aria-hidden="true">&rarr;</span></a>
@@ -178,7 +178,7 @@ FOOTER = '''    </main>
                     <h4>Modules</h4>
                     <ul>
                         <li><a href="nefund.html">NEFUND</a></li>
-                        <li><a href="deal-room/index.html">National Energy Deal Room</a></li>
+                        <li><a href="https://dealroom-neiia.vercel.app/">National Energy Deal Room</a></li>
                         <li><a href="https://nedb.vercel.app">National Energy Data Bank</a></li>
                         <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
                         <li><a href="risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
@@ -401,7 +401,7 @@ BODY = f'''        <section class="nf-hero">
                         <li>Live LP portfolio with an on-demand AI performance read</li>
                     </ul>
                     <div class="hero__actions">
-                        <a class="btn btn--primary" href="deal-room/index.html">Open Deal Room {ARROW}</a>
+                        <a class="btn btn--primary" href="https://dealroom-neiia.vercel.app/">Open Deal Room {ARROW}</a>
                         <a class="btn btn--secondary" href="https://lp-neiia.vercel.app/" target="_blank"
                             rel="noopener noreferrer">Open GP &amp; LP</a>
                     </div>
@@ -538,7 +538,7 @@ BODY = f'''        <section class="nf-hero">
                     <h2>Raise or invest through NEFUND.</h2>
                 </div>
                 <div class="cta__actions">
-                    <a class="btn btn--primary" href="deal-room/index.html">Open Deal Room {ARROW}</a>
+                    <a class="btn btn--primary" href="https://dealroom-neiia.vercel.app/">Open Deal Room {ARROW}</a>
                     <a class="btn btn--secondary" href="contact.html">Contact the team</a>
                 </div>
             </div>

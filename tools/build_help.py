@@ -121,7 +121,7 @@ def masthead():
                     <div class="nav__panel" id="panel-shine">
                         <span class="nav__panel-label">Capital</span>
                         <a href="{P}nefund.html">NEFUND</a>
-                        <a href="{P}deal-room/index.html">National Energy Deal Room</a>
+                        <a href="https://dealroom-neiia.vercel.app/">National Energy Deal Room</a>
                         <span class="nav__panel-label">Intelligence</span>
                         <a href="https://apex-neiia.vercel.app/">Apex AI <span class="tag">Beta</span></a>
                         <a href="{P}edu-center/educenter.html">Edu Center</a>
@@ -177,7 +177,7 @@ def masthead():
 
             <span class="drawer__label">Capital</span>
             <a href="{P}nefund.html">NEFUND <span aria-hidden="true">&rarr;</span></a>
-            <a href="{P}deal-room/index.html">National Energy Deal Room <span aria-hidden="true">&rarr;</span></a>
+            <a href="https://dealroom-neiia.vercel.app/">National Energy Deal Room <span aria-hidden="true">&rarr;</span></a>
 
             <span class="drawer__label">Intelligence</span>
             <a href="https://apex-neiia.vercel.app/">Apex AI <span aria-hidden="true">&rarr;</span></a>
@@ -223,7 +223,7 @@ def footer():
                     <h4>Modules</h4>
                     <ul>
                         <li><a href="{P}nefund.html">NEFUND</a></li>
-                        <li><a href="{P}deal-room/index.html">National Energy Deal Room</a></li>
+                        <li><a href="https://dealroom-neiia.vercel.app/">National Energy Deal Room</a></li>
                         <li><a href="https://nedb.vercel.app">National Energy Data Bank</a></li>
                         <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
                         <li><a href="{P}risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>

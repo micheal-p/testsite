@@ -90,7 +90,7 @@ GUIDES = [
         "module": "Module 02",
         "name": "Deal Room",
         "helpcentre": "dealroom.html",
-        "open": ("../deal-room/index.html", "Open Deal Room"),
+        "open": ("https://dealroom-neiia.vercel.app/", "Open Deal Room"),
         "extra": {
             "investor-onboarding": ("deal-room-signin",
                                     "Sign-in and onboarding. Identity capture runs before any deal data appears."),

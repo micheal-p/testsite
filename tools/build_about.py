@@ -259,7 +259,7 @@ REGISTER = '''
                         </span>
                         <span class="reg-row__go"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
                     </a>
-                    <a class="reg-row" href="deal-room/index.html">
+                    <a class="reg-row" href="https://dealroom-neiia.vercel.app/">
                         <span class="reg-row__id">04</span>
                         <span>
                             <span class="reg-row__name">National Energy Deal Room</span>
