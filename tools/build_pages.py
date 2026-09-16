@@ -210,7 +210,6 @@ def footer(p):
                         <li><a href="{p}newsletter.html">Newsletter</a></li>
                         <li><a href="{p}help-center/dealroom.html">Deal Room guide</a></li>
                         <li><a href="{p}help-center/account.html">Account help</a></li>
-                        <li><a href="{p}compliance/index.html">Compliance</a></li>
                     </ul>
                 </div>
 
@@ -239,7 +238,6 @@ def footer(p):
                 <div class="footer__meta">
                     <a href="{p}risk-esg/terms-of-service.html">Terms</a>
                     <a href="{p}risk-esg/privacy-policy.html">Privacy</a>
-                    <a href="{p}compliance/index.html">Compliance</a>
                     <a href="{p}contact.html">Contact</a>
                 </div>
             </div>
