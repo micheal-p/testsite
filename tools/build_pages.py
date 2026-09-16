@@ -187,7 +187,7 @@ def footer(p):
                     <ul>
                         <li><a href="{p}nefund.html">NEFUND</a></li>
                         <li><a href="{p}deal-room/index.html">National Energy Deal Room</a></li>
-                        <li><a href="{p}energy-databank/index.html">National Energy Data Bank</a></li>
+                        <li><a href="https://nedb.vercel.app">National Energy Data Bank</a></li>
                         <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
                         <li><a href="{p}risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
                     </ul>

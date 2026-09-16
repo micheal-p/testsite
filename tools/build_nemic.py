@@ -475,7 +475,7 @@ INSTRUMENTS = '''
          'Statutory custodian of Nigeria&rsquo;s official energy statistics under the Energy Commission Act, '
          'with a National Energy Data Fund to be established through voluntary contributions from '
          'international development partners. '
-         '<a href="energy-databank/index.html">Open the data bank</a>.') + \
+         '<a href="https://nedb.vercel.app">Open the data bank</a>.') + \
     '''                </div>
             </div>
         </section>

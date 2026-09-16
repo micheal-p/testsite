@@ -251,7 +251,7 @@ REGISTER = '''
                         </span>
                         <span class="reg-row__go"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
                     </a>
-                    <a class="reg-row" href="energy-databank/index.html">
+                    <a class="reg-row" href="https://nedb.vercel.app">
                         <span class="reg-row__id">03</span>
                         <span>
                             <span class="reg-row__name">National Energy Data Bank</span>
