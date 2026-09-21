@@ -237,7 +237,7 @@ def footer():
                         <li><a href="{P}contact.html">Contact</a></li>
                         <li><a href="index.html">Help centre</a></li>
                         <li><a href="{P}edu-center/educenter.html">Edu Center</a></li>
-                        <li><a href="{P}government-site/index.html">Mandate &amp; governance</a></li>
+                        <li><a href="https://neiia-governance.vercel.app/">Mandate &amp; governance</a></li>
                     </ul>
                 </div>
 
