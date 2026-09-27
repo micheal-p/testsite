@@ -28,13 +28,8 @@
     }
 
     function checkAuth() {
-        // Preview mode: ?preview=1 in the URL grants a session pass.
-        // Lets external partner sites (e.g. nor-website) deep-link into modules.
-        if (/[?&]preview=1\b/.test(window.location.search)) {
-            sessionStorage.setItem(AUTH_KEY, 'true');
-            return;
-        }
-
+        // No preview/partner bypass: every visitor must pass the gate, so a
+        // deep link from a partner site lands on the login page first.
         const isAuthenticated = sessionStorage.getItem(AUTH_KEY) === 'true';
 
         if (!isAuthenticated) {

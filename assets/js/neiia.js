@@ -317,7 +317,10 @@
 
      Contract must match auth-check.js, which every other page relies on:
        sessionStorage['neiia_authenticated'] === 'true'
-     and ?preview=1 grants a session pass so partner sites can deep-link.
+
+     There is deliberately NO preview/partner bypass: every visitor, including
+     deep links from partner sites, must pass the gate. Partner-facing apps
+     embed the portable gate instead (see gate/gate.js).
 
      Presentation-layer only — the credential is readable in this file and the
      lockout is clearable from devtools. Real gating belongs at the edge.
@@ -411,13 +414,6 @@
     function close() {
       gate.hidden = true;
       document.body.style.overflow = "";
-    }
-
-    // Deep-link pass, mirroring auth-check.js
-    if (/[?&]preview=1\b/.test(window.location.search)) {
-      store(AUTH_KEY, "true", true);
-      close();
-      return;
     }
 
     if (read(AUTH_KEY, true) === "true") {
