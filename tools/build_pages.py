@@ -189,7 +189,7 @@ def footer(p):
                         <li><a href="https://dealroom-neiia.vercel.app/">National Energy Deal Room</a></li>
                         <li><a href="https://nedb.vercel.app">National Energy Data Bank</a></li>
                         <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
-                        <li><a href="{p}risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
+                        <li><a href="https://risk-esg.vercel.app/">Risk &amp; ESG Intelligence</a></li>
                     </ul>
                 </div>
 
@@ -226,7 +226,7 @@ def footer(p):
                         <button class="btn" type="submit">Subscribe</button>
                     </form>
                     <p class="footer__note">By subscribing you agree to our <a
-                            href="{p}risk-esg/privacy-policy.html">privacy policy</a>.</p>
+                            href="https://risk-esg.vercel.app/privacy">privacy policy</a>.</p>
                 </div>
             </div>
 
@@ -236,8 +236,8 @@ def footer(p):
                     Abuja &middot; Lagos &middot; Port Harcourt
                 </p>
                 <div class="footer__meta">
-                    <a href="{p}risk-esg/terms-of-service.html">Terms</a>
-                    <a href="{p}risk-esg/privacy-policy.html">Privacy</a>
+                    <a href="https://risk-esg.vercel.app/terms">Terms</a>
+                    <a href="https://risk-esg.vercel.app/privacy">Privacy</a>
                     <a href="{p}contact.html">Contact</a>
                 </div>
             </div>
@@ -418,7 +418,7 @@ def contact():
                         </div>
                         <button class="btn btn--primary" type="submit">Send enquiry {ARROW}</button>
                         <p class="form__note">Submissions are handled under our <a
-                                href="risk-esg/privacy-policy.html">privacy policy</a> and NDPA 2023.</p>
+                                href="https://risk-esg.vercel.app/privacy">privacy policy</a> and NDPA 2023.</p>
                     </form>
                 </div>
 
@@ -501,7 +501,7 @@ def newsletter():
                             <input type="text" id="n-org" name="organisation" autocomplete="organization">
                         </div>
                         <button class="btn btn--primary" type="submit">Subscribe {ARROW}</button>
-                        <p class="form__note">Handled under our <a href="risk-esg/privacy-policy.html">privacy
+                        <p class="form__note">Handled under our <a href="https://risk-esg.vercel.app/privacy">privacy
                                 policy</a> and NDPA 2023. We do not share addresses.</p>
                     </form>
                 </div>

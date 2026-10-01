@@ -226,7 +226,7 @@ def footer():
                         <li><a href="https://dealroom-neiia.vercel.app/">National Energy Deal Room</a></li>
                         <li><a href="https://nedb.vercel.app">National Energy Data Bank</a></li>
                         <li><a href="https://apex-neiia.vercel.app/">Apex AI</a></li>
-                        <li><a href="{P}risk-esg/index.html">Risk &amp; ESG Intelligence</a></li>
+                        <li><a href="https://risk-esg.vercel.app/">Risk &amp; ESG Intelligence</a></li>
                     </ul>
                 </div>
 
@@ -262,7 +262,7 @@ def footer():
                         <button class="btn" type="submit">Subscribe</button>
                     </form>
                     <p class="footer__note">By subscribing you agree to our <a
-                            href="{P}risk-esg/privacy-policy.html">privacy policy</a>.</p>
+                            href="https://risk-esg.vercel.app/privacy">privacy policy</a>.</p>
                 </div>
             </div>
 
@@ -272,8 +272,8 @@ def footer():
                     Abuja &middot; Lagos &middot; Port Harcourt
                 </p>
                 <div class="footer__meta">
-                    <a href="{P}risk-esg/terms-of-service.html">Terms</a>
-                    <a href="{P}risk-esg/privacy-policy.html">Privacy</a>
+                    <a href="https://risk-esg.vercel.app/terms">Terms</a>
+                    <a href="https://risk-esg.vercel.app/privacy">Privacy</a>
                     <a href="{P}contact.html">Contact</a>
                 </div>
             </div>

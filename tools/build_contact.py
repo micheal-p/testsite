@@ -131,7 +131,7 @@ FORM_MARKUP = '''
                         </div>
                         <button class="btn btn--primary" type="submit">Send enquiry <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></button>
                         <p class="form__note">Submissions are handled under our <a
-                                href="risk-esg/privacy-policy.html">privacy policy</a> and NDPA 2023.</p>
+                                href="https://risk-esg.vercel.app/privacy">privacy policy</a> and NDPA 2023.</p>
                     </form>
 '''
 
@@ -166,7 +166,7 @@ CONTACT = '''
                             </div>
                             <div>
                                 <dt>Data protection</dt>
-                                <dd>Handled under the <a href="risk-esg/privacy-policy.html">privacy
+                                <dd>Handled under the <a href="https://risk-esg.vercel.app/privacy">privacy
                                     policy</a> and the NDPA 2023.</dd>
                             </div>
                         </dl>
